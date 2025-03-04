@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>it.polimi.ingsw</groupId>
-  <artifactId>PSP000</artifactId>
+  <artifactId>PSP20</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>My Shelfie</name>
+  <name>GalaxyTrucker</name>
   <url>http://maven.apache.org</url>
 
   <properties>
