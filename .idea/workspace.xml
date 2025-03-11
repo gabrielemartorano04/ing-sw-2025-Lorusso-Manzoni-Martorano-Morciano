@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2af6b28c-2089-4664-b068-d7031a1c7073" name="Changes" comment="Commit prova" />
+    <list default="true" id="2af6b28c-2089-4664-b068-d7031a1c7073" name="Changes" comment="Commit Card">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ing-sw-2025-Lorusso-Manzoni-Martorano-Morciano.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ing-sw-2025-Lorusso-Manzoni-Martorano-Morciano.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -92,6 +100,7 @@
       <updated>1741711498314</updated>
       <workItem from="1741711499685" duration="2927000" />
       <workItem from="1741714491250" duration="599000" />
+      <workItem from="1741715166368" duration="429000" />
     </task>
     <task id="LOCAL-00001" summary="Commit prova">
       <option name="closed" value="true" />
@@ -117,7 +126,23 @@
       <option name="project" value="LOCAL" />
       <updated>1741714535088</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Commit prova">
+      <option name="closed" value="true" />
+      <created>1741715246472</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1741715246472</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Commit Card">
+      <option name="closed" value="true" />
+      <created>1741715587338</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1741715587338</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -136,6 +161,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Commit prova" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit prova" />
+    <MESSAGE value="Commit Card" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit Card" />
   </component>
 </project>
