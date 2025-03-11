@@ -1,5 +1,5 @@
 package it.polimi.ingsw;
-
+;
 public class SpaceShip {
 
     //private Component[5][7] components;
