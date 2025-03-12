@@ -1,6 +1,21 @@
 package it.polimi.ingsw;
 
-//contiene tutti i componenti
 public class AvailableComponents {
-    ;
+    private Component[] components;
+
+    public AvailableComponents() {
+        this.components = new Component[0];
+    }
+
+    public Component[] getComponents() {
+        return components;
+    }
+
+    public void shuffle() {
+        ;
+    }
+
+    public void remove() {
+        ;
+    }
 }
