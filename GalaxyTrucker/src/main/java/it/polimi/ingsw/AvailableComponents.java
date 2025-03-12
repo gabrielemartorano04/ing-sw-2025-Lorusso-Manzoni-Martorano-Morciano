@@ -12,7 +12,7 @@ public class AvailableComponents {
     }
 
     public void shuffle() {
-        ;//funziona?
+        ;
     }
 
     public void remove() {

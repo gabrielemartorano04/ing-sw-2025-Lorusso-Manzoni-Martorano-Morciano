@@ -7,7 +7,7 @@ public class Engine extends Component{
         isDouble = false;
     }
 
-    public void setIsDouble(){
+    public void setIsDouble(boolean isDouble) {
         isDouble = true;
     }
 
