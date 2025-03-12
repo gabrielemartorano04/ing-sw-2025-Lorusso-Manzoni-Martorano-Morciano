@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-public class LifeSupport {
+public class LifeSupport extends Component{
     //enum color
 
     public LifeSupport() {

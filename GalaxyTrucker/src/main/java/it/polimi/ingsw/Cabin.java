@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-public class Cabin {
+public class Cabin extends Component{
     private boolean isMain;
     private int quantity;
     private int capacity;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-public class Shield {
+public class Shield extends Component{
     //enum direction
 
     public Shield() {
