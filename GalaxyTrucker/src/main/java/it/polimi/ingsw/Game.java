@@ -71,6 +71,9 @@ public class Game {
 
     public void endGame() {}
 
-
     public void setMode() {};
+
+    public int[] computeScores(){
+        return new int[0];
+    };
 }
