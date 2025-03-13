@@ -7,21 +7,26 @@ public class BatteryStorage extends Component{
     public BatteryStorage() {
         this.capacity = 0;
         this.quantity = 0;
+        super.setType("Battery Storage");
     }
 
-    public void setCapacity() {
-        ;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
-    public void setQuantity() {
-        ;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
-    public void getCapacity() {
-        ;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void getQuantity() {
-        ;
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getType() {
+        return type;
     }
 }

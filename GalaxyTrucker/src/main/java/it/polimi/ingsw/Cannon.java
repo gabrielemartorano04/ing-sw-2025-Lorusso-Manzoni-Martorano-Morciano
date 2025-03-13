@@ -16,12 +16,11 @@ public class Cannon extends Component{
         ;
     }
 
-    public boolean getIsDouble() {
-        return isDouble;
+    public void getIsDouble() {
+        ;
     }
 
     public void getPower() {
-
-
+        ;
     }
 }

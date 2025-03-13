@@ -9,10 +9,12 @@ public class Engine extends Component{
     }
 
     public void setIsDouble(boolean isDouble) {
-        isDouble = true;
+        this.isDouble = isDouble;
     }
 
-
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
 
     public boolean getIsDouble() {
         return isDouble;

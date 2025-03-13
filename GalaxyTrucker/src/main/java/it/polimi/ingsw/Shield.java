@@ -1,17 +1,20 @@
 package it.polimi.ingsw;
 
 public class Shield extends Component{
-    //enum direction
+    private enum Direction {NE, NW, SE, SW};
 
-    public Shield() {
-        ;
+    private Direction direction;
+
+    public Shield(Direction direction) {
+        this.direction = direction;
+        super.setType("Shield");
     }
 
-    public void setDirection() {
-        ;
+    public Direction getDirection() {
+        return direction;
     }
 
-    public void getDirection() {
-        ;
+    public String getType() {
+        return type;
     }
 }
