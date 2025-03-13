@@ -2,9 +2,11 @@ package it.polimi.ingsw;
 
 public class Engine extends Component{
     private boolean isDouble;
+    private String type;
 
     public Engine() {
         isDouble = false;
+        type = "engine";
     }
 
     public void setIsDouble(boolean isDouble) {
