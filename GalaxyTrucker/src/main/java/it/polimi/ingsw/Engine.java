@@ -24,4 +24,8 @@ public class Engine extends Component{
     public void getPower() {
         ;
     }
+
+    public String getType() {
+        return type;
+    }
 }
