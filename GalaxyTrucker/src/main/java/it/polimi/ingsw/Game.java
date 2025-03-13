@@ -7,24 +7,50 @@ public class Game {
     //attributi
     private ArrayList<Trucker> truckers;
     private Card[] cardStack;
-    private Card[] gameDeck;
+    private ArrayList<Card> gameDeck;
     private int numPlayer;
     private int[] dice;
-    private Component[] components;
+    private AvailableComponents[] components;
     private Timer timer;
     private boolean mode;
-    private String gameState; // modificare in enum di GameState
+    private GameState gameState;
+    private Deck deck;
 
-    public Game() {}
+    public Game() {
+        this.truckers = new ArrayList<>();
+        this.gameDeck = new ArrayList<>();
+        this.numPlayer = 1;
+        this.dice = new int[2];
+        this.components = new AvailableComponents[156];
+        this.timer = new Timer();
+        this.mode = false;
+        this.gameState = GameState.WAITING;
+
+
+    }
+
+    public enum GameState {
+        WAITING,  // Attesa giocatori
+        SETUP,    // Setup in corso
+        IN_PROGRESS, // Partita in corso
+        ENDED     // Partita terminata
+    }
 
     // model
-    public void setupGame() {}
+    public void setupGame() {
+        this.gameState = GameState.SETUP;
+        makeDeck();
+        for (Trucker t: truckers) {
+            //passa gestione a trucker per creare la spaceShip
+        }
+        makeStack();
+    }
 
-    public String getGameState() {
-        return "";
+    public GameState getGameState() {
+        return gameState;
     } // da cambiare in GameState
 
-    public void setGameState(String gameState) {}
+    public void setGameState(GameState gameState) {}
 
     public void manageTime(Timer timer) {}
 
@@ -62,9 +88,15 @@ public class Game {
 
     public void setComponents(Component[] components) {}
 
-    public void makeStack(Card[] cards) {}
+    public void makeStack(Card[] cards) {
+
+    }
 
     public void makeDeck() {}
+
+    public ArrayList<Trucker> getTruckerList() {
+        return null;
+    }
 
     //controller
     public void startGame() {}
