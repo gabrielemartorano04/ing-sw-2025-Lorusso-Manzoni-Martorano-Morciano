@@ -5,7 +5,7 @@ public class Engine extends Component{
 
     public Engine() {
         this.isDouble = false;
-        super.setType("engine");
+        super.setType("Engine");
     }
 
     public void setIsDouble(boolean isDouble) {
