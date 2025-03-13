@@ -33,9 +33,48 @@ public class SpaceShip {
         return component;
     }
 
-    public int getEnginePower(){
+    public int getSingleCannonPower(){
         int power=0;
-        int doubleEngine=0;
+        Cannon cannon=null;
+        for(int i=0;i<5;i++){
+            for(int j=0;j<7;j++){
+                if(components[i][j]!=null && components[i][j].getType().equals("cannon")){
+                    if(components[i][j] instanceof Cannon){
+                        cannon=(Cannon)components[i][j];
+                        if(!cannon.getIsDouble())
+                            power++;
+
+                    }
+
+                }
+
+            }
+        }
+        return power;
+    }
+    public int getDoubleCannon(){
+        int doubleCannon=0;
+        Cannon cannon=null;
+        for(int i=0;i<5;i++){
+            for(int j=0;j<7;j++){
+                if(components[i][j]!=null && components[i][j].getType().equals("cannon")){
+                    if(components[i][j] instanceof Cannon){
+                        cannon=(Cannon)components[i][j];
+                        if(cannon.getIsDouble())
+                            doubleCannon++;
+
+                    }
+
+                }
+
+            }
+        }
+        return doubleCannon;
+    }
+
+
+    public int getSingleEnginePower(){
+        int power=0;
         Engine engine=null;
         for(int i=0;i<5;i++){
             for(int j=0;j<7;j++){
@@ -54,6 +93,29 @@ public class SpaceShip {
         return power;
     }
     public int getDoubleEngine(){
+        int doubleEngine=0;
+        Engine engine=null;
+        for(int i=0;i<5;i++){
+            for(int j=0;j<7;j++){
+                if(components[i][j]!=null && components[i][j].getType().equals("engine")){
+                    if(components[i][j] instanceof Engine){
+                        engine=(Engine)components[i][j];
+                        if(engine.getIsDouble())
+                            doubleEngine++;
 
+                    }
+
+                }
+
+            }
+        }
+        return doubleEngine;
     }
+
+    public Component chooseComponent(int x, int y){
+        return components[x][y];
+    }
+
+
+
 }
