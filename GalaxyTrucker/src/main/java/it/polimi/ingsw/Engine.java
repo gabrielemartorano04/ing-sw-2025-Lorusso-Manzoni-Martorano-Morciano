@@ -2,28 +2,30 @@ package it.polimi.ingsw;
 
 public class Engine extends Component{
     private boolean isDouble;
+    private boolean isActive;
 
     public Engine() {
         this.isDouble = false;
+        this.isActive = false;
         super.setType("Engine");
     }
 
     public void setIsDouble(boolean isDouble) {
-        isDouble = true;
+        this.isDouble = isDouble;
     }
 
-    public void setPower() {
-        ;
-    }
-
-    public void getIsDouble() {
-        ;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     public int getPower() {
         if (isDouble) {
-            return 2;
-        }else{
+            if (isActive) {
+                return 2;
+            } else {
+                return 0;
+            }
+        } else {
             return 1;
         }
     }
