@@ -2,25 +2,50 @@ package it.polimi.ingsw;
 
 public class Cannon extends Component{
     private boolean isDouble;
-    //aggiungere la enum per orientation
+    private boolean isActive;
+    private enum Orientation{N, E, S, W};
+
+    private Orientation orientation;
 
     public Cannon() {
         this.isDouble = false;
+        this.isActive = false;
+        super.setType("Cannon");
     }
 
     public void setIsDouble(boolean isDouble) {
-        isDouble = true;
+        this.isDouble = isDouble;
     }
 
-    public void setPower() {
-        ;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
-    public void getIsDouble() {
-        ;
+    public boolean getIsDouble() {
+        return isDouble;
     }
 
-    public void getPower() {
-        ;
+    public double getPower() {
+        if (isDouble) {
+            if (isActive) {
+                if (orientation == Orientation.N  || orientation == Orientation.S) {
+                    return 2;
+                } else {
+                    return 1;
+                }
+            } else {
+                return 0;
+            }
+        }else{
+            if (orientation == Orientation.N && orientation == Orientation.S){
+                return 1;
+            }else{
+                return 0.5;
+            }
+        }
+    }
+
+    public String getType() {
+        return type;
     }
 }

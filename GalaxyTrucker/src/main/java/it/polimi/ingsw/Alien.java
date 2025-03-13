@@ -1,13 +1,19 @@
 package it.polimi.ingsw;
 
 public class Alien {
-    //enum color
+    private enum Color {PURPLE, BROWN};
 
-    public Alien() { //color dentro
-        ;
+    private Color color;
+
+    public Alien(Color color){
+        this.color = color;
     }
 
-    public void getColor() {
-        ;
+    public String getColor() {
+        if (this.color == Color.PURPLE) {
+            return "PURPLE";
+        }else{
+            return "BROWN";
+        }
     }
 }

@@ -10,10 +10,15 @@ public class Load extends Component{
         isSpecial = false;
         capacity = 0;
         goods = new ArrayList<>();
+        super.setType("Load");
     }
 
     public void setCapacity(int capacity) {
-        capacity = goods.size();
+        //come si fa?
+    }
+
+    public void setQuantity(int quantity) {
+        //come si fa?
     }
 
     public int getCapacity() {
@@ -22,5 +27,9 @@ public class Load extends Component{
 
     public int getQuantity() {
         return goods.size();
+    }
+
+    public String getType() {
+        return type;
     }
 }

@@ -7,6 +7,7 @@ public class Component {
     protected String type;
 
     public Component() {
+        this.link = new int[4];
         this.selected = false;
         this.covered = false;
         this.type = "";
@@ -20,31 +21,38 @@ public class Component {
         return this.type;
     }
 
-    public void setLink() {
-        ;
+    public void setLink(int[] link) {
+        this.link = link;
     }
 
-    public void setSelected() {
-        ;
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
-    public void setCovered() {
-        ;
+    public void setCovered(boolean covered) {
+        this.covered = covered;
     }
 
-    public void getLink() {
-        ;
+    public int getLink() {
+        for (int i = 0; i < 4; i++) {
+            return link[i];
+        }
+        return 0;
     }
 
-    public void getSelected() {
-        ;
+    public boolean getSelected() {
+        return this.selected;
     }
 
-    public void getCovered() {
-        ;
+    public boolean getCovered() {
+        return this.covered;
     }
 
     public void turn() {
-        ;
+        for (int i = 0; i < 3; i++) {
+            int tmp = link[i];
+            link[i] = link[i+1];
+            link[i+1] = tmp;
+        }
     }
 }

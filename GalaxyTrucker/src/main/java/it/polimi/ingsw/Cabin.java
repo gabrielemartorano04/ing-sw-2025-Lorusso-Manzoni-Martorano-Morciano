@@ -13,10 +13,11 @@ public class Cabin extends Component{
         this.capacity = 0;
         this.alien = null;
         this.lifeSupport = null;
+        super.setType("Cabin");
     }
 
     public void setIsMain(boolean isMain) {
-        isMain = true;
+        this.isMain = isMain;
     }
 
     public void setQuantity(int quantity) {
@@ -27,11 +28,19 @@ public class Cabin extends Component{
         this.capacity = capacity;
     }
 
+    public boolean isMain() {
+        return isMain;
+    }
+
     public int getQuantity() {
         return quantity;
     }
 
     public int getCapacity() {
         return capacity;
+    }
+
+    public String getType() {
+        return type;
     }
 }
