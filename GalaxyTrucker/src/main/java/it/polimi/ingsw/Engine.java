@@ -18,6 +18,14 @@ public class Engine extends Component{
         this.isActive = isActive;
     }
 
+    public boolean getIsDouble() {
+        return isDouble;
+    }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
     public int getPower() {
         if (isDouble) {
             if (isActive) {
