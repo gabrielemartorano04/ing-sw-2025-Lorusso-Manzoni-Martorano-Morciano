@@ -1,15 +1,15 @@
 package it.polimi.ingsw;
 
 public class Alien {
-    private enum Color {PURPLE, BROWN};
+    private enum AlienColor {PURPLE, BROWN};
 
-    private Color color;
+    private AlienColor color;
 
-    public Alien(Color color){
+    public Alien(AlienColor color){
         this.color = color;
     }
 
-    public Color getColor() {
+    public AlienColor getColor() {
         return color;
     }
 }
