@@ -103,11 +103,12 @@ public class Game {
         return truckers.get(i);
     }
 
-    public Component[] getComponents() {
-        return null;
+    public AvailableComponents[] getComponents() {
+        return components;
     }
 
-    public void setComponents(Component[] components) {
+    public void setComponents(AvailableComponents[] components) {
+
     }
 
     public void makeStacks() {
