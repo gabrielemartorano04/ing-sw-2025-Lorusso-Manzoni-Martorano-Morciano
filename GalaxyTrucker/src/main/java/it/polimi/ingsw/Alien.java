@@ -9,11 +9,7 @@ public class Alien {
         this.color = color;
     }
 
-    public String getColor() {
-        if (this.color == Color.PURPLE) {
-            return "PURPLE";
-        }else{
-            return "BROWN";
-        }
+    public Color getColor() {
+        return color;
     }
 }
