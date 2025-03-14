@@ -9,10 +9,10 @@ import java.util.Comparator;
 public class Game {
     //attributi
     private ArrayList<Trucker> truckers;
+    private ArrayList<Trucker> truckersOut;
     private ArrayList<Card>[] cardStacks;
     private ArrayList<Card> gameDeck;
     private int numPlayer;
-    private int[] dice;
     private AvailableComponents[] components;
     private Timer timer;
     private int gameLevel;
@@ -21,8 +21,8 @@ public class Game {
 
     public Game() {
         this.truckers = new ArrayList<>();
+        this.truckersOut = new ArrayList<>();
         this.gameDeck = new ArrayList<>();
-        this.dice = new int[2];
         this.components = new AvailableComponents[156];
         this.timer = new Timer();
         this.gameState = GameState.SETUP;
@@ -67,17 +67,32 @@ public class Game {
         this.numPlayer = num;
     }
 
-    public int rollDice(int[] dice, Trucker trucker) {
+    public int rollDice() {
         Random rand = new Random();
-        dice[0] = rand.nextInt(5) + 1 ;
-        dice[1] = rand.nextInt(5) + 1;
-        return dice[0]+dice[1];
+        int x = rand.nextInt(5) + 1 ;
+        int y = rand.nextInt(5) + 1;
+        return x+y;
     }
 
     // prendo la prima carta nel mazzo da gioco attivo il suo effetto e la rimuovo
-    public void drawCard(Trucker trucker) {
+    public void drawCard() {
         if (gameDeck.isEmpty()) return;
         gameDeck.removeFirst().cardEffect(this, null ); //da modificare null una volta volta implementato game controller
+    }
+
+    public void turn(){
+        drawCard();
+        for(Trucker t: truckers){
+            checkOvertaken(t);
+            noHumans(t);
+        }
+    }
+
+    public void noHumans(Trucker trucker) {
+        for(Trucker t: truckers){
+            if (t.getSpaceShip().getNumHuman() == 0)
+                withdraw(t);
+        }
     }
 
     public ArrayList<Card> viewStack(int i) {
@@ -95,6 +110,7 @@ public class Game {
     }
 
     public void withdraw(Trucker trucker) {
+        truckersOut.add(trucker);
         truckers.remove(trucker);
     }
 
@@ -105,10 +121,6 @@ public class Game {
 
     public AvailableComponents[] getComponents() {
         return components;
-    }
-
-    public void setComponents(AvailableComponents[] components) {
-
     }
 
     public void makeStacks() {
@@ -164,5 +176,9 @@ public class Game {
 
     public int[] computeScores(){
         return new int[0];
+    };
+
+    public int[] compute(){
+        return null;
     };
 }
