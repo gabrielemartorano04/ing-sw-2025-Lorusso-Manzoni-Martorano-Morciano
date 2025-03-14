@@ -178,11 +178,13 @@ public class SpaceShip {
         return true;
     }
 
-    public int getTotalCannonPower(int active){
+    public int getTotalCannonPower(GameController controller){
+        int active=controller.askActiveComponents(getDoubleCannon());
         return getSingleCannonPower()+2*active*getDoubleCannon();
     }
 
-    public int getTotalEnginePower(int active){
+    public int getTotalEnginePower(GameController controller){
+        int active=controller.askActiveComponents(getDoubleEngine());
         return getSingleEnginePower()+2*active*getDoubleEngine();
     }
 
