@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 
 import java.util.List;
 
-//secondo me tutti i get sono inutili
+//secondo me tutti i get sono inutil
 
 class Smugglers extends Card {
     private int cannonRequired;

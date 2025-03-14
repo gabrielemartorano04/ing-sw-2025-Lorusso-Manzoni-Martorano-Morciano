@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 import java.util.List;
-
+//
 class Planets extends Card {
     private List<List<Goods>> planets;
     private int daysLoss;

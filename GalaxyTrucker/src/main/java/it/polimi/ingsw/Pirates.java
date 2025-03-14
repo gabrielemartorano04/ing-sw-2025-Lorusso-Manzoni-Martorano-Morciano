@@ -1,5 +1,5 @@
 package it.polimi.ingsw;
-//
+
 class Pirates extends Card {
     private int credits;
     private int days;
