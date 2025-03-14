@@ -23,7 +23,20 @@ public class AvailableComponents {
         }
     }
 
-    public void remove() {
-        ;//come si fa?
+    public void remove(Component component) {
+        int index = -1;
+        for (int i = 0; i < components.length; i++) {
+            if (components[i].equals(component)) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            return;
+        }
+        Component[] newComponents = new Component[components.length - 1];
+        System.arraycopy(components, 0, newComponents, 0, index);
+        System.arraycopy(components, index + 1, newComponents, index, components.length - index - 1);
+        components = newComponents;
     }
 }
