@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
 public class Shield extends Component{
-    private enum Direction {NE, NW, SE, SW};
 
     private Direction direction;
 
