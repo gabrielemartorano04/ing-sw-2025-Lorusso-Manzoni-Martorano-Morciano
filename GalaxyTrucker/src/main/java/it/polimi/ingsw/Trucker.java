@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
 public class Trucker {
+
+
     public enum Color{RED, GREEN, BLUE, YELLOW};
     private Color color;
     private SpaceShip spaceShip;
@@ -11,6 +13,12 @@ public class Trucker {
         this.color = color;
         this.spaceShip = spaceShip;
         this.position = position;
+        this.cosmicCredit = 0;
+    }
+    public Trucker() {
+        this.color = null;
+        this.spaceShip = null;
+        this.position = 0;
         this.cosmicCredit = 0;
     }
 
