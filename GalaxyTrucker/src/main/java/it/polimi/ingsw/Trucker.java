@@ -15,6 +15,7 @@ public class Trucker {
         this.position = position;
         this.cosmicCredit = 0;
     }
+
     public Trucker() {
         this.color = null;
         this.spaceShip = null;
