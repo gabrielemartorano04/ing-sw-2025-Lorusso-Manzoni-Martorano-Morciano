@@ -5,22 +5,22 @@ import java.util.List;
 //secondo me tutti i get sono inutil
 
 class Smugglers extends Card {
-    private int cannonRequired;
+    private int smugglersPower;
     private int goodsLost;
     private int days;
     private Goods[] goodsGained = new Goods[3];
     private boolean isDefeated = false;
 
-    public Smugglers(boolean trialFlight, int cannonRequired, int goodsLost, int days, Goods[] goodsGained) {
+    public Smugglers(boolean trialFlight, int smugglersPower, int goodsLost, int days, Goods[] goodsGained) {
         super("Smugglers", "Illegal traders of goods", trialFlight);
-        this.cannonRequired = cannonRequired;
+        this.smugglersPower = smugglersPower;
         this.goodsLost = goodsLost;
         this.days = days;
         this.goodsGained = goodsGained;
     }
 
-    public int getCannonRequired() {
-        return cannonRequired;
+    public int getSmugglersPower() {
+        return smugglersPower;
     }
 
     public int getGoodsLost() {
@@ -43,13 +43,15 @@ class Smugglers extends Card {
                 break;
             }
             else{
-                if(trucker.getSpaceShip().getTotalEnginePower()>cannonRequired){
+                if(trucker.getSpaceShip().getTotalEnginePower()> smugglersPower){
                     isDefeated = true;
                     boolean answer = controller.ask(trucker);
                     if (answer == true){
                         trucker.getSpaceShip().addGoods(goodsGained);
-                        game.move(trucker, days);
+                        game.moveTrucker(trucker, days);
                     }
+                } else if (trucker.getSpaceShip().getTotalEnginePower() < smugglersPower){
+                    
                 }
             }
         }

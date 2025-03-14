@@ -33,7 +33,7 @@ class AbandonedStation extends Card {
                     if (controller.ask(trucker, goods) == true) {
                         decisionTaken = true;
                         trucker.getSpaceShip().addGoods(goods);
-                        trucker.moveTrucker(trucker, days);
+                        game.moveTrucker(trucker, days);
                     }
                 }
             }
