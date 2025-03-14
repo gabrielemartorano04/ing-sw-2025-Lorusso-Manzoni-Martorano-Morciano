@@ -2,7 +2,6 @@ package it.polimi.ingsw;
 
 public class Shield extends Component{
 
-
     private Direction direction;
 
     public Shield(Direction direction) {

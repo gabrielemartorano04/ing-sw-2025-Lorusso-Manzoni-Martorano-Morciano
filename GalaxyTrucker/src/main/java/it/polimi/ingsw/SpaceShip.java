@@ -8,6 +8,7 @@ public class SpaceShip {
     private Component[] kept;
     private int lost;
 
+
     public SpaceShip(){
         components=new Component[5][7];
         kept=new Component[2];
@@ -19,6 +20,9 @@ public class SpaceShip {
             }
         }
         lost=0;
+        Cabin cabin=new Cabin();
+        cabin.setIsMain(true);
+        components[7][7]=cabin;
     }
 
     public Component[][] getComponents() {
@@ -150,11 +154,33 @@ public class SpaceShip {
         int linkD=comD.getLink()[0];
         int linkL=comL.getLink()[1];
         //CONTROLLO CHE U,R,D,L SIA COLLEGATO BENE
-
+        if(!compatibleLinks(link[0],linkU)) return false;
+        if(!compatibleLinks(link[1],linkR)) return false;
+        if(!compatibleLinks(link[2],linkD)) return false;
+        if(!compatibleLinks(link[3],linkL)) return false;
+        return true;
+    }
+    private boolean compatibleLinks(int l1,int l2){
+        if(l1==l2 || l1==3 || l2==3)
+            return true;
+        else {
+            if(l1==1){
+                if (l2==2) return false;
+            }
+            if(l1==2){
+                if(l2==1) return false;
+            }
+        }
         return true;
     }
 
+    public int totalCannonPower(int active){
+        return getSingleCannonPower()+2*active*getDoubleCannon();
+    }
 
+    public int totalEnginePower(int active){
+        return getSingleEnginePower()+2*active*getDoubleEngine();
+    }
 
 
 }

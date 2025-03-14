@@ -6,19 +6,11 @@ public class Load extends Component{
     private int capacity;
     private ArrayList<Goods> goods;
 
-    public Load() {
+    public Load(int capacity) {
         isSpecial = false;
-        capacity = 0;
-        goods = new ArrayList<>();
+        this.capacity = capacity;
+        goods = new ArrayList<Goods>();
         super.setType("Load");
-    }
-
-    public void setCapacity(int capacity) {
-        //come si fa?
-    }
-
-    public void setQuantity(int quantity) {
-        //come si fa?
     }
 
     public int getCapacity() {
@@ -27,6 +19,10 @@ public class Load extends Component{
 
     public int getQuantity() {
         return goods.size();
+    }
+
+    public void addGood(ArrayList<Goods> newGoods) {
+        goods.addAll(newGoods);
     }
 
     public String getType() {

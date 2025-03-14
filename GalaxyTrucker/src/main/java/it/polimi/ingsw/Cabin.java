@@ -28,7 +28,7 @@ public class Cabin extends Component{
         this.capacity = capacity;
     }
 
-    public boolean isMain() {
+    public boolean getIsMain() {
         return isMain;
     }
 
