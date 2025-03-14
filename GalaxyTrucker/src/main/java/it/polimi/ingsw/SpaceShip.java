@@ -10,12 +10,12 @@ public class SpaceShip {
 
 
     public SpaceShip(){
-        components=new Component[5][7];
+        components=new Component[9][10];
         kept=new Component[2];
         for(int i=0;i<2;i++)
             kept[i]=null;
-        for(int i=0;i<5;i++){
-            for(int j=0;j<7;j++){
+        for(int i=0;i<9;i++){
+            for(int j=0;j<10;j++){
                 components[i][j]=null;
             }
         }
@@ -42,8 +42,8 @@ public class SpaceShip {
     public int getSingleCannonPower(){
         int power=0;
         Cannon cannon=null;
-        for(int i=0;i<5;i++){
-            for(int j=0;j<7;j++){
+        for(int i=5;i<9;i++){
+            for(int j=4;j<10;j++){
                 if(components[i][j]!=null && components[i][j].getType().equals("cannon")){
                     if(components[i][j] instanceof Cannon){
                         cannon=(Cannon)components[i][j];
@@ -61,8 +61,8 @@ public class SpaceShip {
     public int getDoubleCannon(){
         int doubleCannon=0;
         Cannon cannon=null;
-        for(int i=0;i<5;i++){
-            for(int j=0;j<7;j++){
+        for(int i=5;i<9;i++){
+            for(int j=4;j<10;j++){
                 if(components[i][j]!=null && components[i][j].getType().equals("cannon")){
                     if(components[i][j] instanceof Cannon){
                         cannon=(Cannon)components[i][j];
@@ -82,8 +82,8 @@ public class SpaceShip {
     public int getSingleEnginePower(){
         int power=0;
         Engine engine=null;
-        for(int i=0;i<5;i++){
-            for(int j=0;j<7;j++){
+        for(int i=5;i<9;i++){
+            for(int j=4;j<10;j++){
                 if(components[i][j]!=null && components[i][j].getType().equals("engine")){
                     if(components[i][j] instanceof Engine){
                         engine=(Engine)components[i][j];
@@ -101,8 +101,8 @@ public class SpaceShip {
     public int getDoubleEngine(){
         int doubleEngine=0;
         Engine engine=null;
-        for(int i=0;i<5;i++){
-            for(int j=0;j<7;j++){
+        for(int i=5;i<9;i++){
+            for(int j=4;j<10;j++){
                 if(components[i][j]!=null && components[i][j].getType().equals("engine")){
                     if(components[i][j] instanceof Engine){
                         engine=(Engine)components[i][j];
@@ -127,8 +127,8 @@ public class SpaceShip {
     public ArrayList<Direction> getProtection(){
         ArrayList<Direction> p=new ArrayList<Direction>();
         Shield shield=null;
-        for(int i=0;i<5;i++){
-            for(int j=0;j<7;j++){
+        for(int i=5;i<9;i++){
+            for(int j=4;j<10;j++){
                 if(components[i][j]!=null && components[i][j].getType().equals("Shield")){
                     if(components[i][j] instanceof Shield){
                         shield=(Shield)components[i][j];
@@ -183,4 +183,32 @@ public class SpaceShip {
     }
 
 
+    public int exposedConnectors(){
+        int cont=0;
+        for(int i=5;i<9;i++){
+            for(int j=4;j<10;j++){
+                if(components[i][j]!=null){
+                    Component com=components[i][j];
+                    Component comU=components[i-1][j];
+                    Component comR=components[i][j+1];
+                    Component comD=components[i][j+2];
+                    Component comL=components[i][j-1];
+                    if(comU==null) cont+=com.getLink()[0];
+                    if(comR==null) cont+=com.getLink()[1];
+                    if(comD==null) cont+=com.getLink()[2];
+                    if(comL==null) cont+=com.getLink()[3];
+                }
+            }
+        }
+        return cont;
+    }
+    public boolean wellDone(){
+        for(int i=5;i<9;i++) {
+            for (int j = 4; j < 10; j++) {
+                if(!isValid(i,j))
+                    return false;
+            }
+        }
+        return true;
+    }
 }

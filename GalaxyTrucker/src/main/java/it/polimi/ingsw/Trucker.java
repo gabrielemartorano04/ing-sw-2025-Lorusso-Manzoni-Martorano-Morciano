@@ -14,6 +14,10 @@ public class Trucker {
         this.cosmicCredit = 0;
     }
 
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
     public void setCosmicCredit(int cosmicCredit) {
         this.cosmicCredit = cosmicCredit;
     }
