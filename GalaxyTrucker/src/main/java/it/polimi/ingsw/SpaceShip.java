@@ -23,6 +23,10 @@ public class SpaceShip {
         Cabin cabin=new Cabin();
         cabin.setIsMain(true);
         components[7][7]=cabin;
+        redGoods=0;
+        greenGoods=0;
+        blueGoods=0;
+        yellowGoods=0;
     }
 
     public Component[][] getComponents() {
@@ -174,11 +178,11 @@ public class SpaceShip {
         return true;
     }
 
-    public int totalCannonPower(int active){
+    public int getTotalCannonPower(int active){
         return getSingleCannonPower()+2*active*getDoubleCannon();
     }
 
-    public int totalEnginePower(int active){
+    public int getTotalEnginePower(int active){
         return getSingleEnginePower()+2*active*getDoubleEngine();
     }
 
@@ -226,6 +230,10 @@ public class SpaceShip {
                             else if(load.getGoods().get(k).getValue()==2) greenGoods++;
                             else if(load.getGoods().get(k).getValue()==1) blueGoods++;
                         }
+                        /*if(load.getCapacity()-load.getQuantity()<=0)
+                            //organizza merci
+                        else //inserisci*/
+
                     }
                 }
             }
