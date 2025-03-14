@@ -7,7 +7,7 @@ public class SpaceShip {
     private Component[][] components;
     private Component[] kept;
     private int lost;
-
+    private int redGoods, greenGoods, blueGoods,yellowGoods;
 
     public SpaceShip(){
         components=new Component[9][10];
@@ -23,6 +23,10 @@ public class SpaceShip {
         Cabin cabin=new Cabin();
         cabin.setIsMain(true);
         components[7][7]=cabin;
+        redGoods=0;
+        greenGoods=0;
+        blueGoods=0;
+        yellowGoods=0;
     }
 
     public Component[][] getComponents() {
@@ -145,7 +149,7 @@ public class SpaceShip {
         Component com=components[x][y];
         Component comU=components[x-1][y];
         Component comR=components[x][y+1];
-        Component comD=components[x][y+2];
+        Component comD=components[x+1][y];
         Component comL=components[x][y-1];
 
         int[] link=com.getLink();
@@ -174,11 +178,13 @@ public class SpaceShip {
         return true;
     }
 
-    public int totalCannonPower(int active){
+    public int getTotalCannonPower(GameController controller){
+        int active=controller.askActiveComponents(getDoubleCannon());
         return getSingleCannonPower()+2*active*getDoubleCannon();
     }
 
-    public int totalEnginePower(int active){
+    public int getTotalEnginePower(GameController controller){
+        int active=controller.askActiveComponents(getDoubleEngine());
         return getSingleEnginePower()+2*active*getDoubleEngine();
     }
 
@@ -191,7 +197,7 @@ public class SpaceShip {
                     Component com=components[i][j];
                     Component comU=components[i-1][j];
                     Component comR=components[i][j+1];
-                    Component comD=components[i][j+2];
+                    Component comD=components[i+1][j];
                     Component comL=components[i][j-1];
                     if(comU==null) cont+=com.getLink()[0];
                     if(comR==null) cont+=com.getLink()[1];
@@ -210,5 +216,34 @@ public class SpaceShip {
             }
         }
         return true;
+    }
+
+    //possiamo riarrangiare le merci quando facciamo una add
+    public void addGoods(ArrayList<Goods> goods){
+        Load load=null;
+        for(int i=5;i<9;i++) {
+            for (int j = 4; j < 10; j++) {
+                if(components[i][j]!=null && components[i][j].getType().equals("Load")){
+                    if(components[i][j] instanceof Load){
+                        load=(Load)components[i][j];
+                        for(int k=0;k<goods.size();k++){
+                            if(load.getGoods().get(k).getValue()==4) redGoods++;
+                            else if(load.getGoods().get(k).getValue()==3) yellowGoods++;
+                            else if(load.getGoods().get(k).getValue()==2) greenGoods++;
+                            else if(load.getGoods().get(k).getValue()==1) blueGoods++;
+                        }
+                        /*if(load.getCapacity()-load.getQuantity()<=0)
+                            //organizza merci
+                        else //inserisci*/
+
+                    }
+                }
+            }
+        }
+
+    }
+
+    public void removeGoods(){
+
     }
 }

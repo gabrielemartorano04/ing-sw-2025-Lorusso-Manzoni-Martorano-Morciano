@@ -28,4 +28,8 @@ public class Load extends Component{
     public String getType() {
         return type;
     }
+
+    public ArrayList<Goods> getGoods() {
+        return goods;
+    }
 }

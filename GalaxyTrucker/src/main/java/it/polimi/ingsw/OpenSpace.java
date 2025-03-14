@@ -12,7 +12,10 @@ class OpenSpace extends Card {
         int[] daysGained = new int[truckers.size()];
         int i = 0;
         for (Trucker trucker : truckers) {
-            daysGained[i] = trucker.getSpaceShip().getEnginePower();
+            daysGained[i] = trucker.getSpaceShip().getTotalEnginePower();
+            if(daysGained[i] == 0){
+                game.withdraw(trucker);
+            }
             i++;
         }
         for (i = 0; i < daysGained.length; i--) {

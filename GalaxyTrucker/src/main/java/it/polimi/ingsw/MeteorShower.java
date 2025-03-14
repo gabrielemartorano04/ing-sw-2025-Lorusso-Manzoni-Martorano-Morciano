@@ -26,10 +26,9 @@ class MeteorShower extends Card {
         for (int[] meteor : direction) {
             boolean isBig = (meteor[0] == 1);
             int direction = meteor[1];
+            int roll = game.rollDice(); // tiro dei dadi mi aspetto che sia in Game
             for (Trucker trucker : truckers) {
                 SpaceShip ship = trucker.getSpaceShip();
-                int roll = game.rollDice(); // tiro dei dadi mi aspetto che sia in Game
-
                 if (ship.isHit(roll, direction)) {
                     if (isBig) {
                         // qui assumo che il meteorite grande possa essere distrutto da un cannone ma è da rivedere
