@@ -51,9 +51,10 @@ class Smugglers extends Card {
                         game.moveTrucker(trucker, days);
                     }
                 } else if (trucker.getSpaceShip().getTotalEnginePower() < smugglersPower){
-                    
+                    trucker.getSpaceShip().removeGoods(goodsLost);
                 }
             }
         }
+        isDefeated = false;
     }
 }
