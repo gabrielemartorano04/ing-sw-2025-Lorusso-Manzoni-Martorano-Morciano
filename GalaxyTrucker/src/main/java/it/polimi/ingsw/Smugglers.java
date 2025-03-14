@@ -48,8 +48,8 @@ class Smugglers extends Card {
                     boolean answer = controller.ask(trucker);
                     if (answer == true){
                         trucker.getSpaceShip().addGoods(goodsGained);
+                        game.move(trucker, days);
                     }
-                    else
                 }
             }
         }

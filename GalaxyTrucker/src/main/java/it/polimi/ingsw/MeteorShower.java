@@ -27,7 +27,7 @@ class MeteorShower extends Card {
             boolean isBig = (meteor[0] == 1);
             int direction = meteor[1];
             for (Trucker trucker : truckers) {
-                SpaceShip ship = trucker.getSpaceship();
+                SpaceShip ship = trucker.getSpaceShip();
                 int roll = game.rollDice(); // tiro dei dadi mi aspetto che sia in Game
 
                 if (ship.isHit(roll, direction)) {
