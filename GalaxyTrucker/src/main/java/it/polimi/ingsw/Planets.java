@@ -14,7 +14,7 @@ class Planets extends Card {
         return planets;
     }
     @Override
-    public void cardEffect(Game game) {
+    public void cardEffect(Game game, GameController controller) {
 
     }
 }

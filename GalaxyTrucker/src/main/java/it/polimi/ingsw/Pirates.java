@@ -25,4 +25,10 @@ class Pirates extends Card {
     public boolean[] getShoots() {
         return shoots;
     }
+
+    @Override
+    public void cardEffect(Game game, GameController controller) {
+
+    }
+
 }

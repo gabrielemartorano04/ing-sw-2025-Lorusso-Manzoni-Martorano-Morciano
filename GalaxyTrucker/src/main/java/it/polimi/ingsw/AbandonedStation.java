@@ -24,12 +24,12 @@ class AbandonedStation extends Card {
         return goods;
     }
     @Override
-    public void cardEffect(Game game){
+    public void cardEffect(Game game, GameController controller) {
         while (!decisionTaken){
             List<Trucker> truckers = game.getTruckerList();
             for(Trucker trucker: truckers) {
                 if (trucker.getSpaceShip().getNumHuman() > numHuman) {
-                    if (game.ask(trucker, goods) == true) {
+                    if (controller.ask(trucker, goods) == true) {
                         decisionTaken = true;
                         trucker.getSpaceShip().addGoods(goods);
                         trucker.moveTrucker(trucker, days);

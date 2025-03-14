@@ -24,12 +24,13 @@ class AbandonedShip extends Card {
     public int getNumHuman() {
         return numHuman;
     }
+
     @Override
-    public void cardEffect(Game game) {
+    public void cardEffect(Game game, GameController controller) {
         while (!decisionTaken) {
             List<Trucker> truckers = game.getTruckerList();
             for(Trucker trucker: truckers) {
-                if (game.ask(trucker, numHuman) == true){
+                if (controller.ask(trucker, numHuman) == true){
                     decisionTaken = true;
                     trucker.getSpaceShip().removeHuman(numHuman);
                     game.moveTrucker(trucker,days);

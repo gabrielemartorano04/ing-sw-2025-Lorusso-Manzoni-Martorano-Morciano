@@ -7,7 +7,7 @@ class OpenSpace extends Card {
     }
 
     @Override
-    public void cardEffect(Game game){
+    public void cardEffect(Game game, GameController controller) {
         List<Trucker> truckers = game.getTruckerList();
         int[] daysGained = new int[truckers.size()];
         int i = 0;

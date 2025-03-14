@@ -7,7 +7,7 @@ class StarDust extends Card {
     }
 
     @Override
-    public void cardEffect(Game game) {
+    public void cardEffect(Game game, GameController controller) {
         List<Trucker> truckers = game.getTruckerList();
         Collections.reverse(truckers);
         for (Trucker trucker : truckers) {

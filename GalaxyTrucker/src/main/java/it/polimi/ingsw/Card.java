@@ -32,7 +32,7 @@ public class Card {
         this.level = level;
     }
 
-    public void cardEffect(Game game) {
+    public void cardEffect(Game game, GameController controller) {
 
     }
 }

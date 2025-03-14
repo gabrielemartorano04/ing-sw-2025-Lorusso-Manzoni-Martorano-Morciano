@@ -24,6 +24,5 @@ public class AvailableComponents {
     }
 
     public void remove() {
-        ;//come si fa?
     }
 }
