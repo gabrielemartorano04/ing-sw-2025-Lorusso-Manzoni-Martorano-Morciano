@@ -33,11 +33,8 @@ public class Component {
         this.covered = covered;
     }
 
-    public int getLink() {
-        for (int i = 0; i < 4; i++) {
-            return link[i];
-        }
-        return 0;
+    public int[] getLink() {
+        return link; //standard: il primo elemento si riferisce ai link superiori, il secondo ai link di dx e così via
     }
 
     public boolean getSelected() {

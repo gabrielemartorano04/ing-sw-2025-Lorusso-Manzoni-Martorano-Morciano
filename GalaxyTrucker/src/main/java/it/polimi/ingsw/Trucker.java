@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 public class Trucker {
-    private enum Color{red, green, blue, yellow};
+    public enum Color{red, green, blue, yellow};
     private Color color;
     private SpaceShip spaceShip;
     private int position;

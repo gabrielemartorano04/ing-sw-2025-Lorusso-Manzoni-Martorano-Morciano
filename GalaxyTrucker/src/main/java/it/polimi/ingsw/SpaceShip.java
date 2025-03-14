@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import java.util.ArrayList;
+
 public class SpaceShip {
 
     private Component[][] components;
@@ -115,6 +117,43 @@ public class SpaceShip {
     public Component chooseComponent(int x, int y){
         return components[x][y];
     }
+
+
+
+    public ArrayList<Direction> getProtection(){
+        ArrayList<Direction> p=new ArrayList<Direction>();
+        Shield shield=null;
+        for(int i=0;i<5;i++){
+            for(int j=0;j<7;j++){
+                if(components[i][j]!=null && components[i][j].getType().equals("Shield")){
+                    if(components[i][j] instanceof Shield){
+                        shield=(Shield)components[i][j];
+                        p.add(shield.getDirection());
+                    }
+                }
+            }
+        }
+        return p;
+    }
+
+    private boolean isValid(int x, int y){
+
+        Component com=components[x][y];
+        Component comU=components[x-1][y];
+        Component comR=components[x][y+1];
+        Component comD=components[x][y+2];
+        Component comL=components[x][y-1];
+
+        int[] link=com.getLink();
+        int linkU=comU.getLink()[2];
+        int linkR=comR.getLink()[3];
+        int linkD=comD.getLink()[0];
+        int linkL=comL.getLink()[1];
+        //CONTROLLO CHE U,R,D,L SIA COLLEGATO BENE
+
+        return true;
+    }
+
 
 
 
