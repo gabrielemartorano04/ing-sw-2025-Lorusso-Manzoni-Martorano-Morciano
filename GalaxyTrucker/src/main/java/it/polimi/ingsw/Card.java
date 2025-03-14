@@ -32,7 +32,7 @@ public class Card {
         this.level = level;
     }
 
-    public void cardEffect(Game state) {
-        // Implementazione specifica nelle sottoclassi
+    public void cardEffect(Game game) {
+
     }
 }
