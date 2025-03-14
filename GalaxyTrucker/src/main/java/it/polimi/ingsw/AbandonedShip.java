@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import java.util.List;
 
+//
 class AbandonedShip extends Card {
     private int days;
     private int credits;

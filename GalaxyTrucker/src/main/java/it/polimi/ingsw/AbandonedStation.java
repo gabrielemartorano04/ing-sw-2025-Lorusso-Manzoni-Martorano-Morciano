@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 import java.util.List;
 
+//
 class AbandonedStation extends Card {
     private int days;
     private int numHuman;

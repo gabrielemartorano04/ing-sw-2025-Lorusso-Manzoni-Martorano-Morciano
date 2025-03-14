@@ -45,7 +45,11 @@ class Smugglers extends Card {
             else{
                 if(trucker.getSpaceShip().getTotalEnginePower()>cannonRequired){
                     isDefeated = true;
-
+                    boolean answer = controller.ask(trucker);
+                    if (answer == true){
+                        trucker.getSpaceShip().addGoods(goodsGained);
+                    }
+                    else
                 }
             }
         }

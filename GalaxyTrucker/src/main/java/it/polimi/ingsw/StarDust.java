@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
-import java.util.*
-
+import java.util.*;
+//
 class StarDust extends Card {
     public StarDust(boolean trialFlight) {
         super("Star Dust", "A cloud of cosmic dust", trialFlight);

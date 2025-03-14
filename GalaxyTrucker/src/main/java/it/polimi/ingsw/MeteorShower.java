@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 import java.util.ArrayList;
 import java.util.List;
-
+//
 
 class MeteorShower extends Card {
     private List<int[]> direction;
