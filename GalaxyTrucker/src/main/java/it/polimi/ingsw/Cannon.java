@@ -3,13 +3,14 @@ package it.polimi.ingsw;
 public class Cannon extends Component{
     private boolean isDouble;
     private boolean isActive;
-    private enum Orientation{N, E, S, W};
+    public enum Orientation{N, E, S, W};
 
     private Orientation orientation;
 
-    public Cannon() {
+    public Cannon(Orientation orientation) {
         this.isDouble = false;
         this.isActive = false;
+        this.orientation = orientation;
         super.setType("Cannon");
     }
 
@@ -43,6 +44,10 @@ public class Cannon extends Component{
                 return 0.5;
             }
         }
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
     }
 
     public String getType() {
