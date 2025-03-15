@@ -236,7 +236,7 @@ public class SpaceShip {
     }
 
 
-    public int exposedConnectors(){
+    public int countExposedConnectors(){
         int cont=0;
         for(int i=5;i<9;i++){
             for(int j=4;j<10;j++){
@@ -246,10 +246,10 @@ public class SpaceShip {
                     Component comR=components[i][j+1];
                     Component comD=components[i+1][j];
                     Component comL=components[i][j-1];
-                    if(comU==null) cont+=com.getLink()[0];
-                    if(comR==null) cont+=com.getLink()[1];
-                    if(comD==null) cont+=com.getLink()[2];
-                    if(comL==null) cont+=com.getLink()[3];
+                    if(comU==null) cont++;
+                    if(comR==null) cont++;
+                    if(comD==null) cont++;
+                    if(comL==null) cont++;
                 }
             }
         }
@@ -264,6 +264,118 @@ public class SpaceShip {
         }
         return true;
     }
+
+    public boolean isHit(int direction, int num){
+        switch(direction){
+            case 0:
+                for(int i=5;i<9;i++) {
+                    if(components[i][num]!=null) return true;
+                }
+                break;
+            case 1:
+                for(int j=9;j>3;j--){
+                    if(components[num][j]!=null) return true;
+                }
+                break;
+            case 2:
+                for(int i=8;i>4;i--) {
+                    if(components[i][num]!=null) return true;
+                }
+                break;
+            case 3:
+                for(int j=4;j<10;j++){
+                    if(components[num][j]!=null) return true;
+                }
+                break;
+        }
+        return false;
+    }
+
+    public boolean shootMeteor(int direction, int num){
+        switch(direction){
+            case 0:
+                for(int i=5;i<9;i++) {
+                    if(components[i][num]!=null){
+                        if(components[i][num] instanceof Cannon
+                                && ((Cannon) components[i][num]).getOrientation()== Cannon.Orientation.N)
+                            return true;
+                    }
+                }
+                break;
+            case 1:
+                for(int j=9;j>3;j--){
+                    if(components[num][j]!=null){
+                        if(components[num][j] instanceof Cannon
+                                &&((Cannon) components[num][j]).getOrientation()== Cannon.Orientation.E)
+                            return true;
+                    }
+                }
+                break;
+            case 2:
+                for(int i=8;i>4;i--) {
+                    if(components[i][num]!=null) {
+                        if (components[i][num] instanceof Cannon
+                                && ((Cannon) components[i][num]).getOrientation()== Cannon.Orientation.S)
+                            return true;
+                    }
+                }
+                break;
+            case 3:
+                for(int j=4;j<10;j++){
+                    if(components[num][j]!=null) {
+                        if(components[num][j] instanceof Cannon
+                                && ((Cannon) components[num][j]).getOrientation()==Cannon.Orientation.W)
+                            return true;
+                    }
+                }
+                break;
+        }
+        return false;
+    }
+
+    public boolean blockSmallMeteor(int direction, int num){
+        if(isHit(direction,num)){
+            if(shootMeteor(direction,num)) return true;
+
+            switch(direction){
+                case 0:
+                    for(int i=5;i<9;i++) {
+                        if(components[i][num]!=null){
+                            if(components[i][num].getLink()[0]==0)
+                                return true;
+                        }
+                    }
+                    break;
+                case 1:
+                    for(int j=9;j>3;j--){
+                        if(components[num][j]!=null){
+                            if(components[num][j].getLink()[1]==0)
+                                return true;
+                        }
+                    }
+                    break;
+                case 2:
+                    for(int i=8;i>4;i--) {
+                        if(components[i][num]!=null) {
+                            if (components[i][num].getLink()[2]==0)
+                                return true;
+                        }
+                    }
+                    break;
+                case 3:
+                    for(int j=4;j<10;j++){
+                        if(components[num][j]!=null) {
+                            if(components[num][j].getLink()[3]==0)
+                                return true;
+                        }
+                    }
+                    break;
+            }
+        }
+        return false;
+    }
+
+
 
     //possiamo riarrangiare le merci quando facciamo una add
     //SISTEMAAAAAAAA
