@@ -4,8 +4,8 @@ class WarZone extends Card {
     private List<Condition> conditionsOrder;
     private Map<Condition, Effect> penalties;
 
-    public WarZone(boolean trialFlight) {
-        super("War Zone", "A dangerous conflict zone", trialFlight);
+    public WarZone(boolean trialFlight, int level) {
+        super("War Zone", "A dangerous conflict zone", trialFlight, level);
     }
 
     public List<Condition> getConditionsOrder() {

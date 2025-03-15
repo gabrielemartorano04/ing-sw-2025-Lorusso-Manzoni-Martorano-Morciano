@@ -9,8 +9,8 @@ class AbandonedShip extends Card {
     private int numHuman;
     private boolean decisionTaken;
 
-    public AbandonedShip(boolean trialFlight, boolean decisionTaken) {
-        super("Abandoned Ship", "A drifting ghost ship",  trialFlight);
+    public AbandonedShip(boolean trialFlight, boolean decisionTaken, int level) {
+        super("Abandoned Ship", "A drifting ghost ship",  trialFlight, level);
         this.decisionTaken = false;
     }
 

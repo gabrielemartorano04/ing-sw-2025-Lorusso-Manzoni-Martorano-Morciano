@@ -6,8 +6,8 @@ class Slavers extends Card {
     private int days;
     private int astronautsLost;
 
-    public Slavers(boolean trialFlight) {
-        super("Slavers", "Intergalactic slave traders", trialFlight);
+    public Slavers(boolean trialFlight, int level) {
+        super("Slavers", "Intergalactic slave traders", trialFlight, level);
     }
 
     public int getCannonRequired() {

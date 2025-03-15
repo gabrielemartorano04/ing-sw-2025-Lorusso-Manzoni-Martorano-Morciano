@@ -6,8 +6,8 @@ class Pirates extends Card {
     private int cannonRequired;
     private boolean[] shoots = new boolean[3];
 
-    public Pirates(boolean trialFlight) {
-        super("Pirates", "Dangerous space raiders", trialFlight);
+    public Pirates(boolean trialFlight, int level) {
+        super("Pirates", "Dangerous space raiders", trialFlight, level);
     }
 
     public int getCredits() {
