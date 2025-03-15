@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 public class Engine extends Component{
     private boolean isDouble;
     private boolean isActive;
+
     public Engine() {
         this.isDouble = false;
         super.setType("Engine");

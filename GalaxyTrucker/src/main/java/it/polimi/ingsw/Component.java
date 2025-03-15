@@ -6,11 +6,11 @@ public class Component {
     protected boolean covered;
     protected String type;
 
-    public Component() {
-        this.link = new int[4];
+    public Component(int linkU, int linkR, int linkD, int linkL, String type) {
+        this.link = new int[] {linkU, linkR, linkD, linkL};
         this.selected = false;
         this.covered = false;
-        this.type = "";
+        this.type = type;
     }
 
     protected void setType(String type){
