@@ -10,12 +10,8 @@ public class LifeSupport extends Component{
         super.setType("Life Support");
     }
 
-    public String getColor() {
-        if (color == Color.PURPLE) {
-            return "PURPLE";
-        } else {
-            return "BROWN";
-        }
+    public Color getColor() {
+        return color;
     }
 
     public String getType() {
