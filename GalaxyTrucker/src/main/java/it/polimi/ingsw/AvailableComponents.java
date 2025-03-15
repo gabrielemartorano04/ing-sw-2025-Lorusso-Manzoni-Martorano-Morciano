@@ -1,12 +1,16 @@
 package it.polimi.ingsw;
 
 import java.util.Random;
+import javax.swing.ImageIcon;
 
 public class AvailableComponents {
     private Component[] components;
+    private final ImageIcon image;
+    private int[] link;
 
-    public AvailableComponents() {
-        this.components = new Component[0];
+    public AvailableComponents(ImageIcon image) {
+        this.components = new Component[156];
+        this.image = image;
     }
 
     public Component[] getComponents() {
@@ -39,4 +43,11 @@ public class AvailableComponents {
         System.arraycopy(components, index + 1, newComponents, index, components.length - index - 1);
         components = newComponents;
     }
+
+    Component Cabin1 = new Cabin(0, 0, 3, 1, "Cabin"); //meglio così o quello sotto?
+    Component Cabin2 = new Component(1, 0, 2, 3, "Cabin");
+    Component Cabin3 = new Component(2, 0, 0, 1, "Cabin");
+    Component Cabin4 = new Component(2, 2, 0, 3, "Cabin");
+    Component Cabin5 = new Component(1, 2, 1, 1, "Cabin");
+    Component Cabin6 = new Component(2, 1, 2, 2, "Cabin");
 }
