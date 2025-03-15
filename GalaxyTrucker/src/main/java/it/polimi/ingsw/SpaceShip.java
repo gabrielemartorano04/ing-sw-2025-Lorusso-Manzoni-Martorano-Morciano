@@ -403,8 +403,9 @@ public class SpaceShip {
 
     }
     //SISTEMAAAAAAAA
-    public void removeGoods(){
+    public void removeGoods(int numOfGoodsLost){
 
     }
+
 
 }
