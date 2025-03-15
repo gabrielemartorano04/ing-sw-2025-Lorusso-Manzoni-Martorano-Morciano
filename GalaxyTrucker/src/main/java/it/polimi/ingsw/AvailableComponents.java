@@ -44,7 +44,7 @@ public class AvailableComponents {
         components = newComponents;
     }
 
-    Component Cabin1 = new Component(0, 0, 3, 1, "Cabin");
+    Cabin Cabin1 = new Cabin(0, 0, 3, 1, "Cabin"); //meglio così o quello sotto?
     Component Cabin2 = new Component(1, 0, 2, 3, "Cabin");
     Component Cabin3 = new Component(2, 0, 0, 1, "Cabin");
     Component Cabin4 = new Component(2, 2, 0, 3, "Cabin");

@@ -4,9 +4,11 @@ public class Engine extends Component{
     private boolean isDouble;
     private boolean isActive;
 
-    public Engine() {
+    public Engine(int linkU, int linkR, int linkD, int linkL, String type) {
         this.isDouble = false;
-        super.setType("Engine");
+        this.isActive = false;
+        super.link = new int[] {linkU, linkR, linkD, linkL};
+        super.setType(type);
     }
 
     public void setIsDouble(boolean isDouble) {

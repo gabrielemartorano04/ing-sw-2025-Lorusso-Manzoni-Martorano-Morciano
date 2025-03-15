@@ -7,13 +7,14 @@ public class Cabin extends Component{
     private Alien alien;
     private LifeSupport lifeSupport;
 
-    public Cabin() {
+    public Cabin(int linkU, int linkR, int linkD, int linkL, String type) {
         this.isMain = false;
         this.quantity = 0;
         this.capacity = 0;
         this.alien = null;
         this.lifeSupport = null;
-        super.setType("Cabin");
+        super.link = new int[] {linkU, linkR, linkD, linkL};
+        super.setType(type);
     }
 
     public Alien getAlien(){
