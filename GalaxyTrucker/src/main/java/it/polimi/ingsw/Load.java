@@ -6,8 +6,8 @@ public class Load extends Component{
     private int capacity;
     private ArrayList<Goods> goods;
 
-    public Load(int capacity) {
-        isSpecial = false;
+    public Load(int capacity, boolean isSpecial) {
+        this.isSpecial = isSpecial;
         this.capacity = capacity;
         goods = new ArrayList<Goods>();
         super.setType("Load");
