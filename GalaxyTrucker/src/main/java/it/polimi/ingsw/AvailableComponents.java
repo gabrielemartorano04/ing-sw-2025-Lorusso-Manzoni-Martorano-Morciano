@@ -44,10 +44,10 @@ public class AvailableComponents {
         components = newComponents;
     }
 
-    Component Cabin1 = new Cabin(0, 0, 3, 1, "Cabin"); //meglio così o quello sotto?
-    Component Cabin2 = new Component(1, 0, 2, 3, "Cabin");
-    Component Cabin3 = new Component(2, 0, 0, 1, "Cabin");
-    Component Cabin4 = new Component(2, 2, 0, 3, "Cabin");
-    Component Cabin5 = new Component(1, 2, 1, 1, "Cabin");
-    Component Cabin6 = new Component(2, 1, 2, 2, "Cabin");
+    Component Cabin1 = new Cabin(0, 0, 3, 1, "Cabin");
+    Component Cabin2 = new Cabin(1, 0, 2, 3, "Cabin");
+    Component Cabin3 = new Cabin(2, 0, 0, 1, "Cabin");
+    Component Cabin4 = new Cabin(2, 2, 0, 3, "Cabin");
+    Component Cabin5 = new Cabin(1, 2, 1, 1, "Cabin");
+    Component Cabin6 = new Cabin(2, 1, 2, 2, "Cabin");
 }
