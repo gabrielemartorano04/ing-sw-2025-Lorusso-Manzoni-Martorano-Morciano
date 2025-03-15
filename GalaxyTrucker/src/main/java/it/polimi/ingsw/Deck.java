@@ -17,11 +17,54 @@ class Deck {
     private int numOfWarZone;
 
     public Deck() {
+        cards = new ArrayList<Card>();
         fillDeck();
     }
 
     //le rpime 20 sono di livello 1 e le altre 20 di livello 2
-    private void fillDeck() {}
+    private void fillDeck() {
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+        cards.addFirst();
+    }
 
     public Card getCard(int index) {
         return cards.get(index);
