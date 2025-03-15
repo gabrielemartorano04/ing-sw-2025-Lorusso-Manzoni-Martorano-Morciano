@@ -44,7 +44,7 @@ class Slavers extends Card {
                         trucker.addCosmicCredit(credits);
                         game.moveTrucker(trucker, days);
                     }
-                } else if (trucker.getSpaceShip().getTotalCannonPower() < slaversPower){
+                } else if (trucker.getSpaceShip().getTotalCannonPower(controller) < slaversPower){
                     trucker.getSpaceShip().removeAstronauts(astronautsLost);
                 }
             }
