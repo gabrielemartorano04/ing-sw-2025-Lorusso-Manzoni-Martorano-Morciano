@@ -1,10 +1,20 @@
 package it.polimi.ingsw;
 
+import java.util.List;
+
+
 class Pirates extends Card {
     private int credits;
     private int days;
-    private int cannonRequired;
-    private boolean[] shoots = new boolean[3];
+    private int piratesPower;
+    private boolean isDefeated = false;
+    private List<Trucker> defeatedTruckers;
+    private List<int[]> shoots;
+    // shoots è una lista dove direction.get(i) rappresenta l'i-esimo colpo in questa specifica carta Pirates
+    // shoots.get(i)[0] vale 1 se il colpo è grande 0 se è piccolo
+    // shoots.get(i)[1] indice la direzione da cui arriva il colpo (1 = dall'alto, 2 = da sx, 3 = dal basso, 4 = da dx)
+    // shoots è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
+    // cioè scegliendo il meteorite dall'alto verso il basso
 
     public Pirates(boolean trialFlight, int level) {
         super("Pirates", "Dangerous space raiders", trialFlight, level);
@@ -18,17 +28,52 @@ class Pirates extends Card {
         return days;
     }
 
-    public int getCannonRequired() {
-        return cannonRequired;
+    public int getPiratesPower() {
+        return piratesPower;
     }
 
-    public boolean[] getShoots() {
+    public List<int[]> getShoots() {
         return shoots;
     }
 
     @Override
     public void cardEffect(Game game, GameController controller) {
-
+        List<Trucker> truckers = game.getTruckerList();
+        for (Trucker trucker : truckers) {
+            if(isDefeated){
+                break;
+            }else{
+                if(trucker.getSpaceShip().getTotalCannonPower(controller)> piratesPower){
+                    isDefeated = true;
+                    boolean answer = controller.ask(trucker);
+                    if (answer == true){
+                        trucker.addCosmicCredit(credits);
+                        game.moveTrucker(trucker, days);
+                    }
+                } else if (trucker.getSpaceShip().getTotalCannonPower(controller) < piratesPower){
+                    defeatedTruckers.add(trucker);
+                }
+            }
+        }
+        isDefeated = false;
+        for(int[] shoot: shoots){
+            int roll = game.rollDice();
+            boolean isBig = (shoot[0] == 1);
+            int direction = shoot[1];
+            for(Trucker trucker : defeatedTruckers){
+                SpaceShip ship = trucker.getSpaceShip();
+                if (ship.isHit(roll, direction)) {
+                    if (isBig) {
+                        // colpo grande non può essere stoppato quindi devo distruggere il componente
+                        ship.destroyComponent(roll, direction);
+                    } else {
+                        // Un colpo piccolo può solo essere fermato con lo scudo
+                        if (!ship.blockSmallShoot(direction, roll)) {
+                            ship.destroyComponent(roll, direction);
+                        }
+                    }
+                }
+            }
+        }
     }
-
 }
