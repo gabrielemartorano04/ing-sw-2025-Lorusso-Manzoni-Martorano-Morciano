@@ -8,8 +8,8 @@ class AbandonedStation extends Card {
     private boolean decisionTaken;
     private List<Goods> goods;
 
-    public AbandonedStation(boolean trialFlight) {
-        super("Abandoned Station", "A derelict space station", trialFlight);
+    public AbandonedStation(boolean trialFlight, int level) {
+        super("Abandoned Station", "A derelict space station", trialFlight, level);
         this.decisionTaken = false;
     }
 

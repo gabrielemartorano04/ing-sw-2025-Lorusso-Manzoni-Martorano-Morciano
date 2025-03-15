@@ -11,8 +11,8 @@ class Smugglers extends Card {
     private Goods[] goodsGained = new Goods[3];
     private boolean isDefeated = false;
 
-    public Smugglers(boolean trialFlight, int smugglersPower, int goodsLost, int days, Goods[] goodsGained) {
-        super("Smugglers", "Illegal traders of goods", trialFlight);
+    public Smugglers(boolean trialFlight, int smugglersPower, int goodsLost, int days, Goods[] goodsGained, int level) {
+        super("Smugglers", "Illegal traders of goods", trialFlight, level);
         this.smugglersPower = smugglersPower;
         this.goodsLost = goodsLost;
         this.days = days;
@@ -43,14 +43,14 @@ class Smugglers extends Card {
                 break;
             }
             else{
-                if(trucker.getSpaceShip().getTotalCannonPower()> smugglersPower){
+                if(trucker.getSpaceShip().getTotalCannonPower(controller)> smugglersPower){
                     isDefeated = true;
                     boolean answer = controller.ask(trucker);
                     if (answer == true){
                         trucker.getSpaceShip().addGoods(goodsGained);
                         game.moveTrucker(trucker, days);
                     }
-                } else if (trucker.getSpaceShip().getTotalCannonPower() < smugglersPower){
+                } else if (trucker.getSpaceShip().getTotalCannonPower(controller) < smugglersPower){
                     trucker.getSpaceShip().removeGoods(goodsLost);
                 }
             }
