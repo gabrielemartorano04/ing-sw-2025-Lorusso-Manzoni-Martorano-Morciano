@@ -8,13 +8,12 @@ public class Cabin extends Component{
     private LifeSupport lifeSupport;
 
     public Cabin(int linkU, int linkR, int linkD, int linkL, String type) {
+        super(linkU, linkR, linkD, linkL, type);
         this.isMain = false;
         this.quantity = 0;
         this.capacity = 0;
         this.alien = null;
         this.lifeSupport = null;
-        super.link = new int[] {linkU, linkR, linkD, linkL};
-        super.setType(type);
     }
 
     public Alien getAlien(){
