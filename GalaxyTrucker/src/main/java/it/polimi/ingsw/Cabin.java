@@ -16,6 +16,10 @@ public class Cabin extends Component{
         super.setType("Cabin");
     }
 
+    public Alien getAlien(){
+        return alien;
+    }
+
     public void setIsMain(boolean isMain) {
         this.isMain = isMain;
     }

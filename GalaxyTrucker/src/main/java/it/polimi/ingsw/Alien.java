@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 public class Alien {
-    private enum AlienColor {PURPLE, BROWN};
+
 
     private AlienColor color;
 

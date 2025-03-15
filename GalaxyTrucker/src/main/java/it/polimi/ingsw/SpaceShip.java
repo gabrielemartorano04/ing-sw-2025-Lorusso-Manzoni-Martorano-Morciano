@@ -8,6 +8,7 @@ public class SpaceShip {
     private Component[] kept;
     private int lost;
     private int redGoods, greenGoods, blueGoods,yellowGoods;
+    private int numHuman;
 
     public SpaceShip(){
         components=new Component[9][10];
@@ -27,6 +28,28 @@ public class SpaceShip {
         greenGoods=0;
         blueGoods=0;
         yellowGoods=0;
+        numHuman=0;
+    }
+
+    public int getNumHuman(){
+        Cabin cabin=null;
+        for(int i=5;i<9;i++) {
+            for (int j = 4; j < 10; j++) {
+                if(components[i][j]!=null) {
+                    if(components[i][j] instanceof Cabin) {
+                        cabin=(Cabin)components[i][j];
+                        if(cabin.getAlien()==null) numHuman+=2;
+                    }
+                }
+            }
+        }
+        return numHuman;
+    }
+    public void removeHuman(int x, int y){
+        if(components[x][y] instanceof Cabin && numHuman>0) {
+            numHuman--;
+        }
+
     }
 
     public Component[][] getComponents() {
@@ -180,12 +203,36 @@ public class SpaceShip {
 
     public int getTotalCannonPower(GameController controller){
         int active=controller.askActiveComponents(getDoubleCannon());
-        return getSingleCannonPower()+2*active*getDoubleCannon();
+        Cabin cabin=null;
+        int power=getSingleCannonPower();
+        for(int i=5;i<9;i++) {
+            for (int j = 4; j < 10; j++) {
+                if(components[i][j]!=null && components[i][j] instanceof Cabin){
+                    cabin=(Cabin)components[i][j];
+                    if(cabin.getAlien()!=null && cabin.getAlien().getColor()==AlienColor.PURPLE){
+                        power+=2;
+                    }
+                }
+            }
+        }
+        return power+2*active*getDoubleCannon();
     }
 
     public int getTotalEnginePower(GameController controller){
         int active=controller.askActiveComponents(getDoubleEngine());
-        return getSingleEnginePower()+2*active*getDoubleEngine();
+        Cabin cabin=null;
+        int power=getSingleEnginePower();
+        for(int i=5;i<9;i++) {
+            for (int j = 4; j < 10; j++) {
+                if(components[i][j]!=null && components[i][j] instanceof Cabin){
+                    cabin=(Cabin)components[i][j];
+                    if(cabin.getAlien()!=null && cabin.getAlien().getColor()==AlienColor.BROWN){
+                        power+=2;
+                    }
+                }
+            }
+        }
+        return power+2*active*getDoubleCannon();
     }
 
 
@@ -219,6 +266,7 @@ public class SpaceShip {
     }
 
     //possiamo riarrangiare le merci quando facciamo una add
+    //SISTEMAAAAAAAA
     public void addGoods(ArrayList<Goods> goods){
         Load load=null;
         for(int i=5;i<9;i++) {
@@ -242,8 +290,9 @@ public class SpaceShip {
         }
 
     }
-
+    //SISTEMAAAAAAAA
     public void removeGoods(){
 
     }
+
 }
