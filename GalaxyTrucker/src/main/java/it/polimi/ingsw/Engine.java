@@ -4,15 +4,10 @@ public class Engine extends Component{
     private boolean isDouble;
     private boolean isActive;
 
-    public Engine(int linkU, int linkR, int linkD, int linkL, String type) {
-        this.isDouble = false;
-        this.isActive = false;
-        super.link = new int[] {linkU, linkR, linkD, linkL};
-        super.setType(type);
-    }
-
-    public void setIsDouble(boolean isDouble) {
+    public Engine(int linkU, int linkR, int linkD, int linkL, String type, String imagePath, boolean isDouble) {
+        super(linkU, linkR, linkD, linkL, type, imagePath);
         this.isDouble = isDouble;
+        this.isActive = false;
     }
 
     public void setIsActive(boolean isActive) {
