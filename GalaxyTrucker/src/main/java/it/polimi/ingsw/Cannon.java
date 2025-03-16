@@ -5,8 +5,8 @@ public class Cannon extends Component{
     private boolean isActive;
     private Orientation orientation;
 
-    public Cannon(int linkU, int linkR, int linkD, int linkL, String type, boolean isDouble) {
-        super(linkU, linkR, linkD, linkL, type);
+    public Cannon(int linkU, int linkR, int linkD, int linkL, String type, String imagePath, boolean isDouble) {
+        super(linkU, linkR, linkD, linkL, type, imagePath);
         this.orientation = Orientation.N;
         this.isDouble = isDouble;
         this.isActive = false;

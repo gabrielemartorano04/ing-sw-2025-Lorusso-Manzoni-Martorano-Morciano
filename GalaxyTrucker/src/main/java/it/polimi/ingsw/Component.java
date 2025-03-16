@@ -1,16 +1,20 @@
 package it.polimi.ingsw;
 
+import javax.swing.ImageIcon;
+
 public class Component {
     protected int link[];
     protected boolean selected;
     protected boolean covered;
     protected String type;
+    protected ImageIcon image;
 
-    public Component(int linkU, int linkR, int linkD, int linkL, String type) {
+    public Component(int linkU, int linkR, int linkD, int linkL, String type, String imagePath) {
         this.link = new int[] {linkU, linkR, linkD, linkL};
         this.selected = false;
         this.covered = false;
         this.type = type;
+        this.image = new ImageIcon(imagePath);
     }
 
     protected String getType() {

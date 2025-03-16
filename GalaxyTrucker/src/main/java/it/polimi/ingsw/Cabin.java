@@ -6,14 +6,16 @@ public class Cabin extends Component{
     private int capacity;
     private Alien alien;
     private LifeSupport lifeSupport;
+    private Color color;
 
-    public Cabin(int linkU, int linkR, int linkD, int linkL, String type, boolean isMain) {
-        super(linkU, linkR, linkD, linkL, type);
+    public Cabin(int linkU, int linkR, int linkD, int linkL, String type, String imagePath, Color color, boolean isMain) {
+        super(linkU, linkR, linkD, linkL, type, imagePath);
         this.isMain = isMain;
         this.quantity = 0;
         this.capacity = 0;
         this.alien = null;
         this.lifeSupport = null;
+        this.color = color;
     }
 
     public Alien getAlien(){
@@ -42,6 +44,10 @@ public class Cabin extends Component{
 
     public int getCapacity() {
         return capacity;
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     public String getType() {

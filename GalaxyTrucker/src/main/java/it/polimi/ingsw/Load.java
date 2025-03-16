@@ -6,8 +6,8 @@ public class Load extends Component{
     private int capacity;
     private ArrayList<Goods> goods;
 
-    public Load(int linkU, int linkR, int linkD, int linkL, String type, int capacity, boolean isSpecial) {
-        super(linkU, linkR, linkD, linkL, type);
+    public Load(int linkU, int linkR, int linkD, int linkL, String type, String imagePath, int capacity, boolean isSpecial) {
+        super(linkU, linkR, linkD, linkL, type, imagePath);
         this.isSpecial = isSpecial;
         this.capacity = capacity;
         goods = new ArrayList<Goods>();

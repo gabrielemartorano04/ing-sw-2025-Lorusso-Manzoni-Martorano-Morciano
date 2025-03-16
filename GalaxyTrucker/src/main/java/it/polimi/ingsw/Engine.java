@@ -4,8 +4,8 @@ public class Engine extends Component{
     private boolean isDouble;
     private boolean isActive;
 
-    public Engine(int linkU, int linkR, int linkD, int linkL, String type, boolean isDouble) {
-        super(linkU, linkR, linkD, linkL, type);
+    public Engine(int linkU, int linkR, int linkD, int linkL, String type, String imagePath, boolean isDouble) {
+        super(linkU, linkR, linkD, linkL, type, imagePath);
         this.isDouble = isDouble;
         this.isActive = false;
     }

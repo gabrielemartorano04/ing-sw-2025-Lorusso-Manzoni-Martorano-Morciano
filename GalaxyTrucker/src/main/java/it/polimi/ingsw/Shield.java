@@ -4,8 +4,8 @@ public class Shield extends Component{
 
     private Direction direction;
 
-    public Shield(int linkU, int linkR, int linkD, int linkL, String type) {
-        super(linkU, linkR, linkD, linkL, type);
+    public Shield(int linkU, int linkR, int linkD, int linkL, String type, String imagePath) {
+        super(linkU, linkR, linkD, linkL, type, imagePath);
         this.direction = Direction.NE;
     }
 
