@@ -1,16 +1,15 @@
 package it.polimi.ingsw;
 
 public class LifeSupport extends Component{
-    private enum Color {PURPLE, BROWN};
 
-    private Color color;
+    private LifeSupportColor color;
 
-    public LifeSupport(Color color) {
+    public LifeSupport(int linkU, int linkR, int linkD, int linkL, String type, String imagePath, LifeSupportColor color) {
+        super(linkU, linkR, linkD, linkL, type, imagePath);
         this.color = color;
-        super.setType("Life Support");
     }
 
-    public Color getColor() {
+    public LifeSupportColor getColor() {
         return color;
     }
 
