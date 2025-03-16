@@ -6,11 +6,11 @@ public class Load extends Component{
     private int capacity;
     private ArrayList<Goods> goods;
 
-    public Load(int capacity, boolean isSpecial) {
+    public Load(int linkU, int linkR, int linkD, int linkL, String type, int capacity, boolean isSpecial) {
+        super(linkU, linkR, linkD, linkL, type);
         this.isSpecial = isSpecial;
         this.capacity = capacity;
         goods = new ArrayList<Goods>();
-        super.setType("Load");
     }
 
     public int getCapacity() {

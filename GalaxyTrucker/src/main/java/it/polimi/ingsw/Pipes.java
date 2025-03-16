@@ -2,8 +2,8 @@ package it.polimi.ingsw;
 
 public class Pipes extends Component{
 
-    public Pipes(){
-        super.setType("Pipes");
+    public Pipes(int linkU, int linkR, int linkD, int linkL, String type){
+        super(linkU, linkR, linkD, linkL, type);
     }
 
     public String getType() {

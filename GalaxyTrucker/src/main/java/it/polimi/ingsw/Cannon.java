@@ -3,15 +3,17 @@ package it.polimi.ingsw;
 public class Cannon extends Component{
     private boolean isDouble;
     private boolean isActive;
-    public enum Orientation{N, E, S, W};
-
     private Orientation orientation;
 
-    public Cannon(Orientation orientation) {
-        this.isDouble = false;
+    public Cannon(int linkU, int linkR, int linkD, int linkL, String type, boolean isDouble) {
+        super(linkU, linkR, linkD, linkL, type);
+        this.orientation = Orientation.N;
+        this.isDouble = isDouble;
         this.isActive = false;
+    }
+
+    public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
-        super.setType("Cannon");
     }
 
     public void setIsDouble(boolean isDouble) {

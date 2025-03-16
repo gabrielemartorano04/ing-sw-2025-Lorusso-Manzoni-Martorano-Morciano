@@ -4,9 +4,13 @@ public class Shield extends Component{
 
     private Direction direction;
 
-    public Shield(Direction direction) {
+    public Shield(int linkU, int linkR, int linkD, int linkL, String type) {
+        super(linkU, linkR, linkD, linkL, type);
+        this.direction = Direction.NE;
+    }
+
+    public void setDirection(Direction direction) {
         this.direction = direction;
-        super.setType("Shield");
     }
 
     public Direction getDirection() {
