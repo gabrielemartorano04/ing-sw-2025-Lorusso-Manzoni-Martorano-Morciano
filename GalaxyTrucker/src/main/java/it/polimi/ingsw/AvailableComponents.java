@@ -17,6 +17,10 @@ public class AvailableComponents {
         return components;
     }
 
+    public ImageIcon getImage() {
+        return image;
+    }
+
     public void shuffle() {
         Random random = new Random();
         for (int i = components.length - 1; i > 0; i--) {
