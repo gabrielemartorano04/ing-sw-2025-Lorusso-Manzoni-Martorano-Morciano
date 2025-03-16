@@ -44,10 +44,31 @@ public class AvailableComponents {
         components = newComponents;
     }
 
-    Component Cabin1 = new Cabin(0, 0, 3, 1, "Cabin");
-    Component Cabin2 = new Cabin(1, 0, 2, 3, "Cabin");
-    Component Cabin3 = new Cabin(2, 0, 0, 1, "Cabin");
-    Component Cabin4 = new Cabin(2, 2, 0, 3, "Cabin");
-    Component Cabin5 = new Cabin(1, 2, 1, 1, "Cabin");
-    Component Cabin6 = new Cabin(2, 1, 2, 2, "Cabin");
+    Component cabin1 = new Cabin(0, 0, 3, 1, "Cabin", false);
+    Component cabin2 = new Cabin(1, 0, 2, 3, "Cabin", false);
+    Component cabin3 = new Cabin(2, 0, 0, 1, "Cabin", false);
+    Component cabin4 = new Cabin(2, 2, 0, 3, "Cabin", false);
+    Component cabin5 = new Cabin(1, 2, 1, 1, "Cabin", false);
+    Component cabin6 = new Cabin(2, 1, 2, 2, "Cabin", false);
+    Component cabin7 = new Cabin(2, 0, 2, 3, "Cabin", false);
+    Component cabin8 = new Cabin(0, 1, 1, 3, "Cabin", false);
+    Component cabin9 = new Cabin(2, 1, 0, 1, "Cabin", false);
+    Component cabin10 = new Cabin(1, 0, 1, 3, "Cabin", false);
+    Component cabin11 = new Cabin(0, 1, 0, 3, "Cabin", false);
+    Component cabin12 = new Cabin(0, 2, 0, 3, "Cabin", false);
+    Component cabin13 = new Cabin(1, 2, 3, 1, "Cabin", false);
+    Component cabin14 = new Cabin(2, 1, 2, 1, "Cabin", false);
+    Component cabin15 = new Cabin(0, 1, 3, 2, "Cabin", false);
+    Component cabin16 = new Cabin(3, 0, 0, 2, "Cabin", false);
+
+    Component mainCabinR = new Cabin(3, 3, 3, 3, "Cabin", true);
+    Component mainCabinG = new Cabin(3, 3, 3, 3, "Cabin", true);
+    Component mainCabinB = new Cabin(3, 3, 3, 3, "Cabin", true);
+    Component mainCabinY = new Cabin(3, 3, 3, 3, "Cabin", true);
+
+
+
+
+
+
 }

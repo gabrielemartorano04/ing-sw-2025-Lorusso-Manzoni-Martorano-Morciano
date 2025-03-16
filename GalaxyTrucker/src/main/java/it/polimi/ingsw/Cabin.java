@@ -7,9 +7,9 @@ public class Cabin extends Component{
     private Alien alien;
     private LifeSupport lifeSupport;
 
-    public Cabin(int linkU, int linkR, int linkD, int linkL, String type) {
+    public Cabin(int linkU, int linkR, int linkD, int linkL, String type, boolean isMain) {
         super(linkU, linkR, linkD, linkL, type);
-        this.isMain = false;
+        this.isMain = isMain;
         this.quantity = 0;
         this.capacity = 0;
         this.alien = null;
