@@ -7,7 +7,7 @@ class MeteorShower extends Card {
     private List<int[]> direction;
     // direction è una lista dove direction.get(i) rappresenta l'i-esimo meteorite in questa specifica MeteorShower
     // direction.get(i)[0] vale 1 se il meteorite è grande 0 se è piccolo
-    // direction.get(i)[1] indice la direzione da cui arriva il meteorite (1 = dall'alto, 2 = da sx, 3 = dal basso, 4 = da dx)
+    // direction.get(i)[1] indice la direzione da cui arriva il meteorite (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da sx)
     // direction è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
     // cioè scegliendo il meteorite dall'alto verso il basso
 
