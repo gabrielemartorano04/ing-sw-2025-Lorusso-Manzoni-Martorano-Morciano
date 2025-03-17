@@ -7,18 +7,27 @@ public class Component {
     protected boolean selected;
     protected boolean covered;
     protected String type;
-    protected ImageIcon image;
+    protected final ImageIcon frontImage, rearImage;
 
-    public Component(int linkU, int linkR, int linkD, int linkL, String type, String imagePath) {
+    public Component(int linkU, int linkR, int linkD, int linkL, String type, String frontImagePath) {
         this.link = new int[] {linkU, linkR, linkD, linkL};
         this.selected = false;
         this.covered = false;
         this.type = type;
-        this.image = new ImageIcon(imagePath);
+        this.frontImage = new ImageIcon(frontImagePath);
+        this.rearImage = new ImageIcon("rearImagePath");
     }
 
     protected String getType() {
         return this.type;
+    }
+
+    public ImageIcon getFrontImage() {
+        return frontImage;
+    }
+
+    public ImageIcon getRearImage() {
+        return rearImage;
     }
 
     public void setLink(int[] link) {
