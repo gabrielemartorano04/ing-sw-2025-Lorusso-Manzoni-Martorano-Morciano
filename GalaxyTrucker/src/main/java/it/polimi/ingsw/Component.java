@@ -15,7 +15,7 @@ public class Component {
         this.covered = false;
         this.type = type;
         this.frontImage = new ImageIcon(frontImagePath);
-        this.rearImage = new ImageIcon("rearImagePath");
+        this.rearImage = new ImageIcon("src/main/resources/components/tiles/GT-new_tiles_16_for web157.jpg");
     }
 
     protected String getType() {
