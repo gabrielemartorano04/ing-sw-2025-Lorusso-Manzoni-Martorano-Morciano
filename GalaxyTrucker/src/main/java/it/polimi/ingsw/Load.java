@@ -25,6 +25,10 @@ public class Load extends Component{
         goods.addAll(newGoods);
     }
 
+    public void removeGood(ArrayList<Goods> newGoods) {
+        goods.removeAll(newGoods);
+    }
+
     public String getType() {
         return type;
     }
