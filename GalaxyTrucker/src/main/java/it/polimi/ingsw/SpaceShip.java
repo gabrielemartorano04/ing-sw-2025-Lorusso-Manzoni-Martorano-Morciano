@@ -584,7 +584,17 @@ public class SpaceShip {
                 if(goods.get(j).getValue() >goodsList.get(i).getValue()){
                     if(goods.get(j).getValue() == 4){
                             // vedi se c'è spazio per un rosso e poi inserisci
-
+                        for(Goods g : goodsList){
+                            if(g.getValue() < 4){
+                                Load l = (Load) components[g.getX()][g.getY()];
+                                if(l.getIsSpecial()){
+                                    l.removeGood(g);
+                                    goodsList.remove(i);
+                                    l.addGood(goods.get(j));
+                                    addGoodsList(goods.get(j));
+                                }
+                            }
+                        }
                     }
                     else{
                             //inserisci in qualsiasi spazio vuoto
@@ -596,8 +606,6 @@ public class SpaceShip {
                         goodsList.remove(i);
                         addGoodsList(goods.get(j));
                     }
-                    goodsList.remove(i);
-                    addGoodsList(goods.get(j));
                 }
             }
         }
