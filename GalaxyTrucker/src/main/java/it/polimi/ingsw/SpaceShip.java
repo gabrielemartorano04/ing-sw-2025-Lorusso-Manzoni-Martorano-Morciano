@@ -492,6 +492,7 @@ public class SpaceShip {
         Load load=null;
         ArrayList<int[]> coord=new ArrayList<>();
         BatteryStorage batteryStorage=null;
+        int batteryQuantity = 0;
         if(goodsList.size()>numOfLostGoods){
             //possiamo rimuovere merci
             for(int i=0;i<numOfLostGoods;i++){
@@ -508,14 +509,22 @@ public class SpaceShip {
                 numOfLostGoods--;
 
             }
-            for(int i=0;i<numOfLostGoods;i++){
+            while(numOfLostGoods>0){
                 coord=controller.askComponentBattery(); //mi restituisce  le coordinate dei componenti da cui vuole togliere batterie
                 for(int[] c:coord){
-
+                    batteryStorage = (BatteryStorage)components[c[0]][c[1]];
+                    batteryQuantity = batteryStorage.getQuantity();
+                    if(batteryQuantity <= numOfLostGoods){
+                        batteryStorage.setQuantity(0);
+                        numOfLostGoods = numOfLostGoods - batteryQuantity;
+                    }else{
+                        batteryQuantity = batteryQuantity - numOfLostGoods;
+                        batteryStorage.setQuantity(batteryQuantity);
+                        numOfLostGoods = 0;
+                    }
                 }
             }
         }
     }
-
 
 }
