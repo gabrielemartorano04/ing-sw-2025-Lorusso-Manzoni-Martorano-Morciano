@@ -5,8 +5,8 @@ public class Cannon extends Component{
     private boolean isActive;
     private Orientation orientation;
 
-    public Cannon(int linkU, int linkR, int linkD, int linkL, String type, String imagePath, boolean isDouble) {
-        super(linkU, linkR, linkD, linkL, type, imagePath);
+    public Cannon(int linkR, int linkD, int linkL, String type, String imagePath, boolean isDouble) {
+        super(0, linkR, linkD, linkL, type, imagePath);
         this.orientation = Orientation.N;
         this.isDouble = isDouble;
         this.isActive = false;
@@ -28,24 +28,8 @@ public class Cannon extends Component{
         return isDouble;
     }
 
-    public double getPower() {
-        if (isDouble) {
-            if (isActive) {
-                if (orientation == Orientation.N  || orientation == Orientation.S) {
-                    return 2;
-                } else {
-                    return 1;
-                }
-            } else {
-                return 0;
-            }
-        }else{
-            if (orientation == Orientation.N && orientation == Orientation.S){
-                return 1;
-            }else{
-                return 0.5;
-            }
-        }
+    public boolean getIsActive() {
+        return isActive;
     }
 
     public Orientation getOrientation() {

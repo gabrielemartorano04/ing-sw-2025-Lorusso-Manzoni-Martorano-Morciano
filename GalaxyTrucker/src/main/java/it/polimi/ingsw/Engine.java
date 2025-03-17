@@ -4,8 +4,8 @@ public class Engine extends Component{
     private boolean isDouble;
     private boolean isActive;
 
-    public Engine(int linkU, int linkR, int linkD, int linkL, String type, String imagePath, boolean isDouble) {
-        super(linkU, linkR, linkD, linkL, type, imagePath);
+    public Engine(int linkU, int linkR, int linkL, String type, String imagePath, boolean isDouble) {
+        super(linkU, linkR, 0, linkL, type, imagePath);
         this.isDouble = isDouble;
         this.isActive = false;
     }
@@ -20,14 +20,6 @@ public class Engine extends Component{
 
     public boolean getIsActive() {
         return isActive;
-    }
-
-    public int getPower() {
-        if (isDouble) {
-            return 2;
-        }else{
-            return 1;
-        }
     }
 
     public String getType() {
