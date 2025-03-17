@@ -1,13 +1,18 @@
 package it.polimi.ingsw;
 
 public class Bank {
-    protected int redGoods, yellowGoods, greenGoods, blueGoods;
+    protected int[] goods; //red, yellow, green, blue
 
     public Bank() {
-        this.redGoods = 12;
-        this.yellowGoods = 17;
-        this.greenGoods = 13;
-        this.blueGoods = 14;
+        this.goods = new int[4];
+        goods[0] = 12;
+        goods[1] = 17;
+        goods[2] = 13;
+        goods[3] = 14;
+    }
+
+    public int[] getBank() {
+        return goods;
     }
 
 }
