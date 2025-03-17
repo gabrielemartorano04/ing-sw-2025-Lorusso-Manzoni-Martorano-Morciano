@@ -14,6 +14,7 @@ public class SpaceShip {
     private int redGoods, greenGoods, blueGoods,yellowGoods;
     private int numHuman;
     private int goodsCapacity;
+    private ArrayList<Goods> goodsList;
 
     /**
      * Spaceship constructor, it inizializes the attributes of this class
@@ -328,6 +329,31 @@ public class SpaceShip {
         return false;
     }
 
+    public void destroyComponent( int num,int direction){
+        switch(direction){
+            case 0:
+                for(int i=5;i<9;i++) {
+                    if(components[i][num]!=null) removeComponent(i,num);
+                }
+                break;
+            case 1:
+                for(int j=9;j>3;j--){
+                    if(components[num][j]!=null) removeComponent(num,j);
+                }
+                break;
+            case 2:
+                for(int i=8;i>4;i--) {
+                    if(components[i][num]!=null) removeComponent(i,num);
+                }
+                break;
+            case 3:
+                for(int j=4;j<10;j++){
+                    if(components[num][j]!=null) removeComponent(num,j);
+                }
+                break;
+        }
+    }
+
     public boolean shootMeteor(int direction, int num){
         switch(direction){
             case 0:
@@ -442,12 +468,17 @@ public class SpaceShip {
                             else if(l.getGoods().get(k).getValue()==3) yellowGoods++;
                             else if(l.getGoods().get(k).getValue()==2) greenGoods++;
                             else if(l.getGoods().get(k).getValue()==1) blueGoods++;
+                            goods.get(k).setX(i);
+                            goods.get(k).setY(j);
+                            goodsList.add(goods.get(k));
                         }
 
                 }
             }
         }
-        if(getGoodsCapacity()-getGoodsQuantity()>goods.size()){
+        int totalCapacity=getGoodsCapacity();
+        int totalQuantity=getGoodsQuantity();
+        if(totalCapacity-totalQuantity>=goods.size()){
 
         }
 
