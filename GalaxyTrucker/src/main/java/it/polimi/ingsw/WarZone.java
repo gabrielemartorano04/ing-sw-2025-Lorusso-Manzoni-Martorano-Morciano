@@ -1,4 +1,5 @@
 package it.polimi.ingsw;
+import java.util.List;
 
 class WarZone extends Card {
     private List<Condition> conditionsOrder;
