@@ -1,5 +1,4 @@
 package it.polimi.ingsw;
-
 import java.util.List;
 
 class Slavers extends Card {
@@ -9,8 +8,12 @@ class Slavers extends Card {
     private int astronautsLost;
     private boolean isDefeated = false;
 
-    public Slavers(boolean trialFlight, int level) {
-        super("Slavers", "Intergalactic slave traders", trialFlight, level);
+    public Slavers(boolean trialFlight, int level, int credits, int days, int astronautsLost, int slaversPower, String frontImage, String backImage ) {
+        super("Slavers", "Intergalactic slave traders", trialFlight, level, frontImage, backImage);
+        this.credits = credits;
+        this.days = days;
+        this.astronautsLost = astronautsLost;
+        this.slaversPower = slaversPower;
     }
 
     public int getSlaversPower() {

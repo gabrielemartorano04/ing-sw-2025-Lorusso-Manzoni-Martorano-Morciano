@@ -4,17 +4,6 @@ import java.util.ArrayList;
 
 class Deck {
     private ArrayList<Card> cards;
-    private int numOfMeteorShower;
-    private int numOfPlanets;
-    private int numOfStarDust;
-    private int numOfOpenSpace;
-    private int numOfAbandonedStation;
-    private int numOfAbandonedShip;
-    private int numOfPirates;
-    private int numOfEpidemic;
-    private int numOfSlavers;
-    private int numOfSmugglers;
-    private int numOfWarZone;
 
     public Deck() {
         cards = new ArrayList<Card>();
@@ -23,7 +12,7 @@ class Deck {
 
     //le rpime 20 sono di livello 1 e le altre 20 di livello 2
     private void fillDeck() {
-        cards.addFirst();
+        cards.addFirst(new Slavers());
         cards.addFirst();
         cards.addFirst();
         cards.addFirst();
