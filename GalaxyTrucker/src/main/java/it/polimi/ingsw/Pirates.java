@@ -12,7 +12,7 @@ class Pirates extends Card {
     private List<int[]> shoots;
     // shoots è una lista dove direction.get(i) rappresenta l'i-esimo colpo in questa specifica carta Pirates
     // shoots.get(i)[0] vale 1 se il colpo è grande 0 se è piccolo
-    // shoots.get(i)[1] indice la direzione da cui arriva il colpo (1 = dall'alto, 2 = da sx, 3 = dal basso, 4 = da dx)
+    // shoots.get(i)[1] indice la direzione da cui arriva il colpo (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da sx)
     // shoots è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
     // cioè scegliendo il meteorite dall'alto verso il basso
 
