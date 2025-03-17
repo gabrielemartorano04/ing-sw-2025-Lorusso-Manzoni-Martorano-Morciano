@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Load extends Component{
     private boolean isSpecial;
     private int capacity;
-    private ArrayList<Goods> goods;
+    private ArrayList<Goods> goods; //lista delle merci contenute in quel Load ordinate dalla rarità maggiore a quella minore
 
     public Load(int linkU, int linkR, int linkD, int linkL, String type, String imagePath, int capacity, boolean isSpecial) {
         super(linkU, linkR, linkD, linkL, type, imagePath);
@@ -21,12 +21,16 @@ public class Load extends Component{
         return goods.size();
     }
 
-    public void addGood(ArrayList<Goods> newGoods) {
-        goods.addAll(newGoods);
+    public void addGood(Goods good) {
+        int i = 0;
+        while (i < goods.size() && goods.get(i).getValue() > good.getValue()) {
+            i++;
+        }
+        goods.add(i, good);
     }
 
-    public void removeGood(ArrayList<Goods> newGoods) {
-        goods.removeAll(newGoods);
+    public void removeGood() {
+        goods.remove(0);
     }
 
     public String getType() {

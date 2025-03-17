@@ -486,9 +486,13 @@ public class SpaceShip {
 
 
     //SISTEMAAAAAAAA
-    public void removeGoods(int numOfLostGoods){
+    public void removeGoods(int numOfLostGoods, GameController controller){
         int x=0;
         int y=0;
+        Load load=null;
+        ArrayList<int[]> coord=new ArrayList<>();
+        BatteryStorage batteryStorage=null;
+        int batteryQuantity = 0;
         if(goodsList.size()>numOfLostGoods){
             //possiamo rimuovere merci
             for(int i=0;i<numOfLostGoods;i++){
@@ -499,15 +503,28 @@ public class SpaceShip {
             for(int i=0;i<goodsList.size();i++){
                 x=goodsList.get(0).getX();
                 y=goodsList.get(0).getY();
-                (Load)components[x][y].removeGood();
+                load=(Load)components[x][y];
+                load.removeGood();
                 goodsList.remove(0);
+                numOfLostGoods--;
 
             }
-            /*for(int j=;j<numOfLostGoods;i++){
-                goodsList.remove(i);
-            }*/
+            while(numOfLostGoods>0){
+                coord=controller.askComponentBattery(); //mi restituisce  le coordinate dei componenti da cui vuole togliere batterie
+                for(int[] c:coord){
+                    batteryStorage = (BatteryStorage)components[c[0]][c[1]];
+                    batteryQuantity = batteryStorage.getQuantity();
+                    if(batteryQuantity <= numOfLostGoods){
+                        batteryStorage.setQuantity(0);
+                        numOfLostGoods = numOfLostGoods - batteryQuantity;
+                    }else{
+                        batteryQuantity = batteryQuantity - numOfLostGoods;
+                        batteryStorage.setQuantity(batteryQuantity);
+                        numOfLostGoods = 0;
+                    }
+                }
+            }
         }
     }
-
 
 }
