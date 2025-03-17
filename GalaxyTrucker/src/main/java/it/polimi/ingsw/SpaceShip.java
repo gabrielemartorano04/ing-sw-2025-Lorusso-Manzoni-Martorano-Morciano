@@ -2,6 +2,10 @@ package it.polimi.ingsw;
 
 import java.util.ArrayList;
 
+/**
+ * Class that manage the Trucker's SpaceShip, with its components, goods, astronauts
+ * */
+
 public class SpaceShip {
 
     private Component[][] components;
@@ -11,6 +15,9 @@ public class SpaceShip {
     private int numHuman;
     private int goodsCapacity;
 
+    /**
+     * Spaceship constructor, it inizializes the attributes of this class
+     * */
     public SpaceShip(){
         components=new Component[9][10];
         kept=new Component[2];
@@ -30,6 +37,11 @@ public class SpaceShip {
         yellowGoods=0;
         numHuman=0;
     }
+
+    /**
+     *
+     * @return goodsCapacity How many goods can be on the spaceship
+     * */
     public int getGoodsCapacity(){
         Load load=null;
         for(int i=0;i<9;i++){
@@ -43,7 +55,7 @@ public class SpaceShip {
         return goodsCapacity;
     }
 
-
+/** numero di astronauti sulla spaceship */
     public int getNumHuman(){
         Cabin cabin=null;
         for(int i=5;i<9;i++) {
@@ -58,33 +70,38 @@ public class SpaceShip {
         }
         return numHuman;
     }
+    /** rimuove un astronauta dalla spaceship*/
     public void removeHuman(int x, int y){
         if(components[x][y] instanceof Cabin && numHuman>0) {
             numHuman--;
         }
 
     }
+    /** rimuove un numero num di astronauti dalla spaceship*/
     public void removeNumHuman(int x, int y, int num){
         if(components[x][y] instanceof Cabin && numHuman>0) {
             numHuman-=num;
         }
 
     }
-
+    /**restituisce la matrice dei componenti*/
     public Component[][] getComponents() {
         return components;
     }
 
+    /**aggiunge un componente alla matrice in una certa cella di coordinate (x,y)*/
     public void addComponent(Component component, int x, int y){
         components[x][y]=component;
     }
 
+    /**date le coordineate, rimuove il componente*/
     public Component removeComponent(int x, int y){
         Component component=components[x][y];
         components[x][y]=null;
         return component;
     }
 
+/**potere dei cannoni singoli*/
     public int getSingleCannonPower(){
         int power=0;
         Cannon cannon=null;
@@ -104,6 +121,7 @@ public class SpaceShip {
         }
         return power;
     }
+    /**numero di componenti di tipo cannone doppio*/
     public int getDoubleCannon(){
         int doubleCannon=0;
         Cannon cannon=null;
