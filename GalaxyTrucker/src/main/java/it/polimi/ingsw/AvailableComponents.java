@@ -5,20 +5,13 @@ import javax.swing.ImageIcon;
 
 public class AvailableComponents {
     private Component[] components;
-    private final ImageIcon image;
-    private int[] link;
 
-    public AvailableComponents(ImageIcon image) {
+    public AvailableComponents() {
         this.components = new Component[156];
-        this.image = image;
     }
 
     public Component[] getComponents() {
         return components;
-    }
-
-    public ImageIcon getImage() {
-        return image;
     }
 
     public void shuffle() {
