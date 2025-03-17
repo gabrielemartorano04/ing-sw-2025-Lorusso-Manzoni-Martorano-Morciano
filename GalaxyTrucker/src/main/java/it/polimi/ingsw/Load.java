@@ -13,7 +13,7 @@ public class Load extends Component{
         goods = new ArrayList<Goods>();
     }
 
-    public boolean isSpecial() { return isSpecial;}
+    public boolean getIsSpecial() { return isSpecial;}
     public int getCapacity() {
         return capacity;
     }
