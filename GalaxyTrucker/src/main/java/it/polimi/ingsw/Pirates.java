@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,8 +17,12 @@ class Pirates extends Card {
     // shoots è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
     // cioè scegliendo il meteorite dall'alto verso il basso
 
-    public Pirates(boolean trialFlight, int level) {
-        super("Pirates", "Dangerous space raiders", trialFlight, level);
+    public Pirates(boolean trialFlight, int level, int credits, int days, int piratesPower, ArrayList<int[]> shoots ,String frontImage, String backImage) {
+        super("Pirates", "Dangerous space raiders", trialFlight, level, frontImage, backImage);
+        this.credits = credits;
+        this.days = days;
+        this.piratesPower = piratesPower;
+        this.shoots = shoots;
     }
 
     public int getCredits() {

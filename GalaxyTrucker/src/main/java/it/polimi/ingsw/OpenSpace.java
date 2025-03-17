@@ -2,8 +2,8 @@ package it.polimi.ingsw;
 import java.util.List;
 
 class OpenSpace extends Card {
-    public OpenSpace(boolean trialFlight, int level) {
-        super("Open Space", "Empty vastness of space", trialFlight, level);
+    public OpenSpace(boolean trialFlight, int level, String frontImage, String backImage) {
+        super("Open Space", "Empty vastness of space", trialFlight, level, frontImage, backImage);
     }
 
     @Override

@@ -1,4 +1,5 @@
 package it.polimi.ingsw;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -8,9 +9,12 @@ class AbandonedStation extends Card {
     private boolean decisionTaken;
     private List<Goods> goods;
 
-    public AbandonedStation(boolean trialFlight, int level) {
-        super("Abandoned Station", "A derelict space station", trialFlight, level);
+    public AbandonedStation(boolean trialFlight, int level, List<Goods> goods, int days, int numHuman,String frontImage, String backIMage) {
+        super("Abandoned Station", "A derelict space station", trialFlight, level, frontImage, backIMage);
         this.decisionTaken = false;
+        this.days = days;
+        this.numHuman = numHuman;
+        this.goods = goods;
     }
 
     public int getDays() {

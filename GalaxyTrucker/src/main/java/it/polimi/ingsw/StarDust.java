@@ -2,8 +2,8 @@ package it.polimi.ingsw;
 import java.util.*;
 
 class StarDust extends Card {
-    public StarDust(boolean trialFlight, int level) {
-        super("Star Dust", "A cloud of cosmic dust", trialFlight, level);
+    public StarDust(boolean trialFlight, int level, String frontImage, String backImage) {
+        super("Star Dust", "A cloud of cosmic dust", trialFlight, level, frontImage, backImage);
     }
 
     @Override
