@@ -14,7 +14,7 @@ public class SpaceShip {
     private int redGoods, greenGoods, blueGoods,yellowGoods;
     private int numHuman;
     private int goodsCapacity;
-    private ArrayList<Goods> goodsList;
+    private ArrayList<Goods> goodsList; //lista di tutte le merci che contiene la nava nello stato corrente e sono ordinante in base al value dal più grande al più piccolo
 
     /**
      * Spaceship constructor, it inizializes the attributes of this class
@@ -37,6 +37,7 @@ public class SpaceShip {
         blueGoods=0;
         yellowGoods=0;
         numHuman=0;
+        goodsList=new ArrayList<>();
     }
 
     /**
@@ -111,8 +112,10 @@ public class SpaceShip {
                 if(components[i][j]!=null && components[i][j].getType().equals("cannon")){
                     if(components[i][j] instanceof Cannon){
                         cannon=(Cannon)components[i][j];
-                        if(!cannon.getIsDouble())
-                            power++;
+                        if(!cannon.getIsDouble()){
+                            if(cannon.getOrientation()==Orientation.N) power++;
+                            else power+=0.5;
+                        }
 
                     }
 
@@ -124,15 +127,19 @@ public class SpaceShip {
     }
     /**numero di componenti di tipo cannone doppio*/
     public int getDoubleCannon(){
-        int doubleCannon=0;
+        int power=0;
         Cannon cannon=null;
         for(int i=5;i<9;i++){
             for(int j=4;j<10;j++){
                 if(components[i][j]!=null && components[i][j].getType().equals("cannon")){
                     if(components[i][j] instanceof Cannon){
                         cannon=(Cannon)components[i][j];
-                        if(cannon.getIsDouble())
-                            doubleCannon++;
+                        if(cannon.getIsDouble() && cannon.getIsActive()){
+
+                                if(cannon.getOrientation()==Orientation.N) power+=2;
+                                else power++;
+
+                        }
 
                     }
 
@@ -140,7 +147,7 @@ public class SpaceShip {
 
             }
         }
-        return doubleCannon;
+        return power;
     }
 
 
@@ -171,7 +178,7 @@ public class SpaceShip {
                 if(components[i][j]!=null && components[i][j].getType().equals("engine")){
                     if(components[i][j] instanceof Engine){
                         engine=(Engine)components[i][j];
-                        if(engine.getIsDouble())
+                        if(engine.getIsDouble() && engine.getIsActive())
                             doubleEngine++;
 
                     }
@@ -207,6 +214,7 @@ public class SpaceShip {
 
     private boolean isValid(int x, int y){
 
+        Cannon cannon=null;
         Component com=components[x][y];
         Component comU=components[x-1][y];
         Component comR=components[x][y+1];
@@ -219,6 +227,27 @@ public class SpaceShip {
         int linkD=comD.getLink()[0];
         int linkL=comL.getLink()[1];
         //CONTROLLO CHE U,R,D,L SIA COLLEGATO BENE
+        if(components[x][y] instanceof Cannon){
+            cannon=(Cannon)components[x][y];
+            switch(cannon.getOrientation()){
+                case N:
+                    if(components[x-1][y]!=null)return false;
+                    break;
+                case E:
+                    if(components[x][y+1]!=null)return false;
+                    break;
+                case S:
+                    if(components[x+1][y]!=null)return false;
+                    break;
+                case W:
+                    if(components[x][y-1]!=null)return false;
+                    break;
+            }
+        }
+        else if (components[x][y] instanceof Engine){
+            if(components[x+1][y]!=null) return false;
+
+        }
         if(!compatibleLinks(link[0],linkU)) return false;
         if(!compatibleLinks(link[1],linkR)) return false;
         if(!compatibleLinks(link[2],linkD)) return false;
@@ -240,9 +269,9 @@ public class SpaceShip {
     }
 
     public int getTotalCannonPower(GameController controller){
-        int active=controller.askActiveComponents(getDoubleCannon());
+        controller.askActiveComponents(getDoubleCannon());
         Cabin cabin=null;
-        int power=getSingleCannonPower();
+        int power=0;
         for(int i=5;i<9;i++) {
             for (int j = 4; j < 10; j++) {
                 if(components[i][j]!=null && components[i][j] instanceof Cabin){
@@ -253,13 +282,13 @@ public class SpaceShip {
                 }
             }
         }
-        return power+2*active*getDoubleCannon();
+        return getSingleCannonPower()+getDoubleCannon()+power;
     }
 
     public int getTotalEnginePower(GameController controller){
-        int active=controller.askActiveComponents(getDoubleEngine());
+        controller.askActiveComponents(getDoubleEngine());
         Cabin cabin=null;
-        int power=getSingleEnginePower();
+        int power=0;
         for(int i=5;i<9;i++) {
             for (int j = 4; j < 10; j++) {
                 if(components[i][j]!=null && components[i][j] instanceof Cabin){
@@ -270,7 +299,7 @@ public class SpaceShip {
                 }
             }
         }
-        return power+2*active*getDoubleCannon();
+        return power+getSingleEnginePower()+getDoubleEngine();
     }
 
 
@@ -453,45 +482,31 @@ public class SpaceShip {
         }
     }
 
-    //possiamo riarrangiare le merci quando facciamo una add
-    //SISTEMAAAAAAAA
-    public void addGoods(ArrayList<Goods> goods){
-        ArrayList<Load> loads=new ArrayList<>();
-        Load l=null;
-        for(int i=5;i<9;i++) {
-            for (int j = 4; j < 10; j++) {
-                if(components[i][j]!=null && components[i][j] instanceof Load){
-                        l=(Load)components[i][j];
-                        loads.add(l);
-                        for(int k=0;k<goods.size();k++){
-                            if(l.getGoods().get(k).getValue()==4) redGoods++;
-                            else if(l.getGoods().get(k).getValue()==3) yellowGoods++;
-                            else if(l.getGoods().get(k).getValue()==2) greenGoods++;
-                            else if(l.getGoods().get(k).getValue()==1) blueGoods++;
-                            goods.get(k).setX(i);
-                            goods.get(k).setY(j);
-                            goodsList.add(goods.get(k));
-                        }
-
-                }
-            }
-        }
-        int totalCapacity=getGoodsCapacity();
-        int totalQuantity=getGoodsQuantity();
-        if(totalCapacity-totalQuantity>=goods.size()){
-
-        }
-
-    }
-    public int getGoodsQuantity(){
-        return redGoods+greenGoods+blueGoods+yellowGoods;
-    }
 
 
 
     //SISTEMAAAAAAAA
     public void removeGoods(int numOfLostGoods){
+        int x=0;
+        int y=0;
+        if(goodsList.size()>numOfLostGoods){
+            //possiamo rimuovere merci
+            for(int i=0;i<numOfLostGoods;i++){
+                goodsList.remove(i);
+            }
+        }
+        else{
+            for(int i=0;i<goodsList.size();i++){
+                x=goodsList.get(0).getX();
+                y=goodsList.get(0).getY();
+                (Load)components[x][y].removeGood();
+                goodsList.remove(0);
 
+            }
+            /*for(int j=;j<numOfLostGoods;i++){
+                goodsList.remove(i);
+            }*/
+        }
     }
 
 
