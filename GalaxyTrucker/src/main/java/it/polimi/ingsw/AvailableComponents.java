@@ -41,6 +41,8 @@ public class AvailableComponents {
         components = newComponents;
     }
 
+    Component emptySpace = new EmptySpace();
+
     Component cabin1 = new Cabin(0, 0, 3, 1, "Cabin", "imagePath", null, false);
     Component cabin2 = new Cabin(1, 0, 2, 3, "Cabin", "imagePath", null, false);
     Component cabin3 = new Cabin(2, 0, 0, 1, "Cabin", "imagePath", null, false);
