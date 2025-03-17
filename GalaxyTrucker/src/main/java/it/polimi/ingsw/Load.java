@@ -30,8 +30,12 @@ public class Load extends Component{
         goods.add(i, good);
     }
 
-    public void removeGood() {
+    public void removeGoodFromHead() {
         goods.remove(0);
+    }
+
+    public void removeGood(Goods good){
+        goods.remove(good);
     }
 
     public String getType() {
