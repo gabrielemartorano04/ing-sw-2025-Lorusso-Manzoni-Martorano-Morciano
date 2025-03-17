@@ -10,6 +10,9 @@ package it.polimi.ingsw;
 
 class Goods {
     private int value;
+    // x e y sono le coordinate della posizione della load che tiene la merce dentro la SpaceShip. Vengono usate solo per le merci
+    // dentro la SpaceShip quindi non vengono messo nel costruttore.
+    private int x, y;
 
     public Goods(int value) {
         this.value = value;
@@ -18,4 +21,17 @@ class Goods {
     public int getValue() {
         return value;
     }
+    public void setX(int x) {
+        this.x = x;
+    }
+    public void setY(int y) {
+        this.y = y;
+    }
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
+
 }
