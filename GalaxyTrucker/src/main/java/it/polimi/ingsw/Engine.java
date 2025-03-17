@@ -22,14 +22,6 @@ public class Engine extends Component{
         return isActive;
     }
 
-    public int getPower() {
-        if (isDouble) {
-            return 2;
-        }else{
-            return 1;
-        }
-    }
-
     public String getType() {
         return type;
     }

@@ -28,24 +28,8 @@ public class Cannon extends Component{
         return isDouble;
     }
 
-    public double getPower() {
-        if (isDouble) {
-            if (isActive) {
-                if (orientation == Orientation.N  || orientation == Orientation.S) {
-                    return 2;
-                } else {
-                    return 1;
-                }
-            } else {
-                return 0;
-            }
-        }else{
-            if (orientation == Orientation.N && orientation == Orientation.S){
-                return 1;
-            }else{
-                return 0.5;
-            }
-        }
+    public boolean getIsActive() {
+        return isActive;
     }
 
     public Orientation getOrientation() {
