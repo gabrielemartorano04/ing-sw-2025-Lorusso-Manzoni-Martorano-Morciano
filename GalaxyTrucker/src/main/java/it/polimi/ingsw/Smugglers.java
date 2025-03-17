@@ -11,8 +11,8 @@ class Smugglers extends Card {
     private Goods[] goodsGained = new Goods[3];
     private boolean isDefeated = false;
 
-    public Smugglers(boolean trialFlight, int smugglersPower, int goodsLost, int days, Goods[] goodsGained, int level) {
-        super("Smugglers", "Illegal traders of goods", trialFlight, level);
+    public Smugglers(boolean trialFlight, int smugglersPower, int goodsLost, int days, Goods[] goodsGained, int level, String frontName, String backName) {
+        super("Smugglers", "Illegal traders of goods", trialFlight, level, frontName, backName);
         this.smugglersPower = smugglersPower;
         this.goodsLost = goodsLost;
         this.days = days;

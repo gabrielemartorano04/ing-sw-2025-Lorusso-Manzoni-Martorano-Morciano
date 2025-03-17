@@ -7,11 +7,13 @@ class AbandonedShip extends Card {
     private int days;
     private int credits;
     private int numHuman;
-    private boolean decisionTaken;
+    private boolean decisionTaken = false;
 
-    public AbandonedShip(boolean trialFlight, boolean decisionTaken, int level) {
-        super("Abandoned Ship", "A drifting ghost ship",  trialFlight, level);
-        this.decisionTaken = false;
+    public AbandonedShip(boolean trialFlight, int level, int numHuman, int credits, int days, String forntImage, String backImage) {
+        super("Abandoned Ship", "A drifting ghost ship",  trialFlight, level, forntImage, backImage);
+        this.numHuman = numHuman;
+        this.credits = credits;
+        this.days = days;
     }
 
     public int getDays() {

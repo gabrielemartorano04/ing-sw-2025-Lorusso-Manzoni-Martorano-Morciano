@@ -2,8 +2,8 @@ package it.polimi.ingsw;
 import java.util.List;
 
 class Epidemic extends Card {
-    public Epidemic(boolean trialFlight, int level) {
-        super("Epidemic", "A contagious outbreak", trialFlight, level);
+    public Epidemic(boolean trialFlight, int level, String frontImage, String backImage) {
+        super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage);
     }
     @Override
     public void cardEffect(Game game, GameController controller) {

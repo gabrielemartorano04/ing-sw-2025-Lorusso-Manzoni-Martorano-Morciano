@@ -11,8 +11,8 @@ class MeteorShower extends Card {
     // direction è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
     // cioè scegliendo il meteorite dall'alto verso il basso
 
-    public MeteorShower(boolean trialFlight, List<int[]> direction, int level) {
-        super("Meteor Shower", "A dangerous meteor storm", trialFlight, level);
+    public MeteorShower(boolean trialFlight, List<int[]> direction, int level, String frontImagae, String backImage) {
+        super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImagae, backImage);
         this.direction = direction;
     }
 
