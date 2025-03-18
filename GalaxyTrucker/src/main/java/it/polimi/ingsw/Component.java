@@ -62,6 +62,7 @@ public abstract class Component {
         }
     }
     public static void main(String[] args) {
-        Component com=nu
+        Component com=new Engine(2, 0, 0, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web77.jpg", false);
+        System.out.println(com.getType());
     }
 }
