@@ -33,63 +33,33 @@ class WarZone extends Card {
     public void cardEffect(Game game, GameController controller) {
         ArrayList<Trucker> truckers = game.getTruckerList();
         Trucker weakestTrucker = null;
-        int minCurrCondition;
-        for(Condition condition : conditionsOrder) {
-            if (condition == condition.HUMANS) {
-                minCurrCondition = truckers.getFirst().getSpaceShip().getNumHuman();
-                for(Trucker trucker : truckers) {
-                    if(trucker.equals(truckers.getFirst())){
-                        continue;
-                    }
-                    else {
-                        if (trucker.getSpaceShip().getNumHuman() < minCurrCondition) {
-                            minCurrCondition = trucker.getSpaceShip().getNumHuman();
-                            weakestTrucker = trucker;
-                        }
-                    }
-                }
-                if(weakestTrucker != null) {
-
-                }
-            } else if (condition == condition.CANNONS) {
-                minCurrCondition = truckers.getFirst().getSpaceShip().getTotalCannonPower(controller);
-                int currTotalCannonPower;
-                for(Trucker trucker : truckers) {
-                    if(trucker.equals(truckers.getFirst())) {
-                        continue;
-                    }
-                    else {
-                        currTotalCannonPower = trucker.getSpaceShip().getTotalCannonPower(controller);
-                        if (currTotalCannonPower < minCurrCondition) {
-                            minCurrCondition = currTotalCannonPower;
-                            weakestTrucker = trucker;
-                        }
-                    }
-                }
-                if(weakestTrucker != null) {
-
-                }
-            } else if (condition == condition.ENGINES){
-                minCurrCondition = truckers.getFirst().getSpaceShip().getTotalEnginePower(controller);
-                int currTotalEnginePower;
-                for(Trucker trucker : truckers) {
-                    if(trucker.equals(truckers.getFirst())) {
-                        continue;
-                    }
-                    else {
-                        currTotalEnginePower = trucker.getSpaceShip().getTotalEnginePower(controller);
-                        if (currTotalEnginePower < minCurrCondition) {
-                            minCurrCondition = currTotalEnginePower;
-                            weakestTrucker = trucker;
-                        }
-                    }
-                }
-                if(weakestTrucker != null) {
-
-                }
+        for (Condition condition : conditionsOrder) {
+            weakestTrucker = findWeakestTrucker(truckers, condition, controller);
+            if (weakestTrucker != null) {
+                applyEffect(weakestTrucker, penalties.get(condition), controller, game);
             }
         }
     }
+
+    private Trucker findWeakestTrucker(List<Trucker> truckers, Condition condition, GameController controller) {
+        Trucker weakestTrucker = null;
+        int minValueCurrCondition = Integer.MAX_VALUE;
+        for (Trucker trucker : truckers) {
+            int currValue = switch (condition) {
+                case HUMANS -> trucker.getSpaceShip().getNumHuman();
+                case CANNONS -> trucker.getSpaceShip().getTotalCannonPower(controller);
+                case ENGINES -> trucker.getSpaceShip().getTotalEnginePower(controller);
+            };
+
+            if (currValue < minValueCurrCondition || (currValue == minValueCurrCondition && trucker.getPosition() > weakestTrucker.getPosition())) {
+                minValueCurrCondition = currValue;
+                weakestTrucker = trucker;
+            }
+        }
+        return weakestTrucker;
+    }
+
+
     private void applyEffect(Trucker trucker, Effect effect, GameController controller, Game game) {
         if (effect == null) return;
 
@@ -97,6 +67,7 @@ class WarZone extends Card {
             case LOSE_DAYS -> game.moveTrucker(trucker, effect.getValue());
             case LOSE_HUMANS -> trucker.getSpaceShip().removeNumHuman(effect.getValue());
             case GET_SHOT -> trucker.getSpaceShip().applyShots(effect.getValue(), controller);
+            case LOSE_GOODS -> trucker.getSpaceShip().removeGoods(effect.getValue(), controller);
         }
     }
 }
