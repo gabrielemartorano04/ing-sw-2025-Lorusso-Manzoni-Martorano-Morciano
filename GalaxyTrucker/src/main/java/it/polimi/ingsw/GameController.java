@@ -18,13 +18,39 @@ public class GameController {
     public ArrayList<int[]> askCabin(){
         return null;
     }
+
     public boolean askAbandonedShip(Trucker trucker, int numHuman){
-        //dato un trucker e un numero di umani che numHumans che dovrebber perdere
+        //dato un trucker e un numero di umani numHumans che dovrebbe perdere
         // il trucker deve dire se è vantaggioso o meno
         return false;
     }
 
     public boolean askSmugglers(Trucker trucker){
+        return false;
+    }
+
+    public boolean askAbandonedStation(Trucker trucker, ArrayList<Goods> goods){
+        //il trucker deve dire se perdere giorni di volo in cambio di una lista di merci
+        return false;
+    }
+
+    public boolean askPirates(Trucker trucker){
+        //il trucker deve dire se è vantaggioso o meno perdere giorni in cambio di crediti cosmici
+        return false;
+    }
+
+    public boolean askPlayerToLand(Trucker trucker){
+        //il trucker deve dire se atterrare su un pianeta per acquisire le relative merci
+        return false;
+    }
+
+    public int askPlayerToChoosePlanet(Trucker trucker, ArrayList<ArrayList<Goods>> planets){
+        //il trucker deve dire su quale pianeta vuole atterrare per acquisirne le merci
+        return 0;
+    }
+
+    public boolean askSlavers(Trucker trucker){
+        //il trucker deve dire se è vantaggioso o meno perdere giorni in cambio di crediti cosmici
         return false;
     }
 
