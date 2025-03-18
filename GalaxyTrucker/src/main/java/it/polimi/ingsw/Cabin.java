@@ -22,7 +22,7 @@ public class Cabin extends Component{
         return alien;
     }
 
-    public void addHumans(int quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
