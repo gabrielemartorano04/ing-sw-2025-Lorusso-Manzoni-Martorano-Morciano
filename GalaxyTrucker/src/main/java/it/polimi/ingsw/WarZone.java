@@ -16,7 +16,7 @@ class WarZone extends Card {
     // cioè scegliendo il meteorite dall'alto verso il basso
 
     public WarZone(boolean trialFlight, int level) {
-        super("War Zone", "A dangerous conflict zone", trialFlight, level);
+        super("War Zone", "A dangerous conflict zone", trialFlight, level, "", "");
     }
     public List<Condition> getConditionsOrder() {
         return conditionsOrder;
@@ -37,18 +37,55 @@ class WarZone extends Card {
             if (condition == condition.HUMANS) {
                 minCurrCondition = truckers.getFirst().getSpaceShip().getNumHuman();
                 for(Trucker trucker : truckers) {
-                    if(trucker.getSpaceShip().getNumHuman()<minCurrCondition) {
-                        minCurrCondition = trucker.getSpaceShip().getNumHuman();
-                        weakestTrucker = trucker;
+                    if(trucker.equals(truckers.getFirst())){
+                        continue;
+                    }
+                    else {
+                        if (trucker.getSpaceShip().getNumHuman() < minCurrCondition) {
+                            minCurrCondition = trucker.getSpaceShip().getNumHuman();
+                            weakestTrucker = trucker;
+                        }
                     }
                 }
                 if(weakestTrucker != null) {
 
                 }
             } else if (condition == condition.CANNONS) {
+                minCurrCondition = truckers.getFirst().getSpaceShip().getTotalCannonPower(controller);
+                int currTotalCannonPower;
+                for(Trucker trucker : truckers) {
+                    if(trucker.equals(truckers.getFirst())) {
+                        continue;
+                    }
+                    else {
+                        currTotalCannonPower = trucker.getSpaceShip().getTotalCannonPower(controller);
+                        if (currTotalCannonPower < minCurrCondition) {
+                            minCurrCondition = currTotalCannonPower;
+                            weakestTrucker = trucker;
+                        }
+                    }
+                }
+                if(weakestTrucker != null) {
 
+                }
             } else if (condition == condition.ENGINES){
+                minCurrCondition = truckers.getFirst().getSpaceShip().getTotalEnginePower(controller);
+                int currTotalEnginePower;
+                for(Trucker trucker : truckers) {
+                    if(trucker.equals(truckers.getFirst())) {
+                        continue;
+                    }
+                    else {
+                        currTotalEnginePower = trucker.getSpaceShip().getTotalEnginePower(controller);
+                        if (currTotalEnginePower < minCurrCondition) {
+                            minCurrCondition = currTotalEnginePower;
+                            weakestTrucker = trucker;
+                        }
+                    }
+                }
+                if(weakestTrucker != null) {
 
+                }
             }
         }
     }
