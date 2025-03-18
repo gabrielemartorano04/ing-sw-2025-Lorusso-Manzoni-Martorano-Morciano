@@ -15,8 +15,10 @@ class WarZone extends Card {
     // shoots è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
     // cioè scegliendo il meteorite dall'alto verso il basso
 
-    public WarZone(boolean trialFlight, int level) {
-        super("War Zone", "A dangerous conflict zone", trialFlight, level);
+    public WarZone(boolean trialFlight, int level, List<Condition> conditionsOrder, Map<Condition, Effect> penalties) {
+        super("War Zone", "A dangerous conflict zone", trialFlight, level, "", "");
+        this.conditionsOrder = conditionsOrder;
+        this.penalties = penalties;
     }
     public List<Condition> getConditionsOrder() {
         return conditionsOrder;
@@ -37,19 +39,65 @@ class WarZone extends Card {
             if (condition == condition.HUMANS) {
                 minCurrCondition = truckers.getFirst().getSpaceShip().getNumHuman();
                 for(Trucker trucker : truckers) {
-                    if(trucker.getSpaceShip().getNumHuman()<minCurrCondition) {
-                        minCurrCondition = trucker.getSpaceShip().getNumHuman();
-                        weakestTrucker = trucker;
+                    if(trucker.equals(truckers.getFirst())){
+                        continue;
+                    }
+                    else {
+                        if (trucker.getSpaceShip().getNumHuman() < minCurrCondition) {
+                            minCurrCondition = trucker.getSpaceShip().getNumHuman();
+                            weakestTrucker = trucker;
+                        }
                     }
                 }
                 if(weakestTrucker != null) {
 
                 }
             } else if (condition == condition.CANNONS) {
+                minCurrCondition = truckers.getFirst().getSpaceShip().getTotalCannonPower(controller);
+                int currTotalCannonPower;
+                for(Trucker trucker : truckers) {
+                    if(trucker.equals(truckers.getFirst())) {
+                        continue;
+                    }
+                    else {
+                        currTotalCannonPower = trucker.getSpaceShip().getTotalCannonPower(controller);
+                        if (currTotalCannonPower < minCurrCondition) {
+                            minCurrCondition = currTotalCannonPower;
+                            weakestTrucker = trucker;
+                        }
+                    }
+                }
+                if(weakestTrucker != null) {
 
+                }
             } else if (condition == condition.ENGINES){
+                minCurrCondition = truckers.getFirst().getSpaceShip().getTotalEnginePower(controller);
+                int currTotalEnginePower;
+                for(Trucker trucker : truckers) {
+                    if(trucker.equals(truckers.getFirst())) {
+                        continue;
+                    }
+                    else {
+                        currTotalEnginePower = trucker.getSpaceShip().getTotalEnginePower(controller);
+                        if (currTotalEnginePower < minCurrCondition) {
+                            minCurrCondition = currTotalEnginePower;
+                            weakestTrucker = trucker;
+                        }
+                    }
+                }
+                if(weakestTrucker != null) {
 
+                }
             }
+        }
+    }
+    private void applyEffect(Trucker trucker, Effect effect, GameController controller, Game game) {
+        if (effect == null) return;
+
+        switch (effect.getType()) {
+            case LOSE_DAYS -> game.moveTrucker(trucker, effect.getValue());
+            case LOSE_HUMANS -> trucker.getSpaceShip().removeNumHuman(effect.getValue());
+            case GET_SHOT -> trucker.getSpaceShip().applyShots(effect.getValue(), controller);
         }
     }
 }

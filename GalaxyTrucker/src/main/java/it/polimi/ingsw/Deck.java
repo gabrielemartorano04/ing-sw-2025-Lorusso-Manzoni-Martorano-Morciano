@@ -236,6 +236,27 @@ class Deck {
         cards.addLast(new AbandonedShip(false, 2, 5, 8, 2, "src/main/resources/Cards/cards/GT-cards_II_IT_0118.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
         cards.addLast(new AbandonedStation(false, 2, goods3, 1, 7, "src/main/resources/Cards/cards/GT-cards_II_IT_0119.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
         cards.addLast(new AbandonedStation(false, 2, goods4, 2, 8, "src/main/resources/Cards/cards/GT-cards_II_IT_0120.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
+
+        WarZone warZone1 = new WarZone(
+                false, 1,
+                List.of(Condition.HUMANS, Condition.ENGINES, Condition.CANNONS),
+                Map.of(
+                        Condition.HUMANS, new Effect(TypeOfEffect.LOSE_DAYS, 3),
+                        Condition.CANNONS, new Effect(TypeOfEffect.GET_SHOT, 1),
+                        Condition.ENGINES, new Effect(TypeOfEffect.LOSE_HUMANS, 2)
+                )
+        );
+
+        WarZone warZone2 = new WarZone(
+                false, 2,
+                List.of(Condition.CANNONS, Condition.HUMANS, Condition.ENGINES),
+                Map.of(
+                        Condition.CANNONS, new Effect(TypeOfEffect.LOSE_DAYS, 4),
+                        Condition.HUMANS, new Effect(TypeOfEffect.GET_SHOT, 2),
+                        Condition.ENGINES, new Effect(TypeOfEffect.LOSE_GOODS, 3)
+                )
+        );
+    }
     }
 
     public Card getCard(int index) {
