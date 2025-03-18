@@ -204,30 +204,44 @@ public class Game {
         timeTurns = timeTurns+1;
     }
 
-    // da finire
+    // da finire, per livello 2
     public int[] computeScores(){
         int i=0;
         int[] scores = new int[numPlayer];
         ArrayList<Goods> goodsList = new ArrayList<>();
         for(Trucker t: truckers) {
-            scores[i] += t.getCosmicCredit();
-            scores[i] -= t.getSpaceShip().countExposedConnectors();
+            if(t.getCosmicCredit()<t.getSpaceShip().getlost()) {
+                scores[i] -= (t.getSpaceShip().getLost()-t.getCosmicCredit());
+            }
             goodsList = t.getSpaceShip().getGoodsList();
             for(Goods g: goodsList) {
                 scores[i] += g.getValue();
             }
-         i++;
+            if (bestSpaceShip(t)){
+                scores[i]+=4;
+            }
+            scores[i] += 8-(2*i);
+            i++;
         }
+        //non sicuro
         for (Trucker t: truckersOut) {
-            scores[i] += t.getCosmicCredit();
-            scores[i] -= t.getSpaceShip().countExposedConnectors();
+            scores[i] -= (t.getSpaceShip().getLost()-t.getCosmicCredit());
             goodsList = t.getSpaceShip().getGoodsList();
             for(Goods g: goodsList) {
-                scores[i] += g.getValue();
+                scores[i] += g.getValue()/2;
             }
             i++;
         }
         return scores;
     };
+
+    public boolean bestSpaceShip(Trucker trucker) {
+        for(Trucker t: truckers) {
+            if (trucker.getSpaceShip().countExposedConnectors() > t.getSpaceShip().countExposedConnectors()){
+                return false;
+            }
+        }
+        return true;
+    }
 
 }
