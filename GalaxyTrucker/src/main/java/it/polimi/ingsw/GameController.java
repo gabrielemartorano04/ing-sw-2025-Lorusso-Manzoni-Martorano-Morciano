@@ -54,4 +54,9 @@ public class GameController {
         return false;
     }
 
+    public boolean askUseBattery(){
+        //il trucker deve dire se vuole utilizzare una batteria per attivare un doubleComponent
+        return false;
+    }
+
 }
