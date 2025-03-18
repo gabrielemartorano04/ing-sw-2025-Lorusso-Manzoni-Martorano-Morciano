@@ -26,9 +26,7 @@ class WarZone extends Card {
         return penalties;
     }
 
-    // in caso di parità di criteri subisce la penitenza quello più avanti nel percorso quindi quando cerco
-    // il weakestTrucker nei confronti uso il minore stretto in modo che a parità di potenza di fuoco/motrice o
-    // numero di umani scelgo sempre il trucker più a sinistra nella lista cioè quello più avanti sulla plancia
+
     @Override
     public void cardEffect(Game game, GameController controller) {
         ArrayList<Trucker> truckers = game.getTruckerList();
@@ -41,6 +39,7 @@ class WarZone extends Card {
         }
     }
 
+
     private Trucker findWeakestTrucker(List<Trucker> truckers, Condition condition, GameController controller) {
         Trucker weakestTrucker = null;
         int minValueCurrCondition = Integer.MAX_VALUE;
@@ -51,7 +50,10 @@ class WarZone extends Card {
                 case ENGINES -> trucker.getSpaceShip().getTotalEnginePower(controller);
             };
 
-            if (currValue < minValueCurrCondition || (currValue == minValueCurrCondition && trucker.getPosition() > weakestTrucker.getPosition())) {
+            // in caso di parità di criteri subisce la penitenza quello più avanti nel percorso quindi quando cerco
+            // il weakestTrucker nei confronti uso il minore stretto in modo che a parità di potenza di fuoco/motrice o
+            // numero di umani scelgo sempre il trucker più a sinistra nella lista cioè quello più avanti sulla plancia
+            if (currValue < minValueCurrCondition) {
                 minValueCurrCondition = currValue;
                 weakestTrucker = trucker;
             }
@@ -73,5 +75,6 @@ class WarZone extends Card {
 
     private void applyShots(Trucker trucker, ArrayList<int[]> shoots, GameController controller) {
         // gestione dei colpi di fuoco simile a meteorShower
+
     }
 }
