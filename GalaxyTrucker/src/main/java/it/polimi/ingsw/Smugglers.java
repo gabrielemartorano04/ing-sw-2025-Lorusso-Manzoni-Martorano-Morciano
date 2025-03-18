@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import java.util.List;
+import java.util.Arrays;
 
 //secondo me tutti i get sono inutil
 
@@ -45,13 +46,14 @@ class Smugglers extends Card {
             else{
                 if(trucker.getSpaceShip().getTotalCannonPower(controller)> smugglersPower){
                     isDefeated = true;
-                    boolean answer = controller.ask(trucker);
+                    boolean answer = controller.askSmugglers(trucker);
                     if (answer == true){
-                        trucker.getSpaceShip().addGoods(goodsGained);
-                        game.moveTrucker(trucker, days);
+                        //uso la conversione con Arrays.asList da checkare
+                        trucker.getSpaceShip().addGoods(Arrays.asList(goodsGained), controller);
+                        game.moveBackward(trucker, days);
                     }
                 } else if (trucker.getSpaceShip().getTotalCannonPower(controller) < smugglersPower){
-                    trucker.getSpaceShip().removeGoods(goodsLost);
+                    trucker.getSpaceShip().removeGoods(goodsLost, controller);
                 }
             }
         }

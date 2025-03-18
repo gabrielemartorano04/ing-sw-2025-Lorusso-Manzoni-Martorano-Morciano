@@ -50,10 +50,10 @@ class Pirates extends Card {
             }else{
                 if(trucker.getSpaceShip().getTotalCannonPower(controller)> piratesPower){
                     isDefeated = true;
-                    boolean answer = controller.ask(trucker);
+                    boolean answer = controller.askPirates(trucker);
                     if (answer == true){
                         trucker.addCosmicCredit(credits);
-                        game.moveTrucker(trucker, days);
+                        game.moveBackward(trucker, days);
                     }
                 } else if (trucker.getSpaceShip().getTotalCannonPower(controller) < piratesPower){
                     defeatedTruckers.add(trucker);

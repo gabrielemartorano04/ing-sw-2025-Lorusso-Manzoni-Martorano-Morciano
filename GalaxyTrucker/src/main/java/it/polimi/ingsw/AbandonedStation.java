@@ -34,10 +34,10 @@ class AbandonedStation extends Card {
             List<Trucker> truckers = game.getTruckerList();
             for(Trucker trucker: truckers) {
                 if (trucker.getSpaceShip().getNumHuman() > numHuman) {
-                    if (controller.ask(trucker, goods) == true) {
+                    if (controller.askAbandonedStation(trucker, goods) == true) {
                         decisionTaken = true;
-                        trucker.getSpaceShip().addGoods(goods);
-                        game.moveTrucker(trucker, days);
+                        trucker.getSpaceShip().addGoods(goods, controller);
+                        game.moveBackward(trucker, days);
                     }
                 }
             }

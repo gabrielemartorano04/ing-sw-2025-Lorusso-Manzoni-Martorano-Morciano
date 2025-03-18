@@ -12,7 +12,7 @@ class StarDust extends Card {
         Collections.reverse(truckers);
         for (Trucker trucker : truckers) {
             int exposedConnectors = trucker.getSpaceShip().countExposedConnectors();
-            game.moveTrucker(trucker, exposedConnectors);
+            game.moveBackward(trucker, exposedConnectors);
         }
         Collections.reverse(truckers); //rigiro i Truckers così
     }
