@@ -111,8 +111,8 @@ public class SpaceShip {
     /**
      * rimuove un numero num di astronauti dalla spaceship
      */
-    public void removeNumHuman(int num, GameController controller) {
-        ArrayList<int[]> coord=controller.askCabin();
+    //i parametri sono il numero di umani che vogliamo rimuovere e le coord(da controller)dei componenti da cui togliere gli umani
+    public void removeNumHuman(int num, ArrayList<int[]> coord) {
         Cabin cabin=null;
         for(int[] c:coord){
             if (components[c[0]][c[1]].getType().equals("Cabin")){
@@ -331,9 +331,13 @@ public class SpaceShip {
         }
         return true;
     }
-
-    public int getTotalCannonPower(GameController controller) {
-        controller.askActiveComponents(getDoubleCannon());
+//in ingresso coordinate dei cannoni doppi che vogliamo attivare (da controller)
+    public int getTotalCannonPower(ArrayList<int[]> coord) {
+        Cannon cannon = null;
+        for(int[] c:coord){
+            cannon = (Cannon) components[c[0]][c[1]];
+            cannon.setIsActive(true);
+        }
         Cabin cabin = null;
         int power = 0;
         for (int i = 5; i <= 9; i++) {
@@ -349,8 +353,12 @@ public class SpaceShip {
         return getSingleCannonPower() + getDoubleCannon() + power;
     }
 
-    public int getTotalEnginePower(GameController controller) {
-        controller.askActiveComponents(getDoubleEngine());
+    public int getTotalEnginePower(ArrayList<int[]> coord) {
+        Engine engine = null;
+        for(int[] c:coord){
+            engine = (Engine) components[c[0]][c[1]];
+            engine.setIsActive(true);
+        }
         Cabin cabin = null;
         int power = 0;
         for (int i = 5; i <= 9; i++) {
@@ -532,9 +540,8 @@ public class SpaceShip {
         return false;
     }
     //considerando che la nave verrà sicuramente colpita controllo se la nave ha uno scudo che protegge quella direzione, se ha almeno una batteria chiedo se vuole attivare quello scudo
-    public boolean blockLightCannonShot(int direction,int num, GameController controller){
+    public boolean blockLightCannonShot(int direction,int num, boolean use){
         Shield shield=null;
-        boolean use=false;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null && components[i][j].getType().equals("Shield")) {
@@ -545,14 +552,14 @@ public class SpaceShip {
                                     || (direction == 2 && (shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)))
                                     || (direction == 3 && (shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)))
                     ){
-                                        if(numOfBatterys>0){
-                                            use=controller.askUseBattery();
+                                        if(numOfBatterys>0 && use){
+                                            return true;
                                         }
                     }
                 }
             }
         }
-        return use;
+        return false;
     }
 
     public void epidemic() {
@@ -571,12 +578,11 @@ public class SpaceShip {
     }
 
 
-    //SISTEMAAAAAAAA
-    public void removeGoods(int numOfLostGoods, GameController controller) {
+    //coord coordinate dei componenti da cui togliere batterie
+    public void removeGoods(int numOfLostGoods, ArrayList<int[]> coord) {
         int x = 0;
         int y = 0;
         Load load = null;
-        ArrayList<int[]> coord = new ArrayList<>();
         BatteryStorage batteryStorage = null;
         int batteryQuantity = 0;
         if (goodsList.size() > numOfLostGoods) {
@@ -595,7 +601,7 @@ public class SpaceShip {
 
             }
             while (numOfLostGoods > 0) {
-                coord = controller.askComponentBattery(); //mi restituisce  le coordinate dei componenti da cui vuole togliere batterie
+                //mi restituisce  le coordinate dei componenti da cui vuole togliere batterie
                 for (int[] c : coord) {
                     batteryStorage = (BatteryStorage) components[c[0]][c[1]];
                     batteryQuantity = batteryStorage.getQuantity();
@@ -619,11 +625,9 @@ public class SpaceShip {
         }
         goodsList.add(i, good);
     }
-
-    public void addGoods(List <Goods> goods,GameController controller){
+    //dove vuole mettere le merci
+    public void addGoods(List <Goods> goods,ArrayList<int[]> coord){
         int index=0;
-        ArrayList<int[]> coord = new ArrayList<>();
-        coord = controller.askComponentGoods(); //dove vuole mettere le merci
         Load load=null;
         for(int[] c : coord){
             int i=c[0];
