@@ -23,7 +23,6 @@ class Planets extends Card {
         for (int i = 0; i < truckers.size(); i++) {
             landed.add(false);
         }
-        //devo aggiungere che non puoi atterrare su un pianeta già occupato
         for (Trucker trucker : truckers) {
             SpaceShip ship = trucker.getSpaceShip();
             if (controller.askPlayerToLand(trucker)) {
@@ -40,6 +39,5 @@ class Planets extends Card {
                 }
             }
         }
-
     }
 }
