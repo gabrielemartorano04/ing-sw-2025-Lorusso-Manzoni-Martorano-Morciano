@@ -15,5 +15,13 @@ public class GameController {
         return null;
         //il controller chiede i componenti di tipo Load in cui vogliamo mettere le batterie
     }
+    public ArrayList<int[]> askCabin(){
+        return null;
+    }
+    public boolean askAbandonedShip(Trucker trucker, int numHuman){
+        //dato un trucker e un numero di umani che numHumans che dovrebber perdere
+        // il trucker deve dire se è vantaggioso o meno
+        return false;
+    }
 
 }

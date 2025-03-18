@@ -33,9 +33,9 @@ class AbandonedShip extends Card {
         while (!decisionTaken) {
             List<Trucker> truckers = game.getTruckerList();
             for(Trucker trucker: truckers) {
-                if (controller.ask(trucker, numHuman) == true){
+                if (controller.askAbandonedShip(trucker, numHuman) == true){
                     decisionTaken = true;
-                    trucker.getSpaceShip().removeHuman(numHuman);
+                    trucker.getSpaceShip().removeNumHuman(numHuman,controller);
                     game.moveTrucker(trucker,days);
                     trucker.addCosmicCredit(credits);
                 }

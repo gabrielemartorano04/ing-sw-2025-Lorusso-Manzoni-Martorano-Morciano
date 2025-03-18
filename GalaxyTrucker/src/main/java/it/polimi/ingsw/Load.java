@@ -11,9 +11,15 @@ public class Load extends Component{
         this.isSpecial = isSpecial;
         this.capacity = capacity;
         goods = new ArrayList<Goods>();
+        for(Goods g : goods){
+            g=null;
+        }
     }
 
-    public boolean getIsSpecial() { return isSpecial;}
+    public boolean getIsSpecial() {
+        return isSpecial;
+    }
+
     public int getCapacity() {
         return capacity;
     }

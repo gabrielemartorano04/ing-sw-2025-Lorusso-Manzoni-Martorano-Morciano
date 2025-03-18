@@ -30,10 +30,6 @@ public abstract class Component {
         return rearImage;
     }
 
-    public void setLink(int[] link) {
-        this.link = link;
-    }
-
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
@@ -55,10 +51,15 @@ public abstract class Component {
     }
 
     public void turn() {
-        for (int i = 0; i < 3; i++) {
-            int tmp = link[i];
-            link[i] = link[i+1];
-            link[i+1] = tmp;
-        }
+        int tmp=link[3];
+        link[3]=link[2];
+        link[2]=link[1];
+        link[1]=link[0];
+        link[0]=tmp;
+    }
+
+    public static void main(String[] args) {
+        Component com=new Engine(2, 0, 0, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web77.jpg", false);
+        System.out.println(com.getType());
     }
 }

@@ -16,10 +16,6 @@ public class Cannon extends Component{
         this.orientation = orientation;
     }
 
-    public void setIsDouble(boolean isDouble) {
-        this.isDouble = isDouble;
-    }
-
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
     }

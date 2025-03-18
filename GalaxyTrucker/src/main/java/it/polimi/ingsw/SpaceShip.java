@@ -20,10 +20,17 @@ public class SpaceShip {
      * Spaceship constructor, it inizializes the attributes of this class
      */
     public SpaceShip() {
-        components = new Component[9][10];
+        components = new Component[10][11];
         kept = new Component[2];
         for (int i = 0; i < 2; i++)
             kept[i] = null;
+        //empty space dove non puoi aggiungere mai
+        //null dove ancora non c'è un componente
+        /*for(int i=0;i<5;i++){
+            for(int j=0;j<11;j++){
+                components[i][j]=new EmptySpace();
+            }
+        }*/
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 10; j++) {
                 components[i][j] = null;
@@ -78,7 +85,9 @@ public class SpaceShip {
      * rimuove un astronauta dalla spaceship
      */
     public void removeHuman(int x, int y) {
+        Cabin cabin=null;
         if (components[x][y].getType().equals("Cabin") && numHuman > 0) {
+            cabin.removeHumans(1);
             numHuman--;
         }
 
@@ -87,10 +96,25 @@ public class SpaceShip {
     /**
      * rimuove un numero num di astronauti dalla spaceship
      */
-    public void removeNumHuman(int x, int y, int num) {
-        if (components[x][y].getType().equals("Cabin") && numHuman > 0) {
-            numHuman -= num;
+    public void removeNumHuman(int num, GameController controller) {
+        ArrayList<int[]> coord=controller.askCabin();
+        Cabin cabin=null;
+        for(int[] c:coord){
+            if (components[c[0]][c[1]].getType().equals("Cabin")){
+                cabin=(Cabin)components[c[0]][c[1]];
+                if(cabin.getQuantity() >= num) {
+                    cabin.removeHumans(num);
+                    numHuman -= num;
+                    num=0;
+                }
+                else {
+                    num-=cabin.getQuantity();
+                    cabin.setQuantity(0);
+                }
+            }
+
         }
+
 
     }
 
@@ -452,7 +476,7 @@ public class SpaceShip {
     }
 
     public boolean blockSmallMeteor(int direction, int num) {
-        if (isHit(direction, num)) {
+
             if (shootMeteor(direction, num)) return true;
 
             switch (direction) {
@@ -489,7 +513,11 @@ public class SpaceShip {
                     }
                     break;
             }
-        }
+
+        return false;
+    }
+    //considerando che la nave verrà sicuramente colpita controllo se la nave ha uno scudo che protegge quella direzione, se ha almeno una batteria chiedo se vuole attivare quello scudo
+    public boolean blockLightCannonShot(int direction,int num, GameController controller){
         return false;
     }
 
