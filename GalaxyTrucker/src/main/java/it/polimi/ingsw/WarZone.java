@@ -30,6 +30,10 @@ class WarZone extends Card {
     @Override
     public void cardEffect(Game game, GameController controller) {
         ArrayList<Trucker> truckers = game.getTruckerList();
+        // zona di guerra non viene fatta se c'è solo un giocatore rimasto
+        if(truckers.size()==1){
+            return;
+        }
         Trucker weakestTrucker = null;
         for (Condition condition : conditionsOrder) {
             weakestTrucker = findWeakestTrucker(truckers, condition, controller);
