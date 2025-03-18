@@ -20,10 +20,17 @@ public class SpaceShip {
      * Spaceship constructor, it inizializes the attributes of this class
      */
     public SpaceShip() {
-        components = new Component[9][10];
+        components = new Component[10][11];
         kept = new Component[2];
         for (int i = 0; i < 2; i++)
             kept[i] = null;
+        //empty space dove non puoi aggiungere mai
+        //null dove ancora non c'è un componente
+        /*for(int i=0;i<5;i++){
+            for(int j=0;j<11;j++){
+                components[i][j]=new EmptySpace();
+            }
+        }*/
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 10; j++) {
                 components[i][j] = null;
