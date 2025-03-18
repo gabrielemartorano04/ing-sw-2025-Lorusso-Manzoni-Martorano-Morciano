@@ -61,4 +61,7 @@ public abstract class Component {
             link[i+1] = tmp;
         }
     }
+    public static void main(String[] args) {
+        Component com=nu
+    }
 }
