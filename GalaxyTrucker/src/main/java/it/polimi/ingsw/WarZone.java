@@ -91,4 +91,13 @@ class WarZone extends Card {
             }
         }
     }
+    private void applyEffect(Trucker trucker, Effect effect, GameController controller, Game game) {
+        if (effect == null) return;
+
+        switch (effect.getType()) {
+            case LOSE_DAYS -> game.moveTrucker(trucker, effect.getValue());
+            case LOSE_HUMANS -> trucker.getSpaceShip().removeNumHuman(effect.getValue());
+            case GET_SHOT -> trucker.getSpaceShip().applyShots(effect.getValue(), controller);
+        }
+    }
 }
