@@ -14,20 +14,23 @@ public class Game {
     private ArrayList<Card> gameDeck;
     private int numPlayer;
     private AvailableComponents[] components;
-    private Timer timer;
+    private Hourglass hourglass;
     private int gameLevel;
     private GameState gameState;
     private Deck deck;
+    private int timeTurns;
+
 
     public Game() {
         this.truckers = new ArrayList<>();
         this.truckersOut = new ArrayList<>();
         this.gameDeck = new ArrayList<>();
         this.components = new AvailableComponents[156];
-        this.timer = new Timer();
+        this.hourglass = new Hourglass(this);
         this.gameState = GameState.SETUP;
         this.deck = new Deck();
         this.cardStacks = new ArrayList[4];
+        this.timeTurns = 0;
     }
 
     public enum GameState {
@@ -146,9 +149,16 @@ public class Game {
         return truckers;
     }
 
-    public void moveTrucker(Trucker trucker, int days){
+    //muove trucker in avanti, riceve days positivo
+    public void moveForward(Trucker trucker, int days){
         int result = trucker.getPosition() + days;
+
         trucker.setPosition(result);
+    }
+
+    //muove trucker in avanti, riceve days negativo
+    public void moveBackward(Trucker trucker, int days){
+
     }
 
     public void makeTruckers(){
@@ -170,12 +180,21 @@ public class Game {
 
     public void setLevel(int level) {};
 
-    public void manageTime(Timer timer) {
-        this.timer = timer;
+    public int getTimeTurns(){
+        return timeTurns;
     }
 
+    public void increaseTimeTurns() {
+        timeTurns = timeTurns+1;
+    }
+
+    // da finire
     public int[] computeScores(){
-        return new int[0];
+        int[] scores = new int[numPlayer];
+        for(int i=0; i<numPlayer; i++) {
+            scores[i]= truckers.get(i).getPosition();
+        }
+        return scores;
     };
 
     public int[] compute(){
