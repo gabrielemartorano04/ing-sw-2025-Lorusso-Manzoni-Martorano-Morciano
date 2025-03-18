@@ -15,5 +15,8 @@ public class GameController {
         return null;
         //il controller chiede i componenti di tipo Load in cui vogliamo mettere le batterie
     }
+    public ArrayList<int[]> askCabin(){
+        return null;
+    }
 
 }
