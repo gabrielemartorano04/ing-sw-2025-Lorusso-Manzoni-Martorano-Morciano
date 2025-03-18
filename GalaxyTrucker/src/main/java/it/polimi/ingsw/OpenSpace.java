@@ -19,7 +19,7 @@ class OpenSpace extends Card {
             i++;
         }
         for (i = 0; i < daysGained.length; i--) {
-            game.moveTrucker(truckers.get(i), daysGained[i]);
+            game.moveForward(truckers.get(i), daysGained[i]);
         }
     }
 }

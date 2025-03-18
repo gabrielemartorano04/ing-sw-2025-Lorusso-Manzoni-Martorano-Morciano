@@ -42,13 +42,13 @@ class Slavers extends Card {
             else{
                 if(trucker.getSpaceShip().getTotalCannonPower(controller)> slaversPower){
                     isDefeated = true;
-                    boolean answer = controller.ask(trucker);
+                    boolean answer = controller.askSlavers(trucker);
                     if (answer == true){
                         trucker.addCosmicCredit(credits);
-                        game.moveTrucker(trucker, days);
+                        game.moveBackward(trucker, days);
                     }
                 } else if (trucker.getSpaceShip().getTotalCannonPower(controller) < slaversPower){
-                    trucker.getSpaceShip().removeAstronauts(astronautsLost);
+                    trucker.getSpaceShip().removeNumHuman(astronautsLost, controller);
                 }
             }
         }

@@ -24,4 +24,8 @@ public class GameController {
         return false;
     }
 
+    public boolean askSmugglers(Trucker trucker){
+        return false;
+    }
+
 }

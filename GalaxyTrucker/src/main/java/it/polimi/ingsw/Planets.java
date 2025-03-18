@@ -29,7 +29,7 @@ class Planets extends Card {
                 int planetIndex = controller.askPlayerToChoosePlanet(trucker, planets);
                 if (planetIndex != -1) {  //assumo che askPlayerToChoosePlanet ritorni -1 se la risposta è falso
                     landed.set(planetIndex, true);
-                    game.moveTrucker(trucker, daysLoss);
+                    game.moveBackward(trucker, daysLoss);
                     ship.addGoods(getPlanet().get(planetIndex));
                 }
             }

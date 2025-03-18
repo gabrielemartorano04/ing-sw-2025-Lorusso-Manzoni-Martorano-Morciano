@@ -45,13 +45,13 @@ class Smugglers extends Card {
             else{
                 if(trucker.getSpaceShip().getTotalCannonPower(controller)> smugglersPower){
                     isDefeated = true;
-                    boolean answer = controller.ask(trucker);
+                    boolean answer = controller.askSmugglers(trucker);
                     if (answer == true){
-                        trucker.getSpaceShip().addGoods(goodsGained);
-                        game.moveTrucker(trucker, days);
+                        trucker.getSpaceShip().addGoods(goodsGained, controller);
+                        game.moveBackward(trucker, days);
                     }
                 } else if (trucker.getSpaceShip().getTotalCannonPower(controller) < smugglersPower){
-                    trucker.getSpaceShip().removeGoods(goodsLost);
+                    trucker.getSpaceShip().removeGoods(goodsLost, controller);
                 }
             }
         }

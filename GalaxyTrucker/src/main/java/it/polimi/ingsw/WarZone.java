@@ -66,7 +66,7 @@ class WarZone extends Card {
         if (effect == null) return;
 
         switch (effect.getType()) {
-            case LOSE_DAYS -> game.moveTrucker(trucker, effect.getValue());
+            case LOSE_DAYS -> game.moveBackward(trucker, effect.getValue());
             case LOSE_HUMANS -> trucker.getSpaceShip().removeNumHuman(effect.getValue(), controller);
             case GET_SHOT -> applyShots(trucker.getSpaceShip(), shoots, controller, game);
             case LOSE_GOODS -> trucker.getSpaceShip().removeGoods(effect.getValue(), controller);
