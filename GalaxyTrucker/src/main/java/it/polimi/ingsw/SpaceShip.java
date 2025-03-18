@@ -521,7 +521,7 @@ public class SpaceShip {
                 x = goodsList.get(0).getX();
                 y = goodsList.get(0).getY();
                 load = (Load) components[x][y];
-                load.removeGood();
+                load.removeGoodFromHead();
                 goodsList.remove(0);
                 numOfLostGoods--;
 
@@ -578,6 +578,39 @@ public class SpaceShip {
 
             }
         }
+
+        for(int j = index; j<goods.size(); j++){
+            for(int i=goodsList.size()-1;i>=0;i--){
+                if(goods.get(j).getValue() >goodsList.get(i).getValue()){
+                    if(goods.get(j).getValue() == 4){
+                            // vedi se c'è spazio per un rosso e poi inserisci
+                        for(Goods g : goodsList){
+                            if(g.getValue() < 4){
+                                Load l = (Load) components[g.getX()][g.getY()];
+                                if(l.getIsSpecial()){
+                                    l.removeGood(g);
+                                    goodsList.remove(i);
+                                    l.addGood(goods.get(j));
+                                    addGoodsList(goods.get(j));
+                                }
+                            }
+                        }
+                    }
+                    else{
+                            //inserisci in qualsiasi spazio vuoto
+                        goods.get(j).setX(goodsList.get(i).getX());
+                        goods.get(j).setY(goodsList.get(i).getY());
+                        Load loadToRemove=(Load)components[goodsList.get(i).getX()][goodsList.get(i).getY()];
+                        loadToRemove.removeGood(goodsList.get(i));
+                        loadToRemove.addGood(goods.get(j));
+                        goodsList.remove(i);
+                        addGoodsList(goods.get(j));
+                    }
+                }
+            }
+        }
+
+
     }
 
 }
