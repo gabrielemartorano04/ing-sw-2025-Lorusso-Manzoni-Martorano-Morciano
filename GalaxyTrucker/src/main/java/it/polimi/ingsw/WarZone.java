@@ -7,7 +7,7 @@ class WarZone extends Card {
     private List<Condition> conditionsOrder;
     private Map<Condition, Effect> penalties;
     private ArrayList<int[]> shoots;
-    // shoots è una lista dove direction.get(i) rappresenta l'i-esimo colpo in questa specifica carta Pirates
+    // shoots è una lista dove shoots.get(i) rappresenta l'i-esimo colpo in questa specifica carta Warzone
     // shoots.get(i)[0] vale 1 se il colpo è grande 0 se è piccolo
     // shoots.get(i)[1] indice la direzione da cui arriva il colpo (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da dx)
     // shoots è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
@@ -68,13 +68,26 @@ class WarZone extends Card {
         switch (effect.getType()) {
             case LOSE_DAYS -> game.moveTrucker(trucker, effect.getValue());
             case LOSE_HUMANS -> trucker.getSpaceShip().removeNumHuman(effect.getValue(), controller);
-            case GET_SHOT -> applyShots(trucker, shoots, controller);
+            case GET_SHOT -> applyShots(trucker.getSpaceShip(), shoots, controller, game);
             case LOSE_GOODS -> trucker.getSpaceShip().removeGoods(effect.getValue(), controller);
         }
     }
 
-    private void applyShots(Trucker trucker, ArrayList<int[]> shoots, GameController controller) {
+    private void applyShots(SpaceShip ship, ArrayList<int[]> shoots, GameController controller, Game game) {
         // gestione dei colpi di fuoco simile a meteorShower
-
+        for (int[] shot : shoots) {
+            boolean isHeavy = (shot[0] == 1);
+            int direction = shot[1];
+            int roll = game.rollDice();
+            if (ship.isHit(roll, direction)) {
+                if (isHeavy) {
+                    ship.destroyComponent(roll, direction);
+                } else {
+                    if (!ship.blockLightCannonShot(direction, roll, controller)) {
+                        ship.destroyComponent(roll, direction);
+                    }
+                }
+            }
+        }
     }
 }
