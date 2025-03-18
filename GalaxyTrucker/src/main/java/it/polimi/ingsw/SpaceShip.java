@@ -31,8 +31,8 @@ public class SpaceShip {
                 components[i][j]=new EmptySpace();
             }
         }*/
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i <= 9; i++) {
+            for (int j = 0; j < = 10; j++) {
                 components[i][j] = null;
             }
         }
@@ -52,8 +52,8 @@ public class SpaceShip {
      */
     public int getGoodsCapacity() {
         Load load = null;
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i <=9; i++) {
+            for (int j = 0; j <= 10; j++) {
                 if (components[i][j] != null && components[i][j].getType().equals("Load")) {
                     load = (Load) components[i][j];
                     goodsCapacity += load.getCapacity();
@@ -68,8 +68,8 @@ public class SpaceShip {
      */
     public int getNumHuman() {
         Cabin cabin = null;
-        for (int i = 5; i < 9; i++) {
-            for (int j = 4; j < 10; j++) {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null) {
                     if (components[i][j].getType().equals("Cabin")) {
                         cabin = (Cabin) components[i][j];
@@ -147,8 +147,8 @@ public class SpaceShip {
     public int getSingleCannonPower() {
         int power = 0;
         Cannon cannon = null;
-        for (int i = 5; i < 9; i++) {
-            for (int j = 4; j < 10; j++) {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null && components[i][j].getType().equals("cannon")) {
                     if (components[i][j].getType().equals("Cannon")) {
                         cannon = (Cannon) components[i][j];
@@ -172,8 +172,8 @@ public class SpaceShip {
     public int getDoubleCannon() {
         int power = 0;
         Cannon cannon = null;
-        for (int i = 5; i < 9; i++) {
-            for (int j = 4; j < 10; j++) {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null && components[i][j].getType().equals("cannon")) {
                     if (components[i][j].getType().equals("Cannon")) {
                         cannon = (Cannon) components[i][j];
@@ -199,8 +199,8 @@ public class SpaceShip {
     public int getSingleEnginePower() {
         int power = 0;
         Engine engine = null;
-        for (int i = 5; i < 9; i++) {
-            for (int j = 4; j < 10; j++) {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null && components[i][j].getType().equals("engine")) {
                     if (components[i][j].getType().equals("Engine")) {
                         engine = (Engine) components[i][j];
@@ -223,8 +223,8 @@ public class SpaceShip {
     public int getDoubleEngine() {
         int doubleEngine = 0;
         Engine engine = null;
-        for (int i = 5; i < 9; i++) {
-            for (int j = 4; j < 10; j++) {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null && components[i][j].getType().equals("engine")) {
 
                         engine = (Engine) components[i][j];
@@ -248,8 +248,8 @@ public class SpaceShip {
     public ArrayList<Direction> getProtection() {
         ArrayList<Direction> p = new ArrayList<Direction>();
         Shield shield = null;
-        for (int i = 5; i < 9; i++) {
-            for (int j = 4; j < 10; j++) {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null && components[i][j].getType().equals("Shield")) {
 
                         shield = (Shield) components[i][j];
@@ -321,8 +321,8 @@ public class SpaceShip {
         controller.askActiveComponents(getDoubleCannon());
         Cabin cabin = null;
         int power = 0;
-        for (int i = 5; i < 9; i++) {
-            for (int j = 4; j < 10; j++) {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null && components[i][j].getType().equals("Cabin")) {
                     cabin = (Cabin) components[i][j];
                     if (cabin.getAlien() != null && cabin.getAlien().getColor() == AlienColor.PURPLE) {
@@ -338,8 +338,8 @@ public class SpaceShip {
         controller.askActiveComponents(getDoubleEngine());
         Cabin cabin = null;
         int power = 0;
-        for (int i = 5; i < 9; i++) {
-            for (int j = 4; j < 10; j++) {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null && components[i][j].getType().equals("Cabin")) {
                     cabin = (Cabin) components[i][j];
                     if (cabin.getAlien() != null && cabin.getAlien().getColor() == AlienColor.BROWN) {
@@ -354,8 +354,8 @@ public class SpaceShip {
 
     public int countExposedConnectors() {
         int cont = 0;
-        for (int i = 5; i < 9; i++) {
-            for (int j = 4; j < 10; j++) {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null) {
                     Component com = components[i][j];
                     Component comU = components[i - 1][j];
@@ -373,8 +373,8 @@ public class SpaceShip {
     }
 
     public boolean wellDone() {
-        for (int i = 5; i < 9; i++) {
-            for (int j = 4; j < 10; j++) {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
                 if (!isValid(i, j))
                     return false;
             }
@@ -385,22 +385,22 @@ public class SpaceShip {
     public boolean isHit(int direction, int num) {
         switch (direction) {
             case 0:
-                for (int i = 5; i < 9; i++) {
+                for (int i = 5; i <= 9; i++) {
                     if (components[i][num] != null) return true;
                 }
                 break;
             case 1:
-                for (int j = 9; j > 3; j--) {
+                for (int j = 10; j > 3; j--) {
                     if (components[num][j] != null) return true;
                 }
                 break;
             case 2:
-                for (int i = 8; i > 4; i--) {
+                for (int i = 9; i > 4; i--) {
                     if (components[i][num] != null) return true;
                 }
                 break;
             case 3:
-                for (int j = 4; j < 10; j++) {
+                for (int j = 4; j <= 10; j++) {
                     if (components[num][j] != null) return true;
                 }
                 break;
@@ -411,22 +411,22 @@ public class SpaceShip {
     public void destroyComponent(int num, int direction) {
         switch (direction) {
             case 0:
-                for (int i = 5; i < 9; i++) {
+                for (int i = 5; i <= 9; i++) {
                     if (components[i][num] != null) removeComponent(i, num);
                 }
                 break;
             case 1:
-                for (int j = 9; j > 3; j--) {
+                for (int j = 10; j > 3; j--) {
                     if (components[num][j] != null) removeComponent(num, j);
                 }
                 break;
             case 2:
-                for (int i = 8; i > 4; i--) {
+                for (int i = 9; i > 4; i--) {
                     if (components[i][num] != null) removeComponent(i, num);
                 }
                 break;
             case 3:
-                for (int j = 4; j < 10; j++) {
+                for (int j = 4; j <= 10; j++) {
                     if (components[num][j] != null) removeComponent(num, j);
                 }
                 break;
@@ -436,7 +436,7 @@ public class SpaceShip {
     public boolean shootMeteor(int direction, int num) {
         switch (direction) {
             case 0:
-                for (int i = 5; i < 9; i++) {
+                for (int i = 5; i <= 9; i++) {
                     if (components[i][num] != null) {
                         if (components[i][num].getType().equals("Cannon")
                                 && ((Cannon) components[i][num]).getOrientation() == Orientation.N)
@@ -445,7 +445,7 @@ public class SpaceShip {
                 }
                 break;
             case 1:
-                for (int j = 9; j > 3; j--) {
+                for (int j = 10; j > 3; j--) {
                     if (components[num][j] != null) {
                         if (components[num][j].getType().equals("Cannon")
                                 && ((Cannon) components[num][j]).getOrientation() == Orientation.E)
@@ -454,7 +454,7 @@ public class SpaceShip {
                 }
                 break;
             case 2:
-                for (int i = 8; i > 4; i--) {
+                for (int i = 9; i > 4; i--) {
                     if (components[i][num] != null) {
                         if (components[i][num].getType().equals("Cannon")
                                 && ((Cannon) components[i][num]).getOrientation() == Orientation.S)
@@ -463,7 +463,7 @@ public class SpaceShip {
                 }
                 break;
             case 3:
-                for (int j = 4; j < 10; j++) {
+                for (int j = 4; j <= 10; j++) {
                     if (components[num][j] != null) {
                         if (components[num][j].getType().equals("Cannon")
                                 && ((Cannon) components[num][j]).getOrientation() == Orientation.W)
@@ -481,7 +481,7 @@ public class SpaceShip {
 
             switch (direction) {
                 case 0:
-                    for (int i = 5; i < 9; i++) {
+                    for (int i = 5; i <= 9; i++) {
                         if (components[i][num] != null) {
                             if (components[i][num].getLink()[0] == 0)
                                 return true;
@@ -489,7 +489,7 @@ public class SpaceShip {
                     }
                     break;
                 case 1:
-                    for (int j = 9; j > 3; j--) {
+                    for (int j = 10; j > 3; j--) {
                         if (components[num][j] != null) {
                             if (components[num][j].getLink()[1] == 0)
                                 return true;
@@ -497,7 +497,7 @@ public class SpaceShip {
                     }
                     break;
                 case 2:
-                    for (int i = 8; i > 4; i--) {
+                    for (int i = 9; i > 4; i--) {
                         if (components[i][num] != null) {
                             if (components[i][num].getLink()[2] == 0)
                                 return true;
@@ -505,7 +505,7 @@ public class SpaceShip {
                     }
                     break;
                 case 3:
-                    for (int j = 4; j < 10; j++) {
+                    for (int j = 4; j <= 10; j++) {
                         if (components[num][j] != null) {
                             if (components[num][j].getLink()[3] == 0)
                                 return true;
@@ -518,12 +518,13 @@ public class SpaceShip {
     }
     //considerando che la nave verrà sicuramente colpita controllo se la nave ha uno scudo che protegge quella direzione, se ha almeno una batteria chiedo se vuole attivare quello scudo
     public boolean blockLightCannonShot(int direction,int num, GameController controller){
+        for(int )
         return false;
     }
 
     public void epidemic() {
-        for (int i = 5; i < 9; i++) {
-            for (int j = 4; j < 10; j++) {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null && components[i][j].getType().equals("Cabin") && ((Cabin) components[i][j]).getQuantity() > 0) {
                     if ((components[i + 1][j].getType().equals("Cabin") && ((Cabin) components[i + 1][j]).getQuantity() > 0)
                             || (components[i][j + 1].getType().equals("Cabin") && ((Cabin) components[i][j + 1]).getQuantity() > 0)
@@ -645,6 +646,9 @@ public class SpaceShip {
         }
 
 
+    }
+    public ArrayList<Goods> getGoodsList(){
+        return goodsList;
     }
 
 }
