@@ -44,7 +44,7 @@ public class GameController {
         return false;
     }
 
-    public int askPlayerToChoosePlanet(Trucker trucker, ArrayList<ArrayList<Goods>> planets){
+    public int askPlayerToChoosePlanet(Trucker trucker, ArrayList<ArrayList<Goods>> planets, ArrayList<Boolean> landed ){
         //il trucker deve dire su quale pianeta vuole atterrare per acquisirne le merci
         return 0;
     }

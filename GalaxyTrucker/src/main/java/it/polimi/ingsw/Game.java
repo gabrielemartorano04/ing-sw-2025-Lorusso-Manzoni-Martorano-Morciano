@@ -155,7 +155,7 @@ public class Game {
         for (int i=0; i<days; i++){
             finalPos = trucker.getPosition() + 1;
             for(Trucker t: truckers){
-                if (t.getPosition() == finalPos){
+                if (t.getPosition() == finalPos && trucker!=t){
                     finalPos++;
                 }
             }
@@ -169,7 +169,7 @@ public class Game {
         for (int i=0; i<days; i++){
             finalPos = trucker.getPosition() - 1;
             for(Trucker t: truckers){
-                if (t.getPosition() == finalPos){
+                if (t.getPosition() == finalPos && trucker!=t){
                     finalPos--;
                 }
             }
