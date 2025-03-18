@@ -77,20 +77,35 @@ public class SpaceShip {
     /**
      * rimuove un astronauta dalla spaceship
      */
-    public void removeHuman(int x, int y) {
+    /*public void removeHuman(int x, int y) {
         if (components[x][y].getType().equals("Cabin") && numHuman > 0) {
             numHuman--;
         }
 
-    }
+    }*/
 
     /**
      * rimuove un numero num di astronauti dalla spaceship
      */
-    public void removeNumHuman(int x, int y, int num) {
-        if (components[x][y].getType().equals("Cabin") && numHuman > 0) {
-            numHuman -= num;
+    public void removeNumHuman(int num, GameController controller) {
+        ArrayList<int[]> coord=controller.askCabin();
+        Cabin cabin=null;
+        for(int[] c:coord){
+            if (components[c[0]][c[1]].getType().equals("Cabin")){
+                cabin=(Cabin)components[c[0]][c[1]];
+                if(cabin.getQuantity() >= num) {
+                    cabin.removeHumans(num);
+                    numHuman -= num;
+                    num=0;
+                }
+                else {
+                    num-=cabin.getQuantity();
+                    cabin.setQuantity(0);
+                }
+            }
+
         }
+
 
     }
 
