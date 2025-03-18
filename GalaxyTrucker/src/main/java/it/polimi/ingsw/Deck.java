@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
-import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 class Deck {
     private ArrayList<Card> cards;
@@ -196,6 +196,43 @@ class Deck {
         goods4.addLast(new Goods(3));
         goods4.addLast(new Goods(2));
 
+        ArrayList<int[]> warShoots = new ArrayList<>();
+        warShoots.add(new int[]{0, 2});
+        warShoots.add(new int[]{1, 2});
+
+        ArrayList<int[]> warShoots2 = new ArrayList<>();
+        warShoots2.add(new int[]{0, 0});
+        warShoots2.add(new int[]{0, 3});
+        warShoots2.add(new int[]{0, 1});
+        warShoots2.add(new int[]{1, 2});
+
+        WarZone warZone1 = new WarZone(
+                true, 1,
+                List.of(Condition.HUMANS, Condition.ENGINES, Condition.CANNONS),
+                Map.of(
+                        Condition.HUMANS, new Effect(TypeOfEffect.LOSE_DAYS, 3),
+                        Condition.ENGINES, new Effect(TypeOfEffect.LOSE_HUMANS, 2),
+                        Condition.CANNONS, new Effect(TypeOfEffect.GET_SHOT, 2)
+                ),
+                warShoots,
+                "src/main/resources/Cards/cards/GT-cards_I_IT_0116.jpg",
+                "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"
+        );
+
+        WarZone warZone2 = new WarZone(
+                false, 2,
+                List.of(Condition.CANNONS, Condition.ENGINES, Condition.HUMANS),
+                Map.of(
+                        Condition.CANNONS, new Effect(TypeOfEffect.LOSE_DAYS, 4),
+                        Condition.ENGINES, new Effect(TypeOfEffect.LOSE_GOODS, 3),
+                        Condition.HUMANS, new Effect(TypeOfEffect.GET_SHOT, 3)
+                ),
+                warShoots2,
+                "src/main/resources/Cards/cards/GT-cards_II_IT_0116.jpg",
+                "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"
+
+        );
+
         cards.addLast(new Slavers(false, 1, 5, 1, 3,6, "src/main/resources/Cards/cards/GT-cards_I_IT_01.jpg",  "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(new Smugglers(true, 4, 2, 1, goodsGained1, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_012.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(new Pirates( false, 1, 4, 1,5, shoots1, "src/main/resources/Cards/cards/GT-cards_I_IT_013.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
@@ -211,7 +248,7 @@ class Deck {
         cards.addLast(new Planets(true, 2, 1, planets2, "src/main/resources/Cards/cards/GT-cards_I_IT_0113.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(new Planets(false, 3, 1, planets3, "src/main/resources/Cards/cards/GT-cards_I_IT_0114.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(new Planets(false, 1, 1, planets4, "src/main/resources/Cards/cards/GT-cards_I_IT_0114.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new WarZone());
+        cards.addLast(warZone1);
         cards.addLast(new AbandonedShip(false, 1, 2, 3, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_0117.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(new AbandonedShip(true, 1, 3, 4, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_0118.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(new AbandonedStation(true, 1, goods1, 1,5, "src/main/resources/Cards/cards/GT-cards_I_IT_0119.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
@@ -231,11 +268,12 @@ class Deck {
         cards.addLast(new Planets(false, 3, 2, planets6,"src/main/resources/Cards/cards/GT-cards_II_IT_0113.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg" ));
         cards.addLast(new Planets(false, 2, 2, planets7,"src/main/resources/Cards/cards/GT-cards_II_IT_0114.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg" ));
         cards.addLast(new Planets(false, 3, 2, planets8,"src/main/resources/Cards/cards/GT-cards_II_IT_0115.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg" ));
-        cards.addLast(new WarZone());
+        cards.addLast(warZone2);
         cards.addLast(new AbandonedShip(false, 2, 4, 6, 1, "src/main/resources/Cards/cards/GT-cards_II_IT_0117.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
         cards.addLast(new AbandonedShip(false, 2, 5, 8, 2, "src/main/resources/Cards/cards/GT-cards_II_IT_0118.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
         cards.addLast(new AbandonedStation(false, 2, goods3, 1, 7, "src/main/resources/Cards/cards/GT-cards_II_IT_0119.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
         cards.addLast(new AbandonedStation(false, 2, goods4, 2, 8, "src/main/resources/Cards/cards/GT-cards_II_IT_0120.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
+
     }
 
     public Card getCard(int index) {
