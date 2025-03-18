@@ -23,11 +23,12 @@ class Planets extends Card {
         for (int i = 0; i < truckers.size(); i++) {
             landed.add(false);
         }
+        //devo aggiungere che non puoi atterrare su un pianeta già occupato
         for (Trucker trucker : truckers) {
             SpaceShip ship = trucker.getSpaceShip();
             if (controller.askPlayerToLand(trucker)) {
                 int planetIndex = controller.askPlayerToChoosePlanet(trucker, planets);
-                if (planetIndex != -1) {  //assumo che askPlayerToChoosePlanet ritorni -1 se la risposta è falso
+                if (planetIndex != -1 && !landed.get(planetIndex)) {  //assumo che askPlayerToChoosePlanet ritorni -1 se la risposta è falso
                     landed.set(planetIndex, true);
                     game.moveBackward(trucker, daysLoss);
                     ship.addGoods(getPlanet().get(planetIndex), controller);
