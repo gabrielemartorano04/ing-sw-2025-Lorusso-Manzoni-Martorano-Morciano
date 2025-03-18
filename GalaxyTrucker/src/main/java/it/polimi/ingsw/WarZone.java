@@ -15,8 +15,10 @@ class WarZone extends Card {
     // shoots è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
     // cioè scegliendo il meteorite dall'alto verso il basso
 
-    public WarZone(boolean trialFlight, int level) {
+    public WarZone(boolean trialFlight, int level, List<Condition> conditionsOrder, Map<Condition, Effect> penalties) {
         super("War Zone", "A dangerous conflict zone", trialFlight, level, "", "");
+        this.conditionsOrder = conditionsOrder;
+        this.penalties = penalties;
     }
     public List<Condition> getConditionsOrder() {
         return conditionsOrder;
