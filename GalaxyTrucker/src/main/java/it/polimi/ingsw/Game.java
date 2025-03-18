@@ -151,14 +151,30 @@ public class Game {
 
     //muove trucker in avanti, riceve days positivo
     public void moveForward(Trucker trucker, int days){
-        int result = trucker.getPosition() + days;
-
-        trucker.setPosition(result);
+        int finalPos = trucker.getPosition();
+        for (int i=0; i<days; i++){
+            finalPos = trucker.getPosition() + 1;
+            for(Trucker t: truckers){
+                if (t.getPosition() == finalPos){
+                    finalPos++;
+                }
+            }
+        }
+        trucker.setPosition(finalPos);
     }
 
-    //muove trucker in avanti, riceve days negativo
+    //muove trucker in avanti, riceve days positivo
     public void moveBackward(Trucker trucker, int days){
-
+        int finalPos = trucker.getPosition();
+        for (int i=0; i<days; i++){
+            finalPos = trucker.getPosition() - 1;
+            for(Trucker t: truckers){
+                if (t.getPosition() == finalPos){
+                    finalPos--;
+                }
+            }
+        }
+        trucker.setPosition(finalPos);
     }
 
     public void makeTruckers(){
