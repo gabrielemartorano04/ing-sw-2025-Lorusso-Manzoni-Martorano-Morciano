@@ -26,11 +26,29 @@ public class SpaceShip {
             kept[i] = null;
         //empty space dove non puoi aggiungere mai
         //null dove ancora non c'è un componente
-        /*for(int i=0;i<5;i++){
+        for(int i=0;i<5;i++){
             for(int j=0;j<11;j++){
                 components[i][j]=new EmptySpace();
             }
-        }*/
+        }
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if(i==5){
+                    if(j==6 || j==8) components[i][j]=null;
+                    else components[i][j]=new EmptySpace();
+                }
+                else if(i==6){
+                    if(j==4 || j==10)components[i][j]=new EmptySpace();
+                    else components[i][j]=null;
+                }
+                else if(i==7 || i==8) components[i][j]=null;
+                else if(i==9){
+                    if(j==7) components[i][j]=new EmptySpace();
+                    else components[i][j]=null;
+                }
+            }
+        }
+
         for (int i = 0; i <= 9; i++) {
             for (int j = 0; j <= 10; j++) {
                 components[i][j] = null;
@@ -144,15 +162,19 @@ public class SpaceShip {
      * aggiunge un componente alla matrice in una certa cella di coordinate (x,y)
      */
     public void addComponent(Component component, int x, int y) {
-        components[x][y] = component;
+        if(components[x][y]==null ) components[x][y] = component;
+        //else eccezione non puoi riempire un emptyspace
     }
 
     /**
      * date le coordineate, rimuove il componente
      */
     public Component removeComponent(int x, int y) {
-        Component component = components[x][y];
-        components[x][y] = null;
+        Component component=null;
+        if(!components[x][y].getType().equals("Empty Space")) {
+            component = components[x][y];
+            components[x][y] = null;
+        }
         return component;
     }
 
@@ -164,7 +186,7 @@ public class SpaceShip {
         Cannon cannon = null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null && components[i][j].getType().equals("cannon")) {
+                if (components[i][j] != null ) {
                     if (components[i][j].getType().equals("Cannon")) {
                         cannon = (Cannon) components[i][j];
                         if (!cannon.getIsDouble()) {
@@ -189,7 +211,7 @@ public class SpaceShip {
         Cannon cannon = null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null && components[i][j].getType().equals("cannon")) {
+                if (components[i][j] != null ) {
                     if (components[i][j].getType().equals("Cannon")) {
                         cannon = (Cannon) components[i][j];
                         if (cannon.getIsDouble() && cannon.getIsActive()) {
@@ -216,7 +238,7 @@ public class SpaceShip {
         Engine engine = null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null && components[i][j].getType().equals("engine")) {
+                if (components[i][j] != null ) {
                     if (components[i][j].getType().equals("Engine")) {
                         engine = (Engine) components[i][j];
                         if (!engine.getIsDouble())
@@ -240,7 +262,7 @@ public class SpaceShip {
         Engine engine = null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null && components[i][j].getType().equals("engine")) {
+                if (components[i][j] != null && components[i][j].getType().equals("Engine")) {
 
                         engine = (Engine) components[i][j];
                         if (engine.getIsDouble() && engine.getIsActive())
@@ -379,7 +401,7 @@ public class SpaceShip {
         int cont = 0;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null) {
+                if (components[i][j] != null && !components[i][j].getType().equals("Empty Space")) {
                     Component com = components[i][j];
                     Component comU = components[i - 1][j];
                     Component comR = components[i][j + 1];
@@ -505,7 +527,7 @@ public class SpaceShip {
             switch (direction) {
                 case 0:
                     for (int i = 5; i <= 9; i++) {
-                        if (components[i][num] != null) {
+                        if (components[i][num] != null && !components[i][num].getType().equals("Empty Space")) {
                             if (components[i][num].getLink()[0] == 0)
                                 return true;
                         }
@@ -513,7 +535,7 @@ public class SpaceShip {
                     break;
                 case 1:
                     for (int j = 10; j > 3; j--) {
-                        if (components[num][j] != null) {
+                        if (components[num][j] != null && !components[num][j].getType().equals("Empty Space")) {
                             if (components[num][j].getLink()[1] == 0)
                                 return true;
                         }
@@ -521,7 +543,7 @@ public class SpaceShip {
                     break;
                 case 2:
                     for (int i = 9; i > 4; i--) {
-                        if (components[i][num] != null) {
+                        if (components[i][num] != null && !components[i][num].getType().equals("Empty Space")) {
                             if (components[i][num].getLink()[2] == 0)
                                 return true;
                         }
@@ -529,7 +551,7 @@ public class SpaceShip {
                     break;
                 case 3:
                     for (int j = 4; j <= 10; j++) {
-                        if (components[num][j] != null) {
+                        if (components[num][j] != null && !components[num][j].getType().equals("Empty Space")) {
                             if (components[num][j].getLink()[3] == 0)
                                 return true;
                         }
@@ -689,6 +711,38 @@ public class SpaceShip {
     }
     public int getLost(){
         return lost;
+    }
+
+    public void setHuman(){
+        Cabin cabin=null;
+        Alien alien=null;
+        LifeSupport ls=null;
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if(components[i][j]!=null && components[i][j].getType().equals("Cabin")){
+                    cabin=(Cabin)components[i][j];
+                    if(!cabin.getIsMain()){
+                        if(components[i+1][j].getType().equals("Life Support"))
+                            ls=(LifeSupport) components[i+1][j];
+                        else if(components[i-1][j].getType().equals("Life Support"))
+                            ls=(LifeSupport) components[i-1][j];
+                        else if(components[i][j+1].getType().equals("Life Support"))
+                            ls=(LifeSupport) components[i][j+1];
+                        else if (components[i][j-1].getType().equals("Life Support"))
+                            ls=(LifeSupport) components[i][j-1];
+                        if(ls!=null){
+                            alien=new Alien(ls.getColor());
+                            cabin.setAlien(alien);
+                        }
+                    }
+                    if(cabin.getAlien()==null){
+                        cabin.setQuantity(2);
+                        numHuman+=2;
+                    }
+
+                }
+            }
+        }
     }
 
 }

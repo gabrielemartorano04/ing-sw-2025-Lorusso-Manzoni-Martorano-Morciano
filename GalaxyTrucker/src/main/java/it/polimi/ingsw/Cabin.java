@@ -21,6 +21,9 @@ public class Cabin extends Component{
     public Alien getAlien(){
         return alien;
     }
+    public void setAlien(Alien alien){
+        this.alien = alien;
+    }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
