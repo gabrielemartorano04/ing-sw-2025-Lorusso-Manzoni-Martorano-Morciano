@@ -476,7 +476,7 @@ public class SpaceShip {
     }
 
     public boolean blockSmallMeteor(int direction, int num) {
-        if (isHit(direction, num)) {
+
             if (shootMeteor(direction, num)) return true;
 
             switch (direction) {
@@ -513,7 +513,11 @@ public class SpaceShip {
                     }
                     break;
             }
-        }
+
+        return false;
+    }
+    //considerando che la nave verrà sicuramente colpita controllo se la nave ha uno scudo che protegge quella direzione, se ha almeno una batteria chiedo se vuole attivare quello scudo
+    public boolean blockLightCannonShot(int direction,int num, GameController controller){
         return false;
     }
 
