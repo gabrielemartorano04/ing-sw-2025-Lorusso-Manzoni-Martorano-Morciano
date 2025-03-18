@@ -33,7 +33,7 @@ class AbandonedShip extends Card {
         while (!decisionTaken) {
             List<Trucker> truckers = game.getTruckerList();
             for(Trucker trucker: truckers) {
-                if (controller.askAbandondedShip(trucker, numHuman) == true){
+                if (controller.askAbandonedShip(trucker, numHuman) == true){
                     decisionTaken = true;
                     trucker.getSpaceShip().removeHuman(numHuman);
                     game.moveTrucker(trucker,days);
