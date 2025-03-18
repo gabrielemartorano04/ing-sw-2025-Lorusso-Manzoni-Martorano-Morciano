@@ -3,7 +3,7 @@ package it.polimi.ingsw;
 public class Cabin extends Component{
     private boolean isMain;
     private int quantity;
-    private int capacity;
+    private final int capacity;
     private Alien alien;
     private LifeSupport lifeSupport;
     private Color color;
@@ -12,7 +12,7 @@ public class Cabin extends Component{
         super(linkU, linkR, linkD, linkL, type, imagePath);
         this.isMain = isMain;
         this.quantity = 0;
-        this.capacity = 0;
+        this.capacity = 2;
         this.alien = null;
         this.lifeSupport = null;
         this.color = color;
@@ -22,16 +22,8 @@ public class Cabin extends Component{
         return alien;
     }
 
-    public void setIsMain(boolean isMain) {
-        this.isMain = isMain;
-    }
-
-    public void setQuantity(int quantity) {
+    public void addHumans(int quantity) {
         this.quantity = quantity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
     }
 
     public boolean getIsMain() {
@@ -48,6 +40,10 @@ public class Cabin extends Component{
 
     public Color getColor() {
         return color;
+    }
+
+    public void removeHumans(int num) {
+        quantity -= num;
     }
 
     public String getType() {
