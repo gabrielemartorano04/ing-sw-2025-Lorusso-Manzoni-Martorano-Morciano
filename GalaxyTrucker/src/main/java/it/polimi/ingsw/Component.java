@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 
 import javax.swing.ImageIcon;
 
-public class Component {
+public abstract class Component {
     protected int link[];
     protected boolean selected;
     protected boolean covered;
