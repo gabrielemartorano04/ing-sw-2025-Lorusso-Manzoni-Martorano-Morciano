@@ -27,7 +27,12 @@ class Planets extends Card {
         for (Trucker trucker : truckers) {
             SpaceShip ship = trucker.getSpaceShip();
             if (controller.askPlayerToLand(trucker)) {
-                int planetIndex = controller.askPlayerToChoosePlanet(trucker, planets);
+                int planetIndex;
+                int moreThan4ChoicesTaken = 0;
+                do {
+                    planetIndex = controller.askPlayerToChoosePlanet(trucker, planets);
+                    moreThan4ChoicesTaken++;
+                }while(landed.get(planetIndex) && moreThan4ChoicesTaken<4);
                 if (planetIndex != -1 && !landed.get(planetIndex)) {  //assumo che askPlayerToChoosePlanet ritorni -1 se la risposta è falso
                     landed.set(planetIndex, true);
                     game.moveBackward(trucker, daysLoss);
