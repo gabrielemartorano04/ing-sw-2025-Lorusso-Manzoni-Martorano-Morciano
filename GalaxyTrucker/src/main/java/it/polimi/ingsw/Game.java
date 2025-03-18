@@ -206,14 +206,28 @@ public class Game {
 
     // da finire
     public int[] computeScores(){
+        int i=0;
         int[] scores = new int[numPlayer];
-        for(int i=0; i<numPlayer; i++) {
-            scores[i]= truckers.get(i).getPosition();
+        ArrayList<Goods> goodsList = new ArrayList<>();
+        for(Trucker t: truckers) {
+            scores[i] += t.getCosmicCredit();
+            scores[i] -= t.getSpaceShip().countExposedConnectors();
+            goodsList = t.getSpaceShip().getGoodsList();
+            for(Goods g: goodsList) {
+                scores[i] += g.getValue();
+            }
+         i++;
+        }
+        for (Trucker t: truckersOut) {
+            scores[i] += t.getCosmicCredit();
+            scores[i] -= t.getSpaceShip().countExposedConnectors();
+            goodsList = t.getSpaceShip().getGoodsList();
+            for(Goods g: goodsList) {
+                scores[i] += g.getValue();
+            }
+            i++;
         }
         return scores;
     };
 
-    public int[] compute(){
-        return null;
-    };
 }
