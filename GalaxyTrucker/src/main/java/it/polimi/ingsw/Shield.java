@@ -20,4 +20,12 @@ public class Shield extends Component{
     public String getType() {
         return type;
     }
+
+    public void turn(){
+        super.turn();
+        if(direction == Direction.NE){ setDirection(Direction.SE);}
+        else if(direction == Direction.SE){setDirection(Direction.SW);}
+        else if(direction == Direction.SW){setDirection(Direction.NW);}
+        else if(direction == Direction.NW){setDirection(Direction.NE);}
+    }
 }
