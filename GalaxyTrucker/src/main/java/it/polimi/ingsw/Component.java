@@ -51,7 +51,11 @@ public abstract class Component {
     }
 
     public void turn() {
-
+        int tmp=link[3];
+        link[3]=link[2];
+        link[2]=link[1];
+        link[1]=link[0];
+        link[0]=tmp;
     }
 
     public static void main(String[] args) {
