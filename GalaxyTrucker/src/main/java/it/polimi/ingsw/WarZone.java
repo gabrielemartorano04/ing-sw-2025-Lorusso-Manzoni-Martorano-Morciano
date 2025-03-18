@@ -65,11 +65,13 @@ class WarZone extends Card {
 
         switch (effect.getType()) {
             case LOSE_DAYS -> game.moveTrucker(trucker, effect.getValue());
-            case LOSE_HUMANS -> trucker.getSpaceShip().removeNumHuman(effect.getValue());
-            case GET_SHOT -> trucker.getSpaceShip().applyShots(shoots, controller);
+            case LOSE_HUMANS -> trucker.getSpaceShip().removeNumHuman(effect.getValue(), controller);
+            case GET_SHOT -> applyShots(trucker, shoots, controller);
             case LOSE_GOODS -> trucker.getSpaceShip().removeGoods(effect.getValue(), controller);
         }
     }
 
-
+    private void applyShots(Trucker trucker, ArrayList<int[]> shoots, GameController controller) {
+        // gestione dei colpi di fuoco simile a meteorShower
+    }
 }
