@@ -77,12 +77,14 @@ public class SpaceShip {
     /**
      * rimuove un astronauta dalla spaceship
      */
-    /*public void removeHuman(int x, int y) {
+    public void removeHuman(int x, int y) {
+        Cabin cabin=null;
         if (components[x][y].getType().equals("Cabin") && numHuman > 0) {
+            cabin.removeHumans(1);
             numHuman--;
         }
 
-    }*/
+    }
 
     /**
      * rimuove un numero num di astronauti dalla spaceship

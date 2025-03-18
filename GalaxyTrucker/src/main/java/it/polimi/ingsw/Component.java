@@ -61,7 +61,8 @@ public abstract class Component {
             link[i+1] = tmp;
         }
     }
-    public static void main(String[] args) {
-        Component com=nu
-    }
+   /*public static void main(String[] args) {
+        Component com=new Engine(2, 0, 0, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web77.jpg", false);
+        System.out.println(com.getType());
+    }*/
 }
