@@ -5,7 +5,7 @@ public class Trucker {
 
     private Color color;
     private final SpaceShip spaceShip;
-    private int position;
+    private int position; //posizione assoluta
     private int cosmicCredit;
 
     public Trucker() {
