@@ -7,9 +7,9 @@ class AbandonedStation extends Card {
     private int days;
     private int numHuman;
     private boolean decisionTaken;
-    private List<Goods> goods;
+    private ArrayList<Goods> goods;
 
-    public AbandonedStation(boolean trialFlight, int level, List<Goods> goods, int days, int numHuman,String frontImage, String backIMage) {
+    public AbandonedStation(boolean trialFlight, int level, ArrayList<Goods> goods, int days, int numHuman,String frontImage, String backIMage) {
         super("Abandoned Station", "A derelict space station", trialFlight, level, frontImage, backIMage);
         this.decisionTaken = false;
         this.days = days;

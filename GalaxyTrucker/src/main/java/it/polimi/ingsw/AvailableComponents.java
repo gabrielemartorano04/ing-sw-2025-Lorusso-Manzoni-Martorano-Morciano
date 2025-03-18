@@ -61,10 +61,10 @@ public class AvailableComponents {
     Component cabin16 = new Cabin(1, 2, 0, 2, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web42.jpg", null, false);
     Component cabin17 = new Cabin(3, 0, 0, 2, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web44.jpg", null, false);
 
-    Component mainCabin1 = new Cabin(3, 3, 3, 3, "Main Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web52.jpg", Color.RED, true);
-    Component mainCabin2 = new Cabin(3, 3, 3, 3, "Main Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web34.jpg", Color.GREEN, true);
-    Component mainCabin3 = new Cabin(3, 3, 3, 3, "Main Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web33.jpg", Color.BLUE, true);
-    Component mainCabin4 = new Cabin(3, 3, 3, 3, "Main Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web61.jpg", Color.YELLOW, true);
+    Component mainCabin1 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web52.jpg", Color.RED, true);
+    Component mainCabin2 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web34.jpg", Color.GREEN, true);
+    Component mainCabin3 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web33.jpg", Color.BLUE, true);
+    Component mainCabin4 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web61.jpg", Color.YELLOW, true);
 
     Component pipes1 = new Pipes(3, 2, 0, 3, "Pipes", "src/main/resources/components/tiles/GT-new_tiles_16_for web59.jpg");
     Component pipes2 = new Pipes(3, 1, 2, 3, "Pipes", "src/main/resources/components/tiles/GT-new_tiles_16_for web58.jpg");
@@ -98,15 +98,15 @@ public class AvailableComponents {
     Component lifeSupportP5 = new LifeSupport(2, 0, 0, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web148.jpg", LifeSupportColor.PURPLE);
     Component lifeSupportP6 = new LifeSupport(0, 0, 2, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web146.jpg", LifeSupportColor.PURPLE);
 
-    Component specialLoad1 = new Load(2, 2, 2, 3, "Special Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web66.jpg", 1, true);
-    Component specialLoad2 = new Load(0, 2, 1, 3, "Special Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web62.jpg", 1, true);
-    Component specialLoad3 = new Load(3, 0, 0, 3, "Special Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web67.jpg", 1, true);
-    Component specialLoad4 = new Load(0, 3, 0, 3, "Special Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web63.jpg", 1, true);
-    Component specialLoad5 = new Load(1, 1, 1, 3, "Special Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web64.jpg", 1, true);
-    Component specialLoad6 = new Load(2, 1, 0, 3, "Special Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web65.jpg", 1, true);
-    Component specialLoad7 = new Load(0, 2, 0, 1, "Special Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web69.jpg", 2, true);
-    Component specialLoad8 = new Load(0, 0, 0, 2, "Special Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web70.jpg", 2, true);
-    Component specialLoad9 = new Load(0, 0, 0, 1, "Special Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web68.jpg", 2, true);
+    Component specialLoad1 = new Load(2, 2, 2, 3, "Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web66.jpg", 1, true);
+    Component specialLoad2 = new Load(0, 2, 1, 3, "Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web62.jpg", 1, true);
+    Component specialLoad3 = new Load(3, 0, 0, 3, "Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web67.jpg", 1, true);
+    Component specialLoad4 = new Load(0, 3, 0, 3, "Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web63.jpg", 1, true);
+    Component specialLoad5 = new Load(1, 1, 1, 3, "Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web64.jpg", 1, true);
+    Component specialLoad6 = new Load(2, 1, 0, 3, "Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web65.jpg", 1, true);
+    Component specialLoad7 = new Load(0, 2, 0, 1, "Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web69.jpg", 2, true);
+    Component specialLoad8 = new Load(0, 0, 0, 2, "Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web70.jpg", 2, true);
+    Component specialLoad9 = new Load(0, 0, 0, 1, "Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web68.jpg", 2, true);
 
     Component load1 = new Load(2, 1, 3, 0, "Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web18.jpg", 2, false);
     Component load2 = new Load(0, 0, 0, 3, "Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web21.jpg", 2, false);
@@ -150,17 +150,17 @@ public class AvailableComponents {
     Component cannon24 = new Cannon(0, 1, 2, "Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web119.jpg", false);
     Component cannon25 = new Cannon(0, 2, 0, "Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web104.jpg", false);
 
-    Component doubleCannon1 = new Cannon(1, 2, 1, "Double Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web131.jpg", true);
-    Component doubleCannon2 = new Cannon(2, 0, 1, "Double Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web132.jpg", true);
-    Component doubleCannon3 = new Cannon(0, 1, 3, "Double Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web136.jpg", true);
-    Component doubleCannon4 = new Cannon(2, 1, 2, "Double Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web134.jpg", true);
-    Component doubleCannon5 = new Cannon(3, 0, 0, "Double Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web129.jpg", true);
-    Component doubleCannon6 = new Cannon(1, 3, 0, "Double Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web128.jpg", true);
-    Component doubleCannon7 = new Cannon(0, 0, 3, "Double Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web135.jpg", true);
-    Component doubleCannon8 = new Cannon(0, 1, 0, "Double Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web126.jpg", true);
-    Component doubleCannon9 = new Cannon(0, 3, 2, "Double Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web133.jpg", true);
-    Component doubleCannon10 = new Cannon(0, 2, 0, "Double Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web127.jpg", true);
-    Component doubleCannon11 = new Cannon(3, 2, 0, "Double Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web130.jpg", true);
+    Component doubleCannon1 = new Cannon(1, 2, 1, "Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web131.jpg", true);
+    Component doubleCannon2 = new Cannon(2, 0, 1, "Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web132.jpg", true);
+    Component doubleCannon3 = new Cannon(0, 1, 3, "Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web136.jpg", true);
+    Component doubleCannon4 = new Cannon(2, 1, 2, "Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web134.jpg", true);
+    Component doubleCannon5 = new Cannon(3, 0, 0, "Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web129.jpg", true);
+    Component doubleCannon6 = new Cannon(1, 3, 0, "Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web128.jpg", true);
+    Component doubleCannon7 = new Cannon(0, 0, 3, "Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web135.jpg", true);
+    Component doubleCannon8 = new Cannon(0, 1, 0, "Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web126.jpg", true);
+    Component doubleCannon9 = new Cannon(0, 3, 2, "Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web133.jpg", true);
+    Component doubleCannon10 = new Cannon(0, 2, 0, "Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web127.jpg", true);
+    Component doubleCannon11 = new Cannon(3, 2, 0, "Cannon", "src/main/resources/components/tiles/GT-new_tiles_16_for web130.jpg", true);
 
     Component engine1 = new Engine(2, 0, 0, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web76.jpg", false);
     Component engine2 = new Engine(3, 2, 0, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web79.jpg", false);
@@ -184,15 +184,15 @@ public class AvailableComponents {
     Component engine20 = new Engine(1, 0, 0, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web74.jpg", false);
     Component engine21 = new Engine(2, 0, 0, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web77.jpg", false);
 
-    Component doubleEngine1 = new Engine(1, 1, 1, "Double Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web96.jpg", true);
-    Component doubleEngine2 = new Engine(2, 0, 0, "Double Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web94.jpg", true);
-    Component doubleEngine3 = new Engine(0, 3, 3, "Double Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web99.jpg", true);
-    Component doubleEngine4 = new Engine(1, 3, 0, "Double Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web93.jpg", true);
-    Component doubleEngine5 = new Engine(2, 2, 2, "Double Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web97.jpg", true);
-    Component doubleEngine6 = new Engine(1, 0, 0, "Double Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web92.jpg", true);
-    Component doubleEngine7 = new Engine(3, 1, 0, "Double Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web95.jpg", true);
-    Component doubleEngine8 = new Engine(3, 0, 2, "Double Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web98.jpg", true);
-    Component doubleEngine9 = new Engine(2, 0, 3, "Double Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web100.jpg", true);
+    Component doubleEngine1 = new Engine(1, 1, 1, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web96.jpg", true);
+    Component doubleEngine2 = new Engine(2, 0, 0, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web94.jpg", true);
+    Component doubleEngine3 = new Engine(0, 3, 3, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web99.jpg", true);
+    Component doubleEngine4 = new Engine(1, 3, 0, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web93.jpg", true);
+    Component doubleEngine5 = new Engine(2, 2, 2, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web97.jpg", true);
+    Component doubleEngine6 = new Engine(1, 0, 0, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web92.jpg", true);
+    Component doubleEngine7 = new Engine(3, 1, 0, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web95.jpg", true);
+    Component doubleEngine8 = new Engine(3, 0, 2, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web98.jpg", true);
+    Component doubleEngine9 = new Engine(2, 0, 3, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web100.jpg", true);
 
     Component batteryStorage1 = new BatteryStorage(3, 2, 1, 0, "Battery Storage", "src/main/resources/components/tiles/GT-new_tiles_16_for web3.jpg", 2);
     Component batteryStorage2 = new BatteryStorage(2, 1, 2, 1, "Battery Storage", "src/main/resources/components/tiles/GT-new_tiles_16_for web4.jpg", 2);

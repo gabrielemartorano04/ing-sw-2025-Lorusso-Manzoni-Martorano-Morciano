@@ -9,8 +9,8 @@ class Pirates extends Card {
     private int days;
     private int piratesPower;
     private boolean isDefeated = false;
-    private List<Trucker> defeatedTruckers;
-    private List<int[]> shoots;
+    private ArrayList<Trucker> defeatedTruckers;
+    private ArrayList<int[]> shoots;
     // shoots è una lista dove direction.get(i) rappresenta l'i-esimo colpo in questa specifica carta Pirates
     // shoots.get(i)[0] vale 1 se il colpo è grande 0 se è piccolo
     // shoots.get(i)[1] indice la direzione da cui arriva il colpo (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da sx)
@@ -37,7 +37,7 @@ class Pirates extends Card {
         return piratesPower;
     }
 
-    public List<int[]> getShoots() {
+    public ArrayList<int[]> getShoots() {
         return shoots;
     }
 
