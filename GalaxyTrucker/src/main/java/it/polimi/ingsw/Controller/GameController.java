@@ -1,5 +1,5 @@
-package it.polimi.ingsw;
-
+package it.polimi.ingsw.Controller;
+import it.polimi.ingsw.Model.*;
 import java.util.ArrayList;
 
 public class GameController {
@@ -31,9 +31,7 @@ public class GameController {
     }
 
     public void manageGame(Game game){
-        do{
-            numPlayer = ;
-        }
+        while
         game.setupGame(numPlayer);
 
 

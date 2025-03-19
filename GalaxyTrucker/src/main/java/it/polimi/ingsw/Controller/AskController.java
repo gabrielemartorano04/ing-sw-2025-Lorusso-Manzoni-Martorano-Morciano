@@ -1,5 +1,4 @@
 package it.polimi.ingsw.Controller;
-
 import it.polimi.ingsw.Model.Components.*;
 import it.polimi.ingsw.Model.Trucker;
 
