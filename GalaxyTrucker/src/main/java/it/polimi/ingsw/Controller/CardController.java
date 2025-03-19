@@ -78,9 +78,11 @@ public class CardController {
             case "Epidemic" -> {
                 ((Epidemic) card).cardEffect(game);
             }
+
             case "MeteorShower" -> {
                 ((MeteorShower) card).cardEffect(game);
             }
+
             case "OpenSpace" -> {
                 ((OpenSpace) card).cardEffect(game);
             }

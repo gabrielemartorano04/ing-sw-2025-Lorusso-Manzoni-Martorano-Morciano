@@ -27,12 +27,12 @@ public class MeteorShower extends Card {
     }
 
     @Override
-    public void cardEffect(Game game, GameController controller) {
+    public void cardEffect(Game game) {
         List<Trucker> truckers = game.getTruckerList();
         for (int[] meteor : direction) {
             boolean isBig = (meteor[0] == 1);
             int direction = meteor[1];
-            int roll = game.rollDice(); // tiro dei dadi mi aspetto che sia in Game
+            int roll = game.rollDice();
             for (Trucker trucker : truckers) {
                 SpaceShip ship = trucker.getSpaceShip();
                 if (ship.isHit(roll, direction)) {
