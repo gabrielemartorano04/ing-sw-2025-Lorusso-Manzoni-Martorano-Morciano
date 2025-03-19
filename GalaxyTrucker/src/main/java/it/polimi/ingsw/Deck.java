@@ -1,4 +1,6 @@
 package it.polimi.ingsw;
+import it.polimi.ingsw.Model.Cards.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

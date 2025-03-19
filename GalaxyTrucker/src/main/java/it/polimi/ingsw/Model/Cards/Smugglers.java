@@ -1,0 +1,69 @@
+package it.polimi.ingsw.Model.Cards;
+
+
+
+import it.polimi.ingsw.Game;
+import it.polimi.ingsw.GameController;
+import it.polimi.ingsw.Model.Components.*;
+import it.polimi.ingsw.Trucker;
+
+import java.util.List;
+import java.util.Arrays;
+
+//secondo me tutti i get sono inutil
+
+public class Smugglers extends Card {
+    private int smugglersPower;
+    private int goodsLost;
+    private int days;
+    private Goods[] goodsGained = new Goods[3];
+    private boolean isDefeated = false;
+
+    public Smugglers(boolean trialFlight, int smugglersPower, int goodsLost, int days, Goods[] goodsGained, int level, String frontName, String backName) {
+        super("Smugglers", "Illegal traders of goods", trialFlight, level, frontName, backName);
+        this.smugglersPower = smugglersPower;
+        this.goodsLost = goodsLost;
+        this.days = days;
+        this.goodsGained = goodsGained;
+    }
+
+    public int getSmugglersPower() {
+        return smugglersPower;
+    }
+
+    public int getGoodsLost() {
+        return goodsLost;
+    }
+
+    public Goods[] getGoodsGained() {
+        return goodsGained;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    @Override
+    public void cardEffect(Game game, GameController controller) {
+        List<Trucker> truckers = game.getTruckerList();
+        for(Trucker trucker: truckers) {
+            if(isDefeated){
+                break;
+            }
+            else{
+                if(trucker.getSpaceShip().getTotalCannonPower(controller)> smugglersPower){
+                    isDefeated = true;
+                    boolean answer = controller.askSmugglers(trucker);
+                    if (answer == true){
+                        //uso la conversione con Arrays.asList da checkare
+                        trucker.getSpaceShip().addGoods(Arrays.asList(goodsGained), controller);
+                        game.moveBackward(trucker, days);
+                    }
+                } else if (trucker.getSpaceShip().getTotalCannonPower(controller) < smugglersPower){
+                    trucker.getSpaceShip().removeGoods(goodsLost, controller);
+                }
+            }
+        }
+        isDefeated = false;
+    }
+}

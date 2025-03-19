@@ -1,0 +1,28 @@
+package it.polimi.ingsw.Model.Components;
+
+public class Engine extends Component{
+    private boolean isDouble;
+    private boolean isActive;
+
+    public Engine(int linkU, int linkR, int linkL, String type, String imagePath, boolean isDouble) {
+        super(linkU, linkR, 0, linkL, type, imagePath);
+        this.isDouble = isDouble;
+        this.isActive = false;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public boolean getIsDouble() {
+        return isDouble;
+    }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public String getType() {
+        return type;
+    }
+}
