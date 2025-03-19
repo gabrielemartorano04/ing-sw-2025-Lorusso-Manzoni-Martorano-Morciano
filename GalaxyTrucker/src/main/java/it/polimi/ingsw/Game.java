@@ -210,7 +210,7 @@ public class Game {
         int[] scores = new int[numPlayer];
         ArrayList<Goods> goodsList = new ArrayList<>();
         for(Trucker t: truckers) {
-            if(t.getCosmicCredit()<t.getSpaceShip().getlost()) {
+            if(t.getCosmicCredit()<t.getSpaceShip().getLost()) {
                 scores[i] -= (t.getSpaceShip().getLost()-t.getCosmicCredit());
             }
             goodsList = t.getSpaceShip().getGoodsList();
