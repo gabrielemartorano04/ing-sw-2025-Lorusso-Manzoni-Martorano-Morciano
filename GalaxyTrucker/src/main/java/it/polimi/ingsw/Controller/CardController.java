@@ -25,7 +25,7 @@ public class CardController {
             throw new IllegalArgumentException("La carta passata è nulla!");
         }
 
-        String cardName = card.getName(); // Supponiamo che ogni carta abbia un metodo getCardName()
+        String cardName = card.getName();
 
         switch (cardName) {
             case "AbandonedShip" -> {
