@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
+
 import it.polimi.ingsw.Model.Cards.*;
+import it.polimi.ingsw.Model.Components.*;
 
 import java.util.ArrayList;
 import java.util.List;
