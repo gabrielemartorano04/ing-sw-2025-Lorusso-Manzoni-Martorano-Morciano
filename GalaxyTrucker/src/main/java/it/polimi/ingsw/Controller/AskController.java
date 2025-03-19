@@ -1,4 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Controller;
+import it.polimi.ingsw.Model.Trucker;
+
 import java.util.ArrayList;
 
 public class AskController {

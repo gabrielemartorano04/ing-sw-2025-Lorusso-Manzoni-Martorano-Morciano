@@ -1,4 +1,5 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Model;
+
 import java.util.Timer;
 import java.util.TimerTask;
 

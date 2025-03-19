@@ -1,10 +1,10 @@
 package it.polimi.ingsw.Model.Cards;
 
-import it.polimi.ingsw.Game;
-import it.polimi.ingsw.GameController;
+import it.polimi.ingsw.Model.Game;
+import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.Components.*;
-import it.polimi.ingsw.SpaceShip;
-import it.polimi.ingsw.Trucker;
+import it.polimi.ingsw.Model.SpaceShip;
+import it.polimi.ingsw.Model.Trucker;
 
 import java.util.ArrayList;
 
