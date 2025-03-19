@@ -1,9 +1,9 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Game;
-import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.Trucker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -11,7 +11,12 @@ public class AbandonedShip extends Card {
     private int days;
     private int credits;
     private int numHuman;
-    private boolean decisionTaken = false;
+
+    //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
+    private Trucker truckerThatHasDecided = null;
+
+    //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
+    private ArrayList<int[]> coord;
 
     public AbandonedShip(boolean trialFlight, int level, int numHuman, int credits, int days, String forntImage, String backImage) {
         super("Abandoned Ship", "A drifting ghost ship",  trialFlight, level, forntImage, backImage);
@@ -32,19 +37,20 @@ public class AbandonedShip extends Card {
         return numHuman;
     }
 
+    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided) {
+        this.truckerThatHasDecided = truckerThatHasDecided;
+    }
+
+    public void setCoord(ArrayList<int[]> coord) {
+        this.coord = coord;
+    }
+
     @Override
-    public void cardEffect(Game game, GameController controller) {
-        while (!decisionTaken) {
-            List<Trucker> truckers = game.getTruckerList();
-            for(Trucker trucker: truckers) {
-                if (controller.askAbandonedShip(trucker, numHuman)){
-                    decisionTaken = true;
-                    trucker.getSpaceShip().removeNumHuman(numHuman,controller);
-                    game.moveBackward(trucker,days);
-                    trucker.addCosmicCredit(credits);
-                }
-            }
+    public void cardEffect(Game game) {
+        if (truckerThatHasDecided != null) {
+            truckerThatHasDecided.getSpaceShip().removeNumHuman(numHuman,coord);
+            game.moveBackward(truckerThatHasDecided,days);
+            truckerThatHasDecided.addCosmicCredit(credits);
         }
-        decisionTaken = false;
     }
 }

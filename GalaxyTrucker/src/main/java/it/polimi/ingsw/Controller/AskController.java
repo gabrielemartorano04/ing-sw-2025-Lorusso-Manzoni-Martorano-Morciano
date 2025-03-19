@@ -21,10 +21,12 @@ public class AskController {
         return null;
     }
 
-    public boolean askAbandonedShip(Trucker trucker, int numHuman){
+    public ArrayList<int[]> askAbandonedShip(Trucker trucker, int numHuman){
         //dato un trucker e un numero di umani numHumans che dovrebbe perdere
-        // il trucker deve dire se è vantaggioso o meno
-        return false;
+        // il trucker decide se perdere gli umani, in tal caso fornisce le coordinate delle cabine da cui rimuoverle,
+        // se invece non vuole restituisce una lista vuota
+        ArrayList<int[]> coord = new ArrayList<>();
+        return coord;
     }
 
     public boolean askSmugglers(Trucker trucker){
