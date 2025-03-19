@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Model.Cards;
 
-import it.polimi.ingsw.Game;
-import it.polimi.ingsw.GameController;
-import it.polimi.ingsw.Trucker;
+import it.polimi.ingsw.Model.Game;
+import it.polimi.ingsw.Controller.GameController;
+import it.polimi.ingsw.Model.Trucker;
 
 import java.util.*;
 

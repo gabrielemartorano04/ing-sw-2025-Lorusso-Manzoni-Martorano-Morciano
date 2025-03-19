@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Model;
 
 public class Bank {
     protected int[] goods; //red, yellow, green, blue

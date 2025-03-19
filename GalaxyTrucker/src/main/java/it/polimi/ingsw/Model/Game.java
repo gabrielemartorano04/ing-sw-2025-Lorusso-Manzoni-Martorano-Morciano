@@ -1,6 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Model;
+import it.polimi.ingsw.Controller.AskController;
+
 import java.util.ArrayList;
-import java.util.Timer;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Comparator;
