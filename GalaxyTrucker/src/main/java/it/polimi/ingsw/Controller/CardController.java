@@ -20,7 +20,7 @@ public class CardController {
         this.askController = askController;
         this.game = game;
     }
-    public void executeCardEffect(Card card) {
+    public void applyCardEffect(Card card) {
         if (card == null) {
             throw new IllegalArgumentException("La carta passata è nulla!");
         }
