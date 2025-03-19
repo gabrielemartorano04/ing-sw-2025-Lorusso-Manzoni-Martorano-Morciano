@@ -36,7 +36,7 @@ public class Game {
     public enum GameState {
         SETUP,  // Attesa giocatori
         BUILDING,    // Setup in corso
-        IN_PROGRESS, // Partita in corso
+        FLIGTH, // Partita in corso
         ENDED     // Partita terminata
     }
 
