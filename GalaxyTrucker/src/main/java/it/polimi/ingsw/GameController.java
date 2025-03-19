@@ -1,5 +1,5 @@
 package it.polimi.ingsw;
-
+import java.util.Timer;
 import java.util.ArrayList;
 
 public class GameController {
@@ -31,6 +31,7 @@ public class GameController {
     }
 
     public void manageGame(Game game){
+        new ti
         do{
             numPlayer = ;
         }
