@@ -5,13 +5,15 @@ import it.polimi.ingsw.Model.Components.GoodsColor;
 public class Trucker {
 
 
-    private GoodsColor goodsColor;
+    private String color;
+    private String nickName;
     private final SpaceShip spaceShip;
     private int position; //posizione assoluta
     private int cosmicCredit;
 
-    public Trucker() {
-        this.goodsColor = null;
+    public Trucker(String nickName, String color) {
+        this.nickName = nickName;
+        this.color = color;
         this.spaceShip = new SpaceShip();
         this.cosmicCredit = 0;
     }
@@ -24,9 +26,11 @@ public class Trucker {
         this.cosmicCredit += cosmicCredit;
     }
 
-    public GoodsColor getColor() {
-        return goodsColor;
+    public String getColor() {
+        return color;
     }
+
+    public String getNickName() {return nickName;}
 
     public SpaceShip getSpaceShip() {
         return spaceShip;
@@ -40,3 +44,4 @@ public class Trucker {
         return cosmicCredit;
     }
 }
+

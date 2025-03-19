@@ -42,7 +42,7 @@ public class Game {
         makeDeck();
         makeStacks();
         for(int i=0; i<numPlayer; i++) {
-            makeTruckers();
+            makeTruckers(numPlayer);
         }
     }
 
