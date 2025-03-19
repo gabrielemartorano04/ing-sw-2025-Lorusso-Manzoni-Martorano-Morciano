@@ -57,5 +57,10 @@ public class AskController {
         //il trucker deve dire se vuole utilizzare una batteria per attivare un doubleComponent
         return false;
     }
+
+    public int askNumPlayer(){
+        //chiede quanti giocatori parteciperanno al gioco
+        return 0;
+    }
 }
 

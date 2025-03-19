@@ -12,13 +12,12 @@ public class Game {
     private ArrayList<Trucker> truckersOut;
     private ArrayList<Card>[] cardStacks;
     private ArrayList<Card> gameDeck;
-    private int numPlayer;
     private AvailableComponents[] components;
     private Hourglass hourglass;
     private int gameLevel;
-    private GameState gameState;
     private Deck deck;
     private int timeTurns;
+    private AskController askController;
 
 
     public Game() {
@@ -27,22 +26,15 @@ public class Game {
         this.gameDeck = new ArrayList<>();
         this.components = new AvailableComponents[156];
         this.hourglass = new Hourglass(this);
-        this.gameState = GameState.SETUP;
         this.deck = new Deck();
         this.cardStacks = new ArrayList[4];
         this.timeTurns = 0;
     }
 
-    public enum GameState {
-        SETUP,  // Attesa giocatori
-        BUILDING,    // Setup in corso
-        FLIGTH, // Partita in corso
-        ENDED     // Partita terminata
-    }
+
 
     // model
-    public void setupGame() {
-        this.gameState = GameState.SETUP;
+    public void setupGame(int numPlayer) {
         makeDeck();
         makeStacks();
         for(int i=0; i<numPlayer; i++) {
@@ -50,25 +42,10 @@ public class Game {
         }
     }
 
-    public GameState getGameState() {
-        return gameState;
-    }
-
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
-    }
-
     public void sortTruckers() {
         truckers.sort(Comparator.comparingInt(Trucker::getPosition).reversed());
     }
 
-    public int getNumPlayer() {
-        return numPlayer;
-    }
-
-    public void setNumPlayer(int num) {
-        this.numPlayer = num;
-    }
 
     public int rollDice() {
         Random rand = new Random();
@@ -177,7 +154,7 @@ public class Game {
         trucker.setPosition(finalPos);
     }
 
-    public void makeTruckers(){
+    public void makeTruckers(int numPlayer){
         for (int i=0; i<numPlayer; i++) {
             truckers.add(new Trucker());
         }
@@ -205,7 +182,7 @@ public class Game {
     }
 
     // da finire, per livello 2
-    public int[] computeScores(){
+    public int[] computeScores(int numPlayer){
         int i=0;
         int[] scores = new int[numPlayer];
         ArrayList<Goods> goodsList = new ArrayList<>();
