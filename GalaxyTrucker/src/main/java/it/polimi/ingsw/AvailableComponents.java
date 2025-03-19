@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
 import java.util.Random;
-import javax.swing.ImageIcon;
 
 public class AvailableComponents {
     private Component[] components;
@@ -61,10 +60,10 @@ public class AvailableComponents {
     Component cabin16 = new Cabin(1, 2, 0, 2, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web42.jpg", null, false);
     Component cabin17 = new Cabin(3, 0, 0, 2, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web44.jpg", null, false);
 
-    Component mainCabin1 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web52.jpg", Color.RED, true);
-    Component mainCabin2 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web34.jpg", Color.GREEN, true);
-    Component mainCabin3 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web33.jpg", Color.BLUE, true);
-    Component mainCabin4 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web61.jpg", Color.YELLOW, true);
+    Component mainCabin1 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web52.jpg", GoodsColor.RED, true);
+    Component mainCabin2 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web34.jpg", GoodsColor.GREEN, true);
+    Component mainCabin3 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web33.jpg", GoodsColor.BLUE, true);
+    Component mainCabin4 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web61.jpg", GoodsColor.YELLOW, true);
 
     Component pipes1 = new Pipes(3, 2, 0, 3, "Pipes", "src/main/resources/components/tiles/GT-new_tiles_16_for web59.jpg");
     Component pipes2 = new Pipes(3, 1, 2, 3, "Pipes", "src/main/resources/components/tiles/GT-new_tiles_16_for web58.jpg");
@@ -84,19 +83,19 @@ public class AvailableComponents {
     Component shield7 = new Shield(1, 2, 1, 2, "Shield", "src/main/resources/components/tiles/GT-new_tiles_16_for web154.jpg");
     Component shield8 = new Shield(0, 0, 1, 3, "Shield", "src/main/resources/components/tiles/GT-new_tiles_16_for web155.jpg");
 
-    Component lifeSupportB1 = new LifeSupport(1, 1, 0, 1, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web137.jpg", LifeSupportColor.BROWN);
-    Component lifeSupportB2 = new LifeSupport(0, 0, 1, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web140.jpg", LifeSupportColor.BROWN);
-    Component lifeSupportB3 = new LifeSupport(0, 0, 0, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web139.jpg", LifeSupportColor.BROWN);
-    Component lifeSupportB4 = new LifeSupport(1, 0, 0, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web142.jpg", LifeSupportColor.BROWN);
-    Component lifeSupportB5 = new LifeSupport(0, 2, 0, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web141.jpg", LifeSupportColor.BROWN);
-    Component lifeSupportB6 = new LifeSupport(2, 1, 0, 1, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web138.jpg", LifeSupportColor.BROWN);
+    Component lifeSupportB1 = new LifeSupport(1, 1, 0, 1, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web137.jpg", AlienColor.BROWN);
+    Component lifeSupportB2 = new LifeSupport(0, 0, 1, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web140.jpg", AlienColor.BROWN);
+    Component lifeSupportB3 = new LifeSupport(0, 0, 0, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web139.jpg", AlienColor.BROWN);
+    Component lifeSupportB4 = new LifeSupport(1, 0, 0, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web142.jpg", AlienColor.BROWN);
+    Component lifeSupportB5 = new LifeSupport(0, 2, 0, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web141.jpg", AlienColor.BROWN);
+    Component lifeSupportB6 = new LifeSupport(2, 1, 0, 1, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web138.jpg", AlienColor.BROWN);
 
-    Component lifeSupportP1 = new LifeSupport(2, 2, 0, 2, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web144.jpg", LifeSupportColor.PURPLE);
-    Component lifeSupportP2 = new LifeSupport(1, 2, 0, 2, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web143.jpg", LifeSupportColor.PURPLE);
-    Component lifeSupportP3 = new LifeSupport(0, 0, 0, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web145.jpg", LifeSupportColor.PURPLE);
-    Component lifeSupportP4 = new LifeSupport(0, 1, 0, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web147.jpg", LifeSupportColor.PURPLE);
-    Component lifeSupportP5 = new LifeSupport(2, 0, 0, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web148.jpg", LifeSupportColor.PURPLE);
-    Component lifeSupportP6 = new LifeSupport(0, 0, 2, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web146.jpg", LifeSupportColor.PURPLE);
+    Component lifeSupportP1 = new LifeSupport(2, 2, 0, 2, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web144.jpg", AlienColor.PURPLE);
+    Component lifeSupportP2 = new LifeSupport(1, 2, 0, 2, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web143.jpg", AlienColor.PURPLE);
+    Component lifeSupportP3 = new LifeSupport(0, 0, 0, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web145.jpg", AlienColor.PURPLE);
+    Component lifeSupportP4 = new LifeSupport(0, 1, 0, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web147.jpg", AlienColor.PURPLE);
+    Component lifeSupportP5 = new LifeSupport(2, 0, 0, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web148.jpg", AlienColor.PURPLE);
+    Component lifeSupportP6 = new LifeSupport(0, 0, 2, 3, "Life Support", "src/main/resources/components/tiles/GT-new_tiles_16_for web146.jpg", AlienColor.PURPLE);
 
     Component specialLoad1 = new Load(2, 2, 2, 3, "Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web66.jpg", 1, true);
     Component specialLoad2 = new Load(0, 2, 1, 3, "Load", "src/main/resources/components/tiles/GT-new_tiles_16_for web62.jpg", 1, true);

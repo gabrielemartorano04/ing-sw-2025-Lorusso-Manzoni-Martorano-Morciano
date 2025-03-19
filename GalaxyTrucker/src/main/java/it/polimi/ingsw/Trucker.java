@@ -3,13 +3,13 @@ package it.polimi.ingsw;
 public class Trucker {
 
 
-    private Color color;
+    private GoodsColor goodsColor;
     private final SpaceShip spaceShip;
     private int position; //posizione assoluta
     private int cosmicCredit;
 
     public Trucker() {
-        this.color = null;
+        this.goodsColor = null;
         this.spaceShip = new SpaceShip();
         this.cosmicCredit = 0;
     }
@@ -22,8 +22,8 @@ public class Trucker {
         this.cosmicCredit += cosmicCredit;
     }
 
-    public Color getColor() {
-        return color;
+    public GoodsColor getColor() {
+        return goodsColor;
     }
 
     public SpaceShip getSpaceShip() {
