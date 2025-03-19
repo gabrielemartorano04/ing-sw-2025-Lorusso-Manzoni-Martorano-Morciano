@@ -28,28 +28,53 @@ public class CardController {
         String cardName = card.getName();
 
         switch (cardName) {
+
             case "AbandonedShip" -> {
                 AbandonedShip currCard = (AbandonedShip) card;
                 boolean decisionTaken = false;
-                while(!decisionTaken) {
-                    List<Trucker> truckers = game.getTruckerList();
-                    for (Trucker trucker : truckers) {
-                        ArrayList<int[]>coord = askController.askAbandonedShip(trucker, currCard.getNumHuman());
-                        if(!coord.isEmpty()) {
-                            decisionTaken = true;
-                            currCard.setTruckerThatHasDecided(trucker);
-                            currCard.setCoord(coord);
-                            currCard.cardEffect(game);
-                        }
-                        if(decisionTaken){
-                            break;
-                        }
+                List<Trucker> truckers = game.getTruckerList();
+                for (Trucker trucker : truckers) {
+                    //non chiedo a un trucker che in ogni caso non avrebbe umani a sufficienza
+                    if(trucker.getSpaceShip().getNumHuman() <= currCard.getNumHuman()) {
+                        continue;
+                    }
+                    ArrayList<int[]> coordinates = askController.askAbandonedShip(trucker, currCard.getNumHuman());
+                    if(!coordinates.isEmpty()) {
+                        decisionTaken = true;
+                        currCard.setTruckerThatHasDecided(trucker);
+                        currCard.setCoordinates(coordinates);
+                        currCard.cardEffect(game);
+                    }
+                    if(decisionTaken){
+                        break;
                     }
                 }
             }
+
             case "AbandonedStation" -> {
-                ((AbandonedStation) card).cardEffect(game);
+                AbandonedStation currCard = (AbandonedStation) card;
+                boolean decisionTaken = false;
+                List<Trucker> truckers = game.getTruckerList();
+                for (Trucker trucker : truckers) {
+                    //non chiedo a un trucker che non ha almeno il numero di umani indicati dalla carta
+                    //NOTA: è diverso da sopra perchè sopra se ho lo stesso numero di umani non posso altrimenti
+                    //mi devo ritirare, mentre qui non mi vengono rimossi
+                    if(trucker.getSpaceShip().getNumHuman() < currCard.getNumHuman()) {
+                        continue;
+                    }
+                    ArrayList<int[]> coordinates = askController.askAbandonedStation(trucker, currCard.getGoods());
+                    if(!coordinates.isEmpty()) {
+                        decisionTaken = true;
+                        currCard.setTruckerThatHasDecided(trucker);
+                        currCard.setCoord(coordinates);
+                        currCard.cardEffect(game);
+                    }
+                    if(decisionTaken){
+                        break;
+                    }
+                }
             }
+
             case "Epidemic" -> {
                 ((Epidemic) card).cardEffect(game);
             }

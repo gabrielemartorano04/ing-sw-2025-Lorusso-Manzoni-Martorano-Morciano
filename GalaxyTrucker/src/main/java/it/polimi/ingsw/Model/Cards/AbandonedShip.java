@@ -4,7 +4,6 @@ import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class AbandonedShip extends Card {
@@ -16,7 +15,7 @@ public class AbandonedShip extends Card {
     private Trucker truckerThatHasDecided = null;
 
     //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
-    private ArrayList<int[]> coord;
+    private ArrayList<int[]> coordinates;
 
     public AbandonedShip(boolean trialFlight, int level, int numHuman, int credits, int days, String forntImage, String backImage) {
         super("Abandoned Ship", "A drifting ghost ship",  trialFlight, level, forntImage, backImage);
@@ -41,14 +40,14 @@ public class AbandonedShip extends Card {
         this.truckerThatHasDecided = truckerThatHasDecided;
     }
 
-    public void setCoord(ArrayList<int[]> coord) {
-        this.coord = coord;
+    public void setCoordinates(ArrayList<int[]> coordinates) {
+        this.coordinates = coordinates;
     }
 
     @Override
     public void cardEffect(Game game) {
         if (truckerThatHasDecided != null) {
-            truckerThatHasDecided.getSpaceShip().removeNumHuman(numHuman,coord);
+            truckerThatHasDecided.getSpaceShip().removeNumHuman(numHuman, coordinates);
             game.moveBackward(truckerThatHasDecided,days);
             truckerThatHasDecided.addCosmicCredit(credits);
         }
