@@ -18,7 +18,7 @@ public abstract class Component {
         this.rearImage = new ImageIcon("src/main/resources/components/tiles/GT-new_tiles_16_for web157.jpg");
     }
 
-    protected String getType() {
+    public String getType() {
         return this.type;
     }
 
