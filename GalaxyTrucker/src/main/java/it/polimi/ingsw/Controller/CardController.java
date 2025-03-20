@@ -183,8 +183,44 @@ public class CardController {
             }
 
             case "Smugglers" -> {
-                //da finire
-                ((Smugglers) card).cardEffect(game);
+                // fase iniziale capire se qualcuno può o meno sconfiggere i pirati e se si chi li sconfigge
+                // devo quindi calcolare la potenza di fuoco per ognuno
+                Smugglers currCard = (Smugglers) card;
+                ArrayList<Trucker> defeatedTruckers = new ArrayList<>();
+                ArrayList<Trucker> truckers = game.getTruckerList();
+                ArrayList<int[]> coordinates;
+                //solita convenzione per liste di trucker con liste di coordinate
+                ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveGoods = new ArrayList<>(truckers.size());
+                boolean piratesDefeated = false;
+                int currTruckerCannonPower;
+
+                for (Trucker trucker : truckers) {
+                    coordinates = askController.askDoubleCannonToActivate();
+                    currTruckerCannonPower = trucker.getSpaceShip().getTotalCannonPower(coordinates);
+                    if(currTruckerCannonPower<currCard.getSmugglersPower()){
+                        defeatedTruckers.add(trucker);
+                        truckersCoordinatesToRemoveGoods.add(askController.askGoodsToRemove(trucker, currCard.getGoodsLost()));
+                    }else if(currTruckerCannonPower>currCard.getSmugglersPower()){
+                        piratesDefeated = true;
+                        if(askController.askPirates(trucker)){
+                            currCard.setWinnerTrucker(trucker);
+                            currCard.setWinnerCoordinatesToAddGoods(askController.askGoodsToAdd(trucker, currCard.getGoodsGained()));
+                        }
+                        currCard.setDefeatedTruckers(defeatedTruckers);
+                        currCard.setTruckersCoordinatesToRemoveGoods(truckersCoordinatesToRemoveGoods);
+                        break;
+                    }else if (currTruckerCannonPower==currCard.getSmugglersPower()){
+                        continue;
+                    }
+                }
+                //se non ho sconfitto i pirati e sono uscito dal for vuol dire che tutti i giocatori hanno perso
+                //o che tutti i giocatori avevano la stessa potenza di fuoco, in ogni caso devo settare defeatedTruckers
+                //della carta pirati corrente per poter chiamare il suo cardEffect
+                if(!piratesDefeated){
+                    currCard.setDefeatedTruckers(defeatedTruckers);
+                    currCard.setTruckersCoordinatesToRemoveGoods(truckersCoordinatesToRemoveGoods);
+                }
+                currCard.cardEffect(game);
             }
 
             case "StarDust" -> {

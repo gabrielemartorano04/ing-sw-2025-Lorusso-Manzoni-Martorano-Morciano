@@ -36,10 +36,17 @@ public class AskController {
         return batteryCoordinates;
     }
 
-    public ArrayList<int[]> askComponentGoods(){
+    public ArrayList<int[]> askGoodsToAdd(Trucker trucker, Goods[] goods){
         return null;
-        //il controller chiede i componenti di tipo Load in cui vogliamo mettere le batterie
+        //il controller chiede i componenti di tipo Load in cui vogliamo mettere le merci
     }
+
+    public ArrayList<int[]> askGoodsToRemove(Trucker trucker, int goodsLost){
+        return null;
+        //il controller chiede i componenti di tipo Load in cui vogliamo rimuovere le merci
+    }
+
+
     public ArrayList<int[]> askCabin(){
         return null;
     }
