@@ -44,10 +44,13 @@ public class AskController {
         return null;
     }
 
-    public ArrayList<int[]> askAbandonedShip(Trucker trucker, int numHuman){
+    public ArrayList<int[]> askCabinToRemovePeople(Trucker trucker, int numPeople){
         //dato un trucker e un numero di umani numHumans che dovrebbe perdere
         //un trucker decide se perdere gli umani, in tal caso fornisce le coordinate delle cabine da cui rimuoverle,
         // se invece nessun trucker vuole accettare la carta coord sarà una lista vuota
+
+        //coord sarà del tipo coord.get(i)[0] = coordinata x della cabina, coord.get(i)[1] = coordinata y della cabina
+        // coord.get(i)[2] = numero di umani da rimuovere in quella cabina
         ArrayList<int[]> coord = new ArrayList<>();
         return coord;
     }
