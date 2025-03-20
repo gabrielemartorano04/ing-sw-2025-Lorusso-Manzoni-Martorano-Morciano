@@ -12,14 +12,13 @@ public class StarDust extends Card {
     }
 
     @Override
-    public void cardEffect(Game game, GameController controller) {
+    public void cardEffect(Game game) {
         List<Trucker> truckers = game.getTruckerList();
         Collections.reverse(truckers);
         for (Trucker trucker : truckers) {
             int exposedConnectors = trucker.getSpaceShip().countExposedConnectors();
             game.moveBackward(trucker, exposedConnectors);
         }
-        Collections.reverse(truckers); //rigiro i Truckers così
+        Collections.reverse(truckers); //rigiro i Truckers così ritorno all'ordine originale della lista
     }
-    
 }

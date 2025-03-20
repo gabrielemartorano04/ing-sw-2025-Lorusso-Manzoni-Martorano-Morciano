@@ -43,5 +43,6 @@ public abstract class Card {
     public void cardEffect(){
     }
 
-    public abstract void cardEffect(Game game, Boolean askAbandonedShip, ArrayList<int[]> coord);
+    public abstract void cardEffect(Game game);
+
 }

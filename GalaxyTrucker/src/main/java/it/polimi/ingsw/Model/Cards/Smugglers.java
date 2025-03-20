@@ -7,6 +7,7 @@ import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.Components.*;
 import it.polimi.ingsw.Model.Trucker;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 
@@ -18,6 +19,17 @@ public class Smugglers extends Card {
     private int days;
     private Goods[] goodsGained = new Goods[3];
     private boolean isDefeated = false;
+
+    // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
+    private Trucker winnerTrucker = null;
+    private ArrayList<Trucker> defeatedTruckers;
+
+    //solita Lista di trucker di liste di coordinate per tenere traccia per ogni trucker delle coordinate dei Load da cui rimuovere
+    // il numero di merci contenuto nella carta Smugglers
+    ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveGoods;
+
+    //coordinate dei load in cui il vincitore ha scelto di caricare le merci
+    ArrayList<int[]> winnerCoordinatesToAddGoods;
 
     public Smugglers(boolean trialFlight, int smugglersPower, int goodsLost, int days, Goods[] goodsGained, int level, String frontName, String backName) {
         super("Smugglers", "Illegal traders of goods", trialFlight, level, frontName, backName);
@@ -43,27 +55,36 @@ public class Smugglers extends Card {
         return days;
     }
 
+    public void setDefeatedTruckers(ArrayList<Trucker> defeatedTruckers) {
+        this.defeatedTruckers = defeatedTruckers;
+    }
+
+    public void setWinnerTrucker(Trucker winnerTrucker) {
+        this.winnerTrucker = winnerTrucker;
+    }
+
+    public void setWinnerCoordinatesToAddGoods(ArrayList<int[]> winnerCoordinatesToAddGoods) {
+        this.winnerCoordinatesToAddGoods = winnerCoordinatesToAddGoods;
+    }
+
+    public void setTruckersCoordinatesToRemoveGoods(ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveGoods) {
+        this.truckersCoordinatesToRemoveGoods = truckersCoordinatesToRemoveGoods;
+    }
+
     @Override
-    public void cardEffect(Game game, GameController controller) {
-        List<Trucker> truckers = game.getTruckerList();
-        for(Trucker trucker: truckers) {
-            if(isDefeated){
-                break;
-            }
-            else{
-                if(trucker.getSpaceShip().getTotalCannonPower(controller)> smugglersPower){
-                    isDefeated = true;
-                    boolean answer = controller.askSmugglers(trucker);
-                    if (answer == true){
-                        //uso la conversione con Arrays.asList da checkare
-                        trucker.getSpaceShip().addGoods(Arrays.asList(goodsGained), controller);
-                        game.moveBackward(trucker, days);
-                    }
-                } else if (trucker.getSpaceShip().getTotalCannonPower(controller) < smugglersPower){
-                    trucker.getSpaceShip().removeGoods(goodsLost, controller);
-                }
+    public void cardEffect(Game game) {
+        int i = 0;
+        if(winnerTrucker != null){
+            winnerTrucker.getSpaceShip().addGoods(Arrays.asList(goodsGained), winnerCoordinatesToAddGoods);
+            game.moveBackward(winnerTrucker, days);
+        }
+        if(!defeatedTruckers.isEmpty()){
+            for(Trucker trucker: defeatedTruckers){
+                trucker.getSpaceShip().removeGoods(goodsLost, truckersCoordinatesToRemoveGoods.get(i));
+                i++;
             }
         }
-        isDefeated = false;
     }
+
+
 }

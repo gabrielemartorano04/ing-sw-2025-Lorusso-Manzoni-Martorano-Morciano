@@ -13,7 +13,9 @@ public class Pirates extends Card {
     private int credits;
     private int days;
     private int piratesPower;
-    private boolean isDefeated = false;
+
+    // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
+    private Trucker winnerTrucker = null;
     private ArrayList<Trucker> defeatedTruckers;
     private ArrayList<int[]> shoots;
     // shoots è una lista dove direction.get(i) rappresenta l'i-esimo colpo in questa specifica carta Pirates
@@ -46,44 +48,44 @@ public class Pirates extends Card {
         return shoots;
     }
 
+    public void setDefeatedTruckers(ArrayList<Trucker> defeatedTruckers) {
+        this.defeatedTruckers = defeatedTruckers;
+    }
+
+    public void setWinnerTrucker(Trucker winnerTrucker) {
+        this.winnerTrucker = winnerTrucker;
+    }
+
     @Override
-    public void cardEffect(Game game, GameController controller) {
-        List<Trucker> truckers = game.getTruckerList();
-        for (Trucker trucker : truckers) {
-            if(isDefeated){
-                break;
-            }else{
-                if(trucker.getSpaceShip().getTotalCannonPower(controller)> piratesPower){
-                    isDefeated = true;
-                    boolean answer = controller.askPirates(trucker);
-                    if (answer == true){
-                        trucker.addCosmicCredit(credits);
-                        game.moveBackward(trucker, days);
-                    }
-                } else if (trucker.getSpaceShip().getTotalCannonPower(controller) < piratesPower){
-                    defeatedTruckers.add(trucker);
-                }
-            }
+    public void cardEffect(Game game) {
+        if (winnerTrucker != null) {
+            winnerTrucker.addCosmicCredit(credits);
+            game.moveBackward(winnerTrucker, days);
         }
-        isDefeated = false;
-        for(int[] shoot: shoots){
-            int roll = game.rollDice();
-            boolean isBig = (shoot[0] == 1);
-            int direction = shoot[1];
-            for(Trucker trucker : defeatedTruckers){
-                SpaceShip ship = trucker.getSpaceShip();
-                if (ship.isHit(roll, direction)) {
-                    if (isBig) {
-                        // colpo grande non può essere stoppato quindi devo distruggere il componente
-                        ship.destroyComponent(roll, direction);
-                    } else {
-                        // Un colpo piccolo può solo essere fermato con lo scudo
-                        if (!ship.blockSmallShoot(direction, roll)) {
+
+        //colpisco le navi solo se c'è qualcuno da colpire
+        if (!defeatedTruckers.isEmpty()) {
+            for (int[] shoot : shoots) {
+                int roll = game.rollDice();
+                boolean isBig = (shoot[0] == 1);
+                int direction = shoot[1];
+                for (Trucker trucker : defeatedTruckers) {
+                    SpaceShip ship = trucker.getSpaceShip();
+                    if (ship.isHit(roll, direction)) {
+                        if (isBig) {
+                            // colpo grande non può essere stoppato quindi devo distruggere il componente
                             ship.destroyComponent(roll, direction);
+                        } else {
+                            // Un colpo piccolo può solo essere fermato con lo scudo
+                            if (!ship.blockSmallShoot(direction, roll)) {
+                                ship.destroyComponent(roll, direction);
+                            }
                         }
                     }
                 }
             }
         }
     }
+
+
 }

@@ -38,12 +38,9 @@ public class Game {
 
 
     // model
-    public void setupGame(int numPlayer) {
+    public void setupGame() {
         makeDeck();
         makeStacks();
-        for(int i=0; i<numPlayer; i++) {
-            makeTruckers(numPlayer);
-        }
     }
 
     public void sortTruckers() {
@@ -61,7 +58,8 @@ public class Game {
     // prendo la prima carta nel mazzo da gioco attivo il suo effetto e la rimuovo
     public void drawCard() {
         if (gameDeck.isEmpty()) return;
-        gameDeck.removeFirst().cardEffect(this, null ); //da modificare null una volta volta implementato game controller
+        Game game= new Game();
+        gameDeck.removeFirst().cardEffect(); //da modificare null una volta volta implementato game controller
     }
 
     public void turn(){
@@ -158,10 +156,8 @@ public class Game {
         trucker.setPosition(finalPos);
     }
 
-    public void makeTruckers(int numPlayer){
-        for (int i=0; i<numPlayer; i++) {
-            truckers.add(new Trucker());
-        }
+    public void makeTrucker(int numPlayer, String nickname, PlayerColors color){
+        truckers.add(new Trucker(nickname, color));
     }
 
     //controller
