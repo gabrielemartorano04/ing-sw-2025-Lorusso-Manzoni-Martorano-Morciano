@@ -9,6 +9,7 @@ public class SpaceShipController {
     public SpaceShipController() {
     }
 
+    //DA MODIFICARE
     public void addComponent(SpaceShip spaceShip, Component component, int[] coord) throws InvalidLinkException, InvalidPositionException {
         if (spaceShip.components[coord[0]][coord[1]] != null) {
             throw new InvalidPositionException("La posizione [" + coord[0] + "] [" + coord[1] + "] è gia occupata");
