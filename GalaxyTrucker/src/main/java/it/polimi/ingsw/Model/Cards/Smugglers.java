@@ -78,7 +78,7 @@ public class Smugglers extends Card {
             winnerTrucker.getSpaceShip().addGoods(Arrays.asList(goodsGained), winnerCoordinatesToAddGoods);
             game.moveBackward(winnerTrucker, days);
         }
-        if(defeatedTruckers.size() > 0){
+        if(!defeatedTruckers.isEmpty()){
             for(Trucker trucker: defeatedTruckers){
                 trucker.getSpaceShip().removeGoods(goodsLost, truckersCoordinatesToRemoveGoods.get(i));
                 i++;
