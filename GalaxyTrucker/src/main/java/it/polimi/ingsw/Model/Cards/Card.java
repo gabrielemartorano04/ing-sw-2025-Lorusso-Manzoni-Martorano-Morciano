@@ -4,12 +4,13 @@ import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Controller.GameController;
 
 import javax.swing.ImageIcon;
+import java.util.ArrayList;
 
 /**
  * classe che rappresenta la carta in generale andrà poi estesa dalle altre carte avventura
  */
 
-public class Card {
+public abstract class Card {
     private final String name;
     private final String description;
     private final Integer level;
@@ -39,7 +40,9 @@ public class Card {
         return level;
     }
 
-    public void cardEffect(Game game, GameController controller) {
-
+    public void cardEffect(){
     }
+
+    public abstract void cardEffect(Game game);
+
 }

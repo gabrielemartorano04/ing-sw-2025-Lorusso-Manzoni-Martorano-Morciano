@@ -11,7 +11,7 @@ public class Epidemic extends Card {
         super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage);
     }
     @Override
-    public void cardEffect(Game game, GameController controller) {
+    public void cardEffect(Game game) {
         List <Trucker> truckers = game.getTruckerList();
         for(Trucker trucker: truckers) {
             trucker.getSpaceShip().epidemic();

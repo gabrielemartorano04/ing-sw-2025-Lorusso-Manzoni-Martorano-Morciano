@@ -10,17 +10,23 @@ import java.util.*;
 
 public class SpaceShip {
 
-    private Component[][] components;
-    private Component[] kept;
-    private int lost;
-    private int redGoods, greenGoods, blueGoods, yellowGoods;
-    private int numHuman;
-    private int goodsCapacity;
-    private ArrayList<Goods> goodsList; //lista di tutte le merci che contiene la nava nello stato corrente e sono ordinante in base al value dal più grande al più piccolo
-    private int numOfBatterys;
+    private Component[][] components; //components in the matrix
+    private Component[] kept; //2 components the trucker decided to keep during the spaceship construction
+    private int lost; //number of lost components
+    private int redGoods, greenGoods, blueGoods, yellowGoods; // number of goods for each type color
+    private int numHuman; //number of astronauts on the spaceship
+    private int goodsCapacity; //number of goods capacity
+    private ArrayList<Goods> goodsList; //list of goods in the spaceship, sort by their value (desc)
+    private int numOfBattery; //number of batteries in the spaceship
+
     /**
-     * Spaceship constructor, it inizializes the attributes of this class
+     * Spaceship constructor, it initializes the attributes of this class
+     * if a components[i][j] can be filled it's initialized null
+     * otherwise it's initialized as EmptySpace
+     * the counters are 0 because the spaceship is empty
+     * This constructor also initialize the main cabin in the middle of the spaceship
      */
+    //chiedi per parametro color per inizializzare il colore della main cabin
     public SpaceShip() {
         components = new Component[10][11];
         kept = new Component[2];
@@ -67,23 +73,28 @@ public class SpaceShip {
         //ogni cabin se non ha un alieno ha due umani
         numHuman = 0;
         //ogni battery storage è pieno di batterie
-        numOfBatterys = 0;
+        numOfBattery = 0;
     }
 
+    /**
+     * This method set the full number of batteries in each battery storage and it updates numOfBattery counter to its
+     * maximum
+     */
     public void setBattery(){
         BatteryStorage bs=null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if(components[i][j] != null && components[i][j].getType().equals("Battery Storage")){
-                    numOfBatterys= bs.getCapacity();
-                    bs.setQuantity(numOfBatterys);
+                    numOfBattery= bs.getCapacity();
+                    bs.setQuantity(numOfBattery);
                 }
             }
         }
     }
 
     /**
-     * @return goodsCapacity How many goods can be on the spaceship
+     * This method calculates the goods capacity of the entire spaceship
+     * @return goodsCapacity the goods capacity of the entire spaceship
      */
     public int getGoodsCapacity() {
         Load load = null;
@@ -99,7 +110,9 @@ public class SpaceShip {
     }
 
     /**
-     * numero di astronauti sulla spaceship
+     * This method has to be called after setNumAlien, if the player didn't put an alien into the cabin we fill
+     * the cabin with 2 astronauts
+     * @return number of astronauts in the spaceship
      */
     public int getNumHuman() {
         Cabin cabin = null;
@@ -108,7 +121,10 @@ public class SpaceShip {
                 if (components[i][j] != null) {
                     if (components[i][j].getType().equals("Cabin")) {
                         cabin = (Cabin) components[i][j];
-                        if (cabin.getAlien() == null) numHuman += 2;
+                        if (cabin.getAlien() == null){
+                            numHuman += 2;
+                            cabin.setQuantity(2);
+                        }
                     }
                 }
             }
@@ -117,21 +133,80 @@ public class SpaceShip {
     }
 
     /**
-     * rimuove un astronauta dalla spaceship
+     * If the cabin is linked with a lifesupport and the player select the component this method puts the alien into
+     * the cabin
+     * @param coord coordinate of the components in which the player would like to put aliens
+     */
+    public void setNumAlien(ArrayList<int[]> coord){
+        Cabin cabin=null;
+        Alien alien=null;
+        LifeSupport ls=null;
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if(components[i][j]!=null && components[i][j].getType().equals("Cabin")){
+                    cabin=(Cabin)components[i][j];
+                    if(!cabin.getIsMain()){
+                        if(components[i+1][j].getType().equals("Life Support"))
+                        {
+                            int link1=components[i][j].getLink()[2];
+                            int link2=components[i+1][j].getLink()[0];
+                            if(link1==link2 || link1==3 || link2==3) ls=(LifeSupport) components[i+1][j];
+                        }
+                        else if(components[i-1][j].getType().equals("Life Support")){
+                            int link1=components[i][j].getLink()[0];
+                            int link2=components[i+1][j].getLink()[2];
+                            if(link1==link2 || link1==3 || link2==3) ls=(LifeSupport) components[i+1][j];
+                            ls=(LifeSupport) components[i-1][j];
+                        }
+                        else if(components[i][j+1].getType().equals("Life Support")){
+                            int link1=components[i][j].getLink()[1];
+                            int link2=components[i+1][j].getLink()[3];
+                            if(link1==link2 || link1==3 || link2==3) ls=(LifeSupport) components[i+1][j];
+                            ls=(LifeSupport) components[i][j+1];
+                        }
+                        else if (components[i][j-1].getType().equals("Life Support")){
+                            int link1=components[i][j].getLink()[3];
+                            int link2=components[i+1][j].getLink()[1];
+                            if(link1==link2 || link1==3 || link2==3) ls=(LifeSupport) components[i+1][j];
+                            ls=(LifeSupport) components[i][j-1];
+                        }
+                        int[] c = {i, j};
+                        if(ls!=null && coord.contains(c)){
+                            alien=new Alien(ls.getColor());
+                            cabin.setAlien(alien);
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    /**
+     * The player select the coordinates of the component from which he would like to remove an astronaut
+     * @param x coordinate x of the component
+     * @param y coordinate x of the component
      */
     public void removeHuman(int x, int y) {
         Cabin cabin=null;
         if (components[x][y].getType().equals("Cabin") && numHuman > 0) {
-            cabin.removeHumans(1);
-            numHuman--;
+            cabin=(Cabin) components[x][y];
+            if(cabin.getQuantity()>0){
+                cabin.removeHumans(1);
+                numHuman--;
+            }
+            else{
+                //exception, qui non ci sono astronauti!!
+            }
         }
 
     }
 
     /**
-     * rimuove un numero num di astronauti dalla spaceship
+     * This method remove a num of astronauts from a list of components
+     * @param num number of astronauts the spaceship loses
+     * @param coord coordinates of the cabin from which the player wants to remove astronauts
      */
-    //i parametri sono il numero di umani che vogliamo rimuovere e le coord(da controller)dei componenti da cui togliere gli umani
     public void removeNumHuman(int num, ArrayList<int[]> coord) {
         Cabin cabin=null;
         for(int[] c:coord){
@@ -143,6 +218,7 @@ public class SpaceShip {
                     num=0;
                 }
                 else {
+                    numHuman -= cabin.getQuantity();
                     num-=cabin.getQuantity();
                     cabin.setQuantity(0);
                 }
@@ -154,14 +230,17 @@ public class SpaceShip {
     }
 
     /**
-     * restituisce la matrice dei componenti
+     * @return matrix of components and empty spaces
      */
     public Component[][] getComponents() {
         return components;
     }
 
     /**
-     * aggiunge un componente alla matrice in una certa cella di coordinate (x,y)
+     * This method adds a component to the matrix
+     * @param component component the player wants to add
+     * @param x x coordinate of the cell in which the player wants to add the component
+     * @param y y coordinate of the cell in which the player wants to add the component
      */
     public void addComponent(Component component, int x, int y) {
         if(components[x][y]==null ) components[x][y] = component;
@@ -169,10 +248,14 @@ public class SpaceShip {
     }
 
     /**
-     * date le coordineate, rimuove il componente
+     * This method remove a component from the matrix
+     * @param x x coordinate of the component to remove
+     * @param y y coordinate of the component to remove
+     * @return the removed component
      */
     public Component removeComponent(int x, int y) {
         Component component=null;
+        //se components[x][y] già null eccezione non c'è niente qua
         if(!components[x][y].getType().equals("Empty Space")) {
             component = components[x][y];
             components[x][y] = null;
@@ -181,7 +264,8 @@ public class SpaceShip {
     }
 
     /**
-     * potere dei cannoni singoli
+     * This method calculate the single cannons power
+     * @return the single cannons power
      */
     public int getSingleCannonPower() {
         int power = 0;
@@ -204,7 +288,7 @@ public class SpaceShip {
         }
         return power;
     }
-
+//--------------------------------------------------------------
     /**
      * potenza dei cannoni doppi
      */
@@ -279,6 +363,13 @@ public class SpaceShip {
         return doubleEngine;
     }
 
+    /**
+     *
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public Component chooseComponent(int x, int y) {
         return components[x][y];
     }
@@ -576,7 +667,7 @@ public class SpaceShip {
                                     || (direction == 2 && (shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)))
                                     || (direction == 3 && (shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)))
                     ){
-                                        if(numOfBatterys>0 && use){
+                                        if(numOfBattery>0 && use){
                                             return true;
                                         }
                     }
@@ -711,40 +802,12 @@ public class SpaceShip {
     public ArrayList<Goods> getGoodsList(){
         return goodsList;
     }
+
+
     public int getLost(){
         return lost;
     }
 
-    public void setHuman(){
-        Cabin cabin=null;
-        Alien alien=null;
-        LifeSupport ls=null;
-        for (int i = 5; i <= 9; i++) {
-            for (int j = 4; j <= 10; j++) {
-                if(components[i][j]!=null && components[i][j].getType().equals("Cabin")){
-                    cabin=(Cabin)components[i][j];
-                    if(!cabin.getIsMain()){
-                        if(components[i+1][j].getType().equals("Life Support"))
-                            ls=(LifeSupport) components[i+1][j];
-                        else if(components[i-1][j].getType().equals("Life Support"))
-                            ls=(LifeSupport) components[i-1][j];
-                        else if(components[i][j+1].getType().equals("Life Support"))
-                            ls=(LifeSupport) components[i][j+1];
-                        else if (components[i][j-1].getType().equals("Life Support"))
-                            ls=(LifeSupport) components[i][j-1];
-                        if(ls!=null){
-                            alien=new Alien(ls.getColor());
-                            cabin.setAlien(alien);
-                        }
-                    }
-                    if(cabin.getAlien()==null){
-                        cabin.setQuantity(2);
-                        numHuman+=2;
-                    }
 
-                }
-            }
-        }
-    }
 
 }

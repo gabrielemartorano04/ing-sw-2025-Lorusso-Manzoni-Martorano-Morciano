@@ -26,7 +26,7 @@ public class GameController {
         this.numPlayer = 0;
         this.askController = new AskController();
         this.game = new Game();
-        this.cardController = new CardController();
+        this.cardController = new CardController(this.askController, this.game);
         this.spaceShipController = new SpaceShipController();
     }
 

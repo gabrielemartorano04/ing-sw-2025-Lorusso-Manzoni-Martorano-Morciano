@@ -12,12 +12,17 @@ import java.util.List;
 public class AbandonedStation extends Card {
     private int days;
     private int numHuman;
-    private boolean decisionTaken;
     private ArrayList<Goods> goods;
+
+    //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
+    private Trucker truckerThatHasDecided = null;
+
+    //coordinates sono le coordinate dei Load dove inserire le merci. Viene settato dal Card controller,
+    // se è vuoto vuol dire che nessun giocatore ha voluto accettare la carta
+    private ArrayList<int[]> coordinates;
 
     public AbandonedStation(boolean trialFlight, int level, ArrayList<Goods> goods, int days, int numHuman,String frontImage, String backIMage) {
         super("Abandoned Station", "A derelict space station", trialFlight, level, frontImage, backIMage);
-        this.decisionTaken = false;
         this.days = days;
         this.numHuman = numHuman;
         this.goods = goods;
@@ -27,27 +32,25 @@ public class AbandonedStation extends Card {
         return days;
     }
 
-    public int getNumHumans() {
+    public int getNumHuman() {
         return numHuman;
     }
 
-    public List<Goods> getGoods() {
+    public ArrayList<Goods> getGoods() {
         return goods;
     }
+
+    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided) {
+        this.truckerThatHasDecided = truckerThatHasDecided;
+    }
+
+    public void setCoord(ArrayList<int[]> coord) {
+        this.coordinates = coord;
+    }
+
     @Override
-    public void cardEffect(Game game, GameController controller) {
-        while (!decisionTaken){
-            List<Trucker> truckers = game.getTruckerList();
-            for(Trucker trucker: truckers) {
-                if (trucker.getSpaceShip().getNumHuman() > numHuman) {
-                    if (controller.askAbandonedStation(trucker, goods) == true) {
-                        decisionTaken = true;
-                        trucker.getSpaceShip().addGoods(goods, controller);
-                        game.moveBackward(trucker, days);
-                    }
-                }
-            }
-        }
-        decisionTaken = false;
+    public void cardEffect(Game game) {
+        truckerThatHasDecided.getSpaceShip().addGoods(goods,coordinates);
+        game.moveBackward(truckerThatHasDecided, days);
     }
 }
