@@ -85,8 +85,8 @@ public class GameController {
                 timeExpired[0] = true; // Modifica il valore dell'array
                 timer.cancel();
                 System.out.println("Timer scaduto!"); // Aggiungi questa riga
-
             }
+
         };
 
         timer.schedule(task, duration);
@@ -120,7 +120,13 @@ public class GameController {
     }
 
     public void manageBuilding() {
-
+        ArrayList<Thread> threads = new ArrayList<>();
+        //creo un thread per giocatore
+        for (Trucker t: game.getTruckerList()){
+            Thread playerThread = new Thread(() -> {
+                
+            });
+        }
     }
 
     public void manageFlight() {
