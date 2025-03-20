@@ -9,10 +9,26 @@ public class AskController {
         //il controller chiedere quanti componenti doppi vuole attivare sapendo che ne ha doubleC
         return 0; //return componenti che vuole attivare
     }
-    public ArrayList<int[]> askComponentBattery(){
-        return null;
-        //il controller chiede i componenti di tipo batteryStorage da cui vogliamo togliere le batterie
+
+    public ArrayList<int[]> askDoubleEnginesToActivate(){
+        //chiede all'utente quali motori doppi vuole attivare e ritorna la lista di coordinate dei cannoni da attivare
+        ArrayList<int[]> coordinates = new ArrayList<>();
+        return coordinates;
     }
+
+    public ArrayList<int[]> askBatteryStorageToRemoveFrom(int numOfBatteriesToEliminate){
+        //il controller chiede i componenti di tipo batteryStorage da cui vogliamo togliere le batterie e anche quante batterie
+        //rimuovere da ognuno di essi
+        // in questo caso quindi batteryCoordinates sarà una lista di array di dimensione 3:
+        // i primi due elementi di ogni array sono le coordinate del Battery storage da cui eliminare le batterie
+        // mentre il terzo elemento indica quante batterie eliminare da quell'elemento
+
+        //io passerò il numero di batterie totali tramite il CardController calcolando il numero di componenti che sono stati attivati
+        // poi dentro questa funzione andrà controllato che la somma di batteryCoordinates.get(i)[3] sia uguale a numOfBatteriesToEliminate
+        ArrayList<int[]> batteryCoordinates = new ArrayList<>();
+        return batteryCoordinates;
+    }
+
     public ArrayList<int[]> askComponentGoods(){
         return null;
         //il controller chiede i componenti di tipo Load in cui vogliamo mettere le batterie

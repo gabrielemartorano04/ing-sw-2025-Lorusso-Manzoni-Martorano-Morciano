@@ -84,8 +84,29 @@ public class CardController {
             }
 
             case "OpenSpace" -> {
-                ((OpenSpace) card).cardEffect(game);
+
+                OpenSpace currCard = (OpenSpace) card;
+                List<Trucker> truckers = game.getTruckerList();
+
+                //lista che contiene per ogni trucker la lista di coordinates dei motori doppi che vuole attivare
+                //la lista esterna associa ogni puntatore a un trucker, quindi la lunghezza della lista esterna è quella di truckers.
+                //mantiene l'ordine dei truckers nel fare questa associazione
+                ArrayList<ArrayList<int[]>> truckersCoordinates = new ArrayList<>(truckers.size());
+
+                // batteryCoordinates andrà passato a una funzione di SpaceShip che qui chiamo removeBatteries che deve
+                // ancora essere implementata
+                ArrayList<int[]> batteryCoordinates = new ArrayList<>();
+                int i = 0;
+                for (Trucker trucker : truckers) {
+                    truckersCoordinates.add(askController.askDoubleEnginesToActivate());
+                    batteryCoordinates = askController.askBatteryStorageToRemoveFrom(truckersCoordinates.get(i).size());
+                    trucker.getSpaceShip().removeBatteries(batteryCoordinates);
+                    i++;
+                }
+                currCard.setCoordinates(truckersCoordinates);
+                currCard.cardEffect(game);
             }
+
             case "Pirates" -> {
                 ((Pirates) card).cardEffect(game);
             }
