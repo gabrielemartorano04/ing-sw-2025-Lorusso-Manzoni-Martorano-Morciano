@@ -16,9 +16,10 @@ public class SpaceShipController {
         if ("Empty Space".equals((spaceShip.getComponents()[coord[0]][coord[1]]).getType())){
             throw new InvalidPositionException("La posizione [" + coord[0] + "] [" + coord[1] + "] è al di fuori dello spazio disponibile");
         }
+        spaceShip.components[coord[0]][coord[1]] = component;
         if (!spaceShip.isValid(coord[0], coord[1])){
+            spaceShip.components[coord[0]][coord[1]] = null;
             throw new InvalidLinkException("Il componente " + component.getType() + " non può essere collegato in questo modo");
         }
-        spaceShip.components[coord[0]][coord[1]] = component;
     }
 }
