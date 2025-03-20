@@ -87,7 +87,6 @@ public class CardController {
 
                 OpenSpace currCard = (OpenSpace) card;
                 List<Trucker> truckers = game.getTruckerList();
-
                 //lista che contiene per ogni trucker la lista di coordinates dei motori doppi che vuole attivare
                 //la lista esterna associa ogni puntatore a un trucker, quindi la lunghezza della lista esterna è quella di truckers.
                 //mantiene l'ordine dei truckers nel fare questa associazione
@@ -108,6 +107,36 @@ public class CardController {
             }
 
             case "Pirates" -> {
+                // fase iniziale capire se qualcuno può o meno sconfiggere i pirati e se si chi li sconfigge
+                // devo quindi calcolare la potenza di fuoco per ognuno
+                Pirates currCard = (Pirates) card;
+                ArrayList<Trucker> defeatedTruckers = new ArrayList<>();
+                ArrayList<Trucker> truckers = game.getTruckerList();
+                ArrayList<int[]> coordinates;
+                boolean piratesDefeated = false;
+                int currTruckerCannonPower;
+                for (Trucker trucker : truckers) {
+                    coordinates = askController.askDoubleCannonToActivate();
+                    currTruckerCannonPower = trucker.getSpaceShip().getTotalCannonPower(coordinates);
+                    if(currTruckerCannonPower<currCard.getPiratesPower()){
+                        defeatedTruckers.add(trucker);
+                    }else if(currTruckerCannonPower>currCard.getPiratesPower()){
+                        piratesDefeated = true;
+                        if(askController.askPirates(trucker)){
+                            currCard.setWinnerTrucker(trucker);
+                        }
+                        currCard.setDefeatedTruckers(defeatedTruckers);
+                        break;
+                    }else if (currTruckerCannonPower==currCard.getPiratesPower()){
+                        continue;
+                    }
+                }
+                //se non ho sconfitto i pirati e sono uscito dal for vuol dire che tutti i giocatori hanno perso
+                //o che tutti i giocatori avevano la stessa potenza di fuoco, in ogni caso devo settare defeatedTruckers
+                //della carta pirati corrente per poter chiamare il suo cardEffect
+                if(!piratesDefeated){
+                    currCard.setDefeatedTruckers(defeatedTruckers);
+                }
                 ((Pirates) card).cardEffect(game);
             }
             case "Planets" -> {

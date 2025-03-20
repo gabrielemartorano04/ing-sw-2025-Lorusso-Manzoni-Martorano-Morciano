@@ -16,6 +16,12 @@ public class AskController {
         return coordinates;
     }
 
+    public ArrayList<int[]> askDoubleCannonToActivate(){
+        //chiede all'utente quali cannoni doppi vuole attivare e ritorna la lista di coordinate dei cannoni da attivare
+        ArrayList<int[]> coordinates = new ArrayList<>();
+        return coordinates;
+    }
+
     public ArrayList<int[]> askBatteryStorageToRemoveFrom(int numOfBatteriesToEliminate){
         //il controller chiede i componenti di tipo batteryStorage da cui vogliamo togliere le batterie e anche quante batterie
         //rimuovere da ognuno di essi
