@@ -288,9 +288,10 @@ public class SpaceShip {
         }
         return power;
     }
-//--------------------------------------------------------------
+
     /**
-     * potenza dei cannoni doppi
+     * This method is called after the method that activates the double cannon components
+     * @return the power of activated double cannons
      */
     public int getDoubleCannon() {
         int power = 0;
@@ -317,8 +318,9 @@ public class SpaceShip {
     }
 
     /**
-     * potere dei motori singoli
-     * */
+     * This method calculate the single engines power
+     * @return the single engines power
+     */
     public int getSingleEnginePower() {
         int power = 0;
         Engine engine = null;
@@ -339,8 +341,9 @@ public class SpaceShip {
         return power;
     }
 
-    /**potere dei motori doppi
-     * @return
+    /**
+     * This method is called after the method that activates the double engines components
+     * @return the power of activated double engines
      */
 
     public int getDoubleEngine() {
@@ -364,17 +367,19 @@ public class SpaceShip {
     }
 
     /**
-     *
-     *
-     * @param x
-     * @param y
-     * @return
+     * This method return the component in position (x,y)
+     * @param x x coordinate of the choosen component
+     * @param y coordinate of the choosen component
+     * @return the component with coordinates (x,y)
      */
     public Component chooseComponent(int x, int y) {
         return components[x][y];
     }
 
-
+    /**
+     * This method find all the shield e calculate the protection
+     * @return spaceship directions protected by the shields
+     */
     public ArrayList<Direction> getProtection() {
         ArrayList<Direction> p = new ArrayList<Direction>();
         Shield shield = null;
@@ -391,6 +396,12 @@ public class SpaceShip {
         return p;
     }
 
+    /**
+     * This method takes two coordinates in input e return if the component is correctly linked with the others components
+     * @param x x coordinate of the component
+     * @param y y coordinate of the component
+     * @return boolean that says if the component in position (x,y) is correctly linked with the others components
+     */
     private boolean isValid(int x, int y) {
 
         Cannon cannon = null;
@@ -447,6 +458,13 @@ public class SpaceShip {
         return true;
     }
 //in ingresso coordinate dei cannoni doppi che vogliamo attivare (da controller)
+
+    /**
+     * This method calculate the sum of single cannon power, double activated cannon and power given by aliens in the cabins
+     * Before calling this method setting the aliens is needed
+     * @param coord coordinates of the components the player wants to activate
+     * @return power of cannons of the spaceship
+     */
     public int getTotalCannonPower(ArrayList<int[]> coord) {
         Cannon cannon = null;
         for(int[] c:coord){
@@ -468,6 +486,12 @@ public class SpaceShip {
         return getSingleCannonPower() + getDoubleCannon() + power;
     }
 
+    /**
+     * This method calculate the sum of single engine power, double activated engine and power given by aliens in the cabins
+     * Before calling this method setting the aliens is needed
+     * @param coord coordinates of the components the player wants to activate
+     * @return power of engine of the spaceship
+     */
     public int getTotalEnginePower(ArrayList<int[]> coord) {
         Engine engine = null;
         for(int[] c:coord){
@@ -490,6 +514,9 @@ public class SpaceShip {
     }
 
 
+    /**
+     * @return number of exposed connectors in the entire spaceship
+     */
     public int countExposedConnectors() {
         int cont = 0;
         for (int i = 5; i <= 9; i++) {
@@ -510,6 +537,9 @@ public class SpaceShip {
         return cont;
     }
 
+    /**
+     * @return true if all the components are correctly linked
+     */
     public boolean wellDone() {
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
@@ -520,6 +550,12 @@ public class SpaceShip {
         return true;
     }
 
+    /**
+     * This method controll if the spaceship is hit
+     * @param direction direction of the attack
+     * @param num row or colon of the attack
+     * @return true if the spaceship is hit else false
+     */
     public boolean isHit(int direction, int num) {
         switch (direction) {
             case 0:
@@ -545,7 +581,7 @@ public class SpaceShip {
         }
         return false;
     }
-
+//--------------------------------------------------------------------------------------------
     public void destroyComponent(int num, int direction) {
         switch (direction) {
             case 0:
