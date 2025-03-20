@@ -61,7 +61,9 @@ public class Game {
     // prendo la prima carta nel mazzo da gioco attivo il suo effetto e la rimuovo
     public void drawCard() {
         if (gameDeck.isEmpty()) return;
-        gameDeck.removeFirst().cardEffect(this, null ); //da modificare null una volta volta implementato game controller
+        Game game= new Game();
+        ModuleLayer.Controller controller =new Controller();
+        gameDeck.removeFirst().cardEffect(); //da modificare null una volta volta implementato game controller
     }
 
     public void turn(){
