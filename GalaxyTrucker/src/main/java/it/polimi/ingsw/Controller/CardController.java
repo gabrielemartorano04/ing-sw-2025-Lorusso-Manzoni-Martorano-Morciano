@@ -38,7 +38,7 @@ public class CardController {
                     if(trucker.getSpaceShip().getNumHuman() <= currCard.getNumHuman()) {
                         continue;
                     }
-                    ArrayList<int[]> coordinates = askController.askAbandonedShip(trucker, currCard.getNumHuman());
+                    ArrayList<int[]> coordinates = askController.askCabinToRemovePeople(trucker, currCard.getNumHuman());
                     if(!coordinates.isEmpty()) {
                         decisionTaken = true;
                         currCard.setTruckerThatHasDecided(trucker);
@@ -137,21 +137,62 @@ public class CardController {
                 if(!piratesDefeated){
                     currCard.setDefeatedTruckers(defeatedTruckers);
                 }
-                ((Pirates) card).cardEffect(game);
+                currCard.cardEffect(game);
             }
+
             case "Planets" -> {
+                //da finire
                 ((Planets) card).cardEffect(game);
             }
+
             case "Slavers" -> {
-                ((Slavers) card).cardEffect(game);
+                Slavers currCard = (Slavers) card;
+                ArrayList<Trucker> defeatedTruckers = new ArrayList<>();
+                ArrayList<Trucker> truckers = game.getTruckerList();
+                ArrayList<int[]> coordinates;
+                ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveHumans = new ArrayList<>(truckers.size());
+                boolean slaversDefeated = false;
+                int currTruckerCannonPower;
+
+                for (Trucker trucker : truckers) {
+                    coordinates = askController.askDoubleCannonToActivate();
+                    currTruckerCannonPower = trucker.getSpaceShip().getTotalCannonPower(coordinates);
+                    if(currTruckerCannonPower<currCard.getSlaversPower()){
+                        defeatedTruckers.add(trucker);
+                        truckersCoordinatesToRemoveHumans.add(askController.askCabinToRemovePeople(trucker, currCard.getAstronautsLost()));
+                    }else if(currTruckerCannonPower>currCard.getSlaversPower()){
+                        slaversDefeated = true;
+                        if(askController.askSlavers(trucker)){
+                            currCard.setWinnerTrucker(trucker);
+                        }
+                        currCard.setDefeatedTruckers(defeatedTruckers);
+                        currCard.setTruckersCoordinatesToRemoveHumans(truckersCoordinatesToRemoveHumans);
+                        break;
+                    }else if (currTruckerCannonPower==currCard.getSlaversPower()){
+                        continue;
+                    }
+                }
+                //se non ho sconfitto gli slavers e sono uscito dal for vuol dire che tutti i giocatori hanno perso
+                //o che tutti i giocatori avevano la stessa potenza di fuoco, in ogni caso devo settare defeatedTruckers
+                //della carta pirati corrente per poter chiamare il suo cardEffect
+                if(!slaversDefeated){
+                    currCard.setDefeatedTruckers(defeatedTruckers);
+                    currCard.setTruckersCoordinatesToRemoveHumans(truckersCoordinatesToRemoveHumans);
+                }
+                currCard.cardEffect(game);
             }
+
             case "Smugglers" -> {
+                //da finire
                 ((Smugglers) card).cardEffect(game);
             }
+
             case "StarDust" -> {
                 ((StarDust) card).cardEffect(game);
             }
+
             case "WarZone" -> {
+                //da finire
                 ((WarZone) card).cardEffect(game);
             }
             //lo metto per sicurezza ma penso sia inutile
