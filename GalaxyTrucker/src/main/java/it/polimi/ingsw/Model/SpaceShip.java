@@ -391,7 +391,7 @@ public class SpaceShip {
         return p;
     }
 
-    private boolean isValid(int x, int y) {
+    public static boolean isValid(int x, int y) {
 
         Cannon cannon = null;
         Component com = components[x][y];
