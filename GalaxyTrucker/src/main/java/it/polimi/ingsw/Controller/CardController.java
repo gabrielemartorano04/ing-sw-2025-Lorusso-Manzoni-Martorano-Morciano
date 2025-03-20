@@ -141,7 +141,7 @@ public class CardController {
             }
 
             case "Planets" -> {
-
+                //da finire
                 ((Planets) card).cardEffect(game);
             }
 
@@ -183,6 +183,7 @@ public class CardController {
             }
 
             case "Smugglers" -> {
+                //da finire
                 ((Smugglers) card).cardEffect(game);
             }
 
@@ -191,6 +192,7 @@ public class CardController {
             }
 
             case "WarZone" -> {
+                //da finire
                 ((WarZone) card).cardEffect(game);
             }
             //lo metto per sicurezza ma penso sia inutile
