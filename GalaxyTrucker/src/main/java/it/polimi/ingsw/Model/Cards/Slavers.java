@@ -66,7 +66,7 @@ public class Slavers extends Card {
             winnerTrucker.addCosmicCredit(credits);
             game.moveBackward(winnerTrucker, days);
         }
-        if(defeatedTruckers.size()>0) {
+        if(!defeatedTruckers.isEmpty()) {
             for (Trucker trucker : defeatedTruckers) {
                 trucker.getSpaceShip().removeNumHuman(astronautsLost, truckersCoordinatesToRemoveHumans.get(i));
                 i++;

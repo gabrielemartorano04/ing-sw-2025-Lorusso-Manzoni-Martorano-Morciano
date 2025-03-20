@@ -64,7 +64,7 @@ public class Pirates extends Card {
         }
 
         //colpisco le navi solo se c'è qualcuno da colpire
-        if (defeatedTruckers.size() > 0) {
+        if (!defeatedTruckers.isEmpty()) {
             for (int[] shoot : shoots) {
                 int roll = game.rollDice();
                 boolean isBig = (shoot[0] == 1);
