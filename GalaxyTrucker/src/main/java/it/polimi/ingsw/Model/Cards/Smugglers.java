@@ -66,4 +66,11 @@ public class Smugglers extends Card {
         }
         isDefeated = false;
     }
+
+    @Override
+    public void cardEffect(Game game) {
+
+    }
+
+
 }
