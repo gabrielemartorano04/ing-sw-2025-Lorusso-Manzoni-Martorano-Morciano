@@ -10,7 +10,7 @@ import java.util.*;
 
 public class SpaceShip {
 
-    private Component[][] components; //components in the matrix
+    public Component[][] components; //components in the matrix
     private Component[] kept; //2 components the trucker decided to keep during the spaceship construction
     private int lost; //number of lost components
     private int redGoods, greenGoods, blueGoods, yellowGoods; // number of goods for each type color
