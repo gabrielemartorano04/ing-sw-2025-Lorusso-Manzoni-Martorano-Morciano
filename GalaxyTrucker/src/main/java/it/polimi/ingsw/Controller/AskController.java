@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Model.Components.*;
+import it.polimi.ingsw.Model.PlayerColors;
 import it.polimi.ingsw.Model.Trucker;
 
 import java.util.ArrayList;
@@ -90,6 +91,14 @@ public class AskController {
     public int askNumPlayer(){
         //chiede quanti giocatori parteciperanno al gioco
         return 0;
+    }
+
+    public String askNickname(){
+        return null;
+    }
+
+    public PlayerColors askColor(){
+        return null;
     }
 }
 

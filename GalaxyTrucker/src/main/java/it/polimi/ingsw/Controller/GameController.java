@@ -1,4 +1,6 @@
 package it.polimi.ingsw.Controller;
+import it.polimi.ingsw.Exceptions.ColorNotAvailable;
+import it.polimi.ingsw.Exceptions.NicknameUsedException;
 import it.polimi.ingsw.Exceptions.TimeExpiredException;
 import it.polimi.ingsw.Model.*;
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ public class GameController {
     private Game game;
     private CardController cardController;
     private SpaceShipController spaceShipController;
+    private ArrayList<PlayerColors> availableColor;
+    private ArrayList<String> usedNickname;
 
     public enum GameState {
         SETUP,  // Attesa giocatori
@@ -21,6 +25,8 @@ public class GameController {
         ENDED     // Partita terminata
     }
 
+
+
     public GameController() {
         this.gameState = GameState.SETUP;
         this.numPlayer = 0;
@@ -28,6 +34,7 @@ public class GameController {
         this.game = new Game();
         this.cardController = new CardController(this.askController, this.game);
         this.spaceShipController = new SpaceShipController();
+        this.availableColor = new ArrayList<PlayerColors>();
     }
 
     public int getNumPlayer() {
@@ -55,13 +62,20 @@ public class GameController {
                 System.out.println("Errore: " + e.getMessage());
             }
         }while(gameState.equals(GameState.BUILDING));
+
         manageBuilding();
         manageFlight();
         manageEnded();
     }
 
-    public void manageSetUp() throws TimeExpiredException {
+    public void manageSetUp() throws TimeExpiredException, NicknameUsedException {
+        availableColor.add(PlayerColors.YELLOW);
+        availableColor.add(PlayerColors.RED);
+        availableColor.add(PlayerColors.GREEN);
+        availableColor.add(PlayerColors.BLUE);
         Timer timer = new Timer();
+        PlayerColors color = null;
+        String nickname = null;
         boolean[] timeExpired = {false};
         long duration = 60000;
         long startTime = System.currentTimeMillis();
@@ -79,12 +93,29 @@ public class GameController {
 
 
         while(numPlayer<2 || numPlayer>4 && !timeExpired[0]){
-            // mostro a scermo il tempo mancante attraverso la view
+            // mostro a scermo il tempo mancante attraverso la view e prendo il nickname e il color dell'utente
+            do {
+                color = askController.askColor();
+                if (!availableColor.contains(color)) {
+                    //catch in askColor
+                    throw new ColorNotAvailable("Color already selected!");
+                }
+            }while(!availableColor.contains(color));
+            availableColor.remove(color);
+            do {
+                nickname = askController.askNickname();
+                if(usedNickname.contains(nickname)){
+                    //catch in askNickname
+                    throw new NicknameUsedException("Nickname already used!");
+                }
+            } while (usedNickname.contains(nickname));
+            usedNickname.add(nickname);
         }
         if (timeExpired[0]){
             throw new TimeExpiredException("Tempo scaduto! Non è stato raggiunto un numero valido di giocatori.");
         }
-        game.setupGame(numPlayer);
+        game.setupGame();
+        game.makeTrucker(numPlayer, nickname, color);
         setGameState(GameState.BUILDING);
     }
 
