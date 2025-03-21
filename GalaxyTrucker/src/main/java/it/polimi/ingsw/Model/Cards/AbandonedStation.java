@@ -23,7 +23,7 @@ public class AbandonedStation extends Card {
      * Abandoned station constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
      * @param level level of the game
-     * @param goods list of goods to acquire
+     * @param goods list of goods to gain
      * @param days number of days of flight to lose
      * @param numHuman number of crew members required
      * @param frontImage front image of the card
@@ -53,8 +53,8 @@ public class AbandonedStation extends Card {
     }
 
     /**
-     * Returns the list of goods to acquire
-     * @return goods to acquire
+     * Returns the list of goods to gain
+     * @return goods to gain
      */
     public ArrayList<Goods> getGoods() {
         return goods;
