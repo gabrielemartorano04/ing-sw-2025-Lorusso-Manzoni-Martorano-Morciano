@@ -128,6 +128,4 @@ public class Pirates extends Card {
             }
         }
     }
-
-
 }
