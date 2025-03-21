@@ -1,26 +1,44 @@
 package it.polimi.ingsw.Model.Components;
 
+/**
+ * Class that manage the single shield
+ */
 public class Shield extends Component{
-
     private Direction direction;
 
+    /**
+     * Shield constructor, it initialised the attributes of this class
+     * @param linkU number of link on the top
+     * @param linkR number of link on the right side
+     * @param linkD number of link on the bottom
+     * @param linkL number of link on the left side
+     * @param type type of component
+     * @param imagePath front image of the component
+     */
     public Shield(int linkU, int linkR, int linkD, int linkL, String type, String imagePath) {
         super(linkU, linkR, linkD, linkL, type, imagePath);
         this.direction = Direction.NE;
     }
 
+    /**
+     * Set the direction if the shield is rotated
+     * @param direction direction of the shield
+     */
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
+    /**
+     * Return the direction of the shield
+     * @return direction of the shield
+     */
     public Direction getDirection() {
         return direction;
     }
 
-    public String getType() {
-        return type;
-    }
-
+    /**
+     * Turn the direction of the shield and the component
+     */
     public void turn(){
         super.turn();
         if(direction == Direction.NE){ setDirection(Direction.SE);}

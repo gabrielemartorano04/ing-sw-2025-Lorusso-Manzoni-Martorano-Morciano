@@ -1,20 +1,32 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.Components.*;
-
 import java.util.Random;
 
+/**
+ * Class that manage the components as a whole
+ */
 public class AvailableComponents {
     private Component[] components;
 
+    /**
+     * Available components constructor, it initialised the array of 156 component
+     */
     public AvailableComponents() {
         this.components = new Component[156];
     }
 
+    /**
+     * Return the array of components available
+     * @return array of components
+     */
     public Component[] getComponents() {
         return components;
     }
 
+    /**
+     * Shuffle the components that are available before the truckers start the game
+     */
     public void shuffle() {
         Random random = new Random();
         for (int i = components.length - 1; i > 0; i--) {
@@ -25,6 +37,10 @@ public class AvailableComponents {
         }
     }
 
+    /**
+     * Remove the component that has been chosen by the trucker for his spaceship from the whole of available components
+     * @param component component to remove
+     */
     public void remove(Component component) {
         int index = -1;
         for (int i = 0; i < components.length; i++) {
@@ -41,6 +57,10 @@ public class AvailableComponents {
         System.arraycopy(components, index + 1, newComponents, index, components.length - index - 1);
         components = newComponents;
     }
+
+    /**
+     * Initialization of each single component available
+     */
 
     Component emptySpace = new EmptySpace();
 
@@ -62,10 +82,10 @@ public class AvailableComponents {
     Component cabin16 = new Cabin(1, 2, 0, 2, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web42.jpg", null, false);
     Component cabin17 = new Cabin(3, 0, 0, 2, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web44.jpg", null, false);
 
-    Component mainCabin1 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web52.jpg", GoodsColor.RED, true);
-    Component mainCabin2 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web34.jpg", GoodsColor.GREEN, true);
-    Component mainCabin3 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web33.jpg", GoodsColor.BLUE, true);
-    Component mainCabin4 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web61.jpg", GoodsColor.YELLOW, true);
+    Component mainCabin1 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web52.jpg", Color.RED, true);
+    Component mainCabin2 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web34.jpg", Color.GREEN, true);
+    Component mainCabin3 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web33.jpg", Color.BLUE, true);
+    Component mainCabin4 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web61.jpg", Color.YELLOW, true);
 
     Component pipes1 = new Pipes(3, 2, 0, 3, "Pipes", "src/main/resources/components/tiles/GT-new_tiles_16_for web59.jpg");
     Component pipes2 = new Pipes(3, 1, 2, 3, "Pipes", "src/main/resources/components/tiles/GT-new_tiles_16_for web58.jpg");
@@ -212,5 +232,4 @@ public class AvailableComponents {
     Component batteryStorage15 = new BatteryStorage(2, 2, 1, 0, "Battery Storage", "src/main/resources/components/tiles/GT-new_tiles_16_for web16.jpg", 3);
     Component batteryStorage16 = new BatteryStorage(1, 0, 2, 0, "Battery Storage", "src/main/resources/components/tiles/GT-new_tiles_16_for web12.jpg", 3);
     Component batteryStorage17 = new BatteryStorage(2, 0, 0, 0, "Battery Storage", "src/main/resources/components/tiles/GT-new_tiles_16_for web14.jpg", 3);
-
 }

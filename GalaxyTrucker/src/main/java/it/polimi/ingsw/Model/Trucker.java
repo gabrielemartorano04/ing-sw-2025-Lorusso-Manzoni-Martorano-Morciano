@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Model.Components.GoodsColor;
-
 public class Trucker {
 
 

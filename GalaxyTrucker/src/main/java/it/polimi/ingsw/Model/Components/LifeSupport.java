@@ -1,19 +1,31 @@
 package it.polimi.ingsw.Model.Components;
 
+/**
+ * Class that manage the single life support
+ */
 public class LifeSupport extends Component{
+    private final AlienColor color;
 
-    private AlienColor color;
-
+    /**
+     * Life support constructor, it initialised the attributes of this class
+     * @param linkU number of link on the top
+     * @param linkR number of link on the right side
+     * @param linkD number of link on the bottom
+     * @param linkL number of link on the left side
+     * @param type type of component
+     * @param imagePath front image of the component
+     * @param color color of the component
+     */
     public LifeSupport(int linkU, int linkR, int linkD, int linkL, String type, String imagePath, AlienColor color) {
         super(linkU, linkR, linkD, linkL, type, imagePath);
         this.color = color;
     }
 
+    /**
+     * Return the color of the life support
+     * @return return the color
+     */
     public AlienColor getColor() {
         return color;
-    }
-
-    public String getType() {
-        return type;
     }
 }
