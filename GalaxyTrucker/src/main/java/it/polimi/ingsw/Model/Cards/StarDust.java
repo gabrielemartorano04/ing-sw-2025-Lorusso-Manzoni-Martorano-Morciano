@@ -5,7 +5,19 @@ import it.polimi.ingsw.Model.Trucker;
 
 import java.util.*;
 
+/**
+ * Class that manages the single card star dust
+ * In reverse order of position, the truckers lose as many days of flight as the number of connectors exposed
+ */
 public class StarDust extends Card {
+
+    /**
+     * Star dust constructor, initialise the attributes of this class
+     * @param trialFlight specify if truckers are playing trial flight
+     * @param level level of the game
+     * @param frontImage front image of the card
+     * @param backImage back image of the card
+     */
     public StarDust(boolean trialFlight, int level, String frontImage, String backImage) {
         super("Star Dust", "A cloud of cosmic dust", trialFlight, level, frontImage, backImage);
     }
