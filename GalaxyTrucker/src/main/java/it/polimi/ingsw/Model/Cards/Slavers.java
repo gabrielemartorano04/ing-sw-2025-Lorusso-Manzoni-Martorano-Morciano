@@ -58,7 +58,10 @@ public class Slavers extends Card {
         this.truckersCoordinatesToRemoveHumans = truckersCoordinatesToRemoveHumans;
     }
 
-
+    /**
+     * Applies the changes provided by the card
+     * @param game game in which the card has been drawn
+     */
     @Override
     public void cardEffect(Game game) {
         int i = 0;

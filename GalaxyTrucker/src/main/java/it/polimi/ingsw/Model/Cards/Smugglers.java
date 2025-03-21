@@ -3,12 +3,10 @@ package it.polimi.ingsw.Model.Cards;
 
 
 import it.polimi.ingsw.Model.Game;
-import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.Components.*;
 import it.polimi.ingsw.Model.Trucker;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
 
 //secondo me tutti i get sono inutil
@@ -71,6 +69,10 @@ public class Smugglers extends Card {
         this.truckersCoordinatesToRemoveGoods = truckersCoordinatesToRemoveGoods;
     }
 
+    /**
+     * Applies the changes provided by the card
+     * @param game game in which the card has been drawn
+     */
     @Override
     public void cardEffect(Game game) {
         int i = 0;

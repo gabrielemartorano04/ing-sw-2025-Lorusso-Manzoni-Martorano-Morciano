@@ -49,8 +49,8 @@ public class Cabin extends Component{
     }
 
     /**
-     * Sets the maximum number of human (2) or alien (1) in the cabin
-     * @param quantity number of character in the cabin
+     * Sets the maximum number of crew members (2 humans or 1 alien) in the cabin
+     * @param quantity number of crew members
      */
     public void setQuantity(int quantity) {
         this.quantity = quantity;
@@ -65,16 +65,16 @@ public class Cabin extends Component{
     }
 
     /**
-     * Returns the number of human or alien contained in the cabin
-     * @return number of character contained in the cabin
+     * Returns the number of crew members contained in the cabin
+     * @return number crew members contained
      */
     public int getQuantity() {
         return quantity;
     }
 
     /**
-     * Returns the maximum number of human or alien that can be contained in the cabin
-     * @return number of character that can be contained in the cabin
+     * Returns the maximum number of crew members that can be contained in the cabin
+     * @return number of crew members that can be contained
      */
     public int getCapacity() {
         return capacity;
@@ -89,8 +89,8 @@ public class Cabin extends Component{
     }
 
     /**
-     * Removes human or alien from the cabin
-     * @param num number of human/alien to remove
+     * Removes crew members from the cabin
+     * @param num number of crew members to remove
      */
     public void removeHumans(int num) {
         quantity -= num;

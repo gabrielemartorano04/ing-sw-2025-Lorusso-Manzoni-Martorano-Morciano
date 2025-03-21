@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Game;
-import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.Trucker;
 
 import java.util.*;
@@ -11,6 +10,10 @@ public class StarDust extends Card {
         super("Star Dust", "A cloud of cosmic dust", trialFlight, level, frontImage, backImage);
     }
 
+    /**
+     * Applies the changes provided by the card
+     * @param game game in which the card has been drawn
+     */
     @Override
     public void cardEffect(Game game) {
         List<Trucker> truckers = game.getTruckerList();
