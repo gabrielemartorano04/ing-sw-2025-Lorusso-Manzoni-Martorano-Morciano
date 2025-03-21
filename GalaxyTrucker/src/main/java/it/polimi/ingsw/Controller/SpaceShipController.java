@@ -9,17 +9,16 @@ public class SpaceShipController {
     public SpaceShipController() {
     }
 
-    //DA MODIFICARE
-    public void addComponent(SpaceShip spaceShip, Component component, int[] coord) throws InvalidLinkException, InvalidPositionException {
-        if (spaceShip.components[coord[0]][coord[1]] != null) {
-            throw new InvalidPositionException("La posizione [" + coord[0] + "] [" + coord[1] + "] è gia occupata");
+    public void addComponent(SpaceShip spaceShip, Component component, int x, int y) throws InvalidLinkException, InvalidPositionException {
+        if (spaceShip.components[x][y] != null) {
+            throw new InvalidPositionException("La posizione [" + x + "] [" + y + "] è gia occupata");
         }
-        if ("Empty Space".equals((spaceShip.getComponents()[coord[0]][coord[1]]).getType())){
-            throw new InvalidPositionException("La posizione [" + coord[0] + "] [" + coord[1] + "] è al di fuori dello spazio disponibile");
+        if ("Empty Space".equals((spaceShip.getComponents()[x][y]).getType())){
+            throw new InvalidPositionException("La posizione [" + x + "] [" + y + "] è al di fuori dello spazio disponibile");
         }
-        spaceShip.components[coord[0]][coord[1]] = component;
-        if (!spaceShip.isValid(coord[0], coord[1])){
-            spaceShip.components[coord[0]][coord[1]] = null;
+        spaceShip.addComponent(component, x, y);
+        if (!spaceShip.isValid(x, y)){
+            spaceShip.removeComponent(x, y);
             throw new InvalidLinkException("Il componente " + component.getType() + " non può essere collegato in questo modo");
         }
     }

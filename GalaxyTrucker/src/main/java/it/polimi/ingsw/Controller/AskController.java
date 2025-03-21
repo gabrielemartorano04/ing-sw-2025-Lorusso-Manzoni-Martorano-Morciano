@@ -36,12 +36,23 @@ public class AskController {
         return batteryCoordinates;
     }
 
-    public ArrayList<int[]> askGoodsToAdd(Trucker trucker, Goods[] goods){
-        return null;
+    public ArrayList<int[]> askWhereToAddGoods(Trucker trucker, Goods[] goods){
+        return new ArrayList<>();
         //il controller chiede i componenti di tipo Load in cui vogliamo mettere le merci
+        // POTREBBE ANCHE RETURNARE UN VETTORE VUOTO MA NON DEVE POTER RETURNARE NULL
     }
 
-    public ArrayList<int[]> askGoodsToRemove(Trucker trucker, int goodsLost){
+    public ArrayList<int[]> askWhereToAddGoodsList(Trucker trucker, ArrayList<Goods> goods){
+        return new ArrayList<>();
+        //il controller chiede i componenti di tipo Load in cui vogliamo mettere le merci
+        // POTREBBE ANCHE RETURNARE UN VETTORE VUOTO MA NON DEVE POTER RETURNARE NULL
+
+        // fa la stessa cosa del WhereToAddGoods ma prende in ingresso una lista invece che un vettore
+        // SAREBBE MEGLIO UNIRLE CAMBIANDO LA DEFINIZIONE DI COME MEMORIZZO LE MERCI DENTRO SMUGGLERS MA IN TANTO
+        // TENGO COSI
+    }
+
+    public ArrayList<int[]> askWhereToRemoveGoods(Trucker trucker, int goodsLost){
         return null;
         //il controller chiede i componenti di tipo Load in cui vogliamo rimuovere le merci
     }
@@ -78,9 +89,15 @@ public class AskController {
         return false;
     }
 
-    public boolean askPlayerToLand(Trucker trucker){
-        //il trucker deve dire se atterrare su un pianeta per acquisire le relative merci
-        return false;
+    public int askPlanets(Trucker trucker, ArrayList<ArrayList<Goods>> planets, int[] planetsLanded){
+        //restituisce l'indice del pianeta scelto tra i planets, se il player non ha scelto nessun pianeta restituisce -1
+        // Per controllare se il pianeta è già stato scelto
+        // si usa il vettore planetesLanded dove planetsLanded[i] = 1 se il pianeta i-esimo è stato scelto
+        // funziona perché planetsLanded è della stessa lunghezza di planets
+
+        // MI ASPETTO CHE VENGA FATTO SCEGLIERE SOLO TRA I PIANETI DOVE planetsLanded[i] VALE 0
+        int indexOfPlanet = -1;
+        return indexOfPlanet;
     }
 
     public int askPlayerToChoosePlanet(Trucker trucker, ArrayList<ArrayList<Goods>> planets, ArrayList<Boolean> landed ){

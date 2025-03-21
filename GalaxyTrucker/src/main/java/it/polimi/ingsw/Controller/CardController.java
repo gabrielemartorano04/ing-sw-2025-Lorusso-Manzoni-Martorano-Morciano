@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Model.Cards.*;
+import it.polimi.ingsw.Model.Components.Goods;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
 
@@ -141,8 +142,39 @@ public class CardController {
             }
 
             case "Planets" -> {
-                //da finire
-                ((Planets) card).cardEffect(game);
+                Planets currCard = (Planets) card;
+                ArrayList<ArrayList<Goods>> availablePlanets = currCard.getPlanets();
+                ArrayList<Trucker> truckers = game.getTruckerList();
+                ArrayList<ArrayList<int[]>> truckersCoordinates = new ArrayList<>(truckers.size());
+                int indexOfPlanetChoosen;
+                int[] playersLanded = new int[truckers.size()];
+                int i = 0;
+
+                // planetsLanded[i] = 1 se quel pianeta è già stato scelto altrimenti vale 0 sono già sicuro che la dimensione
+                // non sarà 0 perché creiamo carte pianeti che hanno almeno 2 pianeti
+                int[] planetsLanded = new int[availablePlanets.get(0).size()];
+                for(int i = 0; i < planetsLanded.length; i++){
+                    planetsLanded[i] = 0;
+                }
+
+                for(Trucker trucker : truckers) {
+                    indexOfPlanetChoosen = askController.askPlanets(trucker, availablePlanets, planetsLanded);
+                    //se la risposta è un indice diverso da -1 segno che quel trucker vuole atterrare
+                    // e dopo chiedo le coordinate di dove caricare le merci
+                    // NOTA: faccio la richiesta delle coordinate dopo perché posso occupare un pianeta anche senza caricare merci
+                    // quindi restituendo una lista di coordinates nulla
+                    if(indexOfPlanetChoosen!=-1){
+                        playersLanded[i] = 1;
+                        planetsLanded[indexOfPlanetChoosen] = 1;
+                        truckersCoordinates.add(askController.askWhereToAddGoodsList(trucker, availablePlanets.get(indexOfPlanetChoosen)));
+                    }
+                    if(indexOfPlanetChoosen == -1){
+                        playersLanded[i] = 0;
+                    }
+                }
+                currCard.setPlayersLanded(playersLanded);
+                currCard.setTruckersCoordinates(truckersCoordinates);
+                currCard.cardEffect(game);
             }
 
             case "Slavers" -> {
@@ -199,12 +231,12 @@ public class CardController {
                     currTruckerCannonPower = trucker.getSpaceShip().getTotalCannonPower(coordinates);
                     if(currTruckerCannonPower<currCard.getSmugglersPower()){
                         defeatedTruckers.add(trucker);
-                        truckersCoordinatesToRemoveGoods.add(askController.askGoodsToRemove(trucker, currCard.getGoodsLost()));
+                        truckersCoordinatesToRemoveGoods.add(askController.askWhereToRemoveGoods(trucker, currCard.getGoodsLost()));
                     }else if(currTruckerCannonPower>currCard.getSmugglersPower()){
                         piratesDefeated = true;
                         if(askController.askPirates(trucker)){
                             currCard.setWinnerTrucker(trucker);
-                            currCard.setWinnerCoordinatesToAddGoods(askController.askGoodsToAdd(trucker, currCard.getGoodsGained()));
+                            currCard.setWinnerCoordinatesToAddGoods(askController.askWhereToAddGoods(trucker, currCard.getGoodsGained()));
                         }
                         currCard.setDefeatedTruckers(defeatedTruckers);
                         currCard.setTruckersCoordinatesToRemoveGoods(truckersCoordinatesToRemoveGoods);
