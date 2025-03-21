@@ -22,7 +22,7 @@ public class AbandonedShip extends Card {
      * @param trialFlight specify if truckers are playing trial flight
      * @param level level of the game
      * @param numHuman number of crew members to lose
-     * @param credits number of cosmic credits acquired
+     * @param credits number of cosmic credits gain
      * @param days number of days of flight to lose
      * @param frontImage front image of the card
      * @param backImage back image of the card
@@ -43,8 +43,8 @@ public class AbandonedShip extends Card {
     }
 
     /**
-     * Returns the number of cosmic credits to acquire
-     * @return credit to acquire
+     * Returns the number of cosmic credits to gain
+     * @return credit to gain
      */
     public int getCredits() {
         return credits;

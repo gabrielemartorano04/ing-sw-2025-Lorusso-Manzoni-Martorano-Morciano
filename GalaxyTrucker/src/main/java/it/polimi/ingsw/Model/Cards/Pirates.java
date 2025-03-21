@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Class that manages the single card pirates
  * In order of position, starting from the leader, each trucker decides which double cannon wants to activate, using batteries, for the calculation of the cannon power.
- * The first trucker that has a cannon power which is equals or higher than the pirates one, defeat them and decide if he/she wants, losing days of flight, acquire cosmic credits.
+ * The first trucker that has a cannon power which is equals or higher than the pirates one, defeat them and decide if he/she wants, losing days of flight, to gain cosmic credits.
  * For all the defeated, the first defeated trucker roll the dices for each shoot, in order of representation on the card, to determinate the row or column in which the shoot will hit.
  * If it's a small shoot, the trucker can use a battery to activate a shield oriented in that direction to protect the ship.
  * If it's a big shoot, there is no way possible for the trucker to protect his/her ship.
@@ -31,7 +31,7 @@ public class Pirates extends Card {
      * Pirates constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
      * @param level level of the game
-     * @param credits number of cosmic credit to acquire
+     * @param credits number of cosmic credit to gain
      * @param days number of days of flight to lose
      * @param piratesPower cannon power required
      * @param shoots list of meteor to protect from
@@ -47,8 +47,8 @@ public class Pirates extends Card {
     }
 
     /**
-     * Returns the number of cosmic credits to acquire
-     * @return credit to acquire
+     * Returns the number of cosmic credits to gain
+     * @return credit to gain
      */
     public int getCredits() {
         return credits;

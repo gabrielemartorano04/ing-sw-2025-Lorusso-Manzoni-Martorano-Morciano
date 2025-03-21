@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Model.Cards;
 
-
-
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Components.*;
 import it.polimi.ingsw.Model.Trucker;
@@ -11,26 +9,34 @@ import java.util.Arrays;
 
 //secondo me tutti i get sono inutil
 
+/**
+ * Class that manages the single card smugglers
+ *
+ */
 public class Smugglers extends Card {
-    private int smugglersPower;
-    private int goodsLost;
-    private int days;
+    private final int smugglersPower;
+    private final int goodsLost;
+    private final int days;
     private Goods[] goodsGained = new Goods[3];
     private boolean isDefeated = false;
-
-    // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
-    private Trucker winnerTrucker = null;
+    private Trucker winnerTrucker = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
     private ArrayList<Trucker> defeatedTruckers;
+    ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveGoods; //solita Lista di trucker di liste di coordinate per tenere traccia per ogni trucker delle coordinate dei Load da cui rimuovere il numero di merci contenuto nella carta Smugglers
+    ArrayList<int[]> winnerCoordinatesToAddGoods; //coordinate dei load in cui il vincitore ha scelto di caricare le merci
 
-    //solita Lista di trucker di liste di coordinate per tenere traccia per ogni trucker delle coordinate dei Load da cui rimuovere
-    // il numero di merci contenuto nella carta Smugglers
-    ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveGoods;
-
-    //coordinate dei load in cui il vincitore ha scelto di caricare le merci
-    ArrayList<int[]> winnerCoordinatesToAddGoods;
-
-    public Smugglers(boolean trialFlight, int smugglersPower, int goodsLost, int days, Goods[] goodsGained, int level, String frontName, String backName) {
-        super("Smugglers", "Illegal traders of goods", trialFlight, level, frontName, backName);
+    /**
+     * Smugglers constructor, initialise the attributes of this class
+     * @param trialFlight specify if truckers are playing trial flight
+     * @param level level of the game
+     * @param smugglersPower cannon power required
+     * @param goodsLost number of goods to lose
+     * @param days number of days of flight to lose
+     * @param goodsGained arrays of goods to gain
+     * @param frontImage front image of the card
+     * @param backImage back image of the card
+     */
+    public Smugglers(boolean trialFlight, int smugglersPower, int goodsLost, int days, Goods[] goodsGained, int level, String frontImage, String backImage) {
+        super("Smugglers", "Illegal traders of goods", trialFlight, level, frontImage, backImage);
         this.smugglersPower = smugglersPower;
         this.goodsLost = goodsLost;
         this.days = days;

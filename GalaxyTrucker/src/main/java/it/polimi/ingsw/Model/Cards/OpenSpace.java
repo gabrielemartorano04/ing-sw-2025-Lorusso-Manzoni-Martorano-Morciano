@@ -29,7 +29,7 @@ public class OpenSpace extends Card {
     }
 
     /**
-     * Sets the coordinates of the double cannon that each trucker wants to activate
+     * Sets for each trucker the coordinates of the double cannon that he/she wants to activate
      * @param truckersCoordinates list of lists of arrays of coordinates
      */
     public void setCoordinates(ArrayList<ArrayList<int[]>> truckersCoordinates) {
