@@ -18,6 +18,7 @@ public class SpaceShip {
     private int goodsCapacity; //number of goods capacity
     private ArrayList<Goods> goodsList; //list of goods in the spaceship, sort by their value (desc)
     private int numOfBattery; //number of batteries in the spaceship
+    private int numAlien;
 
     /**
      * Spaceship constructor, it initializes the attributes of this class
@@ -72,6 +73,7 @@ public class SpaceShip {
         goodsList = new ArrayList<>();
         //ogni cabin se non ha un alieno ha due umani
         numHuman = 0;
+        numAlien=0;
         //ogni battery storage è pieno di batterie
         numOfBattery = 0;
     }
@@ -114,7 +116,7 @@ public class SpaceShip {
      * the cabin with 2 astronauts
      * @return number of astronauts in the spaceship
      */
-    public int getNumHuman() {
+    public int setNumHuman() {
         Cabin cabin = null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
@@ -130,6 +132,14 @@ public class SpaceShip {
             }
         }
         return numHuman;
+    }
+
+    /**
+     * This method
+     * @return number of astronauts and aliens in the spaceship
+     */
+    public int getNumHuman(){
+        return numHuman+numAlien;
     }
 
     /**
@@ -174,6 +184,7 @@ public class SpaceShip {
                         if(ls!=null && coord.contains(c)){
                             alien=new Alien(ls.getColor());
                             cabin.setAlien(alien);
+                            numAlien++;
                         }
                     }
 
@@ -203,30 +214,25 @@ public class SpaceShip {
     }
 
     /**
-     * This method remove a num of astronauts from a list of components
-     * @param num number of astronauts the spaceship loses
-     * @param coord coordinates of the cabin from which the player wants to remove astronauts
+     *
+     * @param coord where coord[0] coord[1] are the x coordinate of the component from which the player
+     *              wants to remove a number of astronauts cointained in coord[2]
      */
-    public void removeNumHuman(int num, ArrayList<int[]> coord) {
+    public void removeNumHuman(ArrayList<int[]> coord) {
         Cabin cabin=null;
         for(int[] c:coord){
             if (components[c[0]][c[1]].getType().equals("Cabin")){
                 cabin=(Cabin)components[c[0]][c[1]];
-                if(cabin.getQuantity() >= num) {
-                    cabin.removeHumans(num);
-                    numHuman -= num;
-                    num=0;
+                if(cabin.getQuantity() >= c[2]) {
+                    cabin.removeHumans(c[2]);
+                    numHuman -= c[2];
                 }
                 else {
-                    numHuman -= cabin.getQuantity();
-                    num-=cabin.getQuantity();
-                    cabin.setQuantity(0);
+                    //eccezione non hai abbastanza umani da togliere
                 }
             }
 
         }
-
-
     }
 
     /**
@@ -581,7 +587,12 @@ public class SpaceShip {
         }
         return false;
     }
-//--------------------------------------------------------------------------------------------
+
+    /**
+     * This method remove a component destroyed by a big meteorite
+     * @param num number of row or colon from which the meteorite arrives
+     * @param direction Direction 0-->N, 1-->E, 2-->S, 3-->W from which the meteorite arrives
+     */
     public void destroyComponent(int num, int direction) {
         switch (direction) {
             case 0:
@@ -607,6 +618,12 @@ public class SpaceShip {
         }
     }
 
+    /**
+     * This method says if there is a cannon which can shoot the arriving meteorite
+     * @param direction Direction 0-->N, 1-->E, 2-->S, 3-->W from which the meteorite arrives
+     * @param num number of row or colon from which the meteorite arrives
+     * @return true if there is a cannon which can shoot the arriving meteorite, false otherwise
+     */
     public boolean shootMeteor(int direction, int num) {
         switch (direction) {
             case 0:
@@ -649,6 +666,13 @@ public class SpaceShip {
         return false;
     }
 
+    /**
+     * This method returns if the spaceship can block a small meteorite, with a cannon or if it doesn't
+     * have exposed links
+     * @param direction Direction 0-->N, 1-->E, 2-->S, 3-->W from which the meteorite arrives
+     * @param num number of row or colon from which the meteorite arrives
+     * @return true if the spaceshio doesn't have exposed links or has a cannon where is hit by the small meteorite
+     */
     public boolean blockSmallMeteor(int direction, int num) {
 
             if (shootMeteor(direction, num)) return true;
@@ -690,7 +714,16 @@ public class SpaceShip {
 
         return false;
     }
-    //considerando che la nave verrà sicuramente colpita controllo se la nave ha uno scudo che protegge quella direzione, se ha almeno una batteria chiedo se vuole attivare quello scudo
+
+    /**
+     * This method is used if it's already known that the spaceship will be hit by the small meteorite,
+     * if the spaceship has protection in the critical direction, the player can choose to use or not the
+     * shield. This is possible only if there is enough batteries to use the shield.
+     * @param direction Direction 0-->N, 1-->E, 2-->S, 3-->W from which the meteorite arrives
+     * @param num number of row or colon from which the meteorite arrives
+     * @param use true if the player wants to use the shield, false otherwise
+     * @return true if the spaceship is protected
+     */
     public boolean blockLightCannonShot(int direction,int num, boolean use){
         Shield shield=null;
         for (int i = 5; i <= 9; i++) {
@@ -713,14 +746,18 @@ public class SpaceShip {
         return false;
     }
 
+
+    /**
+     * This method remove an astronauts from each non empty cabin linked to an other non empty cabin
+     */
     public void epidemic() {
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null && components[i][j].getType().equals("Cabin") && ((Cabin) components[i][j]).getQuantity() > 0) {
-                    if ((components[i + 1][j].getType().equals("Cabin") && ((Cabin) components[i + 1][j]).getQuantity() > 0)
-                            || (components[i][j + 1].getType().equals("Cabin") && ((Cabin) components[i][j + 1]).getQuantity() > 0)
-                            || (components[i - 1][j].getType().equals("Cabin") && ((Cabin) components[i - 1][j]).getQuantity() > 0)
-                            || (components[i][j - 1].getType().equals("Cabin") && ((Cabin) components[i][j - 1]).getQuantity() > 0)) {
+                    if ((components[i + 1][j].getType().equals("Cabin") && ((Cabin) components[i + 1][j]).getQuantity() > 0 && compatibleLinks(components[i][j].getLink()[2], components[i+1][j].getLink()[0]))
+                            || (components[i][j + 1].getType().equals("Cabin") && ((Cabin) components[i][j + 1]).getQuantity() > 0 && compatibleLinks(components[i][j].getLink()[1], components[i][j+1].getLink()[3]))
+                            || (components[i - 1][j].getType().equals("Cabin") && ((Cabin) components[i - 1][j]).getQuantity() > 0 && compatibleLinks(components[i][j].getLink()[0], components[i-1][j].getLink()[2]))
+                            || (components[i][j - 1].getType().equals("Cabin") && ((Cabin) components[i][j - 1]).getQuantity() > 0) && compatibleLinks(components[i][j].getLink()[3], components[i][j-1].getLink()[1])) {
                         removeHuman(i, j);
                     }
                 }
@@ -728,8 +765,14 @@ public class SpaceShip {
         }
     }
 
-
-    //coord coordinate dei componenti da cui togliere batterie
+    /**
+     * This method remove a number of goods from the spaceship, through goodsList it's easy to access
+     * the component that contains a certain good, so we remove it from the component and from goodsList.
+     * If the player loses all his goods and he has to lose more, he will lose the rest in batteries,
+     * at the beginning the player choose battery storages from which he can remove batteries
+     * @param numOfLostGoods number of gooods the player has to remove
+     * @param coord coordinates of battery storages from which he will lose batteries eventually
+     */
     public void removeGoods(int numOfLostGoods, ArrayList<int[]> coord) {
         int x = 0;
         int y = 0;
@@ -769,6 +812,11 @@ public class SpaceShip {
         }
     }
 
+    /**
+     * This method adds a good in the goodsList in a way that keeps it sorted in descending order
+     * based on goods value
+     * @param good the good that needs to be added to goodsList
+     */
     public void addGoodsList(Goods good){
         int i = 0;
         while (i < goodsList.size() && goodsList.get(i).getValue() > good.getValue()) {
@@ -776,7 +824,12 @@ public class SpaceShip {
         }
         goodsList.add(i, good);
     }
-    //dove vuole mettere le merci
+
+    /**
+     * This method insert a list of goods in the Load components choosen by the player
+     * @param goods list of goods the player wants to add
+     * @param coord coordinates of Load components
+     */
     public void addGoods(List <Goods> goods,ArrayList<int[]> coord){
         int index=0;
         Load load=null;
@@ -835,15 +888,44 @@ public class SpaceShip {
 
 
     }
+
+    /**
+     * This method
+     * @return the list of goods in the spaceship
+     */
     public ArrayList<Goods> getGoodsList(){
         return goodsList;
     }
 
-
+    /**
+     * This method
+     * @return the number of lost components
+     */
     public int getLost(){
         return lost;
     }
 
+    /**
+     * This method remove a number of batteries from some Battery Storage component, the number and the
+     * components are choosen by the player
+     * @param batteryCoordinates where batteryCoordinates[0] and batteryCoordinates[1] are the x coordinate
+     *                           of the component from which the player wants to remove a number of batteries
+     *                           cointained in batteryCoordinates[2]
+     */
+    public void removeBatteries(ArrayList<int[]> batteryCoordinates){
+        BatteryStorage bs=null;
+        for(int[] c:batteryCoordinates){
+            if (components[c[0]][c[1]].getType().equals("Battery Storage")){
+                bs=(BatteryStorage) components[c[0]][c[1]];
+                if(bs.getQuantity() >= c[2]) {
+                    bs.setQuantity(bs.getQuantity() - c[2]);
+                    numHuman -= c[2];
+                }
+                else {
+                    //eccezione non hai abbastanza umani in c[0]c[1]
+                }
+            }
 
-
+        }
+    }
 }
