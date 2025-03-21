@@ -1,15 +1,31 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Game;
-import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.Trucker;
 
 import java.util.List;
 
+/**
+ * Class that manages the single card epidemic
+ * Every trucker has to remove a crew member from each occupied cabin that is connected to another occupied cabin
+ */
 public class Epidemic extends Card {
+
+    /**
+     * Epidemic constructor, initialise the attributes of this class
+     * @param trialFlight specify if truckers are playing trial flight
+     * @param level level of the game
+     * @param frontImage front image of the card
+     * @param backImage back image of the card
+     */
     public Epidemic(boolean trialFlight, int level, String frontImage, String backImage) {
         super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage);
     }
+
+    /**
+     * Applies the changes provided by the card
+     * @param game game in which the card has been drawn
+     */
     @Override
     public void cardEffect(Game game) {
         List <Trucker> truckers = game.getTruckerList();
