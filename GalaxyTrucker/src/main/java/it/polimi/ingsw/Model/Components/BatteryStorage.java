@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.Components;
 
 /**
- * Class that manage the single battery storage
+ * Class that manages the single battery storage
  */
 public class BatteryStorage extends Component{
     private final int capacity;

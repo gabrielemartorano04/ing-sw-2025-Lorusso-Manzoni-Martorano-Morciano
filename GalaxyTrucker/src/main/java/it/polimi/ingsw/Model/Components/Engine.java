@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.Components;
 
 /**
- * Class that manage the single engine
+ * Class that manages the single engine
  */
 public class Engine extends Component{
     private final boolean isDouble;

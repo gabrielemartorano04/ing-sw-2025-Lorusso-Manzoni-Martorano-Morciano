@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.Components;
 
 /**
- * Class that manage the single pipes
+ * Class that manages the single pipes
  */
 public class Pipes extends Component{
 

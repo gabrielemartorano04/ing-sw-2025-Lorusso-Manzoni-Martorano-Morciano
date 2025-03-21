@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.Components;
 
 /**
- * Class that manage the single cabin
+ * Class that manages the single cabin
  */
 public class Cabin extends Component{
     private final boolean isMain;

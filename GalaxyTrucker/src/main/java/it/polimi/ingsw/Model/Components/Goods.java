@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Model.Components;
 
 /**
- * Class that manage the single good
- * Value represent the color of the good:
+ * Class that manages the single good
+ * Value represents the color of the good:
  * 4 = red
  * 3 = yellow
  * 2 = green

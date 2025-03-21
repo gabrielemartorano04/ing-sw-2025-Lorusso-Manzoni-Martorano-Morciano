@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model.Components;
 import javax.swing.ImageIcon;
 
 /**
- * Class that manage the single component
+ * Class that manages the single component
  */
 public abstract class Component {
     protected int[] link;

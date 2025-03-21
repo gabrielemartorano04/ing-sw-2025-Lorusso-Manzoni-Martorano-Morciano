@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.Components;
 
 /**
- * Group of constant color of the main cabins
+ * Group of constant colors of the main cabins
  */
 public enum Color {RED, GREEN, BLUE, YELLOW};
 

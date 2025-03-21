@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.Components;
 
 /**
- * Class that manage the single alien
+ * Class that manages the single alien
  */
 public class Alien {
     private final AlienColor color;

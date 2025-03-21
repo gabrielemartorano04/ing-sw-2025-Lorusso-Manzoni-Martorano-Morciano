@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.Components;
 
 /**
- * Class that manage the cannon
+ * Class that manages the cannon
  */
 public class Cannon extends Component{
     private final boolean isDouble;

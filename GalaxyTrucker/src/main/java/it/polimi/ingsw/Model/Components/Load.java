@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model.Components;
 import java.util.ArrayList;
 
 /**
- * Class that manage the single load
+ * Class that manages the single load
  */
 public class Load extends Component{
     private final boolean isSpecial;
