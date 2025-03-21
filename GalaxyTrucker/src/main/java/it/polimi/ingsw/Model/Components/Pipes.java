@@ -6,7 +6,7 @@ package it.polimi.ingsw.Model.Components;
 public class Pipes extends Component{
 
     /**
-     * Pipes constructor, it initialised the attributes of this class
+     * Pipes constructor, initialise the attributes of this class
      * @param linkU number of link on the top
      * @param linkR number of link on the right side
      * @param linkD number of link on the bottom

@@ -10,10 +10,10 @@ public abstract class Component {
     protected boolean selected;
     protected boolean covered;
     protected String type;
-    protected final ImageIcon frontImage, rearImage;
+    protected final ImageIcon frontImage, backImage;
 
     /**
-     * Component constructor, it initialised the attributes of this class
+     * Component constructor, initialise the attributes of this class
      * @param linkU number of link on the top
      * @param linkR number of link on the right side
      * @param linkD number of link on the bottom
@@ -27,11 +27,11 @@ public abstract class Component {
         this.covered = false;
         this.type = type;
         this.frontImage = new ImageIcon(frontImagePath);
-        this.rearImage = new ImageIcon("src/main/resources/components/tiles/GT-new_tiles_16_for web157.jpg");
+        this.backImage = new ImageIcon("src/main/resources/components/tiles/GT-new_tiles_16_for web157.jpg");
     }
 
     /**
-     * Return the front image of the component
+     * Returns the front image of the component
      * @return front image
      */
     public ImageIcon getFrontImage() {
@@ -39,15 +39,15 @@ public abstract class Component {
     }
 
     /**
-     * Return the rear image of the component
+     * Returns the rear image of the component
      * @return rear image
      */
     public ImageIcon getRearImage() {
-        return rearImage;
+        return backImage;
     }
 
     /**
-     * Set if the component has been selected from the table to be added to a spaceship
+     * Sets if the component has been selected from the table to be added to a spaceship
      * @param selected if the component is selected
      */
     public void setSelected(boolean selected) {
@@ -55,7 +55,7 @@ public abstract class Component {
     }
 
     /**
-     * Set if the component has been already uncovered on the table or not
+     * Sets if the component has been already uncovered on the table or not
      * @param covered if the component is covered
      */
     public void setCovered(boolean covered) {
@@ -63,7 +63,7 @@ public abstract class Component {
     }
 
     /**
-     * Return an array of the number of link on each of the four side
+     * Returns an array of the number of link on each of the four side
      * position 0 = top
      * position 1 = right side
      * position 2 = bottom
@@ -75,7 +75,7 @@ public abstract class Component {
     }
 
     /**
-     * Return if the component has been selected from the table to be added to a spaceship
+     * Returns if the component has been selected from the table to be added to a spaceship
      * @return if the component is selected
      */
     public boolean getSelected() {
@@ -83,7 +83,7 @@ public abstract class Component {
     }
 
     /**
-     * Return if the component has been already uncovered on the table or not
+     * Returns if the component has been already uncovered on the table or not
      * @return if the component is covered
      */
     public boolean getCovered() {
@@ -91,7 +91,7 @@ public abstract class Component {
     }
 
     /**
-     * Turn clockwise the component, thus the link
+     * Turns clockwise the component, thus the link
      */
     public void turn() {
         int tmp=link[3];
@@ -102,7 +102,7 @@ public abstract class Component {
     }
 
     /**
-     * Return the type of component
+     * Returns the type of component
      * @return type of component
      */
     public String getType() {

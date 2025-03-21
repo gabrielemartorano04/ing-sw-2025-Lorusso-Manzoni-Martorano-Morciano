@@ -9,7 +9,7 @@ public class Cannon extends Component{
     private Orientation orientation;
 
     /**
-     * Cannon constructor, it initialised the attributes of this class
+     * Cannon constructor, initialise the attributes of this class
      * @param linkR number of link on the right side
      * @param linkD number of link on the bottom
      * @param linkL number of link on the left side
@@ -25,7 +25,7 @@ public class Cannon extends Component{
     }
 
     /**
-     * Set the orientation if the component is rotated
+     * Sets the orientation if the component is rotated
      * @param orientation orientation of the cannon
      */
     public void setOrientation(Orientation orientation) {
@@ -33,7 +33,7 @@ public class Cannon extends Component{
     }
 
     /**
-     * Set if the trucker decides to activate the double cannon
+     * Sets if the trucker decides to activate the double cannon
      * @param isActive activation of double cannon
      */
     public void setIsActive(boolean isActive) {
@@ -41,7 +41,7 @@ public class Cannon extends Component{
     }
 
     /**
-     * Return if the cannon is a double cannon or single cannon
+     * Returns if the cannon is a double cannon or single cannon
      * @return if is a double cannon
      */
     public boolean getIsDouble() {
@@ -49,7 +49,7 @@ public class Cannon extends Component{
     }
 
     /**
-     * Return if the double cannon is active or not
+     * Returns if the double cannon is active or not
      * @return if the double cannon is active
      */
     public boolean getIsActive() {
@@ -57,7 +57,7 @@ public class Cannon extends Component{
     }
 
     /**
-     * Return the orientation of the cannon
+     * Returns the orientation of the cannon
      * @return orientation of the cannon
      */
     public Orientation getOrientation() {
@@ -65,7 +65,7 @@ public class Cannon extends Component{
     }
 
     /**
-     * Turn the orientation of the cannon and the component
+     * Turns the orientation of the cannon and the component
      */
     public void turn(){
         super.turn();

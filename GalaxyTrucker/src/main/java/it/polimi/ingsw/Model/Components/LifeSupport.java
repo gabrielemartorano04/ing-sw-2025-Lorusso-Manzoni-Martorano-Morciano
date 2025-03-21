@@ -7,7 +7,7 @@ public class LifeSupport extends Component{
     private final AlienColor color;
 
     /**
-     * Life support constructor, it initialised the attributes of this class
+     * Life support constructor, initialise the attributes of this class
      * @param linkU number of link on the top
      * @param linkR number of link on the right side
      * @param linkD number of link on the bottom
@@ -22,7 +22,7 @@ public class LifeSupport extends Component{
     }
 
     /**
-     * Return the color of the life support
+     * Returns the color of the life support
      * @return return the color
      */
     public AlienColor getColor() {

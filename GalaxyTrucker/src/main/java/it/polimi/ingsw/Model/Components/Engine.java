@@ -8,7 +8,7 @@ public class Engine extends Component{
     private boolean isActive;
 
     /**
-     * Engine constructor, it initialised the attributes of this class
+     * Engine constructor, initialise the attributes of this class
      * @param linkU number of link on the top
      * @param linkR number of link on the right side
      * @param linkL number of link on the left side
@@ -23,7 +23,7 @@ public class Engine extends Component{
     }
 
     /**
-     * Set if the trucker decides to activate the double engine
+     * Sets if the trucker decides to activate the double engine
      * @param isActive activation of double engine
      */
     public void setIsActive(boolean isActive) {
@@ -31,7 +31,7 @@ public class Engine extends Component{
     }
 
     /**
-     * Return if the engine is a double engine or single engine
+     * Returns if the engine is a double engine or single engine
      * @return if is double
      */
     public boolean getIsDouble() {
@@ -39,7 +39,7 @@ public class Engine extends Component{
     }
 
     /**
-     * Return if the engine is active or not
+     * Returns if the engine is active or not
      * @return if the double engine is active
      */
     public boolean getIsActive() {

@@ -7,7 +7,7 @@ public class Shield extends Component{
     private Direction direction;
 
     /**
-     * Shield constructor, it initialised the attributes of this class
+     * Shield constructor, initialise the attributes of this class
      * @param linkU number of link on the top
      * @param linkR number of link on the right side
      * @param linkD number of link on the bottom
@@ -21,7 +21,7 @@ public class Shield extends Component{
     }
 
     /**
-     * Set the direction if the shield is rotated
+     * Sets the direction if the shield is rotated
      * @param direction direction of the shield
      */
     public void setDirection(Direction direction) {
@@ -29,7 +29,7 @@ public class Shield extends Component{
     }
 
     /**
-     * Return the direction of the shield
+     * Returns the direction of the shield
      * @return direction of the shield
      */
     public Direction getDirection() {
@@ -37,7 +37,7 @@ public class Shield extends Component{
     }
 
     /**
-     * Turn the direction of the shield and the component
+     * Turns the direction of the shield and the component
      */
     public void turn(){
         super.turn();

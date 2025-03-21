@@ -8,7 +8,7 @@ public class BatteryStorage extends Component{
     private int quantity;
 
     /**
-     * Battery storage constructor, it initialised the attributes of this class
+     * Battery storage constructor, initialise the attributes of this class
      * @param linkU number of link on the top
      * @param linkR number of link on the right side
      * @param linkD number of link on the bottom
@@ -24,7 +24,7 @@ public class BatteryStorage extends Component{
     }
 
     /**
-     * Set the new number of batteries storaged
+     * Sets the new number of batteries storaged
      * @param quantity number of batteries to storage
      */
     public void setQuantity(int quantity) {
@@ -32,16 +32,16 @@ public class BatteryStorage extends Component{
     }
 
     /**
-     * Return the maximum number of batteries that can be storaged
-     * @return number of batteries that can be storaged
+     * Returns the maximum number of batteries that can be stored
+     * @return number of batteries that can be stored
      */
     public int getCapacity() {
         return capacity;
     }
 
     /**
-     * Return the number of batteries storaged
-     * @return number of batteries storaged
+     * Returns the number of batteries stored
+     * @return number of batteries stored
      */
     public int getQuantity() {
         return quantity;

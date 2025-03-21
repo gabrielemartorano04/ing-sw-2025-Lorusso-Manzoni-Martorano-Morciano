@@ -12,7 +12,7 @@ public class Cabin extends Component{
     private final Color color;
 
     /**
-     * Cabin constructor, it initialised the attributes of this class
+     * Cabin constructor, initialise the attributes of this class
      * @param linkU number of link on the top
      * @param linkR number of link on the right side
      * @param linkD number of link on the bottom
@@ -33,7 +33,7 @@ public class Cabin extends Component{
     }
 
     /**
-     * Return, if contained, the alien in the cabin, null otherwise
+     * Returns, if contained, the alien in the cabin, null otherwise
      * @return alien in the cabin
      */
     public Alien getAlien(){
@@ -41,7 +41,7 @@ public class Cabin extends Component{
     }
 
     /**
-     * Set the alien if the cabin contain one
+     * Sets the alien if the cabin contain one
      * @param alien type of alien
      */
     public void setAlien(Alien alien){
@@ -49,7 +49,7 @@ public class Cabin extends Component{
     }
 
     /**
-     * Set the maximum number of human (2) or alien (1) in the cabin
+     * Sets the maximum number of human (2) or alien (1) in the cabin
      * @param quantity number of character in the cabin
      */
     public void setQuantity(int quantity) {
@@ -57,7 +57,7 @@ public class Cabin extends Component{
     }
 
     /**
-     * Return if the cabin is a main one
+     * Returns if the cabin is a main one
      * @return if the cabin is a main one
      */
     public boolean getIsMain() {
@@ -65,7 +65,7 @@ public class Cabin extends Component{
     }
 
     /**
-     * Return the number of human or alien contained in the cabin
+     * Returns the number of human or alien contained in the cabin
      * @return number of character contained in the cabin
      */
     public int getQuantity() {
@@ -73,7 +73,7 @@ public class Cabin extends Component{
     }
 
     /**
-     * Return the maximum number of human or alien that can be contained in the cabin
+     * Returns the maximum number of human or alien that can be contained in the cabin
      * @return number of character that can be contained in the cabin
      */
     public int getCapacity() {
@@ -81,7 +81,7 @@ public class Cabin extends Component{
     }
 
     /**
-     * Return the color of the main cabin, null otherwise
+     * Returns the color of the main cabin, null otherwise
      * @return color of the cabin
      */
     public Color getColor() {
@@ -89,7 +89,7 @@ public class Cabin extends Component{
     }
 
     /**
-     * Remove human or alien from the cabin
+     * Removes human or alien from the cabin
      * @param num number of human/alien to remove
      */
     public void removeHumans(int num) {

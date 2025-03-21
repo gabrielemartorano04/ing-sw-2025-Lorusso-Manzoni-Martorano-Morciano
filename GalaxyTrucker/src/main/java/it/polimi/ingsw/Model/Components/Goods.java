@@ -15,7 +15,7 @@ public class Goods {
     private int x, y;
 
     /**
-     * Goods constructor, it initialised the attributes of this class
+     * Goods constructor, initialise the attributes of this class
      * @param value value of the good
      */
     public Goods(int value) {
@@ -23,7 +23,7 @@ public class Goods {
     }
 
     /**
-     * Return the value of the good
+     * Returns the value of the good
      * @return value of the good
      */
     public int getValue() {
@@ -31,7 +31,7 @@ public class Goods {
     }
 
     /**
-     * Set the coordinate X of the position of the load in the spaceship
+     * Sets the coordinate X of the position of the load in the spaceship
      * @param x coordinate X of the position
      */
     public void setX(int x) {
@@ -39,7 +39,7 @@ public class Goods {
     }
 
     /**
-     * Set the coordinate Y of the position of the load in the spaceship
+     * Sets the coordinate Y of the position of the load in the spaceship
      * @param y coordinate Y of the position
      */
     public void setY(int y) {
@@ -47,7 +47,7 @@ public class Goods {
     }
 
     /**
-     * Return the coordinate X of the position of the load in the spaceship
+     * Returns the coordinate X of the position of the load in the spaceship
      * @return coordinate X of the position
      */
     public int getX() {
@@ -55,7 +55,7 @@ public class Goods {
     }
 
     /**
-     * Return the coordinate Y of the position of the load in the spaceship
+     * Returns the coordinate Y of the position of the load in the spaceship
      * @return coordinate Y of the position
      */
     public int getY() {

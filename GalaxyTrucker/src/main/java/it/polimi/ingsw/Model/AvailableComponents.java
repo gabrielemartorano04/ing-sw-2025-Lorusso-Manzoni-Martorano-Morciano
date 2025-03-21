@@ -5,20 +5,20 @@ import it.polimi.ingsw.Model.Components.*;
 import java.util.Random;
 
 /**
- * Class that manage the components as a whole
+ * Class that manages the components as a whole
  */
 public class AvailableComponents {
     private Component[] components;
 
     /**
-     * Available components constructor, it initialised the array of 156 component
+     * Available components constructor, initialise the array of 156 component
      */
     public AvailableComponents() {
         this.components = new Component[156];
     }
 
     /**
-     * Return the array of components available
+     * Returns the array of components available
      * @return array of components
      */
     public Component[] getComponents() {
@@ -26,7 +26,7 @@ public class AvailableComponents {
     }
 
     /**
-     * Shuffle the components that are available before the truckers start the game
+     * Shuffles the components that are available before the truckers start the game
      */
     public void shuffle() {
         Random random = new Random();
@@ -39,7 +39,7 @@ public class AvailableComponents {
     }
 
     /**
-     * Remove the component that has been chosen by the trucker for his spaceship from the whole of available components
+     * Removes the component that has been chosen by the trucker for his spaceship from the whole of available components
      * @param component component to remove
      */
     public void remove(Component component) {

@@ -7,7 +7,7 @@ public class Alien {
     private final AlienColor color;
 
     /**
-     * Alien constructor, it initialised the attributes of this class
+     * Alien constructor, initialise the attributes of this class
      * @param color color of the alien
      */
     public Alien(AlienColor color){
@@ -15,7 +15,7 @@ public class Alien {
     }
 
     /**
-     * Return the color of the alien
+     * Returns the color of the alien
      * @return color of the alien
      */
     public AlienColor getColor() {

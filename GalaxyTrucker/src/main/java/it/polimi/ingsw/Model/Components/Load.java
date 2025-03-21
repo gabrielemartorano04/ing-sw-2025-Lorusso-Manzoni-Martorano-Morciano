@@ -11,7 +11,7 @@ public class Load extends Component{
     private ArrayList<Goods> goods; //lista delle merci contenute in quel Load ordinate dalla rarità maggiore a quella minore
 
     /**
-     * Load constructor, it initialised the attributes of this class
+     * Load constructor, initialise the attributes of this class
      * @param linkU number of link on the top
      * @param linkR number of link on the right side
      * @param linkD number of link on the bottom
@@ -32,7 +32,7 @@ public class Load extends Component{
     }
 
     /**
-     * Return if the load is a special one, thus if can contain red goods
+     * Returns if the load is a special one, thus if can contain red goods
      * @return if the load is special
      */
     public boolean getIsSpecial() {
@@ -40,7 +40,7 @@ public class Load extends Component{
     }
 
     /**
-     * Return the maximum number of goods that can be contained
+     * Returns the maximum number of goods that can be contained
      * @return number of goods that can be contained
      */
     public int getCapacity() {
@@ -48,7 +48,7 @@ public class Load extends Component{
     }
 
     /**
-     * Return the number of goods contained
+     * Returns the number of goods contained
      * @return number of goods contained
      */
     public int getQuantity() {
@@ -56,7 +56,7 @@ public class Load extends Component{
     }
 
     /**
-     * Add a single good in the right position in order of decreasing value
+     * Adds a single good in the right position in order of decreasing value
      * @param good good to add
      */
     public void addGood(Goods good) {
@@ -68,14 +68,14 @@ public class Load extends Component{
     }
 
     /**
-     * Remove a single good in order of value, from the most valuable
+     * Removes a single good in order of value, from the most valuable
      */
     public void removeGoodFromHead() {
         goods.removeFirst();
     }
 
     /**
-     * Remove a specific good
+     * Removes a specific good
      * @param good good to remove
      */
     public void removeGood(Goods good){
@@ -83,7 +83,7 @@ public class Load extends Component{
     }
 
     /**
-     * Return the list of goods contained in the load
+     * Returns the list of goods contained in the load
      * @return list of goods
      */
     public ArrayList<Goods> getGoods() {
