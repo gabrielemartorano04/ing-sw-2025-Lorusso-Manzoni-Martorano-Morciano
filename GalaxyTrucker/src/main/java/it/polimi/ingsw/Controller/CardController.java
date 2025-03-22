@@ -2,10 +2,12 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Model.Cards.*;
 import it.polimi.ingsw.Model.Components.Goods;
 import it.polimi.ingsw.Model.Game;
+import it.polimi.ingsw.Model.SpaceShip;
 import it.polimi.ingsw.Model.Trucker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Il Card controller ha la funzione di gestire le chiamate ai vari CardEffect delle carte girate dal Game controller
@@ -263,22 +265,77 @@ public class CardController {
                 //da finire
                 WarZone currCard = (WarZone) card;
                 ArrayList<Trucker> truckers = game.getTruckerList();
-                List<Condition> conditionsOrder = currCard.getConditionsOrder();
+                ArrayList<Condition> conditionsOrder = currCard.getConditionsOrder();
+                Trucker weakestTrucker = null;
+                Map<Condition, Effect> penalties = currCard.getPenalties();
+                ArrayList<int[]> shoots = currCard.getShoots();
+
+                //variabile usata per salvare per ogni trucker le coordinate dei cannoni che i giocatori vogliono attivare
+                ArrayList<ArrayList<int[]>> truckersCannonsCoordinates = new ArrayList<>(truckers.size());
+
+                //variabile usata per salvare per ogni trucker le coordinate dei motori che i giocatori vogliono attivare
+                ArrayList<ArrayList<int[]>> truckersEnigesCoordinates = new ArrayList<>(truckers.size());
 
 
                 // zona di guerra non viene fatta se c'è solo un giocatore rimasto
                 if(truckers.size()==1){
                     return;
                 }
-                Trucker weakestTrucker = null;
                 for (Condition condition : conditionsOrder) {
-                    weakestTrucker = findWeakestTrucker(truckers, condition, controller);
+                    switch (condition) {
+                        case HUMANS ->
+                            weakestTrucker = currCard.findWeakestTrucker(truckers, condition, new ArrayList<>());
+
+                        case ENGINES -> {
+                            for (Trucker trucker : truckers) {
+                                truckersEnigesCoordinates.add(askController.askDoubleEnginesToActivate());
+                            }
+                            weakestTrucker = currCard.findWeakestTrucker(truckers, condition, truckersEnigesCoordinates);
+                        }
+
+
+                        case CANNONS -> {
+                            for (Trucker trucker : truckers) {
+                                truckersEnigesCoordinates.add(askController.askDoubleCannonToActivate());
+                            }
+                            weakestTrucker = currCard.findWeakestTrucker(truckers, condition, truckersCannonsCoordinates);
+                        }
+                    }
+
                     if (weakestTrucker != null) {
-                        applyEffect(weakestTrucker, penalties.get(condition), controller, game);
+                        // devo gestire le ulteriori richieste per i casi dove vieni sparato perché devo chiedere al giocatore
+                        // se vuole attivare lo scudo ogni volta che il colpo è piccolo
+                        // e per il caso dove devi perdere equipaggio che devi scegliere da dove perdere umani o alieni
+                        Effect effect = penalties.get(condition);
+                        switch(effect.getType()){
+                            case LOSE_DAYS -> game.moveBackward(weakestTrucker, effect.getValue());
+                            case LOSE_HUMANS -> {
+                                weakestTrucker.getSpaceShip().removeNumHuman(askController.askCabinToRemovePeople(weakestTrucker, effect.getValue()));
+                            }
+                            case LOSE_GOODS -> weakestTrucker.getSpaceShip().removeGoods(effect.getValue(), askController.askWhereToRemoveGoods(weakestTrucker, effect.getValue()));
+                            case GET_SHOT -> {
+                                SpaceShip ship = weakestTrucker.getSpaceShip();
+                                for (int[] shot : shoots) {
+                                    boolean isHeavy = (shot[0] == 1);
+                                    int direction = shot[1];
+                                    int roll = game.rollDice();
+                                    if (ship.isHit(roll, direction)) {
+                                        if (isHeavy) {
+                                            ship.destroyComponent(roll, direction);
+                                        } else {
+                                            if (!ship.blockLightCannonShot(direction, roll, askController.askToUseShield(weakestTrucker, roll, direction))) {
+                                                ship.destroyComponent(roll, direction);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
                     }
                 }
-                ((WarZone) card).cardEffect(game);
             }
+
             //lo metto per sicurezza ma penso sia inutile
             default -> throw new IllegalArgumentException("Nome carta non riconosciuto: " + cardName);
         }

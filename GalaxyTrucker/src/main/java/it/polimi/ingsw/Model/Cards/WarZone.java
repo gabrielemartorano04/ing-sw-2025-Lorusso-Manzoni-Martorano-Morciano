@@ -34,28 +34,22 @@ public class WarZone extends Card {
         this.penalties = penalties;
         this.shoots = shoots;
     }
-    public List<Condition> getConditionsOrder() {
+    public ArrayList<Condition> getConditionsOrder() {
         return conditionsOrder;
     }
+
     public Map<Condition, Effect> getPenalties() {
         return penalties;
     }
 
+    public ArrayList<int[]> getShoots(){
+        return shoots;
+    }
+
 
     @Override
-    public void cardEffect(Game game, GameController controller) {
-        ArrayList<Trucker> truckers = game.getTruckerList();
-        // zona di guerra non viene fatta se c'è solo un giocatore rimasto
-        if(truckers.size()==1){
-            return;
-        }
-        Trucker weakestTrucker = null;
-        for (Condition condition : conditionsOrder) {
-            weakestTrucker = findWeakestTrucker(truckers, condition, controller);
-            if (weakestTrucker != null) {
-                applyEffect(weakestTrucker, penalties.get(condition), controller, game);
-            }
-        }
+    public void cardEffect(Game game) {
+        //per ora non lo uso perchè è letteralmente tutto dentro il controller per questa carta
     }
 
 
@@ -63,7 +57,7 @@ public class WarZone extends Card {
     // truckersCoordinates serve perché quando devo calcolare il weakest in base a potenza di fuoco o motrice
     // devo dare in ingresso a findWeakestTrucker la lista delle coordinate delle componenti che ogni giocatore
     // ha deciso di attivare
-    private Trucker findWeakestTrucker(List<Trucker> truckers, Condition condition, ArrayList<ArrayList<int[]>> truckersCoordinates) {
+    public Trucker findWeakestTrucker(List<Trucker> truckers, Condition condition, ArrayList<ArrayList<int[]>> truckersCoordinates) {
         Trucker weakestTrucker = null;
         int i = 0;
         int minValueCurrCondition = Integer.MAX_VALUE;
@@ -88,32 +82,4 @@ public class WarZone extends Card {
     }
 
 
-    private void applyEffect(Trucker trucker, Effect effect, GameController controller, Game game) {
-        if (effect == null) return;
-
-        switch (effect.getType()) {
-            case LOSE_DAYS -> game.moveBackward(trucker, effect.getValue());
-            case LOSE_HUMANS -> trucker.getSpaceShip().removeNumHuman(effect.getValue(), controller);
-            case GET_SHOT -> applyShots(trucker.getSpaceShip(), shoots, controller, game);
-            case LOSE_GOODS -> trucker.getSpaceShip().removeGoods(effect.getValue(), controller);
-        }
-    }
-
-    private void applyShots(SpaceShip ship, ArrayList<int[]> shoots, GameController controller, Game game) {
-        // gestione dei colpi di fuoco simile a meteorShower
-        for (int[] shot : shoots) {
-            boolean isHeavy = (shot[0] == 1);
-            int direction = shot[1];
-            int roll = game.rollDice();
-            if (ship.isHit(roll, direction)) {
-                if (isHeavy) {
-                    ship.destroyComponent(roll, direction);
-                } else {
-                    if (!ship.blockLightCannonShot(direction, roll, controller)) {
-                        ship.destroyComponent(roll, direction);
-                    }
-                }
-            }
-        }
-    }
 }

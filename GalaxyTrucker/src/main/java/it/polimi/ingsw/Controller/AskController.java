@@ -6,9 +6,13 @@ import it.polimi.ingsw.Model.Trucker;
 import java.util.ArrayList;
 
 public class AskController {
-    public int askActiveComponents(int doubleC){
-        //il controller chiedere quanti componenti doppi vuole attivare sapendo che ne ha doubleC
-        return 0; //return componenti che vuole attivare
+
+    public boolean askToUseShield(Trucker trucker, int roll, int direction){
+        // chiede all'utente (solo se si tratta di un colpo piccolo o di un meteorite piccolo)
+        // se vuole attivare uno scudo per proteggersi
+
+        boolean answer = false;
+        return answer;
     }
 
     public ArrayList<int[]> askDoubleEnginesToActivate(){
@@ -57,11 +61,6 @@ public class AskController {
         //il controller chiede i componenti di tipo Load in cui vogliamo rimuovere le merci
     }
 
-
-    public ArrayList<int[]> askCabin(){
-        return null;
-    }
-
     public ArrayList<int[]> askCabinToRemovePeople(Trucker trucker, int numPeople){
         //dato un trucker e un numero di umani numHumans che dovrebbe perdere
         //un trucker decide se perdere gli umani, in tal caso fornisce le coordinate delle cabine da cui rimuoverle,
@@ -71,10 +70,6 @@ public class AskController {
         // coord.get(i)[2] = numero di umani da rimuovere in quella cabina
         ArrayList<int[]> coord = new ArrayList<>();
         return coord;
-    }
-
-    public boolean askSmugglers(Trucker trucker){
-        return false;
     }
 
     public ArrayList<int[]> askAbandonedStation(Trucker trucker, ArrayList<Goods> goods){
@@ -98,11 +93,6 @@ public class AskController {
         // MI ASPETTO CHE VENGA FATTO SCEGLIERE SOLO TRA I PIANETI DOVE planetsLanded[i] VALE 0
         int indexOfPlanet = -1;
         return indexOfPlanet;
-    }
-
-    public int askPlayerToChoosePlanet(Trucker trucker, ArrayList<ArrayList<Goods>> planets, ArrayList<Boolean> landed ){
-        //il trucker deve dire su quale pianeta vuole atterrare per acquisirne le merci
-        return 0;
     }
 
     public boolean askSlavers(Trucker trucker){
