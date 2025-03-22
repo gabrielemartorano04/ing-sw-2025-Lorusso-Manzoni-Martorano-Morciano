@@ -81,7 +81,7 @@ public class AbandonedShip extends Card {
     @Override
     public void cardEffect(Game game) {
         if (truckerThatHasDecided != null) {
-            truckerThatHasDecided.getSpaceShip().removeNumHuman(numHuman, coordinates);
+            truckerThatHasDecided.getSpaceShip().removeNumHuman(coordinates);
             game.moveBackward(truckerThatHasDecided,days);
             truckerThatHasDecided.addCosmicCredit(credits);
         }

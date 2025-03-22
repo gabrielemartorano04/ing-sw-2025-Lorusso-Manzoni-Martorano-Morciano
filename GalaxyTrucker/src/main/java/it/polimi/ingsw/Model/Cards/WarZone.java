@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.ArrayList;
 
 public class WarZone extends Card {
-    private List<Condition> conditionsOrder;
+    private ArrayList<Condition> conditionsOrder;
     private Map<Condition, Effect> penalties;
     private ArrayList<int[]> shoots;
     // shoots è una lista dove shoots.get(i) rappresenta l'i-esimo colpo in questa specifica carta Warzone
@@ -19,7 +19,16 @@ public class WarZone extends Card {
     // shoots è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
     // cioè scegliendo il meteorite dall'alto verso il basso
 
-    public WarZone(boolean trialFlight, int level, List<Condition> conditionsOrder, Map<Condition, Effect> penalties, ArrayList<int[]> shoots ,String frontImage, String backImage) {
+    // variabili settate dal controller per salvare le varie ask fatte dal controller
+
+    // memorizza le coordinate da cui rimuovere l'equipaggio in caso la penitenza sia togli num di equipaggio
+    private ArrayList<int[]> coordinatesToRemoveCrew;
+
+    // memorizza le coordinate da cui rimuovere le merci in caso la penitenza sia togli num di merci
+    private ArrayList<int[]> coordinatesToRemoveGoods;
+
+
+    public WarZone(boolean trialFlight, int level, ArrayList<Condition> conditionsOrder, Map<Condition, Effect> penalties, ArrayList<int[]> shoots ,String frontImage, String backImage) {
         super("War Zone", "A dangerous conflict zone", trialFlight, level, frontImage, backImage);
         this.conditionsOrder = conditionsOrder;
         this.penalties = penalties;
@@ -50,14 +59,19 @@ public class WarZone extends Card {
     }
 
 
-    private Trucker findWeakestTrucker(List<Trucker> truckers, Condition condition, GameController controller) {
+    // questo metodo dovrà essere chiamato dal Controller per capire a ogni condizione il weakestTrucker
+    // truckersCoordinates serve perché quando devo calcolare il weakest in base a potenza di fuoco o motrice
+    // devo dare in ingresso a findWeakestTrucker la lista delle coordinate delle componenti che ogni giocatore
+    // ha deciso di attivare
+    private Trucker findWeakestTrucker(List<Trucker> truckers, Condition condition, ArrayList<ArrayList<int[]>> truckersCoordinates) {
         Trucker weakestTrucker = null;
+        int i = 0;
         int minValueCurrCondition = Integer.MAX_VALUE;
         for (Trucker trucker : truckers) {
             int currValue = switch (condition) {
                 case HUMANS -> trucker.getSpaceShip().getNumHuman();
-                case CANNONS -> trucker.getSpaceShip().getTotalCannonPower(controller);
-                case ENGINES -> trucker.getSpaceShip().getTotalEnginePower(controller);
+                case CANNONS -> trucker.getSpaceShip().getTotalCannonPower(truckersCoordinates.get(i));
+                case ENGINES -> trucker.getSpaceShip().getTotalEnginePower(truckersCoordinates.get(i));
             };
 
             // in caso di parità di criteri subisce la penitenza quello più avanti nel percorso quindi quando cerco
@@ -67,7 +81,9 @@ public class WarZone extends Card {
                 minValueCurrCondition = currValue;
                 weakestTrucker = trucker;
             }
+            i++;
         }
+        i = 0;
         return weakestTrucker;
     }
 

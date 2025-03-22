@@ -261,6 +261,22 @@ public class CardController {
 
             case "WarZone" -> {
                 //da finire
+                WarZone currCard = (WarZone) card;
+                ArrayList<Trucker> truckers = game.getTruckerList();
+                List<Condition> conditionsOrder = currCard.getConditionsOrder();
+
+
+                // zona di guerra non viene fatta se c'è solo un giocatore rimasto
+                if(truckers.size()==1){
+                    return;
+                }
+                Trucker weakestTrucker = null;
+                for (Condition condition : conditionsOrder) {
+                    weakestTrucker = findWeakestTrucker(truckers, condition, controller);
+                    if (weakestTrucker != null) {
+                        applyEffect(weakestTrucker, penalties.get(condition), controller, game);
+                    }
+                }
                 ((WarZone) card).cardEffect(game);
             }
             //lo metto per sicurezza ma penso sia inutile

@@ -111,7 +111,7 @@ public class Slavers extends Card {
         }
         if(!defeatedTruckers.isEmpty()) {
             for (Trucker trucker : defeatedTruckers) {
-                trucker.getSpaceShip().removeNumHuman(astronautsLost, truckersCoordinatesToRemoveHumans.get(i));
+                trucker.getSpaceShip().removeNumHuman(truckersCoordinatesToRemoveHumans.get(i));
                 i++;
             }
         }

@@ -222,7 +222,7 @@ class Deck {
 
         WarZone warZone1 = new WarZone(
                 true, 1,
-                List.of(Condition.HUMANS, Condition.ENGINES, Condition.CANNONS),
+                new ArrayList<>(List.of(Condition.HUMANS, Condition.ENGINES, Condition.CANNONS)),
                 Map.of(
                         Condition.HUMANS, new Effect(TypeOfEffect.LOSE_DAYS, 3),
                         Condition.ENGINES, new Effect(TypeOfEffect.LOSE_HUMANS, 2),
@@ -235,7 +235,7 @@ class Deck {
 
         WarZone warZone2 = new WarZone(
                 false, 2,
-                List.of(Condition.CANNONS, Condition.ENGINES, Condition.HUMANS),
+                new ArrayList<>(List.of(Condition.CANNONS, Condition.ENGINES, Condition.HUMANS)),
                 Map.of(
                         Condition.CANNONS, new Effect(TypeOfEffect.LOSE_DAYS, 4),
                         Condition.ENGINES, new Effect(TypeOfEffect.LOSE_GOODS, 3),
