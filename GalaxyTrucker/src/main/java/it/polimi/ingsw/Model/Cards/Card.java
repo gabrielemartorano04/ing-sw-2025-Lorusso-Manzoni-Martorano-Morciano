@@ -1,15 +1,12 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Game;
-import it.polimi.ingsw.Controller.GameController;
 
 import javax.swing.ImageIcon;
-import java.util.ArrayList;
 
 /**
- * classe che rappresenta la carta in generale andrà poi estesa dalle altre carte avventura
+ * Class that manages the single adventure card
  */
-
 public abstract class Card {
     private final String name;
     private final String description;
@@ -18,6 +15,15 @@ public abstract class Card {
     private final ImageIcon frontImage;
     private final ImageIcon backImage;
 
+    /**
+     * Card constructor, initialise the attributes of this class
+     * @param name name of the card
+     * @param description short description of what the card do
+     * @param trialFlight specify if truckers are playing trial flight
+     * @param level level of the game
+     * @param name_frontImage front image of the card
+     * @param name_backImage back image of the card
+     */
     public Card(String name, String description, boolean trialFlight, Integer level, String name_frontImage, String name_backImage) {
         this.name = name;
         this.description = description;
@@ -28,21 +34,40 @@ public abstract class Card {
 
     }
 
+    /**
+     * Returns the name of the card
+     * @return name of the card
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns the short description of what the card do
+     * @return description of the card
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Returns the level of the game the truckers are playing
+     * @return level of the game
+     */
     public Integer getLevel() {
         return level;
     }
 
+    /**
+     *
+     */
     public void cardEffect(){
     }
 
+    /**
+     * Applies the changes provided by the card
+     * @param game game in which the card has been drawn
+     */
     public abstract void cardEffect(Game game);
 
 }

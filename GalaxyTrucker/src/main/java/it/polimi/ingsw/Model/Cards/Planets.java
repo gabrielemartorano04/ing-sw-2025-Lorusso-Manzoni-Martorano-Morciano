@@ -42,7 +42,7 @@ public class Planets extends Card {
     }
 
     /**
-     * Sets, for each trucker, the coordinates of the loads where he/she want to add the goods gain
+     * Sets, for each trucker, the coordinates of the loads where he/she wants to add the goods gained
      * @param truckersCoordinates list of lists of coordinates
      */
     public void setTruckersCoordinates(ArrayList<ArrayList<int[]>> truckersCoordinates) {

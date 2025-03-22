@@ -11,7 +11,10 @@ import java.util.Arrays;
 
 /**
  * Class that manages the single card smugglers
- *
+ * In order of position, starting from the leader, each trucker decides which double cannon wants to activate, using batteries, for the calculation of the cannon power.
+ * The first trucker that has a cannon power which is higher than the smugglers one, defeat them and decide if he/she wants, losing days of flight, to gain goods.
+ * For all the defeated truckers, they have to lose some of their most valuable goods.
+ * If the trucker's cannon power is equal to the smugglers' one, nothing happens to the trucker, but the smugglers continue to attack
  */
 public class Smugglers extends Card {
     private final int smugglersPower;
@@ -43,34 +46,66 @@ public class Smugglers extends Card {
         this.goodsGained = goodsGained;
     }
 
+    /**
+     * Returns the cannon power required
+     * @return cannon power required
+     */
     public int getSmugglersPower() {
         return smugglersPower;
     }
 
+    /**
+     * Returns the number of goods to lose
+     * @return goods to lose
+     */
     public int getGoodsLost() {
         return goodsLost;
     }
 
+    /**
+     * Returns an array of goods to gain
+     * @return array of goods to gain
+     */
     public Goods[] getGoodsGained() {
         return goodsGained;
     }
 
+    /**
+     * Returns the number of days of flight to lose
+     * @return days to lose
+     */
     public int getDays() {
         return days;
     }
 
+    /**
+     * Sets the list of defeated truckers
+     * @param defeatedTruckers list of truckers ID
+     */
     public void setDefeatedTruckers(ArrayList<Trucker> defeatedTruckers) {
         this.defeatedTruckers = defeatedTruckers;
     }
 
+    /**
+     * Sets the trucker that defeat the pirates
+     * @param winnerTrucker trucker ID
+     */
     public void setWinnerTrucker(Trucker winnerTrucker) {
         this.winnerTrucker = winnerTrucker;
     }
 
+    /**
+     * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
+     * @param winnerCoordinatesToAddGoods list of coordinates
+     */
     public void setWinnerCoordinatesToAddGoods(ArrayList<int[]> winnerCoordinatesToAddGoods) {
         this.winnerCoordinatesToAddGoods = winnerCoordinatesToAddGoods;
     }
 
+    /**
+     * Sets, for each trucker, the coordinates of the loads where he/she wants to remove goods if defeated
+     * @param truckersCoordinatesToRemoveGoods list of lists of coordinates
+     */
     public void setTruckersCoordinatesToRemoveGoods(ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveGoods) {
         this.truckersCoordinatesToRemoveGoods = truckersCoordinatesToRemoveGoods;
     }
@@ -93,6 +128,4 @@ public class Smugglers extends Card {
             }
         }
     }
-
-
 }

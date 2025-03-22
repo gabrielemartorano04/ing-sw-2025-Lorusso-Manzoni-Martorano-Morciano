@@ -7,15 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class that manages the cards as a deck
+ */
 class Deck {
-    private ArrayList<Card> cards;
+    private final ArrayList<Card> cards;
 
+    /**
+     * Deck constructor, initialise the list of cards that will compose the deck
+     */
     public Deck() {
         cards = new ArrayList<Card>();
         fillDeck();
     }
 
-    //le rpime 20 sono di livello 1 e le altre 20 di livello 2
+    //le prime 20 sono di livello 1 e le altre 20 di livello 2
+
+    /**
+     * Fills the deck with the 40 cards available, the first 20 of level 1 and the other 20 of level 2
+     */
     private void fillDeck() {
         Goods[] goodsGained1 = new Goods[3];
         goodsGained1[0] = new Goods(3);
@@ -280,10 +290,19 @@ class Deck {
 
     }
 
+    /**
+     * Returns a specific card from the deck
+     * @param index position in the deck
+     * @return card
+     */
     public Card getCard(int index) {
         return cards.get(index);
     }
 
+    /**
+     * Returns the deck with all the 40 cards
+     * @return deck
+     */
     public ArrayList<Card> getDeck() {
         return cards;
     }
