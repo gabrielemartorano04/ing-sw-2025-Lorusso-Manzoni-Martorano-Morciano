@@ -155,8 +155,8 @@ public class CardController {
                 // planetsLanded[i] = 1 se quel pianeta è già stato scelto altrimenti vale 0 sono già sicuro che la dimensione
                 // non sarà 0 perché creiamo carte pianeti che hanno almeno 2 pianeti
                 int[] planetsLanded = new int[availablePlanets.get(0).size()];
-                for(int i = 0; i < planetsLanded.length; i++){
-                    planetsLanded[i] = 0;
+                for(int j = 0; j < planetsLanded.length; j++){
+                    planetsLanded[j] = 0;
                 }
 
                 for(Trucker trucker : truckers) {
@@ -173,6 +173,7 @@ public class CardController {
                     if(indexOfPlanetChoosen == -1){
                         playersLanded[i] = 0;
                     }
+                    i++;
                 }
                 currCard.setPlayersLanded(playersLanded);
                 currCard.setTruckersCoordinates(truckersCoordinates);
