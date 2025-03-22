@@ -83,7 +83,32 @@ public class CardController {
             }
 
             case "MeteorShower" -> {
-                ((MeteorShower) card).cardEffect(game);
+                MeteorShower currCard = (MeteorShower) card;
+                ArrayList<int[]> directions = currCard.getDirection();
+                List<Trucker> truckers = game.getTruckerList();
+                boolean answer;
+                for (int[] meteor : directions) {
+                    boolean isBig = (meteor[0] == 1);
+                    int direction = meteor[1];
+                    int roll = game.rollDice();
+                    for (Trucker trucker : truckers) {
+                        SpaceShip ship = trucker.getSpaceShip();
+                        if (ship.isHit(roll, direction)) {
+                            if (isBig) {
+                                // qui assumo che il meteorite grande possa essere distrutto da un cannone ma è da rivedere
+                                if (!ship.shootMeteor(direction, roll)) {
+                                    ship.destroyComponent(roll, direction);
+                                }
+                            } else {
+                                // Un meteorite piccolo può rimbalzare o essere fermato dallo scudo
+                                answer = askController.askToUseShield(trucker, roll, direction);
+                                if (!ship.blockSmallMeteor(direction, roll, answer)) {
+                                    ship.destroyComponent(roll, direction);
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             case "OpenSpace" -> {

@@ -22,6 +22,7 @@ public class MeteorShower extends Card {
     // direction è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
     // cioè scegliendo il meteorite dall'alto verso il basso
 
+
     /**
      * Meteor shower constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -48,34 +49,14 @@ public class MeteorShower extends Card {
         return direction;
     }
 
+
     /**
      * Applies the changes provided by the card
      * @param game game in which the card has been drawn
      */
     @Override
     public void cardEffect(Game game) {
-        List<Trucker> truckers = game.getTruckerList();
-        for (int[] meteor : direction) {
-            boolean isBig = (meteor[0] == 1);
-            int direction = meteor[1];
-            int roll = game.rollDice();
-            for (Trucker trucker : truckers) {
-                SpaceShip ship = trucker.getSpaceShip();
-                if (ship.isHit(roll, direction)) {
-                    if (isBig) {
-                        // qui assumo che il meteorite grande possa essere distrutto da un cannone ma è da rivedere
-                        if (!ship.shootMeteor(direction, roll)) {
-                            ship.destroyComponent(roll, direction);
-                        }
-                    } else {
-                        // Un meteorite piccolo può rimbalzare o essere fermato dallo scudo
-                        if (!ship.blockSmallMeteor(direction, roll)) {
-                            ship.destroyComponent(roll, direction);
-                        }
-                    }
-                }
-            }
-        }
+        //per ora non c'è perché è tutto nel Card Controller
     }
 }
 
