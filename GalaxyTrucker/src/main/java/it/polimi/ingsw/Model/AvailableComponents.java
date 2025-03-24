@@ -83,10 +83,10 @@ public class AvailableComponents {
     Component cabin16 = new Cabin(1, 2, 0, 2, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web42.jpg", null, false);
     Component cabin17 = new Cabin(3, 0, 0, 2, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web44.jpg", null, false);
 
-    Component mainCabin1 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web52.jpg", Color.RED, true);
-    Component mainCabin2 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web34.jpg", Color.GREEN, true);
-    Component mainCabin3 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web33.jpg", Color.BLUE, true);
-    Component mainCabin4 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web61.jpg", Color.YELLOW, true);
+    Component mainCabin1 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
+    Component mainCabin2 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web34.jpg", PlayerColors.GREEN, true);
+    Component mainCabin3 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web33.jpg", PlayerColors.BLUE, true);
+    Component mainCabin4 = new Cabin(3, 3, 3, 3, "Cabin", "src/main/resources/components/tiles/GT-new_tiles_16_for web61.jpg", PlayerColors.YELLOW, true);
 
     Component pipes1 = new Pipes(3, 2, 0, 3, "Pipes", "src/main/resources/components/tiles/GT-new_tiles_16_for web59.jpg");
     Component pipes2 = new Pipes(3, 1, 2, 3, "Pipes", "src/main/resources/components/tiles/GT-new_tiles_16_for web58.jpg");

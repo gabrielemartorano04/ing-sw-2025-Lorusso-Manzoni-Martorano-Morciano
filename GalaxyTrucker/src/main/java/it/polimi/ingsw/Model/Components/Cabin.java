@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model.Components;
 
+import it.polimi.ingsw.Model.PlayerColors;
+
 /**
  * Class that manages the single cabin
  */
@@ -9,7 +11,7 @@ public class Cabin extends Component{
     private final int capacity;
     private Alien alien;
     private LifeSupport lifeSupport;
-    private final Color color;
+    private final PlayerColors color;
 
     /**
      * Cabin constructor, initialise the attributes of this class
@@ -22,7 +24,7 @@ public class Cabin extends Component{
      * @param color color of the cabin in case it's main, null otherwise
      * @param isMain specify if the cabin is the main one
      */
-    public Cabin(int linkU, int linkR, int linkD, int linkL, String type, String imagePath, Color color, boolean isMain) {
+    public Cabin(int linkU, int linkR, int linkD, int linkL, String type, String imagePath, PlayerColors color, boolean isMain) {
         super(linkU, linkR, linkD, linkL, type, imagePath);
         this.isMain = isMain;
         this.quantity = 0;
@@ -84,7 +86,7 @@ public class Cabin extends Component{
      * Returns the color of the main cabin, null otherwise
      * @return color of the cabin
      */
-    public Color getColor() {
+    public PlayerColors getColor() {
         return color;
     }
 
