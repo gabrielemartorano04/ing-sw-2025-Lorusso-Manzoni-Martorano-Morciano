@@ -11,6 +11,8 @@ public abstract class Component {
     protected boolean covered;
     protected String type;
     protected final ImageIcon frontImage, backImage;
+    private boolean visited;
+
 
     /**
      * Component constructor, initialise the attributes of this class
@@ -28,6 +30,7 @@ public abstract class Component {
         this.type = type;
         this.frontImage = new ImageIcon(frontImagePath);
         this.backImage = new ImageIcon("src/main/resources/components/tiles/GT-new_tiles_16_for web157.jpg");
+        this.visited = false;
     }
 
     /**
@@ -36,6 +39,14 @@ public abstract class Component {
      */
     public ImageIcon getFrontImage() {
         return frontImage;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
+    public boolean isVisited() {
+        return visited;
     }
 
     /**
