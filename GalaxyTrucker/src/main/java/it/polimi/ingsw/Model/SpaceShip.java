@@ -407,7 +407,7 @@ public class SpaceShip {
      * @param y y coordinate of the component
      * @return boolean that says if the component in position (x,y) is correctly linked with the others components
      */
-    private boolean isValid(int x, int y) {
+    public boolean isValid(int x, int y) {
 
         Cannon cannon = null;
         Component com = components[x][y];
@@ -593,27 +593,130 @@ public class SpaceShip {
      * @param direction Direction 0-->N, 1-->E, 2-->S, 3-->W from which the meteorite arrives
      */
     public void destroyComponent(int num, int direction) {
+        Component c=null;
+        int x=0; int y=0;
         switch (direction) {
             case 0:
                 for (int i = 5; i <= 9; i++) {
-                    if (components[i][num] != null) removeComponent(i, num);
+                    if (components[i][num] != null) {
+                        c=components[i][num];
+                        x=i;
+                        y=num;
+                        removeComponent(i, num);
+                        lost++;
+                    }
                 }
                 break;
             case 1:
                 for (int j = 10; j > 3; j--) {
-                    if (components[num][j] != null) removeComponent(num, j);
+                    if (components[num][j] != null) {
+                        c=components[num][j];
+                        x=num;
+                        y=j;
+                        removeComponent(num, j);
+                        lost++;
+                    }
                 }
                 break;
             case 2:
                 for (int i = 9; i > 4; i--) {
-                    if (components[i][num] != null) removeComponent(i, num);
+                    if (components[i][num] != null) {
+                        c=components[i][num];
+                        x=i;
+                        y=num;
+                        removeComponent(i, num);
+                        lost++;
+                    }
                 }
                 break;
             case 3:
                 for (int j = 4; j <= 10; j++) {
-                    if (components[num][j] != null) removeComponent(num, j);
+                    if (components[num][j] != null) {
+                        c=components[num][j];
+                        x=num;
+                        y=j;
+                        removeComponent(num, j);
+                        lost++;
+                    }
                 }
                 break;
+        }
+        if(c!=null) {
+            //load
+            //batterystorage
+            //lifesupport
+            if(c.getType().equals("Cabin")) {
+                Cabin cabin = (Cabin) c;
+                if(cabin.getAlien() != null) {
+                    numAlien--;
+                }
+                else if(cabin.getQuantity()>0){
+                    numHuman-= cabin.getQuantity();
+                }
+            }
+            if(c.getType().equals("Load")) {
+                Load load= (Load) c;
+                goodsCapacity-= load.getCapacity();
+                if(load.getQuantity()>0){
+
+                    for(Goods g:goodsList){
+                        if(g.getX()==x && g.getY()==y){
+                            if(g.getValue()==4) redGoods--;
+                            else if(g.getValue()==3) yellowGoods--;
+                            else if(g.getValue()==2) greenGoods--;
+                            else if(g.getValue()==1) blueGoods--;
+                            goodsList.remove(g);
+                        }
+                    }
+                }
+            }
+            if(c.getType().equals("Battery Storage")) {
+                BatteryStorage bst= (BatteryStorage) c;
+                if(bst.getQuantity()>0){
+                    numOfBattery-=bst.getQuantity();
+                }
+            }
+            if(c.getType().equals("Life Support")) {
+                if(components[x+1][y].getType().equals("Cabin") && ((Cabin)components[x+1][y]).getAlien() != null) {
+                    numAlien--;
+                }
+                if(components[x-1][y].getType().equals("Cabin") && ((Cabin)components[x-1][y]).getAlien() != null) {
+                    numAlien--;
+                }
+                if(components[x][y+1].getType().equals("Cabin") && ((Cabin)components[x][y+1]).getAlien() != null) {
+                    numAlien--;
+                }
+                if(components[x][y-1].getType().equals("Cabin") && ((Cabin)components[x][y-1]).getAlien() != null) {
+                    numAlien--;
+                }
+            }
+        }
+        //aggiungere il metodo che setta i isVisited a true dei componenti visitati
+        removeUnlinkedComponents();
+    }
+
+    /**
+     * This method remove an unlinked component which is not reachable from the main cabin, then it sets all the
+     * component as unvisited for the next check. It's usually called when a component is destroyed by a cannon shot
+     * or a meteorite
+     */
+    private void removeUnlinkedComponents(){
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if(components[i][j] != null && !components[i][j].getType().equals("Empty Space")) {
+                    if(!components[i][j].isVisited()) {
+                        removeComponent(i, j);
+                        lost++;
+                    }
+                }
+            }
+        }
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if(components[i][j] != null && !components[i][j].getType().equals("Empty Space")) {
+                    components[i][j].setVisited(false);
+                }
+            }
         }
     }
 
