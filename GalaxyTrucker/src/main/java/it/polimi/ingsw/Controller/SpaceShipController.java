@@ -11,10 +11,7 @@ public class SpaceShipController {
 
     public void addComponent(SpaceShip spaceShip, Component component, int x, int y) throws InvalidLinkException, InvalidPositionException {
         if (spaceShip.getComponents()[x][y] != null) {
-            throw new InvalidPositionException("La posizione [" + x + "] [" + y + "] è gia occupata");
-        }
-        if ("Empty Space".equals((spaceShip.getComponents()[x][y]).getType())){
-            throw new InvalidPositionException("La posizione [" + x + "] [" + y + "] è al di fuori dello spazio disponibile");
+            throw new InvalidPositionException("La posizione [" + x + "] [" + y + "] è non valida");
         }
         spaceShip.addComponent(component, x, y);
         if (!spaceShip.isValid(x, y)){
