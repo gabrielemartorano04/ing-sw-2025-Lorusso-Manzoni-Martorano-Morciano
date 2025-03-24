@@ -10,6 +10,12 @@ import java.util.Random;
 import java.util.Comparator;
 
 //gestisce la partita
+
+/**
+ * class that manages
+ *
+ */
+
 public class Game {
     //attributi
     private ArrayList<Trucker> truckers;
@@ -220,5 +226,5 @@ public class Game {
         }
         return true;
     }
-
 }
+

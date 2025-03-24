@@ -92,7 +92,7 @@ public class GameController {
         timer.schedule(task, duration);
 
 
-        while(numPlayer<2 || numPlayer>4 && !timeExpired[0]){
+        while((numPlayer<2 || numPlayer>4) && !timeExpired[0]){
             // mostro a scermo il tempo mancante attraverso la view e prendo il nickname e il color dell'utente
             do {
                 color = askController.askColor();
