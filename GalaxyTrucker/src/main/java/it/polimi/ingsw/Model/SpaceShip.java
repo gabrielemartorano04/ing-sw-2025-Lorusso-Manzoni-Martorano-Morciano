@@ -116,7 +116,7 @@ public class SpaceShip {
      * the cabin with 2 astronauts
      * @return number of astronauts in the spaceship
      */
-    public int setNumHuman() {
+    public void setNumHuman() {
         Cabin cabin = null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
@@ -131,7 +131,6 @@ public class SpaceShip {
                 }
             }
         }
-        return numHuman;
     }
 
     /**
@@ -673,9 +672,8 @@ public class SpaceShip {
      * @param num number of row or colon from which the meteorite arrives
      * @return true if the spaceshio doesn't have exposed links or has a cannon where is hit by the small meteorite
      */
-    public boolean blockSmallMeteor(int direction, int num) {
+    public boolean blockSmallMeteor(int direction, int num, boolean use) {
 
-            if (shootMeteor(direction, num)) return true;
 
             switch (direction) {
                 case 0:
@@ -711,6 +709,25 @@ public class SpaceShip {
                     }
                     break;
             }
+        Shield shield=null;
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if (components[i][j] != null && components[i][j].getType().equals("Shield")) {
+                    shield=(Shield)components[i][j];
+                    if(
+                            (direction == 0 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.NW)))
+                                    || (direction == 1 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.SE)))
+                                    || (direction == 2 && (shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)))
+                                    || (direction == 3 && (shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)))
+                    ){
+                        if(numOfBattery>0 && use){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
 
         return false;
     }
