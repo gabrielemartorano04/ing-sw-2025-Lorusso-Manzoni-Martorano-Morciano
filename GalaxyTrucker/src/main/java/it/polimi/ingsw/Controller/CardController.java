@@ -36,12 +36,13 @@ public class CardController {
                 AbandonedShip currCard = (AbandonedShip) card;
                 boolean decisionTaken = false;
                 List<Trucker> truckers = game.getTruckerList();
+                ArrayList<int[]> coordinates;
                 for (Trucker trucker : truckers) {
                     //non chiedo a un trucker che in ogni caso non avrebbe umani a sufficienza
-                    if(trucker.getSpaceShip().getNumHuman() <= currCard.getNumHuman()) {
+                    if(trucker.getSpaceShip().getNumHuman() < currCard.getNumHuman()) {
                         continue;
                     }
-                    ArrayList<int[]> coordinates = askController.askCabinToRemovePeople(trucker, currCard.getNumHuman());
+                    coordinates = askController.askCabinToRemovePeople(trucker, currCard.getNumHuman());
                     if(!coordinates.isEmpty()) {
                         decisionTaken = true;
                         currCard.setTruckerThatHasDecided(trucker);

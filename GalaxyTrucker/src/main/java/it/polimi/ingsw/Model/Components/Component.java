@@ -9,9 +9,9 @@ public abstract class Component {
     protected int[] link;
     protected boolean selected;
     protected boolean covered;
+    private boolean visited;
     protected String type;
     protected final ImageIcon frontImage, backImage;
-    private boolean visited;
 
 
     /**
@@ -27,10 +27,10 @@ public abstract class Component {
         this.link = new int[] {linkU, linkR, linkD, linkL};
         this.selected = false;
         this.covered = false;
+        this.visited = false;
         this.type = type;
         this.frontImage = new ImageIcon(frontImagePath);
         this.backImage = new ImageIcon("src/main/resources/components/tiles/GT-new_tiles_16_for web157.jpg");
-        this.visited = false;
     }
 
     /**
@@ -41,10 +41,18 @@ public abstract class Component {
         return frontImage;
     }
 
+    /**
+     * Sets if the component is already connected to the spaceship after the removal of a component
+     * @param visited if the component is already connected
+     */
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
 
+    /**
+     * Returns the front image of the component
+     * @return front image
+     */
     public boolean isVisited() {
         return visited;
     }
