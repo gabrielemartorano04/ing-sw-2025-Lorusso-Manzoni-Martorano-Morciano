@@ -12,8 +12,9 @@ import java.util.Comparator;
 //gestisce la partita
 
 /**
- * class that manages
- *
+ * The Game class manages the entire game process, including player actions,
+ * deck management, and game phases. It handles trucker movements, card effects,
+ * and the overall game state.
  */
 
 public class Game {
@@ -29,7 +30,9 @@ public class Game {
     private int timeTurns;
     private AskController askController;
 
-
+    /**
+     * Constructor that initializes the game attributes.
+     */
     public Game() {
         this.truckers = new ArrayList<>();
         this.truckersOut = new ArrayList<>();
@@ -44,16 +47,18 @@ public class Game {
 
 
     // model
-    public void setupGame() {
-        makeDeck();
-        makeStacks();
-    }
 
+    /**
+     * Sorts truckers in descending order based on their position.
+     */
     public void sortTruckers() {
         truckers.sort(Comparator.comparingInt(Trucker::getPosition).reversed());
     }
 
-
+    /**
+     * Rolls two dice and returns their sum.
+     * @return the sum of two random dice values (1-6)
+     */
     public int rollDice() {
         Random rand = new Random();
         int x = rand.nextInt(5) + 1 ;
@@ -61,21 +66,30 @@ public class Game {
         return x+y;
     }
 
-    // prendo la prima carta nel mazzo da gioco attivo il suo effetto e la rimuovo
-    public void drawCard() {
-        if (gameDeck.isEmpty()) return;
+    /**
+     * Draws the first card from the deck, returns it, and removes it.
+     */
+    public Card drawCard() {
+        if (gameDeck.isEmpty()) return null;
         Game game= new Game();
-        gameDeck.removeFirst().cardEffect(); //da modificare null una volta volta implementato game controller
+        return gameDeck.removeFirst();
     }
 
+    /**
+     * checks game conditions for every turn of the game.
+     */
     public void turn(){
-        drawCard();
         for(Trucker t: truckers){
             checkOvertaken(t);
             noHumans(t);
         }
     }
 
+
+    /**
+     * Removes truckers with no astronauts left on their spaceship.
+     * @param trucker the trucker to check
+     */
     public void noHumans(Trucker trucker) {
         for(Trucker t: truckers){
             if (t.getSpaceShip().getNumHuman() == 0)
@@ -83,12 +97,21 @@ public class Game {
         }
     }
 
+    /**
+     * Returns a specific stack of cards.
+     * @param i index of the stack
+     * @return the requested card stack or null if index is invalid
+     */
     public ArrayList<Card> viewStack(int i) {
         if (i != 3)
             return cardStacks[i];
         else return null;
     }
 
+    /**
+     * Checks if a trucker has been overtaken by 24+ positions and removes them.
+     * @param trucker the trucker to check
+     */
     public void checkOvertaken(Trucker trucker) {
         for(Trucker t: truckers) {
             if(t.getPosition() - trucker.getPosition() >= 24){
@@ -97,20 +120,36 @@ public class Game {
         }
     }
 
+    /**
+     * Moves a trucker to the 'out' list and removes them from the active game.
+     * @param trucker the trucker to withdraw
+     */
     public void withdraw(Trucker trucker) {
         truckersOut.add(trucker);
         truckers.remove(trucker);
     }
 
     //i=posizione assoluta
+    /**
+     * Retrieves a trucker at a given index.
+     * @param i index of the trucker
+     * @return the trucker at the specified position
+     */
     public Trucker getTrucker(int i) {
         return truckers.get(i);
     }
 
+    /**
+     * Returns the list of available components.
+     * @return an array of available components
+     */
     public AvailableComponents[] getComponents() {
         return components;
     }
 
+    /**
+     * Creates stacks of cards from the deck.
+     */
     public void makeStacks() {
         Random rand = new Random();
         for(ArrayList<Card> cardStack: cardStacks ) {
@@ -121,7 +160,10 @@ public class Game {
         }
     }
 
-    public void makeDeck() {
+    /**
+     * Creates the game deck by shuffling the card stacks.
+     */
+    public void makeGameDeck() {
         for (ArrayList<Card> cardStack: cardStacks ) {
             gameDeck.addAll(cardStack);
         }
@@ -130,11 +172,17 @@ public class Game {
         }while(gameDeck.getFirst().getLevel() != gameLevel);
     }
 
+    /**
+     * Moves a trucker forward by a specified number of days.
+     */
     public ArrayList<Trucker> getTruckerList() {
         return truckers;
     }
 
     //muove trucker in avanti, riceve days positivo
+    /**
+     * Moves a trucker forward by a specified number of days.
+     */
     public void moveForward(Trucker trucker, int days){
         int finalPos = trucker.getPosition();
         for (int i=0; i<days; i++){
@@ -149,6 +197,9 @@ public class Game {
     }
 
     //muove trucker in avanti, riceve days positivo
+    /**
+     * Moves a trucker backward by a specified number of days.
+     */
     public void moveBackward(Trucker trucker, int days){
         int finalPos = trucker.getPosition();
         for (int i=0; i<days; i++){
@@ -162,32 +213,56 @@ public class Game {
         trucker.setPosition(finalPos);
     }
 
+    /**
+     * Adds a new trucker to the game.
+     * @param numPlayer the number of players
+     * @param nickname the player's nickname
+     * @param color the player's chosen color
+     */
     public void makeTrucker(int numPlayer, String nickname, PlayerColors color){
         truckers.add(new Trucker(nickname, color));
     }
 
-    //controller
+    /**
+     * Checks if a trucker's spaceship is ready.
+     * @param trucker the trucker to check
+     * @return false (to be implemented)
+     */
     public boolean ready(Trucker trucker){
         return false;
     } //trucker's ship is ready
 
-    public void startGame() {}
 
-    public void setStateGame(){}
 
-    public void endGame() {}
+    /**
+     * Sets the game level.
+     * @param level the level to set
+     */
+    public void setLevel(int level) {
+        this.gameLevel = level;
+    };
 
-    public void setLevel(int level) {};
-
+    /**
+     * Gets the number of hourglass turns.
+     * @return the current time turns
+     */
     public int getTimeTurns(){
         return timeTurns;
     }
 
+    /**
+     * Increases the hourglass turns count by 1.
+     */
     public void increaseTimeTurns() {
         timeTurns = timeTurns+1;
     }
 
     // da finire, per livello 2
+    /**
+     * Computes the scores for each player at the end of the game.
+     * @param numPlayer the number of players
+     * @return an array of scores
+     */
     public int[] computeScores(int numPlayer){
         int i=0;
         int[] scores = new int[numPlayer];
@@ -218,6 +293,11 @@ public class Game {
         return scores;
     };
 
+    /**
+     * Determines if a trucker has the best spaceship.
+     * @param trucker the trucker to check
+     * @return true if the trucker's spaceship has the fewest exposed connectors
+     */
     public boolean bestSpaceShip(Trucker trucker) {
         for(Trucker t: truckers) {
             if (trucker.getSpaceShip().countExposedConnectors() > t.getSpaceShip().countExposedConnectors()){
@@ -226,5 +306,6 @@ public class Game {
         }
         return true;
     }
+
 }
 

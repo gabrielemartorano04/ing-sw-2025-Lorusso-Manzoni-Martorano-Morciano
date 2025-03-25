@@ -3,6 +3,8 @@ import it.polimi.ingsw.Exceptions.ColorNotAvailable;
 import it.polimi.ingsw.Exceptions.NicknameUsedException;
 import it.polimi.ingsw.Exceptions.TimeExpiredException;
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.Cards.Card;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,6 +19,7 @@ public class GameController {
     private SpaceShipController spaceShipController;
     private ArrayList<PlayerColors> availableColor;
     private ArrayList<String> usedNickname;
+    private int[] scores;
 
     public enum GameState {
         SETUP,  // Attesa giocatori
@@ -114,7 +117,7 @@ public class GameController {
         if (timeExpired[0]){
             throw new TimeExpiredException("Tempo scaduto! Non è stato raggiunto un numero valido di giocatori.");
         }
-        game.setupGame();
+        game.makeStacks();
         game.makeTrucker(numPlayer, nickname, color);
         setGameState(GameState.BUILDING);
     }
@@ -130,11 +133,19 @@ public class GameController {
     }
 
     public void manageFlight() {
-
+        game.makeGameDeck();
+        Card card;
+        do
+        {
+            card = game.drawCard();
+            cardController.applyCardEffect(card);
+            game.sortTruckers();
+            game.turn();
+        }while(card != null);
     }
 
     public void manageEnded() {
-
+        scores = game.computeScores(numPlayer);
     }
 
 }
