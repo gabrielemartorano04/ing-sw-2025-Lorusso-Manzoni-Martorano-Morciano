@@ -5,7 +5,7 @@ import it.polimi.ingsw.Model.Components.*;
 import java.util.*;
 
 /**
- * Class that manage the Trucker's SpaceShip, with its components, goods, astronauts
+ * Class that manage the Trucker's SpaceShip, with its components, goods, astronauts, aliens
  * */
 
 public class SpaceShip {
@@ -21,11 +21,11 @@ public class SpaceShip {
     private int numAlien;
 
     /**
-     * Spaceship constructor, it initializes the attributes of this class
-     * if a components[i][j] can be filled it's initialized null
-     * otherwise it's initialized as EmptySpace
-     * the counters are 0 because the spaceship is empty
-     * This constructor also initialize the main cabin in the middle of the spaceship
+     * Spaceship constructor, it initializes the attributes of this class.
+     * If a components[i][j] can be filled it's initialized null,
+     * otherwise it's initialized as EmptySpace.
+     * The counters are 0 because the spaceship is empty.
+     * This constructor also initialize the main cabin in the middle of the spaceship.
      */
     //chiedi per parametro color per inizializzare il colore della main cabin
     public SpaceShip() {
@@ -33,8 +33,6 @@ public class SpaceShip {
         kept = new Component[2];
         for (int i = 0; i < 2; i++)
             kept[i] = null;
-        //empty space dove non puoi aggiungere mai
-        //null dove ancora non c'è un componente
         for(int i=0;i<5;i++){
             for(int j=0;j<11;j++){
                 components[i][j]=new EmptySpace();
@@ -58,11 +56,6 @@ public class SpaceShip {
             }
         }
 
-        for (int i = 0; i <= 9; i++) {
-            for (int j = 0; j <= 10; j++) {
-                components[i][j] = null;
-            }
-        }
         lost = 0;
         Cabin cabin = new Cabin(3, 3, 3, 3, "cabin", "", null, true);
         components[7][7] = cabin;
