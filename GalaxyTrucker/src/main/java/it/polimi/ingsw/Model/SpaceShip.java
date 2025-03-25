@@ -684,8 +684,38 @@ public class SpaceShip {
                 }
             }
         }
-        //aggiungere il metodo che setta i isVisited a true dei componenti visitati
+        componentsVisited(7,7);
         removeUnlinkedComponents();
+    }
+
+    /**
+     * Starting from the main cabin we marke as visited every component that is reachable through a path that starts
+     * in the main cabin, every component that isn't reachable from the main cabin will be left as not Visited
+     * @param x: coordinate x of the main cabin
+     * @param y: coordinate y of the main cabin
+     */
+    private void componentsVisited(int x, int y){
+        // caso base della funzione che è ricorsiva
+        // 1. sto uscendo dai bordi della matrice
+        // 2. sono in un component null o vuoto o è un componente già visitato che è diverso dalla cabina principale
+        // il fatto della cabina principale è dovuto al fatto che non è un albero ma un grafo e se setto la cabina principale
+        // a visited allora non riesco a esplorare tutto perchè appena ritorno alla main cabin è visited e quindi finisco
+        // per settare la cabina principale a visited uso il terzo if
+
+        if (x < 0 || x >= components.length || y < 0 || y >= components[0].length) {
+            return;
+        }
+        if(components[x][y] == null || components[x][y].getType().equals("EmptySpace") || (components[x][y].isVisited() && (x!=7 && y!=7))) {
+            return;
+        }
+        if( (components[6][7] != null && components[6][7].isVisited()) && (components[8][7] != null && components[8][7].isVisited()) && (components[7][8] != null && components[7][8].isVisited()) && (components[7][8] != null && components[7][8].isVisited())) {
+            components[7][7].setVisited(true);
+        }
+        components[x][y].setVisited(true);
+        componentsVisited(x+1, y);
+        componentsVisited(x-1, y);
+        componentsVisited(x, y+1);
+        componentsVisited(x, y-1);
     }
 
     /**
