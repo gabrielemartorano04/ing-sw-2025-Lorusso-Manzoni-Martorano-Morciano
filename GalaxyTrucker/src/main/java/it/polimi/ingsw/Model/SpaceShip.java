@@ -708,14 +708,14 @@ public class SpaceShip {
         if(components[x][y] == null || components[x][y].getType().equals("EmptySpace") || (components[x][y].isVisited() && (x!=7 && y!=7))) {
             return;
         }
-        if( (components[6][7] != null && components[6][7].isVisited()) && (components[8][7] != null && components[8][7].isVisited()) && (components[7][8] != null && components[7][8].isVisited()) && (components[7][8] != null && components[7][8].isVisited())) {
+        if( (components[6][7] != null || components[6][7].isVisited()) && (components[8][7] != null || components[8][7].isVisited()) && (components[7][8] != null || components[7][8].isVisited()) && (components[7][8] != null || components[7][8].isVisited())) {
             components[7][7].setVisited(true);
         }
         components[x][y].setVisited(true);
         componentsVisited(x+1, y);
-        componentsVisited(x-1, y);
         componentsVisited(x, y+1);
         componentsVisited(x, y-1);
+        componentsVisited(x-1, y);
     }
 
     /**

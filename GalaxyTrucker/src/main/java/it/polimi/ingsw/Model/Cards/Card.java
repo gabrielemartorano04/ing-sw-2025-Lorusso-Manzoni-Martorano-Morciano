@@ -59,12 +59,6 @@ public abstract class Card {
     }
 
     /**
-     *
-     */
-    public void cardEffect(){
-    }
-
-    /**
      * Applies the changes provided by the card
      * @param game game in which the card has been drawn
      */
