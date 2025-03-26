@@ -6,6 +6,7 @@ package it.polimi.ingsw.Model.Components;
 public class Engine extends Component{
     private final boolean isDouble;
     private boolean isActive;
+    private Orientation orientation;
 
     /**
      * Engine constructor, initialise the attributes of this class
@@ -20,6 +21,7 @@ public class Engine extends Component{
         super(linkU, linkR, 0, linkL, type, imagePath);
         this.isDouble = isDouble;
         this.isActive = false;
+        this.orientation = Orientation.S;
     }
 
     /**
@@ -44,5 +46,21 @@ public class Engine extends Component{
      */
     public boolean getIsActive() {
         return isActive;
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+    }
+
+    public void turn(){
+        super.turn();
+        if(orientation == Orientation.N){ setOrientation(Orientation.E);}
+        else if(orientation == Orientation.E){setOrientation(Orientation.S);}
+        else if(orientation == Orientation.S){setOrientation(Orientation.W);}
+        else if(orientation == Orientation.W){setOrientation(Orientation.N);}
     }
 }
