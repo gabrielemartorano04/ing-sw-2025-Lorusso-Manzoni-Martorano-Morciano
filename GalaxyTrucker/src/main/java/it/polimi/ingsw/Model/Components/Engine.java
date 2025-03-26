@@ -48,14 +48,26 @@ public class Engine extends Component{
         return isActive;
     }
 
-    public Orientation getOrientation() {
-        return orientation;
-    }
-
+    /**
+     * Sets the orientation if the component is rotated
+     * @param orientation orientation of the cannon
+     */
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
     }
 
+    /**
+     * Returns the orientation of the cannon
+     * @return orientation of the cannon
+     */
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    /**
+     * Turns the orientation of the cannon and the component
+     */
+    @Override
     public void turn(){
         super.turn();
         if(orientation == Orientation.N){ setOrientation(Orientation.E);}
