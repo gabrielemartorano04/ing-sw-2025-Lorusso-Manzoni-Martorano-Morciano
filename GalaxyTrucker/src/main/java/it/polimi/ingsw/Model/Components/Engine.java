@@ -70,9 +70,9 @@ public class Engine extends Component{
     @Override
     public void turn(){
         super.turn();
-        if(orientation == Orientation.N){ setOrientation(Orientation.E);}
-        else if(orientation == Orientation.E){setOrientation(Orientation.S);}
-        else if(orientation == Orientation.S){setOrientation(Orientation.W);}
+        if(orientation == Orientation.S){ setOrientation(Orientation.W);}
         else if(orientation == Orientation.W){setOrientation(Orientation.N);}
+        else if(orientation == Orientation.N){setOrientation(Orientation.E);}
+        else if(orientation == Orientation.E){setOrientation(Orientation.S);}
     }
 }
