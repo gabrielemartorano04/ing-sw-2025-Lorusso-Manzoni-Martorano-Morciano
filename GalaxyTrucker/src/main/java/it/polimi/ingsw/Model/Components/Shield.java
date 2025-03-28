@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model.Components;
 /**
  * Class that manages the single shield
  */
-public class Shield extends Component{
+public final class Shield extends Component{
     private Direction direction;
 
     /**

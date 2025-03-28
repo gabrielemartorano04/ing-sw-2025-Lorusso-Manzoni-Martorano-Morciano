@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 /**
  * Class that manages the single component
  */
-public abstract class Component {
+public abstract sealed class Component permits BatteryStorage, Cabin, Cannon, EmptySpace, Engine, LifeSupport,Load,Pipes,Shield {
     protected int[] link;
     protected boolean selected;
     protected boolean covered;

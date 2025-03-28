@@ -76,12 +76,18 @@ public class SpaceShip {
      * maximum
      */
     public void setBattery(){
-        BatteryStorage bs=null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if(components[i][j] != null && components[i][j].getType().equals("Battery Storage")){
-                    numOfBattery= bs.getCapacity();
-                    bs.setQuantity(numOfBattery);
+                if(components[i][j] != null){
+                    switch(components[i][j]){
+                        case BatteryStorage c -> {
+                            numOfBattery= c.getCapacity();
+                            c.setQuantity(numOfBattery);
+                        }
+                        default -> {
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -92,12 +98,17 @@ public class SpaceShip {
      * @return goodsCapacity the goods capacity of the entire spaceship
      */
     public int getGoodsCapacity() {
-        Load load = null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null && components[i][j].getType().equals("Load")) {
-                    load = (Load) components[i][j];
-                    goodsCapacity += load.getCapacity();
+                if(components[i][j] != null){
+                    switch(components[i][j]){
+                        case Load c -> {
+                            goodsCapacity += c.getCapacity();
+                        }
+                        default -> {
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -114,14 +125,20 @@ public class SpaceShip {
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null) {
-                    if (components[i][j].getType().equals("Cabin")) {
-                        cabin = (Cabin) components[i][j];
-                        if (cabin.getAlien() == null){
-                            numHuman += 2;
-                            cabin.setQuantity(2);
+                    switch (components[i][j]) {
+                        case Cabin c -> {
+                            if (c.getAlien() == null){
+                                numHuman += 2;
+                                cabin.setQuantity(2);
+                            }
+
+                        }
+                        default -> {
+                            break;
                         }
                     }
                 }
+
             }
         }
     }
@@ -139,6 +156,7 @@ public class SpaceShip {
      * the cabin
      * @param coord coordinate of the components in which the player would like to put aliens
      */
+    /// //////////////////////////////////////////
     public void setNumAlien(ArrayList<int[]> coord){
         Cabin cabin=null;
         Alien alien=null;
@@ -539,13 +557,19 @@ public class SpaceShip {
      * @return true if all the components are correctly linked
      */
     public boolean wellDone() {
+        boolean wellDone=true;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (!isValid(i, j))
-                    return false;
+                    removeComponent(i,j);
+                    wellDone=false;
             }
         }
-        return true;
+        if(!wellDone){
+            componentsVisited(7,7);
+            removeUnlinkedComponents();
+        }
+        return wellDone;
     }
 
     /**

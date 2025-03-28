@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model.Components;
 /**
  * Class that manages the space outside the spaceship's construction space
  */
-public class EmptySpace extends Component{
+final public class EmptySpace extends Component{
 
     /**
      * Empty space constructor, initialise the attributes of this class

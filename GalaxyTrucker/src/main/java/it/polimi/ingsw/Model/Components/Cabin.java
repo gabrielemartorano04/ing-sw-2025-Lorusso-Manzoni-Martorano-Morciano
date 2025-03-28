@@ -5,7 +5,7 @@ import it.polimi.ingsw.Model.PlayerColors;
 /**
  * Class that manages the single cabin
  */
-public class Cabin extends Component{
+final public class Cabin extends Component{
     private final boolean isMain;
     private int quantity;
     private final int capacity;
