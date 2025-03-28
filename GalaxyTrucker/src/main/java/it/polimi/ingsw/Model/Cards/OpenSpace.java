@@ -36,7 +36,7 @@ public class OpenSpace extends Card {
      */
     public void setCoordinates(ArrayList<int[]> truckerCoordinate, int numTruckers) {
         if (this.state != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("Non è possibile inserire le coordinate nello stato " + this.state);
+            throw new IllegalStateException("Non è possibile inserire le informazioni nello stato " + this.state);
         }
         this.truckersCoordinates.addLast(truckerCoordinate);
         if (truckersCoordinates != null && truckersCoordinates.size() == numTruckers) {

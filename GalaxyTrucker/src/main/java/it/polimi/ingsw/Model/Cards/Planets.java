@@ -16,7 +16,7 @@ public class Planets extends Card {
     private final ArrayList<ArrayList<Goods>> planets;
     private final int daysLoss;
     private int[] playersLanded; // viene settato dal Card Controller e playersLanded[i] vale 1 se quel player è atterato se no 0
-    private ArrayList<ArrayList<int[]>> truckersCoordinates = new ArrayList<>(); // solita convenzione per salvarmi le coordinate di dove aggiungere le merci per ogni trucker
+    private ArrayList<ArrayList<int[]>> truckersCoordinates; // solita convenzione per salvarmi le coordinate di dove aggiungere le merci per ogni trucker
     private CardState state;
     private int playersLandedIndex = 0;
 
@@ -33,6 +33,7 @@ public class Planets extends Card {
         super("Planets", "A new planetary system discovered", trialFlight, level, frontImage, backImage);
         this.daysLoss = daysLoss;
         this.planets = planets;
+        this.truckersCoordinates = new ArrayList<>();
     }
 
     /**
@@ -49,7 +50,7 @@ public class Planets extends Card {
      */
     public void setTruckersCoordinates(ArrayList<int[]> truckerCoordinate, int numTruckers) {
         if (this.state != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("Non è possibile inserire le coordinate nello stato " + this.state);
+            throw new IllegalStateException("Non è possibile inserire le informazioni nello stato " + this.state);
         }
         this.truckersCoordinates.addLast(truckerCoordinate);
         if (truckersCoordinates != null && truckersCoordinates.size() == numTruckers) {
@@ -73,7 +74,7 @@ public class Planets extends Card {
      */
     public void setPlayersLanded(int playerLanded, int numTruckers) {
         if (this.state != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("Non è possibile inserire le coordinate nello stato " + this.state);
+            throw new IllegalStateException("Non è possibile inserire le informazioni nello stato " + this.state);
         }
         if (this.playersLanded == null) {
             this.playersLanded = new int[numTruckers];
