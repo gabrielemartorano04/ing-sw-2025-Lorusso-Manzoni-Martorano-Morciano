@@ -15,6 +15,7 @@ import java.util.List;
  * If it's a big meteor, the trucker can use, or activate if is double, a cannon to destroy the meteor; a cannon protects only one column or 3 row (his own and the 2 adjacent ones) if rotated;
  */
 public class MeteorShower extends Card {
+    public CardState state;
     private final ArrayList<int[]> direction;
     // direction è una lista dove direction.get(i) rappresenta l'i-esimo meteorite in questa specifica MeteorShower
     // direction.get(i)[0] vale 1 se il meteorite è grande 0 se è piccolo
@@ -56,7 +57,11 @@ public class MeteorShower extends Card {
      */
     @Override
     public void cardEffect(Game game) {
+        if (this.state != CardState.ESECUZIONE) {
+            throw new IllegalStateException("Non è possibile eseguire card effect nello stato " + this.state);
+        }
         //per ora non c'è perché è tutto nel Card Controller
+        this.state = CardState.ATTESA_RISPOSTE;
     }
 }
 

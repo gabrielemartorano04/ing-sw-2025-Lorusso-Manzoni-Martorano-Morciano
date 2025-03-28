@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class OpenSpace extends Card {
     private ArrayList<ArrayList<int[]>> truckersCoordinates = new ArrayList<>();
-    CardState state;
+    private CardState state;
     //lista che contiene per ogni trucker la lista di coordinates dei motori doppi che vuole attivare
     //la lista esterna associa ogni puntatore a un trucker, quindi la lunghezza della lista esterna è quella di truckers.
     //mantiene l'ordine dei truckers nel fare questa associazione
