@@ -31,13 +31,13 @@ public class OpenSpace extends Card {
 
     /**
      * Sets for each trucker the coordinates of the double cannon that he/she wants to activate
-     * @param truckerCoordinate list of lists of arrays of coordinates
+     * @param truckerCoordinate list of arrays of coordinates
      */
     public void setCoordinates(ArrayList<int[]> truckerCoordinate, int numTruckers) {
         if (this.state != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Non è possibile inserire le coordinate nello stato " + this.state);
         }
-        this.truckersCoordinates.add(truckerCoordinate);
+        this.truckersCoordinates.addLast(truckerCoordinate);
         if (truckersCoordinates != null && truckersCoordinates.size() == numTruckers) {
             boolean allValid = true;
             for (ArrayList<int[]> list : truckersCoordinates) {
