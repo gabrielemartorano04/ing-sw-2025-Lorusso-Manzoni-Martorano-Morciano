@@ -67,6 +67,7 @@ final public class Cannon extends Component{
     /**
      * Turns the orientation of the cannon and the component
      */
+    @Override
     public void turn(){
         super.turn();
         if(orientation == Orientation.N){ setOrientation(Orientation.E);}
