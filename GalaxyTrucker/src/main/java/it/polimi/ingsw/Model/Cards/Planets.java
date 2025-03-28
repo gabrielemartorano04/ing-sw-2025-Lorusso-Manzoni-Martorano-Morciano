@@ -17,6 +17,8 @@ public class Planets extends Card {
     private final int daysLoss;
     private int[] playersLanded; // viene settato dal Card Controller e playersLanded[i] vale 1 se quel player è atterato se no 0
     private ArrayList<ArrayList<int[]>> truckersCoordinates; // solita convenzione per salvarmi le coordinate di dove aggiungere le merci per ogni trucker
+    private CardState state;
+    private int playersLandedIndex = 0;
 
     /**
      * Planets constructor, initialise the attributes of this class
@@ -31,6 +33,7 @@ public class Planets extends Card {
         super("Planets", "A new planetary system discovered", trialFlight, level, frontImage, backImage);
         this.daysLoss = daysLoss;
         this.planets = planets;
+        this.truckersCoordinates = new ArrayList<>();
     }
 
     /**
@@ -43,18 +46,43 @@ public class Planets extends Card {
 
     /**
      * Sets, for each trucker, the coordinates of the loads where he/she wants to add the goods gained
-     * @param truckersCoordinates list of lists of coordinates
+     * @param truckerCoordinate list of arrays of coordinates
      */
-    public void setTruckersCoordinates(ArrayList<ArrayList<int[]>> truckersCoordinates) {
-        this.truckersCoordinates = truckersCoordinates;
+    public void setTruckersCoordinates(ArrayList<int[]> truckerCoordinate, int numTruckers) {
+        if (this.state != CardState.ATTESA_RISPOSTE) {
+            throw new IllegalStateException("Non è possibile inserire le informazioni nello stato " + this.state);
+        }
+        this.truckersCoordinates.addLast(truckerCoordinate);
+        if (truckersCoordinates != null && truckersCoordinates.size() == numTruckers) {
+            boolean allValid = true;
+            for (ArrayList<int[]> list : truckersCoordinates) {
+                if (list == null || list.isEmpty()) {
+                    allValid = false;
+                    break;
+                }
+            }
+            if (allValid) {
+                state = CardState.ESECUZIONE;
+            }
+        }
     }
 
     /**
      * Sets which truckers landed on a planet
-     * @param playersLanded array of landed truckers
+     * @param playerLanded specify if the trucker
+     * @param numTruckers number of truckers
      */
-    public void setPlayersLanded(int[] playersLanded) {
-        this.playersLanded = playersLanded;
+    public void setPlayersLanded(int playerLanded, int numTruckers) {
+        if (this.state != CardState.ATTESA_RISPOSTE) {
+            throw new IllegalStateException("Non è possibile inserire le informazioni nello stato " + this.state);
+        }
+        if (this.playersLanded == null) {
+            this.playersLanded = new int[numTruckers];
+        }
+        while (playersLandedIndex < this.playersLanded.length && this.playersLanded[playersLandedIndex] != 0) {
+            playersLandedIndex++;
+        }
+        this.playersLanded[playersLandedIndex] = playerLanded;
     }
 
     /**
@@ -63,6 +91,9 @@ public class Planets extends Card {
      */
     @Override
     public void cardEffect(Game game) {
+        if (this.state != CardState.ESECUZIONE) {
+            throw new IllegalStateException("Non è possibile eseguire card effect nello stato " + this.state);
+        }
         int i = 0;
         ArrayList<Trucker> truckers = game.getTruckerList();
 
@@ -79,5 +110,6 @@ public class Planets extends Card {
                 game.moveBackward(truckers.get(i), daysLoss);
             }
         }
+        state = CardState.ATTESA_RISPOSTE;
     }
 }

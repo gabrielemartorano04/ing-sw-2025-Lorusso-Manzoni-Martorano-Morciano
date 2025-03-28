@@ -9,7 +9,8 @@ import java.util.ArrayList;
 /**
  * Class that manages the single card pirates
  * In order of position, starting from the leader, each trucker decides which double cannon wants to activate, using batteries, for the calculation of the cannon power.
- * The first trucker that has a cannon power which is equals or higher than the pirates one, defeat them and decide if he/she wants, losing days of flight, to gain cosmic credits.
+ * The first trucker that has a cannon power which is higher than the pirates one, defeat them and decide if he/she wants, losing days of flight, to gain cosmic credits.
+ * If the trucker's cannon power is equal to the pirates' one, nothing happens to the trucker, but the pirates continue to attack
  * For all the defeated, the first defeated trucker roll the dices for each shoot, in order of representation on the card, to determinate the row or column in which the shoot will hit.
  * If it's a small shoot, the trucker can use a battery to activate a shield oriented in that direction to protect the ship.
  * If it's a big shoot, there is no way possible for the trucker to protect his/her ship.

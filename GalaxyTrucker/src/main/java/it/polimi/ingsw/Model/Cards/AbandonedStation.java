@@ -17,8 +17,8 @@ public class AbandonedStation extends Card {
     private final int numHuman;
     private final ArrayList<Goods> goods;
     private Trucker truckerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
-    private ArrayList<int[]> coordinates; //coordinates sono le coordinate dei Load dove inserire le merci. Viene settato dal Card controller, se è vuoto vuol dire che nessun giocatore ha voluto accettare la carta
-
+    private ArrayList<int[]> coordinates = null; //coordinates sono le coordinate dei Load dove inserire le merci. Viene settato dal Card controller, se è vuoto vuol dire che nessun giocatore ha voluto accettare la carta
+    private CardState cardState;
     /**
      * Abandoned station constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -34,6 +34,7 @@ public class AbandonedStation extends Card {
         this.days = days;
         this.numHuman = numHuman;
         this.goods = goods;
+        this.cardState = CardState.ATTESA_RISPOSTE;
     }
 
     /**
@@ -64,8 +65,14 @@ public class AbandonedStation extends Card {
      * Sets the only trucker that has chosen to take the station
      * @param truckerThatHasDecided trucker ID
      */
-    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided) {
+    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided) throws IllegalStateException {
+        if (cardState != CardState.ATTESA_RISPOSTE) {
+            throw new IllegalStateException("stato non valido");
+        }
         this.truckerThatHasDecided = truckerThatHasDecided;
+        if (coordinates != null){
+            this.cardState = CardState.ESECUZIONE;
+        }
     }
 
     /**
@@ -73,7 +80,13 @@ public class AbandonedStation extends Card {
      * @param coord list of arrays of coordinates of the loads
      */
     public void setCoord(ArrayList<int[]> coord) {
+        if (cardState != CardState.ATTESA_RISPOSTE) {
+            throw new IllegalStateException("stato non valido");
+        }
         this.coordinates = coord;
+        if (truckerThatHasDecided != null){
+            this.cardState = CardState.ESECUZIONE;
+        }
     }
 
     /**
@@ -81,8 +94,12 @@ public class AbandonedStation extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public void cardEffect(Game game) {
+    public void cardEffect(Game game) throws IllegalStateException {
+        if (cardState != CardState.ESECUZIONE) {
+            throw new IllegalStateException("risposte mancanti");
+        }
         truckerThatHasDecided.getSpaceShip().addGoods(goods,coordinates);
         game.moveBackward(truckerThatHasDecided, days);
+        cardState = CardState.ATTESA_RISPOSTE;
     }
 }
