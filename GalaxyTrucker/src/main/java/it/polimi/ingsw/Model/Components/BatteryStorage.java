@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model.Components;
 /**
  * Class that manages the single battery storage
  */
-public class BatteryStorage extends Component{
+final public class BatteryStorage extends Component{
     private final int capacity;
     private int quantity;
 

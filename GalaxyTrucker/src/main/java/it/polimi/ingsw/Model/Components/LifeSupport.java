@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model.Components;
 /**
  * Class that manages the single life support
  */
-public class LifeSupport extends Component{
+final public class LifeSupport extends Component{
     private final AlienColor color;
 
     /**

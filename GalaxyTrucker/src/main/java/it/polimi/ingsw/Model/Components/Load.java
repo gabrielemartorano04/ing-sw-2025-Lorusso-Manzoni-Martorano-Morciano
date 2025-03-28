@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Class that manages the single load
  */
-public class Load extends Component{
+final public class Load extends Component{
     private final boolean isSpecial;
     private final int capacity;
     private ArrayList<Goods> goods; //lista delle merci contenute in quel Load ordinate dalla rarità maggiore a quella minore

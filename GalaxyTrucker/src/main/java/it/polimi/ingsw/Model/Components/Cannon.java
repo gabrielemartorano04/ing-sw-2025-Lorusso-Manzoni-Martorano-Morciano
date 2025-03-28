@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model.Components;
 /**
  * Class that manages the cannon
  */
-public class Cannon extends Component{
+final public class Cannon extends Component{
     private final boolean isDouble;
     private boolean isActive;
     private Orientation orientation;
