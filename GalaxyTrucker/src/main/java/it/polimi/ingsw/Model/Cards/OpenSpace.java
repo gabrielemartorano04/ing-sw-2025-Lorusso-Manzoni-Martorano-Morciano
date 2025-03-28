@@ -9,10 +9,11 @@ import java.util.List;
 
 /**
  * In order of position, starting from the leader, each trucker decides which double engine wants to activate, using batteries, for the calculation of the total engine power.
- * The total engine power of the trucker is the number of days of flight that his/her spaceship will acquire on the dashboard
+ * The total engine power of the trucker is the number of days of flight that his/her spaceship will gain on the dashboard
  */
 public class OpenSpace extends Card {
     private ArrayList<ArrayList<int[]>> truckersCoordinates;
+    CardState state;
     //lista che contiene per ogni trucker la lista di coordinates dei motori doppi che vuole attivare
     //la lista esterna associa ogni puntatore a un trucker, quindi la lunghezza della lista esterna è quella di truckers.
     //mantiene l'ordine dei truckers nel fare questa associazione
@@ -32,8 +33,23 @@ public class OpenSpace extends Card {
      * Sets for each trucker the coordinates of the double cannon that he/she wants to activate
      * @param truckersCoordinates list of lists of arrays of coordinates
      */
-    public void setCoordinates(ArrayList<ArrayList<int[]>> truckersCoordinates) {
+    public void setCoordinates(ArrayList<ArrayList<int[]>> truckersCoordinates, int numTruckers) {
+        if (this.state != CardState.ATTESA_RISPOSTE) {
+            throw new IllegalStateException("Non è possibile inserire le coordinate nello stato " + this.state);
+        }
         this.truckersCoordinates = truckersCoordinates;
+        if (truckersCoordinates != null && truckersCoordinates.size() == numTruckers) {
+            boolean allValid = true;
+            for (ArrayList<int[]> list : truckersCoordinates) {
+                if (list == null || list.isEmpty()) {
+                    allValid = false;
+                    break;
+                }
+            }
+            if (allValid) {
+                state = CardState.ESECUZIONE;
+            }
+        }
     }
 
     /**
@@ -42,6 +58,9 @@ public class OpenSpace extends Card {
      */
     @Override
     public void cardEffect(Game game) {
+        if (this.state != CardState.ESECUZIONE) {
+            throw new IllegalStateException("Non è possibile eseguire card effect nello stato " + this.state);
+        }
         List<Trucker> truckers = game.getTruckerList();
         int[] enginePowerPerTrucker = new int[truckers.size()];
         int i = 0;
@@ -55,6 +74,7 @@ public class OpenSpace extends Card {
         for (i = 0; i < enginePowerPerTrucker.length; i++) {
             game.moveForward(truckers.get(i), enginePowerPerTrucker[i]);
         }
+        state = CardState.ATTESA_RISPOSTE;
     }
 }
 
