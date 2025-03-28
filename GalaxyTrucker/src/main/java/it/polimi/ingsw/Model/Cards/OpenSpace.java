@@ -12,7 +12,7 @@ import java.util.List;
  * The total engine power of the trucker is the number of days of flight that his/her spaceship will gain on the dashboard
  */
 public class OpenSpace extends Card {
-    private ArrayList<ArrayList<int[]>> truckersCoordinates;
+    private ArrayList<ArrayList<int[]>> truckersCoordinates = new ArrayList<>();
     CardState state;
     //lista che contiene per ogni trucker la lista di coordinates dei motori doppi che vuole attivare
     //la lista esterna associa ogni puntatore a un trucker, quindi la lunghezza della lista esterna è quella di truckers.
@@ -31,13 +31,13 @@ public class OpenSpace extends Card {
 
     /**
      * Sets for each trucker the coordinates of the double cannon that he/she wants to activate
-     * @param truckersCoordinates list of lists of arrays of coordinates
+     * @param truckerCoordinate list of lists of arrays of coordinates
      */
-    public void setCoordinates(ArrayList<ArrayList<int[]>> truckersCoordinates, int numTruckers) {
+    public void setCoordinates(ArrayList<int[]> truckerCoordinate, int numTruckers) {
         if (this.state != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Non è possibile inserire le coordinate nello stato " + this.state);
         }
-        this.truckersCoordinates = truckersCoordinates;
+        this.truckersCoordinates.add(truckerCoordinate);
         if (truckersCoordinates != null && truckersCoordinates.size() == numTruckers) {
             boolean allValid = true;
             for (ArrayList<int[]> list : truckersCoordinates) {
