@@ -15,7 +15,8 @@ public class AbandonedShip extends Card {
     private final int credits;
     private final int numHuman;
     private Trucker truckerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
-    private ArrayList<int[]> coordinates; //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
+    private ArrayList<int[]> coordinates = null; //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
+    private CardState state = CardState.ATTESA_RISPOSTE;
 
     /**
      * Abandoned ship constructor, initialise the attributes of this class
@@ -62,8 +63,14 @@ public class AbandonedShip extends Card {
      * Sets the only trucker that has chosen to take the ship
      * @param truckerThatHasDecided trucker ID
      */
-    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided) {
+    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided)  {
+        if(state != CardState.ATTESA_RISPOSTE) {
+            throw new IllegalStateException("Non puoi settare variabili nello stato: " + state);
+        }
         this.truckerThatHasDecided = truckerThatHasDecided;
+        if(coordinates!=null){
+            state = CardState.ESECUZIONE;
+        }
     }
 
     /**
@@ -71,19 +78,31 @@ public class AbandonedShip extends Card {
      * @param coordinates list of arrays of coordinates of the cabins
      */
     public void setCoordinates(ArrayList<int[]> coordinates) {
+        if(state != CardState.ATTESA_RISPOSTE) {
+            throw new IllegalStateException("Non puoi settare variabili nello stato: " + state);
+        }
         this.coordinates = coordinates;
+        if(truckerThatHasDecided!=null){
+            state = CardState.ESECUZIONE;
+        }
+
     }
 
     /**
      * Applies the changes provided by the card
      * @param game game in which the card has been drawn
      */
+
     @Override
     public void cardEffect(Game game) {
+        if(state != CardState.ESECUZIONE) {
+            throw new IllegalStateException("Non puoi settare fare CardEffect nello stato: " + state);
+        }
         if (truckerThatHasDecided != null) {
             truckerThatHasDecided.getSpaceShip().removeNumHuman(coordinates);
             game.moveBackward(truckerThatHasDecided,days);
             truckerThatHasDecided.addCosmicCredit(credits);
         }
+        state = CardState.ATTESA_RISPOSTE;
     }
 }
