@@ -32,6 +32,7 @@ public class OpenSpace extends Card {
     /**
      * Sets for each trucker the coordinates of the double cannon that he/she wants to activate
      * @param truckerCoordinate list of arrays of coordinates
+     * @param numTruckers number of truckers
      */
     public void setCoordinates(ArrayList<int[]> truckerCoordinate, int numTruckers) {
         if (this.state != CardState.ATTESA_RISPOSTE) {
