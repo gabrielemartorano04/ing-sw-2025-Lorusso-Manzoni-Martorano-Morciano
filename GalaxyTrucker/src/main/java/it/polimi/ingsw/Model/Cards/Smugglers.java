@@ -13,8 +13,8 @@ import java.util.Arrays;
  * Class that manages the single card smugglers
  * In order of position, starting from the leader, each trucker decides which double cannon wants to activate, using batteries, for the calculation of the cannon power.
  * The first trucker that has a cannon power which is higher than the smugglers one, defeat them and decide if he/she wants, losing days of flight, to gain goods.
- * For all the defeated truckers, they have to lose some of their most valuable goods.
  * If the trucker's cannon power is equal to the smugglers' one, nothing happens to the trucker, but the smugglers continue to attack
+ * For all the defeated truckers, they have to lose some of their most valuable goods.
  */
 public class Smugglers extends Card {
     private final int smugglersPower;
