@@ -156,48 +156,78 @@ public class SpaceShip {
      * the cabin
      * @param coord coordinate of the components in which the player would like to put aliens
      */
-    /// //////////////////////////////////////////
     public void setNumAlien(ArrayList<int[]> coord){
-        Cabin cabin=null;
+
         Alien alien=null;
-        LifeSupport ls=null;
+        ArrayList<LifeSupport> ls=new ArrayList<>();
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if(components[i][j]!=null && components[i][j].getType().equals("Cabin")){
-                    cabin=(Cabin)components[i][j];
-                    if(!cabin.getIsMain()){
-                        if(components[i+1][j].getType().equals("Life Support"))
-                        {
-                            int link1=components[i][j].getLink()[2];
-                            int link2=components[i+1][j].getLink()[0];
-                            if(link1==link2 || link1==3 || link2==3) ls=(LifeSupport) components[i+1][j];
+                if(components[i][j]!=null){
+                    switch(components[i][j]){
+                        case Cabin c -> {
+                            if(!c.getIsMain()){
+                                if(components[i+1][j]!=null){
+                                    switch(components[i+1][j]){
+                                        case LifeSupport c1->{
+                                            int link1=components[i][j].getLink()[2];
+                                            int link2=components[i+1][j].getLink()[0];
+                                            if(link1==link2 || link1==3 || link2==3)  ls.add(c1);
+                                        }
+                                        default -> {
+                                            break;
+                                        }
+                                    }
+                                }
+                                if(components[i-1][j]!=null){
+                                    switch(components[i-1][j]){
+                                        case LifeSupport c2->{
+                                            int link1=components[i][j].getLink()[0];
+                                            int link2=components[i-1][j].getLink()[2];
+                                            if(link1==link2 || link1==3 || link2==3)  ls.add(c2);
+                                        }
+                                        default -> {
+                                            break;
+                                        }
+                                    }
+                                }
+                                if(components[i][j+1]!=null){
+                                    switch(components[i][j+1]){
+                                        case LifeSupport c3->{
+                                            int link1=components[i][j].getLink()[1];
+                                            int link2=components[i-1][j].getLink()[3];
+                                            if(link1==link2 || link1==3 || link2==3)  ls.add(c3);
+                                        }
+                                        default -> {
+                                            break;
+                                        }
+                                    }
+                                }
+                                if(components[i][j-1]!=null){
+                                    switch(components[i][j-1]){
+                                        case LifeSupport c4->{
+                                            int link1=components[i][j].getLink()[3];
+                                            int link2=components[i-1][j].getLink()[1];
+                                            if(link1==link2 || link1==3 || link2==3)  ls.add(c4);
+                                        }
+                                        default -> {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            int[] co={i,j};
+                            for(LifeSupport l:ls){
+                                if(l!=null && coord.contains(c)){
+                                    alien=new Alien(l.getColor());
+                                    c.setAlien(alien);
+                                    numAlien++;
+                                }
+                            }
                         }
-                        else if(components[i-1][j].getType().equals("Life Support")){
-                            int link1=components[i][j].getLink()[0];
-                            int link2=components[i+1][j].getLink()[2];
-                            if(link1==link2 || link1==3 || link2==3) ls=(LifeSupport) components[i+1][j];
-                            ls=(LifeSupport) components[i-1][j];
-                        }
-                        else if(components[i][j+1].getType().equals("Life Support")){
-                            int link1=components[i][j].getLink()[1];
-                            int link2=components[i+1][j].getLink()[3];
-                            if(link1==link2 || link1==3 || link2==3) ls=(LifeSupport) components[i+1][j];
-                            ls=(LifeSupport) components[i][j+1];
-                        }
-                        else if (components[i][j-1].getType().equals("Life Support")){
-                            int link1=components[i][j].getLink()[3];
-                            int link2=components[i+1][j].getLink()[1];
-                            if(link1==link2 || link1==3 || link2==3) ls=(LifeSupport) components[i+1][j];
-                            ls=(LifeSupport) components[i][j-1];
-                        }
-                        int[] c = {i, j};
-                        if(ls!=null && coord.contains(c)){
-                            alien=new Alien(ls.getColor());
-                            cabin.setAlien(alien);
-                            numAlien++;
+                        default -> {
+                            break;
                         }
                     }
-
                 }
             }
         }
@@ -208,16 +238,23 @@ public class SpaceShip {
      * @param x coordinate x of the component
      * @param y coordinate x of the component
      */
+
     public void removeHuman(int x, int y) {
-        Cabin cabin=null;
-        if (components[x][y].getType().equals("Cabin") && numHuman > 0) {
-            cabin=(Cabin) components[x][y];
-            if(cabin.getQuantity()>0){
-                cabin.removeHumans(1);
-                numHuman--;
+
+        switch(components[x][y]){
+            case Cabin c->{
+                if(numHuman>0){
+                    if(c.getQuantity()>0){
+                        c.removeHumans(1);
+                        numHuman--;
+                    }
+                    else{
+                        //exception, qui non ci sono astronauti!!
+                    }
+                }
             }
-            else{
-                //exception, qui non ci sono astronauti!!
+            default -> {
+                break;
             }
         }
 
@@ -229,19 +266,20 @@ public class SpaceShip {
      *              wants to remove a number of astronauts cointained in coord[2]
      */
     public void removeNumHuman(ArrayList<int[]> coord) {
-        Cabin cabin=null;
-        for(int[] c:coord){
-            if (components[c[0]][c[1]].getType().equals("Cabin")){
-                cabin=(Cabin)components[c[0]][c[1]];
-                if(cabin.getQuantity() >= c[2]) {
-                    cabin.removeHumans(c[2]);
-                    numHuman -= c[2];
-                }
-                else {
-                    //eccezione non hai abbastanza umani da togliere
-                }
-            }
 
+        for(int[] c:coord){
+            switch (components[c[0]][c[1]]){
+                case Cabin cabin -> {
+                    if(cabin.getQuantity() >= c[2]) {
+                        cabin.removeHumans(c[2]);
+                        numHuman -= c[2];
+                    }
+                    else {
+                        //eccezione non hai abbastanza umani da togliere
+                    }
+                }
+                default -> { }
+            }
         }
     }
 
@@ -270,13 +308,19 @@ public class SpaceShip {
      * @return the removed component
      */
     public Component removeComponent(int x, int y) {
-        Component component=null;
+
         //se components[x][y] già null eccezione non c'è niente qua
-        if(!components[x][y].getType().equals("Empty Space")) {
-            component = components[x][y];
-            components[x][y] = null;
+        Component com=components[x][y];
+        switch (components[x][y]) {
+            case EmptySpace c -> {
+                // Non fare nulla se è "Empty Space"
+            }
+            default -> {
+                com=components[x][y];
+                components[x][y] = null;
+            }
         }
-        return component;
+        return com;
     }
 
     /**
@@ -285,21 +329,19 @@ public class SpaceShip {
      */
     public int getSingleCannonPower() {
         int power = 0;
-        Cannon cannon = null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null ) {
-                    if (components[i][j].getType().equals("Cannon")) {
-                        cannon = (Cannon) components[i][j];
-                        if (!cannon.getIsDouble()) {
-                            if (cannon.getOrientation() == Orientation.N) power++;
-                            else power += 0.5;
+                    switch(components[i][j]){
+                        case Cannon c->{
+                            if (!c.getIsDouble()) {
+                                if (c.getOrientation() == Orientation.N) power++;
+                                else power += 0.5;
+                            }
                         }
-
+                        default -> {}
                     }
-
                 }
-
             }
         }
         return power;
@@ -311,23 +353,21 @@ public class SpaceShip {
      */
     public int getDoubleCannon() {
         int power = 0;
-        Cannon cannon = null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null ) {
-                    if (components[i][j].getType().equals("Cannon")) {
-                        cannon = (Cannon) components[i][j];
-                        if (cannon.getIsDouble() && cannon.getIsActive()) {
+                    switch(components[i][j]){
+                        case Cannon c->{
+                            if (c.getIsDouble() && c.getIsActive()) {
 
-                            if (cannon.getOrientation() == Orientation.N) power += 2;
-                            else power++;
+                                if (c.getOrientation() == Orientation.N) power += 2;
+                                else power++;
 
+                            }
                         }
-
+                        default -> {}
                     }
-
                 }
-
             }
         }
         return power;
@@ -339,19 +379,17 @@ public class SpaceShip {
      */
     public int getSingleEnginePower() {
         int power = 0;
-        Engine engine = null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null ) {
-                    if (components[i][j].getType().equals("Engine")) {
-                        engine = (Engine) components[i][j];
-                        if (!engine.getIsDouble())
-                            power++;
-
+                    switch(components[i][j]){
+                        case Engine e->{
+                            if (!e.getIsDouble())
+                                power++;
+                        }
+                        default -> {}
                     }
-
                 }
-
             }
         }
         return power;
@@ -364,17 +402,16 @@ public class SpaceShip {
 
     public int getDoubleEngine() {
         int doubleEngine = 0;
-        Engine engine = null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null && components[i][j].getType().equals("Engine")) {
-
-                        engine = (Engine) components[i][j];
-                        if (engine.getIsDouble() && engine.getIsActive())
-                            doubleEngine++;// non c'è bisogno di controllare l'orientamento perchè
-
-
-
+                if (components[i][j] != null) {
+                    switch(components[i][j]){
+                        case Engine e->{
+                            if (e.getIsDouble() && e.getIsActive() &&e.getOrientation() == Orientation.S);
+                                doubleEngine++;
+                        }
+                        default -> {}
+                    }
                 }
 
             }
@@ -398,14 +435,16 @@ public class SpaceShip {
      */
     public ArrayList<Direction> getProtection() {
         ArrayList<Direction> p = new ArrayList<Direction>();
-        Shield shield = null;
+
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null && components[i][j].getType().equals("Shield")) {
-
-                        shield = (Shield) components[i][j];
-                        p.add(shield.getDirection());
-
+                if (components[i][j] != null) {
+                    switch(components[i][j]){
+                        case Shield s->{
+                            p.add(s.getDirection());
+                        }
+                        default -> {}
+                    }
                 }
             }
         }
@@ -433,26 +472,44 @@ public class SpaceShip {
         int linkD = comD.getLink()[0];
         int linkL = comL.getLink()[1];
         //CONTROLLO CHE U,R,D,L SIA COLLEGATO BENE
-        if (components[x][y].getType().equals("Cannon")) {
-            cannon = (Cannon) components[x][y];
-            switch (cannon.getOrientation()) {
-                case N:
-                    if (components[x - 1][y] != null) return false;
-                    break;
-                case E:
-                    if (components[x][y + 1] != null) return false;
-                    break;
-                case S:
-                    if (components[x + 1][y] != null) return false;
-                    break;
-                case W:
-                    if (components[x][y - 1] != null) return false;
-                    break;
+        switch (components[x][y]) {
+            case Cannon c->{
+                switch (c.getOrientation()) {
+                    case N:
+                        if (components[x - 1][y] != null) return false;
+                        break;
+                    case E:
+                        if (components[x][y + 1] != null) return false;
+                        break;
+                    case S:
+                        if (components[x + 1][y] != null) return false;
+                        break;
+                    case W:
+                        if (components[x][y - 1] != null) return false;
+                        break;
+                }
             }
-        } else if (components[x][y].getType().equals("Engine")) {
-            if (components[x + 1][y] != null) return false;
+            case Engine e->{
+                switch (e.getOrientation()) {
+                    case N:
+                        if (components[x - 1][y] != null) return false;
+                        break;
+                    case E:
+                        if (components[x][y + 1] != null) return false;
+                        break;
+                    case S:
+                        if (components[x + 1][y] != null) return false;
+                        break;
+                    case W:
+                        if (components[x][y - 1] != null) return false;
+                        break;
+                }
+            }
+            default -> {}
+
 
         }
+
         if (!compatibleLinks(link[0], linkU)) return false;
         if (!compatibleLinks(link[1], linkR)) return false;
         if (!compatibleLinks(link[2], linkD)) return false;
@@ -482,19 +539,25 @@ public class SpaceShip {
      * @return power of cannons of the spaceship
      */
     public int getTotalCannonPower(ArrayList<int[]> coord) {
-        Cannon cannon = null;
+
         for(int[] c:coord){
-            cannon = (Cannon) components[c[0]][c[1]];
-            cannon.setIsActive(true);
+            switch(components[c[0]][c[1]]){
+                case Cannon cannon->{
+                    cannon.setIsActive(true);
+                }default -> {}
+            }
         }
-        Cabin cabin = null;
         int power = 0;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null && components[i][j].getType().equals("Cabin")) {
-                    cabin = (Cabin) components[i][j];
-                    if (cabin.getAlien() != null && cabin.getAlien().getColor() == AlienColor.PURPLE) {
-                        power += 2;
+                if (components[i][j] != null) {
+                    switch(components[i][j]){
+                        case Cabin cabin->{
+                            if (cabin.getAlien() != null && cabin.getAlien().getColor() == AlienColor.PURPLE) {
+                                power += 2;
+                            }
+                        }
+                        default -> {}
                     }
                 }
             }
@@ -509,20 +572,28 @@ public class SpaceShip {
      * @return power of engine of the spaceship
      */
     public int getTotalEnginePower(ArrayList<int[]> coord) {
-        Engine engine = null;
+
         for(int[] c:coord){
-            engine = (Engine) components[c[0]][c[1]];
-            engine.setIsActive(true);
+            switch(components[c[0]][c[1]]){
+                case Engine engine->{
+                    engine.setIsActive(true);
+                }default -> {}
+            }
+
         }
-        Cabin cabin = null;
         int power = 0;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null && components[i][j].getType().equals("Cabin")) {
-                    cabin = (Cabin) components[i][j];
-                    if (cabin.getAlien() != null && cabin.getAlien().getColor() == AlienColor.BROWN) {
-                        power += 2;
+                if (components[i][j] != null) {
+                    switch(components[i][j]){
+                        case Cabin cabin->{
+                            if (cabin.getAlien() != null && cabin.getAlien().getColor() == AlienColor.BROWN) {
+                                power += 2;
+                            }
+                        }
+                        default -> {}
                     }
+
                 }
             }
         }
@@ -537,16 +608,22 @@ public class SpaceShip {
         int cont = 0;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null && !components[i][j].getType().equals("Empty Space")) {
-                    Component com = components[i][j];
-                    Component comU = components[i - 1][j];
-                    Component comR = components[i][j + 1];
-                    Component comD = components[i + 1][j];
-                    Component comL = components[i][j - 1];
-                    if (comU == null) cont++;
-                    if (comR == null) cont++;
-                    if (comD == null) cont++;
-                    if (comL == null) cont++;
+                if (components[i][j] != null) {
+                    switch(components[i][j]){
+                        case EmptySpace emptySpace->{}
+                        default -> {
+                            Component com = components[i][j];
+                            Component comU = components[i - 1][j];
+                            Component comR = components[i][j + 1];
+                            Component comD = components[i + 1][j];
+                            Component comL = components[i][j - 1];
+                            if (comU == null) cont++;
+                            if (comR == null) cont++;
+                            if (comD == null) cont++;
+                            if (comL == null) cont++;
+                        }
+                    }
+
                 }
             }
         }
@@ -659,53 +736,58 @@ public class SpaceShip {
                 break;
         }
         if(c!=null) {
-            //load
-            //batterystorage
-            //lifesupport
-            if(c.getType().equals("Cabin")) {
-                Cabin cabin = (Cabin) c;
-                if(cabin.getAlien() != null) {
-                    numAlien--;
+            switch(c){
+                case Cabin cabin->{
+                    if(cabin.getAlien() != null) {
+                        numAlien--;
+                    }
+                    else if(cabin.getQuantity()>0){
+                        numHuman-= cabin.getQuantity();
+                    }
                 }
-                else if(cabin.getQuantity()>0){
-                    numHuman-= cabin.getQuantity();
-                }
-            }
-            if(c.getType().equals("Load")) {
-                Load load= (Load) c;
-                goodsCapacity-= load.getCapacity();
-                if(load.getQuantity()>0){
+                case Load load->{
+                    goodsCapacity-= load.getCapacity();
+                    if(load.getQuantity()>0){
 
-                    for(Goods g:goodsList){
-                        if(g.getX()==x && g.getY()==y){
-                            if(g.getValue()==4) redGoods--;
-                            else if(g.getValue()==3) yellowGoods--;
-                            else if(g.getValue()==2) greenGoods--;
-                            else if(g.getValue()==1) blueGoods--;
-                            goodsList.remove(g);
+                        for(Goods g:goodsList){
+                            if(g.getX()==x && g.getY()==y){
+                                if(g.getValue()==4) redGoods--;
+                                else if(g.getValue()==3) yellowGoods--;
+                                else if(g.getValue()==2) greenGoods--;
+                                else if(g.getValue()==1) blueGoods--;
+                                goodsList.remove(g);
+                            }
                         }
                     }
                 }
-            }
-            if(c.getType().equals("Battery Storage")) {
-                BatteryStorage bst= (BatteryStorage) c;
-                if(bst.getQuantity()>0){
-                    numOfBattery-=bst.getQuantity();
+                case BatteryStorage batteryStorage->{
+                    if(batteryStorage.getQuantity()>0){
+                        numOfBattery-=batteryStorage.getQuantity();
+                    }
                 }
-            }
-            if(c.getType().equals("Life Support")) {
-                if(components[x+1][y].getType().equals("Cabin") && ((Cabin)components[x+1][y]).getAlien() != null) {
-                    numAlien--;
-                }
-                if(components[x-1][y].getType().equals("Cabin") && ((Cabin)components[x-1][y]).getAlien() != null) {
-                    numAlien--;
-                }
-                if(components[x][y+1].getType().equals("Cabin") && ((Cabin)components[x][y+1]).getAlien() != null) {
-                    numAlien--;
-                }
-                if(components[x][y-1].getType().equals("Cabin") && ((Cabin)components[x][y-1]).getAlien() != null) {
-                    numAlien--;
-                }
+                case LifeSupport lifeSupport->{
+                    switch(components[x+1][y]){
+                        case Cabin cabin->{
+                            if(cabin.getAlien() != null) { numAlien--;}
+                        }default -> {}
+                    }
+                    switch(components[x-1][y]){
+                        case Cabin cabin->{
+                            if(cabin.getAlien() != null) { numAlien--;}
+                        }default -> {}
+                    }
+                    switch(components[x][y+1]){
+                        case Cabin cabin->{
+                            if(cabin.getAlien() != null) { numAlien--;}
+                        }default -> {}
+                    }
+                    switch(components[x][y-1]){
+                        case Cabin cabin->{
+                            if(cabin.getAlien() != null) { numAlien--;}
+                        }default -> {}
+                    }
+
+                }default -> {}
             }
         }
         componentsVisited(7,7);
@@ -729,8 +811,13 @@ public class SpaceShip {
         if (x < 0 || x >= components.length || y < 0 || y >= components[0].length) {
             return;
         }
-        if(components[x][y] == null || components[x][y].getType().equals("EmptySpace") || (components[x][y].isVisited() && (x!=7 && y!=7))) {
+        if(components[x][y] == null  || (components[x][y].isVisited() && (x!=7 && y!=7))) {
             return;
+        }
+        switch(components[x][y]){
+            case EmptySpace emptySpace->{
+                return;
+            }default -> {}
         }
         if( (components[6][7] != null || components[6][7].isVisited()) && (components[8][7] != null || components[8][7].isVisited()) && (components[7][8] != null || components[7][8].isVisited()) && (components[7][8] != null || components[7][8].isVisited())) {
             components[7][7].setVisited(true);
@@ -750,18 +837,29 @@ public class SpaceShip {
     private void removeUnlinkedComponents(){
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if(components[i][j] != null && !components[i][j].getType().equals("Empty Space")) {
-                    if(!components[i][j].isVisited()) {
-                        removeComponent(i, j);
-                        lost++;
+                if(components[i][j] != null ) {
+                    switch(components[i][j]){
+                        case EmptySpace emptySpace->{}
+                        default -> {
+                            if(!components[i][j].isVisited()) {
+                                removeComponent(i, j);
+                                lost++;
+                            }
+                        }
                     }
+
                 }
             }
         }
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if(components[i][j] != null && !components[i][j].getType().equals("Empty Space")) {
-                    components[i][j].setVisited(false);
+                if(components[i][j] != null) {
+                    switch(components[i][j]){
+                        case EmptySpace emptySpace->{}
+                        default -> {
+                            components[i][j].setVisited(false);
+                        }
+                    }
                 }
             }
         }
@@ -778,36 +876,48 @@ public class SpaceShip {
             case 0:
                 for (int i = 5; i <= 9; i++) {
                     if (components[i][num] != null) {
-                        if (components[i][num].getType().equals("Cannon")
-                                && ((Cannon) components[i][num]).getOrientation() == Orientation.N)
-                            return true;
+                        switch(components[i][num]){
+                            case Cannon cannon->{
+                                if (cannon.getOrientation() == Orientation.N)
+                                    return true;
+                            }default->{}
+                        }
                     }
                 }
                 break;
             case 1:
                 for (int j = 10; j > 3; j--) {
                     if (components[num][j] != null) {
-                        if (components[num][j].getType().equals("Cannon")
-                                && ((Cannon) components[num][j]).getOrientation() == Orientation.E)
-                            return true;
+                        switch(components[num][j]){
+                            case Cannon cannon->{
+                                if (cannon.getOrientation() == Orientation.E)
+                                    return true;
+                            } default->{}
+                        }
                     }
                 }
                 break;
             case 2:
                 for (int i = 9; i > 4; i--) {
                     if (components[i][num] != null) {
-                        if (components[i][num].getType().equals("Cannon")
-                                && ((Cannon) components[i][num]).getOrientation() == Orientation.S)
-                            return true;
+                        switch(components[i][num]){
+                            case Cannon cannon->{
+                                if (cannon.getOrientation() == Orientation.S)
+                                    return true;
+                            } default -> {}
+                        }
                     }
                 }
                 break;
             case 3:
                 for (int j = 4; j <= 10; j++) {
                     if (components[num][j] != null) {
-                        if (components[num][j].getType().equals("Cannon")
-                                && ((Cannon) components[num][j]).getOrientation() == Orientation.W)
-                            return true;
+                        switch(components[num][j]){
+                            case Cannon cannon->{
+                                if (cannon.getOrientation() == Orientation.W)
+                                    return true;
+                            } default -> {}
+                        }
                     }
                 }
                 break;
@@ -828,52 +938,79 @@ public class SpaceShip {
             switch (direction) {
                 case 0:
                     for (int i = 5; i <= 9; i++) {
-                        if (components[i][num] != null && !components[i][num].getType().equals("Empty Space")) {
-                            if (components[i][num].getLink()[0] == 0)
-                                return true;
+                        if (components[i][num] != null) {
+                            switch(components[i][num]){
+                                case EmptySpace emptySpace->{}
+                                default -> {
+                                    if (components[i][num].getLink()[0] == 0)
+                                        return true;
+                                }
+                            }
                         }
                     }
                     break;
                 case 1:
                     for (int j = 10; j > 3; j--) {
-                        if (components[num][j] != null && !components[num][j].getType().equals("Empty Space")) {
-                            if (components[num][j].getLink()[1] == 0)
-                                return true;
+                        if (components[num][j] != null) {
+                            switch(components[num][j]){
+                                case EmptySpace emptySpace->{}
+                                default -> {
+                                    if (components[num][j].getLink()[1] == 0)
+                                        return true;
+                                }
+                            }
+
                         }
                     }
                     break;
                 case 2:
                     for (int i = 9; i > 4; i--) {
-                        if (components[i][num] != null && !components[i][num].getType().equals("Empty Space")) {
-                            if (components[i][num].getLink()[2] == 0)
-                                return true;
+                        if (components[i][num] != null) {
+                            switch(components[i][num]){
+                                case EmptySpace emptySpace->{}
+                                default -> {
+                                    if (components[i][num].getLink()[2] == 0)
+                                        return true;
+                                }
+                            }
+
                         }
                     }
                     break;
                 case 3:
                     for (int j = 4; j <= 10; j++) {
-                        if (components[num][j] != null && !components[num][j].getType().equals("Empty Space")) {
-                            if (components[num][j].getLink()[3] == 0)
-                                return true;
+                        if (components[num][j] != null) {
+                            switch(components[num][j]){
+                                case EmptySpace emptySpace->{}
+                                default -> {
+                                    if (components[num][j].getLink()[3] == 0)
+                                        return true;
+                                }
+                            }
                         }
                     }
                     break;
             }
-        Shield shield=null;
+
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null && components[i][j].getType().equals("Shield")) {
-                    shield=(Shield)components[i][j];
-                    if(
-                            (direction == 0 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.NW)))
-                                    || (direction == 1 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.SE)))
-                                    || (direction == 2 && (shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)))
-                                    || (direction == 3 && (shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)))
-                    ){
-                        if(numOfBattery>0 && use){
-                            return true;
+                if (components[i][j] != null) {
+                    switch(components[i][j]) {
+                        case Shield shield->{
+                            if(
+                                    (direction == 0 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.NW)))
+                                            || (direction == 1 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.SE)))
+                                            || (direction == 2 && (shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)))
+                                            || (direction == 3 && (shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)))
+                            ){
+                                if(numOfBattery>0 && use){
+                                    return true;
+                                }
+                            }
                         }
+                        default -> {}
                     }
+
                 }
             }
         }
@@ -892,21 +1029,26 @@ public class SpaceShip {
      * @return true if the spaceship is protected
      */
     public boolean blockLightCannonShot(int direction,int num, boolean use){
-        Shield shield=null;
+
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null && components[i][j].getType().equals("Shield")) {
-                    shield=(Shield)components[i][j];
-                    if(
-                            (direction == 0 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.NW)))
-                                    || (direction == 1 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.SE)))
-                                    || (direction == 2 && (shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)))
-                                    || (direction == 3 && (shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)))
-                    ){
-                                        if(numOfBattery>0 && use){
-                                            return true;
-                                        }
+                if (components[i][j] != null) {
+                    switch(components[i][j]){
+                        case Shield shield->{
+                            if(
+                                    (direction == 0 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.NW)))
+                                            || (direction == 1 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.SE)))
+                                            || (direction == 2 && (shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)))
+                                            || (direction == 3 && (shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)))
+                            ){
+                                if(numOfBattery>0 && use){
+                                    return true;
+                                }
+                            }
+                        }
+                        default -> {}
                     }
+
                 }
             }
         }
@@ -920,12 +1062,44 @@ public class SpaceShip {
     public void epidemic() {
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null && components[i][j].getType().equals("Cabin") && ((Cabin) components[i][j]).getQuantity() > 0) {
-                    if ((components[i + 1][j].getType().equals("Cabin") && ((Cabin) components[i + 1][j]).getQuantity() > 0 && compatibleLinks(components[i][j].getLink()[2], components[i+1][j].getLink()[0]))
-                            || (components[i][j + 1].getType().equals("Cabin") && ((Cabin) components[i][j + 1]).getQuantity() > 0 && compatibleLinks(components[i][j].getLink()[1], components[i][j+1].getLink()[3]))
-                            || (components[i - 1][j].getType().equals("Cabin") && ((Cabin) components[i - 1][j]).getQuantity() > 0 && compatibleLinks(components[i][j].getLink()[0], components[i-1][j].getLink()[2]))
-                            || (components[i][j - 1].getType().equals("Cabin") && ((Cabin) components[i][j - 1]).getQuantity() > 0) && compatibleLinks(components[i][j].getLink()[3], components[i][j-1].getLink()[1])) {
-                        removeHuman(i, j);
+                if(components[i][j] != null) {
+                    switch (components[i][j]){
+                        case Cabin cabin->{
+                            if(cabin.getQuantity()>0){
+                                switch(components[i+1][j]){
+                                    case Cabin cabin1->{
+                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[2], cabin.getLink()[0])){
+                                            removeHuman(i,j);
+                                            return;
+                                        }
+                                    }default -> {}
+                                }
+                                switch(components[i][j+1]){
+                                    case Cabin cabin1->{
+                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[1], cabin.getLink()[3])){
+                                            removeHuman(i,j);
+                                            return;
+                                        }
+                                    }default -> {}
+                                }
+                                switch(components[i-1][j]){
+                                    case Cabin cabin1->{
+                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[0], cabin.getLink()[2])){
+                                            removeHuman(i,j);
+                                            return;
+                                        }
+                                    }default -> {}
+                                }
+                                switch(components[i][j-1]){
+                                    case Cabin cabin1->{
+                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[3], cabin.getLink()[1])){
+                                            removeHuman(i,j);
+                                            return;
+                                        }
+                                    }default -> {}
+                                }
+                            }
+                        }default -> {}
                     }
                 }
             }
@@ -943,8 +1117,7 @@ public class SpaceShip {
     public void removeGoods(int numOfLostGoods, ArrayList<int[]> coord) {
         int x = 0;
         int y = 0;
-        Load load = null;
-        BatteryStorage batteryStorage = null;
+
         int batteryQuantity = 0;
         if (goodsList.size() > numOfLostGoods) {
             //possiamo rimuovere merci
@@ -955,8 +1128,12 @@ public class SpaceShip {
             for (int i = 0; i < goodsList.size(); i++) {
                 x = goodsList.get(0).getX();
                 y = goodsList.get(0).getY();
-                load = (Load) components[x][y];
-                load.removeGoodFromHead();
+                switch(components[x][y]){
+                    case Load load->{
+                        load.removeGoodFromHead();
+                    }default -> {}
+                }
+
                 goodsList.remove(0);
                 numOfLostGoods--;
 
@@ -964,16 +1141,20 @@ public class SpaceShip {
             while (numOfLostGoods > 0) {
                 //mi restituisce  le coordinate dei componenti da cui vuole togliere batterie
                 for (int[] c : coord) {
-                    batteryStorage = (BatteryStorage) components[c[0]][c[1]];
-                    batteryQuantity = batteryStorage.getQuantity();
-                    if (batteryQuantity <= numOfLostGoods) {
-                        batteryStorage.setQuantity(0);
-                        numOfLostGoods = numOfLostGoods - batteryQuantity;
-                    } else {
-                        batteryQuantity = batteryQuantity - numOfLostGoods;
-                        batteryStorage.setQuantity(batteryQuantity);
-                        numOfLostGoods = 0;
+                    switch(components[c[0]][c[1]]){
+                        case BatteryStorage batteryStorage->{
+                            batteryQuantity = batteryStorage.getQuantity();
+                            if (batteryQuantity <= numOfLostGoods) {
+                                batteryStorage.setQuantity(0);
+                                numOfLostGoods = numOfLostGoods - batteryQuantity;
+                            } else {
+                                batteryQuantity = batteryQuantity - numOfLostGoods;
+                                batteryStorage.setQuantity(batteryQuantity);
+                                numOfLostGoods = 0;
+                            }
+                        }default -> {}
                     }
+
                 }
             }
         }
@@ -999,26 +1180,26 @@ public class SpaceShip {
      */
     public void addGoods(List <Goods> goods,ArrayList<int[]> coord){
         int index=0;
-        Load load=null;
         for(int[] c : coord){
             int i=c[0];
             int j=c[1];
-            if (components[i][j] != null && components[i][j].getType().equals("Load")) {
-                load = (Load) components[i][j];
-
-                while(load.getCapacity()-load.getQuantity()>0 && index<goods.size()){
-                    if (load.getIsSpecial() && goods.get(index).getValue() == 4) {
-                        load.addGood(goods.get(index));
-                        addGoodsList(goods.get(index));
-                        index++;
-                    }
-                    else if (goods.get(index).getValue() != 4) {
-                        load.addGood(goods.get(index));
-                        addGoodsList(goods.get(index));
-                        index++;
-                    }
+            if (components[i][j] != null) {
+                switch(components[i][j]){
+                    case Load load->{
+                        while(load.getCapacity()-load.getQuantity()>0 && index<goods.size()){
+                            if (load.getIsSpecial() && goods.get(index).getValue() == 4) {
+                                load.addGood(goods.get(index));
+                                addGoodsList(goods.get(index));
+                                index++;
+                            }
+                            else if (goods.get(index).getValue() != 4) {
+                                load.addGood(goods.get(index));
+                                addGoodsList(goods.get(index));
+                                index++;
+                            }
+                        }
+                    }default -> {}
                 }
-
             }
         }
 
@@ -1029,13 +1210,19 @@ public class SpaceShip {
                             // vedi se c'è spazio per un rosso e poi inserisci
                         for(Goods g : goodsList){
                             if(g.getValue() < 4){
-                                Load l = (Load) components[g.getX()][g.getY()];
-                                if(l.getIsSpecial()){
-                                    l.removeGood(g);
-                                    goodsList.remove(i);
-                                    l.addGood(goods.get(j));
-                                    addGoodsList(goods.get(j));
+                                switch(components[g.getX()][g.getY()]){
+                                    case Load l->{
+                                        if(l.getIsSpecial()){
+                                            l.removeGood(g);
+                                            goodsList.remove(i);
+                                            l.addGood(goods.get(j));
+                                            addGoodsList(goods.get(j));
+                                        }
+                                    }
+                                    default -> {}
                                 }
+
+
                             }
                         }
                     }
@@ -1043,11 +1230,14 @@ public class SpaceShip {
                             //inserisci in qualsiasi spazio vuoto
                         goods.get(j).setX(goodsList.get(i).getX());
                         goods.get(j).setY(goodsList.get(i).getY());
-                        Load loadToRemove=(Load)components[goodsList.get(i).getX()][goodsList.get(i).getY()];
-                        loadToRemove.removeGood(goodsList.get(i));
-                        loadToRemove.addGood(goods.get(j));
-                        goodsList.remove(i);
-                        addGoodsList(goods.get(j));
+                        switch(components[goodsList.get(i).getX()][goodsList.get(i).getY()]){
+                            case Load loadToRemove->{
+                                loadToRemove.removeGood(goodsList.get(i));
+                                loadToRemove.addGood(goods.get(j));
+                                goodsList.remove(i);
+                                addGoodsList(goods.get(j));
+                            }default -> {}
+                        }
                     }
                 }
             }
@@ -1080,19 +1270,19 @@ public class SpaceShip {
      *                           cointained in batteryCoordinates[2]
      */
     public void removeBatteries(ArrayList<int[]> batteryCoordinates){
-        BatteryStorage bs=null;
-        for(int[] c:batteryCoordinates){
-            if (components[c[0]][c[1]].getType().equals("Battery Storage")){
-                bs=(BatteryStorage) components[c[0]][c[1]];
-                if(bs.getQuantity() >= c[2]) {
-                    bs.setQuantity(bs.getQuantity() - c[2]);
-                    numHuman -= c[2];
-                }
-                else {
-                    //eccezione non hai abbastanza umani in c[0]c[1]
-                }
-            }
 
+        for(int[] c:batteryCoordinates){
+            switch (components[c[0]][c[1]]){
+                case BatteryStorage bs->{
+                    if(bs.getQuantity() >= c[2]) {
+                        bs.setQuantity(bs.getQuantity() - c[2]);
+                        numHuman -= c[2];
+                    }
+                    else {
+                        //eccezione non hai abbastanza umani in c[0]c[1]
+                    }
+                }default -> {}
+            }
         }
     }
 }
