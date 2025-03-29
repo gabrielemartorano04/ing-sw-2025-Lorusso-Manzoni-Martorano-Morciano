@@ -10,7 +10,7 @@ import java.util.List;
  * Every trucker has to remove a crew member from each occupied cabin that is connected to another occupied cabin
  */
 public class Epidemic extends Card {
-
+    public CardState state;
     /**
      * Epidemic constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -28,9 +28,13 @@ public class Epidemic extends Card {
      */
     @Override
     public void cardEffect(Game game) {
+        if(state != CardState.ESECUZIONE) {
+            throw new IllegalStateException("Non puoi settare fare CardEffect nello stato: " + state);
+        }
         List <Trucker> truckers = game.getTruckerList();
         for(Trucker trucker: truckers) {
             trucker.getSpaceShip().epidemic();
         }
+        state = CardState.ATTESA_RISPOSTE;
     }
 }

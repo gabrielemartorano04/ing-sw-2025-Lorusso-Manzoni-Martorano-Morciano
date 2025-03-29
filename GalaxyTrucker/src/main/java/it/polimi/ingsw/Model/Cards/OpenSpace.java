@@ -48,7 +48,7 @@ public class OpenSpace extends Card {
                 }
             }
             if (allValid) {
-                state = CardState.ESECUZIONE;
+                this.state = CardState.ESECUZIONE;
             }
         }
     }
