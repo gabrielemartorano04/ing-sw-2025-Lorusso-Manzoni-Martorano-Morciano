@@ -15,13 +15,14 @@ import java.util.List;
  * If it's a big meteor, the trucker can use, or activate if is double, a cannon to destroy the meteor; a cannon protects only one column or 3 row (his own and the 2 adjacent ones) if rotated;
  */
 public class MeteorShower extends Card {
-    public CardState state;
+    public CardState state = CardState.PLOT_METEOR;
     // variabile utilizzata per tenere conto delle decisioni prese dai giocatori a ogni aggiornamento dello stato del model
     // dopo la comunicazione del meteorite corrente alla view
     private boolean[] answers;
     // usata per salvare il meteorite che sto considerando in questo momento senza chiamare getCurrentMeteor perché altrimenti
     // sposterei avanti di uno la i
     private int[] meteor;
+    private int roll;
 
     // contatore per tenere traccia del meteorite corrente
     private int i = 0;
@@ -66,7 +67,7 @@ public class MeteorShower extends Card {
     }
 
     public int[] getCurrentMeteor(){
-        if(state != CardState.ATTESA_RISPOSTE){
+        if(state != CardState.PLOT_METEOR) {
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
         }
         if(i<0 || i >= direction.size()){
@@ -75,7 +76,16 @@ public class MeteorShower extends Card {
         int[] meteor = direction.get(i);
         this.meteor = meteor;
         i++;
+        state = CardState.ROLL_DICE;
         return meteor;
+    }
+
+    public void rollDice(Game game){
+        if(state != CardState.ROLL_DICE){
+            throw new IllegalStateException("Non si può girare i dadi nello stato " + this.state);
+        }
+        this.roll = game.rollDice();
+        state = CardState.ATTESA_RISPOSTE;
     }
 
     public void setAnswers(boolean[] answers) {
@@ -103,7 +113,6 @@ public class MeteorShower extends Card {
         }
         boolean isBig = (meteor[0] == 1);
         int direction = meteor[1];
-        int roll = game.rollDice();
         int j = 0;
         for (Trucker trucker : truckers) {
             SpaceShip ship = trucker.getSpaceShip();
@@ -123,7 +132,7 @@ public class MeteorShower extends Card {
             j++;
         }
         //per ora non c'è perché è tutto nel Card Controller
-        this.state = CardState.ATTESA_RISPOSTE;
+        this.state = CardState.PLOT_METEOR;
     }
 }
 

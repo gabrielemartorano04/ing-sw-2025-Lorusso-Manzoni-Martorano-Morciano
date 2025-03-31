@@ -7,5 +7,6 @@ public enum CardState {
     GAIN,
     ATTESA_PIANETI,
     CHIEDI_SCUDI,
-    ROLL_DICE
+    ROLL_DICE,
+    PLOT_METEOR
 }
