@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Game;
-import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.SpaceShip;
 import it.polimi.ingsw.Model.Trucker;
 
@@ -16,12 +15,22 @@ import java.util.List;
  */
 public class MeteorShower extends Card {
     public CardState state;
+    // variabile utilizzata per tenere conto delle decisioni prese dai giocatori a ogni aggiornamento dello stato del model
+    // dopo la comunicazione del meteorite corrente alla view
+    private boolean[] answers;
+    // usata per salvare il meteorite che sto considerando in questo momento senza chiamare getCurrentMeteor perché altrimenti
+    // sposterei avanti di uno la i
+    private int[] meteor;
+
+    // contatore per tenere traccia del meteorite corrente
+    private int i = 0;
     private final ArrayList<int[]> direction;
     // direction è una lista dove direction.get(i) rappresenta l'i-esimo meteorite in questa specifica MeteorShower
     // direction.get(i)[0] vale 1 se il meteorite è grande 0 se è piccolo
     // direction.get(i)[1] indice la direzione da cui arriva il meteorite (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da sx)
     // direction è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
     // cioè scegliendo il meteorite dall'alto verso il basso
+
 
 
     /**
@@ -50,6 +59,27 @@ public class MeteorShower extends Card {
         return direction;
     }
 
+    public int[] getCurrentMeteor(){
+        if(state != CardState.ATTESA_RISPOSTE){
+            throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
+        }
+        if(i<0 || i >= direction.size()){
+            throw new RuntimeException("Stai cercando di accedere a un meteorite che non esiste");
+        }
+        int[] meteor = direction.get(i);
+        this.meteor = meteor;
+        i++;
+        return meteor;
+    }
+
+    public void setAnswers(int[] answers) {
+        if(state != CardState.ATTESA_RISPOSTE){
+            throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
+        }
+        this.answers = answers;
+        state = CardState.ESECUZIONE;
+    }
+
 
     /**
      * Applies the changes provided by the card
@@ -59,6 +89,32 @@ public class MeteorShower extends Card {
     public void cardEffect(Game game) {
         if (this.state != CardState.ESECUZIONE) {
             throw new IllegalStateException("Non è possibile eseguire card effect nello stato " + this.state);
+        }
+
+        List<Trucker> truckers = game.getTruckerList();
+        if(answers.length != truckers.size()){
+            throw new RuntimeException("Non ho una risposta per ogni trucker");
+        }
+        boolean isBig = (meteor[0] == 1);
+        int direction = meteor[1];
+        int roll = game.rollDice();
+        int j = 0;
+        for (Trucker trucker : truckers) {
+            SpaceShip ship = trucker.getSpaceShip();
+            if (ship.isHit(roll, direction)) {
+                if (isBig) {
+                    // qui assumo che il meteorite grande possa essere distrutto da un cannone ma è da rivedere
+                    if (!ship.shootMeteor(direction, roll)) {
+                        ship.destroyComponent(roll, direction);
+                    }
+                } else {
+                    // Un meteorite piccolo può rimbalzare o essere fermato dallo scudo
+                    if (!ship.blockSmallMeteor(direction, roll, answers[j])) {
+                        ship.destroyComponent(roll, direction);
+                    }
+                }
+            }
+            j++;
         }
         //per ora non c'è perché è tutto nel Card Controller
         this.state = CardState.ATTESA_RISPOSTE;
