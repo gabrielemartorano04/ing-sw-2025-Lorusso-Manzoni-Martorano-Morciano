@@ -22,7 +22,17 @@ public class Pirates extends Card {
     private Trucker winnerTrucker = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
     private ArrayList<Trucker> defeatedTruckers;
     private final ArrayList<int[]> shoots;
-    // shoots è una lista dove direction.get(i) rappresenta l'i-esimo colpo in questa specifica carta Pirates
+    private CardState cardState;
+    private ArrayList<ArrayList<int[]>> doubleCannonsCoord; // coordinates of the double cannons the trucker wants to activate
+    private int playersDecisions; // number of players that gave a choice
+    private boolean activateShield;
+    private boolean choiceToGain;
+    private int i;
+    private int[] shoot;
+    private int roll;
+    private boolean [] usesShield;
+
+    // shoots è una lista dove shoots.get(i) rappresenta l'i-esimo colpo in questa specifica carta Pirates
     // shoots.get(i)[0] vale 1 se il colpo è grande 0 se è piccolo
     // shoots.get(i)[1] indice la direzione da cui arriva il colpo (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da sx)
     // shoots è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
@@ -45,6 +55,13 @@ public class Pirates extends Card {
         this.days = days;
         this.piratesPower = piratesPower;
         this.shoots = shoots;
+        this.doubleCannonsCoord= new ArrayList<>();
+        this.cardState = CardState.ATTESA_RISPOSTE;
+        this.playersDecisions = 0;
+        this.activateShield = false;
+        this.choiceToGain = false;
+        this.i = 0;
+        this.roll = 0;
     }
 
     /**
@@ -87,6 +104,37 @@ public class Pirates extends Card {
         this.defeatedTruckers = defeatedTruckers;
     }
 
+    public void addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException {
+        if (cardState != CardState.ATTESA_RISPOSTE) {
+            throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
+        }
+        this.doubleCannonsCoord.addLast(doubleCannonsCoord);
+        playersDecisions++;
+        if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > piratesPower) {
+            winnerTrucker = trucker;
+            cardState = CardState.GAIN;
+        }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == piratesPower){
+            cardState = CardState.ATTESA_RISPOSTE;
+        }else {
+            defeatedTruckers.add(trucker);
+            if (playersDecisions == numPlayer) {
+                cardState = CardState.ESECUZIONE;
+            }else cardState = CardState.ATTESA_RISPOSTE;
+        }
+    }
+
+    public void setActivateShield(boolean activateShield) {
+
+    }
+
+    public void setChooseToGain(Boolean choice) throws IllegalStateException {
+        if (cardState != CardState.GAIN) {
+            throw new IllegalStateException("Card state is not GAIN");
+        }
+        this.choiceToGain = choice;
+        cardState = CardState.ESECUZIONE;
+    }
+
     /**
      * Sets the trucker that defeat the pirates
      * @param winnerTrucker trucker ID
@@ -95,38 +143,76 @@ public class Pirates extends Card {
         this.winnerTrucker = winnerTrucker;
     }
 
+    public ArrayList<int[]> getDirections() {
+        return shoots;
+    }
+
+    public int[] getCurrentMeteor(){
+        if(cardState != CardState.PLOT_METEOR) {
+            throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.cardState);
+        }
+        if(i<0 || i >= shoots.size()){
+            throw new RuntimeException("Stai cercando di accedere a un colpo che non esiste");
+        }
+        int[] meteor = shoots.get(i);
+        this.shoot = meteor;
+        i++;
+        cardState = CardState.ROLL_DICE;
+        return meteor;
+    }
+
+    public void rollDice(Game game){
+        if(cardState != CardState.ROLL_DICE){
+            throw new IllegalStateException("Non si può girare i dadi nello stato " + this.cardState);
+        }
+        this.roll = game.rollDice();
+        cardState = CardState.CHIEDI_SCUDI;
+    }
+
+    public void setAnswers(boolean[] answers) {
+        if(cardState != CardState.CHIEDI_SCUDI){
+            throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.cardState);
+        }
+        this.usesShield = answers;
+        cardState = CardState.ESECUZIONE;
+    }
+
     /**
      * Applies the changes provided by the card
      * @param game game in which the card has been drawn
      */
     @Override
-    public void cardEffect(Game game) {
-        if (winnerTrucker != null) {
+    public void cardEffect(Game game) throws IllegalStateException {
+        if (cardState != CardState.ESECUZIONE) {
+            throw new IllegalStateException("Card state is not ESECUZIONE");
+        }
+        if (winnerTrucker != null && choiceToGain) {
             winnerTrucker.addCosmicCredit(credits);
             game.moveBackward(winnerTrucker, days);
         }
 
         //colpisco le navi solo se c'è qualcuno da colpire
         if (!defeatedTruckers.isEmpty()) {
-            for (int[] shoot : shoots) {
-                int roll = game.rollDice();
-                boolean isBig = (shoot[0] == 1);
-                int direction = shoot[1];
-                for (Trucker trucker : defeatedTruckers) {
-                    SpaceShip ship = trucker.getSpaceShip();
-                    if (ship.isHit(roll, direction)) {
-                        if (isBig) {
-                            // colpo grande non può essere stoppato quindi devo distruggere il componente
+            int roll = game.rollDice();
+            int j =0;
+            boolean isBig = (shoot[0] == 1);
+            int direction = shoot[1];
+            for (Trucker trucker : defeatedTruckers) {
+                SpaceShip ship = trucker.getSpaceShip();
+                if (ship.isHit(roll, direction)) {
+                    if (isBig) {
+                        // colpo grande non può essere stoppato quindi devo distruggere il componente
+                        ship.destroyComponent(roll, direction);
+                    } else {
+                        // Un colpo piccolo può solo essere fermato con lo scudo
+                        if (!ship.blockLightCannonShot(direction, roll, usesShield[j])) {
                             ship.destroyComponent(roll, direction);
-                        } else {
-                            // Un colpo piccolo può solo essere fermato con lo scudo
-                            if (!ship.blockSmallShoot(direction, roll)) {
-                                ship.destroyComponent(roll, direction);
-                            }
                         }
                     }
                 }
+                j++;
             }
         }
+        this.cardState = CardState.PLOT_METEOR;
     }
 }
