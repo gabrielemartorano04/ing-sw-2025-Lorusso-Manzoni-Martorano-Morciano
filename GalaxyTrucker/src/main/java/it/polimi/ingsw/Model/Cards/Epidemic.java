@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
+import it.polimi.ingsw.Model.Visitor.CardVisitor;
 
 import java.util.List;
 
@@ -22,6 +23,10 @@ public class Epidemic extends Card {
         super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage);
     }
 
+    @Override
+    public void accept(CardVisitor visitor) {
+        visitor.visit(this);
+    }
     /**
      * Applies the changes provided by the card
      * @param game game in which the card has been drawn

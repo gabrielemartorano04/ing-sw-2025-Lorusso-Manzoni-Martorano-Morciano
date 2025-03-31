@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Game;
+import it.polimi.ingsw.Model.Visitor.CardVisitor;
 
 import javax.swing.ImageIcon;
 
@@ -34,6 +35,8 @@ public abstract class Card {
 
     }
 
+    abstract void accept(CardVisitor visitor);
+
     /**
      * Returns the name of the card
      * @return name of the card
@@ -57,6 +60,7 @@ public abstract class Card {
     public Integer getLevel() {
         return level;
     }
+
 
     /**
      * Applies the changes provided by the card

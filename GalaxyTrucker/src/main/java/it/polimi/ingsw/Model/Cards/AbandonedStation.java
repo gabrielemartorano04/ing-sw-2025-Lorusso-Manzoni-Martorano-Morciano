@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model.Cards;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
 import it.polimi.ingsw.Model.Components.*;
+import it.polimi.ingsw.Model.Visitor.CardVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,11 @@ public class AbandonedStation extends Card {
         this.numHuman = numHuman;
         this.goods = goods;
         this.cardState = CardState.ATTESA_RISPOSTE;
+    }
+
+    @Override
+    public void accept(CardVisitor visitor) {
+        visitor.visit(this);
     }
 
     /**
