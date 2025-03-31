@@ -72,7 +72,7 @@ public class MeteorShower extends Card {
         return meteor;
     }
 
-    public void setAnswers(int[] answers) {
+    public void setAnswers(boolean[] answers) {
         if(state != CardState.ATTESA_RISPOSTE){
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
         }
