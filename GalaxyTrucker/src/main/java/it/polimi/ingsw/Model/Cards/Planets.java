@@ -19,6 +19,7 @@ public class Planets extends Card {
     private ArrayList<ArrayList<int[]>> truckersCoordinates; // solita convenzione per salvarmi le coordinate di dove aggiungere le merci per ogni trucker
     private CardState state;
     private int playersLandedIndex = 0;
+    boolean allValid1 = true, allValid2 = false;
 
     /**
      * Planets constructor, initialise the attributes of this class
@@ -54,14 +55,13 @@ public class Planets extends Card {
         }
         this.truckersCoordinates.addLast(truckerCoordinate);
         if (truckersCoordinates != null && truckersCoordinates.size() == numTruckers) {
-            boolean allValid = true;
             for (ArrayList<int[]> list : truckersCoordinates) {
                 if (list == null || list.isEmpty()) {
-                    allValid = false;
+                    allValid1 = false;
                     break;
                 }
             }
-            if (allValid) {
+            if (allValid1 && allValid2) {
                 state = CardState.ESECUZIONE;
             }
         }
@@ -83,6 +83,9 @@ public class Planets extends Card {
             playersLandedIndex++;
         }
         this.playersLanded[playersLandedIndex] = playerLanded;
+        if (playersLandedIndex == numTruckers) {
+            allValid2 = true;
+        }
     }
 
     /**
