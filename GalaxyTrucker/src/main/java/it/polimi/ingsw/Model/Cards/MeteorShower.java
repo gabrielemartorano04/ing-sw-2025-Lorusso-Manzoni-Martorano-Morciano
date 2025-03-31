@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model.Cards;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.SpaceShip;
 import it.polimi.ingsw.Model.Trucker;
+import it.polimi.ingsw.Model.Visitor.CardVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,11 @@ public class MeteorShower extends Card {
         this.direction = direction;
     }
 
+    @Override
+    public void accept(CardVisitor visitor) {
+        visitor.visit(this);
+    }
+
     /**
      * Returns the list of arrays indicating the direction of each meteor.
      * Each position of the array represents a direction:
@@ -72,7 +78,7 @@ public class MeteorShower extends Card {
         return meteor;
     }
 
-    public void setAnswers(int[] answers) {
+    public void setAnswers(boolean[] answers) {
         if(state != CardState.ATTESA_RISPOSTE){
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
         }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
+import it.polimi.ingsw.Model.Visitor.CardVisitor;
 
 import java.util.ArrayList;
 
@@ -49,6 +50,11 @@ public class Slavers extends Card {
         this.cardState = CardState.ATTESA_RISPOSTE;
         this.playersDecisions = 0;
         this.truckersCoordinatesToRemoveHumans = new ArrayList<>();
+    }
+
+    @Override
+    public void accept(CardVisitor visitor) {
+        visitor.visit(this);
     }
 
     /**
