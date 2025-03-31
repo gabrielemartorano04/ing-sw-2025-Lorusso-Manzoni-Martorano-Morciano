@@ -4,5 +4,6 @@ public enum CardState {
     ATTESA_RISPOSTE,
     ESECUZIONE,
     HUMANSTOREMOVE,
-    GAIN
+    GAIN,
+    ATTESA_PIANETI
 }
