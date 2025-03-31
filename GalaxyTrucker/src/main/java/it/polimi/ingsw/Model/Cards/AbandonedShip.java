@@ -37,8 +37,15 @@ public class AbandonedShip extends Card {
     }
 
     @Override
-    public void accept(CardVisitor visitor) {
-        visitor.visit(this);
+    public void accept(CardVisitor visitor, String cmd) {
+        switch(cmd){
+            case "GetDays":
+                visitor.visitGetDays(this);
+                break;
+
+
+        }
+
     }
 
     /**
