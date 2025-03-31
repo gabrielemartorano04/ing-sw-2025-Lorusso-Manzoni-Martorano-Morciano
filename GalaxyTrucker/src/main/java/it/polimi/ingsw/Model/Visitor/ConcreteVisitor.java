@@ -9,62 +9,18 @@ import java.util.Map;
 
 public class ConcreteVisitor implements CardVisitor {
 
-    @Override
-    public void visitGetDays(AbandonedShip card) {
-        card.getDays();
-    }
-
-    @Override
-    public void visitGetCredits(AbandonedShip card) {
-        card.getCredits();
-    }
-
-    @Override
-    public int visitGetNumHuman(AbandonedShip card) {
-        return card.getNumHuman();
-    }
-
-    @Override
-    public void visitSetTruckerThatHasDecided(AbandonedShip card, Trucker trucker) {
-        card.setTruckerThatHasDecided(trucker);
-    }
-
-    @Override
-    public void visitSetCoordinates(AbandonedShip card, ArrayList<int[]> coordinates) {
-        card.setCoordinates(coordinates);
-    }
 
 
 
-    @Override
-    public int visitGetDays(AbandonedStation card) {
-        return card.getDays();
-    }
-
-    @Override
-    public int visitGetNumHuman(AbandonedStation card) {
-        return card.getNumHuman();
-    }
 
     @Override
     public ArrayList<Goods> visitGetGoods(AbandonedStation card) {
         return card.getGoods();
     }
 
-    @Override
-    public void visitSetTruckerThatHasDecided(AbandonedStation card, Trucker trucker) {
-        card.setTruckerThatHasDecided(trucker);
-    }
 
-    @Override
-    public void visitSetCoord(AbandonedStation card, ArrayList<int[]> coordinates) {
-        card.setCoord(coordinates);
-    }
 
-    @Override
-    public void visit(Epidemic card) {
 
-    }
 
     @Override
     public ArrayList<int[]> visitGetDirection(MeteorShower card) {
@@ -86,15 +42,6 @@ public class ConcreteVisitor implements CardVisitor {
         card.setCoordinates(coord, numTruckers);
     }
 
-    @Override
-    public int visitGetCredits(Pirates card) {
-        return card.getCredits();
-    }
-
-    @Override
-    public int visitGetDays(Pirates card) {
-        return card.getDays();
-    }
 
     @Override
     public int visitGetPiratesPower(Pirates card) {
@@ -141,15 +88,7 @@ public class ConcreteVisitor implements CardVisitor {
         return card.getAstronautsLost();
     }
 
-    @Override
-    public int visitGetDays(Slavers card) {
-        return card.getDays();
-    }
 
-    @Override
-    public int visitGetCredits(Slavers card) {
-        return card.getCredits();
-    }
 
     @Override
     public void visitSetDefeatedTrcukers(Slavers card, ArrayList<Trucker> defeatedTruckers) {
@@ -191,10 +130,7 @@ public class ConcreteVisitor implements CardVisitor {
         return card.getGoodsGained();
     }
 
-    @Override
-    public int visitGetDays(Smugglers card) {
-        return card.getDays();
-    }
+
 
     @Override
     public void visitSetDefeatedTruckers(Smugglers card, ArrayList<Trucker> truckers) {
@@ -216,10 +152,6 @@ public class ConcreteVisitor implements CardVisitor {
         card.setTruckersCoordinatesToRemoveGoods(coord);
     }
 
-    @Override
-    public void visit(StarDust card) {
-
-    }
 
     @Override
     public ArrayList<Condition> visitGetConditionsOrder(WarZone card) {

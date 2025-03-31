@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
 import it.polimi.ingsw.Model.Visitor.CardVisitor;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -37,13 +38,23 @@ public class AbandonedShip extends Card {
     }
 
     @Override
-    public void accept(CardVisitor visitor, String cmd) {
+    public void accept(CardVisitor visitor, String cmd, Trucker trucker, ArrayList<int[]> coord) {
         switch(cmd){
             case "GetDays":
                 visitor.visitGetDays(this);
                 break;
-
-
+            case "GetCredits":
+                visitor.visitGetCredits(this);
+                break;
+            case "GetNumHuman":
+                visitor.visitGetNumHuman(this);
+                break;
+            case "GetTruckerThatHasDecided":
+                visitor.visitSetTruckerThatHasDecided(this, trucker);
+                break;
+            case "SetCoordinates":
+                visitor.visitSetCoordinates(this, coord);
+                break;
         }
 
     }
