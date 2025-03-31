@@ -26,7 +26,7 @@ public class MeteorShower extends Card {
 
     // contatore per tenere traccia del meteorite corrente
     private int i = 0;
-    private final ArrayList<int[]> direction;
+    private final ArrayList<int[]> directions;
     // direction è una lista dove direction.get(i) rappresenta l'i-esimo meteorite in questa specifica MeteorShower
     // direction.get(i)[0] vale 1 se il meteorite è grande 0 se è piccolo
     // direction.get(i)[1] indice la direzione da cui arriva il meteorite (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da sx)
@@ -45,7 +45,7 @@ public class MeteorShower extends Card {
      */
     public MeteorShower(boolean trialFlight, ArrayList<int[]> direction, int level, String frontImage, String backImage) {
         super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImage, backImage);
-        this.direction = direction;
+        this.directions = direction;
     }
 
     @Override
@@ -62,18 +62,18 @@ public class MeteorShower extends Card {
      * position 3 = left side
      * @return list of direction
      */
-    public ArrayList<int[]> getDirection() {
-        return direction;
+    public ArrayList<int[]> getDirections() {
+        return directions;
     }
 
     public int[] getCurrentMeteor(){
         if(state != CardState.PLOT_METEOR) {
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
         }
-        if(i<0 || i >= direction.size()){
+        if(i<0 || i >= directions.size()){
             throw new RuntimeException("Stai cercando di accedere a un meteorite che non esiste");
         }
-        int[] meteor = direction.get(i);
+        int[] meteor = directions.get(i);
         this.meteor = meteor;
         i++;
         state = CardState.ROLL_DICE;
