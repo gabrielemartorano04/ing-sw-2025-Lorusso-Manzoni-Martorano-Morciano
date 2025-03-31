@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
+import it.polimi.ingsw.Model.Visitor.CardVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,11 @@ public class OpenSpace extends Card {
      */
     public OpenSpace(boolean trialFlight, int level, String frontImage, String backImage) {
         super("Open Space", "Empty vastness of space", trialFlight, level, frontImage, backImage);
+    }
+
+    @Override
+    public void accept(CardVisitor visitor) {
+        visitor.visit(this);
     }
 
     /**

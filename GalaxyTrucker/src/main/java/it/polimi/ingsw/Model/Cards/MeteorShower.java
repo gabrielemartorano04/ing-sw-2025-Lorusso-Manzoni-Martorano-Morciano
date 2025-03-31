@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model.Cards;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.SpaceShip;
 import it.polimi.ingsw.Model.Trucker;
+import it.polimi.ingsw.Model.Visitor.CardVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,11 @@ public class MeteorShower extends Card {
     public MeteorShower(boolean trialFlight, ArrayList<int[]> direction, int level, String frontImage, String backImage) {
         super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImage, backImage);
         this.direction = direction;
+    }
+
+    @Override
+    public void accept(CardVisitor visitor) {
+        visitor.visit(this);
     }
 
     /**
