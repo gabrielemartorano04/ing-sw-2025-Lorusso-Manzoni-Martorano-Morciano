@@ -8,7 +8,8 @@ import java.util.ArrayList;
 /**
  * Class that manages the single card slavers
  * In order of position, starting from the leader, each trucker decides which double cannon wants to activate, using batteries, for the calculation of the cannon power.
- * The first trucker that has a cannon power which is equals or higher than the pirates one, defeat them and decide if he/she wants, losing days of flight, to gain cosmic credits.
+ * The first trucker that has a cannon power which is higher than the slavers one, defeat them and decide if he/she wants, losing days of flight, to gain cosmic credits.
+ * If the trucker's cannon power is equal to the slavers' one, nothing happens to the trucker, but the slavers continue to attack
  * For all the defeated truckers, they have to remove some crew members
  */
 public class Slavers extends Card {
@@ -18,10 +19,14 @@ public class Slavers extends Card {
     private final int astronautsLost;
     private Trucker winnerTrucker = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
     private ArrayList<Trucker> defeatedTruckers;
-    private ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveHumans = new ArrayList<>();
+    private ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveHumans;
     // contiene le coordinate delle cabine scelte dall'utente per rimuovere gli umani. Queste coordinate sono organizzate
     // in liste di liste. La lista esterna è una per ogni trucker, la lista interna contiene la lista di coordinate per quel
     // trucker, mantenute nell'ordine dei trucker.
+    private CardState cardState;
+    private ArrayList<ArrayList<int[]>> doubleCannonsCoord; // coordinates of the double cannons the trucker wants to activate
+    private int playersDecisions;// number of players that gave a choice
+    private Boolean choiceToGain;
 
     /**
      * Slavers constructor, initialise the attributes of this class
@@ -40,6 +45,10 @@ public class Slavers extends Card {
         this.days = days;
         this.astronautsLost = astronautsLost;
         this.slaversPower = slaversPower;
+        this.doubleCannonsCoord= new ArrayList<>();
+        this.cardState = CardState.ATTESA_RISPOSTE;
+        this.playersDecisions = 0;
+        this.truckersCoordinatesToRemoveHumans = new ArrayList<>();
     }
 
     /**
@@ -94,12 +103,41 @@ public class Slavers extends Card {
      * Sets, for each trucker, the coordinates of the cabin where he/she want to remove the crew members
      * @param truckersCoordinatesToRemoveHumans list of lists of arrays of coordinates
      */
-    public void setTruckersCoordinatesToRemoveHumans(ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveHumans) {
-        this.truckersCoordinatesToRemoveHumans = truckersCoordinatesToRemoveHumans;
+    public void addTruckersCoordinatesToRemoveHumans(ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer) throws IllegalStateException {
+        if (cardState != CardState.HUMANSTOREMOVE) {
+            throw new IllegalStateException("Card state in not HUMANSTOREMOVE");
+        }
+        this.truckersCoordinatesToRemoveHumans.add(truckersCoordinatesToRemoveHumans);
+        if (playersDecisions == numPlayer){
+            cardState = CardState.ESECUZIONE;
+        }else{
+            cardState = CardState.ATTESA_RISPOSTE;
+        }
     }
 
-    public void addTruckersCoordinatesToRemoveHumans(ArrayList<int[]> truckersCoordinates) {
-        this.truckersCoordinatesToRemoveHumans.add(truckersCoordinates);
+    public void addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException {
+        if (cardState != CardState.ATTESA_RISPOSTE) {
+            throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
+        }
+            this.doubleCannonsCoord.addLast(doubleCannonsCoord);
+            playersDecisions++;
+        if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > slaversPower) {
+            winnerTrucker = trucker;
+            cardState = CardState.GAIN;
+        }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == slaversPower){
+            cardState = CardState.ATTESA_RISPOSTE;
+        }else {
+            defeatedTruckers.add(trucker);
+            cardState = CardState.HUMANSTOREMOVE;
+        }
+    }
+
+    public void setChooseToGain(Boolean choice) throws IllegalStateException {
+        if (cardState != CardState.GAIN) {
+            throw new IllegalStateException("Card state is not GAIN");
+        }
+        this.choiceToGain = choice;
+        cardState = CardState.ESECUZIONE;
     }
 
     /**
@@ -107,9 +145,12 @@ public class Slavers extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public void cardEffect(Game game) {
+    public void cardEffect(Game game) throws IllegalStateException {
+        if (cardState != CardState.ESECUZIONE) {
+            throw new IllegalStateException("Card state is not ESECUZIONE");
+        }
         int i = 0;
-        if(winnerTrucker!=null){
+        if(winnerTrucker!=null && choiceToGain){
             winnerTrucker.addCosmicCredit(credits);
             game.moveBackward(winnerTrucker, days);
         }
