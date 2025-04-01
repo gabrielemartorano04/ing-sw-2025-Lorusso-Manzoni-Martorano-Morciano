@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.Cards;
 
+import it.polimi.ingsw.Exceptions.PlanetNotFreeException;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Components.*;
 import it.polimi.ingsw.Model.Trucker;
@@ -15,11 +16,18 @@ import java.util.ArrayList;
 public class Planets extends Card {
     private final ArrayList<ArrayList<Goods>> planets;
     private final int daysLoss;
-    private int[] playersLanded; // viene settato dal Card Controller e playersLanded[i] vale 1 se quel player è atterato se no 0
+
+    // planetsOccupied.get(i) è il trucker che ha deciso di atterrare nel pianeta i-esimo, oppure null se nessuno è voluto atterrare su quel pianeta
+    private ArrayList<Trucker> planetsOccupied;
+
+    // truckersLanded tiene conto dei trucker che hanno deciso di atterrare in ordine di decisione, quindi il primo trucker in
+    // truckersLanded è il primo trucker che è atterrato effettivamente in un pianeta
+    private ArrayList<Trucker> truckersLanded;
+    private int numOfCurrPlayer = 0;
     private ArrayList<ArrayList<int[]>> truckersCoordinates; // solita convenzione per salvarmi le coordinate di dove aggiungere le merci per ogni trucker
     private CardState state;
-    private int playersLandedIndex = 0;
-    boolean allValid1 = true, allValid2 = false;
+    private int numOfPlayersLanded = 0;
+    boolean allValid1 = true; // mi dice se tutte le liste delle coordinate sono state riempite
 
     /**
      * Planets constructor, initialise the attributes of this class
@@ -35,6 +43,12 @@ public class Planets extends Card {
         this.daysLoss = daysLoss;
         this.planets = planets;
         this.truckersCoordinates = new ArrayList<>();
+        this.state = CardState.ATTESA_PIANETI;
+        this.planetsOccupied = new ArrayList<>();
+        for (int i = 0; i < planets.size(); i++) {
+            this.planetsOccupied.add(null);
+        }
+        this.truckersLanded = new ArrayList<>();
     }
 
     /**
@@ -54,37 +68,50 @@ public class Planets extends Card {
             throw new IllegalStateException("Non è possibile inserire le informazioni nello stato " + this.state);
         }
         this.truckersCoordinates.addLast(truckerCoordinate);
-        if (truckersCoordinates != null && truckersCoordinates.size() == numTruckers) {
+
+        if (truckersCoordinates != null && truckersCoordinates.size() == numOfPlayersLanded) {
             for (ArrayList<int[]> list : truckersCoordinates) {
                 if (list == null || list.isEmpty()) {
                     allValid1 = false;
                     break;
                 }
             }
-            if (allValid1 && allValid2) {
+            if (allValid1) {
                 state = CardState.ESECUZIONE;
             }
         }
     }
 
-    /**
-     * Sets which truckers landed on a planet
-     * @param playerLanded specify if the trucker
-     * @param numTruckers number of truckers
-     */
-    public void setPlayersLanded(int playerLanded, int numTruckers) {
-        if (this.state != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("Non è possibile inserire le informazioni nello stato " + this.state);
+
+    public void setPlayerLanding(int indexOfLanding, Trucker trucker, int numPlayers){
+        if(state != CardState.ATTESA_PIANETI){
+            throw new IllegalStateException("Non puoi atterrare nello stato " + this.state);
         }
-        if (this.playersLanded == null) {
-            this.playersLanded = new int[numTruckers];
+        if(indexOfLanding < 0 || indexOfLanding >= this.planets.size()){
+            throw new RuntimeException("Nessun pianeta all'indice " + indexOfLanding);
         }
-        while (playersLandedIndex < this.playersLanded.length && this.playersLanded[playersLandedIndex] != 0) {
-            playersLandedIndex++;
+        if(trucker == null){
+            throw new RuntimeException("Trucker è null");
         }
-        this.playersLanded[playersLandedIndex] = playerLanded;
-        if (playersLandedIndex == numTruckers) {
-            allValid2 = true;
+        if(planetsOccupied.contains(trucker)){
+            throw new RuntimeException("Il Trucker ha già scelto");
+        }
+        if(planetsOccupied.get(indexOfLanding)!=null){
+            throw new PlanetNotFreeException("Hai scelto un pianeta già occupato");
+        }
+        planetsOccupied.add(indexOfLanding, trucker);
+        truckersLanded.add(trucker);
+        numOfCurrPlayer++;
+
+        // se truckersLandend non contiene null vuol dire che tutti i pianeti sono occupati
+        // se numOfCurrPlayer è uguale al numero di giocatori della partita vuol dire che tutti hanno risposto
+        if(!planetsOccupied.contains(null) || numOfCurrPlayer == numPlayers){
+            for(int i = 0; i < planetsOccupied.size(); i++){
+                if(planetsOccupied.get(i) != null){
+                    numOfPlayersLanded++;
+                }
+            }
+            state = CardState.ATTESA_RISPOSTE;
         }
     }
 
@@ -98,21 +125,17 @@ public class Planets extends Card {
             throw new IllegalStateException("Non è possibile eseguire card effect nello stato " + this.state);
         }
         int i = 0;
-        ArrayList<Trucker> truckers = game.getTruckerList();
 
         // riempo le merci a tutti tanto chi non è atterrato su un pianeta o non ha voluto caricare nessuna merce
         // avrà truckersCoordinates.get(i) come lista vuota e addGoods non fa nulla
-        for(Trucker trucker : truckers){
+        for(Trucker trucker : truckersLanded){
             trucker.getSpaceShip().addGoods(planets.get(i), truckersCoordinates.get(i));
             i++;
         }
 
         // muovo in dietro i giocatori ma partendo dal più indietro nella plancia non dal Leader
-        for(i = playersLanded.length - 1; i>=0; i--){
-            if(playersLanded[i] == 1){
-                game.moveBackward(truckers.get(i), daysLoss);
-            }
+        for(i = truckersLanded.size() - 1; i>=0; i--){
+            game.moveBackward(truckersLanded.get(i), daysLoss);
         }
-        state = CardState.ATTESA_RISPOSTE;
     }
 }
