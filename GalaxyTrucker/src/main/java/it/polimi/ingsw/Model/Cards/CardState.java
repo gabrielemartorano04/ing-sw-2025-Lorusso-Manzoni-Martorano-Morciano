@@ -8,5 +8,9 @@ public enum CardState {
     ATTESA_PIANETI,
     CHIEDI_SCUDI,
     ROLL_DICE,
-    PLOT_METEOR
+    PLOT_METEOR,
+    WARZONE,
+    EXIT,
+    FIND_WEAKEST,
+    GOODSTOREMOVE
 }
