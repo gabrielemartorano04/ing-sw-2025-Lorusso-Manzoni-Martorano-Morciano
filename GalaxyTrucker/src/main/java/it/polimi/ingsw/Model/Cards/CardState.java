@@ -12,5 +12,8 @@ public enum CardState {
     WARZONE,
     EXIT,
     FIND_WEAKEST,
-    GOODSTOREMOVE
+    GOODSTOREMOVE,
+    GOODSTOADD,
+    BATTERIESTOREMOVE,
+    PLOT_SHOOT,
 }
