@@ -9,75 +9,6 @@ import java.util.Map;
 
 public class ConcreteVisitor implements CardVisitor {
 
-
-
-
-
-    @Override
-    public ArrayList<Goods> visitGetGoods(AbandonedStation card) {
-        return card.getGoods();
-    }
-
-
-
-
-
-    @Override
-    public ArrayList<int[]> visitGetDirection(MeteorShower card) {
-        return card.getDirection();
-    }
-
-    @Override
-    public int[] visitGetCurrentMeteor(MeteorShower card) {
-        return card.getCurrentMeteor();
-    }
-
-    @Override
-    public void visitSetAnswers(MeteorShower card, boolean[] answers) {
-        card.setAnswers(answers);
-    }
-
-    @Override
-    public void visitSetCoordinates(OpenSpace card,ArrayList<int[]> coord, int numTruckers) {
-        card.setCoordinates(coord, numTruckers);
-    }
-
-
-    @Override
-    public int visitGetPiratesPower(Pirates card) {
-        return card.getPiratesPower();
-    }
-
-    @Override
-    public ArrayList<int[]> visitGetShoots(Pirates card) {
-        return card.getShoots();
-    }
-
-    @Override
-    public void visitSetDefeatedTruckers(Pirates card, ArrayList<Trucker> defeatedTruckers) {
-        card.setDefeatedTruckers(defeatedTruckers);
-    }
-
-    @Override
-    public void visitSetWinnerTrucker(Pirates card, Trucker winnerTrucker) {
-        card.setWinnerTrucker(winnerTrucker);
-    }
-
-    @Override
-    public ArrayList<ArrayList<Goods>> visitGetPlanets(Planets card) {
-        return card.getPlanets();
-    }
-
-    @Override
-    public void visitSetTruckersCoordinates(Planets card, ArrayList<int[]> coord, int numTruckers) {
-        card.setTruckersCoordinates(coord, numTruckers);
-    }
-
-    @Override
-    public void visitSetPlayersLanded(Planets card, int playerlanded, int numTruckers) {
-        card.setPlayersLanded(playerlanded, numTruckers);
-    }
-
     @Override
     public int visitGetSlaversPower(Slavers card) {
         return card.getSlaversPower();
@@ -86,18 +17,6 @@ public class ConcreteVisitor implements CardVisitor {
     @Override
     public int visitGetAstronautsLost(Slavers card) {
         return card.getAstronautsLost();
-    }
-
-
-
-    @Override
-    public void visitSetDefeatedTrcukers(Slavers card, ArrayList<Trucker> defeatedTruckers) {
-        card.setDefeatedTruckers(defeatedTruckers);
-    }
-
-    @Override
-    public void visitSetWinnerTrucker(Slavers card, Trucker trucker) {
-        card.setWinnerTrucker(trucker);
     }
 
     @Override
@@ -126,23 +45,6 @@ public class ConcreteVisitor implements CardVisitor {
     }
 
     @Override
-    public Goods[] visitGetGoodsGained(Smugglers card) {
-        return card.getGoodsGained();
-    }
-
-
-
-    @Override
-    public void visitSetDefeatedTruckers(Smugglers card, ArrayList<Trucker> truckers) {
-        card.setDefeatedTruckers(truckers);
-    }
-
-    @Override
-    public void visitSetWinnerTrucker(Smugglers card,Trucker trucker) {
-        card.setWinnerTrucker(trucker);
-    }
-
-    @Override
     public void visitSetWinnerCoordinatesToAddGoods(Smugglers card, ArrayList<int[]> coord) {
         card.setWinnerCoordinatesToAddGoods(coord);
     }
@@ -161,11 +63,6 @@ public class ConcreteVisitor implements CardVisitor {
     @Override
     public Map<Condition,Effect> visitGetPenalties(WarZone card) {
         return card.getPenalties();
-    }
-
-    @Override
-    public ArrayList<int[]> visitGetShoots(WarZone card) {
-        return card.getShoots();
     }
 
     @Override
