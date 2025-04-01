@@ -2,10 +2,10 @@ package it.polimi.ingsw.Model.Visitor;
 
 import it.polimi.ingsw.Model.Cards.*;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
-public class SetPlayersLandedVisitor implements CardVisitor {
-
+public class SetWinnerCoordinatesToAddGoodsVisitor implements CardVisitor {
     @Override
     public Optional<Object> visit(AbandonedShip card) {
         return Optional.empty();
@@ -40,10 +40,6 @@ public class SetPlayersLandedVisitor implements CardVisitor {
     public Optional<Object> visit(Planets card) {
         return Optional.empty();
     }
-    public Optional<Object> visit(Planets card, int playerLanded, int numTruckers) {
-        card.setPlayersLanded(playerLanded, numTruckers);
-        return Optional.empty();
-    }
 
     @Override
     public Optional<Object> visit(Slavers card) {
@@ -52,6 +48,10 @@ public class SetPlayersLandedVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visit(Smugglers card) {
+        return Optional.empty();
+    }
+    public Optional<Object> visit(Smugglers card, ArrayList<int[]> coord) {
+        card.setWinnerCoordinatesToAddGoods(coord);
         return Optional.empty();
     }
 

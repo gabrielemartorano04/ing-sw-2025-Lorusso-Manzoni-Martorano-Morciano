@@ -4,7 +4,7 @@ import it.polimi.ingsw.Model.Cards.*;
 
 import java.util.Optional;
 
-public class GetPiratesPowerVisitor implements CardVisitor {
+public class GetConditionsOrderVisitor implements CardVisitor {
     @Override
     public Optional<Object> visit(AbandonedShip card) {
         return Optional.empty();
@@ -32,7 +32,7 @@ public class GetPiratesPowerVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visit(Pirates card) {
-        return Optional.of(card.getPiratesPower());
+        return Optional.empty();
     }
 
     @Override
@@ -57,6 +57,6 @@ public class GetPiratesPowerVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visit(WarZone card) {
-        return Optional.empty();
+        return Optional.of(card.getConditionsOrder());
     }
 }
