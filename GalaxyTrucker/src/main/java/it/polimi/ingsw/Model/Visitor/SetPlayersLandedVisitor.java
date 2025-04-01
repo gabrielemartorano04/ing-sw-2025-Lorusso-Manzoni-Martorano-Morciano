@@ -40,8 +40,8 @@ public class SetPlayersLandedVisitor implements CardVisitor {
     public Optional<Object> visit(Planets card) {
         return Optional.empty();
     }
-    public Optional<Object> visit(Planets card, int playerLanded, int numTruckera) {
-        card.setPlayersLanded(playerLanded, numTruckera);
+    public Optional<Object> visit(Planets card, int playerLanded, int numTruckers) {
+        card.setPlayersLanded(playerLanded, numTruckers);
         return Optional.empty();
     }
 
