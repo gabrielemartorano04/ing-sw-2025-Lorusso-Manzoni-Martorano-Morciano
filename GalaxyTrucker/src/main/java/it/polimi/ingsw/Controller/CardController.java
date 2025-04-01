@@ -227,7 +227,7 @@ public class CardController {
                             currCard.setWinnerTrucker(trucker);
                         }
                         currCard.setDefeatedTruckers(defeatedTruckers);
-                        currCard.setTruckersCoordinatesToRemoveHumans(truckersCoordinatesToRemoveHumans);
+                        currCard.addTruckersCoordinatesToRemoveHumans(truckersCoordinatesToRemoveHumans);
                         break;
                     }else if (currTruckerCannonPower==currCard.getSlaversPower()){
                         continue;

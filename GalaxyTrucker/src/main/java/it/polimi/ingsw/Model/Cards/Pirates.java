@@ -148,7 +148,7 @@ public class Pirates extends Card {
     }
 
     public int[] getCurrentMeteor(){
-        if(cardState != CardState.PLOT_METEOR) {
+        if(cardState != CardState.PLOT_SHOOT) {
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.cardState);
         }
         if(i<0 || i >= shoots.size()){
@@ -213,6 +213,6 @@ public class Pirates extends Card {
                 j++;
             }
         }
-        this.cardState = CardState.PLOT_METEOR;
+        this.cardState = CardState.PLOT_SHOOT;
     }
 }
