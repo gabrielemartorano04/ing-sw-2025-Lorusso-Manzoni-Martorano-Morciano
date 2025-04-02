@@ -1391,12 +1391,14 @@ public class SpaceShip {
      * @param coord coordinates to check
      * @return true if every component with given coordinates is a Engines, false otherwise
      */
-    public boolean checkEngine(ArrayList<int[]> coord){
+    public boolean checkDoubleEngine(ArrayList<int[]> coord){
         boolean check=true;
         for (int[] c : coord) {
             if (components[c[0]][c[1]] != null && check) {
                 switch (components[c[0]][c[1]]){
-                    case Engine engine->{}
+                    case Engine engine->{
+                        if(!engine.getIsDouble()) check=false;
+                    }
                     default -> { check=false; }
                 }
             }
@@ -1409,12 +1411,14 @@ public class SpaceShip {
      * @param coord coordinates to check
      * @return true if every component with given coordinates is a Cannons, false otherwise
      */
-    public boolean checkCannon(ArrayList<int[]> coord){
+    public boolean checkDoubleCannon(ArrayList<int[]> coord){
         boolean check=true;
         for (int[] c : coord) {
             if (components[c[0]][c[1]] != null && check) {
                 switch (components[c[0]][c[1]]){
-                    case Cannon cannon->{}
+                    case Cannon cannon->{
+                        if(!cannon.getIsDouble()) check=false;
+                    }
                     default -> { check=false; }
                 }
             }
