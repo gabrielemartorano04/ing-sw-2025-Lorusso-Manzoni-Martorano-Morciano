@@ -55,8 +55,15 @@ public class AddTruckersCoordinatesToRemoveVisitor implements CardVisitor {
     public Optional<Object> visit(Smugglers card) {
         return Optional.empty();
     }
-    public Optional<Object> visit(Smugglers card, ArrayList<ArrayList<int[]>> coord) {
-        card.setTruckersCoordinatesToRemoveGoods(coord);
+    public Optional<Object> visit(Smugglers card, String cmd, ArrayList<int[]> truckersCoordinatesToRemove, int numPlayer, Trucker trucker) {
+        switch (cmd) {
+            case "Goods":
+                card.setTruckersCoordinatesToRemoveGoods(truckersCoordinatesToRemove, numPlayer, trucker);
+                break;
+            case "Batteries":
+                card.setTruckersCoordinatesToRemoveBatteries(truckersCoordinatesToRemove, numPlayer, trucker);
+                break;
+        }
         return Optional.empty();
     }
 

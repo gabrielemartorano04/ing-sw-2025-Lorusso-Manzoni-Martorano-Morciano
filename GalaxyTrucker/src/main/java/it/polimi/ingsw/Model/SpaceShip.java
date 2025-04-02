@@ -1125,7 +1125,7 @@ public class SpaceShip {
                 goodsList.remove(i);
             }
         } else {
-            for (int i = 0; i < goodsList.size(); i++) {
+            while (goodsList.size()>0) {
                 x = goodsList.get(0).getX();
                 y = goodsList.get(0).getY();
                 switch(components[x][y]){
@@ -1157,8 +1157,11 @@ public class SpaceShip {
 
                 }
             }
+
         }
     }
+
+
 
     /**
      * This method adds a good in the goodsList in a way that keeps it sorted in descending order
@@ -1285,4 +1288,123 @@ public class SpaceShip {
             }
         }
     }
+
+    /**
+     * This method remove all the goods from the spaceship
+     */
+    public void removeAllGoods(){
+        ArrayList<int[]> c=new ArrayList<>();
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if(components[i][j] != null){
+                    switch(components[i][j]){
+                        case Load load->{
+                            c.add(new int[]{i, j});
+                        }
+                        default -> {}
+                    }
+                }
+            }
+        }
+        removeGoods(goodsList.size(),c);
+    }
+
+    /**
+     * This method returns the number of batteries in the spaceship
+     * @return number of batteries in the spaceship
+     */
+    public int getNumBatteries(){
+        return numOfBattery;
+    }
+
+    /**
+     * This method checks that components with given coordinates are Load
+     * @param coord coordinates to check
+     * @return true if every component with given coordinates is a Load, false otherwise
+     */
+    public boolean checkLoad(ArrayList<int[]> coord){
+        boolean check=true;
+        for (int[] c : coord) {
+            if (components[c[0]][c[1]] != null && check) {
+                switch (components[c[0]][c[1]]){
+                    case Load load->{}
+                    default -> { check=false; }
+                }
+            }
+        }
+        return check;
+    }
+
+    /**
+     * This method checks that components with given coordinates are Engine
+     * @param coord coordinates to check
+     * @return true if every component with given coordinates is a Engine, false otherwise
+     */
+    public boolean checkEngine(ArrayList<int[]> coord){
+        boolean check=true;
+        for (int[] c : coord) {
+            if (components[c[0]][c[1]] != null && check) {
+                switch (components[c[0]][c[1]]){
+                    case Engine engine->{}
+                    default -> { check=false; }
+                }
+            }
+        }
+        return check;
+    }
+
+    public boolean checkCannon(ArrayList<int[]> coord){
+        boolean check=true;
+        for (int[] c : coord) {
+            if (components[c[0]][c[1]] != null && check) {
+                switch (components[c[0]][c[1]]){
+                    case Cannon cannon->{}
+                    default -> { check=false; }
+                }
+            }
+        }
+        return check;
+    }
+
+    public boolean checkShield(ArrayList<int[]> coord){
+        boolean check=true;
+        for (int[] c : coord) {
+            if (components[c[0]][c[1]] != null && check) {
+                switch (components[c[0]][c[1]]){
+                    case Shield shield->{}
+                    default -> { check=false; }
+                }
+            }
+        }
+        return check;
+    }
+
+    public boolean checkBatteryStorage(ArrayList<int[]> coord){
+        boolean check=true;
+        for (int[] c : coord) {
+            if (components[c[0]][c[1]] != null && check) {
+                switch (components[c[0]][c[1]]){
+                    case BatteryStorage bs->{}
+                    default -> { check=false; }
+                }
+            }
+        }
+        return check;
+    }
+
+    public boolean checkCabin(ArrayList<int[]> coord){
+        boolean check=true;
+        for (int[] c : coord) {
+            if (components[c[0]][c[1]] != null && check) {
+                switch (components[c[0]][c[1]]){
+                    case Cabin cabin->{}
+                    default -> { check=false; }
+                }
+            }
+        }
+        return check;
+    }
+
+
+
 }
