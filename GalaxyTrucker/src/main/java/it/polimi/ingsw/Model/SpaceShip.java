@@ -1318,9 +1318,9 @@ public class SpaceShip {
     }
 
     /**
-     * This method checks that components with given coordinates are Load
+     * This method checks that components with given coordinates are Loads
      * @param coord coordinates to check
-     * @return true if every component with given coordinates is a Load, false otherwise
+     * @return true if every component with given coordinates is a Loads, false otherwise
      */
     public boolean checkLoad(ArrayList<int[]> coord){
         boolean check=true;
@@ -1336,9 +1336,9 @@ public class SpaceShip {
     }
 
     /**
-     * This method checks that components with given coordinates are Engine
+     * This method checks that components with given coordinates are Engines
      * @param coord coordinates to check
-     * @return true if every component with given coordinates is a Engine, false otherwise
+     * @return true if every component with given coordinates is a Engines, false otherwise
      */
     public boolean checkEngine(ArrayList<int[]> coord){
         boolean check=true;
@@ -1353,6 +1353,11 @@ public class SpaceShip {
         return check;
     }
 
+    /**
+     * This method checks that components with given coordinates are Cannons
+     * @param coord coordinates to check
+     * @return true if every component with given coordinates is a Cannons, false otherwise
+     */
     public boolean checkCannon(ArrayList<int[]> coord){
         boolean check=true;
         for (int[] c : coord) {
@@ -1366,6 +1371,11 @@ public class SpaceShip {
         return check;
     }
 
+    /**
+     * This method checks that components with given coordinates are Shields
+     * @param coord coordinates to check
+     * @return true if every component with given coordinates is a Shields, false otherwise
+     */
     public boolean checkShield(ArrayList<int[]> coord){
         boolean check=true;
         for (int[] c : coord) {
@@ -1379,6 +1389,11 @@ public class SpaceShip {
         return check;
     }
 
+    /**
+     * This method checks that components with given coordinates are Battery Storages
+     * @param coord coordinates to check
+     * @return true if every component with given coordinates is a Battery Storages, false otherwise
+     */
     public boolean checkBatteryStorage(ArrayList<int[]> coord){
         boolean check=true;
         for (int[] c : coord) {
@@ -1392,6 +1407,11 @@ public class SpaceShip {
         return check;
     }
 
+    /**
+     * This method checks that components with given coordinates are Cabins
+     * @param coord coordinates to check
+     * @return true if every component with given coordinates is a Cabins, false otherwise
+     */
     public boolean checkCabin(ArrayList<int[]> coord){
         boolean check=true;
         for (int[] c : coord) {
