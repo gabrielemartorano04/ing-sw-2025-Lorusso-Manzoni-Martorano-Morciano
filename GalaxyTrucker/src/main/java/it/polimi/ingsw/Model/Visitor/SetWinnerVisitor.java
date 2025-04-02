@@ -35,6 +35,8 @@ public class SetWinnerVisitor implements CardVisitor{
     public Optional<Object> visit(Pirates card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Pirates card, Trucker winnerTrucker) {
         card.setWinnerTrucker(winnerTrucker);
         return Optional.empty();
@@ -49,6 +51,8 @@ public class SetWinnerVisitor implements CardVisitor{
     public Optional<Object> visit(Slavers card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Slavers card, Trucker winnerTrucker) {
         card.setWinnerTrucker(winnerTrucker);
         return Optional.empty();
@@ -58,6 +62,8 @@ public class SetWinnerVisitor implements CardVisitor{
     public Optional<Object> visit(Smugglers card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Smugglers card, Trucker winnerTrucker) {
         card.setWinnerTrucker(winnerTrucker);
         return Optional.empty();

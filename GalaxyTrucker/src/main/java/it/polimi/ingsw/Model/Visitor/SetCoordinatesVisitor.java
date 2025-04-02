@@ -11,6 +11,7 @@ public class SetCoordinatesVisitor implements CardVisitor{
         return Optional.empty();
     }
 
+    @Override
     public Optional<Object> visit(AbandonedShip card, ArrayList<int[]> coord){
         card.setCoordinates(coord);
         return Optional.empty();
@@ -21,6 +22,7 @@ public class SetCoordinatesVisitor implements CardVisitor{
         return Optional.empty();
     }
 
+    @Override
     public Optional<Object> visit(AbandonedStation card, ArrayList<int[]> coord){
         card.setCoord(coord);
         return Optional.empty();
@@ -40,6 +42,8 @@ public class SetCoordinatesVisitor implements CardVisitor{
     public Optional<Object> visit(OpenSpace card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(OpenSpace card,ArrayList<int[]> coord, int numTruckers) {
         card.setCoordinates(coord, numTruckers);
         return Optional.empty();
@@ -54,6 +58,8 @@ public class SetCoordinatesVisitor implements CardVisitor{
     public Optional<Object> visit(Planets card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Planets card,ArrayList<int[]> coord, int numTruckers) {
         card.setTruckersCoordinates(coord, numTruckers);
         return Optional.empty();

@@ -46,6 +46,8 @@ public class AddDoubleCannonsCoordVisitor implements CardVisitor {
     public Optional<Object> visit(Slavers card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Slavers card, ArrayList<int[]> coord, int numPlayer, Trucker trucker) {
         card.addDoubleCannonsCoord(coord, numPlayer, trucker);
         return Optional.empty();
@@ -55,6 +57,8 @@ public class AddDoubleCannonsCoordVisitor implements CardVisitor {
     public Optional<Object> visit(Smugglers card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Smugglers card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) {
         card.addDoubleCannonsCoord(doubleCannonsCoord, numPlayer, trucker);
         return Optional.empty();

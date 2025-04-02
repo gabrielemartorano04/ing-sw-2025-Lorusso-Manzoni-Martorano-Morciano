@@ -7,15 +7,12 @@ import java.util.Optional;
 
 public class SetTruckerThatHasDecidedVisitor implements CardVisitor{
 
-
-
-
-
     @Override
     public Optional<Object> visit(AbandonedShip card) {
         return Optional.empty();
     }
 
+    @Override
     public Optional<Object> visit(AbandonedShip card, Trucker trucker) {
         card.setTruckerThatHasDecided(trucker);
         return Optional.empty();
@@ -26,6 +23,7 @@ public class SetTruckerThatHasDecidedVisitor implements CardVisitor{
         return Optional.empty();
     }
 
+    @Override
     public Optional<Object> visit(AbandonedStation card, Trucker trucker) {
         card.setTruckerThatHasDecided(trucker);
         return Optional.empty();

@@ -25,6 +25,8 @@ public class RollDiceVisitor implements CardVisitor {
     public Optional<Object> visit(MeteorShower card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(MeteorShower card, Game game) {
         card.rollDice(game);
         return Optional.empty();
@@ -39,6 +41,8 @@ public class RollDiceVisitor implements CardVisitor {
     public Optional<Object> visit(Pirates card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Pirates card, Game game) {
         card.rollDice(game);
         return Optional.empty();
@@ -68,6 +72,8 @@ public class RollDiceVisitor implements CardVisitor {
     public Optional<Object> visit(WarZone card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(WarZone card, Game game) {
         card.rollDice(game);
         return Optional.empty();

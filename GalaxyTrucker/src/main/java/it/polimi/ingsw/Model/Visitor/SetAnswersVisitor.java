@@ -25,7 +25,8 @@ public class SetAnswersVisitor implements CardVisitor {
         return Optional.empty();
     }
 
-    public Optional<Object> visit(MeteorShower card, boolean[] answers) {
+    @Override
+    public Optional<Object> visit(MeteorShower card, boolean answers) {
         card.setAnswers(answers);
         return Optional.empty();
     }
@@ -64,6 +65,8 @@ public class SetAnswersVisitor implements CardVisitor {
     public Optional<Object> visit(WarZone card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(WarZone card, boolean answers) {
         card.setAnswers(answers);
         return Optional.empty();

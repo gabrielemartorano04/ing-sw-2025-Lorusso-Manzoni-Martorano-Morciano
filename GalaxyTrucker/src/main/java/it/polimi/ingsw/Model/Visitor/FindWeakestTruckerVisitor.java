@@ -61,6 +61,8 @@ public class FindWeakestTruckerVisitor implements CardVisitor {
     public Optional<Object> visit(WarZone card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(WarZone card, ArrayList<Trucker> truckers, Condition condition, ArrayList<ArrayList<int[]>> coord) {
         card.findWeakestTrucker(truckers, condition, coord);
         return Optional.empty();
