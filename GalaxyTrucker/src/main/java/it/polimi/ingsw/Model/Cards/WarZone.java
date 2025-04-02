@@ -16,6 +16,10 @@ public class WarZone extends Card {
     private Condition currCondition;
     private Trucker weakestTrucker;
     private Map<Condition, Effect> penalties;
+    private int[] shoot;
+    private int i;
+    private boolean useShield;
+    private int roll;
     private ArrayList<int[]> shoots;
     // shoots è una lista dove shoots.get(i) rappresenta l'i-esimo colpo in questa specifica carta Warzone
     // shoots.get(i)[0] vale 1 se il colpo è grande 0 se è piccolo
@@ -38,6 +42,7 @@ public class WarZone extends Card {
         this.state = CardState.WARZONE;
         this.currConditionIndex = 0;
         this.weakestTrucker = null;
+        this.i = 0;
     }
 
     public ArrayList<Condition> getConditionsOrder() {
@@ -51,7 +56,6 @@ public class WarZone extends Card {
     public ArrayList<int[]> getShoots(){
         return shoots;
     }
-
 
     public void combatZone(Game game, ArrayList<ArrayList<int[]>> truckersCannonsCoordinates, ArrayList<ArrayList<int[]>> truckersEnginesCoordinates){
         if(state != CardState.WARZONE){
@@ -117,14 +121,17 @@ public class WarZone extends Card {
         if(penalties.get(currCondition).getType().equals(TypeOfEffect.LOSE_DAYS)){
             state = CardState.ESECUZIONE;
             cardEffect(game);
-        }else{
+        }else if(penalties.get(currCondition).getType().equals(TypeOfEffect.GET_SHOT)){
+            state = CardState.PLOT_SHOOT;
+
+        } else{
             state = CardState.ATTESA_RISPOSTE;
         }
         return this.weakestTrucker;
     }
 
 
-    public void setBeforeEffect(ArrayList<int[]> coordinatesGoods, ArrayList<int[]> coordinatesCrew){
+    public boolean setBeforeEffect(ArrayList<int[]> coordinatesGoods, ArrayList<int[]> coordinatesCrew){
         if(state != CardState.ATTESA_RISPOSTE){
             throw new IllegalStateException("setBeforeEffect not callable in the state " + state);
         }
@@ -134,14 +141,56 @@ public class WarZone extends Card {
         if(coordinatesGoods != null && !coordinatesGoods.isEmpty()){
             this.coordinatesToRemoveGoods = coordinatesGoods;
         }
-        else if (coordinatesCrew != null && !coordinatesCrew.isEmpty()){
+        else{
             this.coordinatesToRemoveCrew = coordinatesCrew;
         }
+        state = CardState.ESECUZIONE;
+
+        // per ora delego la chiamata a cardEffect a chi si accorge tramite setBeforeEffect che si può procedere perché
+        // ha returnato true la funzione, altrimenti avrebbe lanciato un eccezione
+        // altrimenti posso fare da qui cardEffect(game)
+        return true;
+    }
+
+    public int[] getCurrentMeteor(){
+        if(state != CardState.PLOT_SHOOT) {
+            throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
+        }
+        if(i<0 || i >= shoots.size()){
+            throw new RuntimeException("Stai cercando di accedere a un colpo che non esiste");
+        }
+        int[] shoot = shoots.get(i);
+        this.shoot = shoot;
+        i++;
+        state = CardState.ROLL_DICE;
+        return shoot;
+    }
+
+    public void rollDice(Game game){
+        if(state != CardState.ROLL_DICE){
+            throw new IllegalStateException("Non si può girare i dadi nello stato " + this.state);
+        }
+        this.roll = game.rollDice();
+        state = CardState.CHIEDI_SCUDI;
+    }
+
+    public void setAnswers(boolean answers) {
+        if(state != CardState.CHIEDI_SCUDI){
+            throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
+        }
+        this.useShield = answers;
+        state = CardState.ESECUZIONE;
     }
 
 
     @Override
     public void cardEffect(Game game) {
+        if(state != CardState.ESECUZIONE){
+            throw new IllegalStateException("Card effect not callable in the state " + state);
+        }
+        if(weakestTrucker == null){
+            throw new RuntimeException("WeakestTrucker is null");
+        }
         if (weakestTrucker != null) {
             // devo gestire le ulteriori richieste per i casi dove vieni sparato perché devo chiedere al giocatore
             // se vuole attivare lo scudo ogni volta che il colpo è piccolo
@@ -150,28 +199,25 @@ public class WarZone extends Card {
             switch(effect.getType()){
                 case LOSE_DAYS -> game.moveBackward(weakestTrucker, effect.getValue());
                 case LOSE_HUMANS -> {
+
                     weakestTrucker.getSpaceShip().removeNumHuman(coordinatesToRemoveCrew);
                 }
                 case LOSE_GOODS -> weakestTrucker.getSpaceShip().removeGoods(effect.getValue(), coordinatesToRemoveGoods);
                 case GET_SHOT -> {
-                    // DA FINIRE DOPO: devo fare l'alternanza tra uno stato e l'altro
                     SpaceShip ship = weakestTrucker.getSpaceShip();
-                    for (int[] shot : shoots) {
-                        boolean isHeavy = (shot[0] == 1);
-                        int direction = shot[1];
-                        int roll = game.rollDice();
-                        if (ship.isHit(roll, direction)) {
-                            if (isHeavy) {
-                                ship.destroyComponent(roll, direction);
-                            } else {
-                                if (!ship.blockLightCannonShot(direction, roll, askController.askToUseShield(weakestTrucker, roll, direction))) {
-                                    ship.destroyComponent(roll, direction);
-                                }
+                    boolean isHeavy = (this.shoot[0] == 1);
+                    int direction = this.shoot[1];
+                    if (ship.isHit(this.roll, direction)) {
+                        if (isHeavy) {
+                            ship.destroyComponent(this.roll, direction);
+                        } else {
+                            if (!ship.blockLightCannonShot(direction, this.roll, this.useShield)) {
+                                ship.destroyComponent(this.roll, direction);
                             }
                         }
                     }
+                    state = CardState.PLOT_SHOOT;
                 }
-
             }
         }
     }
