@@ -18,7 +18,7 @@ public class MeteorShower extends Card {
     public CardState state = CardState.PLOT_METEOR;
     // variabile utilizzata per tenere conto delle decisioni prese dai giocatori a ogni aggiornamento dello stato del model
     // dopo la comunicazione del meteorite corrente alla view
-    private boolean[] answers;
+    private ArrayList<Boolean> answers;
     // usata per salvare il meteorite che sto considerando in questo momento senza chiamare getCurrentMeteor perché altrimenti
     // sposterei avanti di uno la i
     private int[] meteor;
@@ -46,6 +46,7 @@ public class MeteorShower extends Card {
     public MeteorShower(boolean trialFlight, ArrayList<int[]> direction, int level, String frontImage, String backImage) {
         super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImage, backImage);
         this.directions = direction;
+        this.answers = new ArrayList<>();
     }
 
     @Override
@@ -88,11 +89,11 @@ public class MeteorShower extends Card {
         state = CardState.ATTESA_RISPOSTE;
     }
 
-    public void setAnswers(boolean[] answers) {
+    public void setAnswers(boolean answers) {
         if(state != CardState.ATTESA_RISPOSTE){
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
         }
-        this.answers = answers;
+        this.answers.addLast(answers);
         state = CardState.ESECUZIONE;
     }
 
@@ -108,7 +109,7 @@ public class MeteorShower extends Card {
         }
 
         List<Trucker> truckers = game.getTruckerList();
-        if(answers.length != truckers.size()){
+        if(answers.size() != truckers.size()){
             throw new RuntimeException("Non ho una risposta per ogni trucker");
         }
         boolean isBig = (meteor[0] == 1);
@@ -124,7 +125,7 @@ public class MeteorShower extends Card {
                     }
                 } else {
                     // Un meteorite piccolo può rimbalzare o essere fermato dallo scudo
-                    if (!ship.blockSmallMeteor(direction, roll, answers[j])) {
+                    if (!ship.blockSmallMeteor(direction, roll, answers.get(j))){
                         ship.destroyComponent(roll, direction);
                     }
                 }
