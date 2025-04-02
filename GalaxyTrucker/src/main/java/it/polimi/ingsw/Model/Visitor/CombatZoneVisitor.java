@@ -61,6 +61,8 @@ public class CombatZoneVisitor implements CardVisitor {
     public Optional<Object> visit(WarZone card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(WarZone card, Game game, ArrayList<ArrayList<int[]>> truckersCannonsCoordinates, ArrayList<ArrayList<int[]>> truckersEnginesCoordinates) {
         card.combatZone(game, truckersCannonsCoordinates, truckersEnginesCoordinates);
         return Optional.empty();

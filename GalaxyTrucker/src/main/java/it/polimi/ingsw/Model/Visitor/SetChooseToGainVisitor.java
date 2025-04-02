@@ -35,6 +35,8 @@ public class SetChooseToGainVisitor implements CardVisitor {
     public Optional<Object> visit(Pirates card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Pirates card, Boolean choice) {
         card.setChooseToGain(choice);
         return Optional.empty();
@@ -49,6 +51,8 @@ public class SetChooseToGainVisitor implements CardVisitor {
     public Optional<Object> visit(Slavers card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Slavers card, boolean choice) {
         card.setChooseToGain(choice);
         return Optional.empty();
@@ -58,6 +62,8 @@ public class SetChooseToGainVisitor implements CardVisitor {
     public Optional<Object> visit(Smugglers card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Smugglers card, Boolean choice) {
         card.setChooseToGain(choice);
         return Optional.empty();

@@ -40,6 +40,8 @@ public class SetPlayerLandingVisitor implements CardVisitor{
     public Optional<Object> visit(Planets card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Planets card, int indexOfLanding, Trucker trucker, int numPlayers) {
         card.setPlayerLanding(indexOfLanding, trucker, numPlayers);
         return Optional.empty();

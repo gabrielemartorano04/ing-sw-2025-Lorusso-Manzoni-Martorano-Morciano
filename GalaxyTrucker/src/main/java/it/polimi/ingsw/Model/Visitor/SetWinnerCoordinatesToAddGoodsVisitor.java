@@ -50,6 +50,8 @@ public class SetWinnerCoordinatesToAddGoodsVisitor implements CardVisitor {
     public Optional<Object> visit(Smugglers card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Smugglers card, ArrayList<int[]> coord) {
         card.setWinnerCoordinatesToAddGoods(coord);
         return Optional.empty();

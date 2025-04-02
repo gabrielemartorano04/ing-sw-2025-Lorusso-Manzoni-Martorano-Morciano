@@ -35,6 +35,8 @@ public class SetActivateShieldVisitor implements CardVisitor {
     public Optional<Object> visit(Pirates card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Pirates card, boolean activateShield) {
         card.setActivateShield(activateShield);
         return Optional.empty();

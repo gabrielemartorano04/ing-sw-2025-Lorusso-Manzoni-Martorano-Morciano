@@ -60,6 +60,8 @@ public class SetBeforeEffectVisitor implements CardVisitor {
     public Optional<Object> visit(WarZone card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(WarZone card, ArrayList<int[]> coordinatesGoods, ArrayList<int[]> coordinatesCrew) {
         card.setBeforeEffect(coordinatesGoods, coordinatesCrew);
         return Optional.empty();

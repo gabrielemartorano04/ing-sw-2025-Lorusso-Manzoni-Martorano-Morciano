@@ -36,6 +36,8 @@ public class SetDefeatedTruckersVisitor implements CardVisitor{
     public Optional<Object> visit(Pirates card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Pirates card,  ArrayList<Trucker> defeatedTruckers) {
         card.setDefeatedTruckers(defeatedTruckers);
         return Optional.empty();
@@ -50,6 +52,8 @@ public class SetDefeatedTruckersVisitor implements CardVisitor{
     public Optional<Object> visit(Slavers card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Slavers card,  ArrayList<Trucker> defeatedTruckers) {
         card.setDefeatedTruckers(defeatedTruckers);
         return Optional.empty();
@@ -59,6 +63,8 @@ public class SetDefeatedTruckersVisitor implements CardVisitor{
     public Optional<Object> visit(Smugglers card) {
         return Optional.empty();
     }
+
+    @Override
     public Optional<Object> visit(Smugglers card,  ArrayList<Trucker> defeatedTruckers) {
         card.setDefeatedTruckers(defeatedTruckers);
         return Optional.empty();
