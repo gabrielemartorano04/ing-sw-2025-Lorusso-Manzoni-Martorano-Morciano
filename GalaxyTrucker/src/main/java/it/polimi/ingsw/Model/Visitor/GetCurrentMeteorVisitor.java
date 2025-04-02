@@ -32,7 +32,7 @@ public class GetCurrentMeteorVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visit(Pirates card) {
-        return Optional.empty();
+        return Optional.of(card.getCurrentMeteor());
     }
 
     @Override
@@ -57,6 +57,6 @@ public class GetCurrentMeteorVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visit(WarZone card) {
-        return Optional.empty();
+        return Optional.of(card.getCurrentMeteor());
     }
 }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model.Cards;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
 import it.polimi.ingsw.Model.Components.*;
+import it.polimi.ingsw.Model.Visitor.CardVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
