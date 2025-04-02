@@ -1,12 +1,13 @@
 package it.polimi.ingsw.Model.Cards;
 
+import it.polimi.ingsw.Exceptions.InvalidComponentsException;
+import it.polimi.ingsw.Exceptions.InvalidCoordinates;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
 import it.polimi.ingsw.Model.Components.*;
 import it.polimi.ingsw.Model.Visitor.CardVisitor;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class that manages the single card abandoned ship
@@ -74,6 +75,9 @@ public class AbandonedStation extends Card {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("stato non valido");
         }
+        if(truckerThatHasDecided == null){
+            throw new RuntimeException("TruckerThatHasDecided is null");
+        }
         this.truckerThatHasDecided = truckerThatHasDecided;
         if (coordinates != null){
             this.cardState = CardState.ESECUZIONE;
@@ -84,9 +88,15 @@ public class AbandonedStation extends Card {
      * Sets the coordinates of the loads in which he wants to add the goods acquired
      * @param coord list of arrays of coordinates of the loads
      */
-    public void setCoord(ArrayList<int[]> coord) {
+    public void setCoord(ArrayList<int[]> coord) throws InvalidComponentsException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("stato non valido");
+            throw new IllegalStateException("Not callable in the state: " + cardState);
+        }
+        if(coord == null || coord.isEmpty()){
+            throw new InvalidCoordinates("Coordinates is null or empty");
+        }
+        if(!truckerThatHasDecided.getSpaceShip().checkLoad(coord)){
+            throw new InvalidComponentsException("Not all components are Loads");
         }
         this.coordinates = coord;
         if (truckerThatHasDecided != null){

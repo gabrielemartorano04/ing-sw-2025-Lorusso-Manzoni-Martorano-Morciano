@@ -1,11 +1,11 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Exceptions.InvalidComponentsException;
+import it.polimi.ingsw.Exceptions.InvalidCoordinates;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
 import it.polimi.ingsw.Model.Visitor.CardVisitor;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -92,11 +92,14 @@ public class AbandonedShip extends Card {
         if(state != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Can't call setCoordinates in the state: " + state);
         }
+        if(coordinates==null|| coordinates.isEmpty()){
+            throw new InvalidCoordinates("Coordinates is null or empty");
+        }
         if(!truckerThatHasDecided.getSpaceShip().checkCabin(coordinates)){
             throw new InvalidComponentsException("Not all components are cabin");
-        }else {
-            this.coordinates = coordinates;
         }
+        this.coordinates = coordinates;
+
         if(truckerThatHasDecided!=null){
             state = CardState.ESECUZIONE;
         }else{
