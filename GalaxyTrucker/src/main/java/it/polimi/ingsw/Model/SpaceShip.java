@@ -1480,4 +1480,48 @@ public class SpaceShip {
         return check;
     }
 
+    public void swapGoods(int[] coord1, int value1, int[] coord2, int value2) throws InvalidPositionException{
+        Goods g1=new Goods(value1);
+        switch(components[coord1[0]][coord1[1]]){
+            case Load load1->{
+                g1.setX(coord1[0]);
+                g1.setY(coord1[1]);
+                if(!load1.getGoods().contains(g1))
+                    throw new InvalidPositionException("The load doesn't contain goods with value "+value1);
+            }
+            default->{
+                throw new InvalidPositionException("Load expected in this position");
+            }
+        }
+        Goods g2=new Goods(value2);
+        switch(components[coord2[0]][coord2[1]]){
+            case Load load2->{
+                g2.setX(coord2[0]);
+                g2.setY(coord2[1]);
+                if(!load2.getGoods().contains(g2))
+                    throw new InvalidPositionException("The load doesn't contain goods with value "+value2);
+            }
+            default->{
+                throw new InvalidPositionException("Load expected in this position");
+            }
+        }
+
+        switch(components[coord1[0]][coord1[1]]){
+            case Load load1->{
+                load1.getGoods().remove(g1);
+                load1.getGoods().add(g2);
+            }
+            default->{}
+        }
+        switch(components[coord2[0]][coord2[1]]){
+            case Load load2->{
+                load2.getGoods().remove(g2);
+                load2.getGoods().add(g1);
+            }
+            default->{}
+        }
+
+
+    }
+
 }
