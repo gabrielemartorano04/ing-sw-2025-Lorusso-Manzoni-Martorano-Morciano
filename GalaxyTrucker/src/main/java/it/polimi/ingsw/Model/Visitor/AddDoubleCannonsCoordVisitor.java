@@ -55,6 +55,10 @@ public class AddDoubleCannonsCoordVisitor implements CardVisitor {
     public Optional<Object> visit(Smugglers card) {
         return Optional.empty();
     }
+    public Optional<Object> visit(Smugglers card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) {
+        card.addDoubleCannonsCoord(doubleCannonsCoord, numPlayer, trucker);
+        return Optional.empty();
+    }
 
     @Override
     public Optional<Object> visit(StarDust card) {
