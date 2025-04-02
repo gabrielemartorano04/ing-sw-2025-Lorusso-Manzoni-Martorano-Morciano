@@ -108,8 +108,12 @@ public class Pirates extends Card {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
         }
-        this.doubleCannonsCoord.addLast(doubleCannonsCoord);
-        playersDecisions++;
+        if ( trucker.getSpaceShip().checkDoubleCannon(doubleCannonsCoord)) {
+            this.doubleCannonsCoord.addLast(doubleCannonsCoord);
+            playersDecisions++;
+        }else {
+            throw new IllegalArgumentException("not a double cannon");
+        }
         if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > piratesPower) {
             winnerTrucker = trucker;
             cardState = CardState.GAIN;
@@ -121,10 +125,6 @@ public class Pirates extends Card {
                 cardState = CardState.ESECUZIONE;
             }else cardState = CardState.ATTESA_RISPOSTE;
         }
-    }
-
-    public void setActivateShield(boolean activateShield) {
-
     }
 
     public void setChooseToGain(Boolean choice) throws IllegalStateException {
@@ -147,7 +147,7 @@ public class Pirates extends Card {
         return shoots;
     }
 
-    public int[] getCurrentMeteor(){
+    public int[] getCurrentShoot(){
         if(cardState != CardState.PLOT_SHOOT) {
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.cardState);
         }
@@ -169,11 +169,13 @@ public class Pirates extends Card {
         cardState = CardState.CHIEDI_SCUDI;
     }
 
-    public void setAnswers(boolean[] answers) {
+    public void setAnswers(boolean[] answers, Trucker trucker) {
         if(cardState != CardState.CHIEDI_SCUDI){
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.cardState);
         }
-        this.usesShield = answers;
+        if (!trucker.getSpaceShip().getProtection().isEmpty()){
+            this.usesShield = answers;
+        }
         cardState = CardState.ESECUZIONE;
     }
 

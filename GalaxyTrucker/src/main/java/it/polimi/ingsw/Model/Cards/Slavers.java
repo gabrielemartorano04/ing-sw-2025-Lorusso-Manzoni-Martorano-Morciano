@@ -109,11 +109,15 @@ public class Slavers extends Card {
      * Sets, for each trucker, the coordinates of the cabin where he/she want to remove the crew members
      * @param truckersCoordinatesToRemoveHumans list of lists of arrays of coordinates
      */
-    public void addTruckersCoordinatesToRemoveHumans(ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer) throws IllegalStateException {
+    public void addTruckersCoordinatesToRemoveHumans(ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws IllegalStateException {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new IllegalStateException("Card state in not HUMANSTOREMOVE");
         }
-        this.truckersCoordinatesToRemoveHumans.add(truckersCoordinatesToRemoveHumans);
+        if (trucker.getSpaceShip().checkCabin(truckersCoordinatesToRemoveHumans)) {
+            this.truckersCoordinatesToRemoveHumans.add(truckersCoordinatesToRemoveHumans);
+        }else {
+            throw new IllegalArgumentException("le coordinate non indicano una cabina");
+        }
         if (playersDecisions == numPlayer){
             cardState = CardState.ESECUZIONE;
         }else{
@@ -125,8 +129,12 @@ public class Slavers extends Card {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
         }
+        if (trucker.getSpaceShip().checkCannon(doubleCannonsCoord)) {
             this.doubleCannonsCoord.addLast(doubleCannonsCoord);
             playersDecisions++;
+        }else {
+            throw new IllegalArgumentException("le coordinate non indicano un Double Cannon");
+        }
         if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > slaversPower) {
             winnerTrucker = trucker;
             cardState = CardState.GAIN;
