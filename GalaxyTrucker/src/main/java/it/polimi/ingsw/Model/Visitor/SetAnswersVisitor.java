@@ -64,4 +64,8 @@ public class SetAnswersVisitor implements CardVisitor {
     public Optional<Object> visit(WarZone card) {
         return Optional.empty();
     }
+    public Optional<Object> visit(WarZone card, boolean answers) {
+        card.setAnswers(answers);
+        return Optional.empty();
+    }
 }

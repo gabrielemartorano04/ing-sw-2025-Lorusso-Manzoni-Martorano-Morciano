@@ -33,7 +33,7 @@ public class GetDirectionVisitor implements CardVisitor{
 
     @Override
     public Optional<Object> visit(Pirates card) {
-        return Optional.empty();
+        return Optional.of(card.getDirections());
     }
 
     @Override
