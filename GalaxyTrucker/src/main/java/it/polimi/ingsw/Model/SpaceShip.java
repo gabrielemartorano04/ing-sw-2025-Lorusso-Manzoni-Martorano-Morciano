@@ -1159,9 +1159,10 @@ public class SpaceShip {
      * If the player loses all his goods and he has to lose more, he will lose the rest in batteries,
      * at the beginning the player choose battery storages from which he can remove batteries
      * @param numOfLostGoods number of gooods the player has to remove
-     * @param coord coordinates of battery storages from which he will lose batteries eventually
+     * @param coordL coordinates of loads from which the player wants to remove goods
+     * @param coordB coordinates of battery storages from which he will lose batteries eventually
      */
-    public void removeGoods(int numOfLostGoods, ArrayList<int[]> coord) {
+    public void removeGoods(int numOfLostGoods, ArrayList<int[]> coordL,ArrayList<int[]> coordB) {
         int x = 0;
         int y = 0;
 
@@ -1173,21 +1174,24 @@ public class SpaceShip {
             }
         } else {
             while (goodsList.size()>0) {
-                x = goodsList.get(0).getX();
-                y = goodsList.get(0).getY();
-                switch(components[x][y]){
-                    case Load load->{
-                        load.removeGoodFromHead();
-                    }default -> {}
+                if(coordL.contains(new int[]{x,y})){
+                    x = goodsList.get(0).getX();
+                    y = goodsList.get(0).getY();
+                    switch(components[x][y]){
+                        case Load load->{
+                            load.removeGoodFromHead();
+                        }default -> {}
+                    }
+
+                    goodsList.remove(0);
+                    numOfLostGoods--;
                 }
 
-                goodsList.remove(0);
-                numOfLostGoods--;
 
             }
             while (numOfLostGoods > 0) {
                 //mi restituisce  le coordinate dei componenti da cui vuole togliere batterie
-                for (int[] c : coord) {
+                for (int[] c : coordB) {
                     switch(components[c[0]][c[1]]){
                         case BatteryStorage batteryStorage->{
                             batteryQuantity = batteryStorage.getQuantity();
@@ -1353,7 +1357,7 @@ public class SpaceShip {
                 }
             }
         }
-        removeGoods(goodsList.size(),c);
+        removeGoods(goodsList.size(),c, null);
     }
 
     /**

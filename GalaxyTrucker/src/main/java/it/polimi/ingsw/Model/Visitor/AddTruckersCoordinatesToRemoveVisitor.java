@@ -46,6 +46,7 @@ public class AddTruckersCoordinatesToRemoveVisitor implements CardVisitor {
     public Optional<Object> visit(Slavers card) {
         return Optional.empty();
     }
+    @Override
     public Optional<Object> visit(Slavers card, ArrayList<int[]> truckersCoordinatedToRemoveHuman, int numPlayer) {
         card.addTruckersCoordinatesToRemoveHumans(truckersCoordinatedToRemoveHuman, numPlayer);
         return Optional.empty();

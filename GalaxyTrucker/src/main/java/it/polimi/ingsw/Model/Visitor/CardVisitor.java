@@ -10,14 +10,25 @@ import java.util.Optional;
 
 public interface CardVisitor {
     Optional<Object> visit(AbandonedShip card);
+
     Optional<Object> visit(AbandonedStation card);
+
     Optional<Object> visit(Epidemic card);
+
     Optional<Object> visit(MeteorShower card);
+
     Optional<Object> visit(OpenSpace card);
+
     Optional<Object> visit(Pirates card);
+
     Optional<Object> visit(Planets card);
+
     Optional<Object> visit(Slavers card);
+    Optional<Object> visit(Slavers card, ArrayList<int[]> truckersCoordinatedToRemoveHuman, int numPlayer);
+
     Optional<Object> visit(Smugglers card);
+
     Optional<Object> visit(StarDust card);
+
     Optional<Object> visit(WarZone card);
 }
