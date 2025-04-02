@@ -35,7 +35,9 @@ public abstract class Card {
 
     }
 
-    abstract void accept(CardVisitor visitor, String cmd);
+    void accept(CardVisitor visitor) {
+        visitor.visit( this)
+    }
 
     /**
      * Returns the name of the card

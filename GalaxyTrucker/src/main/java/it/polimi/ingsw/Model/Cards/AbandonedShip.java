@@ -38,25 +38,8 @@ public class AbandonedShip extends Card {
     }
 
     @Override
-    public void accept(CardVisitor visitor, String cmd, Trucker trucker, ArrayList<int[]> coord) {
-        switch(cmd){
-            case "GetDays":
-                visitor.visitGetDays(this);
-                break;
-            case "GetCredits":
-                visitor.visitGetCredits(this);
-                break;
-            case "GetNumHuman":
-                visitor.visitGetNumHuman(this);
-                break;
-            case "GetTruckerThatHasDecided":
-                visitor.visitSetTruckerThatHasDecided(this, trucker);
-                break;
-            case "SetCoordinates":
-                visitor.visitSetCoordinates(this, coord);
-                break;
-        }
-
+    public void accept(CardVisitor visitor) {
+        visitor.visit(this);
     }
 
     /**
