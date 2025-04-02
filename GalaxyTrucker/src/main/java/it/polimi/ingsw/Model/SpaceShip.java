@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.InvalidPositionException;
+import it.polimi.ingsw.Exceptions.NoHumansHereException;
+import it.polimi.ingsw.Exceptions.NotEnoughBatteries;
 import it.polimi.ingsw.Model.Components.*;
 
 import java.util.*;
@@ -239,7 +242,7 @@ public class SpaceShip {
      * @param y coordinate x of the component
      */
 
-    public void removeHuman(int x, int y) {
+    public void removeHuman(int x, int y) throws NoHumansHereException, InvalidPositionException{
 
         switch(components[x][y]){
             case Cabin c->{
@@ -249,15 +252,14 @@ public class SpaceShip {
                         numHuman--;
                     }
                     else{
-                        //exception, qui non ci sono astronauti!!
+                        throw new NoHumansHereException("There are no humans in this cabin");
                     }
                 }
             }
             default -> {
-                break;
+                throw new InvalidPositionException("Cabin position expected");
             }
         }
-
     }
 
     /**
@@ -312,9 +314,7 @@ public class SpaceShip {
         //se components[x][y] già null eccezione non c'è niente qua
         Component com=components[x][y];
         switch (components[x][y]) {
-            case EmptySpace c -> {
-                // Non fare nulla se è "Empty Space"
-            }
+            case EmptySpace c -> {}
             default -> {
                 com=components[x][y];
                 components[x][y] = null;
@@ -659,22 +659,42 @@ public class SpaceShip {
         switch (direction) {
             case 0:
                 for (int i = 5; i <= 9; i++) {
-                    if (components[i][num] != null) return true;
+                    if (components[i][num] != null){
+                        switch(components[i][num]){
+                            case EmptySpace emptySpace->{}
+                            default -> {return true;}
+                        }
+                    }
                 }
                 break;
             case 1:
                 for (int j = 10; j > 3; j--) {
-                    if (components[num][j] != null) return true;
+                    if (components[num][j] != null) {
+                        switch(components[num][j]){
+                            case EmptySpace emptySpace->{}
+                            default -> {return true;}
+                        }
+                    }
                 }
                 break;
             case 2:
                 for (int i = 9; i > 4; i--) {
-                    if (components[i][num] != null) return true;
+                    if (components[i][num] != null) {
+                        switch(components[i][num]){
+                            case EmptySpace emptySpace->{}
+                            default -> {return true;}
+                        }
+                    }
                 }
                 break;
             case 3:
                 for (int j = 4; j <= 10; j++) {
-                    if (components[num][j] != null) return true;
+                    if (components[num][j] != null) {
+                        switch(components[num][j]){
+                            case EmptySpace emptySpace->{}
+                            default -> {return true;}
+                        }
+                    }
                 }
                 break;
         }
@@ -693,44 +713,71 @@ public class SpaceShip {
             case 0:
                 for (int i = 5; i <= 9; i++) {
                     if (components[i][num] != null) {
-                        c=components[i][num];
-                        x=i;
-                        y=num;
-                        removeComponent(i, num);
-                        lost++;
+
+                        switch(components[i][num]){
+                            case EmptySpace emptySpace->{}
+                            default -> {
+                                c=components[i][num];
+                                x=i;
+                                y=num;
+                                removeComponent(i, num);
+                                lost++;
+                            }
+                        }
+
+
                     }
                 }
                 break;
             case 1:
                 for (int j = 10; j > 3; j--) {
                     if (components[num][j] != null) {
-                        c=components[num][j];
-                        x=num;
-                        y=j;
-                        removeComponent(num, j);
-                        lost++;
+                        switch(components[num][j]){
+                            case EmptySpace emptySpace->{}
+                            default -> {
+                                c=components[num][j];
+                                x=num;
+                                y=j;
+                                removeComponent(num, j);
+                                lost++;
+                            }
+                        }
+
                     }
                 }
                 break;
             case 2:
                 for (int i = 9; i > 4; i--) {
                     if (components[i][num] != null) {
-                        c=components[i][num];
-                        x=i;
-                        y=num;
-                        removeComponent(i, num);
-                        lost++;
+                        switch(components[i][num]){
+                            case EmptySpace emptySpace->{}
+                            default -> {
+                                c=components[i][num];
+                                x=i;
+                                y=num;
+                                removeComponent(i, num);
+                                lost++;
+                            }
+                        }
+
                     }
                 }
                 break;
             case 3:
                 for (int j = 4; j <= 10; j++) {
                     if (components[num][j] != null) {
-                        c=components[num][j];
-                        x=num;
-                        y=j;
-                        removeComponent(num, j);
-                        lost++;
+                        switch(components[num][j]){
+                            case EmptySpace emptySpace->{}
+                            default -> {
+                                c=components[num][j];
+                                x=num;
+                                y=j;
+                                removeComponent(num, j);
+                                lost++;
+
+                            }
+                        }
+
                     }
                 }
                 break;
@@ -1059,7 +1106,7 @@ public class SpaceShip {
     /**
      * This method remove an astronauts from each non empty cabin linked to an other non empty cabin
      */
-    public void epidemic() {
+    public void epidemic() throws InvalidPositionException {
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if(components[i][j] != null) {
@@ -1272,7 +1319,7 @@ public class SpaceShip {
      *                           of the component from which the player wants to remove a number of batteries
      *                           cointained in batteryCoordinates[2]
      */
-    public void removeBatteries(ArrayList<int[]> batteryCoordinates){
+    public void removeBatteries(ArrayList<int[]> batteryCoordinates)throws NotEnoughBatteries {
 
         for(int[] c:batteryCoordinates){
             switch (components[c[0]][c[1]]){
@@ -1282,7 +1329,7 @@ public class SpaceShip {
                         numHuman -= c[2];
                     }
                     else {
-                        //eccezione non hai abbastanza umani in c[0]c[1]
+                        throw new NotEnoughBatteries("There are no enought batteries in the selected storage ( "+c[0]+" , "+c[1]+" )");
                     }
                 }default -> {}
             }
@@ -1424,7 +1471,5 @@ public class SpaceShip {
         }
         return check;
     }
-
-
 
 }
