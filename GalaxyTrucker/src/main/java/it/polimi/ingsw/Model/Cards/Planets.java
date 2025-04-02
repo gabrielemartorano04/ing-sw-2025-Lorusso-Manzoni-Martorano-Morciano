@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model.Cards;
 
+import it.polimi.ingsw.Exceptions.InvalidComponentsException;
+import it.polimi.ingsw.Exceptions.InvalidCoordinates;
 import it.polimi.ingsw.Exceptions.PlanetNotFreeException;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Components.*;
@@ -63,9 +65,12 @@ public class Planets extends Card {
      * Sets, for each trucker, the coordinates of the loads where he/she wants to add the goods gained
      * @param truckerCoordinate list of arrays of coordinates
      */
-    public void setTruckersCoordinates(ArrayList<int[]> truckerCoordinate, int numTruckers) {
+    public void setTruckersCoordinates(Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidComponentsException {
         if (this.state != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("Non è possibile inserire le informazioni nello stato " + this.state);
+            throw new IllegalStateException("SetTruckersCoordinates not callable in the state: " + this.state);
+        }
+        if(!trucker.getSpaceShip().checkLoad(truckerCoordinate)){
+            throw new InvalidComponentsException("Not all components are Loads");
         }
         this.truckersCoordinates.addLast(truckerCoordinate);
 
@@ -83,21 +88,21 @@ public class Planets extends Card {
     }
 
 
-    public void setPlayerLanding(int indexOfLanding, Trucker trucker, int numPlayers){
+    public void setPlayerLanding(int indexOfLanding, Trucker trucker, int numPlayers) throws InvalidComponentsException, PlanetNotFreeException {
         if(state != CardState.ATTESA_PIANETI){
-            throw new IllegalStateException("Non puoi atterrare nello stato " + this.state);
+            throw new IllegalStateException("Can't land in the state: " + this.state);
         }
         if(indexOfLanding < 0 || indexOfLanding >= this.planets.size()){
-            throw new RuntimeException("Nessun pianeta all'indice " + indexOfLanding);
+            throw new RuntimeException("No planets at the index: " + indexOfLanding);
         }
         if(trucker == null){
-            throw new RuntimeException("Trucker è null");
+            throw new RuntimeException("Trucker is null");
         }
         if(planetsOccupied.contains(trucker)){
-            throw new RuntimeException("Il Trucker ha già scelto");
+            throw new RuntimeException("This trucker has already chosen");
         }
         if(planetsOccupied.get(indexOfLanding)!=null){
-            throw new PlanetNotFreeException("Hai scelto un pianeta già occupato");
+            throw new PlanetNotFreeException("You choose a planet that was already occupied");
         }
         planetsOccupied.add(indexOfLanding, trucker);
         truckersLanded.add(trucker);
@@ -122,7 +127,7 @@ public class Planets extends Card {
     @Override
     public void cardEffect(Game game) {
         if (this.state != CardState.ESECUZIONE) {
-            throw new IllegalStateException("Non è possibile eseguire card effect nello stato " + this.state);
+            throw new IllegalStateException("CardEffect not callable in the state: " + this.state);
         }
         int i = 0;
 
