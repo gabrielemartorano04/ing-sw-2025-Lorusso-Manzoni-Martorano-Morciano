@@ -1,38 +1,37 @@
 package it.polimi.ingsw.Model.Visitor;
 
 import it.polimi.ingsw.Model.Cards.*;
-import it.polimi.ingsw.Model.Components.Goods;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Optional;
 
 public interface CardVisitor {
     Optional<Object> visit(AbandonedShip card);
-    Optional<Object> visit(AbandonedShip card, ArrayList<int[]> coord);
-    Optional<Object> visit(AbandonedShip card, Trucker trucker);
+    Optional<Object> visitForSetCoordinates(AbandonedShip card, ArrayList<int[]> coord);
+    Optional<Object> visitForSetTruckerThatHasDecided(AbandonedShip card, Trucker trucker);
 
     Optional<Object> visit(AbandonedStation card);
-    Optional<Object> visit(AbandonedStation card, ArrayList<int[]> coord);
-    Optional<Object> visit(AbandonedStation card, Trucker trucker);
+    Optional<Object> visitForSetCoordinates(AbandonedStation card, ArrayList<int[]> coord);
+    Optional<Object> visitForSetTruckerThatHasDecided(AbandonedStation card, Trucker trucker);
 
     Optional<Object> visit(Epidemic card);
 
     Optional<Object> visit(MeteorShower card);
-    Optional<Object> visit(MeteorShower card, Game game);
-    Optional<Object> visit(MeteorShower card, boolean answers);
+    Optional<Object> visitForRollDice(MeteorShower card, Game game);
+    Optional<Object> VisitForSetAnswers(MeteorShower card, boolean answers);
 
     Optional<Object> visit(OpenSpace card);
-    Optional<Object> visit(OpenSpace card,ArrayList<int[]> coord, int numTruckers);
+    Optional<Object> visitForSetCoordinates(OpenSpace card, ArrayList<int[]> coord, int numTruckers);
 
     Optional<Object> visit(Pirates card);
-    Optional<Object> visit(Pirates card, Game game);
-    Optional<Object> visit(Pirates card, boolean activateShield);
+    Optional<Object> visitForRollDice(Pirates card, Game game);
     Optional<Object> visit(Pirates card, Boolean choice);
     Optional<Object> visit(Pirates card,  ArrayList<Trucker> defeatedTruckers);
     Optional<Object> visit(Pirates card, Trucker winnerTrucker);
+    Optional<Object> visitForDoubleCannonsCoordinates(Pirates card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker);
+
 
     Optional<Object> visit(Planets card);
     Optional<Object> visit(Planets card,ArrayList<int[]> coord, int numTruckers);
