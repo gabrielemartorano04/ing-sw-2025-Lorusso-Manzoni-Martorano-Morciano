@@ -16,5 +16,6 @@ public enum CardState {
     GOODSTOADD,
     BATTERIESTOREMOVE,
     PLOT_SHOOT,
-    WAIT_COORDINATES,
+    WAIT_CANNONS,
+    WAIT_ENGINES,
 }
