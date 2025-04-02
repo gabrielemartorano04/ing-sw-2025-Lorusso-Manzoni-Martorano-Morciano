@@ -5,6 +5,7 @@ import it.polimi.ingsw.Exceptions.NoHumansHereException;
 import it.polimi.ingsw.Exceptions.NotEnoughBatteries;
 import it.polimi.ingsw.Model.Components.*;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -22,6 +23,7 @@ public class SpaceShip {
     private ArrayList<Goods> goodsList; //list of goods in the spaceship, sort by their value (desc)
     private int numOfBattery; //number of batteries in the spaceship
     private int numAlien;
+    private int numDoubleCannon, numDoubleEngine;
 
     /**
      * Spaceship constructor, it initializes the attributes of this class.
@@ -72,6 +74,8 @@ public class SpaceShip {
         numAlien=0;
         //ogni battery storage è pieno di batterie
         numOfBattery = 0;
+        numDoubleCannon=0;
+        numDoubleEngine=0;
     }
 
     /**
@@ -292,6 +296,13 @@ public class SpaceShip {
         return components;
     }
 
+    public int getNumDoubleCannon(){
+        return numDoubleCannon;
+    }
+    public int getNumDoubleEngine(){
+        return numDoubleEngine;
+    }
+
     /**
      * This method adds a component to the matrix
      * @param component component the player wants to add
@@ -299,8 +310,22 @@ public class SpaceShip {
      * @param y y coordinate of the cell in which the player wants to add the component
      */
     public void addComponent(Component component, int x, int y) {
-        if(components[x][y]==null ) components[x][y] = component;
+        if(components[x][y]==null ) {
+            components[x][y] = component;
+            switch (component){
+                case Cannon cannon->{
+                    if(cannon.getIsDouble())
+                        numDoubleCannon++;
+                }
+                case Engine engine->{
+                    if(engine.getIsDouble())
+                        numDoubleEngine++;
+                }
+                default -> {}
+            }
+        }
         //else eccezione non puoi riempire un emptyspace
+        //check se non attaccato a niente
     }
 
     /**
@@ -315,6 +340,16 @@ public class SpaceShip {
         Component com=components[x][y];
         switch (components[x][y]) {
             case EmptySpace c -> {}
+            case Cannon cannon->{
+                if(cannon.getIsDouble()) numDoubleCannon--;
+                com=components[x][y];
+                components[x][y] = null;
+            }
+            case Engine engine->{
+                if(engine.getIsDouble()) numDoubleEngine--;
+                com=components[x][y];
+                components[x][y] = null;
+            }
             default -> {
                 com=components[x][y];
                 components[x][y] = null;
@@ -1162,7 +1197,7 @@ public class SpaceShip {
      * @param coordL coordinates of loads from which the player wants to remove goods
      * @param coordB coordinates of battery storages from which he will lose batteries eventually
      */
-    public void removeGoods(int numOfLostGoods, ArrayList<int[]> coordL,ArrayList<int[]> coordB) {
+    /*public void removeGoods(int numOfLostGoods, ArrayList<int[]> coordL,ArrayList<int[]> coordB) {
         int x = 0;
         int y = 0;
 
@@ -1210,7 +1245,7 @@ public class SpaceShip {
             }
 
         }
-    }
+    }*/
 
 
 
@@ -1344,20 +1379,22 @@ public class SpaceShip {
      * This method remove all the goods from the spaceship
      */
     public void removeAllGoods(){
-        ArrayList<int[]> c=new ArrayList<>();
+        ArrayList<Goods> c=new ArrayList<>();
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if(components[i][j] != null){
                     switch(components[i][j]){
                         case Load load->{
-                            c.add(new int[]{i, j});
+                            for(Goods g: load.getGoods()){
+                                c.add(g);
+                            }
                         }
                         default -> {}
                     }
                 }
             }
         }
-        removeGoods(goodsList.size(),c, null);
+        removeGoods(c);
     }
 
     /**
@@ -1479,7 +1516,7 @@ public class SpaceShip {
         }
         return check;
     }
-
+    /// ////////////////////////////////////////
     public void swapGoods(int[] coord1, int value1, int[] coord2, int value2) throws InvalidPositionException{
         Goods g1=new Goods(value1);
         switch(components[coord1[0]][coord1[1]]){
@@ -1520,8 +1557,29 @@ public class SpaceShip {
             }
             default->{}
         }
-
-
     }
 
+    public int getRedGoods(){
+        return redGoods;
+    }
+    public int getGreenGoods(){
+        return greenGoods;
+    }
+    public int getBlueGoods(){
+        return blueGoods;
+    }
+    public int getYellowGoods() {
+        return yellowGoods;
+    }
+
+    public void removeGoods(ArrayList<Goods> list){
+        for(Goods g: list){
+            switch(components[g.getX()][g.getY()]){
+                case Load load->{
+                    load.removeGood(g);
+                }
+                default -> {}
+            }
+        }
+    }
 }
