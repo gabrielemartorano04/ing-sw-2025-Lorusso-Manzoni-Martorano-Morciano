@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.Cards;
 
+import it.polimi.ingsw.Exceptions.InvalidComponentsException;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
 import it.polimi.ingsw.Model.Visitor.CardVisitor;
@@ -72,7 +73,10 @@ public class AbandonedShip extends Card {
      */
     public void setTruckerThatHasDecided(Trucker truckerThatHasDecided)  {
         if(state != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("Non puoi settare variabili nello stato: " + state);
+            throw new IllegalStateException("SetTruckerThatHasDecided not callable in state: " + state);
+        }
+        if(truckerThatHasDecided == null){
+            throw new RuntimeException("TruckerThatHasDecided is null");
         }
         this.truckerThatHasDecided = truckerThatHasDecided;
         if(coordinates!=null){
@@ -84,13 +88,19 @@ public class AbandonedShip extends Card {
      * Sets the coordinates of the cabins from which he wants to remove the crew members required
      * @param coordinates list of arrays of coordinates of the cabins
      */
-    public void setCoordinates(ArrayList<int[]> coordinates) {
+    public void setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException {
         if(state != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("Non puoi settare variabili nello stato: " + state);
+            throw new IllegalStateException("Can't call setCoordinates in the state: " + state);
         }
-        this.coordinates = coordinates;
+        if(!truckerThatHasDecided.getSpaceShip().checkCabin(coordinates)){
+            throw new InvalidComponentsException("Not all components are cabin");
+        }else {
+            this.coordinates = coordinates;
+        }
         if(truckerThatHasDecided!=null){
             state = CardState.ESECUZIONE;
+        }else{
+            throw new RuntimeException("Tried to set coordinates when truckerThatHasDecided is null");
         }
 
     }
