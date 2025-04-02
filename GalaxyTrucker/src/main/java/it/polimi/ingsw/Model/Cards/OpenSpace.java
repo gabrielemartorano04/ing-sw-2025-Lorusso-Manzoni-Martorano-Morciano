@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.Cards;
 
+import it.polimi.ingsw.Exceptions.InvalidCoordinates;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
 import it.polimi.ingsw.Model.Visitor.CardVisitor;
@@ -36,26 +37,26 @@ public class OpenSpace extends Card {
     }
 
     /**
-     * Sets for each trucker the coordinates of the double cannon that he/she wants to activate
+     * Sets for each trucker the coordinates of the double engines that he/she wants to activate
      * @param truckerCoordinate list of arrays of coordinates
      * @param numTruckers number of truckers
      */
-    public void setCoordinates(ArrayList<int[]> truckerCoordinate, int numTruckers) {
+    public void setCoordinates(Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates {
         if (this.state != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Non è possibile inserire le informazioni nello stato " + this.state);
         }
+        if(!trucker.getSpaceShip().checkDoubleEngine(truckerCoordinate)){
+            throw new InvalidCoordinates("Not all components are DoubleEngine");
+        }
         this.truckersCoordinates.addLast(truckerCoordinate);
         if (truckersCoordinates != null && truckersCoordinates.size() == numTruckers) {
-            boolean allValid = true;
             for (ArrayList<int[]> list : truckersCoordinates) {
-                if (list == null || list.isEmpty()) {
-                    allValid = false;
-                    break;
+                // la lista deve essere o piena o vuota ma non può essere null
+                if (list == null) {
+                    throw new RuntimeException("A trucker's list in openspace after all answers is null");
                 }
             }
-            if (allValid) {
-                this.state = CardState.ESECUZIONE;
-            }
+            this.state = CardState.ESECUZIONE;
         }
     }
 
