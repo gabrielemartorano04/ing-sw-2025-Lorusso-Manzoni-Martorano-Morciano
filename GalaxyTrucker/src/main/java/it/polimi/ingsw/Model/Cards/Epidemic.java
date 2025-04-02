@@ -21,6 +21,7 @@ public class Epidemic extends Card {
      */
     public Epidemic(boolean trialFlight, int level, String frontImage, String backImage) {
         super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage);
+        this.state = CardState.ESECUZIONE;
     }
 
     @Override
