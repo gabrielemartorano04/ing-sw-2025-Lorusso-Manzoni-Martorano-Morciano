@@ -1379,20 +1379,22 @@ public class SpaceShip {
      * This method remove all the goods from the spaceship
      */
     public void removeAllGoods(){
-        ArrayList<int[]> c=new ArrayList<>();
+        ArrayList<Goods> c=new ArrayList<>();
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if(components[i][j] != null){
                     switch(components[i][j]){
                         case Load load->{
-                            c.add(new int[]{i, j});
+                            for(Goods g: load.getGoods()){
+                                c.add(g);
+                            }
                         }
                         default -> {}
                     }
                 }
             }
         }
-        removeGoods(goodsList.size(),c, null);
+        removeGoods(c);
     }
 
     /**
