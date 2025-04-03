@@ -20,4 +20,6 @@ public enum CardState {
     WAIT_ENGINES,
     CHOOSE_TO_GAIN,
     SWAP,
+    PLOT_GOODS,
+    REMOVE_GOODS
 }
