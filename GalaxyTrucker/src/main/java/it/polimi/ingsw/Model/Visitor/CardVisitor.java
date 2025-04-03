@@ -9,11 +9,11 @@ import java.util.Optional;
 
 public interface CardVisitor {
     Optional<Object> visit(AbandonedShip card);
-    Optional<Object> visitForSetCoordinates(AbandonedShip card, ArrayList<int[]> coord);
+    Optional<Object> visitForSetCoordinatesToRemoveElements(AbandonedShip card, ArrayList<int[]> coord);
     Optional<Object> visitForSetTruckerThatHasDecided(AbandonedShip card, Trucker trucker);
 
     Optional<Object> visit(AbandonedStation card);
-    Optional<Object> visitForSetCoordinates(AbandonedStation card, ArrayList<int[]> coord);
+    Optional<Object> visitForSetCoordinatesToAddElements(AbandonedStation card, ArrayList<int[]> coord);
     Optional<Object> visitForSetTruckerThatHasDecided(AbandonedStation card, Trucker trucker);
 
     Optional<Object> visit(Epidemic card);
@@ -23,28 +23,30 @@ public interface CardVisitor {
     Optional<Object> VisitForSetAnswers(MeteorShower card, boolean answers);
 
     Optional<Object> visit(OpenSpace card);
-    Optional<Object> visitForSetCoordinates(OpenSpace card, ArrayList<int[]> coord, int numTruckers);
+    Optional<Object> visitForSetDoubleCannonsCoordinates(OpenSpace card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers);
 
     Optional<Object> visit(Pirates card);
     Optional<Object> visitForRollDice(Pirates card, Game game);
-    Optional<Object> visit(Pirates card, Boolean choice);
-    Optional<Object> visit(Pirates card,  ArrayList<Trucker> defeatedTruckers);
-    Optional<Object> visit(Pirates card, Trucker winnerTrucker);
-    Optional<Object> visitForDoubleCannonsCoordinates(Pirates card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker);
+    Optional<Object> visitForSetChooseToGain(Pirates card, Boolean choice);
+    Optional<Object> visitForSetDefeatedTruckers(Pirates card,  ArrayList<Trucker> defeatedTruckers);
+    Optional<Object> visitForSetWinnerTrucker(Pirates card, Trucker winnerTrucker);
+    Optional<Object> visitForSetDoubleCannonsCoordinates(Pirates card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker);
+    Optional<Object> visitForSetAnswers(Pirates card, boolean answers, Trucker trucker);
 
-
+    //ANCORA IN ATTESA
     Optional<Object> visit(Planets card);
     Optional<Object> visit(Planets card,ArrayList<int[]> coord, int numTruckers);
     Optional<Object> visit(Planets card, int indexOfLanding, Trucker trucker, int numPlayers);
 
+
     Optional<Object> visit(Slavers card);
-    Optional<Object> visit(Slavers card, ArrayList<int[]> coord, int numPlayer, Trucker trucker);
-    Optional<Object> visit(Slavers card, ArrayList<int[]> truckersCoordinatedToRemoveHuman, int numPlayer);
-    Optional<Object> visit(Slavers card, boolean choice);
-    Optional<Object> visit(Slavers card,  ArrayList<Trucker> defeatedTruckers);
-    Optional<Object> visit(Slavers card, Trucker winnerTrucker);
+    Optional<Object> visitForSetDoubleCannonsCoordinates(Slavers card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker);
+    Optional<Object> visitForSetCoordinatesToRemoveElements(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker);
+    Optional<Object> visitForSetChooseToGain(Slavers card, boolean choice);
+    Optional<Object> visitForSetDefeatedTruckers(Slavers card,  ArrayList<Trucker> defeatedTruckers);
+    Optional<Object> visitForSetWinnerTrucker(Slavers card, Trucker winnerTrucker);
 
-
+    //ANCORA IN ATTESA
     Optional<Object> visit(Smugglers card);
     Optional<Object> visit(Smugglers card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker);
     Optional<Object> visit(Smugglers card, String cmd, ArrayList<int[]> truckersCoordinatesToRemove, int numPlayer, Trucker trucker);
@@ -55,6 +57,7 @@ public interface CardVisitor {
 
     Optional<Object> visit(StarDust card);
 
+    //ANCORA IN ATTESA
     Optional<Object> visit(WarZone card);
     Optional<Object> visit(WarZone card, Game game, ArrayList<ArrayList<int[]>> truckersCannonsCoordinates, ArrayList<ArrayList<int[]>> truckersEnginesCoordinates);
     Optional<Object> visit(WarZone card, ArrayList<Trucker> truckers, Condition condition, ArrayList<ArrayList<int[]>> coord);
