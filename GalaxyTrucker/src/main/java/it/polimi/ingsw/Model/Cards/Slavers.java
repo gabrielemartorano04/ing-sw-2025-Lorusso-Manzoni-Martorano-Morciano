@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.Trucker;
 import it.polimi.ingsw.Model.Visitor.CardVisitor;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Class that manages the single card slavers
@@ -129,11 +130,13 @@ public class Slavers extends Card {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
         }
-        if (trucker.getSpaceShip().checkCannon(doubleCannonsCoord)) {
-            this.doubleCannonsCoord.addLast(doubleCannonsCoord);
-            playersDecisions++;
-        }else {
-            throw new IllegalArgumentException("le coordinate non indicano un Double Cannon");
+        if (trucker.getSpaceShip().getNumDoubleCannon()!=0) {
+            if (!doubleCannonsCoord.isEmpty() || trucker.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
+                this.doubleCannonsCoord.addLast(doubleCannonsCoord);
+                playersDecisions++;
+            } else {
+                throw new IllegalArgumentException("not a double cannon");
+            }
         }
         if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > slaversPower) {
             winnerTrucker = trucker;

@@ -1,11 +1,14 @@
 package it.polimi.ingsw.Model.Cards;
 
+import it.polimi.ingsw.Exceptions.InvalidComponentsException;
+import it.polimi.ingsw.Exceptions.InvalidCoordinates;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Components.*;
 import it.polimi.ingsw.Model.Trucker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Class that manages the single card smugglers
@@ -104,31 +107,33 @@ public class Smugglers extends Card {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param winnerCoordinatesToAddGoods list of coordinates
      */
-    public void setWinnerCoordinatesToAddGoods(ArrayList<int[]> winnerCoordinatesToAddGoods) throws IllegalStateException, NotGoodsDepositException {
+    public void setWinnerCoordinatesToAddGoods(ArrayList<int[]> winnerCoordinatesToAddGoods, Trucker trucker) throws IllegalStateException, InvalidComponentsException {
         if (cardState != CardState.GOODSTOADD) {
             throw new IllegalStateException("Card state is not GOODSTOADD");
         }
-        try {
+        if (!(winnerCoordinatesToAddGoods.isEmpty()) || trucker.getSpaceShip().checkLoad(Objects.requireNonNull(winnerCoordinatesToAddGoods))) {
             this.winnerCoordinatesToAddGoods = winnerCoordinatesToAddGoods;
-        } catch (NotGoodsDepositException e) {
-            throw new NotGoodsDepositException("Not goods deposit");
+        } else{
+            throw new InvalidCoordinates("Not goods deposit");
         }
         cardState = CardState.ESECUZIONE;
     }
 
-    public void addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException, NotDoubleCannonException{
+    public void addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException, InvalidComponentsException{
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
         }
-        try {
-            this.doubleCannonsCoord.addLast(doubleCannonsCoord);
-        } catch (NotDoubleCannonException e) {
-            throw new NotDoubleCannonException("Not DoubleCannonException");
+        if (trucker.getSpaceShip().getNumDoubleCannon()!=0) {
+            if (!doubleCannonsCoord.isEmpty() || trucker.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
+                this.doubleCannonsCoord.addLast(doubleCannonsCoord);
+                playersDecisions++;
+            } else {
+                throw new IllegalArgumentException("not a double cannon");
+            }
         }
-        playersDecisions++;
         if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > smugglersPower) {
             winnerTrucker = trucker;
-            cardState = CardState.GAIN;
+            cardState = CardState.CHOOSE_TO_GAIN;
         }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == smugglersPower){
             cardState = CardState.ATTESA_RISPOSTE;
         }else {
@@ -139,61 +144,13 @@ public class Smugglers extends Card {
         }
     }
 
-    /**
-     * Sets, for each trucker, the coordinates of the loads where he/she wants to remove goods if defeated
-     * @param truckersCoordinatesToRemoveBatteries list of lists of coordinates
-     */
-    public void setTruckersCoordinatesToRemoveBatteries(ArrayList<int[]> truckersCoordinatesToRemoveBatteries, int numPlayer, Trucker trucker) {
-        if (cardState != CardState.BATTERIESTOREMOVE) {
-            throw new IllegalStateException("Card state in not HUMANSTOREMOVE");
-        }
-        if(trucker.getSpaceShip().getBatteries)
-        this.truckersCoordinatesToRemoveBatteries.add(truckersCoordinatesToRemoveBatteries);
-        if (playersDecisions == numPlayer){
-            cardState = CardState.ESECUZIONE;
-        }else{
-            cardState = CardState.ATTESA_RISPOSTE;
-        }
-    }
+    public void setChoiceToGain(boolean choice) {
 
-    public void setTruckersCoordinatesToRemoveGoods(ArrayList<int[]> truckersCoordinatesToRemoveGoods, int numPlayer, Trucker trucker) {
-        if (cardState != CardState.GOODSTOREMOVE) {
-            throw new IllegalStateException("Card state in not GOODSTOREMOVE");
-        }
-        if (trucker.getSpaceShip().getGoodsList().size() < goodsLost) {
-            if (truckersCoordinatesToRemoveGoods.size() == goodsLost){
-                try {
-                    try {
-                        this.truckersCoordinatesToRemoveGoods.add(truckersCoordinatesToRemoveGoods);
-                    } catch (NotHigherGoodException e) {
-                        throw new NotHigherGoodException("Not HigherGoodException");
-                    }
-                } catch (NotGoodsDepositException e) {
-                    throw new NotGoodsDepositException("Not GoodsDepositException");
-                }
-            }else {
-                cardState = CardState.GOODSTOREMOVE;
-                throw new NotEnoughDepositsException("");
-            }
-        }else {
-            trucker.getSpaceShip().removeAllGoods();
-            cardState = CardState.BATTERIESTOREMOVE;
-            throw new NotEnoughGoodsException("NotEnoughGoods");
-        }
-        if (playersDecisions == numPlayer){
-            cardState = CardState.ESECUZIONE;
-        }else{
-            cardState = CardState.ATTESA_RISPOSTE;
-        }
-    }
-
-    public void setChooseToGain(Boolean choice) throws IllegalStateException {
-        if (cardState != CardState.GAIN) {
-            throw new IllegalStateException("Card state is not GAIN");
-        }
         this.choiceToGain = choice;
-        cardState = CardState.GOODSTOADD;
     }
+
+
+
 
     /**
      * Applies the changes provided by the card

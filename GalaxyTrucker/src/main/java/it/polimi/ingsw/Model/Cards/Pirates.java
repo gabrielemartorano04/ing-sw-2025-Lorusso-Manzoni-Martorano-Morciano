@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.SpaceShip;
 import it.polimi.ingsw.Model.Trucker;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Class that manages the single card pirates
@@ -30,7 +31,7 @@ public class Pirates extends Card {
     private int i;
     private int[] shoot;
     private int roll;
-    private boolean [] usesShield;
+    private ArrayList<Boolean> usesShield;
 
     // shoots è una lista dove shoots.get(i) rappresenta l'i-esimo colpo in questa specifica carta Pirates
     // shoots.get(i)[0] vale 1 se il colpo è grande 0 se è piccolo
@@ -108,11 +109,13 @@ public class Pirates extends Card {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
         }
-        if ( trucker.getSpaceShip().checkDoubleCannon(doubleCannonsCoord)) {
-            this.doubleCannonsCoord.addLast(doubleCannonsCoord);
-            playersDecisions++;
-        }else {
-            throw new IllegalArgumentException("not a double cannon");
+        if (trucker.getSpaceShip().getNumCannon()!=0) {
+            if (!doubleCannonsCoord.isEmpty() || trucker.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
+                this.doubleCannonsCoord.addLast(doubleCannonsCoord);
+                playersDecisions++;
+            } else {
+                throw new IllegalArgumentException("not a double cannon");
+            }
         }
         if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > piratesPower) {
             winnerTrucker = trucker;
@@ -169,12 +172,12 @@ public class Pirates extends Card {
         cardState = CardState.CHIEDI_SCUDI;
     }
 
-    public void setAnswers(boolean[] answers, Trucker trucker) {
+    public void setAnswers(boolean answers, Trucker trucker) {
         if(cardState != CardState.CHIEDI_SCUDI){
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.cardState);
         }
         if (!trucker.getSpaceShip().getProtection().isEmpty()){
-            this.usesShield = answers;
+            this.usesShield.addLast(answers);
         }
         cardState = CardState.ESECUZIONE;
     }
@@ -207,7 +210,7 @@ public class Pirates extends Card {
                         ship.destroyComponent(roll, direction);
                     } else {
                         // Un colpo piccolo può solo essere fermato con lo scudo
-                        if (!ship.blockLightCannonShot(direction, roll, usesShield[j])) {
+                        if (!ship.blockLightCannonShot(direction, roll, usesShield.get(j))) {
                             ship.destroyComponent(roll, direction);
                         }
                     }

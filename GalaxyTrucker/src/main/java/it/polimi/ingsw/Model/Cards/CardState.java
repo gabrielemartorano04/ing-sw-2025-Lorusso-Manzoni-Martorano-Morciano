@@ -18,4 +18,5 @@ public enum CardState {
     PLOT_SHOOT,
     WAIT_CANNONS,
     WAIT_ENGINES,
+    CHOOSE_TO_GAIN
 }
