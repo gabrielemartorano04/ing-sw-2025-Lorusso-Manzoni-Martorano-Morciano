@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Exceptions.InvalidComponentsException;
 import it.polimi.ingsw.Exceptions.InvalidCoordinates;
+import it.polimi.ingsw.Exceptions.InvalidPositionException;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Components.*;
 import it.polimi.ingsw.Model.Trucker;
@@ -32,6 +33,7 @@ public class Smugglers extends Card {
     private ArrayList<ArrayList<int[]>> doubleCannonsCoord; // coordinates of the double cannons the trucker wants to activate
     private int playersDecisions; // number of players that gave a choice
     private boolean choiceToGain;
+    private int currGood;
     /**
      * Smugglers constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -53,6 +55,7 @@ public class Smugglers extends Card {
         this.cardState = CardState.ATTESA_RISPOSTE;
         this.playersDecisions = 0;
         this.choiceToGain = false;
+        this.currGood=0;
     }
 
     /**
@@ -103,22 +106,6 @@ public class Smugglers extends Card {
         this.winnerTrucker = winnerTrucker;
     }
 
-    /**
-     * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
-     * @param winnerCoordinatesToAddGoods list of coordinates
-     */
-    public void setWinnerCoordinatesToAddGoods(ArrayList<int[]> winnerCoordinatesToAddGoods, Trucker trucker) throws IllegalStateException, InvalidComponentsException {
-        if (cardState != CardState.GOODSTOADD) {
-            throw new IllegalStateException("Card state is not GOODSTOADD");
-        }
-        if (!(winnerCoordinatesToAddGoods.isEmpty()) || trucker.getSpaceShip().checkLoad(Objects.requireNonNull(winnerCoordinatesToAddGoods))) {
-            this.winnerCoordinatesToAddGoods = winnerCoordinatesToAddGoods;
-        } else{
-            throw new InvalidCoordinates("Not goods deposit");
-        }
-        cardState = CardState.ESECUZIONE;
-    }
-
     public void addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException, InvalidComponentsException{
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
@@ -144,10 +131,68 @@ public class Smugglers extends Card {
         }
     }
 
-    public void setChoiceToGain(boolean choice) {
-
-        this.choiceToGain = choice;
+    public Goods setChoiceToGain(boolean choice) throws IllegalStateException {
+        if(cardState!=CardState.CHOOSE_TO_GAIN){
+            throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
+        }
+        if (choice) {
+            this.choiceToGain = choice;
+            cardState = CardState.GOODSTOADD;
+            return goodsGained[currGood];
+        }else {
+            cardState = CardState.ESECUZIONE;
+            return null;
+        }
     }
+
+    /**
+     * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
+     * @param winnerCoordinatesToAddGood list of coordinatest
+     */
+    public void setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker) throws IllegalStateException, InvalidCoordinates {
+        if (cardState != CardState.GOODSTOADD) {
+            throw new IllegalStateException("Card state is not GOODSTOADD");
+        }
+        if (winnerCoordinatesToAddGood==null && !trucker.getSpaceShip().checkLoad(winnerCoordinatesToAddGood)) { //check load deve controllare il singolo componente
+            throw new InvalidCoordinates("Not goods deposit");
+        }
+        try{
+            trucker.getSpaceShip().addGood(goodsGained[currGood], winnerCoordinatesToAddGoods, value);
+        }catch {
+            cardState = CardState.GOODSTOADD;
+        }
+        if(currGood == goodsGained.length-1){
+            cardState = CardState.REARRANGE;
+        }
+        else{
+            currGood++;
+            cardState = CardState.CHOOSE_TO_GAIN;
+        }
+
+    }
+
+    // si potrebbe non metter contiune e procedere se tutto e a null
+    public void rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
+        if (cardState != CardState.REARRANGE) {
+            throw new IllegalStateException("Card state is not REARRANGE");
+        }
+        if (!contiune) {
+            if (coord1 == null && !trucker.getSpaceShip().checkLoad(coord1) && coord2 == null && !trucker.getSpaceShip().checkLoad(coord2)) { //check load deve controllare il singolo componente
+                throw new InvalidCoordinates("Not goods deposit");
+            }
+            try {
+                trucker.getSpaceShip().swapGoods(coord1, value1, coord2, value2);
+            } catch (InvalidPositionException e) {
+                cardState = CardState.REARRANGE;
+                throw new InvalidPositionException("invalid positions");
+            }
+        } else{
+            cardState = CardState.ESECUZIONE;
+        }
+
+    }
+
+
 
 
 
@@ -163,7 +208,7 @@ public class Smugglers extends Card {
         }
         int i = 0;
         if(winnerTrucker != null && choiceToGain){
-            winnerTrucker.getSpaceShip().addGoods(Arrays.asList(goodsGained), winnerCoordinatesToAddGoods);
+            winnerTrucker.getSpaceShip().addGoods(Arrays.asList(goodsGained));
             game.moveBackward(winnerTrucker, days);
         }
         if(!defeatedTruckers.isEmpty()){
@@ -175,6 +220,11 @@ public class Smugglers extends Card {
                     i++;
                 }
             }
+        }
+        if(choiceToGain){
+            cardState = CardState.SWAP;
+        } else{
+            cardState = CardState.ATTESA_RISPOSTE;
         }
     }
 }

@@ -24,4 +24,5 @@ public enum CardState {
     REMOVE_WITHOUT_ASKING,
     REMOVE_ASKING,
     REMOVE_BATTERIES,
+    REARRANGE,
 }
