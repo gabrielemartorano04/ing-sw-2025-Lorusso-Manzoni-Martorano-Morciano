@@ -105,21 +105,6 @@ public class GetElementsRequiredVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visit(Planets card) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(Planets card, ArrayList<int[]> coord, int numTruckers) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(Planets card, int indexOfLanding, Trucker trucker, int numPlayers) {
-        return Optional.empty();
-    }
-
-    @Override
     public Optional<Object> visit(Slavers card) {
         return Optional.empty();
     }
@@ -150,72 +135,7 @@ public class GetElementsRequiredVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visit(Smugglers card) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(Smugglers card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(Smugglers card, String cmd, ArrayList<int[]> truckersCoordinatesToRemove, int numPlayer, Trucker trucker) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(Smugglers card, Boolean choice) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(Smugglers card, ArrayList<Trucker> defeatedTruckers) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(Smugglers card, ArrayList<int[]> coord) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(Smugglers card, Trucker winnerTrucker) {
-        return Optional.empty();
-    }
-
-    @Override
     public Optional<Object> visit(StarDust card) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(WarZone card) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(WarZone card, Game game, ArrayList<ArrayList<int[]>> truckersCannonsCoordinates, ArrayList<ArrayList<int[]>> truckersEnginesCoordinates) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(WarZone card, ArrayList<Trucker> truckers, Condition condition, ArrayList<ArrayList<int[]>> coord) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(WarZone card, Game game) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(WarZone card, boolean answers) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Object> visit(WarZone card, ArrayList<int[]> coordinatesGoods, ArrayList<int[]> coordinatesCrew) {
         return Optional.empty();
     }
 }
