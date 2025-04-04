@@ -88,7 +88,7 @@ public class AbandonedShip extends Card {
      * Sets the coordinates of the cabins from which he wants to remove the crew members required
      * @param coordinates list of arrays of coordinates of the cabins
      */
-    public void setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException {
+    public void setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates {
         if(state != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Can't call setCoordinates in the state: " + state);
         }
