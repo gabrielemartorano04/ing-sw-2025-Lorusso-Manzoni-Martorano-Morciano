@@ -297,7 +297,11 @@ public class WarZone extends Card {
             list.add(goodsToRemove.get(index));
         }
         removeWithoutAsking(trucker,list);
-        state = CardState.WARZONE;
+        if(currConditionIndex == conditionsOrder.size()){
+            state = CardState.EXIT;
+        }else {
+            state = CardState.WARZONE;
+        }
     }
 
     public int getNumOfBatteriesToRemove(){
@@ -329,7 +333,11 @@ public class WarZone extends Card {
         }catch(NotEnoughBatteries e){
             throw new NotEnoughBatteries("Not enough batteries");
         }
-        state = CardState.WARZONE;
+        if(currConditionIndex == conditionsOrder.size()){
+            state = CardState.EXIT;
+        }else {
+            state = CardState.WARZONE;
+        }
     }
 
 
