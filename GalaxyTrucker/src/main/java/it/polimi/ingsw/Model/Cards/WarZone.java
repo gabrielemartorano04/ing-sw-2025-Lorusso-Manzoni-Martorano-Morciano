@@ -196,7 +196,7 @@ public class WarZone extends Card {
         }
         ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
 
-        // se il colore corrente è minore uguale a 3 allora devo togliere batterie
+        // se il colore corrente è minore uguale a 3 allora devo togliere le merci
         while(colorOfCurrGoodToRemove<=3 && numOfGoodsToRemove>0) {
             switch (colorOfCurrGoodToRemove) {
                 case 0 -> {
