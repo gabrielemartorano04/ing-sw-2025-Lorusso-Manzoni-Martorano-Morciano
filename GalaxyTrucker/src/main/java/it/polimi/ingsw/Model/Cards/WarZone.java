@@ -227,7 +227,7 @@ public class WarZone extends Card {
         }
         if (colorOfCurrGoodToRemove > 3 && numOfGoodsToRemove > 0) {
             // se il colore corrente è maggiore di 3 allora vuol dire che devo togliere batterie se ho ancora merci da rimuovere
-            state = CardState.REMOVE_BATTERIES;
+            state = CardState.PLOT_BATTERIES;
         }
         if(numOfGoodsToRemove == 0){
             state = CardState.WARZONE;
@@ -299,7 +299,7 @@ public class WarZone extends Card {
     }
 
     public int getNumOfBatteriesToRemove(){
-        if(state != CardState.REMOVE_BATTERIES){
+        if(state != CardState.PLOT_BATTERIES){
             throw new IllegalStateException("Can't call getNumOfBatteriesToRemove in the state " + state);
         }
         return numOfGoodsToRemove;
