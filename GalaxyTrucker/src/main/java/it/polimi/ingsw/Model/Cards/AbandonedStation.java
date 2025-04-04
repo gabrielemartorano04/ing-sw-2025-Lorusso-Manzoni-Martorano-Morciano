@@ -88,7 +88,7 @@ public class AbandonedStation extends Card {
      * Sets the coordinates of the loads in which he wants to add the goods acquired
      * @param coord list of arrays of coordinates of the loads
      */
-    public void setCoord(ArrayList<int[]> coord) throws InvalidComponentsException {
+    public void setCoord(ArrayList<int[]> coord) throws InvalidComponentsException, InvalidCoordinates {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Not callable in the state: " + cardState);
         }

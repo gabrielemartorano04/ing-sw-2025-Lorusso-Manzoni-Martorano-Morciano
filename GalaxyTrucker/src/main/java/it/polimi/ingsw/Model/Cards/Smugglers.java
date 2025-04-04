@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.Cards;
 
+import it.polimi.ingsw.Exceptions.InvalidCoordinates;
 import it.polimi.ingsw.Exceptions.InvalidPositionException;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Components.*;
