@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model.Cards;
 
-import it.polimi.ingsw.Exceptions.InvalidPositionException;
+import it.polimi.ingsw.Exceptions.*;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Components.*;
 import it.polimi.ingsw.Model.Trucker;
@@ -147,12 +147,12 @@ public class Smugglers extends Card {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param winnerCoordinatesToAddGood list of coordinatest
      */
-    public void setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker) throws IllegalStateException, InvalidPositionException,   {
+    public void setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker) throws IllegalStateException, InvalidPositionException, InvalidCoordinates  {
         if (cardState != CardState.GOODSTOADD) {
             throw new IllegalStateException("Card state is not GOODSTOADD");
         }
         if (winnerCoordinatesToAddGood==null && !trucker.getSpaceShip().checkLoad(winnerCoordinatesToAddGood)) { //check load deve controllare il singolo componente
-            throw new ("Not goods deposit");
+            throw new InvalidCoordinates("Not goods deposit");
         }
         try{
             trucker.getSpaceShip().addGood(goodsGained[currGood], winnerCoordinatesToAddGoods, value);

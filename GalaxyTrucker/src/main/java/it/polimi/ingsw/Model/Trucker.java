@@ -4,16 +4,25 @@ public class Trucker {
 
 
     private PlayerColors color;
-    private String nickName;
+    private String nickname;
     private final SpaceShip spaceShip;
     private int position; //posizione assoluta
     private int cosmicCredit;
+    private BuildingState buildingState;
 
     public Trucker(String nickName, PlayerColors color) {
-        this.nickName = nickName;
+        this.nickname = nickName;
         this.color = color;
         this.spaceShip = new SpaceShip();
         this.cosmicCredit = 0;
+    }
+
+    public BuildingState getBuildingState() {
+        return buildingState;
+    }
+
+    public void setBuildingState(BuildingState buildingState) {
+        this.buildingState = buildingState;
     }
 
     public void setPosition(int position) {
@@ -28,7 +37,7 @@ public class Trucker {
         return color;
     }
 
-    public String getNickName() {return nickName;}
+    public String getNickname() {return nickname;}
 
     public SpaceShip getSpaceShip() {
         return spaceShip;
@@ -41,5 +50,32 @@ public class Trucker {
     public int getCosmicCredit() {
         return cosmicCredit;
     }
+
+    //FSM
+
+    public void chooseWhatToDo(){
+
+    }
+
+    public void chooseComponent(){
+
+    }
+
+    public void useComponent(){
+
+    }
+
+    public void addComponent(){
+
+    }
+
+    public void trunHourglass(){
+
+    }
+
+    public void finish(){
+
+    }
+
 }
 

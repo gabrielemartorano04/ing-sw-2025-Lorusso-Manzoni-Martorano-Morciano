@@ -21,15 +21,6 @@ public class GameController {
     private ArrayList<String> usedNickname;
     private int[] scores;
 
-    public enum GameState {
-        SETUP,  // Attesa giocatori
-        BUILDING,    // Setup in corso
-        FLIGTH, // Partita in corso
-        ENDED     // Partita terminata
-    }
-
-
-
     public GameController() {
         this.gameState = GameState.SETUP;
         this.numPlayer = 0;

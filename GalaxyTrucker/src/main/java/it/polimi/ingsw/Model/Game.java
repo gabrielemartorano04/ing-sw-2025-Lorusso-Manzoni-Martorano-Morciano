@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Controller.AskController;
+import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.Cards.*;
 import it.polimi.ingsw.Model.Components.*;
 
@@ -29,6 +30,8 @@ public class Game {
     private Deck deck;
     private int timeTurns;
     private AskController askController;
+    private GameState gameState;
+    private ArrayList<PlayerColors> availableColors;
 
     /**
      * Constructor that initializes the game attributes.
@@ -42,6 +45,11 @@ public class Game {
         this.deck = new Deck();
         this.cardStacks = new ArrayList[4];
         this.timeTurns = 0;
+        this.availableColors = new ArrayList<>();
+        this.availableColors.addFirst(PlayerColors.RED);
+        this.availableColors.addFirst(PlayerColors.BLUE);
+        this.availableColors.addFirst(PlayerColors.GREEN);
+        this.availableColors.addFirst(PlayerColors.YELLOW);
     }
 
 
@@ -74,17 +82,6 @@ public class Game {
         Game game= new Game();
         return gameDeck.removeFirst();
     }
-
-    /**
-     * checks game conditions for every turn of the game.
-     */
-    public void turn(){
-        for(Trucker t: truckers){
-            checkOvertaken(t);
-            noHumans(t);
-        }
-    }
-
 
     /**
      * Removes truckers with no astronauts left on their spaceship.
@@ -305,6 +302,58 @@ public class Game {
             }
         }
         return true;
+    }
+
+    public ArrayList<PlayerColors> showAvailableColors() {
+        return availableColors;
+    }
+    //FSM
+
+    public void addTrucker(PlayerColors color, String nickname) throws IllegalStateException{
+        if (this.gameState != GameState.SETUP){
+            throw new IllegalStateException("State is not setup");
+        }
+        if(truckers.stream().anyMatch(trucker -> trucker.getNickname().equals(nickname))){
+            throw new IllegalArgumentException("Nickname already exists");
+        }
+        if (truckers.stream().anyMatch(trucker -> trucker.getColor().equals(color))){
+            throw new IllegalArgumentException("Color already taken");
+        }
+        availableColors.remove(color);
+        truckers.addLast(new Trucker(nickname, color));
+        gameState = GameState.WAITING;
+    }
+
+    public void waiting(){
+        if (this.gameState != GameState.WAITING){
+            throw new IllegalStateException("State is not waiting");
+        }
+        if (){
+            gameState = GameState.BUILDING;
+        }
+    }
+
+    public void building(Trucker trucker, boolean finish){
+        if (gameState != GameState.BUILDING){
+            throw new IllegalStateException("State is not building");
+        }
+        if (finish && ) {
+            trucker.setBuildingState(CHOOSE_WHAT_TO_DO);
+        }
+    }
+
+    /**
+     * checks game conditions for every turn of the game.
+     */
+    public void turn(){
+        for(Trucker t: truckers){
+            checkOvertaken(t);
+            noHumans(t);
+        }
+    }
+
+    public void finish(){
+
     }
 
 }
