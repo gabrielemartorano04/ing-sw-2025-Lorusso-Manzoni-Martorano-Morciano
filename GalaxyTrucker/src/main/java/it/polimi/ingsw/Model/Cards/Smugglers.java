@@ -155,7 +155,7 @@ public class Smugglers extends Card {
             throw new InvalidCoordinates("Not goods deposit");
         }
         try{
-            trucker.getSpaceShip().addGood(goodsGained[currGood], winnerCoordinatesToAddGoods, value);
+            trucker.getSpaceShip().addGood(goodsGained[currGood], winnerCoordinatesToAddGood, value);
         }catch (InvalidPositionException e) {
             cardState = CardState.GOODSTOADD;
         }
