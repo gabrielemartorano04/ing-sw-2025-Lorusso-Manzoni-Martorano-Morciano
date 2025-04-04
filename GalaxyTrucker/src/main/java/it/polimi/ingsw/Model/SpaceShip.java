@@ -1336,6 +1336,38 @@ public class SpaceShip {
     }
 
     /**
+     * This method adds the specified good in the specified component, also the position is given.
+     * If there's space in the load it just add the good, otherwise we have to remove the good that occupies the gived position
+     * @param good good the user wants to add
+     * @param coord coordinate of the load
+     * @param value position in the load
+     * @throws InvalidPositionException if the good is special but not the choosen load
+     */
+    public void addGood(Goods good,int[] coord,int value ) throws InvalidPositionException{
+        if(components[coord[0]][coord[1]]!=null){
+            switch(components[coord[0]][coord[1]]){
+                case Load load->{
+                    if(!load.getIsSpecial() && good.getValue() == 4){
+                        throw new InvalidPositionException("Special load expected");
+                    }
+                    if(load.getCapacity()-load.getQuantity()>0){
+                        load.getGoods().add(value,good);
+                        addGoodsList(good);
+                    }
+                    else{
+                        Goods g=load.getGoods().get(value);
+                        load.getGoods().remove(g);
+                        load.getGoods().add(value,good);
+                        goodsList.remove(g);
+                        addGoodsList(good);
+                    }
+                }
+                default -> {}
+            }
+        }
+    }
+
+    /**
      * This method
      * @return the list of goods in the spaceship
      */
@@ -1411,16 +1443,27 @@ public class SpaceShip {
      * @return true if every component with given coordinates is a Loads, false otherwise
      */
     public boolean checkLoad(ArrayList<int[]> coord){
-        boolean check=true;
+
         for (int[] c : coord) {
-            if (components[c[0]][c[1]] != null && check) {
+            if (components[c[0]][c[1]] != null) {
                 switch (components[c[0]][c[1]]){
                     case Load load->{}
-                    default -> { check=false; }
+                    default -> { return false; }
                 }
             }
         }
-        return check;
+        return true;
+    }
+
+    public boolean checkLoad(int[] c){
+
+        if (components[c[0]][c[1]] != null) {
+            switch (components[c[0]][c[1]]){
+                case Load load->{}
+                default -> { return false; }
+            }
+        }
+        return true;
     }
 
     /**
@@ -1429,18 +1472,18 @@ public class SpaceShip {
      * @return true if every component with given coordinates is a Engines, false otherwise
      */
     public boolean checkDoubleEngine(ArrayList<int[]> coord){
-        boolean check=true;
+
         for (int[] c : coord) {
-            if (components[c[0]][c[1]] != null && check) {
+            if (components[c[0]][c[1]] != null) {
                 switch (components[c[0]][c[1]]){
                     case Engine engine->{
-                        if(!engine.getIsDouble()) check=false;
+                        if(!engine.getIsDouble()) return false;
                     }
-                    default -> { check=false; }
+                    default -> { return false; }
                 }
             }
         }
-        return check;
+        return true;
     }
 
     /**
@@ -1449,18 +1492,18 @@ public class SpaceShip {
      * @return true if every component with given coordinates is a Cannons, false otherwise
      */
     public boolean checkDoubleCannon(ArrayList<int[]> coord){
-        boolean check=true;
+
         for (int[] c : coord) {
-            if (components[c[0]][c[1]] != null && check) {
+            if (components[c[0]][c[1]] != null) {
                 switch (components[c[0]][c[1]]){
                     case Cannon cannon->{
-                        if(!cannon.getIsDouble()) check=false;
+                        if(!cannon.getIsDouble()) return false;
                     }
-                    default -> { check=false; }
+                    default -> { return false; }
                 }
             }
         }
-        return check;
+        return true;
     }
 
     /**
@@ -1469,16 +1512,16 @@ public class SpaceShip {
      * @return true if every component with given coordinates is a Shields, false otherwise
      */
     public boolean checkShield(ArrayList<int[]> coord){
-        boolean check=true;
+
         for (int[] c : coord) {
-            if (components[c[0]][c[1]] != null && check) {
+            if (components[c[0]][c[1]] != null) {
                 switch (components[c[0]][c[1]]){
                     case Shield shield->{}
-                    default -> { check=false; }
+                    default -> { return false; }
                 }
             }
         }
-        return check;
+        return true;
     }
 
     /**
@@ -1487,16 +1530,15 @@ public class SpaceShip {
      * @return true if every component with given coordinates is a Battery Storages, false otherwise
      */
     public boolean checkBatteryStorage(ArrayList<int[]> coord){
-        boolean check=true;
         for (int[] c : coord) {
-            if (components[c[0]][c[1]] != null && check) {
+            if (components[c[0]][c[1]] != null) {
                 switch (components[c[0]][c[1]]){
                     case BatteryStorage bs->{}
-                    default -> { check=false; }
+                    default -> { return false; }
                 }
             }
         }
-        return check;
+        return true;
     }
 
     /**
@@ -1505,58 +1547,53 @@ public class SpaceShip {
      * @return true if every component with given coordinates is a Cabins, false otherwise
      */
     public boolean checkCabin(ArrayList<int[]> coord){
-        boolean check=true;
         for (int[] c : coord) {
-            if (components[c[0]][c[1]] != null && check) {
+            if (components[c[0]][c[1]] != null) {
                 switch (components[c[0]][c[1]]){
                     case Cabin cabin->{}
-                    default -> { check=false; }
+                    default -> { return false; }
                 }
             }
         }
-        return check;
+        return true;
     }
-    /// ////////////////////////////////////////
+
+    /**
+     * This method swap two goods from two different loads
+     * @param coord1 coordinate of the first load
+     * @param value1 position of the first load il the first load
+     * @param coord2 coordinate of the second load
+     * @param value2 position of the second load il the second load
+     * @throws InvalidPositionException if in that coordinates there is no load
+     */
     public void swapGoods(int[] coord1, int value1, int[] coord2, int value2) throws InvalidPositionException{
-        Goods g1=new Goods(value1);
-        switch(components[coord1[0]][coord1[1]]){
-            case Load load1->{
-                g1.setX(coord1[0]);
-                g1.setY(coord1[1]);
-                if(!load1.getGoods().contains(g1))
-                    throw new InvalidPositionException("The load doesn't contain goods with value "+value1);
-            }
-            default->{
-                throw new InvalidPositionException("Load expected in this position");
-            }
-        }
-        Goods g2=new Goods(value2);
-        switch(components[coord2[0]][coord2[1]]){
-            case Load load2->{
-                g2.setX(coord2[0]);
-                g2.setY(coord2[1]);
-                if(!load2.getGoods().contains(g2))
-                    throw new InvalidPositionException("The load doesn't contain goods with value "+value2);
-            }
-            default->{
-                throw new InvalidPositionException("Load expected in this position");
+        Goods g1=null;
+        Goods g2=null;
+        if(components[coord1[0]][coord1[1]] != null){
+            switch(components[coord1[0]][coord1[1]]){
+                case Load load->{
+                    g1=load.getGoods().get(value1);
+                    load.getGoods().remove(g1);
+                    if(components[coord2[0]][coord2[1]] != null){
+                        switch(components[coord2[0]][coord2[1]]){
+                            case Load load1->{
+                                g2=load1.getGoods().get(value2);
+                                load1.getGoods().remove(g2);
+                                load1.getGoods().add(value2,g1);
+                                load.getGoods().add(value1,g2);
+                            }
+                            default -> {
+                                throw new InvalidPositionException("Load expected in this position");
+                            }
+                        }
+                    }
+                }
+                default -> {
+                    throw new InvalidPositionException("Load expected in this position");
+                }
             }
         }
 
-        switch(components[coord1[0]][coord1[1]]){
-            case Load load1->{
-                load1.getGoods().remove(g1);
-                load1.getGoods().add(g2);
-            }
-            default->{}
-        }
-        switch(components[coord2[0]][coord2[1]]){
-            case Load load2->{
-                load2.getGoods().remove(g2);
-                load2.getGoods().add(g1);
-            }
-            default->{}
-        }
     }
 
     public int getRedGoods(){
