@@ -218,7 +218,6 @@ public class WarZone extends Card {
             }
 
             if (numOfCurrTypeOfGood <= numOfGoodsToRemove) {
-                state = CardState.REMOVE_WITHOUT_ASKING;
                 removeWithoutAsking(trucker,goodsList);
             } else {
                 state = CardState.PLOT_GOODSLIST;
@@ -237,9 +236,6 @@ public class WarZone extends Card {
     }
 
     private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList) {
-        if(state != CardState.REMOVE_WITHOUT_ASKING){
-            throw new IllegalStateException("Can't call removeWithoutAsking in the state " + state);
-        }
         if(this.numOfCurrTypeOfGood == 0){
             throw new RuntimeException("NumOfGoods is 0 but you called removeWithoutAsking");
         }
@@ -253,6 +249,7 @@ public class WarZone extends Card {
             numOfGoodsToRemove--;
         }
         trucker.getSpaceShip().removeGoods(list);
+
     }
 
     public ArrayList<Goods> plotGoodsList(Trucker trucker){
