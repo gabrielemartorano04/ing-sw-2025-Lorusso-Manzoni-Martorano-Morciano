@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model.Cards;
 
+import it.polimi.ingsw.Exceptions.*;
+import it.polimi.ingsw.Model.Components.Goods;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.SpaceShip;
@@ -17,9 +19,21 @@ public class WarZone extends Card {
     private Trucker weakestTrucker;
     private Map<Condition, Effect> penalties;
     private int[] shoot;
+    private int numOfGoodsToRemove;
     private int i;
     private boolean useShield;
     private int roll;
+
+    // variabili per la remove
+    private int colorOfCurrGoodToRemove; // vale 0 se è rosso, 1 se è giallo, 2 se è verde e 3 se è blu
+    private int numOfCurrTypeOfGood;
+    private ArrayList<Goods> goodsToRemove; // verrà creata al più una volta per istanza di questa classe
+    // fine variabili per la remove
+
+    private ArrayList<ArrayList<int[]>> truckersCannonsCoordinates;
+    private ArrayList<ArrayList<int[]>> truckersEnginesCoordinates;
+
+
     private ArrayList<int[]> shoots;
     // shoots è una lista dove shoots.get(i) rappresenta l'i-esimo colpo in questa specifica carta Warzone
     // shoots.get(i)[0] vale 1 se il colpo è grande 0 se è piccolo
@@ -43,6 +57,11 @@ public class WarZone extends Card {
         this.currConditionIndex = 0;
         this.weakestTrucker = null;
         this.i = 0;
+        this.truckersCannonsCoordinates = new ArrayList<>();
+        this.truckersEnginesCoordinates = new ArrayList<>();
+        this.colorOfCurrGoodToRemove = 0;
+        this.numOfCurrTypeOfGood = 0;
+        this.goodsToRemove = new ArrayList<>();
     }
 
     public ArrayList<Condition> getConditionsOrder() {
@@ -57,38 +76,76 @@ public class WarZone extends Card {
         return shoots;
     }
 
-    public void combatZone(Game game, ArrayList<ArrayList<int[]>> truckersCannonsCoordinates, ArrayList<ArrayList<int[]>> truckersEnginesCoordinates){
+    public CardState combatZone(Game game, ArrayList<ArrayList<int[]>> truckersCannonsCoordinates, ArrayList<ArrayList<int[]>> truckersEnginesCoordinates){
         if(state != CardState.WARZONE){
             throw new IllegalStateException("CombatZone not callable in the state " + state);
         }
         if(game.getTruckerList().size() == 1){
             state = CardState.EXIT;
-            return;
+            return this.state;
         }
         this.currCondition = conditionsOrder.get(currConditionIndex);
         currConditionIndex++;
+        if(currConditionIndex == conditionsOrder.size()){
+            throw new RuntimeException("All conditions have been verified");
+        }
         switch(currCondition){
             case HUMANS -> {
                 state = CardState.FIND_WEAKEST;
                 findWeakestTrucker(game, new ArrayList<>());
             }
             case CANNONS -> {
-                state = CardState.FIND_WEAKEST;
-                findWeakestTrucker(game, truckersCannonsCoordinates);
+                state = CardState.WAIT_CANNONS;
             }
             case ENGINES -> {
-                state = CardState.FIND_WEAKEST;
-                findWeakestTrucker(game, truckersEnginesCoordinates);
+                state = CardState.WAIT_ENGINES;
             }
         }
+        return this.state;
     }
+
+    public void setCannonCoordinates(Game game, Trucker trucker, ArrayList<int[]> truckerCannonsCoordinates) throws InvalidComponentsException{
+        if(state != CardState.WAIT_CANNONS){
+            throw new IllegalStateException("setCannonCoordinates not callable in the state " + state);
+        }
+        if(truckerCannonsCoordinates == null){
+            throw new RuntimeException("TruckerCannonCoordinates is null");
+        }
+        if(!trucker.getSpaceShip().checkDoubleCannon(truckerCannonsCoordinates)){
+            throw new InvalidComponentsException("Not all components are double Cannons");
+        }
+
+        truckersCannonsCoordinates.addLast(truckerCannonsCoordinates);
+        if(truckersCannonsCoordinates.size() == game.getTruckerList().size()){
+            state = CardState.FIND_WEAKEST;
+            findWeakestTrucker(game, truckersCannonsCoordinates);
+        }
+    }
+
+    public void setEnginesCoordinates(Game game, Trucker trucker, ArrayList<int[]> truckerEnginesCoordinates) throws InvalidComponentsException{
+        if(state != CardState.WAIT_ENGINES){
+            throw new IllegalStateException("setCannonCoordinates not callable in the state " + state);
+        }
+        if(truckerEnginesCoordinates == null){
+            throw new RuntimeException("TruckerEnginesCoordinates is null");
+        }
+        if(!trucker.getSpaceShip().checkDoubleCannon(truckerEnginesCoordinates)){
+            throw new InvalidComponentsException("Not all components are double Cannons");
+        }
+        truckersEnginesCoordinates.addLast(truckerEnginesCoordinates);
+        if(truckersEnginesCoordinates.size() == game.getTruckerList().size()){
+            state = CardState.FIND_WEAKEST;
+            findWeakestTrucker(game, truckersEnginesCoordinates);
+        }
+    }
+
 
 
     // questo metodo dovrà essere chiamato dal Controller per capire a ogni condizione il weakestTrucker
     // truckersCoordinates serve perché quando devo calcolare il weakest in base a potenza di fuoco o motrice
     // devo dare in ingresso a findWeakestTrucker la lista delle coordinate delle componenti che ogni giocatore
     // ha deciso di attivare
-    public Trucker findWeakestTrucker(Game game, ArrayList<ArrayList<int[]>> truckersCoordinates) {
+    public void findWeakestTrucker(Game game, ArrayList<ArrayList<int[]>> truckersCoordinates) {
         ArrayList<Trucker> truckers = game.getTruckerList();
         if(state != CardState.FIND_WEAKEST){
             throw new IllegalStateException("FindWeakestTrucker not callable in the state " + state);
@@ -127,30 +184,151 @@ public class WarZone extends Card {
         } else{
             state = CardState.ATTESA_RISPOSTE;
         }
-        return this.weakestTrucker;
     }
 
 
-    public boolean setBeforeEffect(ArrayList<int[]> coordinatesGoods, ArrayList<int[]> coordinatesCrew){
-        if(state != CardState.ATTESA_RISPOSTE){
-            throw new IllegalStateException("setBeforeEffect not callable in the state " + state);
+    public CardState manageRemoveGoods(Trucker trucker){
+        if(state != CardState.REMOVE_GOODS){
+            throw new IllegalStateException("plotGoodsToRemove not callable in the state " + state);
         }
-        if((coordinatesGoods == null && coordinatesCrew == null) || (coordinatesCrew.isEmpty() && coordinatesGoods.isEmpty())){
-            throw new RuntimeException("Not expecting an empty list of Coordinates with the effect " + penalties.get(currCondition).getType());
+        if(trucker == null){
+            throw new RuntimeException("trucker is null");
         }
-        if(coordinatesGoods != null && !coordinatesGoods.isEmpty()){
-            this.coordinatesToRemoveGoods = coordinatesGoods;
-        }
-        else{
-            this.coordinatesToRemoveCrew = coordinatesCrew;
-        }
-        state = CardState.ESECUZIONE;
+        ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
 
-        // per ora delego la chiamata a cardEffect a chi si accorge tramite setBeforeEffect che si può procedere perché
-        // ha returnato true la funzione, altrimenti avrebbe lanciato un eccezione
-        // altrimenti posso fare da qui cardEffect(game)
-        return true;
+        // se il colore corrente è minore uguale a 3 allora devo togliere batterie
+        while(colorOfCurrGoodToRemove<=3 && numOfGoodsToRemove>0) {
+            switch (colorOfCurrGoodToRemove) {
+                case 0 -> {
+                    numOfCurrTypeOfGood = trucker.getSpaceShip().getRedGoods();
+                    colorOfCurrGoodToRemove++;
+                }
+                case 1 -> {
+                    numOfCurrTypeOfGood = trucker.getSpaceShip().getYellowGoods();
+                    colorOfCurrGoodToRemove++;
+                }
+                case 2 -> {
+                    numOfCurrTypeOfGood = trucker.getSpaceShip().getGreenGoods();
+                    colorOfCurrGoodToRemove++;
+                }
+                case 3 -> {
+                    numOfCurrTypeOfGood = trucker.getSpaceShip().getBlueGoods();
+                    colorOfCurrGoodToRemove++;
+                }
+            }
+
+            if (numOfCurrTypeOfGood <= numOfGoodsToRemove) {
+                state = CardState.REMOVE_WITHOUT_ASKING;
+                removeWithoutAsking(trucker,goodsList);
+            } else {
+                state = CardState.PLOT_GOODSLIST;
+                break;
+            }
+        }
+        if (colorOfCurrGoodToRemove > 3 && numOfGoodsToRemove > 0) {
+            // se il colore corrente è maggiore di 3 allora vuol dire che devo togliere batterie se ho ancora merci da rimuovere
+            state = CardState.REMOVE_BATTERIES;
+        }
+        if(numOfGoodsToRemove == 0){
+            state = CardState.WARZONE;
+        }
+        return state;
+
     }
+
+    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList) {
+        if(state != CardState.REMOVE_WITHOUT_ASKING){
+            throw new IllegalStateException("Can't call removeWithoutAsking in the state " + state);
+        }
+        if(this.numOfCurrTypeOfGood == 0){
+            throw new RuntimeException("NumOfGoods is 0 but you called removeWithoutAsking");
+        }
+        if(goodsList == null){
+            throw new RuntimeException("goodsList is null");
+        }
+        ArrayList<Goods> list = new ArrayList<>();
+        for (int i = 0; i < numOfCurrTypeOfGood; i++) {
+            list.add(goodsList.getFirst());
+            goodsList.removeFirst();
+            numOfGoodsToRemove--;
+        }
+        trucker.getSpaceShip().removeGoods(list);
+    }
+
+    public ArrayList<Goods> plotGoodsList(Trucker trucker){
+        if (state != CardState.PLOT_GOODSLIST){
+            throw new IllegalStateException("plotGoodsList not callable in the state " + state);
+        }
+        if(trucker == null){
+            throw new RuntimeException("trucker is null");
+        }
+        if(!goodsToRemove.isEmpty()){
+            throw new RuntimeException("Tried to set a new goodsToRemove list but it isn't empty");
+        }
+        ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
+        for (int i = 0; i < numOfCurrTypeOfGood; i++) {
+            goodsToRemove.add(goodsList.getFirst());
+        }
+        state = CardState.REMOVE_ASKING;
+        return goodsToRemove;
+    }
+
+    /**
+     *
+     * @param indexes: contains the indexes of the Goods within the list displayed on the screen that the player wants to remove from his ship
+     * @param trucker
+     */
+
+    public void removeAsking(ArrayList<Integer> indexes, Trucker trucker) throws InvalidGoodChosen {
+        if (state != CardState.REMOVE_ASKING){
+            throw new IllegalStateException("Can't call removeAsking in the state " + state);
+        }
+        for(Integer index : indexes){
+            if(index < 0 || index >= goodsToRemove.size()){
+                throw new InvalidGoodChosen("A good with an index out of range has been chosen");
+            }
+        }
+        if(trucker == null){
+            throw new RuntimeException("trucker is null");
+        }
+        ArrayList<Goods> list = new ArrayList<>();
+        for(Integer index : indexes){
+            list.add(goodsToRemove.get(index));
+        }
+        removeWithoutAsking(trucker,list);
+    }
+
+    public int getNumOfBatteriesToRemove(){
+        if(state != CardState.REMOVE_BATTERIES){
+            throw new IllegalStateException("Can't call getNumOfBatteriesToRemove in the state " + state);
+        }
+        return numOfGoodsToRemove;
+    }
+
+    public void removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
+        if(state!= CardState.REMOVE_BATTERIES){
+            throw new IllegalStateException("Can't call removeBatteries in the state " + state);
+        }
+        if(trucker == null){
+            throw new RuntimeException("trucker is null");
+        }
+        if(!trucker.getSpaceShip().checkBatteryStorage(coordinatesToRemoveBatteries)){
+            throw new InvalidCoordinates("Not all components selected are Battery Storages");
+        }
+        int counterOfBatteriesSelectedByPlayer = 0;
+        for(int i = 0; i < coordinatesToRemoveBatteries.size(); i++){
+            counterOfBatteriesSelectedByPlayer += coordinatesToRemoveBatteries.get(i)[2];
+        }
+        if(counterOfBatteriesSelectedByPlayer != numOfGoodsToRemove){
+            throw new WrongNumberOfBatteriesSelected("The total number of batteries you selected to remove is not " + numOfGoodsToRemove);
+        }
+        try{
+            trucker.getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);
+        }catch(NotEnoughBatteries e){
+            throw new NotEnoughBatteries("Not enough batteries");
+        }
+    }
+
 
     public int[] getCurrentMeteor(){
         if(state != CardState.PLOT_SHOOT) {
@@ -190,19 +368,26 @@ public class WarZone extends Card {
         }
         if(weakestTrucker == null){
             throw new RuntimeException("WeakestTrucker is null");
-        }
-        if (weakestTrucker != null) {
+        }else {
             // devo gestire le ulteriori richieste per i casi dove vieni sparato perché devo chiedere al giocatore
             // se vuole attivare lo scudo ogni volta che il colpo è piccolo
             // e per il caso dove devi perdere equipaggio che devi scegliere da dove perdere umani o alieni
             Effect effect = penalties.get(currCondition);
             switch(effect.getType()){
-                case LOSE_DAYS -> game.moveBackward(weakestTrucker, effect.getValue());
-                case LOSE_HUMANS -> {
-
-                    weakestTrucker.getSpaceShip().removeNumHuman(coordinatesToRemoveCrew);
+                case LOSE_DAYS ->{
+                    game.moveBackward(weakestTrucker, effect.getValue());
+                    state = CardState.WARZONE;
                 }
-                case LOSE_GOODS -> weakestTrucker.getSpaceShip().removeGoods(effect.getValue(), coordinatesToRemoveGoods);
+
+                case LOSE_HUMANS -> {
+                    weakestTrucker.getSpaceShip().removeNumHuman(coordinatesToRemoveCrew);
+                    state = CardState.WARZONE;
+                }
+                case LOSE_GOODS -> {
+                    numOfGoodsToRemove = effect.getValue();
+                    this.state = CardState.REMOVE_GOODS;
+                    weakestTrucker.getSpaceShip().removeGoods(effect.getValue(), coordinatesToRemoveGoods);
+                }
                 case GET_SHOT -> {
                     SpaceShip ship = weakestTrucker.getSpaceShip();
                     boolean isHeavy = (this.shoot[0] == 1);
@@ -217,9 +402,16 @@ public class WarZone extends Card {
                         }
                     }
                     state = CardState.PLOT_SHOOT;
+                    if(i == shoots.size()){
+                        state = CardState.WARZONE;
+                    }
                 }
             }
+            if(currConditionIndex == conditionsOrder.size()){
+                state = CardState.EXIT;
+            }
         }
+
     }
 
 
