@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Cards;
 
-import it.polimi.ingsw.Exceptions.InvalidComponentsException;
 import it.polimi.ingsw.Exceptions.InvalidCoordinates;
 import it.polimi.ingsw.Exceptions.InvalidPositionException;
 import it.polimi.ingsw.Model.Game;
@@ -149,16 +148,16 @@ public class Smugglers extends Card {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param winnerCoordinatesToAddGood list of coordinatest
      */
-    public void setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker) throws IllegalStateException, InvalidCoordinates {
+    public void setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker) throws IllegalStateException, InvalidPositionException,   {
         if (cardState != CardState.GOODSTOADD) {
             throw new IllegalStateException("Card state is not GOODSTOADD");
         }
         if (winnerCoordinatesToAddGood==null && !trucker.getSpaceShip().checkLoad(winnerCoordinatesToAddGood)) { //check load deve controllare il singolo componente
-            throw new InvalidCoordinates("Not goods deposit");
+            throw new ("Not goods deposit");
         }
         try{
             trucker.getSpaceShip().addGood(goodsGained[currGood], winnerCoordinatesToAddGoods, value);
-        }catch {
+        }catch (InvalidPositionException e) {
             cardState = CardState.GOODSTOADD;
         }
         if(currGood == goodsGained.length-1){
@@ -207,10 +206,6 @@ public class Smugglers extends Card {
             throw new IllegalStateException("Card state is not ESECUZIONE");
         }
         int i = 0;
-        if(winnerTrucker != null && choiceToGain){
-            winnerTrucker.getSpaceShip().addGoods(Arrays.asList(goodsGained));
-            game.moveBackward(winnerTrucker, days);
-        }
         if(!defeatedTruckers.isEmpty()){
             for(Trucker trucker: defeatedTruckers){
                 if (trucker.getSpaceShip().getGoodsList() == null) {
