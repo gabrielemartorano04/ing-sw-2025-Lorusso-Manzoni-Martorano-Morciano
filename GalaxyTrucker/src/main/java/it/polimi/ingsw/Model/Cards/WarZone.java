@@ -276,9 +276,12 @@ public class WarZone extends Card {
      * @param trucker
      */
 
-    public void removeAsking(ArrayList<Integer> indexes, Trucker trucker) throws InvalidGoodChosen {
+    public void removeAsking(ArrayList<Integer> indexes, Trucker trucker) throws InvalidGoodChosen, NotEnoughGoodsChosen {
         if (state != CardState.REMOVE_ASKING){
             throw new IllegalStateException("Can't call removeAsking in the state " + state);
+        }
+        if(indexes.size() == numOfGoodsToRemove){
+            throw new NotEnoughGoodsChosen("The number of goods selected is not " + numOfGoodsToRemove);
         }
         for(Integer index : indexes){
             if(index < 0 || index >= goodsToRemove.size()){
@@ -288,11 +291,13 @@ public class WarZone extends Card {
         if(trucker == null){
             throw new RuntimeException("trucker is null");
         }
+        numOfGoodsToRemove = 0;
         ArrayList<Goods> list = new ArrayList<>();
         for(Integer index : indexes){
             list.add(goodsToRemove.get(index));
         }
         removeWithoutAsking(trucker,list);
+        state = CardState.WARZONE;
     }
 
     public int getNumOfBatteriesToRemove(){
@@ -324,6 +329,7 @@ public class WarZone extends Card {
         }catch(NotEnoughBatteries e){
             throw new NotEnoughBatteries("Not enough batteries");
         }
+        state = CardState.WARZONE;
     }
 
 
