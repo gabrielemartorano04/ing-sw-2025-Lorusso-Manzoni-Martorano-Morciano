@@ -24,11 +24,15 @@ public class WarZone extends Card {
     private boolean useShield;
     private int roll;
 
-    // variabili per la remove
+    // variabili per la remove Goods
     private int colorOfCurrGoodToRemove; // vale 0 se è rosso, 1 se è giallo, 2 se è verde e 3 se è blu
     private int numOfCurrTypeOfGood;
     private ArrayList<Goods> goodsToRemove; // verrà creata al più una volta per istanza di questa classe
     // fine variabili per la remove
+
+    // variabile per remove Human
+    private int numOfHumanToRemove;
+    //fine variabile per remove Human
 
     private ArrayList<ArrayList<int[]>> truckersCannonsCoordinates;
     private ArrayList<ArrayList<int[]>> truckersEnginesCoordinates;
@@ -62,6 +66,7 @@ public class WarZone extends Card {
         this.colorOfCurrGoodToRemove = 0;
         this.numOfCurrTypeOfGood = 0;
         this.goodsToRemove = new ArrayList<>();
+        this.numOfHumanToRemove = 0;
     }
 
     public ArrayList<Condition> getConditionsOrder() {
@@ -371,6 +376,24 @@ public class WarZone extends Card {
         state = CardState.ESECUZIONE;
     }
 
+    public synchronized CardState setCoordinatesToRemoveCrew(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates {
+        if(state != CardState.HUMANSTOREMOVE) {
+            throw new IllegalStateException("Can't call setCoordinates in the state: " + state);
+        }
+        if(weakestTrucker == null){
+            throw new RuntimeException("trucker is null");
+        }
+        if(coordinates==null|| coordinates.isEmpty()){
+            throw new InvalidCoordinates("Coordinates is null or empty");
+        }
+        if(!weakestTrucker.getSpaceShip().checkCabin(coordinates)){
+            throw new InvalidComponentsException("Not all components are cabin");
+        }
+        this.coordinatesToRemoveCrew = coordinates;
+        weakestTrucker.getSpaceShip().removeNumHuman(coordinatesToRemoveCrew);
+        state = CardState.ESECUZIONE;
+        return state;
+    }
 
     @Override
     public CardState cardEffect(Game game) {
@@ -391,14 +414,15 @@ public class WarZone extends Card {
                 }
 
                 case LOSE_HUMANS -> {
-                    weakestTrucker.getSpaceShip().removeNumHuman(coordinatesToRemoveCrew);
-                    state = CardState.WARZONE;
+                    this.numOfHumanToRemove = penalties.get(currCondition).getValue();
+                    state = CardState.HUMANSTOREMOVE;
                 }
+
                 case LOSE_GOODS -> {
                     numOfGoodsToRemove = effect.getValue();
                     this.state = CardState.REMOVE_GOODS;
-                    weakestTrucker.getSpaceShip().removeGoods(effect.getValue(), coordinatesToRemoveGoods);
                 }
+
                 case GET_SHOT -> {
                     SpaceShip ship = weakestTrucker.getSpaceShip();
                     boolean isHeavy = (this.shoot[0] == 1);
