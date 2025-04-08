@@ -24,11 +24,11 @@ public class Game {
     private ArrayList<Trucker> truckersOut;
     private ArrayList<Card>[] cardStacks;
     private ArrayList<Card> gameDeck;
-    private AvailableComponents[] components;
+    private AvailableComponents components;
     private Hourglass hourglass;
     private int gameLevel;
     private Deck deck;
-    private int timeTurns;
+
     private AskController askController;
     private GameState gameState;
     private ArrayList<PlayerColors> availableColors;
@@ -40,11 +40,11 @@ public class Game {
         this.truckers = new ArrayList<>();
         this.truckersOut = new ArrayList<>();
         this.gameDeck = new ArrayList<>();
-        this.components = new AvailableComponents[156];
+        this.components = new AvailableComponents;
         this.hourglass = new Hourglass(this);
         this.deck = new Deck();
         this.cardStacks = new ArrayList[4];
-        this.timeTurns = 0;
+
         this.availableColors = new ArrayList<>();
         this.availableColors.addFirst(PlayerColors.RED);
         this.availableColors.addFirst(PlayerColors.BLUE);
@@ -140,7 +140,7 @@ public class Game {
      * Returns the list of available components.
      * @return an array of available components
      */
-    public AvailableComponents[] getComponents() {
+    public AvailableComponents getComponents() {
         return components;
     }
 
@@ -239,22 +239,8 @@ public class Game {
         this.gameLevel = level;
     };
 
-    /**
-     * Gets the number of hourglass turns.
-     * @return the current time turns
-     */
-    public int getTimeTurns(){
-        return timeTurns;
-    }
 
-    /**
-     * Increases the hourglass turns count by 1.
-     */
-    public void increaseTimeTurns() {
-        timeTurns = timeTurns+1;
-    }
 
-    // da finire, per livello 2
     /**
      * Computes the scores for each player at the end of the game.
      * @param numPlayer the number of players
@@ -337,8 +323,8 @@ public class Game {
         if (gameState != GameState.BUILDING){
             throw new IllegalStateException("State is not building");
         }
-        if (finish && ) {
-            trucker.setBuildingState(CHOOSE_WHAT_TO_DO);
+        if (finish) {
+            trucker.setBuildingState(BuildingState.START);
         }
     }
 
@@ -354,6 +340,9 @@ public class Game {
 
     public void finish(){
 
+    }
+    public Hourglass getHourglass(){
+        return hourglass;
     }
 
 }

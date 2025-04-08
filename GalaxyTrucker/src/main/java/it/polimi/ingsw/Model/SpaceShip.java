@@ -1397,7 +1397,7 @@ public class SpaceShip {
                 case BatteryStorage bs->{
                     if(bs.getQuantity() >= c[2]) {
                         bs.setQuantity(bs.getQuantity() - c[2]);
-                        numHuman -= c[2];
+                        numOfBattery -= c[2];
                     }
                     else {
                         throw new NotEnoughBatteries("There are no enought batteries in the selected storage ( "+c[0]+" , "+c[1]+" )");
