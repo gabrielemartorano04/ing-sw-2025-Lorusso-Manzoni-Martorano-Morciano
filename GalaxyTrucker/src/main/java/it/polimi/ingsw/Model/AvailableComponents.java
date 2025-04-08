@@ -373,5 +373,4 @@ public class AvailableComponents {
         components.remove(component);
     }
 
-
 }
