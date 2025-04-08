@@ -270,13 +270,10 @@ public class SpaceShip {
         for(int[] c:coord){
             switch (components[c[0]][c[1]]){
                 case Cabin cabin -> {
-                    if(cabin.getQuantity() >= c[2]) {
-                        cabin.removeHumans(c[2]);
-                        numHuman -= c[2];
-                    }
-                    else {
-                        throw new NoHumansHereException("You haven't enough astronauts in this cabin");
-                    }
+
+                    cabin.removeHumans(c[2]);
+                    numHuman -= c[2];
+
                 }
                 default -> { }
             }
