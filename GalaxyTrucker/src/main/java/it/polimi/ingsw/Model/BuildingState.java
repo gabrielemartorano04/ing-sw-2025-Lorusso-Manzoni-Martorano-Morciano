@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Model;
 
 public enum BuildingState {
-    START,
     BUILDING,
     SELECT_COMPONENT,
     SHOW_STACK,

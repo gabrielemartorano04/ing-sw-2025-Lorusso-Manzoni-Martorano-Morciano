@@ -16,7 +16,7 @@ import java.util.*;
 public class SpaceShip {
 
     private Component[][] components; //components in the matrix
-    private Component[] kept; //2 components the trucker decided to keep during the spaceship construction
+    private ArrayList<Component> kept; //2 components the trucker decided to keep during the spaceship construction
     private int lost; //number of lost components
     private int redGoods, greenGoods, blueGoods, yellowGoods; // number of goods for each type color
     private int numHuman; //number of astronauts on the spaceship
@@ -36,9 +36,7 @@ public class SpaceShip {
     //chiedi per parametro color per inizializzare il colore della main cabin
     public SpaceShip() {
         components = new Component[10][11];
-        kept = new Component[2];
-        for (int i = 0; i < 2; i++)
-            kept[i] = null;
+        kept = new ArrayList<>();
         for(int i=0;i<5;i++){
             for(int j=0;j<11;j++){
                 components[i][j]=new EmptySpace();
@@ -77,6 +75,10 @@ public class SpaceShip {
         numOfBattery = 0;
         numDoubleCannon=0;
         numDoubleEngine=0;
+    }
+
+    public ArrayList<Component> getKept() {
+        return kept;
     }
 
     /**
@@ -301,7 +303,7 @@ public class SpaceShip {
      * @param x x coordinate of the cell in which the player wants to add the component
      * @param y y coordinate of the cell in which the player wants to add the component
      */
-    public void addComponent(Component component, int x, int y) {
+    public void addComponent(Component component, int x, int y) throws InvalidCoordinates{
         if(components[x][y]==null ) {
             components[x][y] = component;
             switch (component){
@@ -316,6 +318,7 @@ public class SpaceShip {
                 default -> {}
             }
         }
+        else throw new InvalidCoordinates("You can't place a component here");
         //else eccezione non puoi riempire un emptyspace
         //check se non attaccato a niente
     }
