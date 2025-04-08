@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.InvalidCoordinates;
 import it.polimi.ingsw.Exceptions.InvalidPositionException;
 import it.polimi.ingsw.Exceptions.NoHumansHereException;
 import it.polimi.ingsw.Exceptions.NotEnoughBatteries;
@@ -1537,23 +1538,23 @@ public class SpaceShip {
      * @param coord coordinates to check
      * @return true if every component with given coordinates is a Cabins, false otherwise
      */
-    public boolean checkCabin(ArrayList<int[]> coord, int sum) throws InvalidPositionException, NoHumansHereException{
+    public boolean checkCabin(ArrayList<int[]> coord, int sum) throws InvalidCoordinates{
         int s=0;
         for (int[] c:coord){
             s+=c[2];
         }
-        if (s<sum) throw new NoHumansHereException("No enough human selected");
+        if (s<sum) throw new InvalidCoordinates("No enough human selected");
 
         for (int[] c : coord) {
             if (components[c[0]][c[1]] != null) {
                 switch (components[c[0]][c[1]]){
                     case Cabin cabin->{
                         if(cabin.getQuantity() < c[2]) {
-                            throw new NoHumansHereException("You haven't enough astronauts in this cabin");
+                            throw new InvalidCoordinates("You haven't enough astronauts in this cabin");
                         }
                     }
                     default -> {
-                        throw new InvalidPositionException("No cabin here");
+                        throw new InvalidCoordinates("No cabin here");
                     }
                 }
             }
