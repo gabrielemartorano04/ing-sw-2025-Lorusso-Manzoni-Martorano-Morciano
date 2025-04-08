@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.Cards;
 
+import it.polimi.ingsw.Exceptions.InvalidCoordinates;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
 import it.polimi.ingsw.Model.Visitor.CardVisitor;
@@ -110,14 +111,15 @@ public class Slavers extends Card {
      * Sets, for each trucker, the coordinates of the cabin where he/she want to remove the crew members
      * @param truckersCoordinatesToRemoveHumans list of lists of arrays of coordinates
      */
-    public void addTruckersCoordinatesToRemoveHumans(ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws IllegalStateException {
+    public void addTruckersCoordinatesToRemoveHumans(ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws InvalidCoordinates {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new IllegalStateException("Card state in not HUMANSTOREMOVE");
         }
-        if (trucker.getSpaceShip().checkCabin(truckersCoordinatesToRemoveHumans)) {
+        try{
+            trucker.getSpaceShip().checkCabin(truckersCoordinatesToRemoveHumans, astronautsLost);
             this.truckersCoordinatesToRemoveHumans.add(truckersCoordinatesToRemoveHumans);
-        }else {
-            throw new IllegalArgumentException("le coordinate non indicano una cabina");
+        }catch (InvalidCoordinates e){
+            throw new InvalidCoordinates(e.getMessage());
         }
         if (playersDecisions == numPlayer){
             cardState = CardState.ESECUZIONE;
