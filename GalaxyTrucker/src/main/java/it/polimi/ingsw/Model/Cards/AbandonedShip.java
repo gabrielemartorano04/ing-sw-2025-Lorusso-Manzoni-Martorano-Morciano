@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Exceptions.InvalidComponentsException;
 import it.polimi.ingsw.Exceptions.InvalidCoordinates;
+import it.polimi.ingsw.Exceptions.InvalidPositionException;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
 import it.polimi.ingsw.Model.Visitor.CardVisitor;
@@ -96,8 +97,10 @@ public class AbandonedShip extends Card {
         if(coordinates==null|| coordinates.isEmpty()){
             throw new InvalidCoordinates("Coordinates is null or empty");
         }
-        if(!truckerThatHasDecided.getSpaceShip().checkCabin(coordinates)){
-            throw new InvalidComponentsException("Not all components are cabin");
+        try{
+            truckerThatHasDecided.getSpaceShip().checkCabin(coordinates, numHuman);
+        }catch (InvalidCoordinates e){
+            throw new InvalidCoordinates(e.getMessage());
         }
         this.coordinates = coordinates;
 
