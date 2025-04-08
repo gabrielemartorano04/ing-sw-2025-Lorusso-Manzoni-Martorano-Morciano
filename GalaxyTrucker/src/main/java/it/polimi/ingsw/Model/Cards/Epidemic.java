@@ -33,7 +33,7 @@ public class Epidemic extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public void cardEffect(Game game) {
+    public CardState cardEffect(Game game) {
         if(state != CardState.ESECUZIONE) {
             throw new IllegalStateException("Non puoi settare fare CardEffect nello stato: " + state);
         }
@@ -41,6 +41,7 @@ public class Epidemic extends Card {
         for(Trucker trucker: truckers) {
             trucker.getSpaceShip().epidemic();
         }
-        state = CardState.ATTESA_RISPOSTE;
+        state = CardState.EXIT;
+        return state;
     }
 }

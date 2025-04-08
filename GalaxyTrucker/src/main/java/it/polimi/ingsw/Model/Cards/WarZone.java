@@ -373,7 +373,7 @@ public class WarZone extends Card {
 
 
     @Override
-    public void cardEffect(Game game) {
+    public CardState cardEffect(Game game) {
         if(state != CardState.ESECUZIONE){
             throw new IllegalStateException("Card effect not callable in the state " + state);
         }
@@ -422,7 +422,7 @@ public class WarZone extends Card {
                 state = CardState.EXIT;
             }
         }
-
+        return state;
     }
 
 

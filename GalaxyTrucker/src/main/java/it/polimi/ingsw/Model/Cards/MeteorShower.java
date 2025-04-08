@@ -103,7 +103,7 @@ public class MeteorShower extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public void cardEffect(Game game) {
+    public CardState cardEffect(Game game) {
         if (this.state != CardState.ESECUZIONE) {
             throw new IllegalStateException("Non è possibile eseguire card effect nello stato " + this.state);
         }
@@ -133,7 +133,12 @@ public class MeteorShower extends Card {
             j++;
         }
         //per ora non c'è perché è tutto nel Card Controller
-        this.state = CardState.PLOT_METEOR;
+        if (directions.size()==(i+1)) {
+            this.state = CardState.EXIT;
+        }else {
+            this.state = CardState.PLOT_METEOR;
+        }
+        return state;
     }
 }
 
