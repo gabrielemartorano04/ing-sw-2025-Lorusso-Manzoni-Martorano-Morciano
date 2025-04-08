@@ -265,7 +265,7 @@ public class SpaceShip {
      * @param coord where coord[0] coord[1] are the x coordinate of the component from which the player
      *              wants to remove a number of astronauts cointained in coord[2]
      */
-    public void removeNumHuman(ArrayList<int[]> coord) throws NoHumansHereException{
+    public void removeNumHuman(ArrayList<int[]> coord){
 
         for(int[] c:coord){
             switch (components[c[0]][c[1]]){
