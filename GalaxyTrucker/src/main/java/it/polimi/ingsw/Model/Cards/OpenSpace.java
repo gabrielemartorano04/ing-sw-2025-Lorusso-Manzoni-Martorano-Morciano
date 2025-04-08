@@ -41,7 +41,7 @@ public class OpenSpace extends Card {
      * @param truckerCoordinate list of arrays of coordinates
      * @param numTruckers number of truckers
      */
-    public void setCoordinates(Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates {
+    public CardState setCoordinates(Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates {
         if (this.state != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Non è possibile inserire le informazioni nello stato " + this.state);
         }
@@ -58,6 +58,7 @@ public class OpenSpace extends Card {
             }
             this.state = CardState.ESECUZIONE;
         }
+        return state;
     }
 
     /**

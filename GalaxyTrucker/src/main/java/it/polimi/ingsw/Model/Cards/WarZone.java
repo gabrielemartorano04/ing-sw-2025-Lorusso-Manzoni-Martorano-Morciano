@@ -7,6 +7,7 @@ import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.SpaceShip;
 import it.polimi.ingsw.Model.Trucker;
 
+import javax.management.RuntimeMBeanException;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -221,7 +222,9 @@ public class WarZone extends Card {
                     colorOfCurrGoodToRemove++;
                 }
             }
-
+            if(numOfCurrTypeOfGood==0){
+                break;
+            }
             if (numOfCurrTypeOfGood <= numOfGoodsToRemove) {
                 removeWithoutAsking(trucker,goodsList);
             } else {
@@ -229,9 +232,17 @@ public class WarZone extends Card {
                 break;
             }
         }
-        if (colorOfCurrGoodToRemove > 3 && numOfGoodsToRemove > 0) {
+        if (numOfGoodsToRemove > 0 && (trucker.getSpaceShip().getNumBatteries() > 0)) {
+            if(!trucker.getSpaceShip().getGoodsList().isEmpty()){
+                throw new RuntimeException("GoodsList should be empty at this point");
+            }
             // se il colore corrente è maggiore di 3 allora vuol dire che devo togliere batterie se ho ancora merci da rimuovere
             state = CardState.PLOT_BATTERIES;
+        }else if (numOfGoodsToRemove > 0 && trucker.getSpaceShip().getNumBatteries() == 0) {
+            if(!trucker.getSpaceShip().getGoodsList().isEmpty()){
+                throw new RuntimeException("GoodsList should be empty at this point");
+            }
+            state = CardState.WARZONE;
         }
         if(numOfGoodsToRemove == 0){
             state = CardState.WARZONE;
@@ -376,7 +387,7 @@ public class WarZone extends Card {
         state = CardState.ESECUZIONE;
     }
 
-    public synchronized CardState setCoordinatesToRemoveCrew(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates {
+    public synchronized CardState removeCrew(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates {
         if(state != CardState.HUMANSTOREMOVE) {
             throw new IllegalStateException("Can't call setCoordinates in the state: " + state);
         }
