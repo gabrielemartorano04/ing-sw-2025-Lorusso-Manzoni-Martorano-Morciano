@@ -26,7 +26,7 @@ public abstract sealed class Component permits BatteryStorage, Cabin, Cannon, Em
     public Component(int linkU, int linkR, int linkD, int linkL, String type, String frontImagePath) {
         this.link = new int[] {linkU, linkR, linkD, linkL};
         this.selected = false;
-        this.covered = false;
+        this.covered = true;
         this.visited = false;
         this.type = type;
         this.frontImage = new ImageIcon(frontImagePath);
