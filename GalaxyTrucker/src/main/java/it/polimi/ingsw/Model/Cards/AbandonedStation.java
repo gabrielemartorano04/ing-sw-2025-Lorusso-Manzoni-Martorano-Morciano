@@ -77,7 +77,7 @@ public class AbandonedStation extends Card {
      * Sets the only trucker that has chosen to take the station
      * @param trucker trucker ID
      */
-    public synchronized CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer) throws IllegalStateException {
+    public synchronized CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws IllegalStateException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("stato non valido");
         }
@@ -86,7 +86,14 @@ public class AbandonedStation extends Card {
         }
         if(landing) {
             this.truckerThatHasDecided = trucker;
-            cardState = CardState.CHOOSE_TO_GAIN;
+            do {
+                if (bank.getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
+                    cardState = CardState.CHOOSE_TO_GAIN;
+                } else {
+                    currGood++;
+                    cardState = CardState.ATTESA_RISPOSTE;
+                }
+            }while(currGood<goods.size() && cardState!=CardState.CHOOSE_TO_GAIN);
         }else{
 
             if (playerDecisions == numPlayer){
@@ -134,6 +141,14 @@ public class AbandonedStation extends Card {
         }
         else{
             currGood++;
+            do {
+                if (bank.getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
+                    cardState = CardState.CHOOSE_TO_GAIN;
+                } else {
+                    currGood++;
+                    cardState = CardState.ATTESA_RISPOSTE;
+                }
+            }while(currGood<goods.size() && cardState!=CardState.CHOOSE_TO_GAIN);
             cardState = CardState.CHOOSE_TO_GAIN;
         }
 
