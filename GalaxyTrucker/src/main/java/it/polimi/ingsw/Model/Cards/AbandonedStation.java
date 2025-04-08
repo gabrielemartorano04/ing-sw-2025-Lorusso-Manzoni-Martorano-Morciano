@@ -109,12 +109,13 @@ public class AbandonedStation extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public void cardEffect(Game game) throws IllegalStateException {
+    public CardState cardEffect(Game game) throws IllegalStateException {
         if (cardState != CardState.ESECUZIONE) {
             throw new IllegalStateException("risposte mancanti");
         }
         truckerThatHasDecided.getSpaceShip().addGoods(goods,coordinates);
         game.moveBackward(truckerThatHasDecided, days);
-        cardState = CardState.ATTESA_RISPOSTE;
+        cardState = CardState.EXIT;
+        return cardState;
     }
 }
