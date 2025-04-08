@@ -71,7 +71,7 @@ public class AbandonedShip extends Card {
      * Sets the only trucker that has chosen to take the ship
      * @param truckerThatHasDecided trucker ID
      */
-    public CardState setTruckerThatHasDecided(Trucker truckerThatHasDecided)  {
+    public synchronized CardState setTruckerThatHasDecided(Trucker truckerThatHasDecided)  {
         if(state != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("SetTruckerThatHasDecided not callable in state: " + state);
         }
@@ -89,7 +89,7 @@ public class AbandonedShip extends Card {
      * Sets the coordinates of the cabins from which he wants to remove the crew members required
      * @param coordinates list of arrays of coordinates of the cabins
      */
-    public CardState setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates {
+    public synchronized CardState setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates {
         if(state != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Can't call setCoordinates in the state: " + state);
         }
@@ -115,7 +115,7 @@ public class AbandonedShip extends Card {
      */
 
     @Override
-    public CardState cardEffect(Game game) {
+    public synchronized CardState cardEffect(Game game) {
         if(state != CardState.ESECUZIONE) {
             throw new IllegalStateException("Non puoi settare fare CardEffect nello stato: " + state);
         }
