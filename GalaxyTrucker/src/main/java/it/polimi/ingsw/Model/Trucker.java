@@ -10,6 +10,7 @@ public class Trucker {
     private int cosmicCredit;
     private BuildingState buildingState;
 
+
     public Trucker(String nickName, PlayerColors color) {
         this.nickname = nickName;
         this.color = color;
@@ -53,7 +54,21 @@ public class Trucker {
 
     //FSM
 
-    public void chooseWhatToDo(){
+    public void chooseWhatToDo(String cmd){
+        switch(buildingState){
+            case START:
+                switch (cmd){
+                    case "Turn Hourglass":
+                        turnHourglass();
+                }
+            case SELECT_COMPONENT:
+            case SHOW_STACK:
+            case TURN_HOURGLASS:
+            case TURN_HOURGLASS_END:
+            case LINK:
+            case KEEP:
+            case END:
+        }
 
     }
 
@@ -69,8 +84,8 @@ public class Trucker {
 
     }
 
-    public void trunHourglass(){
-
+    public void turnHourglass(Game game){
+        if(game.getTimeTurns()==0 && game.get)
     }
 
     public void finish(){

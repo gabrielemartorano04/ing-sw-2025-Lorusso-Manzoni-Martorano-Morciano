@@ -9,11 +9,13 @@ public class Hourglass {
     private boolean timeUp;
     private int secondiRimanenti;
     private Game game;
+    private int timeTurns;
 
     public Hourglass(Game game) {
         timer = new Timer();
         timeUp = false;
-        secondiRimanenti = 60;
+        timeTurns = 0;
+        secondiRimanenti = 90;
         startTimer();
         this.game = game;
     }
