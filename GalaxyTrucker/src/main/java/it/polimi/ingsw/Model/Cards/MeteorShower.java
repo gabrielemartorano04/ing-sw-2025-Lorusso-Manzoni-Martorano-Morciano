@@ -132,7 +132,6 @@ public class MeteorShower extends Card {
             }
             j++;
         }
-        //per ora non c'è perché è tutto nel Card Controller
         if (directions.size()==(i+1)) {
             this.state = CardState.EXIT;
         }else {
