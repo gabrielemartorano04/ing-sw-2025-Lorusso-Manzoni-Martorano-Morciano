@@ -149,7 +149,6 @@ public class AbandonedStation extends Card {
                     cardState = CardState.ATTESA_RISPOSTE;
                 }
             }while(currGood<goods.size() && cardState!=CardState.CHOOSE_TO_GAIN);
-            cardState = CardState.CHOOSE_TO_GAIN;
         }
 
     }
