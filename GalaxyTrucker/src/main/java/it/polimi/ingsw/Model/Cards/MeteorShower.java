@@ -81,20 +81,22 @@ public class MeteorShower extends Card {
         return meteor;
     }
 
-    public void rollDice(Game game){
+    public CardState rollDice(Game game){
         if(state != CardState.ROLL_DICE){
             throw new IllegalStateException("Non si può girare i dadi nello stato " + this.state);
         }
         this.roll = game.rollDice();
         state = CardState.ATTESA_RISPOSTE;
+        return state;
     }
 
-    public void setAnswers(boolean answers) {
+    public CardState setAnswers(boolean answers) {
         if(state != CardState.ATTESA_RISPOSTE){
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
         }
         this.answers.addLast(answers);
         state = CardState.ESECUZIONE;
+        return state;
     }
 
 
