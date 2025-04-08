@@ -22,7 +22,7 @@ public class SetTruckerThatHasDecidedVisitor implements CardVisitor{
     @Override
     public Optional<Object> visitForSetTruckerThatHasDecided(AbandonedShip card, Trucker trucker) {
         card.setTruckerThatHasDecided(trucker);
-        return Optional.empty();
+        return Optional.of(card.setTruckerThatHasDecided(trucker));
     }
 
     @Override

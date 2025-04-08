@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.InvalidCoordinates;
 import it.polimi.ingsw.Exceptions.InvalidPositionException;
 import it.polimi.ingsw.Exceptions.NoHumansHereException;
 import it.polimi.ingsw.Exceptions.NotEnoughBatteries;
@@ -265,18 +266,15 @@ public class SpaceShip {
      * @param coord where coord[0] coord[1] are the x coordinate of the component from which the player
      *              wants to remove a number of astronauts cointained in coord[2]
      */
-    public void removeNumHuman(ArrayList<int[]> coord) throws NoHumansHereException{
+    public void removeNumHuman(ArrayList<int[]> coord){
 
         for(int[] c:coord){
             switch (components[c[0]][c[1]]){
                 case Cabin cabin -> {
-                    if(cabin.getQuantity() >= c[2]) {
-                        cabin.removeHumans(c[2]);
-                        numHuman -= c[2];
-                    }
-                    else {
-                        throw new NoHumansHereException("You haven't enough astronauts in this cabin");
-                    }
+
+                    cabin.removeHumans(c[2]);
+                    numHuman -= c[2];
+
                 }
                 default -> { }
             }
@@ -1540,12 +1538,24 @@ public class SpaceShip {
      * @param coord coordinates to check
      * @return true if every component with given coordinates is a Cabins, false otherwise
      */
-    public boolean checkCabin(ArrayList<int[]> coord){
+    public boolean checkCabin(ArrayList<int[]> coord, int sum) throws InvalidCoordinates{
+        int s=0;
+        for (int[] c:coord){
+            s+=c[2];
+        }
+        if (s<sum) throw new InvalidCoordinates("No enough human selected");
+
         for (int[] c : coord) {
             if (components[c[0]][c[1]] != null) {
                 switch (components[c[0]][c[1]]){
-                    case Cabin cabin->{}
-                    default -> { return false; }
+                    case Cabin cabin->{
+                        if(cabin.getQuantity() < c[2]) {
+                            throw new InvalidCoordinates("You haven't enough astronauts in this cabin");
+                        }
+                    }
+                    default -> {
+                        throw new InvalidCoordinates("No cabin here");
+                    }
                 }
             }
         }
