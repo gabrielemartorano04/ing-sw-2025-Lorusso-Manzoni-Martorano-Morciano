@@ -398,7 +398,7 @@ public class WarZone extends Card {
             throw new InvalidCoordinates("Coordinates is null or empty");
         }
         try{
-            weakestTrucker.getSpaceShip().checkCabin(coordinates, this.numOfHumanToRemove));
+            weakestTrucker.getSpaceShip().checkCabin(coordinates, this.numOfHumanToRemove);
         }catch(InvalidCoordinates e){
             throw new InvalidCoordinates(e.getMessage());
         }
