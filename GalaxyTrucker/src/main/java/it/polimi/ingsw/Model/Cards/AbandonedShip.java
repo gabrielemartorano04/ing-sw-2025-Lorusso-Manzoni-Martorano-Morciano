@@ -71,7 +71,7 @@ public class AbandonedShip extends Card {
      * Sets the only trucker that has chosen to take the ship
      * @param truckerThatHasDecided trucker ID
      */
-    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided)  {
+    public CardState setTruckerThatHasDecided(Trucker truckerThatHasDecided)  {
         if(state != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("SetTruckerThatHasDecided not callable in state: " + state);
         }
@@ -82,13 +82,14 @@ public class AbandonedShip extends Card {
         if(coordinates!=null){
             state = CardState.ESECUZIONE;
         }
+        return state;
     }
 
     /**
      * Sets the coordinates of the cabins from which he wants to remove the crew members required
      * @param coordinates list of arrays of coordinates of the cabins
      */
-    public void setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates {
+    public CardState setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates {
         if(state != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Can't call setCoordinates in the state: " + state);
         }
@@ -105,7 +106,7 @@ public class AbandonedShip extends Card {
         }else{
             throw new RuntimeException("Tried to set coordinates when truckerThatHasDecided is null");
         }
-
+        return state;
     }
 
     /**
@@ -114,7 +115,7 @@ public class AbandonedShip extends Card {
      */
 
     @Override
-    public void cardEffect(Game game) {
+    public CardState cardEffect(Game game) {
         if(state != CardState.ESECUZIONE) {
             throw new IllegalStateException("Non puoi settare fare CardEffect nello stato: " + state);
         }
@@ -123,6 +124,7 @@ public class AbandonedShip extends Card {
             game.moveBackward(truckerThatHasDecided,days);
             truckerThatHasDecided.addCosmicCredit(credits);
         }
-        state = CardState.ATTESA_RISPOSTE;
+        state = CardState.EXIT;
+        return state;
     }
 }

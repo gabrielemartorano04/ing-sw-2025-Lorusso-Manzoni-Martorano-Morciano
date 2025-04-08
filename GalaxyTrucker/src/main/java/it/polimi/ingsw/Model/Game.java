@@ -24,7 +24,7 @@ public class Game {
     private ArrayList<Trucker> truckersOut;
     private ArrayList<Card>[] cardStacks;
     private ArrayList<Card> gameDeck;
-    private AvailableComponents[] components;
+    private AvailableComponents components;
     private Hourglass hourglass;
     private int gameLevel;
     private Deck deck;
@@ -40,7 +40,7 @@ public class Game {
         this.truckers = new ArrayList<>();
         this.truckersOut = new ArrayList<>();
         this.gameDeck = new ArrayList<>();
-        this.components = new AvailableComponents[156];
+        this.components = new AvailableComponents;
         this.hourglass = new Hourglass(this);
         this.deck = new Deck();
         this.cardStacks = new ArrayList[4];
@@ -140,7 +140,7 @@ public class Game {
      * Returns the list of available components.
      * @return an array of available components
      */
-    public AvailableComponents[] getComponents() {
+    public AvailableComponents getComponents() {
         return components;
     }
 

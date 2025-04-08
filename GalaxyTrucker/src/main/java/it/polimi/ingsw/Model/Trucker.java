@@ -73,7 +73,7 @@ public class Trucker {
                         buildingState=BuildingState.TURN_HOURGLASS_END;
                         break;
                     case "Select Component":
-
+                        game.get
                     case "Show Stack":
 
 
