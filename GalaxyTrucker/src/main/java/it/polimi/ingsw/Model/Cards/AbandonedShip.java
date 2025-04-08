@@ -114,7 +114,7 @@ public class AbandonedShip extends Card {
      */
 
     @Override
-    public void cardEffect(Game game) {
+    public CardState cardEffect(Game game) {
         if(state != CardState.ESECUZIONE) {
             throw new IllegalStateException("Non puoi settare fare CardEffect nello stato: " + state);
         }
@@ -123,6 +123,7 @@ public class AbandonedShip extends Card {
             game.moveBackward(truckerThatHasDecided,days);
             truckerThatHasDecided.addCosmicCredit(credits);
         }
-        state = CardState.ATTESA_RISPOSTE;
+        state = CardState.EXIT;
+        return state;
     }
 }
