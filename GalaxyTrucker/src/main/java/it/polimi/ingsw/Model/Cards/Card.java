@@ -68,6 +68,6 @@ public abstract class Card {
      * Applies the changes provided by the card
      * @param game game in which the card has been drawn
      */
-    public abstract void cardEffect(Game game);
+    public abstract CardState cardEffect(Game game);
 
 }
