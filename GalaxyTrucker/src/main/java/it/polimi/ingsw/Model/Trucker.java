@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.CannotTurnHourglassException;
+import it.polimi.ingsw.Model.Components.Component;
 
 import javax.swing.plaf.basic.BasicButtonUI;
 
@@ -58,7 +59,7 @@ public class Trucker {
 
     //FSM
 
-    public void chooseWhatToDo(String cmd, Game game){
+    public void chooseWhatToDo(String cmd, int index, Game game){
         switch(buildingState){
             case START:
                 game.getHourglass().reset();
@@ -73,12 +74,25 @@ public class Trucker {
                         buildingState=BuildingState.TURN_HOURGLASS_END;
                         break;
                     case "Select Component":
-
+                        buildingState=BuildingState.SELECT_COMPONENT;
+                        break;
                     case "Show Stack":
 
 
                 }
             case SELECT_COMPONENT:
+                chooseComponent(index, game);
+                switch (cmd){
+                    case "Link":
+                        buildingState=BuildingState.LINK;
+                        break;
+                    case "Keep":
+                        buildingState=BuildingState.KEEP;
+                        break;
+                    case "Discard":
+                        buildingState=BuildingState.BUILDING;
+                        break;
+                }
             case SHOW_STACK:
             case TURN_HOURGLASS:
                 try{
@@ -102,8 +116,15 @@ public class Trucker {
 
     }
 
-    public void chooseComponent(int index, Game game){
-        game.getComponents().getComponents().get(index);
+    public Component chooseComponent(int index, Game game) throws IllegalStateException {
+        if(buildingState!=BuildingState.SELECT_COMPONENT){
+            throw new IllegalStateException("Card state is not SELECT_COMPONENT");
+        }
+        Component selectedComponent;
+        selectedComponent=game.getComponents().getComponents().get(index);
+        game.getComponents().getComponents().remove(index);
+        buildingState=BuildingState.BUILDING;
+        return selectedComponent;
     }
 
     public void useComponent(){
