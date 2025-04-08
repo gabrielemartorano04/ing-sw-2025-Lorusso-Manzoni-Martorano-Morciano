@@ -275,7 +275,7 @@ public class SpaceShip {
                         numHuman -= c[2];
                     }
                     else {
-                        throw new NoHumansHereException("You haven't enough astronauts in this cabin")
+                        throw new NoHumansHereException("You haven't enough astronauts in this cabin");
                     }
                 }
                 default -> { }
@@ -1135,7 +1135,7 @@ public class SpaceShip {
     /**
      * This method remove an astronauts from each non empty cabin linked to an other non empty cabin
      */
-    public void epidemic() throws InvalidPositionException {
+    public void epidemic() {
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if(components[i][j] != null) {
