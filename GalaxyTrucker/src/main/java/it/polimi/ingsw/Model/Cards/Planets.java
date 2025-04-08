@@ -125,7 +125,7 @@ public class Planets extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public void cardEffect(Game game) {
+    public CardState cardEffect(Game game) {
         if (this.state != CardState.ESECUZIONE) {
             throw new IllegalStateException("CardEffect not callable in the state: " + this.state);
         }
@@ -142,5 +142,7 @@ public class Planets extends Card {
         for(i = truckersLanded.size() - 1; i>=0; i--){
             game.moveBackward(truckersLanded.get(i), daysLoss);
         }
+        state = CardState.EXIT;
+        return state;
     }
 }

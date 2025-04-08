@@ -33,7 +33,7 @@ public class StarDust extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public void cardEffect(Game game) {
+    public CardState cardEffect(Game game) {
         List<Trucker> truckers = game.getTruckerList();
         Collections.reverse(truckers);
         for (Trucker trucker : truckers) {
@@ -41,5 +41,6 @@ public class StarDust extends Card {
             game.moveBackward(trucker, exposedConnectors);
         }
         Collections.reverse(truckers); //rigiro i Truckers così ritorno all'ordine originale della lista
+        return CardState.EXIT;
     }
 }

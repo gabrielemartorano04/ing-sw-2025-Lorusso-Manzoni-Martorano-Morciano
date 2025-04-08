@@ -162,7 +162,7 @@ public class Slavers extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public void cardEffect(Game game) throws IllegalStateException {
+    public CardState cardEffect(Game game) throws IllegalStateException {
         if (cardState != CardState.ESECUZIONE) {
             throw new IllegalStateException("Card state is not ESECUZIONE");
         }
@@ -177,6 +177,8 @@ public class Slavers extends Card {
                 i++;
             }
         }
+        cardState=CardState.EXIT;
+        return cardState;
     }
 
 }

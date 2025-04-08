@@ -21,12 +21,8 @@ public class Smugglers extends Card {
     private int goodsLost;
     private final int days;
     private Goods[] goodsGained = new Goods[3];
-    private boolean isDefeated = false;
     private Trucker winnerTrucker = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
     private ArrayList<Trucker> defeatedTruckers;
-    ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveBatteries; //solita Lista di trucker di liste di coordinate per tenere traccia per ogni trucker delle coordinate dei depositi da cui rimuovere il numero di batterie contenuto nella carta Smugglers
-    ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveGoods; //solita Lista di trucker di liste di coordinate per tenere traccia per ogni trucker delle coordinate dei depositi da cui rimuovere il numero di merci contenuto nella carta Smugglers
-    ArrayList<int[]> winnerCoordinatesToAddGoods; //coordinate dei load in cui il vincitore ha scelto di caricare le merci
     private CardState cardState;
     private ArrayList<ArrayList<int[]>> doubleCannonsCoord; // coordinates of the double cannons the trucker wants to activate
     private int playersDecisions; // number of players that gave a choice
@@ -130,6 +126,7 @@ public class Smugglers extends Card {
         }else {
             defeatedTruckers.add(trucker);
             if (playersDecisions == numPlayer) {
+                playersDecisions=0;
                 cardState = CardState.REMOVE_GOODS;
             }else cardState = CardState.ATTESA_RISPOSTE;
         }
@@ -238,7 +235,7 @@ public class Smugglers extends Card {
             cardState = CardState.PLOT_BATTERIES;
         }
         if(goodsLost == 0){
-            cardState = CardState.WARZONE;
+            cardState = CardState.ESECUZIONE;
         }
         return cardState;
 
@@ -306,10 +303,9 @@ public class Smugglers extends Card {
             list.add(goodsToRemove.get(index));
         }
         removeWithoutAsking(trucker,list);
-        if(currConditionIndex == conditionsOrder.size()){
-            cardState = CardState.EXIT;
-        }else {
-            cardState = CardState.WARZONE;
+        playersDecisions++;
+        if(playersDecisions==defeatedTruckers.size()){
+            cardState = CardState.ESECUZIONE;
         }
     }
 
@@ -342,10 +338,9 @@ public class Smugglers extends Card {
         }catch(NotEnoughBatteries e){
             throw new NotEnoughBatteries("Not enough batteries");
         }
-        if(currConditionIndex == conditionsOrder.size()){
-            cardState = CardState.EXIT;
-        }else {
-            cardState = CardState.WARZONE;
+        playersDecisions++;
+        if(playersDecisions==defeatedTruckers.size()){
+            cardState = CardState.ESECUZIONE;
         }
     }
 
@@ -359,14 +354,15 @@ public class Smugglers extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public void cardEffect(Game game) {
+    public CardState cardEffect(Game game) {
         if (cardState != CardState.ESECUZIONE) {
             throw new IllegalStateException("Card state is not ESECUZIONE");
         }
         if(choiceToGain){
             cardState = CardState.SWAP;
         } else{
-            cardState = CardState.ATTESA_RISPOSTE;
+            cardState = CardState.EXIT;
         }
+        return cardState;
     }
 }
