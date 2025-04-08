@@ -232,7 +232,6 @@ public class SpaceShip {
                             }
                         }
                         default -> {
-                            break;
                         }
                     }
                 }
@@ -241,12 +240,12 @@ public class SpaceShip {
     }
 
     /**
-     * The player select the coordinates of the component from which he would like to remove an astronaut
+     * This method supports epidemic
      * @param x coordinate x of the component
      * @param y coordinate x of the component
      */
 
-    public void removeHuman(int x, int y) throws NoHumansHereException, InvalidPositionException{
+    public void removeHuman(int x, int y){
 
         switch(components[x][y]){
             case Cabin c->{
@@ -255,14 +254,9 @@ public class SpaceShip {
                         c.removeHumans(1);
                         numHuman--;
                     }
-                    else{
-                        throw new NoHumansHereException("There are no humans in this cabin");
-                    }
                 }
             }
-            default -> {
-                throw new InvalidPositionException("Cabin position expected");
-            }
+            default -> {}
         }
     }
 
@@ -271,7 +265,7 @@ public class SpaceShip {
      * @param coord where coord[0] coord[1] are the x coordinate of the component from which the player
      *              wants to remove a number of astronauts cointained in coord[2]
      */
-    public void removeNumHuman(ArrayList<int[]> coord) {
+    public void removeNumHuman(ArrayList<int[]> coord) throws NoHumansHereException{
 
         for(int[] c:coord){
             switch (components[c[0]][c[1]]){
@@ -281,7 +275,7 @@ public class SpaceShip {
                         numHuman -= c[2];
                     }
                     else {
-                        //eccezione non hai abbastanza umani da togliere
+                        throw new NoHumansHereException("You haven't enough astronauts in this cabin")
                     }
                 }
                 default -> { }
