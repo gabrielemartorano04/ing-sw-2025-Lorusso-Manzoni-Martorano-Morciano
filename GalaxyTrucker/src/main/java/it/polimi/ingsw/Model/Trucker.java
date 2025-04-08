@@ -73,7 +73,7 @@ public class Trucker {
                         buildingState=BuildingState.TURN_HOURGLASS_END;
                         break;
                     case "Select Component":
-                        game.get
+
                     case "Show Stack":
 
 
@@ -102,8 +102,8 @@ public class Trucker {
 
     }
 
-    public void chooseComponent(){
-
+    public void chooseComponent(int index, Game game){
+        game.getComponents().getComponents().get(index);
     }
 
     public void useComponent(){

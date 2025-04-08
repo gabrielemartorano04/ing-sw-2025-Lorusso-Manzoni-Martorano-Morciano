@@ -360,8 +360,8 @@ public class AvailableComponents {
         for (int i = components.size() - 1; i > 0; i--) {
             int j = random.nextInt(i + 1);  // Indice casuale tra 0 e i
             Component tmp = components.get(i);
-            components.get(i) = components.get(j);
-            components.get(j) = tmp;
+            components.add(i,components.get(j));
+            components.add(j,tmp);
         }
     }
 
@@ -370,23 +370,8 @@ public class AvailableComponents {
      * @param component component to remove
      */
     public void remove(Component component) {
-        int index = -1;
-        for (int i = 0; i < components.length; i++) {
-            if (components[i].equals(component)) {
-                index = i;
-                break;
-            }
-        }
-        if (index != -1) {
-            return;
-        }
-        Component[] newComponents = new Component[components.length - 1];
-        System.arraycopy(components, 0, newComponents, 0, index);
-        System.arraycopy(components, index + 1, newComponents, index, components.length - index - 1);
-        components = newComponents;
+        components.remove(component);
     }
 
-    /**
-     * Initialization of each single component available
-     */
+
 }
