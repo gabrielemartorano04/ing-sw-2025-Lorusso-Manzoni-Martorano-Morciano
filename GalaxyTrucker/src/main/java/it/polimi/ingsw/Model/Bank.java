@@ -11,8 +11,14 @@ public class Bank {
         goods[3] = 14; // blue
     }
 
-    public int[] getBank() {
-        return goods;
+    public int getGoodsInBank(int valueOfGoods) {
+        return goods[valueOfGoods];
     }
 
+    public void addGoodsInBank(int valueOfGoods) {
+        goods[valueOfGoods]++;
+    }
+    public void removeGoodsInBank(int valueOfGoods) {
+        goods[valueOfGoods]--;
+    }
 }

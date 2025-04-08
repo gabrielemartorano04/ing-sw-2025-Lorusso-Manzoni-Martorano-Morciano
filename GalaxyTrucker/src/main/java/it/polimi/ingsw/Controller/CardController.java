@@ -85,7 +85,7 @@ public class CardController {
 
             case "MeteorShower" -> {
                 MeteorShower currCard = (MeteorShower) card;
-                ArrayList<int[]> directions = currCard.getDirection();
+                ArrayList<int[]> directions = currCard.getDirections();
                 List<Trucker> truckers = game.getTruckerList();
                 boolean answer;
                 for (int[] meteor : directions) {
@@ -367,4 +367,8 @@ public class CardController {
             default -> throw new IllegalArgumentException("Nome carta non riconosciuto: " + cardName);
         }
     }
+
+
+
+
 }

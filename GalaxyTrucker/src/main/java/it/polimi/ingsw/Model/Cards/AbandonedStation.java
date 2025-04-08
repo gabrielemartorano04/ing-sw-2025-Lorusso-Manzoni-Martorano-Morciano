@@ -2,10 +2,12 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Exceptions.InvalidComponentsException;
 import it.polimi.ingsw.Exceptions.InvalidCoordinates;
+import it.polimi.ingsw.Exceptions.InvalidPositionException;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Trucker;
 import it.polimi.ingsw.Model.Components.*;
 import it.polimi.ingsw.Model.Visitor.CardVisitor;
+import it.polimi.ingsw.Model.Bank;
 
 import java.util.ArrayList;
 
@@ -21,6 +23,9 @@ public class AbandonedStation extends Card {
     private Trucker truckerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
     private ArrayList<int[]> coordinates = null; //coordinates sono le coordinate dei Load dove inserire le merci. Viene settato dal Card controller, se è vuoto vuol dire che nessun giocatore ha voluto accettare la carta
     private CardState cardState;
+    private int currGood;
+    private boolean choiceToGain;
+    private int playerDecisions;
     /**
      * Abandoned station constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -37,6 +42,7 @@ public class AbandonedStation extends Card {
         this.numHuman = numHuman;
         this.goods = goods;
         this.cardState = CardState.ATTESA_RISPOSTE;
+        this.playerDecisions=0;
     }
 
     @Override
@@ -69,41 +75,107 @@ public class AbandonedStation extends Card {
 
     /**
      * Sets the only trucker that has chosen to take the station
-     * @param truckerThatHasDecided trucker ID
+     * @param trucker trucker ID
      */
-    public synchronized CardState setTruckerThatHasDecided(Trucker truckerThatHasDecided) throws IllegalStateException {
+    public synchronized CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws IllegalStateException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("stato non valido");
         }
         if(truckerThatHasDecided == null){
             throw new RuntimeException("TruckerThatHasDecided is null");
         }
-        this.truckerThatHasDecided = truckerThatHasDecided;
-        if (coordinates != null){
-            this.cardState = CardState.ESECUZIONE;
+        if(landing) {
+            this.truckerThatHasDecided = trucker;
+            do {
+                if (bank.getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
+                    cardState = CardState.CHOOSE_TO_GAIN;
+                } else {
+                    currGood++;
+                    if(currGood<goods.size()) {
+                        cardState = CardState.ATTESA_RISPOSTE;
+                    }else cardState = CardState.ESECUZIONE;
+                }
+            }while(currGood<goods.size() && cardState!=CardState.CHOOSE_TO_GAIN);
+        }else{
+
+            if (playerDecisions == numPlayer){
+                cardState = CardState.ESECUZIONE;
+            }else{
+                cardState = CardState.ATTESA_RISPOSTE;
+            }
         }
         return cardState;
     }
 
+    public Goods setChoiceToGain(boolean choice) throws IllegalStateException {
+        if(cardState!=CardState.CHOOSE_TO_GAIN){
+            throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
+        }
+        if (choice) {
+            this.choiceToGain = choice;
+            cardState = CardState.GOODSTOADD;
+            return goods.get(currGood);
+        }else {
+            cardState = CardState.ESECUZIONE;
+            return null;
+        }
+    }
+
     /**
-     * Sets the coordinates of the loads in which he wants to add the goods acquired
-     * @param coord list of arrays of coordinates of the loads
+     * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
+     * @param winnerCoordinatesToAddGood list of coordinatest
      */
-    public synchronized CardState setCoord(ArrayList<int[]> coord) throws InvalidComponentsException, InvalidCoordinates {
-        if (cardState != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("Not callable in the state: " + cardState);
+    public void setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws IllegalStateException, InvalidPositionException, InvalidCoordinates  {
+        if (cardState != CardState.GOODSTOADD) {
+            throw new IllegalStateException("Card state is not GOODSTOADD");
         }
-        if(coord == null || coord.isEmpty()){
-            throw new InvalidCoordinates("Coordinates is null or empty");
+        if (winnerCoordinatesToAddGood==null || !trucker.getSpaceShip().checkLoad(winnerCoordinatesToAddGood)) { //check load deve controllare il singolo componente
+            throw new InvalidCoordinates("Not goods deposit");
         }
-        if(!truckerThatHasDecided.getSpaceShip().checkLoad(coord)){
-            throw new InvalidComponentsException("Not all components are Loads");
+        try{
+            trucker.getSpaceShip().addGood(goods.get(currGood), winnerCoordinatesToAddGood, value);
+            bank.removeGoodsInBank(goods.get(currGood).getValue());
+        }catch (InvalidPositionException e) {
+            cardState = CardState.GOODSTOADD;
         }
-        this.coordinates = coord;
-        if (truckerThatHasDecided != null){
-            this.cardState = CardState.ESECUZIONE;
+        if(currGood == goods.size()){
+            cardState = CardState.REARRANGE;
         }
-        return cardState;
+        else{
+            currGood++;
+            do {
+                if (bank.getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
+                    cardState = CardState.CHOOSE_TO_GAIN;
+                } else {
+                    currGood++;
+                    if(currGood<goods.size()) {
+                        cardState = CardState.CHOOSE_TO_GAIN;
+                    }else cardState = CardState.ESECUZIONE;
+                }
+            }while(currGood<goods.size() && (cardState!=CardState.CHOOSE_TO_GAIN || cardState!= CardState.ESECUZIONE));
+        }
+
+    }
+
+    // si potrebbe non metter contiune e procedere se tutto e a null
+    public void rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
+        if (cardState != CardState.REARRANGE) {
+            throw new IllegalStateException("Card state is not REARRANGE");
+        }
+        if (!contiune) {
+            if (coord1 == null && !trucker.getSpaceShip().checkLoad(coord1) && coord2 == null && !trucker.getSpaceShip().checkLoad(coord2)) { //check load deve controllare il singolo componente
+                throw new InvalidCoordinates("Not goods deposit");
+            }
+            try {
+                trucker.getSpaceShip().swapGoods(coord1, value1, coord2, value2);
+            } catch (InvalidPositionException e) {
+                cardState = CardState.REARRANGE;
+                throw new InvalidPositionException("invalid positions");
+            }
+        } else{
+            cardState = CardState.ESECUZIONE;
+        }
+
     }
 
     /**
@@ -115,7 +187,6 @@ public class AbandonedStation extends Card {
         if (cardState != CardState.ESECUZIONE) {
             throw new IllegalStateException("risposte mancanti");
         }
-        truckerThatHasDecided.getSpaceShip().addGoods(goods,coordinates);
         game.moveBackward(truckerThatHasDecided, days);
         cardState = CardState.EXIT;
         return cardState;
