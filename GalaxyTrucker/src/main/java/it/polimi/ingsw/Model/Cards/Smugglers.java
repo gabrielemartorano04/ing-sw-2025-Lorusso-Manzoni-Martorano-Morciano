@@ -108,7 +108,7 @@ public class Smugglers extends Card {
         this.winnerTrucker = winnerTrucker;
     }
 
-    public void addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException, InvalidComponentsException{
+    public void addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker, Bank bank) throws IllegalStateException, InvalidComponentsException{
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
         }
@@ -122,7 +122,16 @@ public class Smugglers extends Card {
         }
         if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > smugglersPower) {
             winnerTrucker = trucker;
-            cardState = CardState.CHOOSE_TO_GAIN;
+            do {
+                if (bank.getGoodsInBank(goodsGained[currGood].getValue()) >= 1) {
+                    cardState = CardState.CHOOSE_TO_GAIN;
+                } else {
+                    currGood++;
+                    if(currGood< goodsGained.length) {
+                        cardState = CardState.ATTESA_RISPOSTE;
+                    }else cardState = CardState.ESECUZIONE;
+                }
+            }while(currGood<goodsGained.length && cardState!=CardState.CHOOSE_TO_GAIN);
         }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == smugglersPower){
             cardState = CardState.ESECUZIONE;
         }else {
@@ -170,7 +179,16 @@ public class Smugglers extends Card {
         }
         else{
             currGood++;
-            cardState = CardState.CHOOSE_TO_GAIN;
+            do {
+                if (bank.getGoodsInBank(goodsGained[currGood].getValue()) >= 1) {
+                    cardState = CardState.CHOOSE_TO_GAIN;
+                } else {
+                    currGood++;
+                    if(currGood<goodsGained.length) {
+                        cardState = CardState.CHOOSE_TO_GAIN;
+                    }else cardState = CardState.ESECUZIONE;
+                }
+            }while(currGood<goodsGained.length && cardState!=CardState.CHOOSE_TO_GAIN);
         }
 
     }
