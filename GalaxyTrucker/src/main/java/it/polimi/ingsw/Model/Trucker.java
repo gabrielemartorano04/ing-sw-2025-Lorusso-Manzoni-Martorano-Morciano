@@ -1,5 +1,9 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.CannotTurnHourglassException;
+
+import javax.swing.plaf.basic.BasicButtonUI;
+
 public class Trucker {
 
 
@@ -54,17 +58,43 @@ public class Trucker {
 
     //FSM
 
-    public void chooseWhatToDo(String cmd){
+    public void chooseWhatToDo(String cmd, Game game){
         switch(buildingState){
             case START:
+                game.getHourglass().reset();
+                buildingState=BuildingState.BUILDING;
+                break;
+            case BUILDING:
                 switch (cmd){
                     case "Turn Hourglass":
-                        turnHourglass();
+                        buildingState=BuildingState.TURN_HOURGLASS;
+                        break;
+                    case "Turn Hourglass end":
+                        buildingState=BuildingState.TURN_HOURGLASS_END;
+                        break;
+                    case "Select Component":
+
+                    case "Show Stack":
+
+
                 }
             case SELECT_COMPONENT:
             case SHOW_STACK:
             case TURN_HOURGLASS:
+                try{
+                    turnHourglass(game);
+                }
+                catch(CannotTurnHourglassException e){
+                    buildingState=BuildingState.BUILDING;
+                }
+                buildingState=BuildingState.BUILDING;
             case TURN_HOURGLASS_END:
+                try{
+                    turnHourglassEnd(game);
+                }
+                catch(CannotTurnHourglassException e){
+                    buildingState=BuildingState.END;
+                }
             case LINK:
             case KEEP:
             case END:
@@ -84,8 +114,18 @@ public class Trucker {
 
     }
 
-    public void turnHourglass(Game game){
-        if(game.getTimeTurns()==0 && game.get)
+    public void turnHourglass(Game game) throws CannotTurnHourglassException{
+        if(game.getHourglass().getTimeTurns()==0 && game.getHourglass().timeIsUp()){
+            game.getHourglass().reset();
+        }
+        else throw new CannotTurnHourglassException("You can't turn the hourglass now!");
+    }
+
+    public void turnHourglassEnd(Game game) throws CannotTurnHourglassException{
+        if(game.getHourglass().getTimeTurns()==1 && game.getHourglass().timeIsUp()){
+            game.getHourglass().reset();
+        }
+        else throw new CannotTurnHourglassException("You can't turn the hourglass now!");
     }
 
     public void finish(){

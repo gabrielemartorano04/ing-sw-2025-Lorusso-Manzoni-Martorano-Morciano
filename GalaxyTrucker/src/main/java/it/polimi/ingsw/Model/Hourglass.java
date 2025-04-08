@@ -34,8 +34,20 @@ public class Hourglass {
         }, 0, 1000); // Esegui ogni secondo
     }
 
+    public int getTimeTurns(){
+        return timeTurns;
+    }
+
+    public void setTimeTurns(int times){
+        timeTurns=times;
+    }
+
     public boolean timeIsUp() {
         return timeUp;
+    }
+
+    public void increaseTimeTurns(){
+        timeTurns++;
     }
 
     //da chiamare qunado un trucker gira la clessidra
@@ -44,11 +56,11 @@ public class Hourglass {
             System.out.println(secondiRimanenti);
             return;
         }
-        game.increaseTimeTurns();
+        increaseTimeTurns();
         timer.cancel(); // Ferma il timer corrente
         timer = new Timer(); // Crea un nuovo timer
         timeUp = false;
-        secondiRimanenti = 60;
+        secondiRimanenti = 90;
         startTimer(); // Avvia il nuovo timer
     }
 }
