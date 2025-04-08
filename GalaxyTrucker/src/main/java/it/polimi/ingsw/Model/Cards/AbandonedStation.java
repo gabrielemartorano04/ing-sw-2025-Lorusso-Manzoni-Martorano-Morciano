@@ -71,7 +71,7 @@ public class AbandonedStation extends Card {
      * Sets the only trucker that has chosen to take the station
      * @param truckerThatHasDecided trucker ID
      */
-    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided) throws IllegalStateException {
+    public synchronized CardState setTruckerThatHasDecided(Trucker truckerThatHasDecided) throws IllegalStateException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("stato non valido");
         }
@@ -82,13 +82,14 @@ public class AbandonedStation extends Card {
         if (coordinates != null){
             this.cardState = CardState.ESECUZIONE;
         }
+        return cardState;
     }
 
     /**
      * Sets the coordinates of the loads in which he wants to add the goods acquired
      * @param coord list of arrays of coordinates of the loads
      */
-    public void setCoord(ArrayList<int[]> coord) throws InvalidComponentsException, InvalidCoordinates {
+    public synchronized CardState setCoord(ArrayList<int[]> coord) throws InvalidComponentsException, InvalidCoordinates {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Not callable in the state: " + cardState);
         }
@@ -102,6 +103,7 @@ public class AbandonedStation extends Card {
         if (truckerThatHasDecided != null){
             this.cardState = CardState.ESECUZIONE;
         }
+        return cardState;
     }
 
     /**
@@ -109,12 +111,13 @@ public class AbandonedStation extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public void cardEffect(Game game) throws IllegalStateException {
+    public synchronized CardState cardEffect(Game game) throws IllegalStateException {
         if (cardState != CardState.ESECUZIONE) {
             throw new IllegalStateException("risposte mancanti");
         }
         truckerThatHasDecided.getSpaceShip().addGoods(goods,coordinates);
         game.moveBackward(truckerThatHasDecided, days);
-        cardState = CardState.ATTESA_RISPOSTE;
+        cardState = CardState.EXIT;
+        return cardState;
     }
 }

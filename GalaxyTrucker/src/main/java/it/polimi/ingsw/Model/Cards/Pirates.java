@@ -109,7 +109,7 @@ public class Pirates extends Card {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
         }
-        if (trucker.getSpaceShip().getNumCannon()!=0) {
+        if (trucker.getSpaceShip().getNumDoubleCannon()!=0) {
             if (!doubleCannonsCoord.isEmpty() || trucker.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
                 this.doubleCannonsCoord.addLast(doubleCannonsCoord);
                 playersDecisions++;
@@ -187,7 +187,7 @@ public class Pirates extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public void cardEffect(Game game) throws IllegalStateException {
+    public CardState cardEffect(Game game) throws IllegalStateException {
         if (cardState != CardState.ESECUZIONE) {
             throw new IllegalStateException("Card state is not ESECUZIONE");
         }
@@ -218,6 +218,11 @@ public class Pirates extends Card {
                 j++;
             }
         }
-        this.cardState = CardState.PLOT_SHOOT;
+        if (shoots.size()==(i+1)) {
+            this.cardState = CardState.EXIT;
+        }else {
+            this.cardState = CardState.PLOT_METEOR;
+        }
+        return cardState;
     }
 }

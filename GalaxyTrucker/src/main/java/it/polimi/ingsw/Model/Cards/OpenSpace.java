@@ -65,7 +65,7 @@ public class OpenSpace extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public void cardEffect(Game game) {
+    public CardState cardEffect(Game game) {
         if (this.state != CardState.ESECUZIONE) {
             throw new IllegalStateException("Non è possibile eseguire card effect nello stato " + this.state);
         }
@@ -82,7 +82,8 @@ public class OpenSpace extends Card {
         for (i = 0; i < enginePowerPerTrucker.length; i++) {
             game.moveForward(truckers.get(i), enginePowerPerTrucker[i]);
         }
-        state = CardState.ATTESA_RISPOSTE;
+        state = CardState.EXIT;
+        return state;
     }
 }
 
