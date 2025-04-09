@@ -91,9 +91,9 @@ public class AbandonedStation extends Card {
                     cardState = CardState.CHOOSE_TO_GAIN;
                 } else {
                     currGood++;
-                    if(currGood<goods.size()) {
-                        cardState = CardState.ATTESA_RISPOSTE;
-                    }else cardState = CardState.ESECUZIONE;
+                    if(currGood>=goods.size()) {
+                        cardState = CardState.ESECUZIONE;
+                    }
                 }
             }while(currGood<goods.size() && cardState!=CardState.CHOOSE_TO_GAIN);
         }else{
@@ -148,11 +148,11 @@ public class AbandonedStation extends Card {
                     cardState = CardState.CHOOSE_TO_GAIN;
                 } else {
                     currGood++;
-                    if(currGood<goods.size()) {
-                        cardState = CardState.CHOOSE_TO_GAIN;
-                    }else cardState = CardState.ESECUZIONE;
+                    if(currGood>=goods.size()) {
+                        cardState = CardState.ESECUZIONE;
+                    }
                 }
-            }while(currGood<goods.size() && (cardState!=CardState.CHOOSE_TO_GAIN || cardState!= CardState.ESECUZIONE));
+            }while(currGood<goods.size() && cardState!=CardState.CHOOSE_TO_GAIN);
         }
 
     }
