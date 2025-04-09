@@ -1,6 +1,6 @@
-package it.polimi.ingsw.model.cards;
+package it.polimi.ingsw.Model.Cards;
 
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.Exceptions.InvalidCoordinates;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.exceptions.PlanetNotFreeException;
 import it.polimi.ingsw.model.Bank;
@@ -153,15 +153,8 @@ public class Planets extends Card {
                     // se la lista da passare non è vuota allora puoi scegliere anche se la banca non aveva le tue merci
                     if(!listToPass.isEmpty()){
                         state = CardState.CHOOSE_TO_GAIN;
-                    }else{ // se non c'era nulla nella banca e neanche nella lista da passare allora devo passare al prossimo trucker
-                        currPlayerIndex++;
-                        currGood = 0;
-                        if(currPlayerIndex == truckersLanded.size()){
-                            state = CardState.ESECUZIONE;
-                        }else {
-                            this.currTrucker = truckersLanded.get(currPlayerIndex);
-                            this.currGoodsList = planets.get(truckersLanded.indexOf(currTrucker));
-                        }
+                    }else{ // se non c'era nulla nella banca e neanche nella lista da passare
+
                     }
                 }
 
@@ -174,10 +167,6 @@ public class Planets extends Card {
         if(currPlayerIndex == truckersLanded.size()){
             state = CardState.ESECUZIONE;
         }
-    }
-
-    public Goods plotCurrGood(){
-        if(state != CardState.PLOT_GOODSLIST)
     }
 
 
