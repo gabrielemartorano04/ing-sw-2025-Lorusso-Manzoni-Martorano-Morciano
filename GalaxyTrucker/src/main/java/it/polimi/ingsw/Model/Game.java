@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Controller.AskController;
-import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.Cards.*;
 import it.polimi.ingsw.Model.Components.*;
 
@@ -40,7 +39,7 @@ public class Game {
         this.truckers = new ArrayList<>();
         this.truckersOut = new ArrayList<>();
         this.gameDeck = new ArrayList<>();
-        this.components = new AvailableComponents;
+        this.components = new AvailableComponents();
         this.hourglass = new Hourglass(this);
         this.deck = new Deck();
         this.cardStacks = new ArrayList[4];

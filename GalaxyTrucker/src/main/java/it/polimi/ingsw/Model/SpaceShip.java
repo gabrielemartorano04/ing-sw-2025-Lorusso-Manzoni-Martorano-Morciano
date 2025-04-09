@@ -2,11 +2,9 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InvalidCoordinates;
 import it.polimi.ingsw.Exceptions.InvalidPositionException;
-import it.polimi.ingsw.Exceptions.NoHumansHereException;
 import it.polimi.ingsw.Exceptions.NotEnoughBatteries;
 import it.polimi.ingsw.Model.Components.*;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**

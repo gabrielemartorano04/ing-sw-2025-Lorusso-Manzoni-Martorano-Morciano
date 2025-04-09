@@ -6,7 +6,6 @@ import it.polimi.ingsw.Exceptions.InvalidCoordinates;
 import it.polimi.ingsw.Model.Cards.Card;
 import it.polimi.ingsw.Model.Components.Component;
 
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.util.ArrayList;
 
 public class Trucker {
