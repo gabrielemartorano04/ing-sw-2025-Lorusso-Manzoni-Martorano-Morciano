@@ -173,7 +173,7 @@ public class Smugglers extends Card {
             throw new InvalidCoordinates("Not goods deposit");
         }
         try{
-            trucker.getSpaceShip().addGood(goodsGained[currGood], winnerCoordinatesToAddGood, value);
+            trucker.getSpaceShip().addGood(goodsGained[currGood], winnerCoordinatesToAddGood, value, bank);
             bank.removeGoodsInBank(goodsGained[currGood].getValue());
         }catch (InvalidPositionException e) {
             cardState = CardState.GOODSTOADD;
