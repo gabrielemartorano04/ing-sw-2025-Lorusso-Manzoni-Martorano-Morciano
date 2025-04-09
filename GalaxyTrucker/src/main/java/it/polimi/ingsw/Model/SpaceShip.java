@@ -81,6 +81,10 @@ public class SpaceShip {
         return kept;
     }
 
+    public void increaseLost(int lost) {
+        this.lost += lost;
+    }
+
     /**
      * This method set the full number of batteries in each battery storage and it updates numOfBattery counter to its
      * maximum

@@ -75,6 +75,8 @@ public class Trucker {
                     case "Show Stack":
                         buildingState=BuildingState.SHOW_STACK;
                         break;
+                    case "End":
+                        buildingState=BuildingState.WAIT_END;
 
                 }
             case SELECT_COMPONENT:
@@ -89,8 +91,7 @@ public class Trucker {
                         buildingState=BuildingState.BUILDING;
                         break;
                 }
-            case END:
-                break;
+
         }
 
 
@@ -162,7 +163,7 @@ public class Trucker {
             buildingState=BuildingState.BUILDING;
         } else if (game.getHourglass().getTimeTurns()==1 && game.getHourglass().timeIsUp()){
             game.getHourglass().reset();
-            buildingState=BuildingState.END;
+            buildingState=BuildingState.WAIT_END;
         } else {
             buildingState=BuildingState.BUILDING;
             throw new CannotTurnHourglassException("You can't turn the hourglass now!");
@@ -170,7 +171,13 @@ public class Trucker {
     }
 
     public void finish(){
-        //dobbiamo controllare la nave???????????????????????????????????????????????????'
+        if(buildingState!=BuildingState.END){
+            throw new IllegalStateException("Trucker is not in finish state");
+        }
+        if(!spaceShip.wellDone()){
+            spaceShip.increaseLost(spaceShip.getKept().size());
+            spaceShip.getKept().removeAll(spaceShip.getKept());
+        }
     }
 
 }

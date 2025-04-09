@@ -7,5 +7,6 @@ public enum BuildingState {
     TURN_HOURGLASS,
     LINK,
     KEEP,
+    WAIT_END,
     END
 }
