@@ -127,9 +127,9 @@ public class Smugglers extends Card {
                     cardState = CardState.CHOOSE_TO_GAIN;
                 } else {
                     currGood++;
-                    if(currGood< goodsGained.length) {
-                        cardState = CardState.ATTESA_RISPOSTE;
-                    }else cardState = CardState.ESECUZIONE;
+                    if(currGood>= goodsGained.length) {
+                        cardState = CardState.ESECUZIONE;
+                    }
                 }
             }while(currGood<goodsGained.length && cardState!=CardState.CHOOSE_TO_GAIN);
         }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == smugglersPower){
@@ -184,9 +184,9 @@ public class Smugglers extends Card {
                     cardState = CardState.CHOOSE_TO_GAIN;
                 } else {
                     currGood++;
-                    if(currGood<goodsGained.length) {
-                        cardState = CardState.CHOOSE_TO_GAIN;
-                    }else cardState = CardState.ESECUZIONE;
+                    if(currGood>=goodsGained.length) {
+                        cardState = CardState.ESECUZIONE;
+                    }
                 }
             }while(currGood<goodsGained.length && cardState!=CardState.CHOOSE_TO_GAIN);
         }
