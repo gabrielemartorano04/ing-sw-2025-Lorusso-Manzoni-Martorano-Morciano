@@ -115,21 +115,23 @@ public class Slavers extends Card {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new IllegalStateException("Card state in not HUMANSTOREMOVE");
         }
-        if(!defeatedTruckers.isEmpty()) {
+        if(!defeatedTruckers.isEmpty() || playersDecisions<numPlayer) {
             try {
                 trucker.getSpaceShip().checkCabin(truckersCoordinatesToRemoveHumans, astronautsLost);
                 this.truckersCoordinatesToRemoveHumans.add(truckersCoordinatesToRemoveHumans);
-                defeatedTruckers.remove(trucker);
+                playersDecisions++;
             } catch (InvalidCoordinates e) {
                 throw new InvalidCoordinates(e.getMessage());
             }
-            if (defeatedTruckers.isEmpty()) {
-                if () {
-                    cardState = CardState.ESECUZIONE;
-                }
+            if (playersDecisions==numPlayer) {
+                if(winnerTrucker!=null) {
+                    cardState = CardState.CHOOSE_TO_GAIN;
+                }else cardState = CardState.ESECUZIONE;
             }
         }else{
-
+            if(winnerTrucker!=null) {
+                cardState = CardState.CHOOSE_TO_GAIN;
+            }else cardState = CardState.ESECUZIONE;
         }
     }
 
