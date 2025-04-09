@@ -19,7 +19,6 @@ public class Trucker {
     private int cosmicCredit;
     private BuildingState buildingState;
 
-
     public Trucker(String nickName, PlayerColors color) {
         this.nickname = nickName;
         this.color = color;
@@ -76,6 +75,8 @@ public class Trucker {
                     case "Show Stack":
                         buildingState=BuildingState.SHOW_STACK;
                         break;
+                    case "End":
+                        buildingState=BuildingState.WAIT_END;
 
                 }
             case SELECT_COMPONENT:
@@ -90,6 +91,7 @@ public class Trucker {
                         buildingState=BuildingState.BUILDING;
                         break;
                 }
+
         }
 
 
@@ -138,12 +140,17 @@ public class Trucker {
         if(buildingState!=BuildingState.SELECT_COMPONENT){
             throw new IllegalStateException("Trucker is not in select component state");
         }
-        Component selectedComponent;
-        selectedComponent=game.getComponents().getComponents().get(index);
-        //controlla index
-        game.getComponents().getComponents().remove(index);
-        buildingState=BuildingState.SELECT_COMPONENT;
-        return selectedComponent;
+        if (index > 0 && index < game.getComponents().getComponents().size()) {
+            Component selectedComponent;
+            selectedComponent = game.getComponents().getComponents().get(index);
+            game.getComponents().getComponents().remove(index);
+            buildingState=BuildingState.SELECT_COMPONENT;
+            return selectedComponent;
+        } else {
+            buildingState=BuildingState.SELECT_COMPONENT;
+            throw new InvalidComponentsException("You're not in the range of components");
+        }
+
     }
 
 
@@ -156,7 +163,7 @@ public class Trucker {
             buildingState=BuildingState.BUILDING;
         } else if (game.getHourglass().getTimeTurns()==1 && game.getHourglass().timeIsUp()){
             game.getHourglass().reset();
-            buildingState=BuildingState.END;
+            buildingState=BuildingState.WAIT_END;
         } else {
             buildingState=BuildingState.BUILDING;
             throw new CannotTurnHourglassException("You can't turn the hourglass now!");
@@ -164,7 +171,13 @@ public class Trucker {
     }
 
     public void finish(){
-        //dobbiamo controllare la nave???????????????????????????????????????????????????'
+        if(buildingState!=BuildingState.END){
+            throw new IllegalStateException("Trucker is not in finish state");
+        }
+        if(!spaceShip.wellDone()){
+            spaceShip.increaseLost(spaceShip.getKept().size());
+            spaceShip.getKept().removeAll(spaceShip.getKept());
+        }
     }
 
 }
