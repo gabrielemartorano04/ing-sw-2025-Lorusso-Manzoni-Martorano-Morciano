@@ -214,7 +214,7 @@ public class Smugglers extends Card {
 
     }
 
-    public CardState manageRemoveGoods(Trucker trucker){
+    public CardState manageRemoveGoods(Trucker trucker, Bank bank){
         if(cardState != CardState.REMOVE_GOODS){
             throw new IllegalStateException("plotGoodsToRemove not callable in the state " + cardState);
         }
@@ -245,7 +245,7 @@ public class Smugglers extends Card {
             }
 
             if (numOfCurrTypeOfGood <= goodsLost) {
-                removeWithoutAsking(trucker,goodsList);
+                removeWithoutAsking(trucker,goodsList, bank);
             } else {
                 cardState = CardState.PLOT_GOODSLIST;
                 break;
@@ -262,7 +262,7 @@ public class Smugglers extends Card {
 
     }
 
-    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList) {
+    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank) {
         if(this.numOfCurrTypeOfGood == 0){
             throw new RuntimeException("NumOfGoods is 0 but you called removeWithoutAsking");
         }
@@ -271,7 +271,9 @@ public class Smugglers extends Card {
         }
         ArrayList<Goods> list = new ArrayList<>();
         for (int i = 0; i < numOfCurrTypeOfGood; i++) {
-            list.add(goodsList.getFirst());
+            Goods good = goodsList.getFirst();
+            list.add(good);
+            bank.addGoodsInBank(good.getValue());
             goodsList.removeFirst();
             goodsLost--;
         }
@@ -303,7 +305,7 @@ public class Smugglers extends Card {
      * @param trucker
      */
 
-    public void removeAsking(ArrayList<Integer> indexes, Trucker trucker) throws InvalidGoodChosen, NotEnoughGoodsChosen {
+    public void removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen {
         if (cardState != CardState.REMOVE_ASKING){
             throw new IllegalStateException("Can't call removeAsking in the state " + cardState);
         }
@@ -323,7 +325,7 @@ public class Smugglers extends Card {
         for(Integer index : indexes){
             list.add(goodsToRemove.get(index));
         }
-        removeWithoutAsking(trucker,list);
+        removeWithoutAsking(trucker,list,bank);
         playersDecisions++;
         if(playersDecisions==defeatedTruckers.size()){
             cardState = CardState.ESECUZIONE;
