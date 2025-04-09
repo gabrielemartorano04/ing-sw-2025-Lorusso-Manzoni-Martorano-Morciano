@@ -156,7 +156,9 @@ public class Smugglers extends Card {
             cardState = CardState.GOODSTOADD;
             return goodsGained[currGood];
         }else {
-            cardState = CardState.ESECUZIONE;
+            if(currGood==goodsGained.length-1) {
+                cardState = CardState.REARRANGE;
+            } else currGood++;
             return null;
         }
     }
@@ -382,14 +384,7 @@ public class Smugglers extends Card {
      */
     @Override
     public CardState cardEffect(Game game) {
-        if (cardState != CardState.ESECUZIONE) {
-            throw new IllegalStateException("Card state is not ESECUZIONE");
-        }
-        if(choiceToGain){
-            cardState = CardState.SWAP;
-        } else{
-            cardState = CardState.EXIT;
-        }
+        cardState = CardState.EXIT;
         return cardState;
     }
 }
