@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Trucker;
 import it. polimi.ingsw.Model.Bank;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 
@@ -136,7 +137,7 @@ public class Smugglers extends Card {
             if (playersDecisions == numPlayer) {
                 playersDecisions=0;
                 cardState = CardState.REMOVE_GOODS;
-            }else cardState = CardState.ATTESA_RISPOSTE;;
+            }else cardState = CardState.ATTESA_RISPOSTE;
         }else {
             defeatedTruckers.add(trucker);
             if (playersDecisions == numPlayer) {

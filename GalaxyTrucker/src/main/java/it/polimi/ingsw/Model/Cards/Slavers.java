@@ -115,20 +115,25 @@ public class Slavers extends Card {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new IllegalStateException("Card state in not HUMANSTOREMOVE");
         }
-        try{
-            trucker.getSpaceShip().checkCabin(truckersCoordinatesToRemoveHumans, astronautsLost);
-            this.truckersCoordinatesToRemoveHumans.add(truckersCoordinatesToRemoveHumans);
-        }catch (InvalidCoordinates e){
-            throw new InvalidCoordinates(e.getMessage());
-        }
-        if (playersDecisions == numPlayer){
-            cardState = CardState.ESECUZIONE;
+        if(!defeatedTruckers.isEmpty()) {
+            try {
+                trucker.getSpaceShip().checkCabin(truckersCoordinatesToRemoveHumans, astronautsLost);
+                this.truckersCoordinatesToRemoveHumans.add(truckersCoordinatesToRemoveHumans);
+                defeatedTruckers.remove(trucker);
+            } catch (InvalidCoordinates e) {
+                throw new InvalidCoordinates(e.getMessage());
+            }
+            if (defeatedTruckers.isEmpty()) {
+                if () {
+                    cardState = CardState.ESECUZIONE;
+                }
+            }
         }else{
-            cardState = CardState.ATTESA_RISPOSTE;
+
         }
     }
 
-    public void addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException {
+    public CardState addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
         }
@@ -142,13 +147,20 @@ public class Slavers extends Card {
         }
         if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > slaversPower) {
             winnerTrucker = trucker;
-            cardState = CardState.GAIN;
+            cardState = CardState.HUMANSTOREMOVE;
         }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == slaversPower){
-            cardState = CardState.ATTESA_RISPOSTE;
+            if (playersDecisions == numPlayer) {
+                playersDecisions=0;
+                cardState = CardState.HUMANSTOREMOVE;
+            }else cardState = CardState.ATTESA_RISPOSTE;
         }else {
             defeatedTruckers.add(trucker);
-            cardState = CardState.HUMANSTOREMOVE;
+            if (playersDecisions == numPlayer) {
+                playersDecisions=0;
+                cardState = CardState.HUMANSTOREMOVE;
+            }else cardState = CardState.ATTESA_RISPOSTE;
         }
+        return cardState;
     }
 
     public void setChooseToGain(Boolean choice) throws IllegalStateException {
