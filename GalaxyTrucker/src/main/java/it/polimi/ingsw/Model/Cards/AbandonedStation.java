@@ -24,7 +24,6 @@ public class AbandonedStation extends Card {
     private ArrayList<int[]> coordinates = null; //coordinates sono le coordinate dei Load dove inserire le merci. Viene settato dal Card controller, se è vuoto vuol dire che nessun giocatore ha voluto accettare la carta
     private CardState cardState;
     private int currGood;
-    private boolean choiceToGain;
     private int playerDecisions;
     /**
      * Abandoned station constructor, initialise the attributes of this class
@@ -77,12 +76,9 @@ public class AbandonedStation extends Card {
      * Sets the only trucker that has chosen to take the station
      * @param trucker trucker ID
      */
-    public synchronized CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws IllegalStateException {
+    public CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws IllegalStateException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("stato non valido");
-        }
-        if(truckerThatHasDecided == null){
-            throw new RuntimeException("TruckerThatHasDecided is null");
         }
         if(landing) {
             this.truckerThatHasDecided = trucker;
@@ -97,13 +93,13 @@ public class AbandonedStation extends Card {
                 }
             }while(currGood<goods.size() && cardState!=CardState.CHOOSE_TO_GAIN);
         }else{
-
             if (playerDecisions == numPlayer){
                 cardState = CardState.ESECUZIONE;
             }else{
                 cardState = CardState.ATTESA_RISPOSTE;
             }
         }
+        playerDecisions++;
         return cardState;
     }
 
@@ -112,11 +108,12 @@ public class AbandonedStation extends Card {
             throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
         }
         if (choice) {
-            this.choiceToGain = choice;
             cardState = CardState.GOODSTOADD;
             return goods.get(currGood);
         }else {
-            cardState = CardState.ESECUZIONE;
+            if(currGood==goods.size()-1) {
+                cardState = CardState.REARRANGE;
+            } else currGood++;
             return null;
         }
     }
@@ -125,7 +122,7 @@ public class AbandonedStation extends Card {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param winnerCoordinatesToAddGood list of coordinatest
      */
-    public void setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws IllegalStateException, InvalidPositionException, InvalidCoordinates  {
+    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws IllegalStateException, InvalidPositionException, InvalidCoordinates  {
         if (cardState != CardState.GOODSTOADD) {
             throw new IllegalStateException("Card state is not GOODSTOADD");
         }
@@ -133,7 +130,7 @@ public class AbandonedStation extends Card {
             throw new InvalidCoordinates("Not goods deposit");
         }
         try{
-            trucker.getSpaceShip().addGood(goods.get(currGood), winnerCoordinatesToAddGood, value);
+            trucker.getSpaceShip().addGood(goods.get(currGood), winnerCoordinatesToAddGood, value, bank);
             bank.removeGoodsInBank(goods.get(currGood).getValue());
         }catch (InvalidPositionException e) {
             cardState = CardState.GOODSTOADD;
@@ -149,16 +146,17 @@ public class AbandonedStation extends Card {
                 } else {
                     currGood++;
                     if(currGood>=goods.size()) {
-                        cardState = CardState.ESECUZIONE;
+                        cardState = CardState.REARRANGE;
                     }
                 }
             }while(currGood<goods.size() && cardState!=CardState.CHOOSE_TO_GAIN);
         }
+        return cardState;
 
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
-    public void rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
+    public CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
             throw new IllegalStateException("Card state is not REARRANGE");
         }
@@ -175,7 +173,7 @@ public class AbandonedStation extends Card {
         } else{
             cardState = CardState.ESECUZIONE;
         }
-
+        return cardState;
     }
 
     /**
@@ -183,7 +181,7 @@ public class AbandonedStation extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public synchronized CardState cardEffect(Game game) throws IllegalStateException {
+    public CardState cardEffect(Game game) throws IllegalStateException {
         if (cardState != CardState.ESECUZIONE) {
             throw new IllegalStateException("risposte mancanti");
         }

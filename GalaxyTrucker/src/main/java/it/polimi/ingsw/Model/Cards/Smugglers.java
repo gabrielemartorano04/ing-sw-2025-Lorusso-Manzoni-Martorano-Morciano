@@ -28,7 +28,6 @@ public class Smugglers extends Card {
     private CardState cardState;
     private ArrayList<ArrayList<int[]>> doubleCannonsCoord; // coordinates of the double cannons the trucker wants to activate
     private int playersDecisions; // number of players that gave a choice
-    private boolean choiceToGain;
     private int currGood;
     // variabili per la remove
     private int colorOfCurrGoodToRemove; // vale 0 se è rosso, 1 se è giallo, 2 se è verde e 3 se è blu
@@ -56,8 +55,8 @@ public class Smugglers extends Card {
         this.doubleCannonsCoord= new ArrayList<>();
         this.cardState = CardState.ATTESA_RISPOSTE;
         this.playersDecisions = 0;
-        this.choiceToGain = false;
         this.currGood=0;
+        this.winnerTrucker=null;
     }
 
     /**
@@ -108,7 +107,7 @@ public class Smugglers extends Card {
         this.winnerTrucker = winnerTrucker;
     }
 
-    public void addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker, Bank bank) throws IllegalStateException, InvalidComponentsException{
+    public CardState addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker, Bank bank) throws IllegalStateException, InvalidComponentsException{
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
         }
@@ -124,16 +123,19 @@ public class Smugglers extends Card {
             winnerTrucker = trucker;
             do {
                 if (bank.getGoodsInBank(goodsGained[currGood].getValue()) >= 1) {
-                    cardState = CardState.CHOOSE_TO_GAIN;
+                    cardState = CardState.REMOVE_GOODS;
                 } else {
                     currGood++;
                     if(currGood>= goodsGained.length) {
-                        cardState = CardState.ESECUZIONE;
+                        cardState = CardState.REMOVE_GOODS;
                     }
                 }
-            }while(currGood<goodsGained.length && cardState!=CardState.CHOOSE_TO_GAIN);
+            }while(currGood<goodsGained.length && cardState!=CardState.REMOVE_GOODS);
         }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == smugglersPower){
-            cardState = CardState.ESECUZIONE;
+            if (playersDecisions == numPlayer) {
+                playersDecisions=0;
+                cardState = CardState.REMOVE_GOODS;
+            }else cardState = CardState.ATTESA_RISPOSTE;;
         }else {
             defeatedTruckers.add(trucker);
             if (playersDecisions == numPlayer) {
@@ -141,6 +143,7 @@ public class Smugglers extends Card {
                 cardState = CardState.REMOVE_GOODS;
             }else cardState = CardState.ATTESA_RISPOSTE;
         }
+        return cardState;
     }
 
     public Goods setChoiceToGain(boolean choice) throws IllegalStateException {
@@ -148,11 +151,12 @@ public class Smugglers extends Card {
             throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
         }
         if (choice) {
-            this.choiceToGain = choice;
             cardState = CardState.GOODSTOADD;
             return goodsGained[currGood];
         }else {
-            cardState = CardState.ESECUZIONE;
+            if(currGood==goodsGained.length-1) {
+                cardState = CardState.REARRANGE;
+            } else currGood++;
             return null;
         }
     }
@@ -161,7 +165,7 @@ public class Smugglers extends Card {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param winnerCoordinatesToAddGood list of coordinatest
      */
-    public void setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws IllegalStateException, InvalidPositionException, InvalidCoordinates  {
+    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws IllegalStateException, InvalidPositionException, InvalidCoordinates  {
         if (cardState != CardState.GOODSTOADD) {
             throw new IllegalStateException("Card state is not GOODSTOADD");
         }
@@ -169,10 +173,11 @@ public class Smugglers extends Card {
             throw new InvalidCoordinates("Not goods deposit");
         }
         try{
-            trucker.getSpaceShip().addGood(goodsGained[currGood], winnerCoordinatesToAddGood, value);
+            trucker.getSpaceShip().addGood(goodsGained[currGood], winnerCoordinatesToAddGood, value, bank);
             bank.removeGoodsInBank(goodsGained[currGood].getValue());
         }catch (InvalidPositionException e) {
             cardState = CardState.GOODSTOADD;
+            return cardState;
         }
         if(currGood == goodsGained.length-1){
             cardState = CardState.REARRANGE;
@@ -185,16 +190,16 @@ public class Smugglers extends Card {
                 } else {
                     currGood++;
                     if(currGood>=goodsGained.length) {
-                        cardState = CardState.ESECUZIONE;
+                        cardState = CardState.REARRANGE;
                     }
                 }
             }while(currGood<goodsGained.length && cardState!=CardState.CHOOSE_TO_GAIN);
         }
-
+        return cardState;
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
-    public void rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
+    public CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
             throw new IllegalStateException("Card state is not REARRANGE");
         }
@@ -211,7 +216,7 @@ public class Smugglers extends Card {
         } else{
             cardState = CardState.ESECUZIONE;
         }
-
+        return cardState;
     }
 
     public CardState manageRemoveGoods(Trucker trucker, Bank bank){
@@ -223,40 +228,46 @@ public class Smugglers extends Card {
         }
         ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
 
-        // se il colore corrente è minore uguale a 3 allora devo togliere le merci
-        while(colorOfCurrGoodToRemove<=3 && goodsLost>0) {
-            switch (colorOfCurrGoodToRemove) {
-                case 0 -> {
-                    numOfCurrTypeOfGood = trucker.getSpaceShip().getRedGoods();
-                    colorOfCurrGoodToRemove++;
+        if(!defeatedTruckers.isEmpty()) {
+            // se il colore corrente è minore uguale a 3 allora devo togliere le merci
+            while (colorOfCurrGoodToRemove <= 3 && goodsLost > 0) {
+                switch (colorOfCurrGoodToRemove) {
+                    case 0 -> {
+                        numOfCurrTypeOfGood = trucker.getSpaceShip().getRedGoods();
+                        colorOfCurrGoodToRemove++;
+                    }
+                    case 1 -> {
+                        numOfCurrTypeOfGood = trucker.getSpaceShip().getYellowGoods();
+                        colorOfCurrGoodToRemove++;
+                    }
+                    case 2 -> {
+                        numOfCurrTypeOfGood = trucker.getSpaceShip().getGreenGoods();
+                        colorOfCurrGoodToRemove++;
+                    }
+                    case 3 -> {
+                        numOfCurrTypeOfGood = trucker.getSpaceShip().getBlueGoods();
+                        colorOfCurrGoodToRemove++;
+                    }
                 }
-                case 1 -> {
-                    numOfCurrTypeOfGood = trucker.getSpaceShip().getYellowGoods();
-                    colorOfCurrGoodToRemove++;
-                }
-                case 2 -> {
-                    numOfCurrTypeOfGood = trucker.getSpaceShip().getGreenGoods();
-                    colorOfCurrGoodToRemove++;
-                }
-                case 3 -> {
-                    numOfCurrTypeOfGood = trucker.getSpaceShip().getBlueGoods();
-                    colorOfCurrGoodToRemove++;
-                }
-            }
 
-            if (numOfCurrTypeOfGood <= goodsLost) {
-                removeWithoutAsking(trucker,goodsList, bank);
-            } else {
-                cardState = CardState.PLOT_GOODSLIST;
-                break;
+                if (numOfCurrTypeOfGood <= goodsLost) {
+                    removeWithoutAsking(trucker, goodsList, bank);
+                } else {
+                    cardState = CardState.PLOT_GOODSLIST;
+                    break;
+                }
             }
-        }
-        if (colorOfCurrGoodToRemove > 3 && goodsLost > 0) {
-            // se il colore corrente è maggiore di 3 allora vuol dire che devo togliere batterie se ho ancora merci da rimuovere
-            cardState = CardState.PLOT_BATTERIES;
-        }
-        if(goodsLost == 0){
-            cardState = CardState.ESECUZIONE;
+            if (colorOfCurrGoodToRemove > 3 && goodsLost > 0) {
+                // se il colore corrente è maggiore di 3 allora vuol dire che devo togliere batterie se ho ancora merci da rimuovere
+                cardState = CardState.PLOT_BATTERIES;
+            }
+            if (goodsLost == 0) {
+                defeatedTruckers.removeFirst();
+            }else {
+                if (winnerTrucker!=null) {
+                    cardState = CardState.CHOOSE_TO_GAIN;
+                }else cardState=CardState.ESECUZIONE;
+            }
         }
         return cardState;
 
@@ -305,7 +316,7 @@ public class Smugglers extends Card {
      * @param trucker
      */
 
-    public void removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen {
+    public CardState removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen {
         if (cardState != CardState.REMOVE_ASKING){
             throw new IllegalStateException("Can't call removeAsking in the state " + cardState);
         }
@@ -326,10 +337,8 @@ public class Smugglers extends Card {
             list.add(goodsToRemove.get(index));
         }
         removeWithoutAsking(trucker,list,bank);
-        playersDecisions++;
-        if(playersDecisions==defeatedTruckers.size()){
-            cardState = CardState.ESECUZIONE;
-        }
+        cardState = CardState.REMOVE_GOODS;
+        return cardState;
     }
 
     public int getNumOfBatteriesToRemove(){
@@ -339,7 +348,7 @@ public class Smugglers extends Card {
         return goodsLost;
     }
 
-    public void removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
+    public CardState removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
         if(cardState!= CardState.REMOVE_BATTERIES){
             throw new IllegalStateException("Can't call removeBatteries in the state " + cardState);
         }
@@ -361,10 +370,8 @@ public class Smugglers extends Card {
         }catch(NotEnoughBatteries e){
             throw new NotEnoughBatteries("Not enough batteries");
         }
-        playersDecisions++;
-        if(playersDecisions==defeatedTruckers.size()){
-            cardState = CardState.ESECUZIONE;
-        }
+        cardState = CardState.REMOVE_GOODS;
+        return cardState;
     }
 
 
@@ -378,14 +385,7 @@ public class Smugglers extends Card {
      */
     @Override
     public CardState cardEffect(Game game) {
-        if (cardState != CardState.ESECUZIONE) {
-            throw new IllegalStateException("Card state is not ESECUZIONE");
-        }
-        if(choiceToGain){
-            cardState = CardState.SWAP;
-        } else{
-            cardState = CardState.EXIT;
-        }
+        cardState = CardState.EXIT;
         return cardState;
     }
 }

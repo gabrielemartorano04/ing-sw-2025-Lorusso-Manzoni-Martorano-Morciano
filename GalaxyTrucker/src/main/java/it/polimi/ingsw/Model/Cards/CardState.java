@@ -25,5 +25,6 @@ public enum CardState {
     REMOVE_BATTERIES,
     REARRANGE,
     PLOT_GOODSLIST,
-    PLOT_BATTERIES
+    PLOT_BATTERIES,
+    PLOT_BANK
 }
