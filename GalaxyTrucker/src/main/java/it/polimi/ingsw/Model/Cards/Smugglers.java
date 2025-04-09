@@ -29,6 +29,7 @@ public class Smugglers extends Card {
     private ArrayList<ArrayList<int[]>> doubleCannonsCoord; // coordinates of the double cannons the trucker wants to activate
     private int playersDecisions; // number of players that gave a choice
     private int currGood;
+    private boolean chooseToGain;
     // variabili per la remove
     private int colorOfCurrGoodToRemove; // vale 0 se è rosso, 1 se è giallo, 2 se è verde e 3 se è blu
     private int numOfCurrTypeOfGood;
@@ -57,6 +58,7 @@ public class Smugglers extends Card {
         this.playersDecisions = 0;
         this.currGood=0;
         this.winnerTrucker=null;
+        this.chooseToGain=false;
     }
 
     /**
@@ -151,11 +153,16 @@ public class Smugglers extends Card {
             throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
         }
         if (choice) {
+            if (!chooseToGain) {
+                this.chooseToGain = choice;
+            }
             cardState = CardState.GOODSTOADD;
             return goodsGained[currGood];
         }else {
             if(currGood==goodsGained.length-1) {
-                cardState = CardState.REARRANGE;
+                if (chooseToGain) {
+                    cardState = CardState.REARRANGE;
+                }else cardState = CardState.ESECUZIONE;
             } else currGood++;
             return null;
         }
@@ -385,6 +392,9 @@ public class Smugglers extends Card {
      */
     @Override
     public CardState cardEffect(Game game) {
+        if(chooseToGain){
+            game.moveBackward(winnerTrucker, days);
+        }
         cardState = CardState.EXIT;
         return cardState;
     }
