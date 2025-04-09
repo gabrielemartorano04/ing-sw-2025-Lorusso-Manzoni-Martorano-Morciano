@@ -305,7 +305,7 @@ public class SpaceShip {
      */
     public void addComponent(Component component, int x, int y) throws InvalidCoordinates{
         if(components[x][y]==null ) {
-            components[x][y] = component;
+            components[x][y] = component;//aggiungi un component agganciato
             switch (component){
                 case Cannon cannon->{
                     if(cannon.getIsDouble())

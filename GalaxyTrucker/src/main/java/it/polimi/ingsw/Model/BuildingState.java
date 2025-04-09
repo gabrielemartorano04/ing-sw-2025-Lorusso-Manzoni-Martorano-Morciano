@@ -5,7 +5,6 @@ public enum BuildingState {
     SELECT_COMPONENT,
     SHOW_STACK,
     TURN_HOURGLASS,
-    TURN_HOURGLASS_END,
     LINK,
     KEEP,
     END

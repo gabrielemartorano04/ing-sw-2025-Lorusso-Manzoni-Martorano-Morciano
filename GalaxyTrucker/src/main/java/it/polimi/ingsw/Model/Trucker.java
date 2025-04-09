@@ -70,9 +70,6 @@ public class Trucker {
                     case "Turn Hourglass":
                         buildingState=BuildingState.TURN_HOURGLASS;
                         break;
-                    case "Turn Hourglass end":
-                        buildingState=BuildingState.TURN_HOURGLASS_END;
-                        break;
                     case "Select Component":
                         buildingState=BuildingState.SELECT_COMPONENT;
                         break;
@@ -143,6 +140,7 @@ public class Trucker {
         }
         Component selectedComponent;
         selectedComponent=game.getComponents().getComponents().get(index);
+        //controlla index
         game.getComponents().getComponents().remove(index);
         buildingState=BuildingState.SELECT_COMPONENT;
         return selectedComponent;
@@ -156,22 +154,10 @@ public class Trucker {
         if(game.getHourglass().getTimeTurns()==0 && game.getHourglass().timeIsUp()){
             game.getHourglass().reset();
             buildingState=BuildingState.BUILDING;
-        }
-        else {
-            buildingState=BuildingState.BUILDING;
-            throw new CannotTurnHourglassException("You can't turn the hourglass now!");
-        }
-    }
-
-    public void turnHourglassEnd(Game game) throws CannotTurnHourglassException{
-        if(buildingState!=BuildingState.TURN_HOURGLASS_END){
-            throw new IllegalStateException("Trucker is not in the last turn hourglass state");
-        }
-        if(game.getHourglass().getTimeTurns()==1 && game.getHourglass().timeIsUp()){
+        } else if (game.getHourglass().getTimeTurns()==1 && game.getHourglass().timeIsUp()){
             game.getHourglass().reset();
             buildingState=BuildingState.END;
-        }
-        else {
+        } else {
             buildingState=BuildingState.BUILDING;
             throw new CannotTurnHourglassException("You can't turn the hourglass now!");
         }
