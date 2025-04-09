@@ -58,6 +58,7 @@ public class Smugglers extends Card {
         this.playersDecisions = 0;
         this.choiceToGain = false;
         this.currGood=0;
+        this.winnerTrucker=null;
     }
 
     /**
@@ -124,7 +125,7 @@ public class Smugglers extends Card {
             winnerTrucker = trucker;
             do {
                 if (bank.getGoodsInBank(goodsGained[currGood].getValue()) >= 1) {
-                    cardState = CardState.CHOOSE_TO_GAIN;
+                    cardState = CardState.REMOVE_GOODS;
                 } else {
                     currGood++;
                     if(currGood>= goodsGained.length) {
@@ -133,7 +134,10 @@ public class Smugglers extends Card {
                 }
             }while(currGood<goodsGained.length && cardState!=CardState.CHOOSE_TO_GAIN);
         }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == smugglersPower){
-            cardState = CardState.ESECUZIONE;
+            if (playersDecisions == numPlayer) {
+                playersDecisions=0;
+                cardState = CardState.REMOVE_GOODS;
+            }else cardState = CardState.ATTESA_RISPOSTE;;
         }else {
             defeatedTruckers.add(trucker);
             if (playersDecisions == numPlayer) {
@@ -185,7 +189,7 @@ public class Smugglers extends Card {
                 } else {
                     currGood++;
                     if(currGood>=goodsGained.length) {
-                        cardState = CardState.ESECUZIONE;
+                        cardState = CardState.REARRANGE;
                     }
                 }
             }while(currGood<goodsGained.length && cardState!=CardState.CHOOSE_TO_GAIN);
@@ -223,40 +227,46 @@ public class Smugglers extends Card {
         }
         ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
 
-        // se il colore corrente è minore uguale a 3 allora devo togliere le merci
-        while(colorOfCurrGoodToRemove<=3 && goodsLost>0) {
-            switch (colorOfCurrGoodToRemove) {
-                case 0 -> {
-                    numOfCurrTypeOfGood = trucker.getSpaceShip().getRedGoods();
-                    colorOfCurrGoodToRemove++;
+        if(!defeatedTruckers.isEmpty()) {
+            // se il colore corrente è minore uguale a 3 allora devo togliere le merci
+            while (colorOfCurrGoodToRemove <= 3 && goodsLost > 0) {
+                switch (colorOfCurrGoodToRemove) {
+                    case 0 -> {
+                        numOfCurrTypeOfGood = trucker.getSpaceShip().getRedGoods();
+                        colorOfCurrGoodToRemove++;
+                    }
+                    case 1 -> {
+                        numOfCurrTypeOfGood = trucker.getSpaceShip().getYellowGoods();
+                        colorOfCurrGoodToRemove++;
+                    }
+                    case 2 -> {
+                        numOfCurrTypeOfGood = trucker.getSpaceShip().getGreenGoods();
+                        colorOfCurrGoodToRemove++;
+                    }
+                    case 3 -> {
+                        numOfCurrTypeOfGood = trucker.getSpaceShip().getBlueGoods();
+                        colorOfCurrGoodToRemove++;
+                    }
                 }
-                case 1 -> {
-                    numOfCurrTypeOfGood = trucker.getSpaceShip().getYellowGoods();
-                    colorOfCurrGoodToRemove++;
-                }
-                case 2 -> {
-                    numOfCurrTypeOfGood = trucker.getSpaceShip().getGreenGoods();
-                    colorOfCurrGoodToRemove++;
-                }
-                case 3 -> {
-                    numOfCurrTypeOfGood = trucker.getSpaceShip().getBlueGoods();
-                    colorOfCurrGoodToRemove++;
-                }
-            }
 
-            if (numOfCurrTypeOfGood <= goodsLost) {
-                removeWithoutAsking(trucker,goodsList, bank);
-            } else {
-                cardState = CardState.PLOT_GOODSLIST;
-                break;
+                if (numOfCurrTypeOfGood <= goodsLost) {
+                    removeWithoutAsking(trucker, goodsList, bank);
+                } else {
+                    cardState = CardState.PLOT_GOODSLIST;
+                    break;
+                }
             }
-        }
-        if (colorOfCurrGoodToRemove > 3 && goodsLost > 0) {
-            // se il colore corrente è maggiore di 3 allora vuol dire che devo togliere batterie se ho ancora merci da rimuovere
-            cardState = CardState.PLOT_BATTERIES;
-        }
-        if(goodsLost == 0){
-            cardState = CardState.ESECUZIONE;
+            if (colorOfCurrGoodToRemove > 3 && goodsLost > 0) {
+                // se il colore corrente è maggiore di 3 allora vuol dire che devo togliere batterie se ho ancora merci da rimuovere
+                cardState = CardState.PLOT_BATTERIES;
+            }
+            if (goodsLost == 0) {
+                defeatedTruckers.removeFirst();
+            }else {
+                if (winnerTrucker!=null) {
+                    cardState = CardState.CHOOSE_TO_GAIN;
+                }else cardState=CardState.ESECUZIONE;
+            }
         }
         return cardState;
 
@@ -326,10 +336,7 @@ public class Smugglers extends Card {
             list.add(goodsToRemove.get(index));
         }
         removeWithoutAsking(trucker,list,bank);
-        playersDecisions++;
-        if(playersDecisions==defeatedTruckers.size()){
-            cardState = CardState.ESECUZIONE;
-        }
+        cardState = CardState.REMOVE_GOODS;
     }
 
     public int getNumOfBatteriesToRemove(){
@@ -361,10 +368,7 @@ public class Smugglers extends Card {
         }catch(NotEnoughBatteries e){
             throw new NotEnoughBatteries("Not enough batteries");
         }
-        playersDecisions++;
-        if(playersDecisions==defeatedTruckers.size()){
-            cardState = CardState.ESECUZIONE;
-        }
+        cardState = CardState.REMOVE_GOODS;
     }
 
 
