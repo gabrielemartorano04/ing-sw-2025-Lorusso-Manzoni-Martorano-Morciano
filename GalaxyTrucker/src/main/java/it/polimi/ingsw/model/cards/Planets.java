@@ -1,10 +1,11 @@
-package it.polimi.ingsw.Model.Cards;
+package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.Exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.exceptions.PlanetNotFreeException;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.Trucker;
 
