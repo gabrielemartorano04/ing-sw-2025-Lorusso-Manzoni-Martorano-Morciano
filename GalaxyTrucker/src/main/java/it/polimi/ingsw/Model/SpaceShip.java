@@ -34,6 +34,7 @@ public class SpaceShip {
      * This constructor also initialize the main cabin in the middle of the spaceship.
      */
     //chiedi per parametro color per inizializzare il colore della main cabin
+
     public SpaceShip() {
         components = new Component[10][11];
         kept = new ArrayList<>();
@@ -309,7 +310,17 @@ public class SpaceShip {
      */
     public void addComponent(Component component, int x, int y) throws InvalidCoordinates{
         if(components[x][y]==null ) {
-            components[x][y] = component;//aggiungi un component agganciato
+            if(
+                    (components[x+1][y]!=null && !components[x+1][y].getType().equals("Empty Space") && compatibleLinks(components[x][y].getLink()[2],components[x+1][y].getLink()[0]))
+                    || (components[x+1][y]!=null && !components[x-1][y].getType().equals("Empty Space") && compatibleLinks(components[x][y].getLink()[0],components[x-1][y].getLink()[2]))
+                    || (components[x+1][y]!=null && !components[x][y+1].getType().equals("Empty Space") && compatibleLinks(components[x][y].getLink()[1],components[x][y+1].getLink()[3]))
+                    || (components[x+1][y]!=null && !components[x][y-1].getType().equals("Empty Space") && compatibleLinks(components[x][y].getLink()[3],components[x][y-1].getLink()[1]))
+            ){
+                components[x][y] = component;
+            }
+            else{
+                throw new InvalidCoordinates("The component is not linked in this space");
+            }
             switch (component){
                 case Cannon cannon->{
                     if(cannon.getIsDouble())
@@ -323,8 +334,6 @@ public class SpaceShip {
             }
         }
         else throw new InvalidCoordinates("You can't place a component here");
-        //else eccezione non puoi riempire un emptyspace
-        //check se non attaccato a niente
     }
 
     /**
@@ -333,9 +342,11 @@ public class SpaceShip {
      * @param y y coordinate of the component to remove
      * @return the removed component
      */
-    public Component removeComponent(int x, int y) {
+    public Component removeComponent(int x, int y) throws InvalidCoordinates {
 
-        //se components[x][y] già null eccezione non c'è niente qua
+        if(components[x][y]==null){
+            throw new InvalidCoordinates("No component to be removed in this position");
+        }
         Component com=components[x][y];
         switch (components[x][y]) {
             case EmptySpace c -> {}
@@ -504,6 +515,7 @@ public class SpaceShip {
         int linkU = comU.getLink()[2];
         int linkR = comR.getLink()[3];
         int linkD = comD.getLink()[0];
+
         int linkL = comL.getLink()[1];
         //CONTROLLO CHE U,R,D,L SIA COLLEGATO BENE
         switch (components[x][y]) {
@@ -672,7 +684,11 @@ public class SpaceShip {
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (!isValid(i, j))
-                    removeComponent(i,j);
+                    try{
+                        removeComponent(i,j);
+                    } catch (InvalidCoordinates e) {
+                        throw new RuntimeException(e);
+                    }
                     wellDone=false;
             }
         }
@@ -754,7 +770,11 @@ public class SpaceShip {
                                 c=components[i][num];
                                 x=i;
                                 y=num;
-                                removeComponent(i, num);
+                                try{
+                                    removeComponent(i, num);
+                                } catch (InvalidCoordinates e) {
+                                    throw new RuntimeException(e);
+                                }
                                 lost++;
                             }
                         }
@@ -772,7 +792,11 @@ public class SpaceShip {
                                 c=components[num][j];
                                 x=num;
                                 y=j;
-                                removeComponent(num, j);
+                                try{
+                                    removeComponent(num, j);
+                                } catch (InvalidCoordinates e) {
+                                    throw new RuntimeException(e);
+                                }
                                 lost++;
                             }
                         }
@@ -789,7 +813,11 @@ public class SpaceShip {
                                 c=components[i][num];
                                 x=i;
                                 y=num;
-                                removeComponent(i, num);
+                                try{
+                                    removeComponent(i, num);
+                                } catch (InvalidCoordinates e) {
+                                    throw new RuntimeException(e);
+                                }
                                 lost++;
                             }
                         }
@@ -806,7 +834,11 @@ public class SpaceShip {
                                 c=components[num][j];
                                 x=num;
                                 y=j;
-                                removeComponent(num, j);
+                                try{
+                                    removeComponent(num, j);
+                                } catch (InvalidCoordinates e) {
+                                    throw new RuntimeException(e);
+                                }
                                 lost++;
 
                             }
@@ -923,7 +955,11 @@ public class SpaceShip {
                         case EmptySpace emptySpace->{}
                         default -> {
                             if(!components[i][j].isVisited()) {
-                                removeComponent(i, j);
+                                try {
+                                    removeComponent(i, j);
+                                } catch (InvalidCoordinates e) {
+                                    throw new RuntimeException(e);
+                                }
                                 lost++;
                             }
                         }
@@ -1186,65 +1222,6 @@ public class SpaceShip {
             }
         }
     }
-
-    /**
-     * This method remove a number of goods from the spaceship, through goodsList it's easy to access
-     * the component that contains a certain good, so we remove it from the component and from goodsList.
-     * If the player loses all his goods and he has to lose more, he will lose the rest in batteries,
-     * at the beginning the player choose battery storages from which he can remove batteries
-     * @param numOfLostGoods number of gooods the player has to remove
-     * @param coordL coordinates of loads from which the player wants to remove goods
-     * @param coordB coordinates of battery storages from which he will lose batteries eventually
-     */
-    /*public void removeGoods(int numOfLostGoods, ArrayList<int[]> coordL,ArrayList<int[]> coordB) {
-        int x = 0;
-        int y = 0;
-
-        int batteryQuantity = 0;
-        if (goodsList.size() > numOfLostGoods) {
-            //possiamo rimuovere merci
-            for (int i = 0; i < numOfLostGoods; i++) {
-                goodsList.remove(i);
-            }
-        } else {
-            while (goodsList.size()>0) {
-                if(coordL.contains(new int[]{x,y})){
-                    x = goodsList.get(0).getX();
-                    y = goodsList.get(0).getY();
-                    switch(components[x][y]){
-                        case Load load->{
-                            load.removeGoodFromHead();
-                        }default -> {}
-                    }
-
-                    goodsList.remove(0);
-                    numOfLostGoods--;
-                }
-
-
-            }
-            while (numOfLostGoods > 0) {
-                //mi restituisce  le coordinate dei componenti da cui vuole togliere batterie
-                for (int[] c : coordB) {
-                    switch(components[c[0]][c[1]]){
-                        case BatteryStorage batteryStorage->{
-                            batteryQuantity = batteryStorage.getQuantity();
-                            if (batteryQuantity <= numOfLostGoods) {
-                                batteryStorage.setQuantity(0);
-                                numOfLostGoods = numOfLostGoods - batteryQuantity;
-                            } else {
-                                batteryQuantity = batteryQuantity - numOfLostGoods;
-                                batteryStorage.setQuantity(batteryQuantity);
-                                numOfLostGoods = 0;
-                            }
-                        }default -> {}
-                    }
-
-                }
-            }
-
-        }
-    }*/
 
 
 
