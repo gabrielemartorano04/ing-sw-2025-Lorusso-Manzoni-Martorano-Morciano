@@ -756,7 +756,7 @@ public class SpaceShip {
      * @param num number of row or colon from which the meteorite arrives
      * @param direction Direction 0-->N, 1-->E, 2-->S, 3-->W from which the meteorite arrives
      */
-    public void destroyComponent(int num, int direction) {
+    public void destroyComponent(int num, int direction, Bank bank) {
         Component c=null;
         int x=0; int y=0;
         switch (direction) {
@@ -869,6 +869,7 @@ public class SpaceShip {
                                 else if(g.getValue()==2) greenGoods--;
                                 else if(g.getValue()==1) blueGoods--;
                                 goodsList.remove(g);
+                                bank.addGoodsInBank(g.getValue());
                             }
                         }
                     }
@@ -1243,7 +1244,7 @@ public class SpaceShip {
      * @param goods list of goods the player wants to add
      * @param coord coordinates of Load components
      */
-    public void addGoods(List <Goods> goods,ArrayList<int[]> coord){
+    public void addGoods(List <Goods> goods,ArrayList<int[]> coord,Bank bank){
         int index=0;
         for(int[] c : coord){
             int i=c[0];
@@ -1255,11 +1256,13 @@ public class SpaceShip {
                             if (load.getIsSpecial() && goods.get(index).getValue() == 4) {
                                 load.addGood(goods.get(index));
                                 addGoodsList(goods.get(index));
+                                bank.removeGoodsInBank(goods.get(index).getValue());
                                 index++;
                             }
                             else if (goods.get(index).getValue() != 4) {
                                 load.addGood(goods.get(index));
                                 addGoodsList(goods.get(index));
+                                bank.removeGoodsInBank(goods.get(index).getValue());
                                 index++;
                             }
                         }
@@ -1280,8 +1283,10 @@ public class SpaceShip {
                                         if(l.getIsSpecial()){
                                             l.removeGood(g);
                                             goodsList.remove(i);
+                                            bank.addGoodsInBank(g.getValue());
                                             l.addGood(goods.get(j));
                                             addGoodsList(goods.get(j));
+                                            bank.removeGoodsInBank(goods.get(j).getValue());
                                         }
                                     }
                                     default -> {}
@@ -1297,7 +1302,9 @@ public class SpaceShip {
                         goods.get(j).setY(goodsList.get(i).getY());
                         switch(components[goodsList.get(i).getX()][goodsList.get(i).getY()]){
                             case Load loadToRemove->{
+                                bank.addGoodsInBank(goodsList.get(i).getValue());
                                 loadToRemove.removeGood(goodsList.get(i));
+                                bank.removeGoodsInBank(goods.get(j).getValue());
                                 loadToRemove.addGood(goods.get(j));
                                 goodsList.remove(i);
                                 addGoodsList(goods.get(j));
@@ -1319,7 +1326,7 @@ public class SpaceShip {
      * @param value position in the load
      * @throws InvalidPositionException if the good is special but not the choosen load
      */
-    public void addGood(Goods good,int[] coord,int value ) throws InvalidPositionException{
+    public void addGood(Goods good,int[] coord,int value ,Bank bank) throws InvalidPositionException{
         if(components[coord[0]][coord[1]]!=null){
             switch(components[coord[0]][coord[1]]){
                 case Load load->{
@@ -1328,12 +1335,15 @@ public class SpaceShip {
                     }
                     if(load.getCapacity()-load.getQuantity()>0){
                         load.getGoods().add(value,good);
+                        bank.removeGoodsInBank(good.getValue());
                         addGoodsList(good);
                     }
                     else{
                         Goods g=load.getGoods().get(value);
                         load.getGoods().remove(g);
+                        bank.addGoodsInBank(g.getValue());
                         load.getGoods().add(value,good);
+                        bank.removeGoodsInBank(good.getValue());
                         goodsList.remove(g);
                         addGoodsList(good);
                     }
