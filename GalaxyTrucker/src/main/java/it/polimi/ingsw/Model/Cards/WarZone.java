@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Exceptions.*;
+import it.polimi.ingsw.Model.Bank;
 import it.polimi.ingsw.Model.Components.Goods;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Controller.GameController;
@@ -193,7 +194,7 @@ public class WarZone extends Card {
     }
 
 
-    public CardState manageRemoveGoods(Trucker trucker){
+    public CardState manageRemoveGoods(Trucker trucker, Bank bank){
         if(state != CardState.REMOVE_GOODS){
             throw new IllegalStateException("plotGoodsToRemove not callable in the state " + state);
         }
@@ -226,7 +227,7 @@ public class WarZone extends Card {
                 break;
             }
             if (numOfCurrTypeOfGood <= numOfGoodsToRemove) {
-                removeWithoutAsking(trucker,goodsList);
+                removeWithoutAsking(trucker,goodsList,bank);
             } else {
                 state = CardState.PLOT_GOODSLIST;
                 break;
@@ -251,7 +252,7 @@ public class WarZone extends Card {
 
     }
 
-    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList) {
+    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank) {
         if(this.numOfCurrTypeOfGood == 0){
             throw new RuntimeException("NumOfGoods is 0 but you called removeWithoutAsking");
         }
@@ -260,7 +261,9 @@ public class WarZone extends Card {
         }
         ArrayList<Goods> list = new ArrayList<>();
         for (int i = 0; i < numOfCurrTypeOfGood; i++) {
-            list.add(goodsList.getFirst());
+            Goods good = goodsList.getFirst();
+            list.add(good);
+            bank.addGoodsInBank(good.getValue());
             goodsList.removeFirst();
             numOfGoodsToRemove--;
         }
@@ -292,7 +295,7 @@ public class WarZone extends Card {
      * @param trucker
      */
 
-    public void removeAsking(ArrayList<Integer> indexes, Trucker trucker) throws InvalidGoodChosen, NotEnoughGoodsChosen {
+    public void removeAsking(Bank bank, ArrayList<Integer> indexes, Trucker trucker) throws InvalidGoodChosen, NotEnoughGoodsChosen {
         if (state != CardState.REMOVE_ASKING){
             throw new IllegalStateException("Can't call removeAsking in the state " + state);
         }
@@ -312,7 +315,7 @@ public class WarZone extends Card {
         for(Integer index : indexes){
             list.add(goodsToRemove.get(index));
         }
-        removeWithoutAsking(trucker,list);
+        removeWithoutAsking(trucker,list, bank);
         if(currConditionIndex == conditionsOrder.size()){
             state = CardState.EXIT;
         }else {
