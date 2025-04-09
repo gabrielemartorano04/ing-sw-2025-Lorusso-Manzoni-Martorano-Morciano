@@ -26,5 +26,6 @@ public enum CardState {
     REARRANGE,
     PLOT_GOODSLIST,
     PLOT_BATTERIES,
-    PLOT_BANK
+    PLOT_BANK,
+    INITIALIZE
 }
