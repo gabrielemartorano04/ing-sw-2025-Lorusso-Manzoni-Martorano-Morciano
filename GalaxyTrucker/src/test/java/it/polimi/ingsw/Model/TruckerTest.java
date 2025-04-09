@@ -1,8 +1,4 @@
-package it.polimi.ingsw;
-
-import it.polimi.ingsw.Model.BuildingState;
-import it.polimi.ingsw.Model.PlayerColors;
-import it.polimi.ingsw.Model.Trucker;
+package it.polimi.ingsw.Model;
 
 import org.junit.After;
 import org.junit.Before;
