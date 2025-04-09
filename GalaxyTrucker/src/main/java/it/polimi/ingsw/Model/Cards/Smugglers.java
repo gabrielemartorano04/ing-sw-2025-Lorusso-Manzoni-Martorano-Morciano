@@ -7,7 +7,6 @@ import it.polimi.ingsw.Model.Trucker;
 import it. polimi.ingsw.Model.Bank;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 
