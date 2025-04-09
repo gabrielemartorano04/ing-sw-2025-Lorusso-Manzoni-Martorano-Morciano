@@ -20,6 +20,7 @@ public class AbandonedShip extends Card {
     private Trucker truckerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
     private ArrayList<int[]> coordinates = null; //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
     private CardState state = CardState.ATTESA_RISPOSTE;
+    private int playerDecisions;
 
     /**
      * Abandoned ship constructor, initialise the attributes of this class
@@ -36,6 +37,9 @@ public class AbandonedShip extends Card {
         this.numHuman = numHuman;
         this.credits = credits;
         this.days = days;
+        this.truckerThatHasDecided = null;
+        this.playerDecisions = 0;
+        this.state = CardState.ATTESA_RISPOSTE;
     }
 
     @Override
@@ -69,19 +73,23 @@ public class AbandonedShip extends Card {
 
     /**
      * Sets the only trucker that has chosen to take the ship
-     * @param truckerThatHasDecided trucker ID
+     * @param trucker trucker ID
      */
-    public synchronized CardState setTruckerThatHasDecided(Trucker truckerThatHasDecided)  {
+    public CardState setTruckerThatHasDecided(Trucker trucker, boolean landing, int numPlayer)  {
         if(state != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("SetTruckerThatHasDecided not callable in state: " + state);
         }
-        if(truckerThatHasDecided == null){
-            throw new RuntimeException("TruckerThatHasDecided is null");
+        if(landing) {
+            truckerThatHasDecided = trucker;
+            state = CardState.HUMANSTOREMOVE;
+        }else{
+            if (playerDecisions == numPlayer){
+                state = CardState.ESECUZIONE;
+            }else{
+                state = CardState.ATTESA_RISPOSTE;
+            }
         }
-        this.truckerThatHasDecided = truckerThatHasDecided;
-        if(coordinates!=null){
-            state = CardState.ESECUZIONE;
-        }
+        playerDecisions++;
         return state;
     }
 
@@ -89,8 +97,8 @@ public class AbandonedShip extends Card {
      * Sets the coordinates of the cabins from which he wants to remove the crew members required
      * @param coordinates list of arrays of coordinates of the cabins
      */
-    public synchronized CardState setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates {
-        if(state != CardState.ATTESA_RISPOSTE) {
+    public CardState setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates {
+        if(state != CardState.HUMANSTOREMOVE) {
             throw new IllegalStateException("Can't call setCoordinates in the state: " + state);
         }
         if(coordinates==null|| coordinates.isEmpty()){
