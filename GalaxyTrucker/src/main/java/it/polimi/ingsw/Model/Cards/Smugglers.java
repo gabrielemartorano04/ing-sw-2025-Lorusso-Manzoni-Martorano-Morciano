@@ -28,7 +28,6 @@ public class Smugglers extends Card {
     private CardState cardState;
     private ArrayList<ArrayList<int[]>> doubleCannonsCoord; // coordinates of the double cannons the trucker wants to activate
     private int playersDecisions; // number of players that gave a choice
-    private boolean choiceToGain;
     private int currGood;
     // variabili per la remove
     private int colorOfCurrGoodToRemove; // vale 0 se è rosso, 1 se è giallo, 2 se è verde e 3 se è blu
@@ -56,7 +55,6 @@ public class Smugglers extends Card {
         this.doubleCannonsCoord= new ArrayList<>();
         this.cardState = CardState.ATTESA_RISPOSTE;
         this.playersDecisions = 0;
-        this.choiceToGain = false;
         this.currGood=0;
         this.winnerTrucker=null;
     }
@@ -109,7 +107,7 @@ public class Smugglers extends Card {
         this.winnerTrucker = winnerTrucker;
     }
 
-    public void addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker, Bank bank) throws IllegalStateException, InvalidComponentsException{
+    public CardState addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker, Bank bank) throws IllegalStateException, InvalidComponentsException{
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
         }
@@ -129,10 +127,10 @@ public class Smugglers extends Card {
                 } else {
                     currGood++;
                     if(currGood>= goodsGained.length) {
-                        cardState = CardState.ESECUZIONE;
+                        cardState = CardState.REMOVE_GOODS;
                     }
                 }
-            }while(currGood<goodsGained.length && cardState!=CardState.CHOOSE_TO_GAIN);
+            }while(currGood<goodsGained.length && cardState!=CardState.REMOVE_GOODS);
         }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == smugglersPower){
             if (playersDecisions == numPlayer) {
                 playersDecisions=0;
@@ -145,6 +143,7 @@ public class Smugglers extends Card {
                 cardState = CardState.REMOVE_GOODS;
             }else cardState = CardState.ATTESA_RISPOSTE;
         }
+        return cardState;
     }
 
     public Goods setChoiceToGain(boolean choice) throws IllegalStateException {
@@ -152,7 +151,6 @@ public class Smugglers extends Card {
             throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
         }
         if (choice) {
-            this.choiceToGain = choice;
             cardState = CardState.GOODSTOADD;
             return goodsGained[currGood];
         }else {
@@ -167,7 +165,7 @@ public class Smugglers extends Card {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param winnerCoordinatesToAddGood list of coordinatest
      */
-    public void setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws IllegalStateException, InvalidPositionException, InvalidCoordinates  {
+    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws IllegalStateException, InvalidPositionException, InvalidCoordinates  {
         if (cardState != CardState.GOODSTOADD) {
             throw new IllegalStateException("Card state is not GOODSTOADD");
         }
@@ -179,6 +177,7 @@ public class Smugglers extends Card {
             bank.removeGoodsInBank(goodsGained[currGood].getValue());
         }catch (InvalidPositionException e) {
             cardState = CardState.GOODSTOADD;
+            return cardState;
         }
         if(currGood == goodsGained.length-1){
             cardState = CardState.REARRANGE;
@@ -196,11 +195,11 @@ public class Smugglers extends Card {
                 }
             }while(currGood<goodsGained.length && cardState!=CardState.CHOOSE_TO_GAIN);
         }
-
+        return cardState;
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
-    public void rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
+    public CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
             throw new IllegalStateException("Card state is not REARRANGE");
         }
@@ -217,7 +216,7 @@ public class Smugglers extends Card {
         } else{
             cardState = CardState.ESECUZIONE;
         }
-
+        return cardState;
     }
 
     public CardState manageRemoveGoods(Trucker trucker, Bank bank){
@@ -317,7 +316,7 @@ public class Smugglers extends Card {
      * @param trucker
      */
 
-    public void removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen {
+    public CardState removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen {
         if (cardState != CardState.REMOVE_ASKING){
             throw new IllegalStateException("Can't call removeAsking in the state " + cardState);
         }
@@ -339,6 +338,7 @@ public class Smugglers extends Card {
         }
         removeWithoutAsking(trucker,list,bank);
         cardState = CardState.REMOVE_GOODS;
+        return cardState;
     }
 
     public int getNumOfBatteriesToRemove(){
@@ -348,7 +348,7 @@ public class Smugglers extends Card {
         return goodsLost;
     }
 
-    public void removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
+    public CardState removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
         if(cardState!= CardState.REMOVE_BATTERIES){
             throw new IllegalStateException("Can't call removeBatteries in the state " + cardState);
         }
@@ -371,6 +371,7 @@ public class Smugglers extends Card {
             throw new NotEnoughBatteries("Not enough batteries");
         }
         cardState = CardState.REMOVE_GOODS;
+        return cardState;
     }
 
 

@@ -15,6 +15,9 @@ public class Bank {
         return goods[valueOfGoods];
     }
 
+    public int[] getGoods(){
+        return goods.clone();
+    }
     public void addGoodsInBank(int valueOfGoods) {
         goods[valueOfGoods]++;
     }
