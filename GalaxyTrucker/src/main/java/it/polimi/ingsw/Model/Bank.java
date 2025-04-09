@@ -18,6 +18,16 @@ public class Bank {
     public int[] getGoods(){
         return goods.clone();
     }
+
+    public boolean isEmpty(){
+        for( int i = 0; i < goods.length; i++){
+            if(goods[i] != 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void addGoodsInBank(int valueOfGoods) {
         goods[valueOfGoods]++;
     }
