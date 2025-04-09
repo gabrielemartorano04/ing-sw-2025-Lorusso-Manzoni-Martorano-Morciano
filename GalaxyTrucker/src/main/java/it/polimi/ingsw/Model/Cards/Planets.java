@@ -147,16 +147,21 @@ public class Planets extends Card {
                 state = CardState.CHOOSE_TO_GAIN;
             } else {
                 currGood++;
-                // se per la lista del pianeta scelto dal giocatore corrente non ho nulla in
+
+                // nella banca non c'è disponibilità per nessuna delle merci della lista del pianeta scelto dal giocatore corrente
                 if (currGood == currGoodsList.size()) {
-                    currGood = 0;
-                    currPlayerIndex++;
-                    if(currPlayerIndex == truckersLanded.size()){
-                        state = CardState.ESECUZIONE;
-                    }
-                    else {
-                        this.currTrucker = truckersLanded.get(currPlayerIndex);
-                        this.currGoodsList = planets.get(truckersLanded.indexOf(currTrucker));
+                    // se la lista da passare non è vuota allora puoi scegliere anche se la banca non aveva le tue merci
+                    if(!listToPass.isEmpty()){
+                        state = CardState.CHOOSE_TO_GAIN;
+                    }else{ // se non c'era nulla nella banca e neanche nella lista da passare allora devo passare al prossimo trucker
+                        currPlayerIndex++;
+                        currGood = 0;
+                        if(currPlayerIndex == truckersLanded.size()){
+                            state = CardState.ESECUZIONE;
+                        }else {
+                            this.currTrucker = truckersLanded.get(currPlayerIndex);
+                            this.currGoodsList = planets.get(truckersLanded.indexOf(currTrucker));
+                        }
                     }
                 }
 
@@ -170,6 +175,11 @@ public class Planets extends Card {
             state = CardState.ESECUZIONE;
         }
     }
+
+    public Goods plotCurrGood(){
+        if(state != CardState.PLOT_GOODSLIST)
+    }
+
 
     public Goods setChoiceToGain(boolean choice, Bank bank) throws IllegalStateException {
         if(state!=CardState.CHOOSE_TO_GAIN){
@@ -189,17 +199,17 @@ public class Planets extends Card {
 
     /**
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
-     * @param winnerCoordinatesToAddGood list of coordinatest
+     * @param coordinatesToAddGood list of coordinatest
      */
-    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int positionInLoad, Bank bank) throws IllegalStateException, InvalidPositionException, InvalidCoordinates  {
+    public CardState setCoordinatesToAddGoods(int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws IllegalStateException, InvalidPositionException, InvalidCoordinates  {
         if (state != CardState.GOODSTOADD) {
             throw new IllegalStateException("Card state is not GOODSTOADD");
         }
-        if (winnerCoordinatesToAddGood==null || (winnerCoordinatesToAddGood.length == 0) || !currTrucker.getSpaceShip().checkLoad(winnerCoordinatesToAddGood)) { //check load deve controllare il singolo componente
+        if (coordinatesToAddGood==null || (coordinatesToAddGood.length == 0) || !currTrucker.getSpaceShip().checkLoad(coordinatesToAddGood)) { //check load deve controllare il singolo componente
             throw new InvalidCoordinates("Not goods deposit");
         }
         try{
-            currTrucker.getSpaceShip().addGood(currGoodsList.get(currGood), winnerCoordinatesToAddGood, positionInLoad, bank);
+            currTrucker.getSpaceShip().addGood(currGoodsList.get(currGood), coordinatesToAddGood, positionInLoad, bank);
             bank.removeGoodsInBank(currGoodsList.get(currGood).getValue());
         }catch (InvalidPositionException e) {
             state = CardState.GOODSTOADD;
