@@ -29,4 +29,5 @@ public enum CardState {
     PLOT_BANK,
     INITIALIZE,
     CHOOSE_FROM_LIST,
+    PLOT_GOOD,
 }

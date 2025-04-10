@@ -33,7 +33,7 @@ public class Epidemic extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public synchronized CardState cardEffect(Game game) {
+    public CardState cardEffect(Game game) {
         if(state != CardState.ESECUZIONE) {
             throw new IllegalStateException("Non puoi settare fare CardEffect nello stato: " + state);
         }

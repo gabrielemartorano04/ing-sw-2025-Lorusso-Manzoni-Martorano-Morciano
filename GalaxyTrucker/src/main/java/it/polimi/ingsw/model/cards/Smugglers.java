@@ -147,7 +147,14 @@ public class Smugglers extends Card {
         return cardState;
     }
 
-    public Goods setChoiceToGain(boolean choice) throws IllegalStateException {
+    public Goods plotCurrGood(){
+        if(cardState!=CardState.PLOT_GOOD){
+            throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
+        }
+        return goodsGained[currGood];
+    }
+
+    public CardState setChoiceToGain(boolean choice) throws IllegalStateException {
         if(cardState!=CardState.CHOOSE_TO_GAIN){
             throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
         }
@@ -156,15 +163,14 @@ public class Smugglers extends Card {
                 this.chooseToGain = choice;
             }
             cardState = CardState.GOODSTOADD;
-            return goodsGained[currGood];
         }else {
             if(currGood==goodsGained.length-1) {
                 if (chooseToGain) {
                     cardState = CardState.REARRANGE;
                 }else cardState = CardState.ESECUZIONE;
             } else currGood++;
-            return null;
         }
+        return cardState;
     }
 
     /**
@@ -271,7 +277,7 @@ public class Smugglers extends Card {
                 defeatedTruckers.removeFirst();
             }else {
                 if (winnerTrucker!=null) {
-                    cardState = CardState.CHOOSE_TO_GAIN;
+                    cardState = CardState.PLOT_GOOD;
                 }else cardState=CardState.ESECUZIONE;
             }
         }

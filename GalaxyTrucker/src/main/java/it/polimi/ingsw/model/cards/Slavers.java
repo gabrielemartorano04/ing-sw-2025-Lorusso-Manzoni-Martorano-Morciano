@@ -111,7 +111,7 @@ public class Slavers extends Card {
      * Sets, for each trucker, the coordinates of the cabin where he/she want to remove the crew members
      * @param truckersCoordinatesToRemoveHumans list of lists of arrays of coordinates
      */
-    public void addTruckersCoordinatesToRemoveHumans(ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws InvalidCoordinates {
+    public CardState addTruckersCoordinatesToRemoveHumans(ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws InvalidCoordinates {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new IllegalStateException("Card state in not HUMANSTOREMOVE");
         }
@@ -133,6 +133,7 @@ public class Slavers extends Card {
                 cardState = CardState.CHOOSE_TO_GAIN;
             }else cardState = CardState.ESECUZIONE;
         }
+        return cardState;
     }
 
     public CardState addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException {
@@ -165,12 +166,13 @@ public class Slavers extends Card {
         return cardState;
     }
 
-    public void setChooseToGain(Boolean choice) throws IllegalStateException {
+    public CardState setChooseToGain(Boolean choice) throws IllegalStateException {
         if (cardState != CardState.GAIN) {
             throw new IllegalStateException("Card state is not GAIN");
         }
         this.choiceToGain = choice;
         cardState = CardState.ESECUZIONE;
+        return cardState;
     }
 
     /**
