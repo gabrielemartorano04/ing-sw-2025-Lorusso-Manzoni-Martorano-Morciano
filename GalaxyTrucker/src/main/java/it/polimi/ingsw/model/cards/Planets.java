@@ -40,6 +40,7 @@ public class Planets extends Card {
     private Goods currGoodToGain;
     private ArrayList<Goods> currGoodsList;
     private ArrayList<Goods> listToPass;
+    private int indexOfListToPass;
     // fine variabili per la addGood
 
     /**
@@ -69,6 +70,7 @@ public class Planets extends Card {
         this.currTrucker = null;
         this.currGoodsList = new ArrayList<>();
         this.listToPass = new ArrayList<>();
+        this.indexOfListToPass = 0;
     }
 
     /**
@@ -149,10 +151,8 @@ public class Planets extends Card {
                 state = CardState.CHOOSE_TO_GAIN;
                 return state;
             } else {
-                currGood++;
-
                 // nella banca non c'è disponibilità per nessuna delle merci della lista del pianeta scelto dal giocatore corrente
-                if (currGood == currGoodsList.size()) {
+                if (currGood == currGoodsList.size()-1) {
                     // se la lista da passare non è vuota allora puoi scegliere anche se la banca non aveva le tue merci
                     if(!listToPass.isEmpty()){
                         state = CardState.CHOOSE_FROM_LIST;
@@ -168,9 +168,10 @@ public class Planets extends Card {
                         }
                     }
                 }
-
+                currGood++;
             }
-        }while (state != CardState.CHOOSE_TO_GAIN && state != CardState.ESECUZIONE);
+        }while (state == CardState.INITIALIZE);
+
         currPlayerIndex++;
 
         // se è stato l'ultimo atterrato a scegliere di non prendersi merci allora setto lo stato a esecuzione
@@ -181,22 +182,55 @@ public class Planets extends Card {
     }
 
 
-
-    public Goods setChoiceToGain(boolean choice, Bank bank) throws IllegalStateException {
+    public Goods plotGoodFromPlanet() throws IllegalStateException {
         if(state!=CardState.CHOOSE_TO_GAIN){
-            throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
+            throw new IllegalStateException("Not callable in state: " + state);
         }
         this.currGoodToGain = currGoodsList.get(currGood);
+        return currGoodToGain;
+    }
+
+    public Goods plotGoodFromList() throws IllegalStateException {
+        if(state!=CardState.CHOOSE_FROM_LIST){
+            throw new IllegalStateException("Not callable in state: " + state);
+        }
+        this.currGoodToGain = listToPass.get(indexOfListToPass);
+        return currGoodToGain;
+    }
+
+    public CardState chooseToGain (boolean choice) throws IllegalStateException {
+        if(state!=CardState.CHOOSE_TO_GAIN){
+            throw new IllegalStateException("Not callable in state: " + state);
+        }
         if (choice) {
             state = CardState.GOODSTOADD;
-            return currGoodToGain;
         }else {
-            if(currGood==currGoodsList.size()-1) {
-                state = CardState.REARRANGE;
+            if(currGood==currGoodsList.size()-1){
+                if(listToPass.isEmpty()){
+                    state = CardState.REARRANGE;
+                }else{
+                    state = CardState.CHOOSE_FROM_LIST;
+                }
             } else currGood++;
-            return null;
         }
+        return state;
     }
+
+
+    public CardState chooseFromList (boolean choice) throws IllegalStateException {
+        if(state!=CardState.CHOOSE_FROM_LIST){
+            throw new IllegalStateException("Not callable in state: " + state);
+        }
+        if (choice) {
+            state = CardState.ADDFROMLIST;
+        }else {
+            if(indexOfListToPass==listToPass.size()-1){
+                state = CardState.REARRANGE;
+            } else indexOfListToPass++;
+        }
+        return state;
+    }
+
 
     /**
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
@@ -217,20 +251,27 @@ public class Planets extends Card {
             return state;
         }
         if(currGood == currGoodsList.size()-1){
-            state = CardState.REARRANGE;
-        }
-        else{
+            if(listToPass.isEmpty()){
+                state = CardState.REARRANGE;
+            }else{
+                state = CardState.CHOOSE_FROM_LIST;
+            }
+        }else{
             currGood++;
             do {
                 if (bank.getGoodsInBank(currGoodsList.get(currGood).getValue()) >= 1) {
                     state = CardState.CHOOSE_TO_GAIN;
                 } else {
                     currGood++;
-                    if(currGood>=currGoodsList.size()) {
-                        state = CardState.ESECUZIONE;
+                    if(currGood==currGoodsList.size()) {
+                        if(listToPass.isEmpty()){
+                            state = CardState.REARRANGE;
+                        }else{
+                            state = CardState.CHOOSE_FROM_LIST;
+                        }
                     }
                 }
-            }while(currGood<currGoodsList.size() && state!=CardState.CHOOSE_TO_GAIN);
+            }while(state==CardState.GOODSTOADD);
         }
         return state;
     }
