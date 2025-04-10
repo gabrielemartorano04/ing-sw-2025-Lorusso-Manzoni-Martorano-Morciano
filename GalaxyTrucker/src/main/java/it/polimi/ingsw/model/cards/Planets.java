@@ -94,7 +94,7 @@ public class Planets extends Card {
      * @param numPlayers: number of players in the current game
      * @throws PlanetNotFreeException: the trucker decided to land on a planet that is already occupied
      */
-    public CardState setPlayerLanding(int indexOfLanding, Trucker trucker, Bank bank, int numPlayers) throws PlanetNotFreeException {
+    public CardState setPlayerLanding(int indexOfLanding, Trucker trucker, int numPlayers) throws PlanetNotFreeException {
         if(state != CardState.ATTESA_PIANETI){
             throw new IllegalStateException("Can't land in the state: " + this.state);
         }
@@ -127,25 +127,27 @@ public class Planets extends Card {
                     numOfPlayersLanded++;
                 }
             }
-            state = CardState.CHOOSE_TO_GAIN;
-            initialize(bank);
+            state = CardState.INITIALIZE;
         }
         return state;
     }
 
-    private void initialize(Bank bank){
-        if(state != CardState.CHOOSE_TO_GAIN){
+    public CardState initialize(Bank bank){
+        if(state != CardState.INITIALIZE){
             throw new RuntimeException("Something is wrong, you called initialize in the state " + state);
         }
         if(currPlayerIndex >= numOfPlayersLanded) {
             throw new RuntimeException("All players have already added their goods");
         }
+
         this.currTrucker = truckersLanded.get(currPlayerIndex);
         this.currGoodsList = planets.get(truckersLanded.indexOf(currTrucker));
         this.currGood = 0;
+
         do {
             if (bank.getGoodsInBank(currGoodsList.get(currGood).getValue()) >= 1) {
                 state = CardState.CHOOSE_TO_GAIN;
+                return state;
             } else {
                 currGood++;
 
@@ -153,22 +155,31 @@ public class Planets extends Card {
                 if (currGood == currGoodsList.size()) {
                     // se la lista da passare non è vuota allora puoi scegliere anche se la banca non aveva le tue merci
                     if(!listToPass.isEmpty()){
-                        state = CardState.CHOOSE_TO_GAIN;
-                    }else{ // se non c'era nulla nella banca e neanche nella lista da passare
-
+                        state = CardState.CHOOSE_FROM_LIST;
+                        return state;
+                    }else{ // se non c'era nulla nella banca e neanche nella lista da passare inizializzo per il prossimo trucker
+                        currGood = 0;
+                        currPlayerIndex++;
+                        if(currPlayerIndex == truckersLanded.size()){
+                            state = CardState.ESECUZIONE;
+                        }else{
+                            currTrucker = truckersLanded.get(currPlayerIndex);
+                            currGoodsList = planets.get(truckersLanded.indexOf(currTrucker));
+                        }
                     }
                 }
 
             }
         }while (state != CardState.CHOOSE_TO_GAIN && state != CardState.ESECUZIONE);
-        if(state!= CardState.ESECUZIONE){
-            currPlayerIndex++;
-        }
+        currPlayerIndex++;
+
         // se è stato l'ultimo atterrato a scegliere di non prendersi merci allora setto lo stato a esecuzione
         if(currPlayerIndex == truckersLanded.size()){
             state = CardState.ESECUZIONE;
         }
+        return state;
     }
+
 
 
     public Goods setChoiceToGain(boolean choice, Bank bank) throws IllegalStateException {
@@ -176,7 +187,7 @@ public class Planets extends Card {
             throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
         }
         this.currGoodToGain = currGoodsList.get(currGood);
-        if (choice && (bank.getGoodsInBank(currGoodToGain.getValue()) >= 1)) {
+        if (choice) {
             state = CardState.GOODSTOADD;
             return currGoodToGain;
         }else {

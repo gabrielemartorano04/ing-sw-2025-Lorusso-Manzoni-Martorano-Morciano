@@ -11,8 +11,10 @@ public class Bank {
         goods[3] = 14; // blue
     }
 
+    // va messo il meno 1 nell'indice perche come indice passiamo il value della merce che va da 1 a 4
+    // mentre gli indici dentro l'array vanno da 0 a 3
     public int getGoodsInBank(int valueOfGoods) {
-        return goods[valueOfGoods];
+        return goods[valueOfGoods - 1];
     }
 
     public int[] getGoods(){

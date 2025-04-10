@@ -27,5 +27,6 @@ public enum CardState {
     PLOT_GOODSLIST,
     PLOT_BATTERIES,
     PLOT_BANK,
-    INITIALIZE
+    INITIALIZE,
+    CHOOSE_FROM_LIST,
 }

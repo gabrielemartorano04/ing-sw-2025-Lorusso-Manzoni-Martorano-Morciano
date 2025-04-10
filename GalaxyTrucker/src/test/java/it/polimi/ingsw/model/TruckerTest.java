@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.components.Cabin;
+import it.polimi.ingsw.model.components.Component;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -89,4 +91,25 @@ public class TruckerTest {
         assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
     }
 
+    public void showStack(){
+        Game game=new Game();
+        assertNotNull(trucker.showStack(1,game));
+        assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
+    }
+
+    public void keep(){
+
+    }
+
+    public void link(){
+
+    }
+
+    public void turnHourglass(){
+
+    }
+
+    public void finish(){
+
+    }
 }
