@@ -30,5 +30,6 @@ public enum CardState {
     INITIALIZE,
     CHOOSE_FROM_LIST,
     PLOT_GOOD,
+    PLOT_GOOD_FROM_LIST,
     ADDFROMLIST,
 }
