@@ -1,6 +1,5 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.components.*;
 import org.junit.Before;
 import org.junit.Test;

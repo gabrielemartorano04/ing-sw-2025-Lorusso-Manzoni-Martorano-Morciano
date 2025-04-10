@@ -38,10 +38,6 @@ public class Hourglass {
         return timeTurns;
     }
 
-    public void setTimeTurns(int times){
-        timeTurns=times;
-    }
-
     public boolean timeIsUp() {
         return timeUp;
     }
