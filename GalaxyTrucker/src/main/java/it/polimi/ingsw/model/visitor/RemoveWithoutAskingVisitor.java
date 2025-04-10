@@ -1,4 +1,4 @@
 package it.polimi.ingsw.model.visitor;
 
-public class RemoveWithoutAskingVisitor {
+public class RemoveWithoutAskingVisitor extends CardVisitor {
 }

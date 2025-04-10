@@ -1,4 +1,4 @@
 package it.polimi.ingsw.model.visitor;
 
-public class GetCreditsVisitor {
+public class GetCreditsVisitor extends CardVisitor {
 }

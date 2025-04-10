@@ -1,4 +1,4 @@
 package it.polimi.ingsw.model.visitor;
 
-public class GetDaysVisitor {
+public class GetDaysVisitor extends CardVisitor {
 }

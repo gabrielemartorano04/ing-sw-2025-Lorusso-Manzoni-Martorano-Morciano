@@ -1,4 +1,4 @@
 package it.polimi.ingsw.model.visitor;
 
-public class GetEnemyPowerVisitor {
+public class GetEnemyPowerVisitor extends CardVisitor {
 }

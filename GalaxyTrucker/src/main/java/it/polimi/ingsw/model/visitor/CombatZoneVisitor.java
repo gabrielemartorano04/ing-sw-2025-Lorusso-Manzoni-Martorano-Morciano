@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model.visitor;
 
-public class CombatZoneVisitor {
+public class CombatZoneVisitor extends CardVisitor {
+
 }

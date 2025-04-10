@@ -1,4 +1,4 @@
 package it.polimi.ingsw.model.visitor;
 
-public class SetCoordinatesToAddElementsFromListVisitor {
+public class SetCoordinatesToAddElementsFromListVisitor extends CardVisitor {
 }

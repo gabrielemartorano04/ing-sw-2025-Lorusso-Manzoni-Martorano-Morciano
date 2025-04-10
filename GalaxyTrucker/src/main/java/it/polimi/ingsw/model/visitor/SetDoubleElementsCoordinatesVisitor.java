@@ -1,4 +1,4 @@
 package it.polimi.ingsw.model.visitor;
 
-public class SetDoubleElementsCoordinatesVisitor {
+public class SetDoubleElementsCoordinatesVisitor extends CardVisitor {
 }
