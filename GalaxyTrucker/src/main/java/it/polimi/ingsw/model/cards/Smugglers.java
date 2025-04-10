@@ -151,6 +151,7 @@ public class Smugglers extends Card {
         if(cardState!=CardState.PLOT_GOOD){
             throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
         }
+        cardState = CardState.CHOOSE_TO_GAIN;
         return goodsGained[currGood];
     }
 
@@ -198,14 +199,14 @@ public class Smugglers extends Card {
             currGood++;
             do {
                 if (bank.getGoodsInBank(goodsGained[currGood].getValue()) >= 1) {
-                    cardState = CardState.CHOOSE_TO_GAIN;
+                    cardState = CardState.PLOT_GOOD;
                 } else {
                     currGood++;
                     if(currGood>=goodsGained.length) {
                         cardState = CardState.REARRANGE;
                     }
                 }
-            }while(currGood<goodsGained.length && cardState!=CardState.CHOOSE_TO_GAIN);
+            }while(currGood<goodsGained.length && cardState!=CardState.PLOT_GOOD);
         }
         return cardState;
     }
