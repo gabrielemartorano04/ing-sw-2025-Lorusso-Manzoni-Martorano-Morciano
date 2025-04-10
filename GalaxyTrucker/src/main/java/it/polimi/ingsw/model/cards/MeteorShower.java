@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
@@ -123,12 +124,12 @@ public class MeteorShower extends Card {
                 if (isBig) {
                     // qui assumo che il meteorite grande possa essere distrutto da un cannone ma è da rivedere
                     if (!ship.shootMeteor(direction, roll)) {
-                        ship.destroyComponent(roll, direction);
+                        ship.destroyComponent(roll, direction, game.getBank());
                     }
                 } else {
                     // Un meteorite piccolo può rimbalzare o essere fermato dallo scudo
                     if (!ship.blockSmallMeteor(direction, roll, answers.get(j))){
-                        ship.destroyComponent(roll, direction);
+                        ship.destroyComponent(roll, direction, game.getBank());
                     }
                 }
             }

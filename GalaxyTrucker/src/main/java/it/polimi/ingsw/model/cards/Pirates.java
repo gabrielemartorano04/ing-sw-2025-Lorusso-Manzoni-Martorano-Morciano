@@ -105,7 +105,7 @@ public class Pirates extends Card {
         this.defeatedTruckers = defeatedTruckers;
     }
 
-    public void addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException {
+    public CardState addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
         }
@@ -121,21 +121,25 @@ public class Pirates extends Card {
             winnerTrucker = trucker;
             cardState = CardState.GAIN;
         }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == piratesPower){
-            cardState = CardState.ATTESA_RISPOSTE;
+            if (playersDecisions == numPlayer) {
+                cardState = CardState.GAIN;
+            }else cardState = CardState.ATTESA_RISPOSTE;
         }else {
             defeatedTruckers.add(trucker);
             if (playersDecisions == numPlayer) {
-                cardState = CardState.ESECUZIONE;
+                cardState = CardState.GAIN;
             }else cardState = CardState.ATTESA_RISPOSTE;
         }
+        return cardState;
     }
 
-    public void setChooseToGain(Boolean choice) throws IllegalStateException {
+    public CardState setChooseToGain(Boolean choice) throws IllegalStateException {
         if (cardState != CardState.GAIN) {
             throw new IllegalStateException("Card state is not GAIN");
         }
         this.choiceToGain = choice;
-        cardState = CardState.ESECUZIONE;
+        cardState = CardState.PLOT_SHOOT;
+        return cardState;
     }
 
     /**
@@ -164,15 +168,16 @@ public class Pirates extends Card {
         return meteor;
     }
 
-    public void rollDice(Game game){
+    public int rollDice(Game game){
         if(cardState != CardState.ROLL_DICE){
             throw new IllegalStateException("Non si può girare i dadi nello stato " + this.cardState);
         }
         this.roll = game.rollDice();
         cardState = CardState.CHIEDI_SCUDI;
+        return roll;
     }
 
-    public void setAnswers(boolean answers, Trucker trucker) {
+    public CardState setAnswers(boolean answers, Trucker trucker) {
         if(cardState != CardState.CHIEDI_SCUDI){
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.cardState);
         }
@@ -180,6 +185,7 @@ public class Pirates extends Card {
             this.usesShield.addLast(answers);
         }
         cardState = CardState.ESECUZIONE;
+        return cardState;
     }
 
     /**
@@ -207,11 +213,11 @@ public class Pirates extends Card {
                 if (ship.isHit(roll, direction)) {
                     if (isBig) {
                         // colpo grande non può essere stoppato quindi devo distruggere il componente
-                        ship.destroyComponent(roll, direction);
+                        ship.destroyComponent(roll, direction, game.getBank());
                     } else {
                         // Un colpo piccolo può solo essere fermato con lo scudo
                         if (!ship.blockLightCannonShot(direction, roll, usesShield.get(j))) {
-                            ship.destroyComponent(roll, direction);
+                            ship.destroyComponent(roll, direction, game.getBank());
                         }
                     }
                 }
