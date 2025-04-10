@@ -442,10 +442,10 @@ public class WarZone extends Card {
                     int direction = this.shoot[1];
                     if (ship.isHit(this.roll, direction)) {
                         if (isHeavy) {
-                            ship.destroyComponent(this.roll, direction);
+                            ship.destroyComponent(this.roll, direction, game.getBank());
                         } else {
                             if (!ship.blockLightCannonShot(direction, this.roll, this.useShield)) {
-                                ship.destroyComponent(this.roll, direction);
+                                ship.destroyComponent(this.roll, direction, game.getBank());
                             }
                         }
                     }
