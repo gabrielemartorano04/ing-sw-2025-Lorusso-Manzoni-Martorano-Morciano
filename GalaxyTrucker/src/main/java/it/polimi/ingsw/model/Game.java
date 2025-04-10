@@ -27,6 +27,7 @@ public class Game {
     private Hourglass hourglass;
     private int gameLevel;
     private Deck deck;
+    private Bank bank;
 
     private AskController askController;
     private GameState gameState;
@@ -43,6 +44,7 @@ public class Game {
         this.hourglass = new Hourglass(this);
         this.deck = new Deck();
         this.cardStacks = new ArrayList[4];
+        this.bank = new Bank();
 
         this.availableColors = new ArrayList<>();
         this.availableColors.addFirst(PlayerColors.RED);
@@ -54,6 +56,10 @@ public class Game {
 
 
     // model
+
+    public Bank getBank() {
+        return bank;
+    }
 
     /**
      * Sorts truckers in descending order based on their position.
@@ -323,7 +329,7 @@ public class Game {
             throw new IllegalStateException("State is not building");
         }
         if (finish) {
-            trucker.setBuildingState(BuildingState.START);
+            trucker.setBuildingState(BuildingState.BUILDING);
         }
     }
 
