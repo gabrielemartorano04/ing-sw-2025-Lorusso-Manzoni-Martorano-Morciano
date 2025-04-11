@@ -350,13 +350,14 @@ public class RearrangeVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToAddElements(Smugglers card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) {
+    public Optional<Object> visitForSetCoordinatesToAddGoods(Smugglers card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) {
         return Optional.empty();
     }
 
     @Override
-    public Optional<Object> visitForRearrange(Smugglers card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) {
-        return Optional.empty();
+    public Optional<Object> visitForRearrange(Smugglers card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws InvalidCoordinates, InvalidPositionException {
+        card.rearrange(trucker, coord1, coord2, value1, value2, contiune);
+        return Optional.of(card.rearrange(trucker, coord1, coord2, value1, value2, contiune));
     }
 
     @Override
@@ -370,7 +371,7 @@ public class RearrangeVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForPlotGoodsList(Smugglers card, Trucker trucker) {
+    public Optional<Object> visitForGetGoodsList(Smugglers card, Trucker trucker) {
         return Optional.empty();
     }
 
@@ -380,7 +381,7 @@ public class RearrangeVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveBatteries(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
         return Optional.empty();
     }
 

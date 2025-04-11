@@ -347,7 +347,7 @@ public class GetGoodsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToAddElements(Smugglers card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) {
+    public Optional<Object> visitForSetCoordinatesToAddGoods(Smugglers card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) {
         return Optional.empty();
     }
 
@@ -367,8 +367,9 @@ public class GetGoodsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForPlotGoodsList(Smugglers card, Trucker trucker) {
-        return Optional.empty();
+    public Optional<Object> visitForGetGoodsList(Smugglers card, Trucker trucker) {
+        card.plotGoodsList(trucker);
+        return Optional.of(card.plotGoodsList(trucker));
     }
 
     @Override
@@ -377,7 +378,7 @@ public class GetGoodsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveBatteries(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
         return Optional.empty();
     }
 

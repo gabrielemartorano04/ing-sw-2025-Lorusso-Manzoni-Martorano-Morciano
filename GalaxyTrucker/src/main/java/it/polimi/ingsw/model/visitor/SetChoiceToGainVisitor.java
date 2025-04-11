@@ -347,11 +347,12 @@ public class SetChoiceToGainVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForSetChoiceToGain(Smugglers card, boolean choice) {
-        return Optional.empty();
+        card.setChoiceToGain(choice);
+        return Optional.of(card.setChoiceToGain(choice));
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToAddElements(Smugglers card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) {
+    public Optional<Object> visitForSetCoordinatesToAddGoods(Smugglers card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) {
         return Optional.empty();
     }
 
@@ -371,7 +372,7 @@ public class SetChoiceToGainVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForPlotGoodsList(Smugglers card, Trucker trucker) {
+    public Optional<Object> visitForGetGoodsList(Smugglers card, Trucker trucker) {
         return Optional.empty();
     }
 
@@ -381,7 +382,7 @@ public class SetChoiceToGainVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveBatteries(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
         return Optional.empty();
     }
 

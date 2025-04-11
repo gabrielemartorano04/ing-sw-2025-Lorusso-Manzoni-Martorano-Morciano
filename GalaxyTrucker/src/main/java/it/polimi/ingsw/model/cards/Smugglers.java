@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.Trucker;
 import it. polimi.ingsw.model.Bank;
+import it.polimi.ingsw.model.visitor.CardVisitor;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -60,12 +61,21 @@ public class Smugglers extends Card {
         this.chooseToGain=false;
     }
 
+    @Override
+    public void accept(CardVisitor visitor) {
+        visitor.visit(this);
+    }
+
     /**
      * Returns the cannon power required
      * @return cannon power required
      */
     public int getSmugglersPower() {
         return smugglersPower;
+    }
+
+    public void acceptForGetSmugglersPower(CardVisitor visitor) {
+        visitor.visitForGetSmugglersPower(this);
     }
 
     /**
@@ -76,12 +86,20 @@ public class Smugglers extends Card {
         return goodsLost;
     }
 
+    public void acceptForGetGoodsToRemove(CardVisitor visitor) {
+        visitor.visitForGetGoodsToRemove(this);
+    }
+
     /**
      * Returns an array of goods to gain
      * @return array of goods to gain
      */
     public Goods[] getGoodsGained() {
         return goodsGained;
+    }
+
+    public void acceptForGetGoodsToGain(CardVisitor visitor) {
+        visitor.visitForGetGoodsToGain(this);
     }
 
     /**
@@ -92,6 +110,10 @@ public class Smugglers extends Card {
         return days;
     }
 
+    public void acceptForGetDays(CardVisitor visitor) {
+        visitor.visitForGetDays(this);
+    }
+
     /**
      * Sets the list of defeated truckers
      * @param defeatedTruckers list of truckers ID
@@ -100,12 +122,20 @@ public class Smugglers extends Card {
         this.defeatedTruckers = defeatedTruckers;
     }
 
+    public void acceptForSetDefeatedTruckers(CardVisitor visitor, ArrayList<Trucker> defeatedTruckers) {
+        visitor.visitForSetDefeatedTruckers(this, defeatedTruckers);
+    }
+
     /**
      * Sets the trucker that defeat the pirates
      * @param winnerTrucker trucker ID
      */
     public void setWinnerTrucker(Trucker winnerTrucker) {
         this.winnerTrucker = winnerTrucker;
+    }
+
+    public void acceptForSetWinnerTrucker(CardVisitor visitor, Trucker winnerTrucker) {
+        visitor.visitForSetWinnerTrucker(this, winnerTrucker);
     }
 
     public CardState addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker, Bank bank) throws IllegalStateException, InvalidComponentsException{
@@ -147,12 +177,20 @@ public class Smugglers extends Card {
         return cardState;
     }
 
+    public void acceptForSetDoubleCannonsCoordinates(CardVisitor visitor, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker, Bank bank) {
+        visitor.visitForSetDoubleCannonsCoordinates(this, doubleCannonsCoord, numPlayer, trucker, bank);
+    }
+
     public Goods plotCurrGood(){
         if(cardState!=CardState.PLOT_GOOD){
             throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
         }
         cardState = CardState.CHOOSE_TO_GAIN;
         return goodsGained[currGood];
+    }
+
+    public void acceptForGetCurrentGoods(CardVisitor visitor) {
+        visitor.visitForGetCurrentGoods(this);
     }
 
     public CardState setChoiceToGain(boolean choice) throws IllegalStateException {
@@ -172,6 +210,10 @@ public class Smugglers extends Card {
             } else currGood++;
         }
         return cardState;
+    }
+
+    public void acceptForSetChoiceToGain(CardVisitor visitor, boolean choice) {
+        visitor.visitForSetChoiceToGain(this, choice);
     }
 
     /**
@@ -211,6 +253,10 @@ public class Smugglers extends Card {
         return cardState;
     }
 
+    public void acceptForSetCoordinatesToAddGoods(CardVisitor visitor, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws InvalidCoordinates, InvalidPositionException {
+        visitor.visitForSetCoordinatesToAddGoods(this, winnerCoordinatesToAddGood, value, trucker, bank);
+    }
+
     // si potrebbe non metter contiune e procedere se tutto e a null
     public CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
@@ -230,6 +276,10 @@ public class Smugglers extends Card {
             cardState = CardState.ESECUZIONE;
         }
         return cardState;
+    }
+
+    public void acceptForRearrange(CardVisitor visitor, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws InvalidCoordinates, InvalidPositionException {
+        visitor.visitForRearrange(this, trucker, coord1, coord2, value1, value2, contiune);
     }
 
     public CardState manageRemoveGoods(Trucker trucker, Bank bank){
@@ -286,7 +336,11 @@ public class Smugglers extends Card {
 
     }
 
-    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank) {
+    public void acceptForManageRemoveGoods(CardVisitor visitor, Trucker trucker, Bank bank) {
+        visitor.visitForManageRemoveGoods(this, trucker, bank);
+    }
+
+    public void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank) {
         if(this.numOfCurrTypeOfGood == 0){
             throw new RuntimeException("NumOfGoods is 0 but you called removeWithoutAsking");
         }
@@ -305,6 +359,10 @@ public class Smugglers extends Card {
 
     }
 
+    public void acceptForRemoveWithoutAsking(CardVisitor visitor, Trucker trucker, ArrayList<Goods> goodsList, Bank bank) {
+        visitor.visitForRemoveWithoutAsking(this, trucker, goodsList, bank);
+    }
+
     public ArrayList<Goods> plotGoodsList(Trucker trucker){
         if (cardState != CardState.PLOT_GOODSLIST){
             throw new IllegalStateException("plotGoodsList not callable in the state " + cardState);
@@ -321,6 +379,10 @@ public class Smugglers extends Card {
         }
         cardState = CardState.REMOVE_ASKING;
         return goodsToRemove;
+    }
+
+    public void acceptForGetGoodsList(CardVisitor visitor, Trucker trucker) {
+        visitor.visitForGetGoodsList(this, trucker);
     }
 
     /**
@@ -354,11 +416,19 @@ public class Smugglers extends Card {
         return cardState;
     }
 
+    public void acceptForRemoveAsking(CardVisitor visitor, ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen {
+        visitor.visitForRemoveAsking(this, indexes, trucker, bank);
+    }
+
     public int getNumOfBatteriesToRemove(){
         if(cardState != CardState.PLOT_BATTERIES){
             throw new IllegalStateException("Can't call getNumOfBatteriesToRemove in the state " + cardState);
         }
         return goodsLost;
+    }
+
+    public void acceptForGetBatteriesToRemove(CardVisitor visitor) {
+        visitor.visitForGetBatteriesToRemove(this);
     }
 
     public CardState removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
@@ -387,10 +457,9 @@ public class Smugglers extends Card {
         return cardState;
     }
 
-
-
-
-
+    public void acceptForSetCoordinatesToRemoveBatteries(CardVisitor visitor, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
+        visitor.visitForSetCoordinatesToRemoveBatteries(this, coordinatesToRemoveBatteries, trucker);
+    }
 
     /**
      * Applies the changes provided by the card

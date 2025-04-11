@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.WrongNumberOfBatteriesSelected;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
@@ -349,7 +350,7 @@ public class SetCoordinatesToRemoveElementsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToAddElements(Smugglers card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) {
+    public Optional<Object> visitForSetCoordinatesToAddGoods(Smugglers card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) {
         return Optional.empty();
     }
 
@@ -369,7 +370,7 @@ public class SetCoordinatesToRemoveElementsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForPlotGoodsList(Smugglers card, Trucker trucker) {
+    public Optional<Object> visitForGetGoodsList(Smugglers card, Trucker trucker) {
         return Optional.empty();
     }
 
@@ -379,8 +380,9 @@ public class SetCoordinatesToRemoveElementsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
-        return Optional.empty();
+    public Optional<Object> visitForSetCoordinatesToRemoveBatteries(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
+        card.removeBatteries(coordinatesToRemoveBatteries, trucker);
+        return Optional.of(card.removeBatteries(coordinatesToRemoveBatteries, trucker));
     }
 
     @Override

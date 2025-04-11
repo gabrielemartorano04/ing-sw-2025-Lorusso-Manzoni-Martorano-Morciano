@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.visitor;
 
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.exceptions.InvalidPositionException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.Game;
@@ -83,17 +82,18 @@ public interface CardVisitor {
     Optional<Object> visitForGetGoodsToGain(Smugglers card);
     Optional<Object> visitForGetDays(Smugglers card);
     Optional<Object> visitForGetBatteriesToRemove(Smugglers card);
+    Optional<Object> visitForGetCurrentGoods(Smugglers card);
     Optional<Object> visitForSetDefeatedTruckers(Smugglers card, ArrayList<Trucker> defeatedTruckers);
     Optional<Object> visitForSetWinnerTrucker(Smugglers card, Trucker winnerTrucker);
     Optional<Object> visitForSetDoubleCannonsCoordinates(Smugglers card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker, Bank bank);
     Optional<Object> visitForSetChoiceToGain(Smugglers card, boolean choice);
-    Optional<Object> visitForSetCoordinatesToAddElements(Smugglers card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank);
-    Optional<Object> visitForRearrange(Smugglers card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune);
+    Optional<Object> visitForSetCoordinatesToAddGoods(Smugglers card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws InvalidCoordinates, InvalidPositionException;
+    Optional<Object> visitForRearrange(Smugglers card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws InvalidCoordinates, InvalidPositionException;
     Optional<Object> visitForManageRemoveGoods(Smugglers card, Trucker trucker, Bank bank);
     Optional<Object> visitForRemoveWithoutAsking(Smugglers card, Trucker trucker, ArrayList<Goods> goodsList, Bank bank);
-    Optional<Object> visitForPlotGoodsList(Smugglers card, Trucker trucker);
-    Optional<Object> visitForRemoveAsking(Smugglers card, ArrayList<Integer> indexes, Trucker trucker, Bank bank);
-    Optional<Object> visitForSetCoordinatesToRemoveElements(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker);
+    Optional<Object> visitForGetGoodsList(Smugglers card, Trucker trucker);
+    Optional<Object> visitForRemoveAsking(Smugglers card, ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen;
+    Optional<Object> visitForSetCoordinatesToRemoveBatteries(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected;
 
     Optional<Object> visit(StarDust card);
 
