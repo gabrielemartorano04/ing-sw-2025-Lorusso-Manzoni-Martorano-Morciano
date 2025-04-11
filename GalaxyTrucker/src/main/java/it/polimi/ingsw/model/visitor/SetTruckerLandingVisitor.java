@@ -214,7 +214,8 @@ public class SetTruckerLandingVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForSetTruckerLanding(Planets card, int indexOfLanding, Trucker trucker, int numPlayers) {
-        return Optional.empty();
+        card.setPlayerLanding(indexOfLanding, trucker, numPlayers);
+        return Optional.of(card.setPlayerLanding(indexOfLanding, trucker, numPlayers));
     }
 
     @Override

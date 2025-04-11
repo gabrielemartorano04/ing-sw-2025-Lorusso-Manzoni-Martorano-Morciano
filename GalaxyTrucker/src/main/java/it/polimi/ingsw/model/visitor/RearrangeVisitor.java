@@ -244,7 +244,8 @@ public class RearrangeVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForRearrange(Planets card, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) {
+    public Optional<Object> visitForRearrange(Planets card, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws InvalidCoordinates, InvalidPositionException {
+        card.rearrange(coord1, coord2, value1, value2, contiune);
         return Optional.empty();
     }
 

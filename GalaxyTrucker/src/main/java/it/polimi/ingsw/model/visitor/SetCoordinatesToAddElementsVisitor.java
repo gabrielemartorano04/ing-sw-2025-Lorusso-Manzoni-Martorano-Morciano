@@ -234,8 +234,9 @@ public class SetCoordinatesToAddElementsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToAddElements(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) {
-        return Optional.empty();
+    public Optional<Object> visitForSetCoordinatesToAddElements(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException {
+        card.setCoordinatesToAddGoods(coordinatesToAddGood, positionInLoad, bank);
+        return Optional.of(card.setCoordinatesToAddGoods(coordinatesToAddGood, positionInLoad, bank));
     }
 
     @Override

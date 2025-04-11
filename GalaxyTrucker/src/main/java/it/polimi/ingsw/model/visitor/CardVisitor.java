@@ -62,9 +62,9 @@ public interface CardVisitor {
     Optional<Object> visitForInitialize(Planets card, Bank bank);
     Optional<Object> visitForSetChoiceToGain(Planets card, Boolean choice);
     Optional<Object> visitForSetChoiceToGainFromList(Planets card, boolean choice);
-    Optional<Object> visitForSetCoordinatesToAddElements(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank);
-    Optional<Object> visitForSetCoordinatesToAddElementsFromList(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank);
-    Optional<Object> visitForRearrange(Planets card, int[] coord1, int[] coord2, int value1, int value2, boolean contiune);
+    Optional<Object> visitForSetCoordinatesToAddElements(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException;
+    Optional<Object> visitForSetCoordinatesToAddElementsFromList(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException;
+    Optional<Object> visitForRearrange(Planets card, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws InvalidCoordinates, InvalidPositionException;
 
     Optional<Object> visit(Slavers card);
     Optional<Object> visitForGetSlaversPower(Slavers card);

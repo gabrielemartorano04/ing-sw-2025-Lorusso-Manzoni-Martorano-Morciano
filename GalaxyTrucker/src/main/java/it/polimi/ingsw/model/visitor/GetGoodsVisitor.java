@@ -203,7 +203,7 @@ public class GetGoodsVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForGetGoodsFromList(Planets card) {
-        return Optional.empty();
+        return Optional.of(card.plotGoodFromList());
     }
 
     @Override
