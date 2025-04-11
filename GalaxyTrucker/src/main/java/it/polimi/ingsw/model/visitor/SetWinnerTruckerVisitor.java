@@ -279,7 +279,7 @@ public class SetWinnerTruckerVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveHuman(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
         return Optional.empty();
     }
 
@@ -295,6 +295,7 @@ public class SetWinnerTruckerVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForSetWinnerTrucker(Slavers card, Trucker winnerTrucker) {
+        card.setWinnerTrucker(winnerTrucker);
         return Optional.empty();
     }
 

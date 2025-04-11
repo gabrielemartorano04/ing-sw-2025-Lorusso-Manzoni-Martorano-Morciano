@@ -72,7 +72,7 @@ public interface CardVisitor {
     Optional<Object> visitForGetDays(Slavers card);
     Optional<Object> visitForGetCredits(Slavers card);
     Optional<Object> visitForSetDoubleCannonsCoordinates(Slavers card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker);
-    Optional<Object> visitForSetCoordinatesToRemoveElements(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker);
+    Optional<Object> visitForSetCoordinatesToRemoveHuman(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws InvalidCoordinates;
     Optional<Object> visitForSetChoiceToGain(Slavers card, boolean choice);
     Optional<Object> visitForSetDefeatedTruckers(Slavers card, ArrayList<Trucker> defeatedTruckers);
     Optional<Object> visitForSetWinnerTrucker(Slavers card, Trucker winnerTrucker);

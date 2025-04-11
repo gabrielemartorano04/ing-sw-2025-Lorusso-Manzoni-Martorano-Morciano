@@ -278,8 +278,9 @@ public class SetCoordinatesToRemoveElementsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
-        return Optional.empty();
+    public Optional<Object> visitForSetCoordinatesToRemoveHuman(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws InvalidCoordinates {
+        card.addTruckersCoordinatesToRemoveHumans(truckersCoordinatesToRemoveHumans, numPlayer, trucker);
+        return Optional.of(card.addTruckersCoordinatesToRemoveHumans(truckersCoordinatesToRemoveHumans, numPlayer, trucker));
     }
 
     @Override

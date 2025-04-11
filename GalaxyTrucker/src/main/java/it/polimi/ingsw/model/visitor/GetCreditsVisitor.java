@@ -267,7 +267,7 @@ public class GetCreditsVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForGetCredits(Slavers card) {
-        return Optional.empty();
+        return Optional.of(card.getCredits());
     }
 
     @Override
@@ -276,7 +276,7 @@ public class GetCreditsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveHuman(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
         return Optional.empty();
     }
 

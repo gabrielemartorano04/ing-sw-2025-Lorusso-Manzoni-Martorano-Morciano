@@ -280,13 +280,14 @@ public class SetChoiceToGainVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveHuman(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
         return Optional.empty();
     }
 
     @Override
     public Optional<Object> visitForSetChoiceToGain(Slavers card, boolean choice) {
-        return Optional.empty();
+        card.setChooseToGain(choice);
+        return Optional.of(card.setChooseToGain(choice));
     }
 
     @Override

@@ -276,11 +276,12 @@ public class SetDoubleElementsCoordinatesVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForSetDoubleCannonsCoordinates(Slavers card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) {
-        return Optional.empty();
+        card.addDoubleCannonsCoord(doubleCannonsCoord, numPlayer, trucker);
+        return Optional.of(card.addDoubleCannonsCoord(doubleCannonsCoord, numPlayer, trucker));
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveHuman(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
         return Optional.empty();
     }
 

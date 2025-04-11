@@ -257,7 +257,7 @@ public class GetElementsToRemoveVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForGetAstronautsLost(Slavers card) {
-        return Optional.empty();
+        return Optional.of(card.getAstronautsLost());
     }
 
     @Override
@@ -276,7 +276,7 @@ public class GetElementsToRemoveVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveHuman(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
         return Optional.empty();
     }
 
