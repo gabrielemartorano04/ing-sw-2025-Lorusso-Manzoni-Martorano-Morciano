@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.Game;
@@ -22,9 +23,9 @@ public interface CardVisitor {
     Optional<Object> visitForGetDays(AbandonedStation card);
     Optional<Object> visitForGetHumanToGain(AbandonedStation card);
     Optional<Object> visitForGetGoods(AbandonedStation card);
-    Optional<Object> visitForSetCoordinatesToAddElements(AbandonedStation card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank);
+    Optional<Object> visitForSetCoordinatesToAddElements(AbandonedStation card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws InvalidCoordinates, InvalidPositionException;
     Optional<Object> visitForSetTruckerLanding(AbandonedStation card, Trucker trucker, boolean landing, int numPlayer, Bank bank);
-    Optional<Object> visitForRearrange(AbandonedStation card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune);
+    Optional<Object> visitForRearrange(AbandonedStation card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws InvalidCoordinates, InvalidPositionException;
     Optional<Object> visitForSetChoiceToGain(AbandonedStation card, Boolean choice);
 
     Optional<Object> visit(Epidemic card);

@@ -55,6 +55,10 @@ public class AbandonedStation extends Card {
         return days;
     }
 
+    public void acceptForGetDays(CardVisitor visitor) {
+        visitor.visitForGetDays(this);
+    }
+
     /**
      * Returns the number of crew members required
      * @return crew members to lose
@@ -63,12 +67,20 @@ public class AbandonedStation extends Card {
         return numHuman;
     }
 
+    public void acceptForGetHumanToGain(CardVisitor visitor) {
+        visitor.visitForGetHumanToGain(this);
+    }
+
     /**
      * Returns the list of goods to gain
      * @return goods to gain
      */
     public ArrayList<Goods> getGoods() {
         return goods;
+    }
+
+    public void acceptForGetGoods(CardVisitor visitor) {
+        visitor.visitForGetGoods(this);
     }
 
     /**
@@ -102,6 +114,10 @@ public class AbandonedStation extends Card {
         return cardState;
     }
 
+    public void acceptForSetTruckerLanding(CardVisitor visitor, Trucker trucker, boolean landing, int numPlayer, Bank bank) {
+        visitor.visitForSetTruckerLanding(this, trucker, landing, numPlayer, bank);
+    }
+
     public Goods setChoiceToGain(boolean choice) throws IllegalStateException {
         if(cardState!=CardState.CHOOSE_TO_GAIN){
             throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
@@ -115,6 +131,10 @@ public class AbandonedStation extends Card {
             } else currGood++;
             return null;
         }
+    }
+
+    public void acceptForSetChoiceToGain(CardVisitor visitor, boolean choice) {
+        visitor.visitForSetChoiceToGain(this, choice);
     }
 
     /**
@@ -154,6 +174,10 @@ public class AbandonedStation extends Card {
 
     }
 
+    public void acceptForSetCoordinatesToAddElements(CardVisitor visitor, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws InvalidCoordinates, InvalidPositionException {
+        visitor.visitForSetCoordinatesToAddElements(this, winnerCoordinatesToAddGood, value, trucker, bank);
+    }
+
     // si potrebbe non metter contiune e procedere se tutto e a null
     public CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
@@ -173,6 +197,10 @@ public class AbandonedStation extends Card {
             cardState = CardState.ESECUZIONE;
         }
         return cardState;
+    }
+
+    public void acceptForRearrange(CardVisitor visitor, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws InvalidCoordinates, InvalidPositionException {
+        visitor.visitForRearrange(this, trucker, coord1, coord2, value1, value2, contiune);
     }
 
     /**

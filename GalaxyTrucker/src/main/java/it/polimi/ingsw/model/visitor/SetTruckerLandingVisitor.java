@@ -68,6 +68,7 @@ public class SetTruckerLandingVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForSetTruckerLanding(AbandonedStation card, Trucker trucker, boolean landing, int numPlayer, Bank bank) {
+        card.truckerLanding(trucker, landing, numPlayer, bank);
         return Optional.empty();
     }
 

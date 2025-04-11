@@ -47,7 +47,7 @@ public class GetDaysVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForGetDays(AbandonedStation card) {
-        return Optional.empty();
+        return Optional.of(card.getDays());
     }
 
     @Override
