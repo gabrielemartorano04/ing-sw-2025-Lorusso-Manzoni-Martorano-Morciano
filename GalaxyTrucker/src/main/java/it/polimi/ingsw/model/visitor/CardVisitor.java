@@ -37,7 +37,7 @@ public interface CardVisitor {
     Optional<Object> visitForSetAnswers(MeteorShower card, boolean answers);
 
     Optional<Object> visit(OpenSpace card);
-    Optional<Object> visitForSetDoubleEnginesCoordinates(OpenSpace card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers);
+    Optional<Object> visitForSetDoubleEnginesCoordinates(OpenSpace card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates;
 
     Optional<Object> visit(Pirates card);
     Optional<Object> visitForGetDays(Pirates card);

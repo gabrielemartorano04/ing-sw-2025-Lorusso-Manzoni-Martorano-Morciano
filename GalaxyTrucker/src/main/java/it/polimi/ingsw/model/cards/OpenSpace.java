@@ -61,6 +61,10 @@ public class OpenSpace extends Card {
         return state;
     }
 
+    public void acceptForSetDoubleEnginesCoordinates(CardVisitor visitor, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates {
+        visitor.visitForSetDoubleEnginesCoordinates(this, trucker, truckerCoordinate, numTruckers);
+    }
+
     /**
      * Applies the changes provided by the card
      * @param game game in which the card has been drawn
