@@ -106,7 +106,7 @@ public class GetElementsToRemoveVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> VisitForSetAnswers(MeteorShower card, boolean answers) {
+    public Optional<Object> visitForSetAnswers(MeteorShower card, boolean answers) {
         return Optional.empty();
     }
 

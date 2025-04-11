@@ -68,6 +68,10 @@ public class MeteorShower extends Card {
         return directions;
     }
 
+    public void acceptForGetDirection(CardVisitor visitor) {
+        visitor.visitForGetDirection(this);
+    }
+
     public int[] getCurrentMeteor(){
         if(state != CardState.PLOT_METEOR) {
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
@@ -82,6 +86,10 @@ public class MeteorShower extends Card {
         return meteor;
     }
 
+    public void acceptForGetCurrentMeteor(CardVisitor visitor) {
+        visitor.visitForGetCurrentMeteor(this);
+    }
+
     public CardState rollDice(Game game){
         if(state != CardState.ROLL_DICE){
             throw new IllegalStateException("Non si può girare i dadi nello stato " + this.state);
@@ -91,6 +99,10 @@ public class MeteorShower extends Card {
         return state;
     }
 
+    public void acceptForRollDice(CardVisitor visitor, Game game) {
+        visitor.visitForRollDice(this, game);
+    }
+
     public CardState setAnswers(boolean answers) {
         if(state != CardState.ATTESA_RISPOSTE){
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
@@ -98,6 +110,10 @@ public class MeteorShower extends Card {
         this.answers.addLast(answers);
         state = CardState.ESECUZIONE;
         return state;
+    }
+
+    public void acceptForSetAnswers(CardVisitor visitor, boolean answers) {
+        visitor.visitForSetAnswers(this, answers);
     }
 
 

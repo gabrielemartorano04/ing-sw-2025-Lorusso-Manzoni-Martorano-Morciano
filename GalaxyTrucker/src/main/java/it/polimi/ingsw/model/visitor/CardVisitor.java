@@ -34,7 +34,7 @@ public interface CardVisitor {
     Optional<Object> visitForGetDirection(MeteorShower card);
     Optional<Object> visitForGetCurrentMeteor(MeteorShower card);
     Optional<Object> visitForRollDice(MeteorShower card, Game game);
-    Optional<Object> VisitForSetAnswers(MeteorShower card, boolean answers);
+    Optional<Object> visitForSetAnswers(MeteorShower card, boolean answers);
 
     Optional<Object> visit(OpenSpace card);
     Optional<Object> visitForSetDoubleEnginesCoordinates(OpenSpace card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers);

@@ -28,6 +28,7 @@ public class Epidemic extends Card {
     public void accept(CardVisitor visitor) {
         visitor.visit(this);
     }
+
     /**
      * Applies the changes provided by the card
      * @param game game in which the card has been drawn
