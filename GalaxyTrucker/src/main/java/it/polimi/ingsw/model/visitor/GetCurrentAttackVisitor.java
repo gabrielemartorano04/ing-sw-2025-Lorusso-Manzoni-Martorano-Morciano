@@ -154,7 +154,7 @@ public class GetCurrentAttackVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForGetCurrentShoot(Pirates card) {
-        return Optional.empty();
+        return Optional.of(card.getCurrentShoot());
     }
 
     @Override

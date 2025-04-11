@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.visitor.CardVisitor;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -65,12 +66,21 @@ public class Pirates extends Card {
         this.roll = 0;
     }
 
+    @Override
+    public void accept(CardVisitor visitor) {
+        visitor.visit(this);
+    }
+
     /**
      * Returns the number of cosmic credits to gain
      * @return credit to gain
      */
     public int getCredits() {
         return credits;
+    }
+
+    public void acceptForGetCredits(CardVisitor visitor) {
+        visitor.visitForGetCredits(this);
     }
 
     /**
@@ -81,12 +91,20 @@ public class Pirates extends Card {
         return days;
     }
 
+    public void acceptForGetDays(CardVisitor visitor) {
+        visitor.visitForGetDays(this);
+    }
+
     /**
      * Returns the cannon power required
      * @return cannon power required
      */
     public int getPiratesPower() {
         return piratesPower;
+    }
+
+    public void acceptForGetPiratesPower(CardVisitor visitor) {
+        visitor.visitForGetPiratesPower(this);
     }
 
     /**
@@ -97,12 +115,20 @@ public class Pirates extends Card {
         return shoots;
     }
 
+    public void acceptForGetShoots(CardVisitor visitor) {
+        visitor.visitForGetShoots(this);
+    }
+
     /**
      * Sets the list of defeated truckers
      * @param defeatedTruckers list of truckers ID
      */
     public void setDefeatedTruckers(ArrayList<Trucker> defeatedTruckers) {
         this.defeatedTruckers = defeatedTruckers;
+    }
+
+    public void acceptForSetDefeatedTruckers(CardVisitor visitor, ArrayList<Trucker> defeatedTruckers) {
+        visitor.visitForSetDefeatedTruckers(this, defeatedTruckers);
     }
 
     public CardState addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException {
@@ -133,6 +159,10 @@ public class Pirates extends Card {
         return cardState;
     }
 
+    public void acceptForSetDoubleCannonsCoordinates(CardVisitor visitor, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) {
+        visitor.visitForSetDoubleCannonsCoordinates(this, doubleCannonsCoord, numPlayer, trucker);
+    }
+
     public CardState setChooseToGain(Boolean choice) throws IllegalStateException {
         if (cardState != CardState.GAIN) {
             throw new IllegalStateException("Card state is not GAIN");
@@ -140,6 +170,10 @@ public class Pirates extends Card {
         this.choiceToGain = choice;
         cardState = CardState.PLOT_SHOOT;
         return cardState;
+    }
+
+    public void acceptForSetChoiceToGain(CardVisitor visitor, Boolean choice) {
+        visitor.visitForSetChoiceToGain(this, choice);
     }
 
     /**
@@ -150,8 +184,16 @@ public class Pirates extends Card {
         this.winnerTrucker = winnerTrucker;
     }
 
+    public void acceptForSetWinnerTrucker(CardVisitor visitor, Trucker winnerTrucker) {
+        visitor.visitForSetWinnerTrucker(this, winnerTrucker);
+    }
+
     public ArrayList<int[]> getDirections() {
         return shoots;
+    }
+
+    public void acceptForGetDirections(CardVisitor visitor) {
+        visitor.visitForGetDirections(this);
     }
 
     public int[] getCurrentShoot(){
@@ -168,6 +210,10 @@ public class Pirates extends Card {
         return meteor;
     }
 
+    public void acceptForGetCurrentShoot(CardVisitor visitor) {
+        visitor.visitForGetCurrentShoot(this);
+    }
+
     public int rollDice(Game game){
         if(cardState != CardState.ROLL_DICE){
             throw new IllegalStateException("Non si può girare i dadi nello stato " + this.cardState);
@@ -175,6 +221,10 @@ public class Pirates extends Card {
         this.roll = game.rollDice();
         cardState = CardState.CHIEDI_SCUDI;
         return roll;
+    }
+
+    public void acceptForRollDice(CardVisitor visitor, Game game) {
+        visitor.visitForRollDice(this, game);
     }
 
     public CardState setAnswers(boolean answers, Trucker trucker) {
@@ -186,6 +236,10 @@ public class Pirates extends Card {
         }
         cardState = CardState.ESECUZIONE;
         return cardState;
+    }
+
+    public void acceptForSetAnswers(CardVisitor visitor, boolean answers, Trucker trucker) {
+        visitor.visitForSetAnswers(this, answers, trucker);
     }
 
     /**

@@ -132,7 +132,7 @@ public class GetCreditsVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForGetCredits(Pirates card) {
-        return Optional.empty();
+        return Optional.of(card.getCredits());
     }
 
     @Override

@@ -160,7 +160,8 @@ public class RollDiceVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForRollDice(Pirates card, Game game) {
-        return Optional.empty();
+        card.rollDice(game);
+        return Optional.of(card.rollDice(game));
     }
 
     @Override

@@ -164,7 +164,8 @@ public class SetChoiceToGainVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForSetChoiceToGain(Pirates card, Boolean choice) {
-        return Optional.empty();
+        card.setChooseToGain(choice);
+        return Optional.of(card.setChooseToGain(choice));
     }
 
     @Override

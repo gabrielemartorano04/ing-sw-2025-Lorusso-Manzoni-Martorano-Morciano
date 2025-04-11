@@ -185,7 +185,8 @@ public class SetAnswersVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForSetAnswers(Pirates card, boolean answers, Trucker trucker) {
-        return Optional.empty();
+        card.setAnswers(answers, trucker);
+        return Optional.of(card.setAnswers(answers, trucker));
     }
 
     @Override

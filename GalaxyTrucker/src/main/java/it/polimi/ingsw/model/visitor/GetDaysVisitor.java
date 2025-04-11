@@ -127,7 +127,7 @@ public class GetDaysVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForGetDays(Pirates card) {
-        return Optional.empty();
+        return Optional.of(card.getDays());
     }
 
     @Override

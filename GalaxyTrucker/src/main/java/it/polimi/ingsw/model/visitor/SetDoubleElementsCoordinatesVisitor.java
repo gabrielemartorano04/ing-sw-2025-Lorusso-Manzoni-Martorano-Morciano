@@ -180,7 +180,8 @@ public class SetDoubleElementsCoordinatesVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForSetDoubleCannonsCoordinates(Pirates card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) {
-        return Optional.empty();
+        card.addDoubleCannonsCoord(doubleCannonsCoord, numPlayer, trucker);
+        return Optional.of(card.addDoubleCannonsCoord(doubleCannonsCoord, numPlayer, trucker));
     }
 
     @Override
