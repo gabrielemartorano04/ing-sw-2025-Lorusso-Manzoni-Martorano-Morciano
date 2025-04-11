@@ -160,8 +160,8 @@ public class Slavers extends Card {
         return cardState;
     }
 
-    public void acceptForSetCoordinatesToRemoveHuman(CardVisitor visitor, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws InvalidCoordinates {
-        visitor.visitForSetCoordinatesToRemoveHuman(this, truckersCoordinatesToRemoveHumans, numPlayer, trucker);
+    public void acceptForSetCoordinatesToRemoveCrew(CardVisitor visitor, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws InvalidCoordinates {
+        visitor.visitForSetCoordinatesToRemoveCrew(this, truckersCoordinatesToRemoveHumans, numPlayer, trucker);
     }
 
     public CardState addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException {

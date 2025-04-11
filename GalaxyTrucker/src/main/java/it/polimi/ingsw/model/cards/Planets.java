@@ -5,7 +5,6 @@ import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.exceptions.PlanetNotFreeException;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.visitor.CardVisitor;
@@ -316,8 +315,8 @@ public class Planets extends Card {
         return state;
     }
 
-    public void acceptForSetCoordinatesToAddElements(CardVisitor visitor, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException {
-        visitor.visitForSetCoordinatesToAddElements(this, coordinatesToAddGood, positionInLoad, bank);
+    public void acceptForSetCoordinatesToAddGoods(CardVisitor visitor, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException {
+        visitor.visitForSetCoordinatesToAddGoods(this, coordinatesToAddGood, positionInLoad, bank);
     }
 
     /**
@@ -348,8 +347,8 @@ public class Planets extends Card {
         return state;
     }
 
-    public void acceptForSetCoordinatesToAddElementsFromList(CardVisitor visitor, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException {
-        visitor.visitForSetCoordinatesToAddElementsFromList(this, coordinatesToAddGood, positionInLoad, bank);
+    public void acceptForSetCoordinatesToAddGoodsFromList(CardVisitor visitor, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException {
+        visitor.visitForSetCoordinatesToAddGoodsFromList(this, coordinatesToAddGood, positionInLoad, bank);
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null

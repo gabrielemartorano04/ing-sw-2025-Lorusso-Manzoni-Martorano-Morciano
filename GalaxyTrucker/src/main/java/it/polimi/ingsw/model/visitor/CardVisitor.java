@@ -16,14 +16,14 @@ public interface CardVisitor {
     Optional<Object> visitForGetDays(AbandonedShip card);
     Optional<Object> visitForGetCredits(AbandonedShip card);
     Optional<Object> visitForGetHumanToRemove(AbandonedShip card);
-    Optional<Object> visitForSetCoordinatesToRemoveElements(AbandonedShip card, ArrayList<int[]> coordinates) throws InvalidCoordinates;
+    Optional<Object> visitForSetCoordinatesToRemoveCrew(AbandonedShip card, ArrayList<int[]> coordinates) throws InvalidCoordinates;
     Optional<Object> visitForSetTruckerLanding(AbandonedShip card, Trucker trucker, boolean landing, int numPlayer);
 
     Optional<Object> visit(AbandonedStation card);
     Optional<Object> visitForGetDays(AbandonedStation card);
     Optional<Object> visitForGetHumanToGain(AbandonedStation card);
     Optional<Object> visitForGetGoods(AbandonedStation card);
-    Optional<Object> visitForSetCoordinatesToAddElements(AbandonedStation card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws InvalidCoordinates, InvalidPositionException;
+    Optional<Object> visitForSetCoordinatesToAddGoods(AbandonedStation card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws InvalidCoordinates, InvalidPositionException;
     Optional<Object> visitForSetTruckerLanding(AbandonedStation card, Trucker trucker, boolean landing, int numPlayer, Bank bank);
     Optional<Object> visitForRearrange(AbandonedStation card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws InvalidCoordinates, InvalidPositionException;
     Optional<Object> visitForSetChoiceToGain(AbandonedStation card, Boolean choice);
@@ -62,8 +62,8 @@ public interface CardVisitor {
     Optional<Object> visitForInitialize(Planets card, Bank bank);
     Optional<Object> visitForSetChoiceToGain(Planets card, Boolean choice);
     Optional<Object> visitForSetChoiceToGainFromList(Planets card, boolean choice);
-    Optional<Object> visitForSetCoordinatesToAddElements(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException;
-    Optional<Object> visitForSetCoordinatesToAddElementsFromList(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException;
+    Optional<Object> visitForSetCoordinatesToAddGoods(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException;
+    Optional<Object> visitForSetCoordinatesToAddGoodsFromList(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException;
     Optional<Object> visitForRearrange(Planets card, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws InvalidCoordinates, InvalidPositionException;
 
     Optional<Object> visit(Slavers card);
@@ -72,7 +72,7 @@ public interface CardVisitor {
     Optional<Object> visitForGetDays(Slavers card);
     Optional<Object> visitForGetCredits(Slavers card);
     Optional<Object> visitForSetDoubleCannonsCoordinates(Slavers card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker);
-    Optional<Object> visitForSetCoordinatesToRemoveHuman(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws InvalidCoordinates;
+    Optional<Object> visitForSetCoordinatesToRemoveCrew(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws InvalidCoordinates;
     Optional<Object> visitForSetChoiceToGain(Slavers card, boolean choice);
     Optional<Object> visitForSetDefeatedTruckers(Slavers card, ArrayList<Trucker> defeatedTruckers);
     Optional<Object> visitForSetWinnerTrucker(Slavers card, Trucker winnerTrucker);

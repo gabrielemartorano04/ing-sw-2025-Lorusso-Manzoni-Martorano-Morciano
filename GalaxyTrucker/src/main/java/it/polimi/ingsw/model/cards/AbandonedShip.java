@@ -135,8 +135,8 @@ public class AbandonedShip extends Card {
         return state;
     }
 
-    public void acceptForSetCoordinatesToRemoveElements(CardVisitor visitor, ArrayList<int[]> coordinates) throws InvalidCoordinates {
-        visitor.visitForSetCoordinatesToRemoveElements(this, coordinates);
+    public void acceptForSetCoordinatesToRemoveCrew(CardVisitor visitor, ArrayList<int[]> coordinates) throws InvalidCoordinates {
+        visitor.visitForSetCoordinatesToRemoveCrew(this, coordinates);
     }
 
     /**

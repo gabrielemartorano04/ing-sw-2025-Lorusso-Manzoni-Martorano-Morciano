@@ -174,8 +174,8 @@ public class AbandonedStation extends Card {
 
     }
 
-    public void acceptForSetCoordinatesToAddElements(CardVisitor visitor, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws InvalidCoordinates, InvalidPositionException {
-        visitor.visitForSetCoordinatesToAddElements(this, winnerCoordinatesToAddGood, value, trucker, bank);
+    public void acceptForSetCoordinatesToAddGoods(CardVisitor visitor, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws InvalidCoordinates, InvalidPositionException {
+        visitor.visitForSetCoordinatesToAddGoods(this, winnerCoordinatesToAddGood, value, trucker, bank);
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null

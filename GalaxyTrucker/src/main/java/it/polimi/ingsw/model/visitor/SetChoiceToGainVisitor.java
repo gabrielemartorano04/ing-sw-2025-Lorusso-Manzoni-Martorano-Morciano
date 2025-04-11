@@ -32,7 +32,7 @@ public class SetChoiceToGainVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(AbandonedShip card, ArrayList<int[]> coordinates) throws InvalidCoordinates {
+    public Optional<Object> visitForSetCoordinatesToRemoveCrew(AbandonedShip card, ArrayList<int[]> coordinates) throws InvalidCoordinates {
         return Optional.empty();
     }
 
@@ -62,7 +62,7 @@ public class SetChoiceToGainVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToAddElements(AbandonedStation card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) {
+    public Optional<Object> visitForSetCoordinatesToAddGoods(AbandonedStation card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) {
         return Optional.empty();
     }
 
@@ -235,12 +235,12 @@ public class SetChoiceToGainVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToAddElements(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) {
+    public Optional<Object> visitForSetCoordinatesToAddGoods(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) {
         return Optional.empty();
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToAddElementsFromList(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) {
+    public Optional<Object> visitForSetCoordinatesToAddGoodsFromList(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) {
         return Optional.empty();
     }
 
@@ -280,7 +280,7 @@ public class SetChoiceToGainVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveHuman(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveCrew(Slavers card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
         return Optional.empty();
     }
 
