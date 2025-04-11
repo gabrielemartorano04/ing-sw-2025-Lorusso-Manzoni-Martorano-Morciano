@@ -330,6 +330,11 @@ public class SetAnswersVisitor implements CardVisitor {
     }
 
     @Override
+    public Optional<Object> visitForGetCurrentGoods(Smugglers card) {
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<Object> visitForSetDefeatedTruckers(Smugglers card, ArrayList<Trucker> defeatedTruckers) {
         return Optional.empty();
     }

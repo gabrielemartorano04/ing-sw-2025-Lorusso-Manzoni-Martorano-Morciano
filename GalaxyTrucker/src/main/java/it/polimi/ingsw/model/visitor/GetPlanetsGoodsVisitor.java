@@ -1,4 +1,0 @@
-package it.polimi.ingsw.model.visitor;
-
-public class GetPlanetsGoodsVisitor extends CardVisitor {
-}
