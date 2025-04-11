@@ -452,7 +452,7 @@ public class GetElementsToGainVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForPlotGoodsList(WarZone card, Trucker trucker) {
+    public Optional<Object> visitForGetGoodsList(WarZone card, Trucker trucker) {
         return Optional.empty();
     }
 
@@ -462,7 +462,7 @@ public class GetElementsToGainVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveBatteries(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
         return Optional.empty();
     }
 
@@ -477,7 +477,7 @@ public class GetElementsToGainVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(WarZone card, ArrayList<int[]> coordinates) {
+    public Optional<Object> visitForSetCoordinatesToRemoveCrew(WarZone card, ArrayList<int[]> coordinates) {
         return Optional.empty();
     }
 }

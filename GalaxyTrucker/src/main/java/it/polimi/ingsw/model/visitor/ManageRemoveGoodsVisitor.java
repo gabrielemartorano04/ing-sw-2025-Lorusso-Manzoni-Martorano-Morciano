@@ -445,7 +445,8 @@ public class ManageRemoveGoodsVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForManageRemoveGoods(WarZone card, Trucker trucker, Bank bank) {
-        return Optional.empty();
+        card.manageRemoveGoods(trucker, bank);
+        return Optional.of(card.manageRemoveGoods(trucker, bank));
     }
 
     @Override
@@ -454,7 +455,7 @@ public class ManageRemoveGoodsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForPlotGoodsList(WarZone card, Trucker trucker) {
+    public Optional<Object> visitForGetGoodsList(WarZone card, Trucker trucker) {
         return Optional.empty();
     }
 
@@ -464,7 +465,7 @@ public class ManageRemoveGoodsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveBatteries(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
         return Optional.empty();
     }
 
@@ -479,7 +480,7 @@ public class ManageRemoveGoodsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(WarZone card, ArrayList<int[]> coordinates) {
+    public Optional<Object> visitForSetCoordinatesToRemoveCrew(WarZone card, ArrayList<int[]> coordinates) {
         return Optional.empty();
     }
 }

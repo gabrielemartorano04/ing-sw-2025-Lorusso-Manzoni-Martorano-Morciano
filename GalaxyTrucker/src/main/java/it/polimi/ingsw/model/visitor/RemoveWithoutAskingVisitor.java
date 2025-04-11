@@ -450,11 +450,12 @@ public class RemoveWithoutAskingVisitor implements CardVisitor {
 
     @Override
     public Optional<Object> visitForRemoveWithoutAsking(WarZone card, Trucker trucker, ArrayList<Goods> goodsList, Bank bank) {
+        card.removeWithoutAsking(trucker, goodsList, bank);
         return Optional.empty();
     }
 
     @Override
-    public Optional<Object> visitForPlotGoodsList(WarZone card, Trucker trucker) {
+    public Optional<Object> visitForGetGoodsList(WarZone card, Trucker trucker) {
         return Optional.empty();
     }
 
@@ -464,7 +465,7 @@ public class RemoveWithoutAskingVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveBatteries(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
         return Optional.empty();
     }
 
@@ -479,7 +480,7 @@ public class RemoveWithoutAskingVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(WarZone card, ArrayList<int[]> coordinates) {
+    public Optional<Object> visitForSetCoordinatesToRemoveCrew(WarZone card, ArrayList<int[]> coordinates) {
         return Optional.empty();
     }
 }

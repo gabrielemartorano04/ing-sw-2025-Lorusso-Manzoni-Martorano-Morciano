@@ -109,10 +109,10 @@ public interface CardVisitor {
     Optional<Object> visitForFindWeakestTrucker(WarZone card, Game game, ArrayList<ArrayList<int[]>> truckersCoordinates);
     Optional<Object> visitForManageRemoveGoods(WarZone card, Trucker trucker, Bank bank);
     Optional<Object> visitForRemoveWithoutAsking(WarZone card, Trucker trucker, ArrayList<Goods> goodsList, Bank bank);
-    Optional<Object> visitForPlotGoodsList(WarZone card, Trucker trucker);
-    Optional<Object> visitForRemoveAsking(WarZone card, Bank bank, ArrayList<Integer> indexes, Trucker trucker);
-    Optional<Object> visitForSetCoordinatesToRemoveElements(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker);
+    Optional<Object> visitForGetGoodsList(WarZone card, Trucker trucker);
+    Optional<Object> visitForRemoveAsking(WarZone card, Bank bank, ArrayList<Integer> indexes, Trucker trucker) throws InvalidGoodChosen, NotEnoughGoodsChosen;
+    Optional<Object> visitForSetCoordinatesToRemoveBatteries(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected;
     Optional<Object> visitForRollDice(WarZone card, Game game);
     Optional<Object> visitForSetAnswers(WarZone card, boolean answers);
-    Optional<Object> visitForSetCoordinatesToRemoveElements(WarZone card, ArrayList<int[]> coordinates);
+    Optional<Object> visitForSetCoordinatesToRemoveCrew(WarZone card, ArrayList<int[]> coordinates) throws InvalidCoordinates;
 }

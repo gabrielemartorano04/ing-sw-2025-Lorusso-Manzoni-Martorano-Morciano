@@ -456,17 +456,18 @@ public class RemoveAskingVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForPlotGoodsList(WarZone card, Trucker trucker) {
+    public Optional<Object> visitForGetGoodsList(WarZone card, Trucker trucker) {
         return Optional.empty();
     }
 
     @Override
-    public Optional<Object> visitForRemoveAsking(WarZone card, Bank bank, ArrayList<Integer> indexes, Trucker trucker) {
+    public Optional<Object> visitForRemoveAsking(WarZone card, Bank bank, ArrayList<Integer> indexes, Trucker trucker) throws InvalidGoodChosen, NotEnoughGoodsChosen {
+        card.removeAsking(bank, indexes, trucker);
         return Optional.empty();
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveBatteries(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
         return Optional.empty();
     }
 
@@ -481,7 +482,7 @@ public class RemoveAskingVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(WarZone card, ArrayList<int[]> coordinates) {
+    public Optional<Object> visitForSetCoordinatesToRemoveCrew(WarZone card, ArrayList<int[]> coordinates) {
         return Optional.empty();
     }
 }

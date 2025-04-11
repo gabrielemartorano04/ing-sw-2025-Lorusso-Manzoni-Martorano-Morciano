@@ -456,7 +456,7 @@ public class SetCoordinatesToRemoveElementsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForPlotGoodsList(WarZone card, Trucker trucker) {
+    public Optional<Object> visitForGetGoodsList(WarZone card, Trucker trucker) {
         return Optional.empty();
     }
 
@@ -466,7 +466,8 @@ public class SetCoordinatesToRemoveElementsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
+    public Optional<Object> visitForSetCoordinatesToRemoveBatteries(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
+        card.removeBatteries(coordinatesToRemoveBatteries, trucker);
         return Optional.empty();
     }
 
@@ -481,7 +482,8 @@ public class SetCoordinatesToRemoveElementsVisitor implements CardVisitor {
     }
 
     @Override
-    public Optional<Object> visitForSetCoordinatesToRemoveElements(WarZone card, ArrayList<int[]> coordinates) {
-        return Optional.empty();
+    public Optional<Object> visitForSetCoordinatesToRemoveCrew(WarZone card, ArrayList<int[]> coordinates) throws InvalidCoordinates {
+        card.removeCrew(coordinates);
+        return Optional.of(card.removeCrew(coordinates));
     }
 }
