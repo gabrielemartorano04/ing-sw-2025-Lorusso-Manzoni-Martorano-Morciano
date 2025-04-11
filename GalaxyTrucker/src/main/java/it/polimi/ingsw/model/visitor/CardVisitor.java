@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.visitor;
 
+import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.Game;
@@ -10,12 +11,14 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public interface CardVisitor {
+    Optional<Object> visit(AbandonedShip card);
     Optional<Object> visitForGetDays(AbandonedShip card);
     Optional<Object> visitForGetCredits(AbandonedShip card);
     Optional<Object> visitForGetHumanToRemove(AbandonedShip card);
-    Optional<Object> visitForSetCoordinatesToRemoveElements(AbandonedShip card, ArrayList<int[]> coordinates);
+    Optional<Object> visitForSetCoordinatesToRemoveElements(AbandonedShip card, ArrayList<int[]> coordinates) throws InvalidCoordinates;
     Optional<Object> visitForSetTruckerLanding(AbandonedShip card, Trucker trucker, boolean landing, int numPlayer);
 
+    Optional<Object> visit(AbandonedStation card);
     Optional<Object> visitForGetDays(AbandonedStation card);
     Optional<Object> visitForGetHumanToGain(AbandonedStation card);
     Optional<Object> visitForGetGoods(AbandonedStation card);
@@ -26,13 +29,16 @@ public interface CardVisitor {
 
     Optional<Object> visit(Epidemic card);
 
+    Optional<Object> visit(MeteorShower card);
     Optional<Object> visitForGetDirection(MeteorShower card);
     Optional<Object> visitForGetCurrentMeteor(MeteorShower card);
     Optional<Object> visitForRollDice(MeteorShower card, Game game);
     Optional<Object> VisitForSetAnswers(MeteorShower card, boolean answers);
 
+    Optional<Object> visit(OpenSpace card);
     Optional<Object> visitForSetDoubleEnginesCoordinates(OpenSpace card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers);
 
+    Optional<Object> visit(Pirates card);
     Optional<Object> visitForGetDays(Pirates card);
     Optional<Object> visitForGetCredits(Pirates card);
     Optional<Object> visitForGetPiratesPower(Pirates card);
@@ -46,6 +52,7 @@ public interface CardVisitor {
     Optional<Object> visitForSetDoubleCannonsCoordinates(Pirates card, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker);
     Optional<Object> visitForSetAnswers(Pirates card, boolean answers, Trucker trucker);
 
+    Optional<Object> visit(Planets card);
     Optional<Object> visitForGetPlanets(Planets card);
     Optional<Object> visitForGetGoodsFromPlanets(Planets card);
     Optional<Object> visitForGetGoodsFromList(Planets card);
@@ -58,6 +65,7 @@ public interface CardVisitor {
     Optional<Object> visitForSetCoordinatesToAddElementsFromList(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank);
     Optional<Object> visitForRearrange(Planets card, int[] coord1, int[] coord2, int value1, int value2, boolean contiune);
 
+    Optional<Object> visit(Slavers card);
     Optional<Object> visitForGetSlaversPower(Slavers card);
     Optional<Object> visitForGetAstronautsLost(Slavers card);
     Optional<Object> visitForGetDays(Slavers card);
@@ -68,6 +76,7 @@ public interface CardVisitor {
     Optional<Object> visitForSetDefeatedTruckers(Slavers card, ArrayList<Trucker> defeatedTruckers);
     Optional<Object> visitForSetWinnerTrucker(Slavers card, Trucker winnerTrucker);
 
+    Optional<Object> visit(Smugglers card);
     Optional<Object> visitForGetSmugglersPower(Smugglers card);
     Optional<Object> visitForGetGoodsToRemove(Smugglers card);
     Optional<Object> visitForGetGoodsToGain(Smugglers card);
@@ -83,10 +92,11 @@ public interface CardVisitor {
     Optional<Object> visitForRemoveWithoutAsking(Smugglers card, Trucker trucker, ArrayList<Goods> goodsList, Bank bank);
     Optional<Object> visitForPlotGoodsList(Smugglers card, Trucker trucker);
     Optional<Object> visitForRemoveAsking(Smugglers card, ArrayList<Integer> indexes, Trucker trucker, Bank bank);
-    Optional<Object> visitForSetCoordinatesToRemoveElements(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker)
+    Optional<Object> visitForSetCoordinatesToRemoveElements(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker);
 
     Optional<Object> visit(StarDust card);
 
+    Optional<Object> visit(WarZone card);
     Optional<Object> visitForGetConditionsOrder(WarZone card);
     Optional<Object> visitForGetPenalties(WarZone card);
     Optional<Object> visitForGetShoots(WarZone card);

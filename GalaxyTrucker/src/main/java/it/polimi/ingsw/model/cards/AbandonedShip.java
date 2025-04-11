@@ -55,6 +55,10 @@ public class AbandonedShip extends Card {
         return days;
     }
 
+    public void acceptForGetDays(CardVisitor visitor) {
+        visitor.visitForGetDays(this);
+    }
+
     /**
      * Returns the number of cosmic credits to gain
      * @return credit to gain
@@ -63,12 +67,20 @@ public class AbandonedShip extends Card {
         return credits;
     }
 
+    public void acceptForGetCredits(CardVisitor visitor) {
+        visitor.visitForGetCredits(this);
+    }
+
     /**
      * Returns the number of crew members to lose
      * @return crew members to lose
      */
     public int getNumHuman() {
         return numHuman;
+    }
+
+    public void acceptForGetHumanToRemove(CardVisitor visitor) {
+        visitor.visitForGetHumanToRemove(this);
     }
 
     /**
@@ -91,6 +103,10 @@ public class AbandonedShip extends Card {
         }
         playerDecisions++;
         return state;
+    }
+
+    public void acceptForSetTruckerLanding(CardVisitor visitor, Trucker trucker, boolean landing, int numPlayer) {
+        visitor.visitForSetTruckerLanding(this, trucker, landing, numPlayer);
     }
 
     /**
@@ -117,6 +133,10 @@ public class AbandonedShip extends Card {
             throw new RuntimeException("Tried to set coordinates when truckerThatHasDecided is null");
         }
         return state;
+    }
+
+    public void acceptForSetCoordinatesToRemoveElements(CardVisitor visitor, ArrayList<int[]> coordinates) throws InvalidCoordinates {
+        visitor.visitForSetCoordinatesToRemoveElements(this, coordinates);
     }
 
     /**
