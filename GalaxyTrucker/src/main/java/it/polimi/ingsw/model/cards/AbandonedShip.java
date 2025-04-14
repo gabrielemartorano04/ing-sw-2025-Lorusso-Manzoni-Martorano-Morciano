@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.visitor.CardVisitor;
+import it.polimi.ingsw.model.visitor.GetDaysVisitor;
 
 import java.util.ArrayList;
 
@@ -156,5 +157,11 @@ public class AbandonedShip extends Card {
         }
         state = CardState.EXIT;
         return state;
+    }
+
+    public static void main(String[] args) {
+        AbandonedShip card=new AbandonedShip(false,2,3,3,3, "","");
+        GetDaysVisitor getDaysVisitor = new GetDaysVisitor();
+        card.acceptForGetDays(getDaysVisitor);
     }
 }

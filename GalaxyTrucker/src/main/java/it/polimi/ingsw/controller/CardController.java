@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.cards.AbandonedShip;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardState;
 
@@ -37,5 +38,9 @@ public class CardController {
 
     public CardState applyEffects(Card card, Game game) {
         return card.cardEffect(game);
+    }
+
+    public int getDays(AbandonedShip card) {
+        card.acceptForGetDays();
     }
 }
