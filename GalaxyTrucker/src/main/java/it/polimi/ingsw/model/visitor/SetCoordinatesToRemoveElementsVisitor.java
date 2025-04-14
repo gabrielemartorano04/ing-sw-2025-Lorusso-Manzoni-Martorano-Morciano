@@ -476,4 +476,9 @@ public class SetCoordinatesToRemoveElementsVisitor implements CardVisitor {
         card.removeCrew(coordinates);
         return Optional.of(card.removeCrew(coordinates));
     }
+
+    @Override
+    public Optional<Object> visit(Card card) {
+        return Optional.empty();
+    }
 }

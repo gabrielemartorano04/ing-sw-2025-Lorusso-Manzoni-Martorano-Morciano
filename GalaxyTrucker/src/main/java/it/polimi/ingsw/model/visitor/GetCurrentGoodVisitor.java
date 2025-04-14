@@ -471,4 +471,9 @@ public class GetCurrentGoodVisitor implements CardVisitor {
     public Optional<Object> visitForSetCoordinatesToRemoveCrew(WarZone card, ArrayList<int[]> coordinates) {
         return Optional.empty();
     }
+
+    @Override
+    public Optional<Object> visit(Card card) {
+        return Optional.empty();
+    }
 }
