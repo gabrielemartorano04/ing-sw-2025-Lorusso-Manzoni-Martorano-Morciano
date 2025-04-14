@@ -8,6 +8,7 @@ import java.util.Random;
 /**
  * Class that manages the components as a whole
  */
+
 public class AvailableComponents {
     private ArrayList<Component> components;
 
