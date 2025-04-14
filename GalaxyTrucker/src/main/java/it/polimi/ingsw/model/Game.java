@@ -298,11 +298,15 @@ public class Game {
     public ArrayList<PlayerColors> showAvailableColors() {
         return availableColors;
     }
+
     //FSM
 
     public void addTrucker(PlayerColors color, String nickname) throws IllegalStateException{
         if (this.gameState != GameState.SETUP){
             throw new IllegalStateException("State is not setup");
+        }
+        if(truckers.size()=4 || ){
+
         }
         if(truckers.stream().anyMatch(trucker -> trucker.getNickname().equals(nickname))){
             throw new IllegalArgumentException("Nickname already exists");
