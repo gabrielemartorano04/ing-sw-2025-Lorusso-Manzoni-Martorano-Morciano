@@ -113,4 +113,6 @@ public interface CardVisitor {
     Optional<Object> visitForRollDice(WarZone card, Game game);
     Optional<Object> visitForSetAnswers(WarZone card, boolean answers);
     Optional<Object> visitForSetCoordinatesToRemoveCrew(WarZone card, ArrayList<int[]> coordinates) throws InvalidCoordinates;
+
+    Optional<Object> visit(Card card);
 }
