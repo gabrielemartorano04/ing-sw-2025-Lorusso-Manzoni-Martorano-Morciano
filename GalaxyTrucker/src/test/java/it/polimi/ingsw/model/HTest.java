@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class HourglassTest {
+public class HTest {
     private Hourglass hourglass;
 
     @Before
