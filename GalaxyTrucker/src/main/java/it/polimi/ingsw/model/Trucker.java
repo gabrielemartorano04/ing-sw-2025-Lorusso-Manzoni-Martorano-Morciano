@@ -191,6 +191,14 @@ public class Trucker {
             spaceShip.increaseLost(spaceShip.getKept().size());
             spaceShip.getKept().removeAll(spaceShip.getKept());
         }
+
+    }
+
+    public void fillSpaceship(ArrayList<int[]> coordAliens){
+        spaceShip.setBattery();
+        int goodsCapacity = spaceShip.getGoodsCapacity();
+        spaceShip.setNumAlien(coordAliens);
+        spaceShip.setNumHuman();
     }
 
     //FSM ingresso
