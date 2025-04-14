@@ -193,5 +193,7 @@ public class Trucker {
         }
     }
 
+    //FSM ingresso
+
 }
 
