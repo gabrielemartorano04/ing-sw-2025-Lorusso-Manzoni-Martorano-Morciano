@@ -63,6 +63,29 @@ public abstract class Card {
         return level;
     }
 
+    /**
+     * Returns if the truckers are playing the trial flight
+     * @return specify if truckers are in trial flight
+     */
+    public boolean isTrialFlight() {
+        return trialFlight;
+    }
+
+    /**
+     * Returns the front image of the card
+     * @return front image
+     */
+    public ImageIcon getFrontImage() {
+        return frontImage;
+    }
+
+    /**
+     * Returns the back image of the card
+     * @return back image
+     */
+    public ImageIcon getBackImage() {
+        return backImage;
+    }
 
     /**
      * Applies the changes provided by the card

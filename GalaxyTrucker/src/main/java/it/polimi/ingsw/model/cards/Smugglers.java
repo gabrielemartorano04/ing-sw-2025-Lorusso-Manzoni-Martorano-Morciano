@@ -340,7 +340,7 @@ public class Smugglers extends Card {
         visitor.visitForManageRemoveGoods(this, trucker, bank);
     }
 
-    public void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank) {
+    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank) {
         if(this.numOfCurrTypeOfGood == 0){
             throw new RuntimeException("NumOfGoods is 0 but you called removeWithoutAsking");
         }
@@ -357,10 +357,6 @@ public class Smugglers extends Card {
         }
         trucker.getSpaceShip().removeGoods(list);
 
-    }
-
-    public void acceptForRemoveWithoutAsking(CardVisitor visitor, Trucker trucker, ArrayList<Goods> goodsList, Bank bank) {
-        visitor.visitForRemoveWithoutAsking(this, trucker, goodsList, bank);
     }
 
     public ArrayList<Goods> plotGoodsList(Trucker trucker){
