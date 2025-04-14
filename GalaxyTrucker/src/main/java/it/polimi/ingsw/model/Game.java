@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.AskController;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
 

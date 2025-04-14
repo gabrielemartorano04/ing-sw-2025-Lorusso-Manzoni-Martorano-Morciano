@@ -5,15 +5,11 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardState;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  *
  */
 public class CardController {
-
-    public CardController() {
-    }
 
     public String getCardName(Card card) {
         return card.getName();
