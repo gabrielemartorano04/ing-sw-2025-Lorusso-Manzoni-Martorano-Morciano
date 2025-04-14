@@ -11,6 +11,9 @@ import it.polimi.ingsw.model.visitor.CardVisitor;
 import java.util.Map;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class WarZone extends Card {
     private CardState state;
     private int currConditionIndex;
