@@ -1,24 +1,23 @@
 package it.polimi.ingsw.model;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class BankTest {
+import static org.junit.Assert.*;
+public class BankTest {
 
     @Test
-    void getGoodsInBank() {
+    public void getGoodsInBank() {
     }
 
     @Test
-    void getGoods() {
+    public void getGoods() {
     }
 
     @Test
-    void addGoodsInBank() {
+    public void addGoodsInBank() {
     }
 
     @Test
-    void removeGoodsInBank() {
+    public void removeGoodsInBank() {
     }
 }

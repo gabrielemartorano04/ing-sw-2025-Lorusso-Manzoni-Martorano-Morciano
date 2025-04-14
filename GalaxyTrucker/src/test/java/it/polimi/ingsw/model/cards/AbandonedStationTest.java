@@ -1,72 +1,71 @@
 package it.polimi.ingsw.model.cards;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class AbandonedStationTest {
+import static org.junit.Assert.*;
+public class AbandonedStationTest {
 
     @Test
-    void accept() {
+    public void accept() {
     }
 
     @Test
-    void getDays() {
+    public void getDays() {
     }
 
     @Test
-    void acceptForGetDays() {
+    public void acceptForGetDays() {
     }
 
     @Test
-    void getNumHuman() {
+    public void getNumHuman() {
     }
 
     @Test
-    void acceptForGetHumanToGain() {
+    public void acceptForGetHumanToGain() {
     }
 
     @Test
-    void getGoods() {
+    public void getGoods() {
     }
 
     @Test
-    void acceptForGetGoods() {
+    public void acceptForGetGoods() {
     }
 
     @Test
-    void truckerLanding() {
+    public void truckerLanding() {
     }
 
     @Test
-    void acceptForSetTruckerLanding() {
+    public void acceptForSetTruckerLanding() {
     }
 
     @Test
-    void setChoiceToGain() {
+    public void setChoiceToGain() {
     }
 
     @Test
-    void acceptForSetChoiceToGain() {
+    public void acceptForSetChoiceToGain() {
     }
 
     @Test
-    void setWinnerCoordinatesToAddGoods() {
+    public void setWinnerCoordinatesToAddGoods() {
     }
 
     @Test
-    void acceptForSetCoordinatesToAddGoods() {
+    public void acceptForSetCoordinatesToAddGoods() {
     }
 
     @Test
-    void rearrange() {
+    public void rearrange() {
     }
 
     @Test
-    void acceptForRearrange() {
+    public void acceptForRearrange() {
     }
 
     @Test
-    void cardEffect() {
+    public void cardEffect() {
     }
 }

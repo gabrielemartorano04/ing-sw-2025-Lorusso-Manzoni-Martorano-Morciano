@@ -1,216 +1,215 @@
 package it.polimi.ingsw.model;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class SpaceShipTest {
+import static org.junit.Assert.*;
+public class SpaceShipTest {
 
     @Test
-    void getKept() {
+    public void getKept() {
     }
 
     @Test
-    void increaseLost() {
+    public void increaseLost() {
     }
 
     @Test
-    void setBattery() {
+    public void setBattery() {
     }
 
     @Test
-    void getGoodsCapacity() {
+    public void getGoodsCapacity() {
     }
 
     @Test
-    void setNumHuman() {
+    public void setNumHuman() {
     }
 
     @Test
-    void getNumHuman() {
+    public void getNumHuman() {
     }
 
     @Test
-    void setNumAlien() {
+    public void setNumAlien() {
     }
 
     @Test
-    void removeHuman() {
+    public void removeHuman() {
     }
 
     @Test
-    void removeNumHuman() {
+    public void removeNumHuman() {
     }
 
     @Test
-    void getComponents() {
+    public void getComponents() {
     }
 
     @Test
-    void getNumDoubleCannon() {
+    public void getNumDoubleCannon() {
     }
 
     @Test
-    void getNumDoubleEngine() {
+    public void getNumDoubleEngine() {
     }
 
     @Test
-    void addComponent() {
+    public void addComponent() {
     }
 
     @Test
-    void removeComponent() {
+    public void removeComponent() {
     }
 
     @Test
-    void getSingleCannonPower() {
+    public void getSingleCannonPower() {
     }
 
     @Test
-    void getDoubleCannon() {
+    public void getDoubleCannon() {
     }
 
     @Test
-    void getSingleEnginePower() {
+    public void getSingleEnginePower() {
     }
 
     @Test
-    void getDoubleEngine() {
+    public void getDoubleEngine() {
     }
 
     @Test
-    void chooseComponent() {
+    public void chooseComponent() {
     }
 
     @Test
-    void getProtection() {
+    public void getProtection() {
     }
 
     @Test
-    void isValid() {
+    public void isValid() {
     }
 
     @Test
-    void getTotalCannonPower() {
+    public void getTotalCannonPower() {
     }
 
     @Test
-    void getTotalEnginePower() {
+    public void getTotalEnginePower() {
     }
 
     @Test
-    void countExposedConnectors() {
+    public void countExposedConnectors() {
     }
 
     @Test
-    void wellDone() {
+    public void wellDone() {
     }
 
     @Test
-    void isHit() {
+    public void isHit() {
     }
 
     @Test
-    void destroyComponent() {
+    public void destroyComponent() {
     }
 
     @Test
-    void shootMeteor() {
+    public void shootMeteor() {
     }
 
     @Test
-    void blockSmallMeteor() {
+    public void blockSmallMeteor() {
     }
 
     @Test
-    void blockLightCannonShot() {
+    public void blockLightCannonShot() {
     }
 
     @Test
-    void epidemic() {
+    public void epidemic() {
     }
 
     @Test
-    void addGoodsList() {
+    public void addGoodsList() {
     }
 
     @Test
-    void addGoods() {
+    public void addGoods() {
     }
 
     @Test
-    void addGood() {
+    public void addGood() {
     }
 
     @Test
-    void getGoodsList() {
+    public void getGoodsList() {
     }
 
     @Test
-    void getLost() {
+    public void getLost() {
     }
 
     @Test
-    void removeBatteries() {
+    public void removeBatteries() {
     }
 
     @Test
-    void removeAllGoods() {
+    public void removeAllGoods() {
     }
 
     @Test
-    void getNumBatteries() {
+    public void getNumBatteries() {
     }
 
     @Test
-    void checkLoad() {
+    public void checkLoad() {
     }
 
     @Test
-    void testCheckLoad() {
+    public void testCheckLoad() {
     }
 
     @Test
-    void checkDoubleEngine() {
+    public void checkDoubleEngine() {
     }
 
     @Test
-    void checkDoubleCannon() {
+    public void checkDoubleCannon() {
     }
 
     @Test
-    void checkShield() {
+    public void checkShield() {
     }
 
     @Test
-    void checkBatteryStorage() {
+    public void checkBatteryStorage() {
     }
 
     @Test
-    void checkCabin() {
+    public void checkCabin() {
     }
 
     @Test
-    void swapGoods() {
+    public void swapGoods() {
     }
 
     @Test
-    void getRedGoods() {
+    public void getRedGoods() {
     }
 
     @Test
-    void getGreenGoods() {
+    public void getGreenGoods() {
     }
 
     @Test
-    void getBlueGoods() {
+    public void getBlueGoods() {
     }
 
     @Test
-    void getYellowGoods() {
+    public void getYellowGoods() {
     }
 
     @Test
-    void removeGoods() {
+    public void removeGoods() {
     }
 }

@@ -1,28 +1,27 @@
 package it.polimi.ingsw.model.cards;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class CardTest {
+import static org.junit.Assert.*;
+public class CardTest {
 
     @Test
-    void accept() {
+    public void accept() {
     }
 
     @Test
-    void getName() {
+    public void getName() {
     }
 
     @Test
-    void getDescription() {
+    public void getDescription() {
     }
 
     @Test
-    void getLevel() {
+    public void getLevel() {
     }
 
     @Test
-    void cardEffect() {
+    public void cardEffect() {
     }
 }

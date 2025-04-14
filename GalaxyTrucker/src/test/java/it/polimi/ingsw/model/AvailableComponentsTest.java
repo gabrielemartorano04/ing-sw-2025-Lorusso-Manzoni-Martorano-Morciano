@@ -1,20 +1,20 @@
 package it.polimi.ingsw.model;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class AvailableComponentsTest {
+public class AvailableComponentsTest {
 
     @Test
-    void getComponents() {
+    public void getComponents() {
     }
 
     @Test
-    void shuffle() {
+    public void shuffle() {
     }
 
     @Test
-    void remove() {
+    public void remove() {
     }
 }

@@ -1,48 +1,47 @@
 package it.polimi.ingsw.model.cards;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class MeteorShowerTest {
+import static org.junit.Assert.*;
+public class MeteorShowerTest {
 
     @Test
-    void accept() {
+    public void accept() {
     }
 
     @Test
-    void getDirections() {
+    public void getDirections() {
     }
 
     @Test
-    void acceptForGetDirection() {
+    public void acceptForGetDirection() {
     }
 
     @Test
-    void getCurrentMeteor() {
+    public void getCurrentMeteor() {
     }
 
     @Test
-    void acceptForGetCurrentMeteor() {
+    public void acceptForGetCurrentMeteor() {
     }
 
     @Test
-    void rollDice() {
+    public void rollDice() {
     }
 
     @Test
-    void acceptForRollDice() {
+    public void acceptForRollDice() {
     }
 
     @Test
-    void setAnswers() {
+    public void setAnswers() {
     }
 
     @Test
-    void acceptForSetAnswers() {
+    public void acceptForSetAnswers() {
     }
 
     @Test
-    void cardEffect() {
+    public void cardEffect() {
     }
 }

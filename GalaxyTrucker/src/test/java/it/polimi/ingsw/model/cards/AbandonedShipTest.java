@@ -1,56 +1,55 @@
 package it.polimi.ingsw.model.cards;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class AbandonedShipTest {
+import static org.junit.Assert.*;
+public class AbandonedShipTest {
 
     @Test
-    void accept() {
+    public void accept() {
     }
 
     @Test
-    void getDays() {
+    public void getDays() {
     }
 
     @Test
-    void acceptForGetDays() {
+    public void acceptForGetDays() {
     }
 
     @Test
-    void getCredits() {
+    public void getCredits() {
     }
 
     @Test
-    void acceptForGetCredits() {
+    public void acceptForGetCredits() {
     }
 
     @Test
-    void getNumHuman() {
+    public void getNumHuman() {
     }
 
     @Test
-    void acceptForGetHumanToRemove() {
+    public void acceptForGetHumanToRemove() {
     }
 
     @Test
-    void setTruckerThatHasDecided() {
+    public void setTruckerThatHasDecided() {
     }
 
     @Test
-    void acceptForSetTruckerLanding() {
+    public void acceptForSetTruckerLanding() {
     }
 
     @Test
-    void setCoordinates() {
+    public void setCoordinates() {
     }
 
     @Test
-    void acceptForSetCoordinatesToRemoveCrew() {
+    public void acceptForSetCoordinatesToRemoveCrew() {
     }
 
     @Test
-    void cardEffect() {
+    public void cardEffect() {
     }
 }

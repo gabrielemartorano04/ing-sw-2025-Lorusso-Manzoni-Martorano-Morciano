@@ -1,24 +1,23 @@
 package it.polimi.ingsw.model.cards;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class OpenSpaceTest {
+import static org.junit.Assert.*;
+public class OpenSpaceTest {
 
     @Test
-    void accept() {
+    public void accept() {
     }
 
     @Test
-    void setCoordinates() {
+    public void setCoordinates() {
     }
 
     @Test
-    void acceptForSetDoubleEnginesCoordinates() {
+    public void acceptForSetDoubleEnginesCoordinates() {
     }
 
     @Test
-    void cardEffect() {
+    public void cardEffect() {
     }
 }

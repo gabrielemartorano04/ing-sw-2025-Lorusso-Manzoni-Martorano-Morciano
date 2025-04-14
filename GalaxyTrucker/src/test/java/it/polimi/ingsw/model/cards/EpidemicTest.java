@@ -1,16 +1,15 @@
 package it.polimi.ingsw.model.cards;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class EpidemicTest {
+import static org.junit.Assert.*;
+public class EpidemicTest {
 
     @Test
-    void accept() {
+    public void accept() {
     }
 
     @Test
-    void cardEffect() {
+    public void cardEffect() {
     }
 }

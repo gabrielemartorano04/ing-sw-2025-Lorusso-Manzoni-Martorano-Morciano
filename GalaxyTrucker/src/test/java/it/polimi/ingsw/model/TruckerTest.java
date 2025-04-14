@@ -1,72 +1,72 @@
 package it.polimi.ingsw.model;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class TruckerTest {
+public class TruckerTest {
 
     @Test
-    void getBuildingState() {
+    public void getBuildingState() {
     }
 
     @Test
-    void setBuildingState() {
+    public void setBuildingState() {
     }
 
     @Test
-    void setPosition() {
+    public void setPosition() {
     }
 
     @Test
-    void getPosition() {
+    public void getPosition() {
     }
 
     @Test
-    void getColor() {
+    public void getColor() {
     }
 
     @Test
-    void addCosmicCredit() {
+    public void addCosmicCredit() {
     }
 
     @Test
-    void getCosmicCredit() {
+    public void getCosmicCredit() {
     }
 
     @Test
-    void getNickname() {
+    public void getNickname() {
     }
 
     @Test
-    void getSpaceShip() {
+    public void getSpaceShip() {
     }
 
     @Test
-    void chooseWhatToDo() {
+    public void chooseWhatToDo() {
     }
 
     @Test
-    void showStack() {
+    public void showStack() {
     }
 
     @Test
-    void keep() {
+    public void keep() {
     }
 
     @Test
-    void link() {
+    public void link() {
     }
 
     @Test
-    void selectComponent() {
+    public void selectComponent() {
     }
 
     @Test
-    void turnHourglass() {
+    public void turnHourglass() {
     }
 
     @Test
-    void finish() {
+    public void finish() {
     }
 }

@@ -1,16 +1,15 @@
 package it.polimi.ingsw.model;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class DeckTest {
+import static org.junit.Assert.*;
+public class DeckTest {
 
     @Test
-    void getCard() {
+    public void getCard() {
     }
 
     @Test
-    void getDeck() {
+    public void getDeck() {
     }
 }

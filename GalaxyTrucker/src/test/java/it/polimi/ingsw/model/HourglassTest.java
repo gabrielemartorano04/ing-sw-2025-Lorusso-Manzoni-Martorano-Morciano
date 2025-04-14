@@ -1,24 +1,24 @@
 package it.polimi.ingsw.model;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class HourglassTest {
+public class HourglassTest {
 
     @Test
-    void getTimeTurns() {
+    public void getTimeTurns() {
     }
 
     @Test
-    void timeIsUp() {
+    public void timeIsUp() {
     }
 
     @Test
-    void increaseTimeTurns() {
+    public void increaseTimeTurns() {
     }
 
     @Test
-    void reset() {
+    public void reset() {
     }
 }

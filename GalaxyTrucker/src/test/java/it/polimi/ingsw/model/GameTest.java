@@ -1,116 +1,115 @@
 package it.polimi.ingsw.model;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class GameTest {
+import static org.junit.Assert.*;
+public class GameTest {
 
     @Test
-    void getBank() {
+    public void getBank() {
     }
 
     @Test
-    void sortTruckers() {
+    public void sortTruckers() {
     }
 
     @Test
-    void rollDice() {
+    public void rollDice() {
     }
 
     @Test
-    void drawCard() {
+    public void drawCard() {
     }
 
     @Test
-    void noHumans() {
+    public void noHumans() {
     }
 
     @Test
-    void viewStack() {
+    public void viewStack() {
     }
 
     @Test
-    void checkOvertaken() {
+    public void checkOvertaken() {
     }
 
     @Test
-    void withdraw() {
+    public void withdraw() {
     }
 
     @Test
-    void getTrucker() {
+    public void getTrucker() {
     }
 
     @Test
-    void getComponents() {
+    public void getComponents() {
     }
 
     @Test
-    void makeStacks() {
+    public void makeStacks() {
     }
 
     @Test
-    void makeGameDeck() {
+    public void makeGameDeck() {
     }
 
     @Test
-    void getTruckerList() {
+    public void getTruckerList() {
     }
 
     @Test
-    void moveForward() {
+    public void moveForward() {
     }
 
     @Test
-    void moveBackward() {
+    public void moveBackward() {
     }
 
     @Test
-    void makeTrucker() {
+    public void makeTrucker() {
     }
 
     @Test
-    void ready() {
+    public void ready() {
     }
 
     @Test
-    void setLevel() {
+    public void setLevel() {
     }
 
     @Test
-    void computeScores() {
+    public void computeScores() {
     }
 
     @Test
-    void bestSpaceShip() {
+    public void bestSpaceShip() {
     }
 
     @Test
-    void showAvailableColors() {
+    public void showAvailableColors() {
     }
 
     @Test
-    void addTrucker() {
+    public void addTrucker() {
     }
 
     @Test
-    void waiting() {
+    public void waiting() {
     }
 
     @Test
-    void building() {
+    public void building() {
     }
 
     @Test
-    void turn() {
+    public void turn() {
     }
 
     @Test
-    void finish() {
+    public void finish() {
     }
 
     @Test
-    void getHourglass() {
+    public void getHourglass() {
     }
 }
