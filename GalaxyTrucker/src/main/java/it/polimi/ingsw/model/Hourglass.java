@@ -3,6 +3,10 @@ package it.polimi.ingsw.model;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ *
+ */
+
 public class Hourglass {
 
     private Timer timer;

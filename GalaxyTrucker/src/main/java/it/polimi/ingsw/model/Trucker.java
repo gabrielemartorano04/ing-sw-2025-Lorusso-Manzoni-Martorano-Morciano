@@ -8,6 +8,10 @@ import it.polimi.ingsw.model.components.Component;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
+
 public class Trucker {
 
 

@@ -10,6 +10,7 @@ import java.util.Map;
 /**
  * Class that manages the cards as a deck
  */
+
 class Deck {
     private final ArrayList<Card> cards;
 
