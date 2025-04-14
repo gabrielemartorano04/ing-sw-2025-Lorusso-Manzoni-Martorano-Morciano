@@ -69,4 +69,5 @@ class TruckerTest {
     @Test
     void finish() {
     }
+
 }
