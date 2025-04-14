@@ -4,10 +4,7 @@ import it.polimi.ingsw.controller.AskController;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Comparator;
+import java.util.*;
 
 //gestisce la partita
 
@@ -31,7 +28,8 @@ public class Game {
 
     private AskController askController;
     private GameState gameState;
-    private ArrayList<PlayerColors> availableColors;
+    private final Set<String> nicknames = new HashSet<>();
+    private final Set<PlayerColors> usedColors = new HashSet<>();
 
     /**
      * Constructor that initializes the game attributes.
@@ -45,17 +43,17 @@ public class Game {
         this.deck = new Deck();
         this.cardStacks = new ArrayList[4];
         this.bank = new Bank();
-
-        this.availableColors = new ArrayList<>();
-        this.availableColors.addFirst(PlayerColors.RED);
-        this.availableColors.addFirst(PlayerColors.BLUE);
-        this.availableColors.addFirst(PlayerColors.GREEN);
-        this.availableColors.addFirst(PlayerColors.YELLOW);
+        this.gameState = GameState.SETUP;
     }
 
 
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
 
-    // model
+    public GameState getGameState() {
+        return gameState;
+    }
 
     public Bank getBank() {
         return bank;
@@ -141,6 +139,8 @@ public class Game {
         return truckers.get(i);
     }
 
+    public ArrayList<Trucker> getTruckers() {return truckers;}
+
     /**
      * Returns the list of available components.
      * @return an array of available components
@@ -216,16 +216,6 @@ public class Game {
     }
 
     /**
-     * Adds a new trucker to the game.
-     * @param numPlayer the number of players
-     * @param nickname the player's nickname
-     * @param color the player's chosen color
-     */
-    public void makeTrucker(int numPlayer, String nickname, PlayerColors color){
-        truckers.add(new Trucker(nickname, color));
-    }
-
-    /**
      * Checks if a trucker's spaceship is ready.
      * @param trucker the trucker to check
      * @return false (to be implemented)
@@ -295,61 +285,41 @@ public class Game {
         return true;
     }
 
-    public ArrayList<PlayerColors> showAvailableColors() {
-        return availableColors;
+    public Set<PlayerColors> showUsedColors() {
+        return usedColors;
     }
 
-    //FSM
-
-    public void addTrucker(PlayerColors color, String nickname) throws IllegalStateException{
-        if (this.gameState != GameState.SETUP){
-            throw new IllegalStateException("State is not setup");
-        }
-        if(truckers.size()=4 || ){
-
-        }
-        if(truckers.stream().anyMatch(trucker -> trucker.getNickname().equals(nickname))){
-            throw new IllegalArgumentException("Nickname already exists");
-        }
-        if (truckers.stream().anyMatch(trucker -> trucker.getColor().equals(color))){
-            throw new IllegalArgumentException("Color already taken");
-        }
-        availableColors.remove(color);
-        truckers.addLast(new Trucker(nickname, color));
-        gameState = GameState.WAITING;
+    public synchronized boolean isNicknameTaken(String nickname) {
+        return nicknames.contains(nickname);
     }
 
-    public void waiting(){
-        if (this.gameState != GameState.WAITING){
-            throw new IllegalStateException("State is not waiting");
-        }
-        if (){
-            gameState = GameState.BUILDING;
-        }
+    public synchronized boolean isColorTaken(PlayerColors color) {
+        return usedColors.contains(color);
     }
 
-    public void building(Trucker trucker, boolean finish){
-        if (gameState != GameState.BUILDING){
-            throw new IllegalStateException("State is not building");
+    public synchronized void addTrucker(Trucker trucker) throws IllegalStateException {
+        if (gameState!= GameState.SETUP){
+            throw new IllegalStateException("Game has already been started");
         }
-        if (finish) {
-            trucker.setBuildingState(BuildingState.BUILDING);
-        }
+        truckers.add(trucker);
+        nicknames.add(trucker.getNickname());
+        usedColors.add(trucker.getColor());
     }
 
-    /**
-     * checks game conditions for every turn of the game.
-     */
-    public void turn(){
-        for(Trucker t: truckers){
-            checkOvertaken(t);
-            noHumans(t);
+    public void setupGame() throws IllegalStateException {
+        if (gameState!= GameState.SETUP){
+            throw new IllegalStateException("Game has already been started");
         }
+        makeGameDeck();
+        makeStacks();
+        gameState = GameState.BUILDING;
     }
 
-    public void finish(){
-
+    public boolean allPlayersReady() {
+        return truckers.stream()
+                .allMatch(t -> t.getBuildingState() == BuildingState.END || t.getBuildingState() == BuildingState.WAIT_END);
     }
+
     public Hourglass getHourglass(){
         return hourglass;
     }
