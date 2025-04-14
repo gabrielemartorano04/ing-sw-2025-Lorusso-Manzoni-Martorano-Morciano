@@ -11,6 +11,7 @@ import java.util.*;
  * Class that manage the Trucker's SpaceShip, with its components, goods, astronauts, aliens
  * */
 
+
 public class SpaceShip {
 
     private Component[][] components; //components in the matrix
