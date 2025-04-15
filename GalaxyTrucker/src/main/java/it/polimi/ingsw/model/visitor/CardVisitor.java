@@ -1,35 +1,31 @@
 package it.polimi.ingsw.model.visitor;
 
-import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.cards.*;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.components.Goods;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
-public interface CardVisitor {
-    Optional<Object> visitForAbandonedShip(AbandonedShip abandonedShip);
+public interface CardVisitor<R> {
+    R visit(Card card);
 
-    Optional<Object> visitForAbandonedStation(AbandonedStation abandonedStation);
+    R visitForAbandonedShip(AbandonedShip abandonedShip);
 
-    Optional<Object> visitForEpidemic(Epidemic epidemic);
+    R visitForAbandonedStation(AbandonedStation abandonedStation);
 
-    Optional<Object> visitForMeteorShowers(MeteorShower meteorShowers);
+    R visitForEpidemic(Epidemic epidemic);
 
-    Optional<Object> visitForOpenSpace(OpenSpace openSpace);
+    R visitForMeteorShowers(MeteorShower meteorShowers);
 
-    Optional<Object> visitForPirates(Pirates pirates);
+    R visitForOpenSpace(OpenSpace openSpace);
 
-    Optional<Object> visitForPlanets(Planets planets);
+    R visitForPirates(Pirates pirates);
 
-    Optional<Object> visitForSlavers(Slavers slavers);
+    R visitForPlanets(Planets planets);
 
-    Optional<Object> visitForSmugglers(Smugglers smugglers);
+    R visitForSlavers(Slavers slavers);
 
-    Optional<Object> visitForStarDust(StarDust starDust);
+    R visitForSmugglers(Smugglers smugglers);
 
-    Optional<Object> visitForWarZone(WarZone warZone);
+    R visitForStarDust(StarDust starDust);
+
+    R visitForWarZone(WarZone warZone);
 }

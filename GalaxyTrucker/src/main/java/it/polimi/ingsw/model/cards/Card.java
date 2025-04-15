@@ -35,8 +35,8 @@ public abstract class Card {
 
     }
 
-    void accept(CardVisitor visitor) {
-        visitor.visit(this);
+    public Object accept(CardVisitor visitor) {
+        return visitor.visit(this);
     }
 
     /**
