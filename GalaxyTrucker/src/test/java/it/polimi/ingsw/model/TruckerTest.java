@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.CannotTurnHourglassException;
-import it.polimi.ingsw.exceptions.InvalidComponentsException;
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.components.*;
 import org.junit.After;
 import org.junit.Assert;
