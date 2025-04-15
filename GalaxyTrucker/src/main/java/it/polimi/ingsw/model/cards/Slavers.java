@@ -56,7 +56,7 @@ public class Slavers extends Card {
 
     @Override
     public void accept(CardVisitor visitor) {
-        visitor.visit(this);
+        visitor.visitForSlavers(this);
     }
 
     /**
@@ -67,20 +67,12 @@ public class Slavers extends Card {
         return slaversPower;
     }
 
-    public void acceptForGetSlaversPower(CardVisitor visitor) {
-        visitor.visitForGetSlaversPower(this);
-    }
-
     /**
      * Returns the number of crew members to lose
      * @return crew members to lose
      */
     public int getAstronautsLost() {
         return astronautsLost;
-    }
-
-    public void acceptForGetAstronautsLost(CardVisitor visitor) {
-        visitor.visitForGetAstronautsLost(this);
     }
 
     /**
@@ -91,20 +83,12 @@ public class Slavers extends Card {
         return days;
     }
 
-    public void acceptForGetDays(CardVisitor visitor) {
-        visitor.visitForGetDays(this);
-    }
-
     /**
      * Returns the number of cosmic credits to gain
      * @return credit to gain
      */
     public int getCredits() {
         return credits;
-    }
-
-    public void acceptForGetCredits(CardVisitor visitor) {
-        visitor.visitForGetCredits(this);
     }
 
     /**
@@ -115,20 +99,12 @@ public class Slavers extends Card {
         this.defeatedTruckers = defeatedTruckers;
     }
 
-    public void acceptForSetDefeatedTruckers(CardVisitor visitor, ArrayList<Trucker> defeatedTruckers) {
-        visitor.visitForSetDefeatedTruckers(this, defeatedTruckers);
-    }
-
     /**
      * Sets the trucker that defeat the pirates
      * @param winnerTrucker trucker ID
      */
     public void setWinnerTrucker(Trucker winnerTrucker) {
         this.winnerTrucker = winnerTrucker;
-    }
-
-    public void acceptForSetWinnerTrucker(CardVisitor visitor, Trucker winnerTrucker) {
-        visitor.visitForSetWinnerTrucker(this, winnerTrucker);
     }
 
     /**
@@ -158,10 +134,6 @@ public class Slavers extends Card {
             }else cardState = CardState.ESECUZIONE;
         }
         return cardState;
-    }
-
-    public void acceptForSetCoordinatesToRemoveCrew(CardVisitor visitor, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws InvalidCoordinates {
-        visitor.visitForSetCoordinatesToRemoveCrew(this, truckersCoordinatesToRemoveHumans, numPlayer, trucker);
     }
 
     public CardState addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException {
@@ -194,10 +166,6 @@ public class Slavers extends Card {
         return cardState;
     }
 
-    public void acceptForSetDoubleCannonsCoordinates(CardVisitor visitor, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) {
-        visitor.visitForSetDoubleCannonsCoordinates(this, doubleCannonsCoord, numPlayer, trucker);
-    }
-
     public CardState setChooseToGain(Boolean choice) throws IllegalStateException {
         if (cardState != CardState.GAIN) {
             throw new IllegalStateException("Card state is not GAIN");
@@ -205,10 +173,6 @@ public class Slavers extends Card {
         this.choiceToGain = choice;
         cardState = CardState.ESECUZIONE;
         return cardState;
-    }
-
-    public void acceptForSetChoiceToGain(CardVisitor visitor, Boolean choice) {
-        visitor.visitForSetChoiceToGain(this, choice);
     }
 
     /**

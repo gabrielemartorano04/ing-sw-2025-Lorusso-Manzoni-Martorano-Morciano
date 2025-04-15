@@ -78,7 +78,7 @@ public class Planets extends Card {
 
     @Override
     public void accept(CardVisitor visitor) {
-        visitor.visit(this);
+        visitor.visitForPlanets(this);
     }
 
     /**
@@ -89,20 +89,12 @@ public class Planets extends Card {
         return planets;
     }
 
-    public void acceptForGetPlanets(CardVisitor visitor) {
-        visitor.visitForGetPlanets(this);
-    }
-
     public int[] getBank(Bank bank){
         if(state != CardState.PLOT_BANK){
             throw new IllegalStateException("Can't get bank from state " + state);
         }
         state = CardState.ATTESA_PIANETI;
         return bank.getGoods();
-    }
-
-    public void acceptForGetBank(CardVisitor visitor, Bank bank) {
-        visitor.visitForGetBank(this, bank);
     }
 
     /**
@@ -148,10 +140,6 @@ public class Planets extends Card {
             state = CardState.INITIALIZE;
         }
         return state;
-    }
-
-    public void acceptForSetTruckerLanding(CardVisitor visitor, int indexOfLanding, Trucker trucker, int numPlayers) {
-        visitor.visitForSetTruckerLanding(this, indexOfLanding, trucker, numPlayers);
     }
 
     public CardState initialize(Bank bank){
@@ -201,11 +189,6 @@ public class Planets extends Card {
         return state;
     }
 
-    public void acceptForInitialize(CardVisitor visitor, Bank bank) {
-        visitor.visitForInitialize(this, bank);
-    }
-
-
     public Goods plotGoodFromPlanet() throws IllegalStateException {
         if(state!=CardState.PLOT_GOOD){
             throw new IllegalStateException("Not callable in state: " + state);
@@ -214,20 +197,12 @@ public class Planets extends Card {
         return currGoodToGain;
     }
 
-    public void acceptForGetGoodsFromPlanets(CardVisitor visitor) {
-        visitor.visitForGetGoodsFromPlanets(this);
-    }
-
     public Goods plotGoodFromList() throws IllegalStateException {
         if(state!=CardState.PLOT_GOOD_FROM_LIST){
             throw new IllegalStateException("Not callable in state: " + state);
         }
         this.currGoodToGain = listToPass.get(indexOfListToPass);
         return currGoodToGain;
-    }
-
-    public void acceptForGetGoodsFromList(CardVisitor visitor) {
-        visitor.visitForGetGoodsFromList(this);
     }
 
     public CardState chooseToGain (boolean choice) throws IllegalStateException {
@@ -249,10 +224,6 @@ public class Planets extends Card {
         return state;
     }
 
-    public void acceptForSetChoiceToGain(CardVisitor visitor, boolean choice) {
-        visitor.visitForSetChoiceToGain(this, choice);
-    }
-
     public CardState chooseFromList (boolean choice) throws IllegalStateException {
         if(state!=CardState.CHOOSE_FROM_LIST){
             throw new IllegalStateException("Not callable in state: " + state);
@@ -265,10 +236,6 @@ public class Planets extends Card {
             } else indexOfListToPass++;
         }
         return state;
-    }
-
-    public void acceptForSetChoiceToGainFromList(CardVisitor visitor, boolean choice) {
-        visitor.visitForSetChoiceToGainFromList(this, choice);
     }
 
     /**
@@ -315,10 +282,6 @@ public class Planets extends Card {
         return state;
     }
 
-    public void acceptForSetCoordinatesToAddGoods(CardVisitor visitor, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException {
-        visitor.visitForSetCoordinatesToAddGoods(this, coordinatesToAddGood, positionInLoad, bank);
-    }
-
     /**
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param coordinatesToAddGood list of coordinatest
@@ -345,10 +308,6 @@ public class Planets extends Card {
             state = CardState.PLOT_GOOD_FROM_LIST;
         }
         return state;
-    }
-
-    public void acceptForSetCoordinatesToAddGoodsFromList(CardVisitor visitor, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException {
-        visitor.visitForSetCoordinatesToAddGoodsFromList(this, coordinatesToAddGood, positionInLoad, bank);
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
@@ -380,10 +339,6 @@ public class Planets extends Card {
             }
         }
 
-    }
-
-    public void acceptForRearrange(CardVisitor visitor, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws InvalidCoordinates, InvalidPositionException {
-        visitor.visitForRearrange(this, coord1, coord2, value1, value2, contiune);
     }
 
     /**

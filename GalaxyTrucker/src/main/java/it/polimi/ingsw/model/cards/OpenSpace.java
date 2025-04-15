@@ -33,7 +33,7 @@ public class OpenSpace extends Card {
 
     @Override
     public void accept(CardVisitor visitor) {
-        visitor.visit(this);
+        visitor.visitForOpenSpace(this);
     }
 
     /**
@@ -59,10 +59,6 @@ public class OpenSpace extends Card {
             this.state = CardState.ESECUZIONE;
         }
         return state;
-    }
-
-    public void acceptForSetDoubleEnginesCoordinates(CardVisitor visitor, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates {
-        visitor.visitForSetDoubleEnginesCoordinates(this, trucker, truckerCoordinate, numTruckers);
     }
 
     /**

@@ -45,7 +45,7 @@ public class AbandonedShip extends Card {
 
     @Override
     public void accept(CardVisitor visitor) {
-        visitor.visit(this);
+        visitor.visitForAbandonedShip(this);
     }
 
     /**
@@ -56,10 +56,6 @@ public class AbandonedShip extends Card {
         return days;
     }
 
-    public void acceptForGetDays(CardVisitor visitor) {
-        visitor.visitForGetDays(this);
-    }
-
     /**
      * Returns the number of cosmic credits to gain
      * @return credit to gain
@@ -68,20 +64,12 @@ public class AbandonedShip extends Card {
         return credits;
     }
 
-    public void acceptForGetCredits(CardVisitor visitor) {
-        visitor.visitForGetCredits(this);
-    }
-
     /**
      * Returns the number of crew members to lose
      * @return crew members to lose
      */
     public int getNumHuman() {
         return numHuman;
-    }
-
-    public void acceptForGetHumanToRemove(CardVisitor visitor) {
-        visitor.visitForGetHumanToRemove(this);
     }
 
     /**
@@ -104,10 +92,6 @@ public class AbandonedShip extends Card {
         }
         playerDecisions++;
         return state;
-    }
-
-    public void acceptForSetTruckerLanding(CardVisitor visitor, Trucker trucker, boolean landing, int numPlayer) {
-        visitor.visitForSetTruckerLanding(this, trucker, landing, numPlayer);
     }
 
     /**
@@ -136,10 +120,6 @@ public class AbandonedShip extends Card {
         return state;
     }
 
-    public void acceptForSetCoordinatesToRemoveCrew(CardVisitor visitor, ArrayList<int[]> coordinates) throws InvalidCoordinates {
-        visitor.visitForSetCoordinatesToRemoveCrew(this, coordinates);
-    }
-
     /**
      * Applies the changes provided by the card
      * @param game game in which the card has been drawn
@@ -157,11 +137,5 @@ public class AbandonedShip extends Card {
         }
         state = CardState.EXIT;
         return state;
-    }
-
-    public static void main(String[] args) {
-        AbandonedShip card=new AbandonedShip(false,2,3,3,3, "","");
-        GetDaysVisitor getDaysVisitor = new GetDaysVisitor();
-        card.acceptForGetDays(getDaysVisitor);
     }
 }

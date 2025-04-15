@@ -25,7 +25,7 @@ public class StarDust extends Card {
 
     @Override
     public void accept(CardVisitor visitor) {
-        visitor.visit(this);
+        visitor.visitForStarDust(this);
     }
 
     /**

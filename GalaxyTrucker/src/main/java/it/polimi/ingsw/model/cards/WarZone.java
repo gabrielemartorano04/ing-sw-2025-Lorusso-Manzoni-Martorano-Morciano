@@ -74,31 +74,19 @@ public class WarZone extends Card {
 
     @Override
     public void accept(CardVisitor visitor) {
-        visitor.visit(this);
+        visitor.visitForWarZone(this);
     }
 
     public ArrayList<Condition> getConditionsOrder() {
         return conditionsOrder;
     }
 
-    public void acceptForGetConditionsOrder(CardVisitor visitor) {
-        visitor.visitForGetConditionsOrder(this);
-    }
-
     public Map<Condition, Effect> getPenalties() {
         return penalties;
     }
 
-    public void acceptForGetPenalties(CardVisitor visitor) {
-        visitor.visitForGetPenalties(this);
-    }
-
     public ArrayList<int[]> getShoots(){
         return shoots;
-    }
-
-    public void acceptForGetShoots(CardVisitor visitor) {
-        visitor.visitForGetShoots(this);
     }
 
     public CardState combatZone(Game game, ArrayList<ArrayList<int[]>> truckersCannonsCoordinates, ArrayList<ArrayList<int[]>> truckersEnginesCoordinates){
@@ -129,10 +117,6 @@ public class WarZone extends Card {
         return this.state;
     }
 
-    public void acceptForCombatZone(CardVisitor visitor, Game game, ArrayList<ArrayList<int[]>> truckersCannonsCoordinates, ArrayList<ArrayList<int[]>> truckersEnginesCoordinates) {
-        visitor.visitForCombatZone(this, game, truckersCannonsCoordinates, truckersEnginesCoordinates);
-    }
-
     public void setCannonCoordinates(Game game, Trucker trucker, ArrayList<int[]> truckerCannonsCoordinates) throws InvalidComponentsException{
         if(state != CardState.WAIT_CANNONS){
             throw new IllegalStateException("setCannonCoordinates not callable in the state " + state);
@@ -151,10 +135,6 @@ public class WarZone extends Card {
         }
     }
 
-    public void acceptForSetDoubleCannonsCoordinates(CardVisitor visitor, Game game, Trucker trucker, ArrayList<int[]> truckerCannonsCoordinates) {
-        visitor.visitForSetDoubleCannonsCoordinates(this, game, trucker,truckerCannonsCoordinates);
-    }
-
     public void setEnginesCoordinates(Game game, Trucker trucker, ArrayList<int[]> truckerEnginesCoordinates) throws InvalidComponentsException{
         if(state != CardState.WAIT_ENGINES){
             throw new IllegalStateException("setCannonCoordinates not callable in the state " + state);
@@ -170,10 +150,6 @@ public class WarZone extends Card {
             state = CardState.FIND_WEAKEST;
             findWeakestTrucker(game, truckersEnginesCoordinates);
         }
-    }
-
-    public void acceptForSetDoubleEnginesCoordinates(CardVisitor visitor, Game game, Trucker trucker, ArrayList<int[]> truckerEnginesCoordinates) {
-        visitor.visitForSetDoubleEnginesCoordinates(this, game, trucker,truckerEnginesCoordinates);
     }
 
     // questo metodo dovrà essere chiamato dal Controller per capire a ogni condizione il weakestTrucker
@@ -219,10 +195,6 @@ public class WarZone extends Card {
         } else{
             state = CardState.ATTESA_RISPOSTE;
         }
-    }
-
-    public void acceptForFindWeakestTrucker(CardVisitor visitor, Game game, ArrayList<ArrayList<int[]>> truckersCoordinates) {
-        visitor.visitForFindWeakestTrucker(this, game, truckersCoordinates);
     }
 
     public CardState manageRemoveGoods(Trucker trucker, Bank bank){
@@ -283,10 +255,6 @@ public class WarZone extends Card {
 
     }
 
-    public void acceptForManageRemoveGoods(CardVisitor visitor, Trucker trucker, Bank bank) {
-        visitor.visitForManageRemoveGoods(this, trucker, bank);
-    }
-
     private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank) {
         if(this.numOfCurrTypeOfGood == 0){
             throw new RuntimeException("NumOfGoods is 0 but you called removeWithoutAsking");
@@ -324,10 +292,6 @@ public class WarZone extends Card {
         return goodsToRemove;
     }
 
-    public void acceptForGetGoodsList(CardVisitor visitor, Trucker trucker) {
-        visitor.visitForGetGoodsList(this, trucker);
-    }
-
     /**
      *
      * @param indexes: contains the indexes of the Goods within the list displayed on the screen that the player wants to remove from his ship
@@ -362,19 +326,11 @@ public class WarZone extends Card {
         }
     }
 
-    public void acceptForRemoveAsking(CardVisitor visitor, Bank bank, ArrayList<Integer> indexes, Trucker trucker) throws InvalidGoodChosen, NotEnoughGoodsChosen {
-        visitor.visitForRemoveAsking(this, bank, indexes, trucker);
-    }
-
     public int getNumOfBatteriesToRemove(){
         if(state != CardState.PLOT_BATTERIES){
             throw new IllegalStateException("Can't call getNumOfBatteriesToRemove in the state " + state);
         }
         return numOfGoodsToRemove;
-    }
-
-    public void acceptForGetBatteriesToRemove(CardVisitor visitor) {
-        visitor.visitForGetBatteriesToRemove(this);
     }
 
     public void removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
@@ -406,11 +362,6 @@ public class WarZone extends Card {
         }
     }
 
-    public void acceptForSetCoordinatesToRemoveBatteries(CardVisitor visitor, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
-        visitor.visitForSetCoordinatesToRemoveBatteries(this, coordinatesToRemoveBatteries, trucker);
-    }
-
-
     public int[] getCurrentMeteor(){
         if(state != CardState.PLOT_SHOOT) {
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
@@ -425,10 +376,6 @@ public class WarZone extends Card {
         return shoot;
     }
 
-    public void acceptForGetCurrentMeteor(CardVisitor visitor) {
-        visitor.visitForGetCurrentMeteor(this);
-    }
-
     public void rollDice(Game game){
         if(state != CardState.ROLL_DICE){
             throw new IllegalStateException("Non si può girare i dadi nello stato " + this.state);
@@ -437,20 +384,12 @@ public class WarZone extends Card {
         state = CardState.CHIEDI_SCUDI;
     }
 
-    public void acceptForRollDice(CardVisitor visitor, Game game) {
-        visitor.visitForRollDice(this, game);
-    }
-
     public void setAnswers(boolean answers) {
         if(state != CardState.CHIEDI_SCUDI){
             throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
         }
         this.useShield = answers;
         state = CardState.ESECUZIONE;
-    }
-
-    public void acceptForSetAnswers(CardVisitor visitor, boolean answers) {
-        visitor.visitForSetAnswers(this, answers);
     }
 
     public synchronized CardState removeCrew(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates {
@@ -472,10 +411,6 @@ public class WarZone extends Card {
         weakestTrucker.getSpaceShip().removeNumHuman(coordinatesToRemoveCrew);
         state = CardState.ESECUZIONE;
         return state;
-    }
-
-    public void acceptForSetCoordinatesToRemoveCrew(CardVisitor visitor, ArrayList<int[]> coordinates) throws InvalidCoordinates {
-        visitor.visitForSetCoordinatesToRemoveCrew(this, coordinates);
     }
 
     @Override

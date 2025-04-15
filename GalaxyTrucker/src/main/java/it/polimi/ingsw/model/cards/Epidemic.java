@@ -26,7 +26,7 @@ public class Epidemic extends Card {
 
     @Override
     public void accept(CardVisitor visitor) {
-        visitor.visit(this);
+        visitor.visitForEpidemic(this);
     }
 
     /**
