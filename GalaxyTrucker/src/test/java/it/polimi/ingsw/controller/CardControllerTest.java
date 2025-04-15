@@ -9,7 +9,6 @@ import static org.junit.Assert.assertEquals;
 
 public class CardControllerTest {
     CardController cardController;
-
     @Before
     public void setup(){
         this.cardController=new CardController();

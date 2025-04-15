@@ -25,7 +25,7 @@ public class Game {
     private Deck deck;
     private Bank bank;
 
-    private AskController askController;
+    //private AskController askController;
     private GameState gameState;
     private final Set<String> nicknames = new HashSet<>();
     private final Set<PlayerColors> usedColors = new HashSet<>();

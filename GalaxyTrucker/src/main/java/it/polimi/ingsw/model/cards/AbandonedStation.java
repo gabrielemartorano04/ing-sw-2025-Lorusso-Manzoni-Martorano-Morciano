@@ -44,8 +44,9 @@ public class AbandonedStation extends Card {
     }
 
     @Override
-    public void accept(CardVisitor visitor) {
+    public Object accept(CardVisitor visitor) {
         visitor.visitForAbandonedStation(this);
+        return null;
     }
     /**
      * Returns the number of days of flight to lose
