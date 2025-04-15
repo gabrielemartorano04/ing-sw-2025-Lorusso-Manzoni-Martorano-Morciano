@@ -40,7 +40,8 @@ public class CardController {
         return card.cardEffect(game);
     }
 
-    public int getDays(AbandonedShip card) {
-        card.acceptForGetDays();
+    public int getDays(Card card) {
+        visitor = new getDaysVisitor;
+        card.accept(visitor);
     }
 }
