@@ -1,13 +1,23 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.cards.AbandonedShip;
-import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.*;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 public class CardControllerTest {
-    CardController cardController = new CardController();
+    CardController cardController;
+
+    @Before
+    public void setup(){
+        this.cardController=new CardController();
+    }
+
+    @After
+    public void teardown(){ }
+
     @Test
     public void getCardName() {
     }

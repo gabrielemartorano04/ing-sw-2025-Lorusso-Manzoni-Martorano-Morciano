@@ -17,7 +17,7 @@ public class TruckerTest {
 
     @Before
     public void setup(){
-        trucker=new Trucker("frenk", PlayerColors.BLUE);
+        this.trucker=new Trucker("frenk", PlayerColors.BLUE);
     }
 
     @After
