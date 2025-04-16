@@ -77,8 +77,8 @@ public class Planets extends Card {
     }
 
     @Override
-    public void accept(CardVisitor visitor) {
-        visitor.visitForPlanets(this);
+    public Object accept(CardVisitor visitor) {
+        return visitor.visitForPlanets(this);
     }
 
     /**

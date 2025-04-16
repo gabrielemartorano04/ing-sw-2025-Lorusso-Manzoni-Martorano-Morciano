@@ -55,8 +55,8 @@ public class Slavers extends Card {
     }
 
     @Override
-    public void accept(CardVisitor visitor) {
-        visitor.visitForSlavers(this);
+    public Object accept(CardVisitor visitor) {
+        return visitor.visitForSlavers(this);
     }
 
     /**

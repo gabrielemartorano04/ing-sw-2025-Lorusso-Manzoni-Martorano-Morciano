@@ -67,8 +67,8 @@ public class Pirates extends Card {
     }
 
     @Override
-    public void accept(CardVisitor visitor) {
-        visitor.visitForPirates(this);
+    public Object accept(CardVisitor visitor) {
+        return visitor.visitForPirates(this);
     }
 
     /**

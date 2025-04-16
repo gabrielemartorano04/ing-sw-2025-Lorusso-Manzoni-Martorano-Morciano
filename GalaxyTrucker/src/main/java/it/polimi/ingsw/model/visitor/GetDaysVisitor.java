@@ -18,7 +18,7 @@ public class GetDaysVisitor implements CardVisitor {
 
     @Override
     public Object visitForAbandonedStation(AbandonedStation abandonedStation) {
-        return null;
+        return abandonedStation.getDays();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class GetDaysVisitor implements CardVisitor {
 
     @Override
     public Object visitForPirates(Pirates pirates) {
-        return null;
+        return pirates.getDays();
     }
 
     @Override
@@ -48,12 +48,12 @@ public class GetDaysVisitor implements CardVisitor {
 
     @Override
     public Object visitForSlavers(Slavers slavers) {
-        return null;
+        return slavers.getDays();
     }
 
     @Override
     public Object visitForSmugglers(Smugglers smugglers) {
-        return null;
+        return smugglers.getDays();
     }
 
     @Override

@@ -1,15 +1,66 @@
 package it.polimi.ingsw.model.visitor;
 
-import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.Bank;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
-import it.polimi.ingsw.model.components.Goods;
-
-import java.util.ArrayList;
-import java.util.Optional;
 
 public class CombatZoneVisitor implements CardVisitor {
 
+    @Override
+    public Object visit(Card card) {
+        return null;
+    }
+
+    @Override
+    public Object visitForAbandonedShip(AbandonedShip abandonedShip) {
+        return null;
+    }
+
+    @Override
+    public Object visitForAbandonedStation(AbandonedStation abandonedStation) {
+        return null;
+    }
+
+    @Override
+    public Object visitForEpidemic(Epidemic epidemic) {
+        return null;
+    }
+
+    @Override
+    public Object visitForMeteorShowers(MeteorShower meteorShowers) {
+        return null;
+    }
+
+    @Override
+    public Object visitForOpenSpace(OpenSpace openSpace) {
+        return null;
+    }
+
+    @Override
+    public Object visitForPirates(Pirates pirates) {
+        return null;
+    }
+
+    @Override
+    public Object visitForPlanets(Planets planets) {
+        return null;
+    }
+
+    @Override
+    public Object visitForSlavers(Slavers slavers) {
+        return null;
+    }
+
+    @Override
+    public Object visitForSmugglers(Smugglers smugglers) {
+        return null;
+    }
+
+    @Override
+    public Object visitForStarDust(StarDust starDust) {
+        return null;
+    }
+
+    @Override
+    public Object visitForWarZone(WarZone warZone) {
+        return null;
+    }
 }

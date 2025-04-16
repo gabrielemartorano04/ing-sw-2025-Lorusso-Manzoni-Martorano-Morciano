@@ -73,8 +73,8 @@ public class WarZone extends Card {
     }
 
     @Override
-    public void accept(CardVisitor visitor) {
-        visitor.visitForWarZone(this);
+    public Object accept(CardVisitor visitor) {
+        return visitor.visitForWarZone(this);
     }
 
     public ArrayList<Condition> getConditionsOrder() {

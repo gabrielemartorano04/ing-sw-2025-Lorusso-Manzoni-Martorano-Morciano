@@ -62,8 +62,8 @@ public class Smugglers extends Card {
     }
 
     @Override
-    public void accept(CardVisitor visitor) {
-        visitor.visitForSmugglers(this);
+    public Object accept(CardVisitor visitor) {
+        return visitor.visitForSmugglers(this);
     }
 
     /**

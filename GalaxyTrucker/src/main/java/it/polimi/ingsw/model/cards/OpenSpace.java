@@ -32,8 +32,8 @@ public class OpenSpace extends Card {
     }
 
     @Override
-    public void accept(CardVisitor visitor) {
-        visitor.visitForOpenSpace(this);
+    public Object accept(CardVisitor visitor) {
+        return visitor.visitForOpenSpace(this);
     }
 
     /**

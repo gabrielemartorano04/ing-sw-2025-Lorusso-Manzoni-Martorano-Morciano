@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.visitor.CardVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Class that manages the single card meteor shower
@@ -50,8 +51,8 @@ public class MeteorShower extends Card {
     }
 
     @Override
-    public void accept(CardVisitor visitor) {
-        visitor.visitForMeteorShowers(this);
+    public Object accept(CardVisitor visitor) {
+        return visitor.visitForMeteorShowers(this);
     }
 
     /**
