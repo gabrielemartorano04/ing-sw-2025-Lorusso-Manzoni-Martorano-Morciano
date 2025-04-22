@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.visitor;
 
+import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
 
@@ -20,7 +21,11 @@ public class SetTruckerLandingVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForAbandonedStation(AbandonedStation abandonedStation, Object... params) {
-        return null;
+        Trucker trucker = (Trucker) params[0];
+        boolean landing = (Boolean) params[1];
+        int numPlayers = (Integer) params[2];
+        Bank bank = (Bank) params[3];
+        return abandonedStation.truckerLanding(trucker, landing, numPlayers, bank);
     }
 
     @Override

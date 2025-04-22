@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.visitor;
 
+import it.polimi.ingsw.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.cards.*;
 
@@ -17,7 +18,7 @@ public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisi
         try {
             ArrayList<int[]> coordinates = (ArrayList<int[]>) params[0];
             return abandonedShip.setCoordinates(coordinates);
-        } catch (InvalidCoordinates e) {
+        } catch (InvalidCoordinates | InvalidComponentsException e) {
             return e;
         }
     }
