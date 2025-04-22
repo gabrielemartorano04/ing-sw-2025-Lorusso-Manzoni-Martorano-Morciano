@@ -61,8 +61,8 @@ public class Slavers extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object context) {
-        return visitor.visitForSlavers(this, context);
+    public Object accept(ParametricCardVisitor visitor, Object... params) {
+        return visitor.visitForSlavers(this, params);
     }
 
     /**

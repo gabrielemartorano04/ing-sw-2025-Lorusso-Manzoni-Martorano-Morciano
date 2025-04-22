@@ -83,8 +83,8 @@ public class Planets extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object context) {
-        return visitor.visitForPlanets(this, context);
+    public Object accept(ParametricCardVisitor visitor, Object... params) {
+        return visitor.visitForPlanets(this, params);
     }
 
     /**

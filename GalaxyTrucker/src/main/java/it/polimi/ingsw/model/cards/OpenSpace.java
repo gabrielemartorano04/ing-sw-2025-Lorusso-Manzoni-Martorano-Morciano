@@ -38,8 +38,8 @@ public class OpenSpace extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object context) {
-        return visitor.visitForOpenSpace(this, context);
+    public Object accept(ParametricCardVisitor visitor, Object... params) {
+        return visitor.visitForOpenSpace(this, params);
     }
 
     /**

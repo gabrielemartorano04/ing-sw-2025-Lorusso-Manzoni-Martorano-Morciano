@@ -2,28 +2,28 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
 
-public interface ParametricCardVisitor<R, C> {
-    R visit(Card card, C context);
+public interface ParametricCardVisitor<R> {
+    R visit(Card card, Object... params);
 
-    R visitForAbandonedShip(AbandonedShip abandonedShip, C context);
+    R visitForAbandonedShip(AbandonedShip abandonedShip, Object... params);
 
-    R visitForAbandonedStation(AbandonedStation abandonedStation, C context);
+    R visitForAbandonedStation(AbandonedStation abandonedStation, Object... params);
 
-    R visitForEpidemic(Epidemic epidemic, C context);
+    R visitForEpidemic(Epidemic epidemic, Object... params);
 
-    R visitForMeteorShowers(MeteorShower meteorShowers, C context);
+    R visitForMeteorShowers(MeteorShower meteorShowers, Object... params);
 
-    R visitForOpenSpace(OpenSpace openSpace, C context);
+    R visitForOpenSpace(OpenSpace openSpace, Object... params);
 
-    R visitForPirates(Pirates pirates, C context);
+    R visitForPirates(Pirates pirates, Object... params);
 
-    R visitForPlanets(Planets planets, C context);
+    R visitForPlanets(Planets planets, Object... params);
 
-    R visitForSlavers(Slavers slavers, C context);
+    R visitForSlavers(Slavers slavers, Object... params);
 
-    R visitForSmugglers(Smugglers smugglers, C context);
+    R visitForSmugglers(Smugglers smugglers, Object... params);
 
-    R visitForStarDust(StarDust starDust, C context);
+    R visitForStarDust(StarDust starDust, Object... params);
 
-    R visitForWarZone(WarZone warZone, C context);
+    R visitForWarZone(WarZone warZone, Object... params);
 }

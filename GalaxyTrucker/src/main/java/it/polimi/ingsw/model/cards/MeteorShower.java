@@ -57,8 +57,8 @@ public class MeteorShower extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object context) {
-        return visitor.visitForMeteorShowers(this, context);
+    public Object accept(ParametricCardVisitor visitor, Object... params) {
+        return visitor.visitForMeteorShowers(this, params);
     }
 
     /**

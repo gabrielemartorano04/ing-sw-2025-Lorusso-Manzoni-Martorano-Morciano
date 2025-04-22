@@ -73,8 +73,8 @@ public class Pirates extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object context) {
-        return visitor.visitForPirates(this, context);
+    public Object accept(ParametricCardVisitor visitor, Object... params) {
+        return visitor.visitForPirates(this, params);
     }
 
     /**

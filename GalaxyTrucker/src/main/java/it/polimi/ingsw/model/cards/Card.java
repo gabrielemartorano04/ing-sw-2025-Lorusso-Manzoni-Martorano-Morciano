@@ -40,8 +40,8 @@ public abstract class Card {
         return visitor.visit(this);
     }
 
-    public Object accept(ParametricCardVisitor visitor, Object context) {
-        return visitor.visit(this, context);
+    public Object accept(ParametricCardVisitor visitor, Object... params) {
+        return visitor.visit(this, params);
     }
 
     /**

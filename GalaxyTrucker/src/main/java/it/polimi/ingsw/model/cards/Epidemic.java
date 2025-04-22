@@ -31,8 +31,8 @@ public class Epidemic extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object context) {
-        return visitor.visitForEpidemic(this, context);
+    public Object accept(ParametricCardVisitor visitor, Object... params) {
+        return visitor.visitForEpidemic(this, params);
     }
 
     /**

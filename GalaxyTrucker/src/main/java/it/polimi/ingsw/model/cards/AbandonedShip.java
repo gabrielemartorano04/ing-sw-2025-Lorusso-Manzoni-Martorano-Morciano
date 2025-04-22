@@ -49,8 +49,8 @@ public class AbandonedShip extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object context) {
-        return visitor.visitForAbandonedShip(this, context);
+    public Object accept(ParametricCardVisitor visitor, Object... params) {
+        return visitor.visitForAbandonedShip(this, params);
     }
 
     /**

@@ -30,8 +30,8 @@ public class StarDust extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object context) {
-        return visitor.visitForStarDust(this, context);
+    public Object accept(ParametricCardVisitor visitor, Object... params) {
+        return visitor.visitForStarDust(this, params);
     }
 
     /**

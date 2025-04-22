@@ -79,8 +79,8 @@ public class WarZone extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object context) {
-        return visitor.visitForWarZone(this, context);
+    public Object accept(ParametricCardVisitor visitor, Object... params) {
+        return visitor.visitForWarZone(this, params);
     }
 
     public ArrayList<Condition> getConditionsOrder() {
