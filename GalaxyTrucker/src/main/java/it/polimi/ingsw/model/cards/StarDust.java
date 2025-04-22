@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.visitor.CardVisitor;
+import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 
 import java.util.*;
 
@@ -26,6 +27,11 @@ public class StarDust extends Card {
     @Override
     public Object accept(CardVisitor visitor) {
         return visitor.visitForStarDust(this);
+    }
+
+    @Override
+    public Object accept(ParametricCardVisitor visitor, Object context) {
+        return visitor.visitForStarDust(this, context);
     }
 
     /**

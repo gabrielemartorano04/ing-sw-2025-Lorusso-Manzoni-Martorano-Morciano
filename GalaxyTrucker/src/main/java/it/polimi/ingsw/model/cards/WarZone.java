@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.visitor.CardVisitor;
+import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 
 import java.util.Map;
 import java.util.ArrayList;
@@ -75,6 +76,11 @@ public class WarZone extends Card {
     @Override
     public Object accept(CardVisitor visitor) {
         return visitor.visitForWarZone(this);
+    }
+
+    @Override
+    public Object accept(ParametricCardVisitor visitor, Object context) {
+        return visitor.visitForWarZone(this, context);
     }
 
     public ArrayList<Condition> getConditionsOrder() {

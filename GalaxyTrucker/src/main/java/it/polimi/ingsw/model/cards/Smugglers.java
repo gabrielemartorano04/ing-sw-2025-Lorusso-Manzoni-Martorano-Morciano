@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.Trucker;
 import it. polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.visitor.CardVisitor;
+import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -64,6 +65,11 @@ public class Smugglers extends Card {
     @Override
     public Object accept(CardVisitor visitor) {
         return visitor.visitForSmugglers(this);
+    }
+
+    @Override
+    public Object accept(ParametricCardVisitor visitor, Object context) {
+        return visitor.visitForSmugglers(this, context);
     }
 
     /**

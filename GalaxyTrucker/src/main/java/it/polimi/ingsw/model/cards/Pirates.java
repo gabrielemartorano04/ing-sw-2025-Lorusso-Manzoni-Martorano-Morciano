@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.visitor.CardVisitor;
+import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -69,6 +70,11 @@ public class Pirates extends Card {
     @Override
     public Object accept(CardVisitor visitor) {
         return visitor.visitForPirates(this);
+    }
+
+    @Override
+    public Object accept(ParametricCardVisitor visitor, Object context) {
+        return visitor.visitForPirates(this, context);
     }
 
     /**

@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.Bank;
+import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 
 import java.util.ArrayList;
 
@@ -48,6 +49,12 @@ public class AbandonedStation extends Card {
         visitor.visitForAbandonedStation(this);
         return null;
     }
+
+    @Override
+    public Object accept(ParametricCardVisitor visitor, Object context) {
+        return visitor.visitForAbandonedStation(this, context);
+    }
+
     /**
      * Returns the number of days of flight to lose
      * @return days to lose

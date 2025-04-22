@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.visitor.CardVisitor;
+import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,11 @@ public class OpenSpace extends Card {
     @Override
     public Object accept(CardVisitor visitor) {
         return visitor.visitForOpenSpace(this);
+    }
+
+    @Override
+    public Object accept(ParametricCardVisitor visitor, Object context) {
+        return visitor.visitForOpenSpace(this, context);
     }
 
     /**
