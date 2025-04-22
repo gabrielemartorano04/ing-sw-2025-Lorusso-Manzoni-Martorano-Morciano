@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.visitor.CardVisitor;
+import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 
 import javax.swing.ImageIcon;
 
@@ -37,6 +38,10 @@ public abstract class Card {
 
     public Object accept(CardVisitor visitor) {
         return visitor.visit(this);
+    }
+
+    public Object accept(ParametricCardVisitor visitor, Object context) {
+        return visitor.visit(this, context);
     }
 
     /**

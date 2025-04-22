@@ -2,8 +2,6 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
 
-import java.util.Optional;
-
 public interface CardVisitor<R> {
     R visit(Card card);
 

@@ -2,8 +2,6 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
 
-import java.util.Optional;
-
 public class GetDaysVisitor implements CardVisitor {
 
     @Override
