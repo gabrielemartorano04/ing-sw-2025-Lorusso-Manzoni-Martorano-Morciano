@@ -75,7 +75,17 @@ public class RearrangeVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForSmugglers(Smugglers smugglers, Object... params) {
-        return null;
+        try {
+            Trucker trucker = (Trucker) params[0];
+            int[] coord1 = (int[]) params[1];
+            int[] coord2 = (int[]) params[2];
+            int value1 = (Integer) params[3];
+            int value2 = (Integer) params[4];
+            boolean contiune = (Boolean) params[5];
+            return smugglers.rearrange(trucker, coord1, coord2, value1, value2, contiune);
+        } catch (InvalidCoordinates | InvalidPositionException e) {
+            return e;
+        }
     }
 
     @Override

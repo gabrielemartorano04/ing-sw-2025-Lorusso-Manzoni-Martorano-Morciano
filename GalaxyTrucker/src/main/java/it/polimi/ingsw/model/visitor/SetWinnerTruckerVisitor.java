@@ -56,6 +56,8 @@ public class SetWinnerTruckerVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForSmugglers(Smugglers smugglers, Object... params) {
+        Trucker winnerTrucker = (Trucker) params[0];
+        smugglers.setWinnerTrucker(winnerTrucker);
         return null;
     }
 

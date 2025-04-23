@@ -190,7 +190,7 @@ public class Smugglers extends Card {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param winnerCoordinatesToAddGood list of coordinatest
      */
-    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws IllegalStateException, InvalidPositionException, InvalidCoordinates  {
+    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws IllegalStateException, InvalidCoordinates  {
         if (cardState != CardState.GOODSTOADD) {
             throw new IllegalStateException("Card state is not GOODSTOADD");
         }

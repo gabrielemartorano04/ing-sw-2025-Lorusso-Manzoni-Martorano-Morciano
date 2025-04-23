@@ -72,7 +72,15 @@ public class SetCoordinatesToAddElementsVisitor implements ParametricCardVisitor
 
     @Override
     public Object visitForSmugglers(Smugglers smugglers, Object... params) {
-        return null;
+        try {
+            int[] coordinatesToAddGoods = (int[]) params[0];
+            int value = (Integer) params[1];
+            Trucker trucker = (Trucker) params[2];
+            Bank bank = (Bank) params[3];
+            return smugglers.setWinnerCoordinatesToAddGoods(coordinatesToAddGoods, value, trucker, bank);
+        } catch (InvalidCoordinates e) {
+            return e;
+        }
     }
 
     @Override

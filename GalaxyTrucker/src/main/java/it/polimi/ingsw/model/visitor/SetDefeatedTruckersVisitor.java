@@ -58,6 +58,8 @@ public class SetDefeatedTruckersVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForSmugglers(Smugglers smugglers, Object... params) {
+        ArrayList<Trucker> defeatedTruckers = (ArrayList<Trucker>) params[0];
+        smugglers.setDefeatedTruckers(defeatedTruckers);
         return null;
     }
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
 
@@ -69,7 +70,15 @@ public class SetDoubleElementsCoordinatesVisitor implements ParametricCardVisito
 
     @Override
     public Object visitForSmugglers(Smugglers smugglers, Object... params) {
-        return null;
+        try {
+            ArrayList<int[]> doubleCannonCoord = (ArrayList<int[]>) params[0];
+            int numPlayer = (Integer) params[1];
+            Trucker trucker = (Trucker) params [2];
+            Bank bank = (Bank) params[3];
+            return smugglers.addDoubleCannonsCoord(doubleCannonCoord, numPlayer, trucker, bank);
+        } catch (InvalidComponentsException e) {
+            return e;
+        }
     }
 
     @Override

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.visitor;
 
-import it.polimi.ingsw.exceptions.InvalidComponentsException;
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
 
@@ -68,7 +68,13 @@ public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisi
 
     @Override
     public Object visitForSmugglers(Smugglers smugglers, Object... params) {
-        return null;
+        try {
+            ArrayList<int[]> coordinatesToRemoveBatteries = (ArrayList<int[]>) params[0];
+            Trucker trucker = (Trucker) params[1];
+            return smugglers.removeBatteries(coordinatesToRemoveBatteries, trucker);
+        } catch (InvalidCoordinates | WrongNumberOfBatteriesSelected e) {
+            return e;
+        }
     }
 
     @Override
