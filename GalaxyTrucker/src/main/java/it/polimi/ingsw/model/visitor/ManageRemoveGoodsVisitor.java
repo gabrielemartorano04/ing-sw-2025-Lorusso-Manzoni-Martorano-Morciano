@@ -65,6 +65,8 @@ public class ManageRemoveGoodsVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForWarZone(WarZone warZone, Object... params) {
-        return null;
+        Trucker trucker = (Trucker) params[0];
+        Bank bank = (Bank) params[1];
+        return warZone.manageRemoveGoods(trucker, bank);
     }
 }

@@ -68,13 +68,7 @@ public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisi
 
     @Override
     public Object visitForSmugglers(Smugglers smugglers, Object... params) {
-        try {
-            ArrayList<int[]> coordinatesToRemoveBatteries = (ArrayList<int[]>) params[0];
-            Trucker trucker = (Trucker) params[1];
-            return smugglers.removeBatteries(coordinatesToRemoveBatteries, trucker);
-        } catch (InvalidCoordinates | WrongNumberOfBatteriesSelected e) {
-            return e;
-        }
+        return null;
     }
 
     @Override
@@ -84,6 +78,11 @@ public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisi
 
     @Override
     public Object visitForWarZone(WarZone warZone, Object... params) {
-        return null;
+        try {
+            ArrayList<int[]> coordinates = (ArrayList<int[]>) params[0];
+            return warZone.removeCrew(coordinates);
+        } catch (InvalidComponentsException | InvalidCoordinates e) {
+            return e;
+        }
     }
 }

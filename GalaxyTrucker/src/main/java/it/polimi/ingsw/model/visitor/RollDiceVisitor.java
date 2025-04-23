@@ -64,6 +64,8 @@ public class RollDiceVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForWarZone(WarZone warZone, Object... params) {
+        Game game = (Game) params[0];
+        warZone.rollDice(game);
         return null;
     }
 }

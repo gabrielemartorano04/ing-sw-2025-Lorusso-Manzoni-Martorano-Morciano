@@ -2,13 +2,13 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.model.Bank;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
 
 import java.util.ArrayList;
 
-public class SetDoubleElementsCoordinatesVisitor implements ParametricCardVisitor {
+public class SetDoubleEnginesCoordinatesVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visit(Card card, Object... params) {
@@ -49,10 +49,7 @@ public class SetDoubleElementsCoordinatesVisitor implements ParametricCardVisito
 
     @Override
     public Object visitForPirates(Pirates pirates, Object... params) {
-        ArrayList<int[]> doubleCannonCoordinates = (ArrayList<int[]>) params[0];
-        int numPlayer = (Integer) params[1];
-        Trucker trucker = (Trucker) params[2];
-        return pirates.addDoubleCannonsCoord(doubleCannonCoordinates, numPlayer, trucker);
+        return null;
     }
 
     @Override
@@ -62,23 +59,12 @@ public class SetDoubleElementsCoordinatesVisitor implements ParametricCardVisito
 
     @Override
     public Object visitForSlavers(Slavers slavers, Object... params) {
-        ArrayList<int[]> doubleCannonCoord = (ArrayList<int[]>) params[0];
-        int numPlayer = (Integer) params[1];
-        Trucker trucker = (Trucker) params[2];
-        return slavers.addDoubleCannonsCoord(doubleCannonCoord, numPlayer, trucker);
+        return null;
     }
 
     @Override
     public Object visitForSmugglers(Smugglers smugglers, Object... params) {
-        try {
-            ArrayList<int[]> doubleCannonCoord = (ArrayList<int[]>) params[0];
-            int numPlayer = (Integer) params[1];
-            Trucker trucker = (Trucker) params [2];
-            Bank bank = (Bank) params[3];
-            return smugglers.addDoubleCannonsCoord(doubleCannonCoord, numPlayer, trucker, bank);
-        } catch (InvalidComponentsException e) {
-            return e;
-        }
+        return null;
     }
 
     @Override
@@ -88,6 +74,14 @@ public class SetDoubleElementsCoordinatesVisitor implements ParametricCardVisito
 
     @Override
     public Object visitForWarZone(WarZone warZone, Object... params) {
-        return null;
+        try {
+            Game game = (Game) params[0];
+            Trucker trucker = (Trucker) params[1];
+            ArrayList<int[]> truckerCannonCoordinates = (ArrayList<int[]>) params[2];
+            warZone.setCannonCoordinates(game, trucker, truckerCannonCoordinates);
+            return null;
+        } catch (InvalidComponentsException e) {
+            return e;
+        }
     }
 }

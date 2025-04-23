@@ -123,6 +123,7 @@ public class GetGoodsVisitor implements CardVisitor, ParametricCardVisitor {
 
     @Override
     public Object visitForWarZone(WarZone warZone, Object... params) {
-        return null;
+        Trucker trucker = (Trucker) params[0];
+        return warZone.plotGoodsList(trucker);
     }
 }
