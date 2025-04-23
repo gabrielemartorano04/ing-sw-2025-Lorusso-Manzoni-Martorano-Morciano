@@ -55,7 +55,17 @@ public class RearrangeVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForPlanets(Planets planets, Object... params) {
-        return null;
+        try {
+            int[] coord1 = (int[]) params[0];
+            int[] coord2 = (int[]) params[1];
+            int value1 = (Integer) params[2];
+            int value2 = (Integer) params[3];
+            boolean contiune = (Boolean) params[4];
+            planets.rearrange(coord1, coord2, value1, value2, contiune);
+            return null;
+        } catch (InvalidCoordinates | InvalidPositionException e) {
+            return e;
+        }
     }
 
     @Override

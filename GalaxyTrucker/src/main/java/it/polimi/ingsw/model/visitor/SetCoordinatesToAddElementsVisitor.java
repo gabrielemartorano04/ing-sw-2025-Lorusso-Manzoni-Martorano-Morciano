@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.visitor;
 
+import it.polimi.ingsw.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
@@ -54,7 +55,14 @@ public class SetCoordinatesToAddElementsVisitor implements ParametricCardVisitor
 
     @Override
     public Object visitForPlanets(Planets planets, Object... params) {
-        return null;
+        try {
+            int[] coordinatesToAddGoods = (int[]) params[0];
+            int positionInLoad = (int) params[1];
+            Bank bank = (Bank) params[2];
+            return planets.setCoordinatesToAddGoods(coordinatesToAddGoods,positionInLoad, bank);
+        } catch (InvalidCoordinates e) {
+            return e;
+        }
     }
 
     @Override

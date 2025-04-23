@@ -43,7 +43,8 @@ public class SetChoiceToGainVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForPlanets(Planets planets, Object... params) {
-        return null;
+        boolean choice = (Boolean) params[0];
+        return planets.chooseToGain(choice);
     }
 
     @Override

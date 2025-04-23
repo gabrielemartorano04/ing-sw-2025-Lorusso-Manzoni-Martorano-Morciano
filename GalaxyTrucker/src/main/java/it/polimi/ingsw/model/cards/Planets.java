@@ -248,7 +248,7 @@ public class Planets extends Card {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param coordinatesToAddGood list of coordinatest
      */
-    public CardState setCoordinatesToAddGoods(int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws IllegalStateException, InvalidPositionException, InvalidCoordinates  {
+    public CardState setCoordinatesToAddGoods(int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws IllegalStateException, InvalidCoordinates  {
         if (state != CardState.GOODSTOADD) {
             throw new IllegalStateException("Card state is not GOODSTOADD");
         }
@@ -292,7 +292,7 @@ public class Planets extends Card {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param coordinatesToAddGood list of coordinatest
      */
-    public CardState coordinatesToAddFromList(int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws IllegalStateException, InvalidPositionException, InvalidCoordinates  {
+    public CardState coordinatesToAddFromList(int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws IllegalStateException, InvalidCoordinates  {
         if (state != CardState.ADDFROMLIST) {
             throw new IllegalStateException("Not callable in the state: " + state);
         }

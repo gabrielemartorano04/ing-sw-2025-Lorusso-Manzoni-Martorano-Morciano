@@ -2,65 +2,66 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
 
-public class SetChoiceToGainFromListVisitor implements CardVisitor {
+public class SetChoiceToGainFromListVisitor implements ParametricCardVisitor {
 
     @Override
-    public Object visit(Card card) {
+    public Object visit(Card card, Object... params) {
         return null;
     }
 
     @Override
-    public Object visitForAbandonedShip(AbandonedShip abandonedShip) {
+    public Object visitForAbandonedShip(AbandonedShip abandonedShip, Object... params) {
         return null;
     }
 
     @Override
-    public Object visitForAbandonedStation(AbandonedStation abandonedStation) {
+    public Object visitForAbandonedStation(AbandonedStation abandonedStation, Object... params) {
         return null;
     }
 
     @Override
-    public Object visitForEpidemic(Epidemic epidemic) {
+    public Object visitForEpidemic(Epidemic epidemic, Object... params) {
         return null;
     }
 
     @Override
-    public Object visitForMeteorShowers(MeteorShower meteorShowers) {
+    public Object visitForMeteorShowers(MeteorShower meteorShowers, Object... params) {
         return null;
     }
 
     @Override
-    public Object visitForOpenSpace(OpenSpace openSpace) {
+    public Object visitForOpenSpace(OpenSpace openSpace, Object... params) {
         return null;
     }
 
     @Override
-    public Object visitForPirates(Pirates pirates) {
+    public Object visitForPirates(Pirates pirates, Object... params) {
         return null;
     }
 
     @Override
-    public Object visitForPlanets(Planets planets) {
+    public Object visitForPlanets(Planets planets, Object... params) {
+        boolean choice = (Boolean) params[0];
+        return planets.chooseFromList(choice);
+    }
+
+    @Override
+    public Object visitForSlavers(Slavers slavers, Object... params) {
         return null;
     }
 
     @Override
-    public Object visitForSlavers(Slavers slavers) {
+    public Object visitForSmugglers(Smugglers smugglers, Object... params) {
         return null;
     }
 
     @Override
-    public Object visitForSmugglers(Smugglers smugglers) {
+    public Object visitForStarDust(StarDust starDust, Object... params) {
         return null;
     }
 
     @Override
-    public Object visitForStarDust(StarDust starDust) {
-        return null;
-    }
-
-    @Override
-    public Object visitForWarZone(WarZone warZone) {
+    public Object visitForWarZone(WarZone warZone, Object... params) {
         return null;
     }
 }

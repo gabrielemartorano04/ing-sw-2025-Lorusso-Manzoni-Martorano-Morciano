@@ -1,8 +1,13 @@
 package it.polimi.ingsw.model.visitor;
 
+import it.polimi.ingsw.exceptions.InvalidComponentsException;
+import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.PlanetNotFreeException;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
+
+import java.util.ArrayList;
 
 public class SetTruckerLandingVisitor implements ParametricCardVisitor {
 
@@ -50,7 +55,14 @@ public class SetTruckerLandingVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForPlanets(Planets planets, Object... params) {
-        return null;
+        try {
+            int indexOfLanding = (Integer) params[0];
+            Trucker trucker = (Trucker) params[1];
+            int numPlayers = (Integer) params[2];
+            return planets.setPlayerLanding(indexOfLanding, trucker, numPlayers);
+        } catch (PlanetNotFreeException e) {
+            return e;
+        }
     }
 
     @Override
