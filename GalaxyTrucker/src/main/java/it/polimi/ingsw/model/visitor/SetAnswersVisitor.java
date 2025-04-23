@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.visitor;
 
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
 
 public class SetAnswersVisitor implements ParametricCardVisitor {
@@ -37,7 +38,9 @@ public class SetAnswersVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForPirates(Pirates pirates, Object... params) {
-        return null;
+        boolean answers = (Boolean) params[0];
+        Trucker trucker = (Trucker) params[1];
+        return pirates.setAnswers(answers, trucker);
     }
 
     @Override

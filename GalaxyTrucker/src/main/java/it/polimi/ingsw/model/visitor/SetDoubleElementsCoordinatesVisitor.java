@@ -48,7 +48,10 @@ public class SetDoubleElementsCoordinatesVisitor implements ParametricCardVisito
 
     @Override
     public Object visitForPirates(Pirates pirates, Object... params) {
-        return null;
+        ArrayList<int[]> doubleCannonCoordinates = (ArrayList<int[]>) params[0];
+        int numPlayer = (Integer) params[1];
+        Trucker trucker = (Trucker) params[2];
+        return pirates.addDoubleCannonsCoord(doubleCannonCoordinates, numPlayer, trucker);
     }
 
     @Override

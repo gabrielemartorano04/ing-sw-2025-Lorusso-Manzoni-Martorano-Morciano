@@ -37,7 +37,8 @@ public class SetChoiceToGainVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForPirates(Pirates pirates, Object... params) {
-        return null;
+        boolean choice = (Boolean) params[0];
+        return pirates.setChooseToGain(choice);
     }
 
     @Override

@@ -38,7 +38,8 @@ public class RollDiceVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForPirates(Pirates pirates, Object... params) {
-        return null;
+        Game game = (Game) params[0];
+        return pirates.rollDice(game);
     }
 
     @Override

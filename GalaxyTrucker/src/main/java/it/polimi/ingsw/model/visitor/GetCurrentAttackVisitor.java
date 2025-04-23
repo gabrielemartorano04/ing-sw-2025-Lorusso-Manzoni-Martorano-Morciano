@@ -36,7 +36,7 @@ public class GetCurrentAttackVisitor implements CardVisitor {
 
     @Override
     public Object visitForPirates(Pirates pirates) {
-        return null;
+        return pirates.getCurrentShoot();
     }
 
     @Override
