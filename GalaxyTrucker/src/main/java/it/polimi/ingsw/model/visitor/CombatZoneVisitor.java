@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model.visitor;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.*;
+
+import java.util.ArrayList;
 
 public class CombatZoneVisitor implements ParametricCardVisitor {
 
@@ -61,6 +64,7 @@ public class CombatZoneVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForWarZone(WarZone warZone, Object... params) {
-        return null;
+        Game game = (Game) params[0];
+        return warZone.combatZone(game);
     }
 }

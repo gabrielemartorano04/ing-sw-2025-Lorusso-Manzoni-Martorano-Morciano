@@ -1,12 +1,15 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.AbandonedShip;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.visitor.*;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -144,5 +147,50 @@ public class CardController {
     public Object getPenalties(Card card) {
         CardVisitor visitor = new GetPenaltiesVisitor();
         return card.accept(visitor);
+    }
+
+    public Object setTruckerThatHasDecided(Card card, Trucker trucker, boolean landing, int numPlayer) {
+        ParametricCardVisitor visitor = new SetTruckerLandingVisitor();
+        return card.accept(visitor, trucker, landing, numPlayer);
+    }
+
+    public Object setTruckerLanding(Card card, Trucker trucker, boolean landing, int numPlayer, Bank bank) {
+        ParametricCardVisitor visitor = new SetTruckerLandingVisitor();
+        return card.accept(visitor, trucker, landing, numPlayer, bank);
+    }
+
+    public Object setCoordinatesToRemoveCrew(Card card, ArrayList<int[]> coordinates) {
+        ParametricCardVisitor visitor = new SetCoordinatesToRemoveElementsVisitor();
+        return card.accept(visitor, coordinates);
+    }
+
+    public Object setCoordinatesToAddGoods(Card card, int[] coordinatesToAddGood, int value, Trucker trucker, Bank bank) {
+        ParametricCardVisitor visitor = new SetCoordinatesToAddElementsVisitor();
+        return card.accept(visitor, coordinatesToAddGood, value, trucker, bank);
+    }
+
+    public Object setChoiceToGain(Card card, boolean choice) {
+        ParametricCardVisitor visitor = new SetChoiceToGainVisitor();
+        return card.accept(visitor, choice);
+    }
+
+    public Object rearrange(Card card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) {
+        ParametricCardVisitor visitor = new RearrangeVisitor();
+        return card.accept(visitor, coord1, coord2, value1, value2, contiune);
+    }
+
+    public Object rollDice(Card card, Game game) {
+        ParametricCardVisitor visitor = new RollDiceVisitor();
+        return card.accept(visitor, game);
+    }
+
+    public Object setAnswear(Card card, boolean answear) {
+        ParametricCardVisitor visitor = new SetAnswersVisitor();
+        return card.accept(visitor, answear);
+    }
+
+    public Object setDoubleCannonsCoordinates(Card card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) {
+        ParametricCardVisitor visitor = new SetDoubleCannonsCoordinatesVisitor();
+        return card.accept(visitor, truckerCoordinate, numTruckers);
     }
 }

@@ -95,8 +95,7 @@ public class WarZone extends Card {
         return shoots;
     }
 
-    //????????????????????????????????????????
-    public CardState combatZone(Game game, ArrayList<ArrayList<int[]>> truckersCannonsCoordinates, ArrayList<ArrayList<int[]>> truckersEnginesCoordinates){
+    public CardState combatZone(Game game){
         if(state != CardState.WARZONE){
             throw new IllegalStateException("CombatZone not callable in the state " + state);
         }
