@@ -149,14 +149,19 @@ public class CardController {
         return card.accept(visitor);
     }
 
-    public Object setTruckerThatHasDecided(Card card, Trucker trucker, boolean landing, int numPlayer) {
+    public Object setTruckerLandingOnAbandonedShip(Card card, Trucker trucker, boolean landing, int numPlayer) {
         ParametricCardVisitor visitor = new SetTruckerLandingVisitor();
         return card.accept(visitor, trucker, landing, numPlayer);
     }
 
-    public Object setTruckerLanding(Card card, Trucker trucker, boolean landing, int numPlayer, Bank bank) {
+    public Object setTruckerLandingOnAbandonedStation(Card card, Trucker trucker, boolean landing, int numPlayer, Bank bank) {
         ParametricCardVisitor visitor = new SetTruckerLandingVisitor();
         return card.accept(visitor, trucker, landing, numPlayer, bank);
+    }
+
+    public Object setTruckerLandingOnPlanets(Card card, int indexOfLanding, Trucker trucker, int numPlayers) {
+        ParametricCardVisitor visitor = new SetTruckerLandingVisitor();
+        return card.accept(visitor, indexOfLanding, trucker, numPlayers);
     }
 
     public Object setCoordinatesToRemoveCrew(Card card, ArrayList<int[]> coordinates) {
@@ -164,9 +169,29 @@ public class CardController {
         return card.accept(visitor, coordinates);
     }
 
+    public Object setCoordinatesToRemoveCrewFromPlanet(Card card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
+        ParametricCardVisitor visitor = new SetCoordinatesToRemoveElementsVisitor();
+        return card.accept(visitor, truckersCoordinatesToRemoveHumans, numPlayer, trucker);
+    }
+
+    public Object setCoordinatesToRemoveBatteries(Card card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) {
+        ParametricCardVisitor visitor = new SetCoordinatesToRemoveBatteriesVisitor();
+        return card.accept(visitor, coordinatesToRemoveBatteries, trucker);
+    }
+
     public Object setCoordinatesToAddGoods(Card card, int[] coordinatesToAddGood, int value, Trucker trucker, Bank bank) {
         ParametricCardVisitor visitor = new SetCoordinatesToAddElementsVisitor();
         return card.accept(visitor, coordinatesToAddGood, value, trucker, bank);
+    }
+
+    public Object setCoordinatesToAddGoodsFromPlanet(Card card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) {
+        ParametricCardVisitor visitor = new SetCoordinatesToAddElementsVisitor();
+        return card.accept(visitor, coordinatesToAddGood, positionInLoad, bank);
+    }
+
+    public Object setCoordinatesToAddGoodsFromList(Card card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) {
+        ParametricCardVisitor visitor = new SetCoordinatesToAddElementsFromListVisitor();
+        return card.accept(visitor, coordinatesToAddGood, positionInLoad, bank);
     }
 
     public Object setChoiceToGain(Card card, boolean choice) {
@@ -174,7 +199,17 @@ public class CardController {
         return card.accept(visitor, choice);
     }
 
+    public Object setChoiceToGainFromList(Card card, boolean choice) {
+        ParametricCardVisitor visitor = new SetChoiceToGainFromListVisitor();
+        return card.accept(visitor, choice);
+    }
+
     public Object rearrange(Card card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) {
+        ParametricCardVisitor visitor = new RearrangeVisitor();
+        return card.accept(visitor, trucker, coord1, coord2, value1, value2, contiune);
+    }
+
+    public Object rearrangeForPlanet(Card card, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) {
         ParametricCardVisitor visitor = new RearrangeVisitor();
         return card.accept(visitor, coord1, coord2, value1, value2, contiune);
     }
@@ -189,8 +224,78 @@ public class CardController {
         return card.accept(visitor, answear);
     }
 
+    public Object setTruckersAnswear(Card card, boolean answear, Trucker trucker) {
+        ParametricCardVisitor visitor = new SetAnswersVisitor();
+        return card.accept(visitor, answear, trucker);
+    }
+
+    public Object setDoubleEnginesCoordinates(Card card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) {
+        ParametricCardVisitor visitor = new SetDoubleEnginesCoordinatesVisitor();
+        return card.accept(visitor, trucker, truckerCoordinate, numTruckers);
+    }
+
+    public Object setDoubleEnginesCoordinatesforWarZone(Card card, Game game, Trucker trucker, ArrayList<int[]> truckerCannonsCoordinates) {
+        ParametricCardVisitor visitor = new SetDoubleEnginesCoordinatesVisitor();
+        return card.accept(visitor, game, trucker, truckerCannonsCoordinates);
+    }
+
     public Object setDoubleCannonsCoordinates(Card card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) {
         ParametricCardVisitor visitor = new SetDoubleCannonsCoordinatesVisitor();
-        return card.accept(visitor, truckerCoordinate, numTruckers);
+        return card.accept(visitor, trucker, truckerCoordinate, numTruckers);
+    }
+
+    public Object setDoubleCannonsCoordinatesForSmugglers(Card card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers, Bank bank) {
+        ParametricCardVisitor visitor = new SetDoubleCannonsCoordinatesVisitor();
+        return card.accept(visitor, trucker, truckerCoordinate, numTruckers, bank);
+    }
+
+    public Object setDoubleCannonsCoordinatesForWarZone(Card card, Game game, Trucker trucker, ArrayList<int[]> truckerCannonsCoordinates) {
+        ParametricCardVisitor visitor = new SetDoubleCannonsCoordinatesVisitor();
+        return card.accept(visitor, game, trucker, truckerCannonsCoordinates);
+    }
+
+    public Object setDefeatedTruckers(Card card, ArrayList<Trucker> defeatedTruckers) {
+        ParametricCardVisitor visitor = new SetDefeatedTruckersVisitor();
+        return card.accept(visitor, defeatedTruckers);
+    }
+
+    public Object setWinnerTrucker(Card card, Trucker winnerTrucker) {
+        ParametricCardVisitor visitor = new SetWinnerTruckerVisitor();
+        return card.accept(visitor, winnerTrucker);
+    }
+
+    public Object getBank(Card card, Bank bank) {
+        ParametricCardVisitor visitor = new GetBankVisitor();
+        return card.accept(visitor, bank);
+    }
+
+    public Object initialize(Card card, Bank bank) {
+        ParametricCardVisitor visitor = new InitializeVisitor();
+        return card.accept(visitor, bank);
+    }
+
+    public Object manageRemoveGoods(Card card, Trucker trucker, Bank bank) {
+        ParametricCardVisitor visitor = new ManageRemoveGoodsVisitor();
+        return card.accept(visitor, trucker, bank);
+    }
+
+    public Object plotGoods(Card card, Trucker trucker) {
+        ParametricCardVisitor visitor = new GetGoodsVisitor();
+        return card.accept(visitor, trucker);
+    }
+
+    public Object removeAsking(Card card, ArrayList<Integer> indexes, Trucker trucker, Bank bank) {
+        ParametricCardVisitor visitor = new RemoveAskingVisitor();
+        return card.accept(visitor, indexes, trucker, bank);
+    }
+
+    public Object combactZone(Card card, Game game) {
+        ParametricCardVisitor visitor = new CombatZoneVisitor();
+        return card.accept(visitor, game);
+    }
+
+    public Object findWeakestTrucker(Card card, Game game, ArrayList<ArrayList<int[]>> truckersCoordinates) {
+        ParametricCardVisitor visitor = new FindWeakestTruckerVisitor();
+        return card.accept(visitor, game, truckersCoordinates);
     }
 }

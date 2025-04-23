@@ -77,10 +77,10 @@ public class RemoveAskingVisitor implements ParametricCardVisitor {
     @Override
     public Object visitForWarZone(WarZone warZone, Object... params) {
         try {
-            Bank bank = (Bank) params[0];
-            ArrayList<Integer> indexes = (ArrayList<Integer>) params[1];
-            Trucker trucker = (Trucker) params[2];
-            warZone.removeAsking(bank, indexes, trucker);
+            ArrayList<Integer> indexes = (ArrayList<Integer>) params[0];
+            Trucker trucker = (Trucker) params[1];
+            Bank bank = (Bank) params[2];
+            warZone.removeAsking(indexes, trucker, bank);
             return null;
         } catch (InvalidGoodChosen | NotEnoughGoodsChosen e) {
             return e;

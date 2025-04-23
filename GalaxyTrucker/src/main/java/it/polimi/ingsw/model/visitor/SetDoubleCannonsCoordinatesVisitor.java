@@ -43,10 +43,10 @@ public class SetDoubleCannonsCoordinatesVisitor implements ParametricCardVisitor
 
     @Override
     public Object visitForPirates(Pirates pirates, Object... params) {
-        ArrayList<int[]> doubleCannonCoordinates = (ArrayList<int[]>) params[0];
-        int numPlayer = (Integer) params[1];
-        Trucker trucker = (Trucker) params[2];
-        return pirates.addDoubleCannonsCoord(doubleCannonCoordinates, numPlayer, trucker);
+        Trucker trucker = (Trucker) params[0];
+        ArrayList<int[]> doubleCannonCoordinates = (ArrayList<int[]>) params[1];
+        int numPlayer = (Integer) params[2];
+        return pirates.addDoubleCannonsCoord(trucker, doubleCannonCoordinates, numPlayer);
     }
 
     @Override
@@ -56,20 +56,20 @@ public class SetDoubleCannonsCoordinatesVisitor implements ParametricCardVisitor
 
     @Override
     public Object visitForSlavers(Slavers slavers, Object... params) {
-        ArrayList<int[]> doubleCannonCoord = (ArrayList<int[]>) params[0];
-        int numPlayer = (Integer) params[1];
-        Trucker trucker = (Trucker) params[2];
-        return slavers.addDoubleCannonsCoord(doubleCannonCoord, numPlayer, trucker);
+        Trucker trucker = (Trucker) params[0];
+        ArrayList<int[]> doubleCannonCoord = (ArrayList<int[]>) params[1];
+        int numPlayer = (Integer) params[2];
+        return slavers.addDoubleCannonsCoord(trucker, doubleCannonCoord, numPlayer);
     }
 
     @Override
     public Object visitForSmugglers(Smugglers smugglers, Object... params) {
         try {
-            ArrayList<int[]> doubleCannonCoord = (ArrayList<int[]>) params[0];
-            int numPlayer = (Integer) params[1];
-            Trucker trucker = (Trucker) params [2];
+            Trucker trucker = (Trucker) params [0];
+            ArrayList<int[]> doubleCannonCoord = (ArrayList<int[]>) params[1];
+            int numPlayer = (Integer) params[2];
             Bank bank = (Bank) params[3];
-            return smugglers.addDoubleCannonsCoord(doubleCannonCoord, numPlayer, trucker, bank);
+            return smugglers.addDoubleCannonsCoord(trucker, doubleCannonCoord, numPlayer, bank);
         } catch (InvalidComponentsException e) {
             return e;
         }

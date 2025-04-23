@@ -304,7 +304,7 @@ public class WarZone extends Card {
      * @param trucker
      */
 
-    public void removeAsking(Bank bank, ArrayList<Integer> indexes, Trucker trucker) throws InvalidGoodChosen, NotEnoughGoodsChosen {
+    public void removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen {
         if (state != CardState.REMOVE_ASKING){
             throw new IllegalStateException("Can't call removeAsking in the state " + state);
         }

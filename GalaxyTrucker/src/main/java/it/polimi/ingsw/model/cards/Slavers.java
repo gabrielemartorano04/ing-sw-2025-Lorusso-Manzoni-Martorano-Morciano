@@ -142,7 +142,7 @@ public class Slavers extends Card {
         return cardState;
     }
 
-    public CardState addDoubleCannonsCoord(ArrayList<int[]> doubleCannonsCoord, int numPlayer, Trucker trucker) throws IllegalStateException {
+    public CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws IllegalStateException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
         }
