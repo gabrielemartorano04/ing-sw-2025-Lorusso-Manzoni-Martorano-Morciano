@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.components.Component;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class TruckerController {
     private final Trucker trucker;
     private final GameController gameController;

@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ *
+ */
 public class GameController {
     private final Game game;
     private final List<TruckerController> truckerControllers = new ArrayList<>();
