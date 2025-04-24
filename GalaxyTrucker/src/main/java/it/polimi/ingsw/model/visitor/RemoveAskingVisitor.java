@@ -10,6 +10,9 @@ import it.polimi.ingsw.model.cards.*;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class RemoveAskingVisitor implements ParametricCardVisitor {
 
     @Override

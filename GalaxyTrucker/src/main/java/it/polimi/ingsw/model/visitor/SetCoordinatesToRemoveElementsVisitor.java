@@ -7,6 +7,9 @@ import it.polimi.ingsw.model.cards.*;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisitor {
 
     @Override

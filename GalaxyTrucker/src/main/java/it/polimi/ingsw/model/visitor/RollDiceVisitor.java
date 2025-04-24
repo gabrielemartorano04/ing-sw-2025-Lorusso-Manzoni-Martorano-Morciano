@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.visitor;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.*;
 
+/**
+ *
+ */
 public class RollDiceVisitor implements ParametricCardVisitor {
 
     @Override

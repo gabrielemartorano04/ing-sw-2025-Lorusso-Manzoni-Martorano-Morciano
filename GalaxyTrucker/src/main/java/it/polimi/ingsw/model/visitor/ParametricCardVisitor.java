@@ -2,6 +2,10 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
 
+/**
+ *
+ * @param <R>
+ */
 public interface ParametricCardVisitor<R> {
     R visit(Card card, Object... params);
 

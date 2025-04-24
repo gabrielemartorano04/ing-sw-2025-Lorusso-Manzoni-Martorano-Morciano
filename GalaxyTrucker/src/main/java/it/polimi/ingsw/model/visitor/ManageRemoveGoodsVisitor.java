@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
 
+/**
+ *
+ */
 public class ManageRemoveGoodsVisitor implements ParametricCardVisitor {
 
     @Override

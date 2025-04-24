@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.visitor;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.cards.*;
 
+/**
+ *
+ */
 public class InitializeVisitor implements ParametricCardVisitor {
 
     @Override

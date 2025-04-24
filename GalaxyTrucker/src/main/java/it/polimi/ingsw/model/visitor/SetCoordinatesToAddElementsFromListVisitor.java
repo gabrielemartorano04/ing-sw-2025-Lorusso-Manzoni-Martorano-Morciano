@@ -4,6 +4,9 @@ import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.cards.*;
 
+/**
+ *
+ */
 public class SetCoordinatesToAddElementsFromListVisitor implements ParametricCardVisitor {
 
     @Override

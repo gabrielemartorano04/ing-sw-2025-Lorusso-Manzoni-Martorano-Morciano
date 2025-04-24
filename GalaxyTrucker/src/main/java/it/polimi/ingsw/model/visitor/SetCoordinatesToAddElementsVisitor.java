@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.cards.*;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class SetCoordinatesToAddElementsVisitor implements ParametricCardVisitor {
 
     @Override

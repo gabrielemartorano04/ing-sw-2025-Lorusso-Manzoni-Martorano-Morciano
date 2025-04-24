@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
 
+/**
+ *
+ */
 public class GetElementsRequired implements CardVisitor {
     @Override
     public Object visit(Card card) {
