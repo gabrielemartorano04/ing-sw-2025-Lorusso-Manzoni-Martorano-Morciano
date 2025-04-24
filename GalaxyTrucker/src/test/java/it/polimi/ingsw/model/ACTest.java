@@ -13,7 +13,7 @@ public class ACTest {
 
     @Before
     public void setUp() {
-        availableComponents = new AvailableComponents();
+        this.availableComponents = new AvailableComponents();
     }
 
     @Test
