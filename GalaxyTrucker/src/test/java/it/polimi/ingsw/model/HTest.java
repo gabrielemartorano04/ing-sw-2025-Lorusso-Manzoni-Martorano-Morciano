@@ -10,7 +10,7 @@ public class HTest {
 
     @Before
     public void setUp() {
-        hourglass = new Hourglass(null);
+        this.hourglass = new Hourglass(null);
     }
 
     @Test
