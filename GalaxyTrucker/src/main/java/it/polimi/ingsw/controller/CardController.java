@@ -169,7 +169,7 @@ public class CardController {
         return card.accept(visitor, coordinates);
     }
 
-    public Object setCoordinatesToRemoveCrewFromPlanet(Card card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
+    public Object setCoordinatesToRemoveCrewForSlavers(Card card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) {
         ParametricCardVisitor visitor = new SetCoordinatesToRemoveElementsVisitor();
         return card.accept(visitor, truckersCoordinatesToRemoveHumans, numPlayer, trucker);
     }
