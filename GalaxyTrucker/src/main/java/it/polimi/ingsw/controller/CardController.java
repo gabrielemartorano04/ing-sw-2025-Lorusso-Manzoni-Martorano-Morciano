@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.cards.AbandonedShip;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.visitor.*;
