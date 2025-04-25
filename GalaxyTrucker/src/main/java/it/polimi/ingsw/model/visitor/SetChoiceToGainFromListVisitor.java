@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
 
+/**
+ *
+ */
 public class SetChoiceToGainFromListVisitor implements ParametricCardVisitor {
 
     @Override

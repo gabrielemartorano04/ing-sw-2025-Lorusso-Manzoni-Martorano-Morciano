@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
 
+/**
+ *
+ */
 public class GetPenaltiesVisitor implements CardVisitor {
 
     @Override

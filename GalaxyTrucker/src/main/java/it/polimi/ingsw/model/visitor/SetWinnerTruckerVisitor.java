@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.visitor;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
 
+/**
+ *
+ */
 public class SetWinnerTruckerVisitor implements ParametricCardVisitor {
 
     @Override

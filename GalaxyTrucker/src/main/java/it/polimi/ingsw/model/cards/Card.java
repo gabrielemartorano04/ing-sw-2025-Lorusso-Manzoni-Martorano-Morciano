@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
@@ -40,7 +42,7 @@ public abstract class Card {
         return visitor.visit(this);
     }
 
-    public Object accept(ParametricCardVisitor visitor, Object... params) {
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidPositionException {
         return visitor.visit(this, params);
     }
 

@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.cards.*;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class FindWeakestTruckerVisitor implements ParametricCardVisitor {
 
     @Override

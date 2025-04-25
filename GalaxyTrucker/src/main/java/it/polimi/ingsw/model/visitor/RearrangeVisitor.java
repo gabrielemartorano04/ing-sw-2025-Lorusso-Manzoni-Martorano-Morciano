@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
 
+/**
+ *
+ */
 public class RearrangeVisitor implements ParametricCardVisitor {
 
     @Override
@@ -19,7 +22,7 @@ public class RearrangeVisitor implements ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForAbandonedStation(AbandonedStation abandonedStation, Object... params) {
+    public Object visitForAbandonedStation(AbandonedStation abandonedStation, Object... params) throws InvalidCoordinates, InvalidPositionException {
         try {
             Trucker trucker = (Trucker) params[0];
             int[] coord1 = (int[]) params[1];
@@ -28,8 +31,12 @@ public class RearrangeVisitor implements ParametricCardVisitor {
             int value2 = (Integer) params[4];
             boolean contiune = (Boolean) params[5];
             return abandonedStation.rearrange(trucker, coord1, coord2, value1, value2, contiune);
-        } catch (InvalidCoordinates | InvalidPositionException e) {
-            return e;
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
