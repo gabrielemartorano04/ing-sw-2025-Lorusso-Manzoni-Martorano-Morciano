@@ -68,7 +68,7 @@ public class Smugglers extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) {
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidGoodChosen, NotEnoughGoodsChosen, InvalidPositionException, WrongNumberOfBatteriesSelected {
         return visitor.visitForSmugglers(this, params);
     }
 

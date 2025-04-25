@@ -59,14 +59,16 @@ public class SetCoordinatesToAddElementsVisitor implements ParametricCardVisitor
     }
 
     @Override
-    public Object visitForPlanets(Planets planets, Object... params) {
+    public Object visitForPlanets(Planets planets, Object... params) throws InvalidCoordinates {
         try {
             int[] coordinatesToAddGoods = (int[]) params[0];
             int positionInLoad = (int) params[1];
             Bank bank = (Bank) params[2];
             return planets.setCoordinatesToAddGoods(coordinatesToAddGoods,positionInLoad, bank);
         } catch (InvalidCoordinates e) {
-            return e;
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -76,7 +78,7 @@ public class SetCoordinatesToAddElementsVisitor implements ParametricCardVisitor
     }
 
     @Override
-    public Object visitForSmugglers(Smugglers smugglers, Object... params) {
+    public Object visitForSmugglers(Smugglers smugglers, Object... params) throws InvalidCoordinates {
         try {
             int[] coordinatesToAddGoods = (int[]) params[0];
             int value = (Integer) params[1];
@@ -84,7 +86,9 @@ public class SetCoordinatesToAddElementsVisitor implements ParametricCardVisitor
             Bank bank = (Bank) params[3];
             return smugglers.setWinnerCoordinatesToAddGoods(coordinatesToAddGoods, value, trucker, bank);
         } catch (InvalidCoordinates e) {
-            return e;
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
         }
     }
 

@@ -69,7 +69,7 @@ public class SetTruckerLandingVisitor implements ParametricCardVisitor {
             int numPlayers = (Integer) params[2];
             return planets.setPlayerLanding(indexOfLanding, trucker, numPlayers);
         } catch (PlanetNotFreeException e) {
-            return e;
+            throw new PlanetNotFreeException(e.getMessage());
         }
     }
 

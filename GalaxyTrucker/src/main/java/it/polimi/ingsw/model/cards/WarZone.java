@@ -79,7 +79,7 @@ public class WarZone extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) {
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
         return visitor.visitForWarZone(this, params);
     }
 

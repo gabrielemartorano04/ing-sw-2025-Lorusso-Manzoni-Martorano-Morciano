@@ -49,7 +49,7 @@ public class AbandonedShip extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) {
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates {
         return visitor.visitForAbandonedShip(this, params);
     }
 

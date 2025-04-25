@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.visitor;
 
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.exceptions.InvalidPositionException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.cards.*;
 
 /**
@@ -19,17 +18,17 @@ public interface ParametricCardVisitor<R> {
 
     R visitForMeteorShowers(MeteorShower meteorShowers, Object... params);
 
-    R visitForOpenSpace(OpenSpace openSpace, Object... params);
+    R visitForOpenSpace(OpenSpace openSpace, Object... params) throws InvalidCoordinates;
 
     R visitForPirates(Pirates pirates, Object... params);
 
-    R visitForPlanets(Planets planets, Object... params);
+    R visitForPlanets(Planets planets, Object... params) throws InvalidCoordinates, InvalidPositionException;
 
-    R visitForSlavers(Slavers slavers, Object... params);
+    R visitForSlavers(Slavers slavers, Object... params) throws InvalidCoordinates;
 
-    R visitForSmugglers(Smugglers smugglers, Object... params);
+    R visitForSmugglers(Smugglers smugglers, Object... params) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected;
 
     R visitForStarDust(StarDust starDust, Object... params);
 
-    R visitForWarZone(WarZone warZone, Object... params);
+    R visitForWarZone(WarZone warZone, Object... params) throws InvalidGoodChosen, NotEnoughGoodsChosen, InvalidCoordinates, WrongNumberOfBatteriesSelected;
 }

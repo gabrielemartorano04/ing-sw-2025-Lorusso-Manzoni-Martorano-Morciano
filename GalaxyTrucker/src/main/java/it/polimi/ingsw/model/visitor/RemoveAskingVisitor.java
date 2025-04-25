@@ -61,14 +61,16 @@ public class RemoveAskingVisitor implements ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForSmugglers(Smugglers smugglers, Object... params) {
+    public Object visitForSmugglers(Smugglers smugglers, Object... params) throws InvalidGoodChosen, NotEnoughGoodsChosen {
         try {
             ArrayList<Integer> indexes = (ArrayList<Integer>) params[0];
             Trucker trucker = (Trucker) params[1];
             Bank bank = (Bank) params[2];
             return smugglers.removeAsking(indexes, trucker, bank);
-        } catch (InvalidGoodChosen | NotEnoughGoodsChosen e) {
-            return e;
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
         }
     }
 
@@ -78,15 +80,17 @@ public class RemoveAskingVisitor implements ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForWarZone(WarZone warZone, Object... params) {
+    public Object visitForWarZone(WarZone warZone, Object... params) throws InvalidGoodChosen, NotEnoughGoodsChosen {
         try {
             ArrayList<Integer> indexes = (ArrayList<Integer>) params[0];
             Trucker trucker = (Trucker) params[1];
             Bank bank = (Bank) params[2];
             warZone.removeAsking(indexes, trucker, bank);
             return null;
-        } catch (InvalidGoodChosen | NotEnoughGoodsChosen e) {
-            return e;
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
         }
     }
 }

@@ -39,14 +39,14 @@ public class SetDoubleEnginesCoordinatesVisitor implements ParametricCardVisitor
     }
 
     @Override
-    public Object visitForOpenSpace(OpenSpace openSpace, Object... params) {
+    public Object visitForOpenSpace(OpenSpace openSpace, Object... params) throws InvalidCoordinates {
         try {
             Trucker trucker = (Trucker) params[0];
             ArrayList<int[]> truckerCoordinate = (ArrayList<int[]>) params[1];
             int numTrucker = (Integer) params[2];
             return openSpace.setCoordinates(trucker, truckerCoordinate, numTrucker);
         } catch (InvalidCoordinates e) {
-            return e;
+            throw new InvalidCoordinates(e.getMessage());
         }
     }
 
@@ -84,7 +84,7 @@ public class SetDoubleEnginesCoordinatesVisitor implements ParametricCardVisitor
             warZone.setCannonCoordinates(game, trucker, truckerCannonCoordinates);
             return null;
         } catch (InvalidComponentsException e) {
-            return e;
+            throw new InvalidComponentsException(e.getMessage());
         }
     }
 }

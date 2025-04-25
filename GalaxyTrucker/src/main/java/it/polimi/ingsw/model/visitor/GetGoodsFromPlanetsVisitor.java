@@ -44,7 +44,11 @@ public class GetGoodsFromPlanetsVisitor implements CardVisitor {
 
     @Override
     public Object visitForPlanets(Planets planets) {
-        return planets.plotGoodFromPlanet();
+        try {
+            return planets.plotGoodFromPlanet();
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
     }
 
     @Override

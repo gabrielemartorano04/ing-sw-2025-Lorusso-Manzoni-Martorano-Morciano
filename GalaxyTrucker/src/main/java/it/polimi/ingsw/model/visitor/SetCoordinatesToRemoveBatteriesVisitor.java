@@ -58,13 +58,15 @@ public class SetCoordinatesToRemoveBatteriesVisitor implements ParametricCardVis
     }
 
     @Override
-    public Object visitForSmugglers(Smugglers smugglers, Object... params) {
+    public Object visitForSmugglers(Smugglers smugglers, Object... params) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
         try {
             ArrayList<int[]> coordinatesToRemoveBatteries = (ArrayList<int[]>) params[0];
             Trucker trucker = (Trucker) params[1];
             return smugglers.removeBatteries(coordinatesToRemoveBatteries, trucker);
-        } catch (InvalidCoordinates | WrongNumberOfBatteriesSelected e) {
-            return e;
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
         }
     }
 
@@ -74,14 +76,16 @@ public class SetCoordinatesToRemoveBatteriesVisitor implements ParametricCardVis
     }
 
     @Override
-    public Object visitForWarZone(WarZone warZone, Object... params) {
+    public Object visitForWarZone(WarZone warZone, Object... params) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
         try {
             ArrayList<int[]> coordinatesToRemoveBatteries = (ArrayList<int[]>) params[0];
             Trucker trucker = (Trucker) params[1];
             warZone.removeBatteries(coordinatesToRemoveBatteries, trucker);
             return null;
-        } catch (InvalidCoordinates | WrongNumberOfBatteriesSelected e) {
-            return e;
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
         }
     }
 }

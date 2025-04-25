@@ -61,7 +61,7 @@ public class RearrangeVisitor implements ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForPlanets(Planets planets, Object... params) {
+    public Object visitForPlanets(Planets planets, Object... params) throws InvalidCoordinates, InvalidPositionException {
         try {
             int[] coord1 = (int[]) params[0];
             int[] coord2 = (int[]) params[1];
@@ -70,8 +70,12 @@ public class RearrangeVisitor implements ParametricCardVisitor {
             boolean contiune = (Boolean) params[4];
             planets.rearrange(coord1, coord2, value1, value2, contiune);
             return null;
-        } catch (InvalidCoordinates | InvalidPositionException e) {
-            return e;
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -81,7 +85,7 @@ public class RearrangeVisitor implements ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForSmugglers(Smugglers smugglers, Object... params) {
+    public Object visitForSmugglers(Smugglers smugglers, Object... params) throws InvalidCoordinates, InvalidPositionException {
         try {
             Trucker trucker = (Trucker) params[0];
             int[] coord1 = (int[]) params[1];
@@ -90,8 +94,12 @@ public class RearrangeVisitor implements ParametricCardVisitor {
             int value2 = (Integer) params[4];
             boolean contiune = (Boolean) params[5];
             return smugglers.rearrange(trucker, coord1, coord2, value1, value2, contiune);
-        } catch (InvalidCoordinates | InvalidPositionException e) {
-            return e;
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
         }
     }
 

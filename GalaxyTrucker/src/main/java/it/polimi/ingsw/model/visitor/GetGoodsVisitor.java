@@ -45,7 +45,12 @@ public class GetGoodsVisitor implements CardVisitor, ParametricCardVisitor {
 
     @Override
     public Object visitForPlanets(Planets planets) {
-        return planets.plotGoodFromList();
+        try {
+            return planets.plotGoodFromList();
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
+
     }
 
     @Override

@@ -45,26 +45,45 @@ public class SetChoiceToGainVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForPirates(Pirates pirates, Object... params) {
-        boolean choice = (Boolean) params[0];
-        return pirates.setChooseToGain(choice);
+        try {
+            boolean choice = (Boolean) params[0];
+            return pirates.setChooseToGain(choice);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
+
     }
 
     @Override
     public Object visitForPlanets(Planets planets, Object... params) {
-        boolean choice = (Boolean) params[0];
-        return planets.chooseToGain(choice);
+        try {
+            boolean choice = (Boolean) params[0];
+            return planets.chooseToGain(choice);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
+
     }
 
     @Override
     public Object visitForSlavers(Slavers slavers, Object... params) {
-        boolean choice = (Boolean) params[0];
-        return slavers.setChooseToGain(choice);
+        try {
+            boolean choice = (Boolean) params[0];
+            return slavers.setChooseToGain(choice);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
+
     }
 
     @Override
     public Object visitForSmugglers(Smugglers smugglers, Object... params) {
-        boolean choice = (Boolean) params[0];
-        return smugglers.setChoiceToGain(choice);
+        try {
+            boolean choice = (Boolean) params[0];
+            return smugglers.setChoiceToGain(choice);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
     }
 
     @Override

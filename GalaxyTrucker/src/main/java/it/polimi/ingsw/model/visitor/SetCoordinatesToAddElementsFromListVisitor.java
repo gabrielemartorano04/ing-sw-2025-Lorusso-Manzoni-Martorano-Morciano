@@ -45,14 +45,16 @@ public class SetCoordinatesToAddElementsFromListVisitor implements ParametricCar
     }
 
     @Override
-    public Object visitForPlanets(Planets planets, Object... params) {
+    public Object visitForPlanets(Planets planets, Object... params) throws InvalidCoordinates {
         try {
             int[] coordinatesToAddGoods = (int[]) params[0];
             int positionInLoad = (int) params[1];
             Bank bank = (Bank) params[2];
             return planets.coordinatesToAddFromList(coordinatesToAddGoods,positionInLoad, bank);
         } catch (InvalidCoordinates e) {
-            return e;
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
         }
     }
 

@@ -44,8 +44,13 @@ public class SetChoiceToGainFromListVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForPlanets(Planets planets, Object... params) {
-        boolean choice = (Boolean) params[0];
-        return planets.chooseFromList(choice);
+        try {
+            boolean choice = (Boolean) params[0];
+            return planets.chooseFromList(choice);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
+
     }
 
     @Override

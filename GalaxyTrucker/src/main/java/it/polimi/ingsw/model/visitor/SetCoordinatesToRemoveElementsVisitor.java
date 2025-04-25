@@ -60,14 +60,14 @@ public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisi
     }
 
     @Override
-    public Object visitForSlavers(Slavers slavers, Object... params) {
+    public Object visitForSlavers(Slavers slavers, Object... params) throws InvalidCoordinates {
         try {
             ArrayList<int[]> truckerCoordinatesToRemoveHuman = (ArrayList<int[]>) params[0];
             int numTrucker = (Integer) params[1];
             Trucker trucker = (Trucker) params[2];
             return slavers.addTruckersCoordinatesToRemoveHumans(truckerCoordinatesToRemoveHuman, numTrucker, trucker);
         } catch (InvalidCoordinates e) {
-            return e;
+            throw new InvalidCoordinates(e.getMessage());
         }
     }
 
@@ -82,12 +82,14 @@ public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisi
     }
 
     @Override
-    public Object visitForWarZone(WarZone warZone, Object... params) {
+    public Object visitForWarZone(WarZone warZone, Object... params) throws InvalidCoordinates {
         try {
             ArrayList<int[]> coordinates = (ArrayList<int[]>) params[0];
             return warZone.removeCrew(coordinates);
-        } catch (InvalidComponentsException | InvalidCoordinates e) {
-            return e;
+        } catch (InvalidComponentsException e) {
+            throw new InvalidComponentsException(e.getMessage());
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
         }
     }
 }
