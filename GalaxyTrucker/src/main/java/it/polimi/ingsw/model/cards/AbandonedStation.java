@@ -51,7 +51,7 @@ public class AbandonedStation extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) {
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidPositionException {
         return visitor.visitForAbandonedStation(this, params);
     }
 
