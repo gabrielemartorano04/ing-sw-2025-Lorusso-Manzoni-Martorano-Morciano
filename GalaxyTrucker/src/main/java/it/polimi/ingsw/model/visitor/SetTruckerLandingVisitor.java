@@ -21,10 +21,15 @@ public class SetTruckerLandingVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForAbandonedShip(AbandonedShip abandonedShip, Object... params) {
-        Trucker trucker = (Trucker) params[0];
-        boolean landing = (Boolean) params[1];
-        int numPlayers = (Integer) params[2];
-        return abandonedShip.setTruckerThatHasDecided(trucker, landing, numPlayers);
+        try {
+            Trucker trucker = (Trucker) params[0];
+            boolean landing = (Boolean) params[1];
+            int numPlayers = (Integer) params[2];
+            return abandonedShip.setTruckerThatHasDecided(trucker, landing, numPlayers);
+        } catch (IllegalStateException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+
     }
 
     @Override

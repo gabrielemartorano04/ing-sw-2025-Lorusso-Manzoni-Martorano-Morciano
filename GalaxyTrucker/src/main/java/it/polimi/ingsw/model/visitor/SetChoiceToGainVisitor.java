@@ -19,8 +19,13 @@ public class SetChoiceToGainVisitor implements ParametricCardVisitor {
 
     @Override
     public Object visitForAbandonedStation(AbandonedStation abandonedStation, Object... params) {
-        boolean choice = (Boolean) params[0];
-        return abandonedStation.setChoiceToGain(choice);
+        try {
+            boolean choice = (Boolean) params[0];
+            return abandonedStation.setChoiceToGain(choice);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
+
     }
 
     @Override

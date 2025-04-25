@@ -18,12 +18,14 @@ public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisi
     }
 
     @Override
-    public Object visitForAbandonedShip(AbandonedShip abandonedShip, Object... params) {
+    public Object visitForAbandonedShip(AbandonedShip abandonedShip, Object... params) throws InvalidCoordinates {
         try {
             ArrayList<int[]> coordinates = (ArrayList<int[]>) params[0];
             return abandonedShip.setCoordinates(coordinates);
-        } catch (InvalidCoordinates | InvalidComponentsException e) {
-            return e;
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidComponentsException e) {
+            throw new InvalidComponentsException(e.getMessage());
         }
     }
 

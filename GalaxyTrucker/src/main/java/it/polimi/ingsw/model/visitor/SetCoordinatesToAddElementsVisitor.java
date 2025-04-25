@@ -24,7 +24,7 @@ public class SetCoordinatesToAddElementsVisitor implements ParametricCardVisitor
     }
 
     @Override
-    public Object visitForAbandonedStation(AbandonedStation abandonedStation, Object... params) {
+    public Object visitForAbandonedStation(AbandonedStation abandonedStation, Object... params) throws InvalidCoordinates {
         try {
             int[] winnerCoordinatesToAddGoods = (int[]) params[0];
             int value = (Integer) params[1];
@@ -32,7 +32,9 @@ public class SetCoordinatesToAddElementsVisitor implements ParametricCardVisitor
             Bank bank = (Bank) params[3];
             return abandonedStation.setWinnerCoordinatesToAddGoods(winnerCoordinatesToAddGoods, value, trucker, bank);
         } catch (InvalidCoordinates e) {
-            return e;
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
         }
     }
 

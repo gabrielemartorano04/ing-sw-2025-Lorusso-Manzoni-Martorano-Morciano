@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.visitor;
 
+import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.model.cards.*;
 
 /**
@@ -9,9 +11,9 @@ import it.polimi.ingsw.model.cards.*;
 public interface ParametricCardVisitor<R> {
     R visit(Card card, Object... params);
 
-    R visitForAbandonedShip(AbandonedShip abandonedShip, Object... params);
+    R visitForAbandonedShip(AbandonedShip abandonedShip, Object... params) throws InvalidCoordinates;
 
-    R visitForAbandonedStation(AbandonedStation abandonedStation, Object... params);
+    R visitForAbandonedStation(AbandonedStation abandonedStation, Object... params) throws InvalidCoordinates, InvalidPositionException;
 
     R visitForEpidemic(Epidemic epidemic, Object... params);
 
