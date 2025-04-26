@@ -2,43 +2,29 @@ package it.polimi.ingsw.net.server;
 
 import it.polimi.ingsw.net.events.Event;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.IOException;
-import java.net.Socket;
 
 public class ClientHandlerServer {
-    private final Socket clientSocket;
-    private ObjectOutputStream outputStream;
+    private final NetworkServer network;
+    private final ServerController controller;
     private Thread listenerThread;
-    private final ServerController controller; // Logica di gioco
 
-    public ClientHandlerServer(Socket socket, ServerController controller) {
-        this.clientSocket = socket;
+    public ClientHandlerServer(NetworkServer network, ServerController controller) {
+        this.network = network;
         this.controller = controller;
-        setup();
-    }
-
-    private void setup() {
-        try {
-            outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
-            startListener();
-        } catch (IOException e) {
-            System.err.println("Errore setup client handler: " + e.getMessage());
-        }
+        startListener();
     }
 
     private void startListener() {
         listenerThread = new Thread(() -> {
-            try (ObjectInputStream inputStream = new ObjectInputStream(clientSocket.getInputStream())) {
-                while (!clientSocket.isClosed()) {
-                    Object obj = inputStream.readObject();
-                    if (obj instanceof Event event) {
-                        controller.handleEvent(event, this); // Passa l'evento al controller server
-                    }
+            try {
+                while (!network.isClosed()) {
+                    Event event = network.receiveMessage();
+                    controller.handleEvent(event, this); // Inoltra evento al ServerController
                 }
             } catch (IOException | ClassNotFoundException e) {
-                System.err.println("Errore listener server: " + e.getMessage());
+                System.err.println("Errore ricezione evento: " + e.getMessage());
+                // TODO: notifica disconnessione
             }
         });
         listenerThread.setDaemon(true);
@@ -47,10 +33,18 @@ public class ClientHandlerServer {
 
     public void sendEvent(Event event) {
         try {
-            outputStream.writeObject(event);
-            outputStream.flush();
+            network.sendMessage(event);
         } catch (IOException e) {
-            System.err.println("Errore invio evento a client: " + e.getMessage());
+            System.err.println("Errore invio evento al client: " + e.getMessage());
+        }
+    }
+
+    public void close() {
+        try {
+            network.close();
+        } catch (IOException e) {
+            System.err.println("Errore chiusura connessione: " + e.getMessage());
         }
     }
 }
+

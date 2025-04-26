@@ -1,30 +1,46 @@
 package it.polimi.ingsw.net.server;
 
+import it.polimi.ingsw.net.events.Event;
+
 import java.io.IOException;
-import java.net.ServerSocket;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class NetworkServer {
-    private final int port;
-    private final ConnectionHandlerFactory handlerFactory;
+    private final Socket socket;
+    private final ObjectOutputStream outputStream;
+    private final ObjectInputStream inputStream;
 
-    public NetworkServer(int port, ConnectionHandlerFactory handlerFactory) {
-        this.port = port;
-        this.handlerFactory = handlerFactory;
+    public NetworkServer(Socket socket) throws IOException {
+        this.socket = socket;
+        this.outputStream = new ObjectOutputStream(socket.getOutputStream());
+        this.inputStream = new ObjectInputStream(socket.getInputStream());
     }
 
-    public void start() throws IOException {
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("Server avviato sulla porta " + port);
+    public void sendMessage(Event event) throws IOException {
+        outputStream.writeObject(event);
+        outputStream.flush();
+    }
 
-            while (true) {
-                Socket clientSocket = serverSocket.accept();
-                handlerFactory.create(clientSocket);
-            }
+    public Event receiveMessage() throws IOException, ClassNotFoundException {
+        Object obj = inputStream.readObject();
+        if (obj instanceof Event event) {
+            return event;
+        } else {
+            throw new IOException("Messaggio ricevuto non è un Event");
         }
     }
 
-    public interface ConnectionHandlerFactory {
-        void create(Socket socket);
+    public void close() throws IOException {
+        socket.close();
+        inputStream.close();
+        outputStream.close();
+    }
+
+    public boolean isClosed() {
+        return socket.isClosed();
     }
 }
+
+
