@@ -21,7 +21,7 @@ public class MainServer {
                 NetworkServer networkServer = new NetworkServer(clientSocket);
                 ClientHandlerServer clientHandlerServer = new ClientHandlerServer(networkServer, serverController);
 
-                Thread thread = new Thread(clientHandlerServer);
+                Thread thread = new Thread((Runnable) clientHandlerServer);
                 thread.start();
             }
         } catch (IOException e) {
