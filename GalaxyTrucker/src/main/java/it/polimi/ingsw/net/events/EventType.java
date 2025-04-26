@@ -5,4 +5,6 @@ package it.polimi.ingsw.net.events;
  */
 public enum EventType {
     HELLO_MESSAGE,
+    LOGIN,
+    CREATE_GAME,
 }
