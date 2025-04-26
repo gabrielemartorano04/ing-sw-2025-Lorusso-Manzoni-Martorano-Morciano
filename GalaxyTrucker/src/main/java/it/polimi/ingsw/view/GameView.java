@@ -11,7 +11,7 @@ public class GameView {
     }
 
     public void playButton(){
-        gameController.addNumPlayer();
+        //gameController.addNumPlayer();
     }
 
 }
