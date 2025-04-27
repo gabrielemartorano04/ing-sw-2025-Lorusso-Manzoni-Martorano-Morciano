@@ -100,4 +100,6 @@ public abstract class Card {
      */
     public abstract CardState cardEffect(Game game);
 
+
+
 }

@@ -144,4 +144,12 @@ public class AbandonedShip extends Card{
         state = CardState.EXIT;
         return state;
     }
+
+    public CardState getCardState() {
+        return state;
+    }
+
+    public void setCardState(CardState cardState) {
+        this.state = cardState;
+    }
 }

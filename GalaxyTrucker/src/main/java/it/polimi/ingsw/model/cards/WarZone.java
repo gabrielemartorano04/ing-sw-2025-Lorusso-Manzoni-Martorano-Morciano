@@ -473,5 +473,12 @@ public class WarZone extends Card {
         return state;
     }
 
+    public CardState getCardState() {
+        return state;
+    }
+
+    public void setCardState(CardState cardState) {
+        this.state = cardState;
+    }
 
 }
