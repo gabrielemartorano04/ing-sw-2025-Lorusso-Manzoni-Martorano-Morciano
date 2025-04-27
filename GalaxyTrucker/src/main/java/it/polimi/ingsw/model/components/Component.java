@@ -29,8 +29,8 @@ public abstract sealed class Component permits BatteryStorage, Cabin, Cannon, Em
         this.covered = true;
         this.visited = false;
         this.type = type;
-        this.frontImage = new ImageIcon(frontImagePath);
-        this.backImage = new ImageIcon(getClass().getResource("it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web157.jpg"));
+        this.frontImage = new ImageIcon(getClass().getResource(frontImagePath));
+        this.backImage = new ImageIcon(getClass().getResource("/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web157.jpg"));
     }
 
     /**
