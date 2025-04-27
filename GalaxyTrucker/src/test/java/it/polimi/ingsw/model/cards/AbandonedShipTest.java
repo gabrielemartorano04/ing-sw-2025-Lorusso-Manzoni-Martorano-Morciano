@@ -11,7 +11,7 @@ class AbandonedShipTest {
 
     @BeforeEach
     void setUp() {
-        card = new AbandonedShip( false, 1,1,1,1, "it/polimi/ingsw/model/cards/GT-cards_I_IT_0117.jpg", "it/polimi/ingsw/model/cards/GT-cards_I_IT_0117.jpg");
+        card = new AbandonedShip( false, 1,1,1,1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0117.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0117.jpg");
     }
 
     @Test
