@@ -77,6 +77,7 @@ public class AbandonedShip extends Card {
         return numHuman;
     }
 
+
     /**
      * Sets the only trucker that has chosen to take the ship
      * @param trucker trucker ID
