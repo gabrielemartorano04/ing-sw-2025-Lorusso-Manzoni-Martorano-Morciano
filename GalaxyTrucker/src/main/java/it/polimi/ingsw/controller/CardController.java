@@ -150,152 +150,513 @@ public class CardController {
     }
 
     public Object setTruckerLandingOnAbandonedShip(Card card, Trucker trucker, boolean landing, int numPlayer) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetTruckerLandingVisitor();
-        return card.accept(visitor, trucker, landing, numPlayer);
+        try {
+            ParametricCardVisitor visitor = new SetTruckerLandingVisitor();
+            return card.accept(visitor, trucker, landing, numPlayer);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setTruckerLandingOnAbandonedStation(Card card, Trucker trucker, boolean landing, int numPlayer, Bank bank) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetTruckerLandingVisitor();
-        return card.accept(visitor, trucker, landing, numPlayer, bank);
+        try {
+            ParametricCardVisitor visitor = new SetTruckerLandingVisitor();
+            return card.accept(visitor, trucker, landing, numPlayer, bank);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setTruckerLandingOnPlanets(Card card, int indexOfLanding, Trucker trucker, int numPlayers) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetTruckerLandingVisitor();
-        return card.accept(visitor, indexOfLanding, trucker, numPlayers);
+        try {
+            ParametricCardVisitor visitor = new SetTruckerLandingVisitor();
+            return card.accept(visitor, indexOfLanding, trucker, numPlayers);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setCoordinatesToRemoveCrew(Card card, ArrayList<int[]> coordinates) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetCoordinatesToRemoveElementsVisitor();
-        return card.accept(visitor, coordinates);
+        try {
+            ParametricCardVisitor visitor = new SetCoordinatesToRemoveElementsVisitor();
+            return card.accept(visitor, coordinates);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setCoordinatesToRemoveCrewForSlavers(Card card, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetCoordinatesToRemoveElementsVisitor();
-        return card.accept(visitor, truckersCoordinatesToRemoveHumans, numPlayer, trucker);
+        try {
+            ParametricCardVisitor visitor = new SetCoordinatesToRemoveElementsVisitor();
+            return card.accept(visitor, truckersCoordinatesToRemoveHumans, numPlayer, trucker);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setCoordinatesToRemoveBatteries(Card card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetCoordinatesToRemoveBatteriesVisitor();
-        return card.accept(visitor, coordinatesToRemoveBatteries, trucker);
+        try {
+            ParametricCardVisitor visitor = new SetCoordinatesToRemoveBatteriesVisitor();
+            return card.accept(visitor, coordinatesToRemoveBatteries, trucker);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setCoordinatesToAddGoods(Card card, int[] coordinatesToAddGood, int value, Trucker trucker, Bank bank) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetCoordinatesToAddElementsVisitor();
-        return card.accept(visitor, coordinatesToAddGood, value, trucker, bank);
+        try {
+            ParametricCardVisitor visitor = new SetCoordinatesToAddElementsVisitor();
+            return card.accept(visitor, coordinatesToAddGood, value, trucker, bank);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setCoordinatesToAddGoodsFromPlanet(Card card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetCoordinatesToAddElementsVisitor();
-        return card.accept(visitor, coordinatesToAddGood, positionInLoad, bank);
+        try {
+            ParametricCardVisitor visitor = new SetCoordinatesToAddElementsVisitor();
+            return card.accept(visitor, coordinatesToAddGood, positionInLoad, bank);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setCoordinatesToAddGoodsFromList(Card card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetCoordinatesToAddElementsFromListVisitor();
-        return card.accept(visitor, coordinatesToAddGood, positionInLoad, bank);
+        try {
+            ParametricCardVisitor visitor = new SetCoordinatesToAddElementsFromListVisitor();
+            return card.accept(visitor, coordinatesToAddGood, positionInLoad, bank);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setChoiceToGain(Card card, boolean choice) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetChoiceToGainVisitor();
-        return card.accept(visitor, choice);
+        try {
+            ParametricCardVisitor visitor = new SetChoiceToGainVisitor();
+            return card.accept(visitor, choice);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setChoiceToGainFromList(Card card, boolean choice) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetChoiceToGainFromListVisitor();
-        return card.accept(visitor, choice);
+        try {
+            ParametricCardVisitor visitor = new SetChoiceToGainFromListVisitor();
+            return card.accept(visitor, choice);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object rearrange(Card card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new RearrangeVisitor();
-        return card.accept(visitor, trucker, coord1, coord2, value1, value2, contiune);
+        try {
+            ParametricCardVisitor visitor = new RearrangeVisitor();
+            return card.accept(visitor, trucker, coord1, coord2, value1, value2, contiune);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object rearrangeForPlanet(Card card, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new RearrangeVisitor();
-        return card.accept(visitor, coord1, coord2, value1, value2, contiune);
+        try {
+            ParametricCardVisitor visitor = new RearrangeVisitor();
+            return card.accept(visitor, coord1, coord2, value1, value2, contiune);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object rollDice(Card card, Game game) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new RollDiceVisitor();
-        return card.accept(visitor, game);
+        try {
+            ParametricCardVisitor visitor = new RollDiceVisitor();
+            return card.accept(visitor, game);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setAnswear(Card card, boolean answear) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetAnswersVisitor();
-        return card.accept(visitor, answear);
+        try {
+            ParametricCardVisitor visitor = new SetAnswersVisitor();
+            return card.accept(visitor, answear);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setTruckersAnswear(Card card, boolean answear, Trucker trucker) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetAnswersVisitor();
-        return card.accept(visitor, answear, trucker);
+        try {
+            ParametricCardVisitor visitor = new SetAnswersVisitor();
+            return card.accept(visitor, answear, trucker);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setDoubleEnginesCoordinates(Card card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetDoubleEnginesCoordinatesVisitor();
-        return card.accept(visitor, trucker, truckerCoordinate, numTruckers);
+        try {
+            ParametricCardVisitor visitor = new SetDoubleEnginesCoordinatesVisitor();
+            return card.accept(visitor, trucker, truckerCoordinate, numTruckers);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setDoubleEnginesCoordinatesforWarZone(Card card, Game game, Trucker trucker, ArrayList<int[]> truckerCannonsCoordinates) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetDoubleEnginesCoordinatesVisitor();
-        return card.accept(visitor, game, trucker, truckerCannonsCoordinates);
+        try {
+            ParametricCardVisitor visitor = new SetDoubleEnginesCoordinatesVisitor();
+            return card.accept(visitor, game, trucker, truckerCannonsCoordinates);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setDoubleCannonsCoordinates(Card card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetDoubleCannonsCoordinatesVisitor();
-        return card.accept(visitor, trucker, truckerCoordinate, numTruckers);
+        try {
+            ParametricCardVisitor visitor = new SetDoubleCannonsCoordinatesVisitor();
+            return card.accept(visitor, trucker, truckerCoordinate, numTruckers);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setDoubleCannonsCoordinatesForSmugglers(Card card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers, Bank bank) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetDoubleCannonsCoordinatesVisitor();
-        return card.accept(visitor, trucker, truckerCoordinate, numTruckers, bank);
+        try {
+            ParametricCardVisitor visitor = new SetDoubleCannonsCoordinatesVisitor();
+            return card.accept(visitor, trucker, truckerCoordinate, numTruckers, bank);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setDoubleCannonsCoordinatesForWarZone(Card card, Game game, Trucker trucker, ArrayList<int[]> truckerCannonsCoordinates) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetDoubleCannonsCoordinatesVisitor();
-        return card.accept(visitor, game, trucker, truckerCannonsCoordinates);
+        try {
+            ParametricCardVisitor visitor = new SetDoubleCannonsCoordinatesVisitor();
+            return card.accept(visitor, game, trucker, truckerCannonsCoordinates);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setDefeatedTruckers(Card card, ArrayList<Trucker> defeatedTruckers) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetDefeatedTruckersVisitor();
-        return card.accept(visitor, defeatedTruckers);
+        try {
+            ParametricCardVisitor visitor = new SetDefeatedTruckersVisitor();
+            return card.accept(visitor, defeatedTruckers);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object setWinnerTrucker(Card card, Trucker winnerTrucker) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new SetWinnerTruckerVisitor();
-        return card.accept(visitor, winnerTrucker);
+        try {
+            ParametricCardVisitor visitor = new SetWinnerTruckerVisitor();
+            return card.accept(visitor, winnerTrucker);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object getBank(Card card, Bank bank) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new GetBankVisitor();
-        return card.accept(visitor, bank);
+        try {
+            ParametricCardVisitor visitor = new GetBankVisitor();
+            return card.accept(visitor, bank);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object initialize(Card card, Bank bank) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new InitializeVisitor();
-        return card.accept(visitor, bank);
+        try {
+            ParametricCardVisitor visitor = new InitializeVisitor();
+            return card.accept(visitor, bank);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object manageRemoveGoods(Card card, Trucker trucker, Bank bank) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new ManageRemoveGoodsVisitor();
-        return card.accept(visitor, trucker, bank);
+        try {
+            ParametricCardVisitor visitor = new ManageRemoveGoodsVisitor();
+            return card.accept(visitor, trucker, bank);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object plotGoods(Card card, Trucker trucker) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new GetGoodsVisitor();
-        return card.accept(visitor, trucker);
+        try {
+            ParametricCardVisitor visitor = new GetGoodsVisitor();
+            return card.accept(visitor, trucker);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object removeAsking(Card card, ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new RemoveAskingVisitor();
-        return card.accept(visitor, indexes, trucker, bank);
+        try {
+            ParametricCardVisitor visitor = new RemoveAskingVisitor();
+            return card.accept(visitor, indexes, trucker, bank);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object combactZone(Card card, Game game) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new CombatZoneVisitor();
-        return card.accept(visitor, game);
+        try {
+            ParametricCardVisitor visitor = new CombatZoneVisitor();
+            return card.accept(visitor, game);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
     }
 
     public Object findWeakestTrucker(Card card, Game game, ArrayList<ArrayList<int[]>> truckersCoordinates) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
-        ParametricCardVisitor visitor = new FindWeakestTruckerVisitor();
-        return card.accept(visitor, game, truckersCoordinates);
+        try {
+            ParametricCardVisitor visitor = new FindWeakestTruckerVisitor();
+            return card.accept(visitor, game, truckersCoordinates);
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
+        } catch (InvalidPositionException e) {
+            throw new InvalidPositionException(e.getMessage());
+        } catch (InvalidGoodChosen e) {
+            throw new InvalidGoodChosen(e.getMessage());
+        } catch (NotEnoughGoodsChosen e) {
+            throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (WrongNumberOfBatteriesSelected e) {
+            throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        }
+
     }
 }
