@@ -4,33 +4,23 @@ import it.polimi.ingsw.model.cards.AbandonedShip;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CardControllerTest {
 
     private CardController cardController;
-
     private AbandonedShip card;
-
     @BeforeEach
     void setUp() {
-        this.cardController = new CardController();
-        this.card = mock(AbandonedShip.class); // Creiamo il mock a mano
+        cardController = new CardController();
+        card=new AbandonedShip(false,1,1,1,1,"GT-cards_I_IT_0117.jpg","GT-cards_I_IT_0121.jpg");
     }
 
     @Test
     void getCardName() {
-        // Arrange
-        expect(card.getName()).andReturn("Abandoned Ship");
-        replay(card);
+        String cardName=cardController.getCardName(card);
+        assertEquals("AbandonedShip",cardName);
 
-        // Act
-        String cardName = cardController.getCardName(card);
-
-        // Assert
-        assertEquals("Abandoned Ship", cardName);
-        verify(card); // Verifica che il metodo sia stato chiamato
     }
 
     @Test
