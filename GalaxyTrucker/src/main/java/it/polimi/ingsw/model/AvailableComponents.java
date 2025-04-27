@@ -16,6 +16,7 @@ public class AvailableComponents {
      * Available components constructor, initialise the array of 156 component
      */
     public AvailableComponents() {
+        components = new ArrayList<>();
         Component cabin1 = new Cabin(0, 0, 3, 1, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web35.jpg", null, false);
         Component cabin2 = new Cabin(1, 0, 2, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web49.jpg", null, false);
         Component cabin3 = new Cabin(2, 0, 0, 1, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web38.jpg", null, false);
