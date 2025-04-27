@@ -19,7 +19,7 @@ class AbandonedShipTest {
     }
 
     @Test
-    void testAccept() {
+    void parametricAccept() {
     }
 
     @Test
@@ -29,14 +29,17 @@ class AbandonedShipTest {
 
     @Test
     void getCredits() {
+        assertEquals(1, card.getCredits());
     }
 
     @Test
     void getNumHuman() {
+        assertEquals(1, card.getNumHuman());
     }
 
     @Test
     void setTruckerThatHasDecided() {
+
     }
 
     @Test

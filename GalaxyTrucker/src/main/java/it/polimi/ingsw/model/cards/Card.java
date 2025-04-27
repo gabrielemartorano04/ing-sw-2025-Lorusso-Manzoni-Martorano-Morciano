@@ -33,8 +33,8 @@ public abstract class Card {
         this.description = description;
         this.trialFlight = trialFlight;
         this.level = level;
-        this.frontImage = new ImageIcon(getClass().getResource("/"+ name_frontImage));
-        this.backImage = new ImageIcon(getClass().getResource("/"+name_backImage));
+        this.frontImage = new ImageIcon(getClass().getResource(name_frontImage));
+        this.backImage = new ImageIcon(getClass().getResource(name_backImage));
 
     }
 

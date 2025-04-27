@@ -196,4 +196,12 @@ public class AbandonedStation extends Card {
         cardState = CardState.EXIT;
         return cardState;
     }
+
+    public CardState getCardState() {
+        return cardState;
+    }
+
+    public void setCardState(CardState cardState) {
+        this.cardState = cardState;
+    }
 }
