@@ -173,13 +173,6 @@ public class Game {
         }while(gameDeck.getFirst().getLevel() != gameLevel);
     }
 
-    /**
-     * Moves a trucker forward by a specified number of days.
-     */
-    public ArrayList<Trucker> getTruckerList() {
-        return truckers;
-    }
-
     //muove trucker in avanti, riceve days positivo
     /**
      * Moves a trucker forward by a specified number of days.
