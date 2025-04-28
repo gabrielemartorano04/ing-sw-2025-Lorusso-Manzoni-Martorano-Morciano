@@ -79,7 +79,7 @@ public class WarZone extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected {
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries {
         return visitor.visitForWarZone(this, params);
     }
 
@@ -339,7 +339,7 @@ public class WarZone extends Card {
         return numOfGoodsToRemove;
     }
 
-    public void removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
+    public void removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(state!= CardState.REMOVE_BATTERIES){
             throw new IllegalStateException("Can't call removeBatteries in the state " + state);
         }
