@@ -314,9 +314,20 @@ public class Game {
         gameState = GameState.BUILDING;
     }
 
+    public void startFlightPhase() {
+        if (gameState != GameState.BUILDING) {
+            throw new IllegalStateException("Cannot start flight phase from state: " + gameState);
+        }
+        gameState = GameState.FLIGTH;
+    }
+
+    public boolean isHourglassExpired() {
+        return hourglass.timeIsUp() && hourglass.getTimeTurns() >= 2;
+    }
+
     public boolean allPlayersReady() {
         return truckers.stream()
-                .allMatch(t -> t.getBuildingState() == BuildingState.END || t.getBuildingState() == BuildingState.WAIT_END);
+                .allMatch(t -> t.getBuildingState() == BuildingState.END);
     }
 
     public Hourglass getHourglass(){
