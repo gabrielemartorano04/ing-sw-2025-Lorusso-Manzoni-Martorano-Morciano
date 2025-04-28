@@ -90,28 +90,66 @@ class TruckerTest {
 
     @Test
     public void showStack(){
-
+        //assertNotNull(trucker.showStack(1,new Game()));
     }
 
     @Test
     public void keep() {
+        trucker.setBuildingState(BuildingState.KEEP);
+        Game game=new Game();
+        Component comp=new Load(1,1,1,1,"Load","",1,false);
+        try{
+            trucker.keep(comp,game);
+            assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
+        } catch (InvalidComponentsException e) {}
+
+        trucker.setBuildingState(BuildingState.KEEP);
+        trucker.getSpaceShip().getKept().add(comp);
+        trucker.getSpaceShip().getKept().add(comp);
+        try{
+            trucker.keep(comp,game);
+
+        } catch (InvalidComponentsException e) {
+            System.out.println(e.getMessage());
+        }
+        assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
+
 
     }
 
     @Test
     public void link() {
-
+        Component comp=new Load(1,1,1,1,"Load","",1,false);
+        trucker.setBuildingState(BuildingState.LINK);
+        trucker.link(comp,6,7);
+        assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
 
     }
 
     @Test
     public void selectComponent() {
+        trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
+        try {
+            trucker.selectComponent(2,new Game());
+        } catch (InvalidComponentsException e) {
+            System.out.println(e.getMessage());
+        }
+        assertEquals(BuildingState.SELECT_COMPONENT, trucker.getBuildingState());
 
     }
 
     @Test
     public void turnHourglass() {
-
+        trucker.setBuildingState(BuildingState.TURN_HOURGLASS);
+        Game game=new Game();
+        try {
+            trucker.turnHourglass(game);
+        } catch (CannotTurnHourglassException e) {
+            System.out.println(e.getMessage());
+        }
+        if(game.getHourglass().getTimeTurns()==2)
+            assertEquals(BuildingState.WAIT_END, trucker.getBuildingState());
+        else assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
     }
 
     @Test
