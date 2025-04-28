@@ -188,7 +188,6 @@ public class Trucker {
             spaceShip.getKept().removeAll(spaceShip.getKept());
         }
         buildingState=BuildingState.END;
-
     }
 
     public void fillSpaceship(ArrayList<int[]> coordAliens){

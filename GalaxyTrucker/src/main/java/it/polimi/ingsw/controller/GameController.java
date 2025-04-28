@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -21,6 +24,8 @@ public class GameController {
     private final Timer startTimer = new Timer();
     private boolean timerStarted = false;
     private boolean gameStarted = false;
+    private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
 
     public GameController(Game game) {
         this.game = game;
@@ -48,7 +53,7 @@ public class GameController {
 
         if (count == 4) {
             startTimer.cancel();
-            startGame();
+            startBuildingPhase();
         }
 
         return true;
@@ -61,17 +66,35 @@ public class GameController {
             public void run() {
                 synchronized (GameController.this) {
                     if (game.getTruckers().size() >= 2 && game.getTruckers().size() < 4) {
-                        startGame();
+                        startBuildingPhase();
                     }
                 }
             }
         }, 2 * 60 * 1000); // 2 minuti
     }
 
-    private void startGame() {
+    public void startBuildingPhase() {
         if (gameStarted) return;
         gameStarted = true;
         game.setupGame();
+        startHourglassChecker();
+    }
+
+    private void startHourglassChecker() {
+        scheduler.scheduleAtFixedRate(() -> {
+            if (game.isHourglassExpired()) {
+                forcePlayersToWaitEnd();
+            }
+        }, 0, 2, TimeUnit.SECONDS); // ogni 2 secondi controlla
+    }
+
+    private synchronized void forcePlayersToWaitEnd() {
+        for (Trucker t : game.getTruckers()) {
+            if (t.getBuildingState() != BuildingState.WAIT_END) {
+                t.setBuildingState(BuildingState.WAIT_END);
+            }
+        }
+        scheduler.shutdown(); // ferma il controllo
     }
 
     public Component selectComponent(Trucker t, int index) {
@@ -98,7 +121,7 @@ public class GameController {
         trucker.finish(); // FSM: controlla che sia valido e marca END
 
         if (game.allPlayersReady()) {
-            game.setGameState(GameState.FLIGTH);
+            game.startFlightPhase();
         }
     }
 }
