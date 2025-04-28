@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.OpenSpace;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,40 +9,64 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
+    private Game game;
+    private Deck deck;
+    private SpaceShip ship;
+    private Trucker trucker1,trucker2;
+
     @BeforeEach
     void setUp() {
+        game = new Game();
+        deck = new Deck();
+        ship = new SpaceShip();
+        trucker1 = new Trucker("frenk", PlayerColors.BLUE);
+        game.addTrucker(trucker1);
+        trucker2 = new Trucker("manzo", PlayerColors.RED);
+        game.addTrucker(trucker2);
     }
 
     @Test
     void setGameState() {
+        game.setGameState(GameState.BUILDING);
+        assertEquals(GameState.BUILDING,game.getGameState());
     }
 
     @Test
     void getGameState() {
+        assertEquals(GameState.SETUP,game.getGameState());
     }
 
     @Test
     void getBank() {
+        assertNotNull(game.getBank());
     }
 
     @Test
     void sortTruckers() {
+
     }
 
     @Test
     void rollDice() {
+        int sum;
+        sum = game.rollDice();
+        assertTrue(sum >= 1 && sum <= 12);
     }
 
     @Test
     void drawCard() {
+
     }
 
     @Test
     void noHumans() {
+        game.noHumans(trucker1);
+        assertFalse(game.getTruckers().contains(game.getTrucker(0)));
     }
 
     @Test
     void viewStack() {
+
     }
 
     @Test
@@ -53,10 +79,14 @@ class GameTest {
 
     @Test
     void getTrucker() {
+        assertEquals("manzo", game.getTrucker(1).getNickname());
     }
 
     @Test
     void getTruckers() {
+        assertEquals(2, game.getTruckers().size());
+        assertEquals("frenk", game.getTruckers().get(0).getNickname());
+        assertEquals("manzo", game.getTruckers().get(1).getNickname());
     }
 
     @Test
@@ -69,10 +99,6 @@ class GameTest {
 
     @Test
     void makeGameDeck() {
-    }
-
-    @Test
-    void getTruckerList() {
     }
 
     @Test
@@ -113,6 +139,9 @@ class GameTest {
 
     @Test
     void addTrucker() {
+        Trucker trucker = new Trucker("gabri", PlayerColors.YELLOW);
+        game.addTrucker(trucker);
+        assertTrue(game.getTruckers().contains(trucker));
     }
 
     @Test
