@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.NotEnoughBatteries;
 import it.polimi.ingsw.exceptions.WrongNumberOfBatteriesSelected;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
@@ -58,7 +59,7 @@ public class SetCoordinatesToRemoveBatteriesVisitor implements ParametricCardVis
     }
 
     @Override
-    public Object visitForSmugglers(Smugglers smugglers, Object... params) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
+    public Object visitForSmugglers(Smugglers smugglers, Object... params) throws InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         try {
             ArrayList<int[]> coordinatesToRemoveBatteries = (ArrayList<int[]>) params[0];
             Trucker trucker = (Trucker) params[1];
@@ -67,6 +68,8 @@ public class SetCoordinatesToRemoveBatteriesVisitor implements ParametricCardVis
             throw new InvalidCoordinates(e.getMessage());
         } catch (WrongNumberOfBatteriesSelected e) {
             throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        } catch (NotEnoughBatteries e) {
+            throw new NotEnoughBatteries(e.getMessage());
         }
     }
 
@@ -76,7 +79,7 @@ public class SetCoordinatesToRemoveBatteriesVisitor implements ParametricCardVis
     }
 
     @Override
-    public Object visitForWarZone(WarZone warZone, Object... params) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
+    public Object visitForWarZone(WarZone warZone, Object... params) throws InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         try {
             ArrayList<int[]> coordinatesToRemoveBatteries = (ArrayList<int[]>) params[0];
             Trucker trucker = (Trucker) params[1];
@@ -86,6 +89,8 @@ public class SetCoordinatesToRemoveBatteriesVisitor implements ParametricCardVis
             throw new InvalidCoordinates(e.getMessage());
         } catch (WrongNumberOfBatteriesSelected e) {
             throw new WrongNumberOfBatteriesSelected(e.getMessage());
+        } catch (NotEnoughBatteries e) {
+            throw new NotEnoughBatteries(e.getMessage());
         }
     }
 }

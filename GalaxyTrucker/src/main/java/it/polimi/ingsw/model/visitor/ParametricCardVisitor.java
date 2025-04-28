@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.cards.*;
 public interface ParametricCardVisitor<R> {
     R visit(Card card, Object... params);
 
-    R visitForAbandonedShip(AbandonedShip abandonedShip, Object... params) throws InvalidCoordinates;
+    R visitForAbandonedShip(AbandonedShip abandonedShip, Object... params) throws InvalidCoordinates, InvalidComponentsException;
 
     R visitForAbandonedStation(AbandonedStation abandonedStation, Object... params) throws InvalidCoordinates, InvalidPositionException;
 
@@ -26,9 +26,9 @@ public interface ParametricCardVisitor<R> {
 
     R visitForSlavers(Slavers slavers, Object... params) throws InvalidCoordinates;
 
-    R visitForSmugglers(Smugglers smugglers, Object... params) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected;
+    R visitForSmugglers(Smugglers smugglers, Object... params) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries;
 
     R visitForStarDust(StarDust starDust, Object... params);
 
-    R visitForWarZone(WarZone warZone, Object... params) throws InvalidGoodChosen, NotEnoughGoodsChosen, InvalidCoordinates, WrongNumberOfBatteriesSelected;
+    R visitForWarZone(WarZone warZone, Object... params) throws InvalidGoodChosen, NotEnoughGoodsChosen, InvalidCoordinates, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries;
 }

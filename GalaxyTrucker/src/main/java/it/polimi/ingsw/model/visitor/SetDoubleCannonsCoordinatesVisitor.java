@@ -76,7 +76,7 @@ public class SetDoubleCannonsCoordinatesVisitor implements ParametricCardVisitor
     }
 
     @Override
-    public Object visitForSmugglers(Smugglers smugglers, Object... params) {
+    public Object visitForSmugglers(Smugglers smugglers, Object... params) throws InvalidComponentsException {
         try {
             Trucker trucker = (Trucker) params [0];
             ArrayList<int[]> doubleCannonCoord = (ArrayList<int[]>) params[1];
@@ -96,7 +96,7 @@ public class SetDoubleCannonsCoordinatesVisitor implements ParametricCardVisitor
     }
 
     @Override
-    public Object visitForWarZone(WarZone warZone, Object... params) {
+    public Object visitForWarZone(WarZone warZone, Object... params) throws InvalidComponentsException {
         try {
             Game game = (Game) params[0];
             Trucker trucker = (Trucker) params[1];

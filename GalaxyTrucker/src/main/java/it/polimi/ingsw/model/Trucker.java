@@ -145,7 +145,7 @@ public class Trucker {
         buildingState=BuildingState.BUILDING;
     }
 
-    public Component selectComponent(int index, Game game){
+    public Component selectComponent(int index, Game game) throws InvalidComponentsException {
         if(buildingState!=BuildingState.SELECT_COMPONENT){
             throw new IllegalStateException("Trucker is not in select component state");
         }
