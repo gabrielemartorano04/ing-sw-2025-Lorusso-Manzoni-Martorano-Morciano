@@ -76,7 +76,7 @@ public class SetDoubleEnginesCoordinatesVisitor implements ParametricCardVisitor
     }
 
     @Override
-    public Object visitForWarZone(WarZone warZone, Object... params) {
+    public Object visitForWarZone(WarZone warZone, Object... params) throws InvalidComponentsException {
         try {
             Game game = (Game) params[0];
             Trucker trucker = (Trucker) params[1];

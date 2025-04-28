@@ -18,7 +18,7 @@ public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisi
     }
 
     @Override
-    public Object visitForAbandonedShip(AbandonedShip abandonedShip, Object... params) throws InvalidCoordinates {
+    public Object visitForAbandonedShip(AbandonedShip abandonedShip, Object... params) throws InvalidCoordinates, InvalidComponentsException {
         try {
             ArrayList<int[]> coordinates = (ArrayList<int[]>) params[0];
             return abandonedShip.setCoordinates(coordinates);
@@ -82,7 +82,7 @@ public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisi
     }
 
     @Override
-    public Object visitForWarZone(WarZone warZone, Object... params) throws InvalidCoordinates {
+    public Object visitForWarZone(WarZone warZone, Object... params) throws InvalidCoordinates, InvalidComponentsException {
         try {
             ArrayList<int[]> coordinates = (ArrayList<int[]>) params[0];
             return warZone.removeCrew(coordinates);

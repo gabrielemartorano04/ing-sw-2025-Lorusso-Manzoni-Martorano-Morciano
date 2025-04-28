@@ -1,8 +1,5 @@
 package it.polimi.ingsw.controller;
-import it.polimi.ingsw.exceptions.ColorNotAvailable;
-import it.polimi.ingsw.exceptions.InvalidComponentsException;
-import it.polimi.ingsw.exceptions.NicknameUsedException;
-import it.polimi.ingsw.exceptions.TimeExpiredException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
@@ -97,7 +94,7 @@ public class GameController {
         scheduler.shutdown(); // ferma il controllo
     }
 
-    public Component selectComponent(Trucker t, int index) {
+    public Component selectComponent(Trucker t, int index) throws InvalidComponentsException {
         return t.selectComponent(index, game);
     }
 
@@ -109,7 +106,7 @@ public class GameController {
         trucker.link(component, x, y);
     }
 
-    public void turnHourglass(Trucker trucker) {
+    public void turnHourglass(Trucker trucker) throws CannotTurnHourglassException {
         trucker.turnHourglass(game);
     }
 

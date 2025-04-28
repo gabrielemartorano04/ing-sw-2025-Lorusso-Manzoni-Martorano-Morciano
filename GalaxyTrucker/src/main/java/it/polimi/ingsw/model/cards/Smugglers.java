@@ -68,7 +68,7 @@ public class Smugglers extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidGoodChosen, NotEnoughGoodsChosen, InvalidPositionException, WrongNumberOfBatteriesSelected {
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidGoodChosen, NotEnoughGoodsChosen, InvalidPositionException, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries {
         return visitor.visitForSmugglers(this, params);
     }
 
@@ -373,7 +373,7 @@ public class Smugglers extends Card {
         return goodsLost;
     }
 
-    public CardState removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected {
+    public CardState removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(cardState!= CardState.REMOVE_BATTERIES){
             throw new IllegalStateException("Can't call removeBatteries in the state " + cardState);
         }
