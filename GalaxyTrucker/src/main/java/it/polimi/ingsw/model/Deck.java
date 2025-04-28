@@ -230,8 +230,8 @@ class Deck {
                         Condition.CANNONS, new Effect(TypeOfEffect.GET_SHOT, 2)
                 ),
                 warShoots,
-                "src/main/resources/Cards/cards/GT-cards_I_IT_0116.jpg",
-                "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"
+                "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0116.jpg",
+                "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"
         );
 
         WarZone warZone2 = new WarZone(
@@ -243,51 +243,51 @@ class Deck {
                         Condition.HUMANS, new Effect(TypeOfEffect.GET_SHOT, 3)
                 ),
                 warShoots2,
-                "src/main/resources/Cards/cards/GT-cards_II_IT_0116.jpg",
-                "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"
+                "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0116.jpg",
+                "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"
 
         );
 
-        cards.addLast(new Slavers(false, 1, 5, 1, 3,6, "src/main/resources/Cards/cards/GT-cards_I_IT_01.jpg",  "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new Smugglers(true, 4, 2, 1, goodsGained1, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_012.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new Pirates( false, 1, 4, 1,5, shoots1, "src/main/resources/Cards/cards/GT-cards_I_IT_013.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new StarDust(true, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_014.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new OpenSpace(true, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_015.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new OpenSpace(false, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_018.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new OpenSpace(false, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_018.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new OpenSpace(false, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_018.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new MeteorShower(true, direction1, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_019.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new MeteorShower(false, direction2, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_0110.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new MeteorShower(false, direction3, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_0111.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new Planets(false, 3, 1, planets1, "src/main/resources/Cards/cards/GT-cards_I_IT_0112.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new Planets(true, 2, 1, planets2, "src/main/resources/Cards/cards/GT-cards_I_IT_0113.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new Planets(false, 3, 1, planets3, "src/main/resources/Cards/cards/GT-cards_I_IT_0114.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new Planets(false, 1, 1, planets4, "src/main/resources/Cards/cards/GT-cards_I_IT_0114.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new Slavers(false, 1, 5, 1, 3,6, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_01.jpg",  "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new Smugglers(true, 4, 2, 1, goodsGained1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_012.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new Pirates( false, 1, 4, 1,5, shoots1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_013.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new StarDust(true, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new OpenSpace(true, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_015.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new MeteorShower(true, direction1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_019.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new MeteorShower(false, direction2, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0110.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new MeteorShower(false, direction3, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0111.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new Planets(false, 3, 1, planets1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0112.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new Planets(true, 2, 1, planets2, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0113.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new Planets(false, 3, 1, planets3, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0114.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new Planets(false, 1, 1, planets4, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0114.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(warZone1);
-        cards.addLast(new AbandonedShip(false, 1, 2, 3, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_0117.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new AbandonedShip(true, 1, 3, 4, 1, "src/main/resources/Cards/cards/GT-cards_I_IT_0118.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new AbandonedStation(true, 1, goods1, 1,5, "src/main/resources/Cards/cards/GT-cards_I_IT_0119.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new AbandonedStation(false, 1, goods2, 1,6, "src/main/resources/Cards/cards/GT-cards_I_IT_0120.jpg", "src/main/resources/Cards/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new Slavers(false, 2, 8, 2, 4,7, "src/main/resources/Cards/cards/GT-cards_II_IT_01.jpg",  "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new Smugglers(false, 8, 3, 1, goodsGained2, 2, "src/main/resources/Cards/cards/GT-cards_II_IT_012.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new Pirates( false, 2, 7, 2,6, shoots2, "src/main/resources/Cards/cards/GT-cards_II_IT_013.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new StarDust(false, 2, "src/main/resources/Cards/cards/GT-cards_II_IT_014.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new Epidemic(false, 2, "src/main/resources/Cards/cards/GT-cards_II_IT_015.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new OpenSpace(false, 2, "src/main/resources/Cards/cards/GT-cards_I_IT_018.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new OpenSpace(false, 2, "src/main/resources/Cards/cards/GT-cards_I_IT_018.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new OpenSpace(false, 2, "src/main/resources/Cards/cards/GT-cards_I_IT_018.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new MeteorShower(false, direction4, 2, "src/main/resources/Cards/cards/GT-cards_II_IT_019.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new MeteorShower(false, direction5, 2, "src/main/resources/Cards/cards/GT-cards_II_IT_0110.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new MeteorShower(false, direction6, 2, "src/main/resources/Cards/cards/GT-cards_II_IT_0111.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new Planets(false, 4, 2, planets5,"src/main/resources/Cards/cards/GT-cards_II_IT_0112.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg" ));
-        cards.addLast(new Planets(false, 3, 2, planets6,"src/main/resources/Cards/cards/GT-cards_II_IT_0113.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg" ));
-        cards.addLast(new Planets(false, 2, 2, planets7,"src/main/resources/Cards/cards/GT-cards_II_IT_0114.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg" ));
-        cards.addLast(new Planets(false, 3, 2, planets8,"src/main/resources/Cards/cards/GT-cards_II_IT_0115.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg" ));
+        cards.addLast(new AbandonedShip(false, 1, 2, 3, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0117.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new AbandonedShip(true, 1, 3, 4, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0118.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new AbandonedStation(true, 1, goods1, 1,5, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0119.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new AbandonedStation(false, 1, goods2, 1,6, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0120.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+        cards.addLast(new Slavers(false, 2, 8, 2, 4,7, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_01.jpg",  "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new Smugglers(false, 8, 3, 1, goodsGained2, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_012.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new Pirates( false, 2, 7, 2,6, shoots2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_013.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new StarDust(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new Epidemic(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_015.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new OpenSpace(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new OpenSpace(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new OpenSpace(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new MeteorShower(false, direction4, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_019.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new MeteorShower(false, direction5, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0110.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new MeteorShower(false, direction6, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0111.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new Planets(false, 4, 2, planets5,"/it/polimi/ingsw/model/cards/GT-cards_II_IT_0112.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg" ));
+        cards.addLast(new Planets(false, 3, 2, planets6,"/it/polimi/ingsw/model/cards/GT-cards_II_IT_0113.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg" ));
+        cards.addLast(new Planets(false, 2, 2, planets7,"/it/polimi/ingsw/model/cards/GT-cards_II_IT_0114.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg" ));
+        cards.addLast(new Planets(false, 3, 2, planets8,"/it/polimi/ingsw/model/cards/GT-cards_II_IT_0115.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg" ));
         cards.addLast(warZone2);
-        cards.addLast(new AbandonedShip(false, 2, 4, 6, 1, "src/main/resources/Cards/cards/GT-cards_II_IT_0117.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new AbandonedShip(false, 2, 5, 8, 2, "src/main/resources/Cards/cards/GT-cards_II_IT_0118.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new AbandonedStation(false, 2, goods3, 1, 7, "src/main/resources/Cards/cards/GT-cards_II_IT_0119.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
-        cards.addLast(new AbandonedStation(false, 2, goods4, 2, 8, "src/main/resources/Cards/cards/GT-cards_II_IT_0120.jpg", "src/main/resources/Cards/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new AbandonedShip(false, 2, 4, 6, 1, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0117.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new AbandonedShip(false, 2, 5, 8, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0118.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new AbandonedStation(false, 2, goods3, 1, 7, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0119.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        cards.addLast(new AbandonedStation(false, 2, goods4, 2, 8, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0120.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
 
     }
 

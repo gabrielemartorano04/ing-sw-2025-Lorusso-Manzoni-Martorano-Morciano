@@ -26,9 +26,9 @@ public class Bank {
     }
 
     public void addGoodsInBank(int valueOfGoods) {
-        goods[valueOfGoods]++;
+        goods[valueOfGoods-1]++;
     }
     public void removeGoodsInBank(int valueOfGoods) {
-        goods[valueOfGoods]--;
+        goods[valueOfGoods-1]--;
     }
 }
