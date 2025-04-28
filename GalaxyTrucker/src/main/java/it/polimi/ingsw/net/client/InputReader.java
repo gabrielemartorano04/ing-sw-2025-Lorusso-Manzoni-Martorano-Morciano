@@ -11,6 +11,7 @@ public class InputReader {
 
     public String readLine() {
         System.out.print("Scrivi un comando (login <username> / hello <messaggio> / exit): ");
+        // uses .trim() to avoid problems with spaces before and after the input written by the user
         return scanner.nextLine().trim();
     }
 }
