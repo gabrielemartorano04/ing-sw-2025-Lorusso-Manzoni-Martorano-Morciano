@@ -180,13 +180,14 @@ public class Trucker {
     }
 
     public void finish(){
-        if(buildingState!=BuildingState.END){
+        if(buildingState!=BuildingState.WAIT_END){
             throw new IllegalStateException("Trucker is not in finish state");
         }
         if(!spaceShip.wellDone()){
             spaceShip.increaseLost(spaceShip.getKept().size());
             spaceShip.getKept().removeAll(spaceShip.getKept());
         }
+        buildingState=BuildingState.END;
 
     }
 
