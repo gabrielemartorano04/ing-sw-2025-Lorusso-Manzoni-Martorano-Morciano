@@ -1,18 +1,21 @@
-package it.polimi.ingsw.param;
+package it.polimi.ingsw.param.params;
 
-public class Param4<A,B,C,D> implements Params{
+public class Param6<A,B,C,D,E,F> implements Params {
     private final A first;
     private final B second;
     private final C third;
     private final D fourth;
-
+    private final E fifth;
+    private final F sixth;
     private boolean isEmpty=false;
 
-    public Param4(A first, B second, C third, D fourth) {
+    public Param6(A first, B second, C third, D fourth, E fifth,F sixth) {
         this.first = first;
         this.second = second;
         this.third = third;
         this.fourth = fourth;
+        this.fifth = fifth;
+        this.sixth = sixth;
     }
     public A getFirst() {
         return first;
@@ -26,6 +29,13 @@ public class Param4<A,B,C,D> implements Params{
     public D getFourth() {
         return fourth;
     }
+    public E getFifth() {
+        return fifth;
+    }
+    public F getSixth() {
+        return sixth;
+    }
+
     public boolean isEmpty() {
         return isEmpty;
     }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.param;
+package it.polimi.ingsw.param.params;
 
 public class Param1<A> implements Params{
     private final A first;
