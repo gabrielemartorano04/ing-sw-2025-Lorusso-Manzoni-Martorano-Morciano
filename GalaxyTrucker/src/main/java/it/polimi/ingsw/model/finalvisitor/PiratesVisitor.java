@@ -1,9 +1,13 @@
 package it.polimi.ingsw.model.finalvisitor;
 
 import it.polimi.ingsw.model.cards.Pirates;
+import it.polimi.ingsw.param.Params;
+import it.polimi.ingsw.param.Result;
 
 public class PiratesVisitor {
     public void visit(Pirates card){
-
+    }
+    public Result visit(Pirates card, Params params){
+        return null;
     }
 }
