@@ -7,6 +7,7 @@ public class Param6<A,B,C,D,E,F> implements Params {
     private final D fourth;
     private final E fifth;
     private final F sixth;
+    private boolean isEmpty=false;
 
     public Param6(A first, B second, C third, D fourth, E fifth,F sixth) {
         this.first = first;
@@ -33,5 +34,9 @@ public class Param6<A,B,C,D,E,F> implements Params {
     }
     public F getSixth() {
         return sixth;
+    }
+
+    public boolean isEmpty() {
+        return isEmpty;
     }
 }

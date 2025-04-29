@@ -7,6 +7,8 @@ public class Param5<A,B,C,D,E> implements Params {
     private final D fourth;
     private final E fifth;
 
+    private boolean isEmpty=false;
+
     public Param5(A first, B second, C third, D fourth, E fifth) {
         this.first = first;
         this.second = second;
@@ -28,5 +30,9 @@ public class Param5<A,B,C,D,E> implements Params {
     }
     public E getFifth() {
         return fifth;
+    }
+
+    public boolean isEmpty() {
+        return isEmpty;
     }
 }

@@ -6,6 +6,8 @@ public class Param4<A,B,C,D> implements Params{
     private final C third;
     private final D fourth;
 
+    private boolean isEmpty=false;
+
     public Param4(A first, B second, C third, D fourth) {
         this.first = first;
         this.second = second;
@@ -23,5 +25,8 @@ public class Param4<A,B,C,D> implements Params{
     }
     public D getFourth() {
         return fourth;
+    }
+    public boolean isEmpty() {
+        return isEmpty;
     }
 }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.param;
 public class Param2<A,B> implements Params{
     private final A first;
     private final B second;
+    private boolean isEmpty=false;
 
     public Param2(A first, B second) {
         this.first = first;
@@ -13,5 +14,8 @@ public class Param2<A,B> implements Params{
     }
     public B getSecond() {
         return second;
+    }
+    public boolean isEmpty() {
+        return isEmpty;
     }
 }
