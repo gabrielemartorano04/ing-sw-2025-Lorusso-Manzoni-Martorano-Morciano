@@ -5,9 +5,6 @@ import it.polimi.ingsw.param.Params;
 import it.polimi.ingsw.param.Result;
 
 public class MeteorShowerVisitor {
-    public void visit (MeteorShower card) {
-
-    }
     public Result visit(MeteorShower card, Params params){
         return null;
     }
