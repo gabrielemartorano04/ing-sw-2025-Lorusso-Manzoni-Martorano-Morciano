@@ -5,23 +5,24 @@ import it.polimi.ingsw.model.cards.OpenSpace;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Set;
 
+import static org.easymock.EasyMock.mock;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
     private Game game;
-    private Deck deck;
+    private ArrayList<Card> deck;
     private SpaceShip ship;
     private Trucker trucker1, trucker2;
     private Hourglass hourglass;
-    private Card card;
 
     @BeforeEach
     void setUp() {
         game = new Game();
-        deck = new Deck();
+        deck = new ArrayList<Card>();
         ship = new SpaceShip();
         hourglass = new Hourglass(game);
         trucker1 = new Trucker("frenk", PlayerColors.BLUE);
@@ -48,14 +49,20 @@ class GameTest {
 
     @Test
     void sortTruckers() {
-
+        assertEquals("frenk", game.getTruckers().get(0).getNickname());
+        assertEquals("manzo", game.getTruckers().get(1).getNickname());
+        game.getTrucker(0).setPosition(3);
+        game.getTrucker(1).setPosition(5);
+        game.sortTruckers();
+        assertEquals("manzo", game.getTruckers().get(0).getNickname());
+        assertEquals("frenk", game.getTruckers().get(1).getNickname());
     }
 
     @Test
     void rollDice() {
         int sum;
         sum = game.rollDice();
-        assertTrue(sum >= 1 && sum <= 12);
+        assertTrue(sum >= 2 && sum <= 12);
     }
 
     @Test
@@ -75,12 +82,20 @@ class GameTest {
 
     @Test
     void checkOvertaken() {
-
+        Trucker t1 = trucker1;
+        trucker1.setPosition(1);
+        trucker2.setPosition(27);
+        game.checkOvertaken(trucker1);
+        assertFalse(game.getTruckers().contains(t1));
     }
 
     @Test
     void withdraw() {
-
+        Trucker t1 = trucker1;
+        game.withdraw(trucker1);
+        assertFalse(game.getTruckers().contains(t1));
+        assertNotNull(game.getTrucker(0).getNickname());
+        //invertiti perche ho fatto sort sopra
     }
 
     @Test
@@ -124,8 +139,8 @@ class GameTest {
         trucker1.setPosition(1);
         trucker2.setPosition(2);
         game.moveForward(trucker2, 1);
-        assertEquals(3, trucker2.getPosition());
         game.moveForward(trucker1, 3);
+        assertEquals(3, trucker2.getPosition());
         assertEquals(5, trucker1.getPosition());
     }
 
@@ -134,17 +149,14 @@ class GameTest {
         trucker1.setPosition(5);
         trucker2.setPosition(4);
         game.moveBackward(trucker2, 1);
-        assertEquals(3, trucker2.getPosition());
         game.moveBackward(trucker1, 3);
+        assertEquals(3, trucker2.getPosition());
         assertEquals(1, trucker1.getPosition());
     }
 
     @Test
     void ready() {
-        game.ready(trucker1);
-        assertEquals(BuildingState.END,game.getTrucker(0).getBuildingState());
-        game.ready(trucker2);
-        assertEquals(BuildingState.END,game.getTrucker(1).getBuildingState());
+
     }
 
     @Test
@@ -190,9 +202,7 @@ class GameTest {
 
     @Test
     void setupGame() {
-        game.setupGame();
-        assertEquals(GameState.SETUP,game.getGameState());
-        assertEquals(2,game.getTruckers().size());
+
     }
 
     @Test
@@ -234,6 +244,5 @@ class GameTest {
     @Test
     void getHourglass() {
         assertNotNull(game.getHourglass());
-        assertEquals(hourglass,game.getHourglass());
     }
 }

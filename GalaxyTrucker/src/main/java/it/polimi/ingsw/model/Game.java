@@ -115,6 +115,7 @@ public class Game {
         for(Trucker t: truckers) {
             if(t.getPosition() - trucker.getPosition() >= 24){
                 withdraw(trucker);
+                break;
             }
         }
     }
@@ -187,7 +188,7 @@ public class Game {
     public void moveForward(Trucker trucker, int days){
         int finalPos = trucker.getPosition();
         for (int i=0; i<days; i++){
-            finalPos = trucker.getPosition() + 1;
+            finalPos ++;
             for(Trucker t: truckers){
                 if (t.getPosition() == finalPos && trucker!=t){
                     finalPos++;
@@ -204,7 +205,7 @@ public class Game {
     public void moveBackward(Trucker trucker, int days){
         int finalPos = trucker.getPosition();
         for (int i=0; i<days; i++){
-            finalPos = trucker.getPosition() - 1;
+            finalPos --;
             for(Trucker t: truckers){
                 if (t.getPosition() == finalPos && trucker!=t){
                     finalPos--;
