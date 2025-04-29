@@ -117,7 +117,7 @@ public class Slavers extends Card {
      * Sets, for each trucker, the coordinates of the cabin where he/she want to remove the crew members
      * @param truckersCoordinatesToRemoveHumans list of lists of arrays of coordinates
      */
-    public CardState addTruckersCoordinatesToRemoveHumans(ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer, Trucker trucker) throws InvalidCoordinates {
+    public CardState addTruckersCoordinatesToRemoveHumans(Trucker trucker, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer) throws InvalidCoordinates {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new IllegalStateException("Card state in not HUMANSTOREMOVE");
         }

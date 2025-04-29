@@ -9,7 +9,6 @@ import it.polimi.ingsw.param.Result;
 public class OpenSpaceVisitor {
     public void visit(OpenSpace card) {}
     public Result visit(OpenSpace card, Params params){
-        GenericResult<CardState> result = new GenericResult<>(CardState.ESECUZIONE);
-        return result;
+        return new GenericResult<>(CardState.ESECUZIONE);
     }
 }
