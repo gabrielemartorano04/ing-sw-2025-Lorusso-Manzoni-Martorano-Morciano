@@ -6,11 +6,8 @@ package it.polimi.ingsw.param.results;
 public class ResultHandler {
     public static void handleResult(Result result) {
         switch (result) {
-            case StringResult sr -> {
-                String val = sr.getValue();
-            }
             case IntResult ir -> {
-                int val = ir.getValue();
+                int val = ir.getResult();
             }
             default -> throw new IllegalStateException("Unexpected result type");
         }
