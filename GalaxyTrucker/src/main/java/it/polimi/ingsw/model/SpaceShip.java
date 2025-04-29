@@ -135,7 +135,7 @@ public class SpaceShip {
      * @return number of astronauts in the spaceship
      */
     public void setNumHuman() {
-        Cabin cabin = null;
+
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null) {
@@ -143,7 +143,7 @@ public class SpaceShip {
                         case Cabin c -> {
                             if (c.getAlien() == null){
                                 numHuman += 2;
-                                cabin.setQuantity(2);
+                                c.setQuantity(2);
                             }
 
                         }
@@ -310,10 +310,10 @@ public class SpaceShip {
     public void addComponent(Component component, int x, int y) throws InvalidCoordinates{
         if(components[x][y]==null ) {
             if(
-                    (components[x+1][y]!=null && !components[x+1][y].getType().equals("Empty Space") && compatibleLinks(components[x][y].getLink()[2],components[x+1][y].getLink()[0]))
-                    || (components[x+1][y]!=null && !components[x-1][y].getType().equals("Empty Space") && compatibleLinks(components[x][y].getLink()[0],components[x-1][y].getLink()[2]))
-                    || (components[x+1][y]!=null && !components[x][y+1].getType().equals("Empty Space") && compatibleLinks(components[x][y].getLink()[1],components[x][y+1].getLink()[3]))
-                    || (components[x+1][y]!=null && !components[x][y-1].getType().equals("Empty Space") && compatibleLinks(components[x][y].getLink()[3],components[x][y-1].getLink()[1]))
+                    (components[x+1][y]!=null && !components[x+1][y].getType().equals("Empty Space") && compatibleLinks(component.getLink()[2],components[x+1][y].getLink()[0]))
+                    || (components[x-1][y]!=null && !components[x-1][y].getType().equals("Empty Space") && compatibleLinks(component.getLink()[0],components[x-1][y].getLink()[2]))
+                    || (components[x][y+1]!=null && !components[x][y+1].getType().equals("Empty Space") && compatibleLinks(component.getLink()[1],components[x][y+1].getLink()[3]))
+                    || (components[x][y-1]!=null && !components[x][y-1].getType().equals("Empty Space") && compatibleLinks(component.getLink()[3],components[x][y-1].getLink()[1]))
             ){
                 components[x][y] = component;
             }
@@ -505,17 +505,29 @@ public class SpaceShip {
 
         Cannon cannon = null;
         Component com = components[x][y];
-        Component comU = components[x - 1][y];
-        Component comR = components[x][y + 1];
-        Component comD = components[x + 1][y];
-        Component comL = components[x][y - 1];
+        Component comU = null;
+        Component comR = null;
+        Component comD = null;
+        Component comL = null;
+        comU = components[x - 1][y];
+        if(y+1<11) comR = components[x][y + 1];
+        if(x+1<10) comD = components[x + 1][y];
+        comL = components[x][y - 1];
 
+        int linkU=0,linkR=0,linkD=0,linkL=0;
         int[] link = com.getLink();
-        int linkU = comU.getLink()[2];
-        int linkR = comR.getLink()[3];
-        int linkD = comD.getLink()[0];
-
-        int linkL = comL.getLink()[1];
+        if(comU!=null){
+             linkU= comU.getLink()[2];
+        }
+        if(comR!=null){
+            linkR = comR.getLink()[3];
+        }
+        if(comD!=null){
+            linkD = comD.getLink()[0];
+        }
+        if(comL!=null){
+            linkL = comL.getLink()[1];
+        }
         //CONTROLLO CHE U,R,D,L SIA COLLEGATO BENE
         switch (components[x][y]) {
             case Cannon c->{
@@ -682,7 +694,7 @@ public class SpaceShip {
         boolean wellDone=true;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (!isValid(i, j))
+                if (components[i][j]!=null && !isValid(i, j))
                     try{
                         removeComponent(i,j);
                     } catch (InvalidCoordinates e) {
@@ -921,7 +933,7 @@ public class SpaceShip {
         // a visited allora non riesco a esplorare tutto perchè appena ritorno alla main cabin è visited e quindi finisco
         // per settare la cabina principale a visited uso il terzo if
 
-        if (x < 0 || x >= components.length || y < 0 || y >= components[0].length) {
+        if (x < 0 || x > components.length || y < 0 || y > components[0].length) {
             return;
         }
         if(components[x][y] == null  || (components[x][y].isVisited() && (x!=7 && y!=7))) {
@@ -932,9 +944,11 @@ public class SpaceShip {
                 return;
             }default -> {}
         }
-        if( (components[6][7] != null || components[6][7].isVisited()) && (components[8][7] != null || components[8][7].isVisited()) && (components[7][8] != null || components[7][8].isVisited()) && (components[7][8] != null || components[7][8].isVisited())) {
-            components[7][7].setVisited(true);
+        if (components[6][7] != null && components[7][6] != null && components[8][7] != null && components[7][8] != null){
+            if(components[6][7].isVisited() && components[7][6].isVisited() && components[8][7].isVisited() && components[7][8].isVisited())
+                components[7][7].setVisited(true);
         }
+
         components[x][y].setVisited(true);
         componentsVisited(x+1, y);
         componentsVisited(x, y+1);

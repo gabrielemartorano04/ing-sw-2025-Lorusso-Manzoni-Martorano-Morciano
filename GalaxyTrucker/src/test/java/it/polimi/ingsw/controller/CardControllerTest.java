@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.AbandonedShip;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,28 +20,35 @@ class CardControllerTest {
     @Test
     void getCardName() {
         String cardName=cardController.getCardName(card);
-        assertEquals("AbandonedShip",cardName);
+        assertEquals("Abandoned Ship",cardName);
 
     }
 
     @Test
     void getCardDescription() {
+        String cardDescription=cardController.getCardDescription(card);
+        assertEquals("A drifting ghost ship",cardDescription);
     }
 
     @Test
     void getCardLevel() {
+        int cardLevel=cardController.getCardLevel(card);
+        assertEquals(1,cardLevel);
     }
 
     @Test
     void isTrialFlight() {
+        assertFalse(cardController.isTrialFlight(card));
     }
 
     @Test
     void getCardFrontImage() {
+        assertNotNull(cardController.getCardFrontImage(card));
     }
 
     @Test
     void getCardBackImage() {
+        assertNotNull(cardController.getCardBackImage(card));
     }
 
     @Test
@@ -49,10 +57,12 @@ class CardControllerTest {
 
     @Test
     void getDays() {
+        assertEquals(1,cardController.getDays(card));
     }
 
     @Test
     void getCredits() {
+        assertEquals(1,cardController.getCredits(card));
     }
 
     @Test
