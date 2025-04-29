@@ -67,7 +67,9 @@ class GameTest {
 
     @Test
     void drawCard() {
+        Card card = new OpenSpace(false, 2, "", "");
 
+        assertNotNull(game.drawCard());
     }
 
     @Test
