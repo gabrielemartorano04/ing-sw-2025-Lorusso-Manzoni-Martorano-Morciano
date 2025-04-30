@@ -2,10 +2,8 @@ package it.polimi.ingsw.net.server;
 
 import it.polimi.ingsw.net.events.Event;
 
-import it.polimi.ingsw.net.events.Event;
-import it.polimi.ingsw.net.events.EventType;
-import it.polimi.ingsw.net.events.HelloEvent;
-import it.polimi.ingsw.net.server.ClientHandlerServer;
+import it.polimi.ingsw.net.events.clientevents.ClientEventType;
+import it.polimi.ingsw.net.events.clientevents.HelloEvent;
 
 public class ServerController {
     public void handleEvent(Event event, ClientHandlerServer client) {
@@ -16,7 +14,7 @@ public class ServerController {
             System.out.println("[SERVER] Testo ricevuto: " + msg);
 
             // Rispondiamo al client
-            HelloEvent response = new HelloEvent("Server ha ricevuto il tuo messaggio: '" + msg + "'", EventType.HELLO_MESSAGE);
+            HelloEvent response = new HelloEvent("Server ha ricevuto il tuo messaggio: '" + msg + "'", ClientEventType.HELLO_MESSAGE);
             try {
                 client.sendEvent(response);
             } catch (Exception e) {

@@ -19,3 +19,5 @@ public class ConditionsListResult implements Result{
         return result;
     }
 }
+
+

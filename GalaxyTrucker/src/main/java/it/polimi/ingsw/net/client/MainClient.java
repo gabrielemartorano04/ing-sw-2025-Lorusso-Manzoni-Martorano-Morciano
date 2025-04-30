@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.client;
 
 import it.polimi.ingsw.net.events.Event;
+import it.polimi.ingsw.view.SimpleView;
 
 import java.io.IOException;
 

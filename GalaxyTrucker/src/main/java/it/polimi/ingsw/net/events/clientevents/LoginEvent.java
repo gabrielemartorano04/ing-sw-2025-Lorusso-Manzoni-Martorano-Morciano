@@ -1,10 +1,12 @@
-package it.polimi.ingsw.net.events;
+package it.polimi.ingsw.net.events.clientevents;
+
+import it.polimi.ingsw.net.events.Event;
 
 public class LoginEvent extends Event {
     private final String username;
 
     public LoginEvent(String username) {
-        super(EventType.LOGIN);
+        super(ClientEventType.LOGIN);
         this.username = username;
     }
 

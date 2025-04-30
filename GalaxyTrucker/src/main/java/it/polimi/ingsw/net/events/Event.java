@@ -1,5 +1,5 @@
 package it.polimi.ingsw.net.events;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.net.events.clientevents.ClientEventType;
 
 import java.io.Serializable;
 
@@ -9,12 +9,12 @@ import java.io.Serializable;
  */
 
 public abstract class Event implements Serializable {
-    private final EventType eventType;
+    private final ClientEventType eventType;
 
-    public Event(EventType eventType) {
+    public Event(ClientEventType eventType) {
         this.eventType = eventType;
     }
-    public EventType getEventType() {
+    public ClientEventType getEventType() {
         return eventType;
     }
 }

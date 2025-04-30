@@ -1,5 +1,6 @@
 package it.polimi.ingsw.param.results;
 
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
@@ -14,6 +15,7 @@ import java.util.Map;
  * possible use of this class: we can use handleResult to generate the events or handle the results that the controller
  * returns to the server controller
  */
+
 public class ResultHandler {
     public static void handleResult(Result result) {
         switch (result) {
@@ -49,7 +51,7 @@ public class ResultHandler {
             }
             default -> throw new IllegalStateException("Unexpected result type");
         }
-
     }
 }
+
 

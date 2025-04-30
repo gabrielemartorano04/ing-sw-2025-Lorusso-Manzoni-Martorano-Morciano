@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.finalvisitor.AbandonedShipVisitor;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 
@@ -22,6 +23,7 @@ public class AbandonedShip extends Card{
     private ArrayList<int[]> coordinates = null; //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
     private CardState state = CardState.ATTESA_RISPOSTE;
     private int playerDecisions;
+
 
     /**
      * Abandoned ship constructor, initialise the attributes of this class
