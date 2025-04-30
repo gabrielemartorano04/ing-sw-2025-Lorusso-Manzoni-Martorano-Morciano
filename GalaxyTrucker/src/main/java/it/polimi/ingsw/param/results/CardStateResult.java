@@ -10,4 +10,5 @@ public class CardStateResult implements Result{
     public CardState getState() {
         return state;
     }
+    public CardState getResult() {return state;}
 }
