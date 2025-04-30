@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.visitor;
 
-import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 
 import java.util.ArrayList;
 

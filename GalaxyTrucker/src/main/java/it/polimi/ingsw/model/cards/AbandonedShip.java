@@ -1,10 +1,9 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.exceptions.InvalidComponentsException;
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.finalvisitor.AbandonedShipVisitor;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 

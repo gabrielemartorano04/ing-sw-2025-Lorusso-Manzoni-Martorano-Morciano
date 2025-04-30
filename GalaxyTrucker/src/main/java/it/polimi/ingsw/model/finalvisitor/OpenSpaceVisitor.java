@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.finalvisitor;
 
 import it.polimi.ingsw.model.cards.OpenSpace;
-import it.polimi.ingsw.param.params.Params;
-import it.polimi.ingsw.param.results.Result;
+import it.polimi.ingsw.utilities.params.Params;
+import it.polimi.ingsw.utilities.results.Result;
 
 public class OpenSpaceVisitor {
     public Result visit(OpenSpace card, Params params){

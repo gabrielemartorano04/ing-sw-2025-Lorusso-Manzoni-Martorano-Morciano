@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model.visitor;
 
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.exceptions.InvalidGoodChosen;
-import it.polimi.ingsw.exceptions.InvalidPositionException;
-import it.polimi.ingsw.exceptions.NotEnoughGoodsChosen;
+import it.polimi.ingsw.utilities.exceptions.InvalidGoodChosen;
+import it.polimi.ingsw.utilities.exceptions.NotEnoughGoodsChosen;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;

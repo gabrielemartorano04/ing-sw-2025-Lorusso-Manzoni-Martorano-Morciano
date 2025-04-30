@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.exceptions.InvalidPositionException;
-import it.polimi.ingsw.exceptions.PlanetNotFreeException;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
+import it.polimi.ingsw.utilities.exceptions.PlanetNotFreeException;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.components.*;

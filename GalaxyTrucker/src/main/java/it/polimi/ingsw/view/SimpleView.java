@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.net.client.ClientHandler;
-import it.polimi.ingsw.net.client.NetworkListenerClient;
-import it.polimi.ingsw.net.events.Event;
+import it.polimi.ingsw.net.socket.client.ClientHandler;
+import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
+import it.polimi.ingsw.net.socket.events.Event;
 
 public class SimpleView implements NetworkListenerClient.EventReceiver {
     private final ClientHandler clientHandler;

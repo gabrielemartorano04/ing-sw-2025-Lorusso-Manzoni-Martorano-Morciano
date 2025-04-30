@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.visitor;
 
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.exceptions.NotEnoughBatteries;
-import it.polimi.ingsw.exceptions.WrongNumberOfBatteriesSelected;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.NotEnoughBatteries;
+import it.polimi.ingsw.utilities.exceptions.WrongNumberOfBatteriesSelected;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
 

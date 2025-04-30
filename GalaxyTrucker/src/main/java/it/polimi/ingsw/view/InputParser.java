@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.net.events.Event;
-import it.polimi.ingsw.net.events.clientevents.ClientEventType;
-import it.polimi.ingsw.net.events.clientevents.HelloEvent;
-import it.polimi.ingsw.net.events.clientevents.LoginEvent;
+import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
+import it.polimi.ingsw.net.socket.events.clientevents.HelloEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.LoginEvent;
 
 public class InputParser {
 

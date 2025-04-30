@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.model.Game;
@@ -8,6 +7,7 @@ import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
+import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.util.Map;
 import java.util.ArrayList;

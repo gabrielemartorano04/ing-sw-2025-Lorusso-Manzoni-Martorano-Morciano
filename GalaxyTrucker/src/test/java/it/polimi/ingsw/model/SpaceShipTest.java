@@ -1,9 +1,8 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Direction;
-import it.polimi.ingsw.model.components.Engine;
 import it.polimi.ingsw.model.components.Load;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
