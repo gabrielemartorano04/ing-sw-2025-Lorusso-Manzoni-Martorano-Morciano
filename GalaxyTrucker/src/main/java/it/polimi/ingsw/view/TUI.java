@@ -2,6 +2,11 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.GameState;
 
+import java.io.PrintStream;
+import java.nio.charset.Charset;
+
+import static it.polimi.ingsw.model.PlayerColors.YELLOW;
+
 /**
  * Implementation of the TUI
  */
@@ -9,6 +14,14 @@ public class TUI extends UI{
 
     public TUI(GameState gameState) {
 
+    }
+
+    private <__TMP__> __TMP__ ansi() {
+        return null;
+    }
+
+    private <__TMP__> __TMP__ clearScreen() {
+        return null;
     }
 
     @Override
@@ -51,11 +64,17 @@ public class TUI extends UI{
                         `---`             `----'   `--`---'               ---`-'                                 \\s
                       ""\").reset());
       
-              try {
-                  Thread.sleep(DefaultValue.time_publisher_showing_seconds * 1000);
-              } catch (InterruptedException e) {
-                  throw new RuntimeException(e);
-              }
-              this.show_titleMyShelfie();
+          try {
+              Thread.sleep(DefaultValue.time_publisher_showing_seconds * 1000);
+          } catch (InterruptedException e) {
+              throw new RuntimeException(e);
           }
+          this.show_titleMyShelfie();
+          }
+          
+         
+
+        
+    }
 }
+
