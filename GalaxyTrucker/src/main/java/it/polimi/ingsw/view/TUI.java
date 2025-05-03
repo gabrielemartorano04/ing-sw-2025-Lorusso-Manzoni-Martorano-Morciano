@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.GameState;
-
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 
@@ -10,18 +9,10 @@ import static it.polimi.ingsw.model.PlayerColors.YELLOW;
 /**
  * Implementation of the TUI
  */
-public class TUI extends UI{
+public abstract class TUI extends UI{
 
-    public TUI(GameState gameState) {
+    public TUI() {
 
-    }
-
-    private <__TMP__> __TMP__ ansi() {
-        return null;
-    }
-
-    private <__TMP__> __TMP__ clearScreen() {
-        return null;
     }
 
     @Override
@@ -49,32 +40,56 @@ public class TUI extends UI{
                 |   :    /  ---'  ;  :   .'   \\|   |/      ;  :    ;`----'                                 \s
                  \\   \\ .'         |  ,     .-./'---'       |  ,   /                                        \s
                   `---`            `--`---'                 ---`-'                                         \s
-                        ,----..                                   ___                                            \\s
-                       /   /   \\\\                                ,--.'|_    ,--,                                  \\s
-                      |   :     :  __  ,-.                      |  | :,' ,--.'|    ,---.        ,---,            \\s
-                      .   |  ;. /,' ,'/ /|                      :  : ' : |  |,    '   ,'\\\\   ,-+-. /  | .--.--.   \\s
-                      .   ; /--` '  | |' | ,---.     ,--.--.  .;__,'  /  `--'_   /   /   | ,--.'|'   |/  /    '  \\s
-                      ;   | ;    |  |   ,'/     \\\\   /       \\\\ |  |   |   ,' ,'| .   ; ,. :|   |  ,"' |  :  /`./  \\s
-                      |   : |    '  :  / /    /  | .--.  .-. |:__,'| :   '  | | '   | |: :|   | /  | |  :  ;_    \\s
-                      .   | '___ |  | ' .    ' / |  \\\\__\\\\/: . .  '  : |__ |  | : '   | .; :|   | |  | |\\\\  \\\\    `. \\s
-                      '   ; : .'|;  : | '   ;   /|  ," .--.; |  |  | '.'|'  : |_|   :    ||   | |  |/  `----.   \\\\\\s
-                      '   | '/  :|  , ; '   |  / | /  /  ,.  |  ;  :    ;|  | '.'\\\\   \\\\  / |   | |--'  /  /`--'  /\\s
-                      |   :    /  ---'  |   :    |;  :   .'   \\\\ |  ,   / ;  :    ;`----'  |   |/     '--'.     / \\s
-                       \\\\   \\\\ .'          \\\\   \\\\  / |  ,     .-./  ---`-'  |  ,   /         '---'        `--'---'  \\s
-                        `---`             `----'   `--`---'               ---`-'                                 \\s
-                      ""\").reset());
-      
-          try {
-              Thread.sleep(DefaultValue.time_publisher_showing_seconds * 1000);
-          } catch (InterruptedException e) {
-              throw new RuntimeException(e);
-          }
-          this.show_titleMyShelfie();
-          }
-          
-         
+                  ,----..                                   ___                                            \s
+                 /   /   \\                                ,--.'|_    ,--,                                  \s
+                |   :     :  __  ,-.                      |  | :,' ,--.'|    ,---.        ,---,            \s
+                .   |  ;. /,' ,'/ /|                      :  : ' : |  |,    '   ,'\\   ,-+-. /  | .--.--.   \s
+                .   ; /--` '  | |' | ,---.     ,--.--.  .;__,'  /  `--'_   /   /   | ,--.'|'   |/  /    '  \s
+                ;   | ;    |  |   ,'/     \\   /       \\ |  |   |   ,' ,'| .   ; ,. :|   |  ,"' |  :  /`./  \s
+                |   : |    '  :  / /    /  | .--.  .-. |:__,'| :   '  | | '   | |: :|   | /  | |  :  ;_    \s
+                .   | '___ |  | ' .    ' / |  \\__\\/: . .  '  : |__ |  | : '   | .; :|   | |  | |\\  \\    `. \s
+                '   ; : .'|;  : | '   ;   /|  ," .--.; |  |  | '.'|'  : |_|   :    ||   | |  |/  `----.   \\\s
+                '   | '/  :|  , ; '   |  / | /  /  ,.  |  ;  :    ;|  | '.'\\   \\  / |   | |--'  /  /`--'  /\s
+                |   :    /  ---'  |   :    |;  :   .'   \\ |  ,   / ;  :    ;`----'  |   |/     '--'.     / \s
+                 \\   \\ .'          \\   \\  / |  ,     .-./  ---`-'  |  ,   /         '---'        `--'---'  \s
+                  `---`             `----'   `--`---'               ---`-'                                 \s
+                """).reset());
 
-        
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        this.show_titleGalaxyTrucker();
     }
+
+    protected abstract void clearScreen();
+
+
+    public void show_titleGalaxyTrucker() {
+        new PrintStream(System.out, true, System.console() != null
+                ? System.console().charset()
+                : Charset.defaultCharset()
+        ).println(ansi().fg(YELLOW).a("""
+
+       ██████╗░░█████╗░██╗░░░░░░█████╗░██╗░░░██╗██╗░░░██╗  ████████╗██████╗░██╗░░░██╗██████╗░██╗░░░██╗███████╗██████╗░
+       ██╔══██╗██╔══██╗██║░░░░░██╔══██╗██║░░░██║╚██╗░██╔╝  ╚══██╔══╝██╔══██╗██║░░░██║██╔══██╗██║░░░██║██╔════╝██╔══██╗
+       ██████╦╝██║░░██║██║░░░░░██║░░██║██║░░░██║░╚████╔╝░  ░░░██║░░░██████╔╝██║░░░██║██████╦╝██║░░░██║█████╗░░██████╔╝
+       ██╔══██╗██║░░██║██║░░░░░██║░░██║██║░░░██║░░╚██╔╝░░  ░░░██║░░░██╔═══╝░██║░░░██║██╔══██╗██║░░░██║██╔══╝░░██╔═══╝░
+       ██████╦╝╚█████╔╝███████╗╚█████╔╝╚██████╔╝░░░██║░░░  ░░░██║░░░██║░░░░░╚██████╔╝██████╦╝╚██████╔╝███████╗██║░░░░░
+       ╚═════╝░░╚════╝░╚══════╝░╚════╝░░╚═════╝░░░░╚═╝░░░  ░░░╚═╝░░░╚═╝░░░░░░╚═════╝░╚═════╝░░╚═════╝░╚══════╝╚═╝░░░░░
+            """).reset());
+    }
+
+    protected abstract Object ansi();
+
+    public void resize() {
+        try {
+            new ProcessBuilder("cmd", "/c", "mode con:cols=160 lines=50").inheritIO().start().waitFor();
+        } catch (IOException | InterruptedException e) {
+            //couldn't resize the terminal window
+        }
+    }
+
 }
 

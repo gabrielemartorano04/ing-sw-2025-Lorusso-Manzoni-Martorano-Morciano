@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
@@ -15,6 +16,7 @@ public class SimpleView implements NetworkListenerClient.EventReceiver {
     private final boolean isRunning;
     private final GameState gameState;
     private final UI ui;
+    private Game game;
 
     public SimpleView(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
@@ -23,7 +25,7 @@ public class SimpleView implements NetworkListenerClient.EventReceiver {
         this.nickname = "";
         this.isRunning = true;
         this.gameState = GameState.SETUP;
-        this.ui = new UI;
+        ui = new TUI();
     }
 
     @Override
@@ -45,10 +47,12 @@ public class SimpleView implements NetworkListenerClient.EventReceiver {
             }
         }
         System.out.println("Chiusura View.");
+    }
 
+    public void run() {
         try {
             ui.show_publisher();
-            events.add(null, APP_MENU);
+            game.setGameState(GameState.SETUP);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

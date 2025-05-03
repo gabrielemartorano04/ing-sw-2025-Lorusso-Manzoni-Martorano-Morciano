@@ -7,5 +7,5 @@ import java.io.IOException;
  */
 public abstract class UI {
 
-    public abstract void show_publisher() throws IOException, InterruptedException;
+    protected abstract void show_publisher() throws IOException, InterruptedException;
 }
