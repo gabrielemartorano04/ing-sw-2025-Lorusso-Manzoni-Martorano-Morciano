@@ -11,7 +11,7 @@ import java.io.Serializable;
 public abstract class Event implements Serializable {
     private final ClientEventType eventType;
 
-    public Event(ClientEventType eventType) {
+    public Event(EventType eventType) {
         this.eventType = eventType;
     }
     public ClientEventType getEventType() {

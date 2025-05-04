@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.net.socket.events.Event;
-import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
-import it.polimi.ingsw.net.socket.events.clientevents.HelloEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.LoginEvent;
+import it.polimi.ingsw.net.socket.events.EventType;
+import it.polimi.ingsw.net.socket.events.HelloEvent;
+import it.polimi.ingsw.net.socket.events.LoginEvent;
 
 public class InputParser {
 
@@ -28,7 +28,7 @@ public class InputParser {
                     System.out.println("Errore: devi scrivere un messaggio.");
                     return null;
                 }
-                return new HelloEvent(tokens[1].trim(), ClientEventType.HELLO_MESSAGE);
+                return new HelloEvent(tokens[1].trim(), EventType.HELLO_MESSAGE);
 
             default:
                 System.out.println("Comando sconosciuto: " + command);
