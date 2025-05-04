@@ -95,6 +95,10 @@ public class Planets extends Card {
         return planets;
     }
 
+    public CardState getState() {
+        return state;
+    }
+
     public int[] getBank(Bank bank){
         if(state != CardState.PLOT_BANK){
             throw new IllegalStateException("Can't get bank from state " + state);
@@ -317,7 +321,7 @@ public class Planets extends Card {
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
-    public void rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
+    public CardState rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
         if (state != CardState.REARRANGE) {
             throw new IllegalStateException("Not callable in the state: " + state);
         }
@@ -344,6 +348,7 @@ public class Planets extends Card {
                  state = CardState.INITIALIZE;
             }
         }
+        return state;
 
     }
 
