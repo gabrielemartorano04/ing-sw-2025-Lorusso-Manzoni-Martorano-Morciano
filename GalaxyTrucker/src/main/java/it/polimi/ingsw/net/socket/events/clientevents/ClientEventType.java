@@ -1,0 +1,37 @@
+package it.polimi.ingsw.net.socket.events.clientevents;
+
+/**
+ * enum used to indicate the type of event we are considering
+ */
+public enum ClientEventType {
+    HELLO_MESSAGE,
+    LOGIN, //data request
+    CREATE_GAME,
+    NICKNAME_ALREADY_IN,
+    COLOR_ALREADY_IN,
+    NO_AVAILABLE_SPACE,
+    PLAYER_JOINED, //login success
+    START_BUILDING,
+    TURN_HOURGLASS,
+    TURN_HOURGLASS_ERROR,
+    SELECT_TILE,
+    COMPONENT_NOT_AVAILABLE,
+    COMPONENT_SELECTED,
+    LINK_TILE,
+    INVALID_POSITION_ERROR,
+    COMPONENT_LINKED,
+    CHECK_SHIPS,
+    BUILD_ERROR,
+    BUILD_SUCCESS,
+    END_BUILDING,
+    SHOW_CARD,
+    CARD_EFFECT,
+    NEXT_TURN,
+    END_GAME,
+    UPDATE_STATE,
+    INVALID_COORDINATES_ERROR,
+    TIME_EXPIRED,
+    GENERIC_ERROR_INSERTED_DATA,
+    DISCONNECTED_USER,
+    RECONNECTED_USER,
+}

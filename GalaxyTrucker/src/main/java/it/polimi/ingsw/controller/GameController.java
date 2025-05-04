@@ -1,8 +1,9 @@
 package it.polimi.ingsw.controller;
-import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
+import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 
 import java.util.ArrayList;
 import java.util.List;

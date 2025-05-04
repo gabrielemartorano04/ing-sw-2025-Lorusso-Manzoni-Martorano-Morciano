@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.visitor;
 
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.cards.*;
 

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.exceptions.InvalidPositionException;
-import it.polimi.ingsw.exceptions.PlanetNotFreeException;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
+import it.polimi.ingsw.utilities.exceptions.PlanetNotFreeException;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.components.*;
@@ -93,6 +93,10 @@ public class Planets extends Card {
      */
     public ArrayList<ArrayList<Goods>> getPlanets() {
         return planets;
+    }
+
+    public CardState getState() {
+        return state;
     }
 
     public int[] getBank(Bank bank){
@@ -317,7 +321,7 @@ public class Planets extends Card {
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
-    public void rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
+    public CardState rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
         if (state != CardState.REARRANGE) {
             throw new IllegalStateException("Not callable in the state: " + state);
         }
@@ -344,6 +348,7 @@ public class Planets extends Card {
                  state = CardState.INITIALIZE;
             }
         }
+        return state;
 
     }
 

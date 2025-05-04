@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.visitor.CardVisitor;

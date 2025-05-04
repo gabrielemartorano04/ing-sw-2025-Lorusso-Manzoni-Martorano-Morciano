@@ -335,5 +335,12 @@ public class Game {
         return hourglass;
     }
 
+    public void endTurn(){
+        for(Trucker t: truckers) {
+            noHumans(t);
+            checkOvertaken(t);
+        }
+    }
+
 }
 

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.CannotTurnHourglassException;
-import it.polimi.ingsw.exceptions.InvalidComponentsException;
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
+import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 

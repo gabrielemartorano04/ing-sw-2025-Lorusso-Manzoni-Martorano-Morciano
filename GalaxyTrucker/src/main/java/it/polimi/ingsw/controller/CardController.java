@@ -1,12 +1,12 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.visitor.*;
+import it.polimi.ingsw.utilities.exceptions.*;
 
 import javax.swing.*;
 import java.util.ArrayList;

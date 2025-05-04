@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.visitor;
 
-import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 
 import java.util.ArrayList;
 
@@ -65,7 +65,7 @@ public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisi
             ArrayList<int[]> truckerCoordinatesToRemoveHuman = (ArrayList<int[]>) params[0];
             int numTrucker = (Integer) params[1];
             Trucker trucker = (Trucker) params[2];
-            return slavers.addTruckersCoordinatesToRemoveHumans(truckerCoordinatesToRemoveHuman, numTrucker, trucker);
+            return slavers.addTruckersCoordinatesToRemoveHumans(trucker, truckerCoordinatesToRemoveHuman, numTrucker);
         } catch (InvalidCoordinates e) {
             throw new InvalidCoordinates(e.getMessage());
         }
