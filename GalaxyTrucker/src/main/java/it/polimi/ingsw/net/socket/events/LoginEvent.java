@@ -1,17 +1,25 @@
 package it.polimi.ingsw.net.socket.events;
 
-import it.polimi.ingsw.net.socket.events.*;
+import it.polimi.ingsw.model.PlayerColors;
 
 public class LoginEvent extends Event {
     private final String username;
+    private PlayerColors color;
+    private String message;
 
-    public LoginEvent(String username) {
+    public LoginEvent(String username,PlayerColors color) {
         super(EventType.LOGIN);
         this.username = username;
+        this.color = color;
+        message = "Username: " + username + " , Color: " + color.toString();
     }
 
     public String getUsername() {
         return username;
+    }
+
+    public PlayerColors getColor() {
+        return color;
     }
 
     @Override
