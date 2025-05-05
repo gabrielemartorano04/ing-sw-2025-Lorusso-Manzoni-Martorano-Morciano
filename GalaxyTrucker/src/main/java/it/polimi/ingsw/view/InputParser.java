@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.net.socket.events.*;
+import it.polimi.ingsw.net.socket.events.clientevents.LoginEvent;
 
 public class InputParser {
 

@@ -1,9 +1,12 @@
-package it.polimi.ingsw.net.socket.events;
+package it.polimi.ingsw.net.socket.events.serverevents;
+
+import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.EventType;
 
 /**
  * Error event from server to client. It signals that the player gave an invalid position
  */
-public class InvalidPositionError extends Event{
+public class InvalidPositionError extends Event {
     private String username, message;
     public InvalidPositionError(String username) {
         super(EventType.INVALID_POSITION_ERROR);

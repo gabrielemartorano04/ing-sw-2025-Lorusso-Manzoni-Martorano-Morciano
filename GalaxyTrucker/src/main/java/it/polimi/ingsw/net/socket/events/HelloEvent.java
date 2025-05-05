@@ -1,6 +1,8 @@
 package it.polimi.ingsw.net.socket.events;
 
-
+/**
+ * prova
+ */
 public class HelloEvent extends Event {
     private final String message;
 

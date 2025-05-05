@@ -1,6 +1,12 @@
-package it.polimi.ingsw.net.socket.events;
+package it.polimi.ingsw.net.socket.events.clientevents;
 
-public class EndBuildingEvent extends Event{
+import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.EventType;
+
+/**
+ * Event client to server
+ */
+public class EndBuildingEvent extends Event {
     String username,message;
     public EndBuildingEvent(String username){
         super(EventType.END_BUILDING);

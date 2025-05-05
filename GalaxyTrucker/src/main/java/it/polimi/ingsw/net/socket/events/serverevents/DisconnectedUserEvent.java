@@ -1,6 +1,12 @@
-package it.polimi.ingsw.net.socket.events;
+package it.polimi.ingsw.net.socket.events.serverevents;
 
-public class DisconnectedUserEvent extends Event{
+import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.EventType;
+
+/**
+ * Event from server to clients. A player disconnected
+ */
+public class DisconnectedUserEvent extends Event {
     String username, message;
     public DisconnectedUserEvent(String username){
         super(EventType.DISCONNECTED_USER);

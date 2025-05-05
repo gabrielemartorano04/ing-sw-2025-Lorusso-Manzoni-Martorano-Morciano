@@ -1,5 +1,11 @@
-package it.polimi.ingsw.net.socket.events;
+package it.polimi.ingsw.net.socket.events.serverevents;
 
+import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.EventType;
+
+/**
+ * Server to client
+ */
 public class EndGameEvent extends Event {
     private String message;
     public EndGameEvent() {

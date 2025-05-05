@@ -1,4 +1,7 @@
-package it.polimi.ingsw.net.socket.events;
+package it.polimi.ingsw.net.socket.events.clientevents;
+
+import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.EventType;
 
 /**
  * Event from client to server. The player wants to select a component through a given index
