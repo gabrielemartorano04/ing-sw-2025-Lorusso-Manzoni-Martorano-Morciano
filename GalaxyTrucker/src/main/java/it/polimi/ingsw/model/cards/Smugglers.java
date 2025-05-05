@@ -120,6 +120,10 @@ public class Smugglers extends Card {
         this.winnerTrucker = winnerTrucker;
     }
 
+    public CardState getCardState() {
+        return cardState;
+    }
+
     public CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Bank bank) throws IllegalStateException, InvalidComponentsException{
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");

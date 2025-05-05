@@ -101,6 +101,7 @@ public class Pirates extends Card {
         return piratesPower;
     }
 
+    public CardState getCardState() {return cardState;}
     /**
      * Returns the list of shoots with direction to protect from
      * @return list of shoots to protect from
@@ -145,7 +146,7 @@ public class Pirates extends Card {
         return cardState;
     }
 
-    public CardState setChooseToGain(Boolean choice) throws IllegalStateException {
+    public CardState setChooseToGain(boolean choice) throws IllegalStateException {
         if (cardState != CardState.GAIN) {
             throw new IllegalStateException("Card state is not GAIN");
         }
