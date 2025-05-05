@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
@@ -17,6 +18,7 @@ public class SimpleView implements NetworkListenerClient.EventReceiver {
     private final GameState gameState;
     private final UI ui;
     private Game game;
+    private GameController gameController;
 
     public SimpleView(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
@@ -56,6 +58,39 @@ public class SimpleView implements NetworkListenerClient.EventReceiver {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+        while (!Thread.interrupted()) {
+            if (gameState != null) {
+                //if something happened
+                switch (game.getGameState()) {
+                    case WAITING -> {
+                        statusWaiting();
+                    }
+                    case BUILDING, FLIGTH -> {
+                        statusPlaying();
+                    }
+                    case ENDED -> {
+                        statusEnded();
+                    }
+                }
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void statusWaiting() {
+
+    }
+
+    private void statusPlaying() {
+
+    }
+
+    private void statusEnded() {
+
     }
 }
 
