@@ -1,12 +1,12 @@
-package it.polimi.ingsw.net.socket.events.clientevents;
+package it.polimi.ingsw.net.socket.events;
 
-import it.polimi.ingsw.net.socket.events.Event;
+
 
 public class CreateGameEvent extends Event {
     private final int numberOfPlayers;
 
     public CreateGameEvent(int numberOfPlayers) {
-        super(ClientEventType.CREATE_GAME);
+        super(EventType.CREATE_GAME);
         this.numberOfPlayers = numberOfPlayers;
     }
 

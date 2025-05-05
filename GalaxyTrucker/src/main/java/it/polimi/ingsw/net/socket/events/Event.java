@@ -1,5 +1,4 @@
 package it.polimi.ingsw.net.socket.events;
-import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 
 import java.io.Serializable;
 
@@ -9,12 +8,12 @@ import java.io.Serializable;
  */
 
 public abstract class Event implements Serializable {
-    private final ClientEventType eventType;
+    private final EventType eventType;
 
-    public Event(ClientEventType eventType) {
+    public Event(EventType eventType) {
         this.eventType = eventType;
     }
-    public ClientEventType getEventType() {
+    public EventType getEventType() {
         return eventType;
     }
 }

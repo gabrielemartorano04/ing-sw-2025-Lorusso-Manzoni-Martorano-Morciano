@@ -1,11 +1,10 @@
-package it.polimi.ingsw.net.socket.events.clientevents;
+package it.polimi.ingsw.net.socket.events;
 
-import it.polimi.ingsw.net.socket.events.Event;
 
 public class HelloEvent extends Event {
     private final String message;
 
-    public HelloEvent(String message, ClientEventType eventType) {
+    public HelloEvent(String message, EventType eventType) {
         super(eventType);
         this.message = message;
     }
