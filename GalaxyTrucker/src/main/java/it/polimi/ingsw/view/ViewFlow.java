@@ -27,6 +27,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.isRunning = true;
         this.gameState = GameState.SETUP;
         ui = new TUI();
+        new Thread().start();
     }
 
     @Override
@@ -63,13 +64,18 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                         statusBuilding();
                     }
                     case FLIGHT -> {
-                        statusFlighting();
+                        statusFlight();
                     }
                     case ENDED -> {
                         statusEnded();
                     }
                 }
             }
+        }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -81,7 +87,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     }
 
-    private void statusFlighting() {
+    private void statusFlight() {
 
     }
 
