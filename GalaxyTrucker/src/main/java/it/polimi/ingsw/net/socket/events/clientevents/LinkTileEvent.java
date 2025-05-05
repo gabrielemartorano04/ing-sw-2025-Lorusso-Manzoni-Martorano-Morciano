@@ -8,17 +8,13 @@ import it.polimi.ingsw.net.socket.events.EventType;
  * The player gives the coordinates.
  */
 public class LinkTileEvent extends Event {
-    private String username, message;
+    private String  message;
     private int x,y;
-    public LinkTileEvent(String username, int x, int y) {
+    public LinkTileEvent( int x, int y) {
         super(EventType.LINK_TILE);
-        this.username = username;
         this.x = x;
         this.y = y;
-        message=username+" wants to link the selected component in position ("+x+", "+y+")";
-    }
-    public String getUsername() {
-        return username;
+        message="I want to link the selected component in position ("+x+", "+y+")";
     }
     public int getX() {
         return x;

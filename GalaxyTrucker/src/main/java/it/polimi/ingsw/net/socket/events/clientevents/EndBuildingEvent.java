@@ -7,15 +7,12 @@ import it.polimi.ingsw.net.socket.events.EventType;
  * Event client to server
  */
 public class EndBuildingEvent extends Event {
-    String username,message;
-    public EndBuildingEvent(String username){
+    String message;
+    public EndBuildingEvent(){
         super(EventType.END_BUILDING);
-        this.username=username;
-        message=username + "'s spaceship is done";
+        message="my spaceship is done";
     }
-    public String getUsername(){
-        return username;
-    }
+
     public String getMessage(){
         return message;
     }

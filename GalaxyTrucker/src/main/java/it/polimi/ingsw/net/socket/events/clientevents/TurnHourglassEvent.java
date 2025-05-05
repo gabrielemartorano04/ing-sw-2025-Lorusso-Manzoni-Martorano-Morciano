@@ -7,15 +7,11 @@ import it.polimi.ingsw.net.socket.events.EventType;
  * Event from client to server, sent when the player wants to turn the hourglass
  */
 public class TurnHourglassEvent extends Event {
-    private String username,message;
+    private String message;
 
-    public TurnHourglassEvent(String username) {
+    public TurnHourglassEvent() {
         super(EventType.TURN_HOURGLASS);
-        this.username = username;
-        message = username+" wants to turn the hourglass";
-    }
-    public String getUsername() {
-        return username;
+        message = "I want to turn the hourglass";
     }
     public String getMessage() {
         return message;

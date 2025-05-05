@@ -8,21 +8,17 @@ import it.polimi.ingsw.net.socket.events.EventType;
  */
 public class SelectTileEvent extends Event {
 
-    private String message,username;
+    private String message;
     private int index;
 
-    public SelectTileEvent(String username, int index) {
+    public SelectTileEvent( int index) {
         super(EventType.SELECT_TILE);
-        this.username = username;
         this.index = index;
-        message = username + " select component " + index;
+        message = "I select component " + index;
     }
 
     public String getMessage() {
         return message;
-    }
-    public String getUsername() {
-        return username;
     }
     public int getIndex() {
         return index;
