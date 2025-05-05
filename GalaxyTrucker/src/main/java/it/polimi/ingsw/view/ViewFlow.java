@@ -9,7 +9,7 @@ import it.polimi.ingsw.net.socket.events.Event;
 
 import java.io.IOException;
 
-public class SimpleView implements NetworkListenerClient.EventReceiver {
+public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private final ClientHandler clientHandler;
     private final InputReader inputReader;
     private final InputParser inputParser;
@@ -20,7 +20,7 @@ public class SimpleView implements NetworkListenerClient.EventReceiver {
     private Game game;
     private GameController gameController;
 
-    public SimpleView(ClientHandler clientHandler) {
+    public ViewFlow(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
         this.inputReader = new InputReader();
         this.inputParser = new InputParser();

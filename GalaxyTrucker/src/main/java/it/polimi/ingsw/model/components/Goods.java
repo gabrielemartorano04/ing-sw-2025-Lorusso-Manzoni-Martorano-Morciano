@@ -61,4 +61,22 @@ public class Goods {
     public int getY() {
         return y;
     }
+
+    public String getColor() {
+        switch (value){
+            case 1 -> {
+                return "blue";
+            }
+            case 2 -> {
+                return "green";
+            }
+            case 3 -> {
+                return "yellow";
+            }
+            case 4 -> {
+                return "red";
+            }
+        }
+        return "";
+    }
 }
