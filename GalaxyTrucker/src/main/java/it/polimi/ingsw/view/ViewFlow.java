@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.view.text.TUI;
 
 public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private final ClientHandler clientHandler;
@@ -68,11 +69,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                         statusEnded();
                     }
                 }
-            }
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             }
         }
     }
