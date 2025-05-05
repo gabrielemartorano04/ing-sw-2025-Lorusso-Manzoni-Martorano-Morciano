@@ -7,8 +7,6 @@ import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.socket.events.Event;
 
-import java.io.IOException;
-
 public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private final ClientHandler clientHandler;
     private final InputReader inputReader;
@@ -52,21 +50,19 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     }
 
     public void run() {
-        try {
-            ui.show_publisher();
-            game.setGameState(GameState.SETUP);
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        ui.showWelcome();
+        game.setGameState(GameState.SETUP);
         while (!Thread.interrupted()) {
             if (gameState != null) {
-                //if something happened
                 switch (game.getGameState()) {
                     case WAITING -> {
                         statusWaiting();
                     }
-                    case BUILDING, FLIGTH -> {
-                        statusPlaying();
+                    case BUILDING -> {
+                        statusBuilding();
+                    }
+                    case FLIGHT -> {
+                        statusFlighting();
                     }
                     case ENDED -> {
                         statusEnded();
@@ -85,7 +81,11 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     }
 
-    private void statusPlaying() {
+    private void statusBuilding() {
+
+    }
+
+    private void statusFlighting() {
 
     }
 

@@ -319,7 +319,7 @@ public class Game {
         if (gameState != GameState.BUILDING) {
             throw new IllegalStateException("Cannot start flight phase from state: " + gameState);
         }
-        gameState = GameState.FLIGTH;
+        gameState = GameState.FLIGHT;
     }
 
     public boolean isHourglassExpired() {
