@@ -89,6 +89,10 @@ public class Slavers extends Card {
         return days;
     }
 
+    public CardState getCardState(){
+        return cardState;
+    }
+
     /**
      * Returns the number of cosmic credits to gain
      * @return credit to gain
