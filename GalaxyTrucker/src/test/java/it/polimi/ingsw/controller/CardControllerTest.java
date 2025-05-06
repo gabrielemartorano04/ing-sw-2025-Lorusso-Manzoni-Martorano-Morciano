@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.AbandonedShip;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CardControllerTest {
 
-    private CardController cardController;
+    private CardControllerVecchio cardController;
     private AbandonedShip card;
     @BeforeEach
     void setUp() {
-        cardController = new CardController();
+        cardController = new CardControllerVecchio();
         card=new AbandonedShip(false,1,1,1,1,"GT-cards_I_IT_0117.jpg","GT-cards_I_IT_0121.jpg");
     }
 
