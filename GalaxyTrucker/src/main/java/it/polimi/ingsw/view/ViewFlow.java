@@ -1,20 +1,19 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.socket.events.Event;
 import it.polimi.ingsw.view.text.TUI;
 
-public clas
-Flow implements NetworkListenerClient.EventReceiver {
+public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private final ClientHandler clientHandler;
     private final InputReader inputReader;
     private final InputParser inputParser;
     private final String nickname;
     private final UI ui;
     private volatile boolean running;
+
+    public enum
 
     public ViewFlow(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
@@ -31,7 +30,11 @@ Flow implements NetworkListenerClient.EventReceiver {
         System.out.println("[SERVER] Messaggio ricevuto: " + event);
         //!!questa deve gestire gli eventi dal server!!
         switch (event.getEventType()){
-            case LOGIN -> {}
+            case LOGIN -> {
+                ui.showWelcome();
+                ui.askNickname();
+
+            }
             case END_GAME -> {}
             case NEXT_TURN -> {}
             case LINK_TILE -> {}
@@ -40,14 +43,11 @@ Flow implements NetworkListenerClient.EventReceiver {
             case CREATE_GAME -> {}
             case SELECT_TILE -> {}
             case END_BUILDING -> {}
-            case
 
         }
     }
 
     public void start() {
-        ui.showWelcome();
-
         // Thread per input utente
         new Thread(() -> {
             while (running) {
@@ -68,21 +68,10 @@ Flow implements NetworkListenerClient.EventReceiver {
             }
         }, "UserInputThread").start();
 
-        // Thread per eventi da server
-        new Thread(() -> {
-            while (running) {
-                // Bloccante o polling da socket
-                Event eventFromServer = clientHandler.getNextEventBlocking();
-                if (eventFromServer != null) {
-                    onEventReceived(eventFromServer);
-                }
-            }
-        }, "ServerListenerThread").start();
     }
 
     public void run() {
-        ui.showWelcome();
-        start(); // Il tuo vecchio 'start()' può diventare questo
+        start();
         while (running) {
             try {
                 Thread.sleep(100);
