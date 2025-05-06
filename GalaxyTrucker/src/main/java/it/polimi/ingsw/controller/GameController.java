@@ -25,8 +25,8 @@ public class GameController {
     private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
 
-    public GameController(Game game) {
-        this.game = game;
+    public GameController() {
+        this.game = new Game();
     }
 
     public synchronized boolean tryAddPlayer(String nickname, PlayerColors color) throws IllegalStateException, IllegalArgumentException {
