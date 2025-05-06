@@ -103,7 +103,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     case SELECT_COMPONENT -> {
                         for (){
                             if (game.getComponents().getComponents().getFirst().getCovered()==false){
-                                ui.showAvailableComponents();
+                                ui.showAvailableComponent();
                             }
                         }
                     }
