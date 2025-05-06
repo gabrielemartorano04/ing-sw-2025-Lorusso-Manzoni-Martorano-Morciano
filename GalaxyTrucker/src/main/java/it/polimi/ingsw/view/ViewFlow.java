@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
@@ -13,21 +12,15 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private final InputReader inputReader;
     private final InputParser inputParser;
     private final String nickname;
-    private final boolean isRunning;
-    private GameState gameState;
-    private BuildingState buildingState;
-    private CardState cardState;
     private final UI ui;
-    private Trucker trucker;
+    private volatile boolean running;
 
     public ViewFlow(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
         this.inputReader = new InputReader();
         this.inputParser = new InputParser();
         this.nickname = "";
-        this.isRunning = true;
-        this.buildingState = null;
-        this.cardState = null;
+        this.running = true;
         ui = new TUI();
         new Thread().start();
     }
@@ -35,84 +28,67 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     @Override
     public void onEventReceived(Event event) {
         System.out.println("[SERVER] Messaggio ricevuto: " + event);
+        //!!questa deve gestire gli eventi dal server!!
+        switch (event.getEventType()){
+            case LOGIN -> {}
+            case END_GAME -> {}
+            case NEXT_TURN -> {}
+            case LINK_TILE -> {}
+            case SHOW_CARD -> {}
+            case ASK_BOOLEAN -> {}
+            case CREATE_GAME -> {}
+            case SELECT_TILE -> {}
+            case END_BUILDING -> {}
+            case
+
+        }
     }
 
     public void start() {
-        System.out.println("SimpleView avviata.");
-        while (true) {
-            String input = inputReader.readLine();
-            if (input.equalsIgnoreCase("exit")) {
-                break;
-            }
+        ui.showWelcome();
 
-            Event event = inputParser.parse(input);
-            if (event != null) {
-                clientHandler.handleEvent(event);
+        // Thread per input utente
+        new Thread(() -> {
+            while (running) {
+                String input = null;
+                try {
+                    input = inputReader.nextLineBlocking();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                if (input == null || input.equalsIgnoreCase("exit")) {
+                    running = false;
+                    break;
+                }
+                Event event = inputParser.parse(input);
+                if (event != null) {
+                    clientHandler.handleEvent(event);
+                }
             }
-        }
-        System.out.println("Chiusura View.");
+        }, "UserInputThread").start();
+
+        // Thread per eventi da server
+        new Thread(() -> {
+            while (running) {
+                // Bloccante o polling da socket
+                Event eventFromServer = clientHandler.getNextEventBlocking();
+                if (eventFromServer != null) {
+                    onEventReceived(eventFromServer);
+                }
+            }
+        }, "ServerListenerThread").start();
     }
 
     public void run() {
         ui.showWelcome();
-        while (!Thread.interrupted()) {
-        }
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void statusWaiting() {
-        while (!Thread.interrupted()) {
-
-        }
-    }
-
-    private void statusBuilding() {
-        while (!Thread.interrupted()) {
-            if(buildingState != null) {
-                switch (buildingState){
-                    case BUILDING -> {
-                        ui.showBuildOptions();
-                    }
-                    case SELECT_COMPONENT -> {
-                        for (){
-                            if (game.getComponents().getComponents().getFirst().getCovered()==false){
-                                ui.showAvailableComponent();
-                            }
-                        }
-                    }
-                    case SHOW_STACK -> {
-                        ui.show
-                    }
-                    case TURN_HOURGLASS -> {
-
-                    }
-                    case LINK -> {
-
-                    }
-                    case KEEP -> {
-                        ui.showKeptComponents(trucker.getSpaceShip().getKept());
-                    }
-                    case WAIT_END -> {
-                        ui.
-                    }
-                    case END -> {
-
-                    }
-                }
+        start(); // Il tuo vecchio 'start()' può diventare questo
+        while (running) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         }
-    }
-
-    private void statusFlight() {
-
-    }
-
-    private void statusEnded() {
-
     }
 }
 

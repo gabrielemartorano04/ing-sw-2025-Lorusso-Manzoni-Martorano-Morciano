@@ -2,15 +2,19 @@ package it.polimi.ingsw.view.text;
 
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.components.Goods;
+import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.UI;
 
 import java.util.*;
 
 public class TUI extends UI {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final InputReader inputReader;
+
+    public TUI() {
+        this.inputReader = new InputReader();
+    }
 
     @Override
     public void showWelcome() {
@@ -160,7 +164,7 @@ public class TUI extends UI {
 
     @Override
     public void showScores(Map<String, Integer> finalScores) {
-        System.out.println("📊 Punteggi finali:");
+        System.out.println("Punteggi finali:");
         finalScores.forEach((name, score) -> System.out.println("- " + name + ": " + score));
     }
 
@@ -224,56 +228,24 @@ public class TUI extends UI {
     }
 
     @Override
-    public String askNickname() {
+    public void askNickname() {
         System.out.print("Inserisci il tuo nickname: ");
-        return scanner.nextLine().trim();
     }
 
     @Override
-    public PlayerColors askColor() {
+    public void askColor() {
         System.out.println("Colori disponibili: YELLOW, RED, GREEN, BLUE");
-        while (true) {
-            System.out.print("Scegli un colore: ");
-            String input = scanner.nextLine().trim().toUpperCase();
-            try {
-                return PlayerColors.valueOf(input);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Colore non valido. Riprova.");
-            }
-        }
+        System.out.print("Scegli un colore: ");
     }
 
     @Override
-    public int askStackIndex() {
+    public void askStackIndex() {
         System.out.print("Scegli lo stack (0-3): ");
-        while (true) {
-            try {
-                int index = Integer.parseInt(scanner.nextLine().trim());
-                if (index >= 0 && index <= 3) return index;
-                else System.out.print("Indice non valido. Riprova: ");
-            } catch (NumberFormatException e) {
-                System.out.print("Input non valido. Riprova: ");
-            }
-        }
     }
 
     @Override
-    public int[] askCoordinates() {
+    public void askCoordinates() {
         System.out.print("Inserisci coordinate (x y): ");
-        while (true) {
-            String[] parts = scanner.nextLine().trim().split("\\s+");
-            if (parts.length == 2) {
-                try {
-                    int x = Integer.parseInt(parts[0]);
-                    int y = Integer.parseInt(parts[1]);
-                    return new int[]{x, y};
-                } catch (NumberFormatException e) {
-                    System.out.print("Valori non numerici. Riprova: ");
-                }
-            } else {
-                System.out.print("Formato errato. Inserisci due numeri separati da spazio: ");
-            }
-        }
     }
 
     @Override
@@ -285,25 +257,8 @@ public class TUI extends UI {
     }
 
     @Override
-    public List<Integer> askGoodsIndexesToRemove(int numToRemove) {
+    public void askGoodsIndexesToRemove(int numToRemove) {
         System.out.println("Seleziona " + numToRemove + " merci da rimuovere (es. 0 1):");
-        while (true) {
-            try {
-                String input = scanner.nextLine().trim();
-                String[] parts = input.split("\\s+");
-                if (parts.length != numToRemove) {
-                    System.out.println("⚠️ Devi selezionare esattamente " + numToRemove + " merci.");
-                    continue;
-                }
-                List<Integer> indexes = new ArrayList<>();
-                for (String s : parts) {
-                    indexes.add(Integer.parseInt(s));
-                }
-                return indexes;
-            } catch (NumberFormatException e) {
-                System.out.println("⚠️ Input non valido. Inserisci numeri separati da spazio.");
-            }
-        }
     }
 
     @Override
@@ -315,49 +270,18 @@ public class TUI extends UI {
     }
 
     @Override
-    public Component askComponentFromStack(List<Component> stack) {
+    public void askComponentFromStack(List<Component> stack) {
         System.out.println("\nComponenti disponibili nello stack:");
         for (int i = 0; i < stack.size(); i++) {
             System.out.println("[" + i + "] " + stack.get(i).getType());
         }
 
         System.out.print("Seleziona un componente dallo stack: ");
-        while (true) {
-            try {
-                int index = Integer.parseInt(scanner.nextLine().trim());
-                if (index >= 0 && index < stack.size()) {
-                    return stack.get(index);
-                } else {
-                    System.out.print("Indice non valido. Riprova: ");
-                }
-            } catch (NumberFormatException e) {
-                System.out.print("Input non numerico. Riprova: ");
-            }
-        }
     }
 
     @Override
-    public int[] askPlacedComponent(Component[][] layout) {
+    public void askPlacedComponent(Component[][] layout) {
         System.out.println("\nSeleziona un componente dalla tua nave (formato: x y):");
-
-        while (true) {
-            try {
-                System.out.print("Inserisci coordinate (x y): ");
-                String[] parts = scanner.nextLine().trim().split("\\s+");
-                if (parts.length != 2) throw new NumberFormatException();
-
-                int x = Integer.parseInt(parts[0]);
-                int y = Integer.parseInt(parts[1]);
-
-                if (x < 0 || x >= layout.length || y < 0 || y >= layout[0].length || layout[x][y] == null) {
-                    System.out.println("Nessun componente in quella posizione. Riprova.");
-                    continue;
-                }
-                return new int[]{x, y};
-
-            } catch (NumberFormatException e) {
-                System.out.println("Input non valido. Inserisci due numeri interi separati da spazio.");
-            }
-        }
+        System.out.print("Inserisci coordinate (x y): ");
     }
 }
