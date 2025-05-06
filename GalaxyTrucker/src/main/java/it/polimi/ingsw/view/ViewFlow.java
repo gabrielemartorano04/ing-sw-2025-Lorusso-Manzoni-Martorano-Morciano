@@ -18,9 +18,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private BuildingState buildingState;
     private CardState cardState;
     private final UI ui;
-    private Game game;
-    private AvailableComponents availableComponents;
-    private GameController gameController;
     private Trucker trucker;
 
     public ViewFlow(ClientHandler clientHandler) {
@@ -59,24 +56,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public void run() {
         ui.showWelcome();
         while (!Thread.interrupted()) {
-            gameState= game.getGameState();
-            if (gameState != null) {
-                switch (game.getGameState()) {
-                    case WAITING -> {
-                        statusWaiting();
-                    }
-                    case BUILDING -> {
-                        this.buildingState = BuildingState.BUILDING;
-                        statusBuilding();
-                    }
-                    case FLIGHT -> {
-                        statusFlight();
-                    }
-                    case ENDED -> {
-                        statusEnded();
-                    }
-                }
-            }
         }
         try {
             Thread.sleep(100);
@@ -86,7 +65,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     }
 
     private void statusWaiting() {
-        game.setGameState(GameState.WAITING);
         while (!Thread.interrupted()) {
 
         }
@@ -94,7 +72,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     private void statusBuilding() {
         while (!Thread.interrupted()) {
-            buildingState = trucker.getBuildingState();
             if(buildingState != null) {
                 switch (buildingState){
                     case BUILDING -> {
