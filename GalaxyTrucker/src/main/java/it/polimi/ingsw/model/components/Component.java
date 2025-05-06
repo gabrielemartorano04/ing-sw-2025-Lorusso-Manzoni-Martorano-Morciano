@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
  * Class that manages the single component
  */
 public abstract sealed class Component permits BatteryStorage, Cabin, Cannon, EmptySpace, Engine, LifeSupport,Load,Pipes,Shield {
-    protected int[] link;
+    protected Integer[] link;
     protected boolean selected;
     protected boolean covered;
     private boolean visited;
@@ -24,7 +24,7 @@ public abstract sealed class Component permits BatteryStorage, Cabin, Cannon, Em
      * @param frontImagePath front image of the component
      */
     public Component(int linkU, int linkR, int linkD, int linkL, String type, String frontImagePath) {
-        this.link = new int[] {linkU, linkR, linkD, linkL};
+        this.link = new Integer[] {linkU, linkR, linkD, linkL};
         this.selected = false;
         this.covered = true;
         this.visited = false;
@@ -89,7 +89,7 @@ public abstract sealed class Component permits BatteryStorage, Cabin, Cannon, Em
      * position 3 = left side
      * @return array of number of link
      */
-    public int[] getLink() {
+    public Integer[] getLink() {
         return link; //standard: il primo elemento si riferisce ai link superiori, il secondo ai link di dx e così via
     }
 
@@ -131,5 +131,12 @@ public abstract sealed class Component permits BatteryStorage, Cabin, Cannon, Em
     public static void main(String[] args) {
         Component com=new Engine(2, 0, 0, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web77.jpg", false);
         System.out.println(com.getType());
+    }
+
+    @Override
+    public String toString(){
+        String s;
+        s="tipo: "+type.toString()+" link alto: "+link[0].toString()+" link dx: "+ link[1].toString()+" link lx: "+ link[2].toString()+" link basso: "+ link[3].toString();
+        return s;
     }
 }

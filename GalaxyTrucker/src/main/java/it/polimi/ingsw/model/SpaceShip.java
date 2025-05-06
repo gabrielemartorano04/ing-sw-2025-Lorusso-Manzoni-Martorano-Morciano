@@ -515,7 +515,7 @@ public class SpaceShip {
         comL = components[x][y - 1];
 
         int linkU=0,linkR=0,linkD=0,linkL=0;
-        int[] link = com.getLink();
+        Integer[] link = com.getLink();
         if(comU!=null){
              linkU= comU.getLink()[2];
         }

@@ -31,7 +31,7 @@ public abstract class UI {
     //BUILDING
     public abstract void showBuildPhaseStart();
 
-    public abstract void showAvailableComponents(List<Component> stack);
+    public abstract void showAvailableComponent(Component component);
     public abstract void showKeptComponents(List<Component> kept);
     public abstract void showSelectComponent();
     public abstract void showBuildOptions(); // (link / keep / discard)

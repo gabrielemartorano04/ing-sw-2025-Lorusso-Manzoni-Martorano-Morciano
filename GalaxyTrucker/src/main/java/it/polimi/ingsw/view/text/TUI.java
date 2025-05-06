@@ -64,11 +64,9 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showAvailableComponents(List<Component> stack) {
-        System.out.println("Componenti disponibili nello stack:");
-        for (int i = 0; i < stack.size(); i++) {
-            System.out.println("[" + i + "] " + stack.get(i).getType());
-        }
+    public void showAvailableComponent(Component component) {
+        System.out.println("Componenti selezionato:");
+        System.out.println(component.getType());
     }
 
     @Override
