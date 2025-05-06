@@ -31,38 +31,31 @@ public class InputParser {
 
     }
 
-    public Event parseBuilding(String input, BuildingState buildingState){
+    public Event parseBuilding(String input){
         if (input == null || input.isEmpty()) {
             return null;
         }
         String[] tokens = input.split("\\s+", 3);
         String command = tokens[0].toLowerCase();
-
-        switch(buildingState){
-            case BUILDING ->{
-                switch (command) {
-                    case "hourglass":
-                        return new TurnHourglassEvent();
-                    case "select":
-                        return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
-                    case "stack":
-                        return new ShowStackEvent(Integer.parseInt(tokens[1].trim()));
-                    case "end":
-                        return new EndBuildingEvent();
-                }
-            }
-            case SELECT_COMPONENT -> {
-                switch (command) {
-                    case "link":
-                        return new LinkTileEvent(Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()));
-                    case "keep":
-                        return new KeepTileEvent();
-                    case "discard":
-                }       return new DiscardTileEvent();
-            }
+        switch (command) {
+            case "hourglass":
+                return new TurnHourglassEvent();
+            case "select":
+                return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
+            case "stack":
+                return new ShowStackEvent(Integer.parseInt(tokens[1].trim()));
+            case "end":
+                return new EndBuildingEvent();
+            case "link":
+                return new LinkTileEvent(Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()));
+            case "keep":
+                return new KeepTileEvent();
+            case "discard":
+                return new DiscardTileEvent();
+            default: System.out.println("Error: unknown command: " + command);
+                return null;
         }
-        System.out.println("Error: unknown command: " + command);
-        return null;
+
     }
     public Event parseFlight(String input) {
         if (input == null || input.isEmpty()) {
