@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.finalvisitor;
+package it.polimi.ingsw.model.callers;
 
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
@@ -7,13 +7,12 @@ import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.cards.WarZone;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.utilities.exceptions.*;
-import it.polimi.ingsw.utilities.params.Params;
 import it.polimi.ingsw.utilities.results.*;
 
 import java.util.ArrayList;
 
-public class WarZoneVisitor {
-    public Result visit(WarZone card, Game game) {
+public class WarZoneCaller implements CardCaller {
+    public CardStateResult call(WarZone card, Game game) {
         if(card.getCardState()== CardState.WARZONE){
             return new CardStateResult(card.combatZone(game));
         }else if(card.getCardState() == CardState.ROLL_DICE){
@@ -24,7 +23,7 @@ public class WarZoneVisitor {
         }
     }
 
-    public Result visit(WarZone card, Game game, Trucker trucker, ArrayList<int[]> coord) throws InvalidComponentsException{
+    public CardStateResult call(WarZone card, Game game, Trucker trucker, ArrayList<int[]> coord) throws InvalidComponentsException{
         if(card.getCardState()== CardState.WAIT_CANNONS){
             card.setCannonCoordinates(game,trucker, coord);
         }else {
@@ -33,46 +32,46 @@ public class WarZoneVisitor {
         return new CardStateResult(card.getCardState());
     }
 
-    public Result visit(WarZone card, Game game, ArrayList<ArrayList<int[]>> truckersCoordinates){
+    public CardStateResult call(WarZone card, Game game, ArrayList<ArrayList<int[]>> truckersCoordinates){
         card.findWeakestTrucker(game, truckersCoordinates);
         return new CardStateResult(card.getCardState());
     }
 
-    public Result visit(WarZone card, Trucker trucker, Bank bank){
+    public CardStateResult call(WarZone card, Trucker trucker, Bank bank){
         return new CardStateResult(card.manageRemoveGoods(trucker, bank));
     }
 
-    public Result visit(WarZone card, Trucker trucker){
+    public GoodsListResult call(WarZone card, Trucker trucker){
         ArrayList<Goods> goodsList = card.plotGoodsList(trucker);
         return new GoodsListResult(card.getCardState(), goodsList);
     }
 
-    public Result visit(WarZone card, ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen{
+    public CardStateResult call(WarZone card, ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen{
         card.removeAsking(indexes, trucker, bank);
         return new CardStateResult(card.getCardState());
     }
 
-    public Result visit(WarZone card) {
-        if (card.getCardState() == CardState.PLOT_BATTERIES) {
-            int result = card.getNumOfBatteriesToRemove();
-            return new IntResult(card.getCardState(), result);
-        }else {
-            int[] result = card.getCurrentMeteor();
-            return new CoordinatesResult(card.getCardState(), result);
-        }
+    public IntResult callGetBatteries(WarZone card) {
+        int result = card.getNumOfBatteriesToRemove();
+        return new IntResult(card.getCardState(), result);
     }
 
-    public Result visit(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries{
+    public CoordinatesResult callGetMeteor(WarZone card) {
+        int[] result = card.getCurrentMeteor();
+        return new CoordinatesResult(card.getCardState(), result);
+    }
+
+    public CardStateResult call(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries{
         card.removeBatteries(coordinatesToRemoveBatteries, trucker);
         return new CardStateResult(card.getCardState());
     }
 
-    public Result visit(WarZone card, boolean choice){
+    public CardStateResult call(WarZone card, boolean choice){
         card.setAnswers(choice);
         return new CardStateResult(card.getCardState());
     }
 
-    public Result visit(WarZone card, ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates{
+    public CardStateResult call(WarZone card, ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates{
         return new CardStateResult(card.removeCrew(coordinates));
     }
 

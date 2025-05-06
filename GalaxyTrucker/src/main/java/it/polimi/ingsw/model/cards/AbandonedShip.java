@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.callers.AbandonedShipCaller;
+import it.polimi.ingsw.model.resulthandlers.AbandonedShipHandler;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
@@ -22,6 +24,8 @@ public class AbandonedShip extends Card{
     private ArrayList<int[]> coordinates = null; //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
     private CardState state = CardState.ATTESA_RISPOSTE;
     private int playerDecisions;
+    private AbandonedShipHandler handler;
+    private AbandonedShipCaller caller;
 
 
     /**
@@ -42,6 +46,7 @@ public class AbandonedShip extends Card{
         this.truckerThatHasDecided = null;
         this.playerDecisions = 0;
         this.state = CardState.ATTESA_RISPOSTE;
+
     }
 
     @Override
@@ -53,6 +58,7 @@ public class AbandonedShip extends Card{
     public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidComponentsException {
         return visitor.visitForAbandonedShip(this, params);
     }
+
 
     /**
      * Returns the number of days of flight to lose
