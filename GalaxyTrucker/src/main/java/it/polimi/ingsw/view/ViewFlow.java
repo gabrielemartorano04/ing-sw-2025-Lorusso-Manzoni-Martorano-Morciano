@@ -1,10 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.model.BuildingState;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameState;
-import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
@@ -22,6 +19,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private CardState cardState;
     private final UI ui;
     private Game game;
+    private AvailableComponents availableComponents;
     private GameController gameController;
     private Trucker trucker;
 
@@ -31,7 +29,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.inputParser = new InputParser();
         this.nickname = "";
         this.isRunning = true;
-        this.gameState = GameState.SETUP;
         this.buildingState = null;
         this.cardState = null;
         ui = new TUI();
@@ -61,8 +58,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     public void run() {
         ui.showWelcome();
-        game.setGameState(GameState.SETUP);
         while (!Thread.interrupted()) {
+            gameState= game.getGameState();
             if (gameState != null) {
                 switch (game.getGameState()) {
                     case WAITING -> {
@@ -96,18 +93,22 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     }
 
     private void statusBuilding() {
-        game.setGameState(GameState.BUILDING);
         while (!Thread.interrupted()) {
+            buildingState = trucker.getBuildingState();
             if(buildingState != null) {
-                switch (trucker.getBuildingState()){
+                switch (buildingState){
                     case BUILDING -> {
-
+                        ui.showBuildOptions();
                     }
                     case SELECT_COMPONENT -> {
-
+                        for (){
+                            if (game.getComponents().getComponents().getFirst().getCovered()==false){
+                                ui.showAvailableComponents();
+                            }
+                        }
                     }
                     case SHOW_STACK -> {
-
+                        ui.show
                     }
                     case TURN_HOURGLASS -> {
 
@@ -116,10 +117,10 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
                     }
                     case KEEP -> {
-
+                        ui.showKeptComponents(trucker.getSpaceShip().getKept());
                     }
                     case WAIT_END -> {
-
+                        ui.
                     }
                     case END -> {
 

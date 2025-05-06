@@ -9,7 +9,7 @@ import java.util.Random;
  * Class that manages the components as a whole
  */
 
-public class AvailableComponents {
+public class AvailableComponents extends Component {
     private ArrayList<Component> components;
 
     /**
