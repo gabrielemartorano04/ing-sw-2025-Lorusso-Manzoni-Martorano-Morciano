@@ -78,6 +78,9 @@ public class AbandonedShip extends Card{
         return numHuman;
     }
 
+    public int getPlayerDecisions() {
+        return playerDecisions;
+    }
 
     /**
      * Sets the only trucker that has chosen to take the ship
