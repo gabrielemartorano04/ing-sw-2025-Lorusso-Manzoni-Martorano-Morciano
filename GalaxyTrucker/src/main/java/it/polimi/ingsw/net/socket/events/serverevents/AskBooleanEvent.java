@@ -6,9 +6,9 @@ import it.polimi.ingsw.net.socket.events.EventType;
 
 public class AskBooleanEvent extends Event {
     private String question;
-    private String userId;
+    private int userId;
 
-    public AskBooleanEvent(EventType eventType, String question, String Id) {
+    public AskBooleanEvent(EventType eventType, String question, int Id) {
         super(eventType);
         this.question = question;
         this.userId = Id;
@@ -18,7 +18,7 @@ public class AskBooleanEvent extends Event {
         return question;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 }
