@@ -14,7 +14,7 @@ public class TUI extends UI {
 
     @Override
     public void showWelcome() {
-        System.out.println("🚀 Benvenuto in Galaxy Trucker! (by Cranio creations)");
+        System.out.println("Benvenuto in Galaxy Trucker! (by Cranio creations)");
     }
 
     @Override
@@ -30,37 +30,37 @@ public class TUI extends UI {
 
     @Override
     public void showColorTaken() {
-        System.out.println("❌ Colore già scelto, scegline un altro.");
+        System.out.println("Colore già scelto, scegline un altro.");
     }
 
     @Override
     public void showNicknameTaken() {
-        System.out.println("❌ Nickname già in uso, scegline un altro.");
+        System.out.println("Nickname già in uso, scegline un altro.");
     }
 
     @Override
     public void showPlayerJoined(String nickname) {
-        System.out.println("✅ Giocatore " + nickname + " si è unito alla partita.");
+        System.out.println("Giocatore " + nickname + " si è unito alla partita.");
     }
 
     @Override
     public void showWaitingForPlayers(int currentPlayers) {
-        System.out.println("⏳ In attesa di giocatori... (" + currentPlayers + ")");
+        System.out.println("In attesa di giocatori... (" + currentPlayers + ")");
     }
 
     @Override
     public void showStartCountdown(int secondsLeft) {
-        System.out.println("⏲️ Il gioco inizierà tra " + secondsLeft + " secondi.");
+        System.out.println("Il gioco inizierà tra " + secondsLeft + " secondi.");
     }
 
     @Override
     public void showSetupComplete() {
-        System.out.println("✅ Setup completato. Inizio costruzione nave.");
+        System.out.println("Setup completato. Inizio costruzione nave.");
     }
 
     @Override
     public void showBuildPhaseStart() {
-        System.out.println("\n🛠️ Inizio della fase di BUILDING. Costruisci la tua nave!");
+        System.out.println("\nInizio della fase di BUILDING. Costruisci la tua nave!");
     }
 
     @Override
@@ -95,67 +95,67 @@ public class TUI extends UI {
 
     @Override
     public void showInvalidPlacement(String reason) {
-        System.out.println("❌ Posizionamento non valido: " + reason);
+        System.out.println("Posizionamento non valido: " + reason);
     }
 
     @Override
     public void showHourglassTurned() {
-        System.out.println("⏳ Clessidra girata.");
+        System.out.println("Clessidra girata.");
     }
 
     @Override
     public void showTimeExpired() {
-        System.out.println("⏰ Tempo scaduto!");
+        System.out.println("Tempo scaduto!");
     }
 
     @Override
     public void showWaitForOthers() {
-        System.out.println("⏸️ Attendi che gli altri giocatori finiscano.");
+        System.out.println("Attendi che gli altri giocatori finiscano.");
     }
 
     @Override
     public void showBuildComplete() {
-        System.out.println("🚀 Costruzione completata!");
+        System.out.println("Costruzione completata!");
     }
 
     @Override
     public void showFlightPhaseStart() {
-        System.out.println("🌌 Inizio fase di volo. Preparati agli eventi spaziali!");
+        System.out.println("Inizio fase di volo. Preparati agli eventi spaziali!");
     }
 
     @Override
     public void showCardDrawn(Card card) {
-        System.out.println("🃏 Carta pescata: " + card.getName());
+        System.out.println("Carta pescata: " + card.getName());
     }
 
     @Override
     public void showCardEffectStart(Card card) {
-        System.out.println("✨ Effetto della carta: " + card.getDescription());
+        System.out.println("Effetto della carta: " + card.getDescription());
     }
 
     @Override
     public void showCardEffectEnd(Card card) {
-        System.out.println("✅ Carta " + card.getName() + " completata.");
+        System.out.println("Carta " + card.getName() + " completata.");
     }
 
     @Override
     public void showTruckerMoved(String nickname, int newPosition) {
-        System.out.println("🚀 " + nickname + " si è mosso alla posizione " + newPosition);
+        System.out.println(nickname + " si è mosso alla posizione " + newPosition);
     }
 
     @Override
     public void showTruckerWithdrawn(String nickname) {
-        System.out.println("💥 " + nickname + " si è ritirato dal volo.");
+        System.out.println(nickname + " si è ritirato dal volo.");
     }
 
     @Override
     public void showTruckerLostAllCrew(String nickname) {
-        System.out.println("☠️ " + nickname + " ha perso tutto l'equipaggio.");
+        System.out.println(nickname + " ha perso tutto l'equipaggio.");
     }
 
     @Override
     public void showGameEnded() {
-        System.out.println("🏁 Partita terminata!");
+        System.out.println("Partita terminata!");
     }
 
     @Override
@@ -166,36 +166,36 @@ public class TUI extends UI {
 
     @Override
     public void showWinner(String nickname) {
-        System.out.println("🏆 Vincitore: " + nickname + "!");
+        System.out.println("Vincitore: " + nickname + "!");
     }
 
     @Override
     public void showError(String message) {
-        System.out.println("❗ ERRORE: " + message);
+        System.out.println("ERRORE: " + message);
     }
 
     @Override
     public void showConnectionLost() {
-        System.out.println("🚫 Connessione persa.");
+        System.out.println("Connessione persa.");
     }
 
     @Override
     public void showInvalidCommand(String expectedFormat) {
-        System.out.println("❌ Comando non valido. Atteso: " + expectedFormat);
+        System.out.println("Comando non valido. Atteso: " + expectedFormat);
     }
 
     @Override
     public void showPlayerShipStatus(String nickname, int position, int batteryCount, int humanCount, int alienCount,
                                      int cannonPower, int shieldPower, int enginePower, Map<String, Integer> goods) {
-        System.out.println("\n🔍 Stato della nave di " + nickname + ":");
-        System.out.println("📍 Posizione: " + position);
-        System.out.println("🔋 Batterie: " + batteryCount);
-        System.out.println("🧑 Umani: " + humanCount + ", 👽 Alieni: " + alienCount);
-        System.out.println("🔫 Potenza fuoco: " + cannonPower);
-        System.out.println("🛡️ Scudi: " + shieldPower);
-        System.out.println("🚀 Motori: " + enginePower);
+        System.out.println("\nStato della nave di " + nickname + ":");
+        System.out.println("Posizione: " + position);
+        System.out.println("Batterie: " + batteryCount);
+        System.out.println("Umani: " + humanCount + ", 👽 Alieni: " + alienCount);
+        System.out.println("Potenza fuoco: " + cannonPower);
+        System.out.println("Scudi: " + shieldPower);
+        System.out.println("Motori: " + enginePower);
 
-        System.out.println("📦 Merci a bordo:");
+        System.out.println("Merci a bordo:");
         for (Map.Entry<String, Integer> entry : goods.entrySet()) {
             System.out.println("  - " + entry.getKey() + ": " + entry.getValue());
         }
@@ -203,7 +203,7 @@ public class TUI extends UI {
 
     @Override
     public void showShipLayout(String nickname, Component[][] layout) {
-        System.out.println("\n🛠️ Layout nave di " + nickname + ":");
+        System.out.println("\nLayout nave di " + nickname + ":");
 
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[i].length; j++) {
@@ -238,7 +238,7 @@ public class TUI extends UI {
             try {
                 return PlayerColors.valueOf(input);
             } catch (IllegalArgumentException e) {
-                System.out.println("❌ Colore non valido. Riprova.");
+                System.out.println("Colore non valido. Riprova.");
             }
         }
     }
@@ -278,7 +278,7 @@ public class TUI extends UI {
 
     @Override
     public void showGoodsToRemove(List<Goods> goods) {
-        System.out.println("\n📦 Merci da rimuovere:");
+        System.out.println("\nMerci da rimuovere:");
         for (int i = 0; i < goods.size(); i++) {
             System.out.println("[" + i + "] " + goods.get(i).getColor() + " (" + goods.get(i).getValue() + " crediti)");
         }
@@ -308,7 +308,7 @@ public class TUI extends UI {
 
     @Override
     public void showGoodsGained(List<Goods> goods) {
-        System.out.println("🎁 Merci ottenute:");
+        System.out.println("Merci ottenute:");
         for (Goods g : goods) {
             System.out.println("- " + g.getColor() + " (" + g.getValue() + ")");
         }
@@ -316,7 +316,7 @@ public class TUI extends UI {
 
     @Override
     public Component askComponentFromStack(List<Component> stack) {
-        System.out.println("\n🧱 Componenti disponibili nello stack:");
+        System.out.println("\nComponenti disponibili nello stack:");
         for (int i = 0; i < stack.size(); i++) {
             System.out.println("[" + i + "] " + stack.get(i).getType());
         }
@@ -338,7 +338,7 @@ public class TUI extends UI {
 
     @Override
     public int[] askPlacedComponent(Component[][] layout) {
-        System.out.println("\n📌 Seleziona un componente dalla tua nave (formato: x y):");
+        System.out.println("\nSeleziona un componente dalla tua nave (formato: x y):");
 
         while (true) {
             try {
@@ -350,13 +350,13 @@ public class TUI extends UI {
                 int y = Integer.parseInt(parts[1]);
 
                 if (x < 0 || x >= layout.length || y < 0 || y >= layout[0].length || layout[x][y] == null) {
-                    System.out.println("⚠️ Nessun componente in quella posizione. Riprova.");
+                    System.out.println("Nessun componente in quella posizione. Riprova.");
                     continue;
                 }
                 return new int[]{x, y};
 
             } catch (NumberFormatException e) {
-                System.out.println("⚠️ Input non valido. Inserisci due numeri interi separati da spazio.");
+                System.out.println("Input non valido. Inserisci due numeri interi separati da spazio.");
             }
         }
     }
