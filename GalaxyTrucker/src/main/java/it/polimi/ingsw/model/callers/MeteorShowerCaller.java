@@ -1,19 +1,18 @@
-package it.polimi.ingsw.model.finalvisitor;
+package it.polimi.ingsw.model.callers;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.cards.MeteorShower;
 import it.polimi.ingsw.utilities.results.CardStateResult;
 import it.polimi.ingsw.utilities.results.CoordinatesResult;
-import it.polimi.ingsw.utilities.results.Result;
 
-public class MeteorShowerVisitor {
-    public Result visit(MeteorShower card){
+public class MeteorShowerCaller implements CardCaller{
+    public CoordinatesResult call(MeteorShower card){
         int[] result = card.getCurrentMeteor();
         return new CoordinatesResult(card.getCardState(), result);
     }
-    public Result visit(MeteorShower card, Game game){
-        Result result = null;
+    public CardStateResult call(MeteorShower card, Game game){
+        CardStateResult result = null;
         if(card.getCardState() == CardState.ROLL_DICE){
             result =  new CardStateResult(card.rollDice(game));
         } else if (card.getCardState() == CardState.ESECUZIONE){
@@ -21,7 +20,7 @@ public class MeteorShowerVisitor {
         }
         return result;
     }
-    public Result visit(MeteorShower card, boolean answer){
+    public CardStateResult call(MeteorShower card, boolean answer){
         return new CardStateResult(card.setAnswers(answer));
     }
 }
