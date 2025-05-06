@@ -1,9 +1,12 @@
-package it.polimi.ingsw.net.socket.events;
+package it.polimi.ingsw.net.socket.events.serverevents;
+
+import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.EventType;
 
 /**
  * Error event from server to client. It happens if a player try to join the game but there are already 4 players
  */
-public class NoAvailableSpaceError extends Event{
+public class NoAvailableSpaceError extends Event {
     private String username, message;
     public NoAvailableSpaceError(String username){
         super(EventType.NO_AVAILABLE_SPACE);

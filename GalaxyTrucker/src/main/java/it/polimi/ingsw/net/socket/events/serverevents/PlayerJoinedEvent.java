@@ -1,4 +1,7 @@
-package it.polimi.ingsw.net.socket.events;
+package it.polimi.ingsw.net.socket.events.serverevents;
+
+import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.EventType;
 
 /**
  * Event from server to client to notify the successful login for a player

@@ -1,9 +1,12 @@
-package it.polimi.ingsw.net.socket.events;
+package it.polimi.ingsw.net.socket.events.serverevents;
+
+import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.EventType;
 
 /**
  * Event from server to client. A player tried to turn the hourglass but it's not possible at the moment
  */
-public class TurnHourglassError extends Event{
+public class TurnHourglassError extends Event {
     private String username,message;
     public TurnHourglassError(String username) {
         super(EventType.TURN_HOURGLASS_ERROR);
