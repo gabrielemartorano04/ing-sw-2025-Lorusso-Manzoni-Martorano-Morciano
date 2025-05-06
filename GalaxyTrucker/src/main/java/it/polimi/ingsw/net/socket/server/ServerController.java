@@ -5,7 +5,18 @@ import it.polimi.ingsw.net.socket.events.Event;
 import it.polimi.ingsw.net.socket.events.EventType;
 import it.polimi.ingsw.net.socket.events.HelloEvent;
 
+import java.util.HashMap;
+
 public class ServerController {
+    private final HashMap<Integer, ClientHandlerServer> clients = new HashMap<>();
+    private int nextId = 0;
+
+    public synchronized int registerClient(ClientHandlerServer client) {
+        int id = nextId++;
+        clients.put(id, client);
+        return id;
+    }
+
     public void handleEvent(Event event, ClientHandlerServer client) {
         System.out.println("[SERVER] Ricevuto evento: " + event);
 

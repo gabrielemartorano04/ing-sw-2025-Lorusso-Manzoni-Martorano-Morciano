@@ -1,13 +1,12 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameState;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.socket.events.Event;
-
-import java.io.IOException;
+import it.polimi.ingsw.view.text.TUI;
 
 public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private final ClientHandler clientHandler;
@@ -15,10 +14,14 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private final InputParser inputParser;
     private final String nickname;
     private final boolean isRunning;
-    private final GameState gameState;
+    private GameState gameState;
+    private BuildingState buildingState;
+    private CardState cardState;
     private final UI ui;
     private Game game;
+    private AvailableComponents availableComponents;
     private GameController gameController;
+    private Trucker trucker;
 
     public ViewFlow(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
@@ -26,8 +29,10 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.inputParser = new InputParser();
         this.nickname = "";
         this.isRunning = true;
-        this.gameState = GameState.SETUP;
+        this.buildingState = null;
+        this.cardState = null;
         ui = new TUI();
+        new Thread().start();
     }
 
     @Override
@@ -52,40 +57,80 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     }
 
     public void run() {
-        try {
-            ui.show_publisher();
-            game.setGameState(GameState.SETUP);
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        ui.showWelcome();
         while (!Thread.interrupted()) {
+            gameState= game.getGameState();
             if (gameState != null) {
-                //if something happened
                 switch (game.getGameState()) {
                     case WAITING -> {
                         statusWaiting();
                     }
-                    case BUILDING, FLIGTH -> {
-                        statusPlaying();
+                    case BUILDING -> {
+                        this.buildingState = BuildingState.BUILDING;
+                        statusBuilding();
+                    }
+                    case FLIGHT -> {
+                        statusFlight();
                     }
                     case ENDED -> {
                         statusEnded();
                     }
                 }
             }
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
     private void statusWaiting() {
+        game.setGameState(GameState.WAITING);
+        while (!Thread.interrupted()) {
 
+        }
     }
 
-    private void statusPlaying() {
+    private void statusBuilding() {
+        while (!Thread.interrupted()) {
+            buildingState = trucker.getBuildingState();
+            if(buildingState != null) {
+                switch (buildingState){
+                    case BUILDING -> {
+                        ui.showBuildOptions();
+                    }
+                    case SELECT_COMPONENT -> {
+                        for (){
+                            if (game.getComponents().getComponents().getFirst().getCovered()==false){
+                                ui.showAvailableComponent();
+                            }
+                        }
+                    }
+                    case SHOW_STACK -> {
+                        ui.show
+                    }
+                    case TURN_HOURGLASS -> {
+
+                    }
+                    case LINK -> {
+
+                    }
+                    case KEEP -> {
+                        ui.showKeptComponents(trucker.getSpaceShip().getKept());
+                    }
+                    case WAIT_END -> {
+                        ui.
+                    }
+                    case END -> {
+
+                    }
+                }
+            }
+        }
+    }
+
+    private void statusFlight() {
 
     }
 
