@@ -8,7 +8,8 @@ import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.socket.events.Event;
 import it.polimi.ingsw.view.text.TUI;
 
-public class ViewFlow implements NetworkListenerClient.EventReceiver {
+public clas
+Flow implements NetworkListenerClient.EventReceiver {
     private final ClientHandler clientHandler;
     private final InputReader inputReader;
     private final InputParser inputParser;

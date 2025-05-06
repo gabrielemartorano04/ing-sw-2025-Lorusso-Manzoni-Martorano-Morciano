@@ -32,5 +32,8 @@ public enum EventType {
     DISCONNECTED_USER,
     RECONNECTED_USER,
     SEND_INFO_EVENT,
-    ASK_BOOLEAN
+    ASK_BOOLEAN,
+    SHOW_STACK,
+    KEEP_TILE,
+    DISCARD_TILE
 }
