@@ -1,7 +1,7 @@
 package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.net.socket.events.Event;
-import it.polimi.ingsw.view.SimpleView;
+import it.polimi.ingsw.view.ViewFlow;
 
 import java.io.IOException;
 
@@ -24,7 +24,7 @@ public class MainClient {
             ClientHandler clientHandler = new ClientHandler(networkClient);
 
             // Crea la View che riceverà e mostrerà gli eventi dal server
-            SimpleView view = new SimpleView(clientHandler);
+            ViewFlow view = new ViewFlow(clientHandler);
 
             // Crea il NetworkListenerClient per ascoltare gli eventi dal server
             NetworkListenerClient listenerClient = new NetworkListenerClient(networkClient.getSocket(), new NetworkListenerClient.EventReceiver() {
