@@ -124,7 +124,7 @@ public class TUI extends UI {
 
     @Override
     public void showBuildComplete() {
-        System.out.println("Costruzione completata!");
+        System.out.println("Costruzione completata! Attesa altri giocatori");
     }
 
     @Override
