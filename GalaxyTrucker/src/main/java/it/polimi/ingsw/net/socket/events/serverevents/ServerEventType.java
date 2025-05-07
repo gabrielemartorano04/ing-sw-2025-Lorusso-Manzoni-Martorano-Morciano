@@ -20,5 +20,6 @@ public enum ServerEventType {
     RECONNECTED_USER,
     REQUEST,
     SEND_MESSAGE,
-    END_GAME
+    END_GAME,
+    START_BUILDING
 }

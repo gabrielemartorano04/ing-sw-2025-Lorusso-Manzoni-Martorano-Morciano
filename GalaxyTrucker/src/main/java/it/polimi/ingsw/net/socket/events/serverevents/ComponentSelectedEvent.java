@@ -1,5 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
+import it.polimi.ingsw.model.components.Component;
+
 /**
  * Event from server to client that returns the selected successfully component
  */
@@ -15,6 +17,7 @@ public class ComponentSelectedEvent extends ServerEvent {
     public Component getComponent() {
         return component;
     }
+    @Override
     public String getMessage() {
         return message;
     }

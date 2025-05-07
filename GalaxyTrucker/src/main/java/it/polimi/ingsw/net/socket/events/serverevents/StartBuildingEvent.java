@@ -10,8 +10,8 @@ public class StartBuildingEvent extends ServerEvent {
         super(ServerEventType.START_BUILDING);
         message = "It's time to start building";
     }
-
-    public void setMessage(String message) {
-        this.message = message;
+    @Override
+    public String getMessage() {
+        return message;
     }
 }

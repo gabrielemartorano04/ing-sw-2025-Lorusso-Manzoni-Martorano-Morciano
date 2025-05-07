@@ -11,6 +11,7 @@ public class UpdateCardStateEvent extends ServerEvent {
     public CardState getState() {
         return state;
     }
+    @Override
     public String getMessage() {
         return "Current Card State is: " + state.toString();
     }
