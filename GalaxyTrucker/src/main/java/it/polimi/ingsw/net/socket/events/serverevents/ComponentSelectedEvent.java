@@ -7,12 +7,12 @@ import it.polimi.ingsw.net.socket.events.EventType;
 /**
  * Event from server to client that returns the selected successfully component
  */
-public class ComponentSelectedEvent extends Event {
+public class ComponentSelectedEvent extends ServerEvent {
     private String message;
     private Component component;
 
     public ComponentSelectedEvent(Component component) {
-        super(EventType.COMPONENT_SELECTED);
+        super(ServerEventType.COMPONENT_SELECTED);
         this.component = component;
         message="Component selected";
     }

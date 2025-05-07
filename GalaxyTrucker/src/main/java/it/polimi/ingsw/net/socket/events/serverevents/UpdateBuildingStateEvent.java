@@ -7,11 +7,11 @@ import it.polimi.ingsw.net.socket.events.EventType;
 /**
  * Event server to client
  */
-public class UpdateBuildingStateEvent extends Event {
+public class UpdateBuildingStateEvent extends ServerEvent {
     private BuildingState state;
 
     public UpdateBuildingStateEvent(BuildingState state) {
-        super(EventType.UPDATE_STATE);
+        super(ServerEventType.UPDATE_STATE);
         this.state = state;
     }
     public BuildingState getState() {

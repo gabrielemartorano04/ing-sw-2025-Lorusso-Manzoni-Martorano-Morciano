@@ -6,10 +6,10 @@ import it.polimi.ingsw.net.socket.events.EventType;
 /**
  * Event server to clients. It signals that a user reconnected to the game.
  */
-public class ReconnectedUserEvent extends Event {
+public class ReconnectedUserEvent extends ServerEvent {
     String username,message;
     public ReconnectedUserEvent(String username){
-        super(EventType.RECONNECTED_USER);
+        super(ServerEventType.RECONNECTED_USER);
         this.username = username;
         message = username+" reconnected";
     }

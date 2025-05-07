@@ -6,10 +6,10 @@ import it.polimi.ingsw.net.socket.events.EventType;
 /**
  * Event from server to client when the component is correctly linked to the spaceship
  */
-public class ComponentLinkedEvent extends Event {
+public class ComponentLinkedEvent extends ServerEvent {
     String message;
     public ComponentLinkedEvent() {
-        super(EventType.COMPONENT_LINKED);
+        super(ServerEventType.COMPONENT_LINKED);
         message = "Component correctly linked";
     }
     public String getMessage() {

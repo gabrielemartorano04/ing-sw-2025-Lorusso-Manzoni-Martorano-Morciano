@@ -7,13 +7,13 @@ import it.polimi.ingsw.net.socket.events.EventType;
 /**
  * client to server
  */
-public class LoginEvent extends Event {
+public class LoginEvent extends ClientEvent {
     private final String username;
     private PlayerColors color;
     private String message;
 
     public LoginEvent(String username,PlayerColors color) {
-        super(EventType.LOGIN);
+        super(ClientEventType.LOGIN);
         this.username = username;
         this.color = color;
         message = "Username: " + username + " , Color: " + color.toString();

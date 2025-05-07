@@ -6,10 +6,10 @@ import it.polimi.ingsw.net.socket.events.EventType;
 /**
  * Server to client
  */
-public class EndGameEvent extends Event {
+public class EndGameEvent extends ServerEvent {
     private String message;
     public EndGameEvent() {
-        super(EventType.END_GAME);
+        super(ServerEventType.END_GAME);
         message = "The game ended";
     }
 

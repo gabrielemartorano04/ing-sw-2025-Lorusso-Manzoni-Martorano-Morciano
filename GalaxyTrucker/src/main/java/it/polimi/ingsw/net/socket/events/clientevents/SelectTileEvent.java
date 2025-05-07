@@ -6,13 +6,13 @@ import it.polimi.ingsw.net.socket.events.EventType;
 /**
  * Event from client to server. The player wants to select a component through a given index
  */
-public class SelectTileEvent extends Event {
+public class SelectTileEvent extends ClientEvent {
 
     private String message;
     private int index;
 
     public SelectTileEvent( int index) {
-        super(EventType.SELECT_TILE);
+        super(ClientEventType.SELECT_TILE);
         this.index = index;
         message = "I select component " + index;
     }
