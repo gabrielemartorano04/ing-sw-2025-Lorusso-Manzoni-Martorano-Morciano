@@ -80,5 +80,5 @@ public abstract class UI {
     public abstract void showPlayerShipStatus(int position, int batteryCount, int humanCount, int cannonPower, int enginePower, Map<String, Integer> goodsByColor);
     public abstract void showShipLayout(String nickname, Component[][] layout);
 
-
+    public abstract void showMessage(String message);
 }

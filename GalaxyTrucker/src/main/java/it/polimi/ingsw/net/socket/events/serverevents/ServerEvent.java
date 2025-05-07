@@ -1,6 +1,6 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
-import it.polimi.ingsw.net.socket.server.servereventhandler.servereventhandler.ServerEventVisitor;
+import it.polimi.ingsw.net.socket.client.ServerEventVisitor;
 
 import java.io.Serializable;
 

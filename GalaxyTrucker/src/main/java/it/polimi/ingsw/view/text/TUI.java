@@ -118,6 +118,11 @@ public class TUI extends UI {
     }
 
     @Override
+    public void showMessage(String message) {
+        System.out.println(message);
+    }
+
+    @Override
     public void showBuildComplete() {
         System.out.println("Costruzione completata!");
     }

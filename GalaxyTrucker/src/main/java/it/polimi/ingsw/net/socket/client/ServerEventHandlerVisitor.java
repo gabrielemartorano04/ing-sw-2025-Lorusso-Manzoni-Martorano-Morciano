@@ -2,12 +2,14 @@ package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.view.*;
+import it.polimi.ingsw.view.text.TUI;
 
-public class ClientEventHandlerVisitor implements ClientEventVisitor{
-    private UI.
+public class ServerEventHandlerVisitor implements ServerEventVisitor{
+    private final UI ui=new TUI();
+
     @Override
     public void visit(AvailableColorsEvent event) {
-        u
+        ui.showChooseColor(event.getColors());
     }
 
     @Override
@@ -22,17 +24,19 @@ public class ClientEventHandlerVisitor implements ClientEventVisitor{
 
     @Override
     public void visit(ColorAlreadyInError event) {
-
+        ui.showError(event.getMessage());
+        ui.showColorTaken();
+        ui.showChooseColor(event.getColor());
     }
 
     @Override
     public void visit(ComponentLinkedEvent event) {
-
+        ui.showMessage(event.getMessage());
     }
 
     @Override
     public void visit(ComponentNotAvailableError event) {
-
+        ui.showError(event.getMessage());
     }
 
     @Override
@@ -42,52 +46,52 @@ public class ClientEventHandlerVisitor implements ClientEventVisitor{
 
     @Override
     public void visit(DisconnectedUserEvent event) {
-
+        ui.showMessage(event.getMessage());
     }
 
     @Override
     public void visit(EndGameEvent event) {
-
+        ui.showWinner();
+        ui.showScores();
+        ui.showGameEnded();
     }
 
     @Override
     public void visit(GenericErrorInsertedData event) {
-
+        ui.showError(event.getMessage());
     }
 
     @Override
     public void visit(InvalidCoordinatesError event) {
-
+     ui.showError(event.getMessage());
+     ui.askCoordinates();
     }
 
     @Override
     public void visit(InvalidPositionError event) {
-
+        ui.showError(event.getMessage());
+        ui.askCoordinates();
     }
 
     @Override
     public void visit(NicknameAlreadyInError event) {
-
+        ui.showNicknameTaken();
+        ui.showInsertNickname();
     }
 
     @Override
     public void visit(NoAvailableSpaceError event) {
-
+        ui.showError(event.getMessage());
     }
 
     @Override
     public void visit(PlayerJoinedEvent event) {
-
+        ui.showPlayerJoined(event.getUsername());
     }
 
     @Override
     public void visit(ReconnectedUserEvent event) {
-
-    }
-
-    @Override
-    public void visit(ShipStateUpdateEvent event) {
-
+        ui.showMessage(event.getMessage());
     }
 
     @Override
@@ -97,31 +101,31 @@ public class ClientEventHandlerVisitor implements ClientEventVisitor{
 
     @Override
     public void visit(ShowCardEvent event) {
-
+        ui.showCardDrawn(event.getCard());
     }
 
     @Override
     public void visit(StartBuildingEvent event) {
-
+        ui.showBuildPhaseStart();
     }
 
     @Override
     public void visit(TimeExpiredEvent event) {
-
+        ui.showMessage(event.getMessage());
     }
 
     @Override
     public void visit(TurnHourglassError event) {
-
+        ui.showError(event.getMessage());
     }
 
     @Override
     public void visit(UpdateBuildingStateEvent event) {
-
+        ui.showMessage(event.getMessage());
     }
 
     @Override
     public void visit(UpdateCardStateEvent event) {
-
+        ui.showMessage(event.getMessage());
     }
 }
