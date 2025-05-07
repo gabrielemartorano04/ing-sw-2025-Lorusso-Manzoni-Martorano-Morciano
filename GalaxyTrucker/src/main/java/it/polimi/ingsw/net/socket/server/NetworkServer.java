@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.socket.server;
 
-import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,17 +19,17 @@ public class NetworkServer {
         this.inputStream = new ObjectInputStream(socket.getInputStream());
     }
 
-    public void sendMessage(Event event) throws IOException {
+    public void sendMessage(ServerEvent event) throws IOException {
         outputStream.writeObject(event);
         outputStream.flush();
     }
 
-    public Event receiveMessage() throws IOException, ClassNotFoundException {
-        Object obj = inputStream.readObject();
-        if (obj instanceof Event event) {
+    public ClientEvent receiveMessage() throws IOException, ClassNotFoundException {
+        ClientEvent event=(ClientEvent)inputStream.readObject();
+        if (event!=null) {
             return event;
         } else {
-            throw new IOException("Messaggio ricevuto non è un Event");
+            throw new IOException("null event received");
         }
     }
 

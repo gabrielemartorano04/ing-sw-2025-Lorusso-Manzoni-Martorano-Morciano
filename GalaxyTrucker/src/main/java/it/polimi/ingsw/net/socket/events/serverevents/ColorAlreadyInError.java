@@ -24,4 +24,5 @@ public class ColorAlreadyInError extends ServerEvent {
     public Color getColor() {
         return color;
     }
+    public ArrayList<Color> getAvailableColors() {return availableColors;}
 }

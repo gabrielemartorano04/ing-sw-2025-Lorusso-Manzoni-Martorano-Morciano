@@ -26,7 +26,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(ColorAlreadyInError event) {
         ui.showError(event.getMessage());
         ui.showColorTaken();
-        ui.showChooseColor(event.getColor());
+        ui.showChooseColor(event.ge());
     }
 
     @Override
@@ -51,8 +51,8 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(EndGameEvent event) {
-        ui.showWinner();
-        ui.showScores();
+        ui.showWinner(event.getWinner());
+        ui.showScores(event.getScores());
         ui.showGameEnded();
     }
 
@@ -128,4 +128,29 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(UpdateCardStateEvent event) {
         ui.showMessage(event.getMessage());
     }
+
+    @Override
+    public void visit(CoordRequest event){
+        ui.askCoordinates();
+    }
+
+    @Override
+    public void visit(LobbyEvent event) {
+        ui.showWaitingForPlayers(event.getTruckers().size());
+        ui.showStartCountdown(event.getCountdown());
+    }
+
+    @Override
+    public void visit(IndexesRequest event){
+        ui.askGoodsIndexesToRemove();
+    };
+
+    @Override
+    public void visit(IntRequest event) {
+        ui.askStackIndex();
+    }
+
+    public void
+
+
 }
