@@ -1,8 +1,5 @@
 package it.polimi.ingsw.net.socket.events.clientevents;
 
-import it.polimi.ingsw.net.socket.events.Event;
-import it.polimi.ingsw.net.socket.events.EventType;
-
 public class SendCoordEvent extends ClientEvent {
     private int x;
     private int y;
@@ -10,5 +7,15 @@ public class SendCoordEvent extends ClientEvent {
         super(ClientEventType.SEND_INFO_EVENT);
         this.x = x;
         this.y = y;
+    }
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
+    @Override
+    public String getMessage() {
+        return "Sent coordinate: "+x+", "+y;
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.callers.AbandonedShipCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
 import it.polimi.ingsw.model.Game;
@@ -25,6 +26,7 @@ public class AbandonedStation extends Card {
     private CardState cardState;
     private int currGood;
     private int playerDecisions;
+
     /**
      * Abandoned station constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -36,7 +38,7 @@ public class AbandonedStation extends Card {
      * @param backIMage back image of the card
      */
     public AbandonedStation(boolean trialFlight, int level, ArrayList<Goods> goods, int days, int numHuman,String frontImage, String backIMage) {
-        super("Abandoned Station", "A derelict space station", trialFlight, level, frontImage, backIMage);
+        super("Abandoned Station", "A derelict space station", trialFlight, level, frontImage, backIMage, new AbandonedShipCaller());
         this.days = days;
         this.numHuman = numHuman;
         this.goods = goods;
@@ -54,6 +56,7 @@ public class AbandonedStation extends Card {
     public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidPositionException {
         return visitor.visitForAbandonedStation(this, params);
     }
+
 
     /**
      * Returns the number of days of flight to lose
@@ -81,7 +84,10 @@ public class AbandonedStation extends Card {
 
     /**
      * Sets the only trucker that has chosen to take the station
-     * @param trucker trucker ID
+     * @param trucker: current trucker that is deciding whether to land or not
+     * @param landing: choice taken
+     * @param numPlayer: num of player in the game
+     * @param bank: bank of the game
      */
     public CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws IllegalStateException {
         if (cardState != CardState.ATTESA_RISPOSTE) {

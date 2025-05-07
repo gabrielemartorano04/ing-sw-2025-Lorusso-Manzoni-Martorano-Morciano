@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.callers.PiratesCaller;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 
@@ -53,7 +54,7 @@ public class Pirates extends Card {
      * @param backImage back image of the card
      */
     public Pirates(boolean trialFlight, int level, int credits, int days, int piratesPower, ArrayList<int[]> shoots ,String frontImage, String backImage) {
-        super("Pirates", "Dangerous space raiders", trialFlight, level, frontImage, backImage);
+        super("Pirates", "Dangerous space raiders", trialFlight, level, frontImage, backImage, new PiratesCaller());
         this.credits = credits;
         this.days = days;
         this.piratesPower = piratesPower;

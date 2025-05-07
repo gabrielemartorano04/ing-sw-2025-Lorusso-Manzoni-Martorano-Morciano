@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.callers.MeteorShowerCaller;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 
@@ -46,7 +47,7 @@ public class MeteorShower extends Card {
      * @param backImage back image of the card
      */
     public MeteorShower(boolean trialFlight, ArrayList<int[]> direction, int level, String frontImage, String backImage) {
-        super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImage, backImage);
+        super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImage, backImage, new MeteorShowerCaller());
         this.directions = direction;
         this.answers = new ArrayList<>();
     }

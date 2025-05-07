@@ -24,8 +24,6 @@ public class AbandonedShip extends Card{
     private ArrayList<int[]> coordinates = null; //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
     private CardState state = CardState.ATTESA_RISPOSTE;
     private int playerDecisions;
-    private AbandonedShipHandler handler;
-    private AbandonedShipCaller caller;
 
 
     /**
@@ -39,14 +37,13 @@ public class AbandonedShip extends Card{
      * @param backImage back image of the card
      */
     public AbandonedShip(boolean trialFlight, int level, int numHuman, int credits, int days, String frontImage, String backImage) {
-        super("Abandoned Ship", "A drifting ghost ship",  trialFlight, level, frontImage, backImage);
+        super("Abandoned Ship", "A drifting ghost ship",  trialFlight, level, frontImage, backImage, new AbandonedShipCaller());
         this.numHuman = numHuman;
         this.credits = credits;
         this.days = days;
         this.truckerThatHasDecided = null;
         this.playerDecisions = 0;
         this.state = CardState.ATTESA_RISPOSTE;
-
     }
 
     @Override

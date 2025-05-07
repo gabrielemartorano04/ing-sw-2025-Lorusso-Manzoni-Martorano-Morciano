@@ -1,8 +1,5 @@
 package it.polimi.ingsw.net.socket.events.clientevents;
 
-import it.polimi.ingsw.net.socket.events.Event;
-import it.polimi.ingsw.net.socket.events.EventType;
-
 public class SendBooleanEvent extends ClientEvent {
     private boolean answer;
     public SendBooleanEvent(final boolean answer) {
@@ -11,5 +8,9 @@ public class SendBooleanEvent extends ClientEvent {
     }
     public boolean getAnswer() {
         return answer;
+    }
+    @Override
+    public String getMessage() {
+        return "Sent answer " + answer;
     }
 }

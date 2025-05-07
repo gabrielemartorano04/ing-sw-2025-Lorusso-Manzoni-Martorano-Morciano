@@ -1,8 +1,5 @@
 package it.polimi.ingsw.net.socket.events.clientevents;
 
-import it.polimi.ingsw.net.socket.events.Event;
-import it.polimi.ingsw.net.socket.events.EventType;
-
 import java.util.ArrayList;
 
 
@@ -17,5 +14,9 @@ public class SendCoordListEvent extends ClientEvent {
     }
     public ArrayList<int[]> getCoordinates() {
         return coordinates;
+    }
+    @Override
+    public String getMessage() {
+        return "Sent coordinate list: " + coordinates;
     }
 }

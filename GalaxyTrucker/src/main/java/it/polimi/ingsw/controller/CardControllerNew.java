@@ -28,7 +28,15 @@ public class CardControllerNew {
         return numPlayers;
     }
 
+    public void setNumPlayers(int numPlayers) {
+        this.numPlayers = numPlayers;
+    }
+
     public Trucker getCurrentTrucker() {
         return currentTrucker;
+    }
+
+    public void setCurrentTrucker(Trucker currentTrucker) {
+        this.currentTrucker = currentTrucker;
     }
 }
