@@ -9,10 +9,10 @@ import java.util.ArrayList;
 /**
  * Event client to server. The player insert a list of coordinates
  */
-public class SendCoordListEvent extends Event {
+public class SendCoordListEvent extends ClientEvent {
     private ArrayList<int[]> coordinates;
     public SendCoordListEvent(ArrayList<int[]> coordinates) {
-        super(EventType.SEND_INFO_EVENT);
+        super(ClientEventType.SEND_INFO_EVENT);
         this.coordinates = coordinates;
     }
     public ArrayList<int[]> getCoordinates() {

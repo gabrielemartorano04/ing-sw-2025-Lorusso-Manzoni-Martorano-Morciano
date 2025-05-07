@@ -1,13 +1,11 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.model.cards.CardState;
-import it.polimi.ingsw.net.socket.events.Event;
-import it.polimi.ingsw.net.socket.events.EventType;
 
-public class UpdateCardStateEvent extends Event {
+public class UpdateCardStateEvent extends ServerEvent {
     private CardState state;
     public UpdateCardStateEvent(CardState state) {
-        super(EventType.UPDATE_STATE);
+        super(ServerEventType.UPDATE_STATE);
         this.state = state;
     }
     public CardState getState() {

@@ -7,11 +7,11 @@ import it.polimi.ingsw.net.socket.events.EventType;
  * Event client to server. The first player chooses the players number
  */
 
-public class CreateGameEvent extends Event {
+public class CreateGameEvent extends ClientEvent {
     private final int numberOfPlayers;
 
     public CreateGameEvent(int numberOfPlayers) {
-        super(EventType.CREATE_GAME);
+        super(ClientEventType.CREATE_GAME);
         this.numberOfPlayers = numberOfPlayers;
     }
 

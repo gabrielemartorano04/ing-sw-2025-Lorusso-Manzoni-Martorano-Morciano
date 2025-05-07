@@ -3,9 +3,9 @@ package it.polimi.ingsw.net.socket.events.clientevents;
 import it.polimi.ingsw.net.socket.events.Event;
 import it.polimi.ingsw.net.socket.events.EventType;
 
-public class DiscardTileEvent extends Event {
+public class DiscardTileEvent extends ClientEvent {
     public DiscardTileEvent() {
-        super(EventType.DISCARD_TILE);
+        super(ClientEventType.DISCARD_TILE);
     }
 
 }
