@@ -1,8 +1,5 @@
 package it.polimi.ingsw.net.socket.events.clientevents;
 
-import it.polimi.ingsw.net.socket.events.Event;
-import it.polimi.ingsw.net.socket.events.EventType;
-
 /**
  * Event from client to server. The player wants to link the selected component to the spaceship.
  * The player gives the coordinates.
@@ -22,6 +19,7 @@ public class LinkTileEvent extends ClientEvent {
     public int getY() {
         return y;
     }
+    @Override
     public String getMessage() {
         return message;
     }

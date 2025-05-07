@@ -8,4 +8,14 @@ public class SendCoordEvent extends ClientEvent {
         this.x = x;
         this.y = y;
     }
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
+    @Override
+    public String getMessage() {
+        return "Sent coordinate: "+x+", "+y;
+    }
 }

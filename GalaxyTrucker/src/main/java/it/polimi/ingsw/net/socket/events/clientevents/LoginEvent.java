@@ -1,8 +1,6 @@
 package it.polimi.ingsw.net.socket.events.clientevents;
 
 import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.net.socket.events.Event;
-import it.polimi.ingsw.net.socket.events.EventType;
 
 /**
  * client to server
@@ -28,7 +26,7 @@ public class LoginEvent extends ClientEvent {
     }
 
     @Override
-    public String toString() {
-        return "LoginEvent{ username='" + username + "' }";
+    public String getMessage() {
+        return message;
     }
 }

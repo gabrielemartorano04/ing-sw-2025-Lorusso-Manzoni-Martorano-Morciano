@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class InputParser {
 
-    public Event parseLogin(String input){
+    public ClientEvent parseLogin(String input){
         if (input == null || input.isEmpty()) {
             return null;
         }
@@ -31,7 +31,7 @@ public class InputParser {
 
     }
 
-    public Event parseBuilding(String input){
+    public ClientEvent parseBuilding(String input){
         if (input == null || input.isEmpty()) {
             return null;
         }
@@ -57,7 +57,7 @@ public class InputParser {
         }
 
     }
-    public Event parseFlight(String input) {
+    public ClientEvent parseFlight(String input) {
         if (input == null || input.isEmpty()) {
             return null;
         }
