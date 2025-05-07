@@ -1,5 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
+import it.polimi.ingsw.model.PlayerColors;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -8,9 +10,9 @@ import java.util.ArrayList;
  */
 public class ColorAlreadyInError extends ServerEvent {
     private String message;
-    private Color color;
+    private PlayerColors color;
     private ArrayList<String> chooseColors;
-    public ColorAlreadyInError(Color color,ArrayList<Color> availableColors) {
+    public ColorAlreadyInError(PlayerColors color, ArrayList<PlayerColors> availableColors) {
         super(ServerEventType.COLOR_ALREADY_IN, false);
         this.color = color;
         int i=0;
@@ -25,7 +27,7 @@ public class ColorAlreadyInError extends ServerEvent {
     public String getMessage() {
         return message;
     }
-    public Color getColor() {
+    public PlayerColors getColor() {
         return color;
     }
     public ArrayList<String> getAvailableColors() {return chooseColors;}
