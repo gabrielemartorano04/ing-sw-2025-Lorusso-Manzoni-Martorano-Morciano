@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,7 +24,7 @@ public class NetworkListenerClient {
             try (ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
                 while (running && !socket.isClosed()) {
                     Object obj = inputStream.readObject();
-                    if (obj instanceof ClientEvent event) {
+                    if (obj instanceof ServerEvent event) {
                         receiver.onEventReceived(event);
                     }
                 }
@@ -45,6 +46,6 @@ public class NetworkListenerClient {
     }
 
     public interface EventReceiver {
-        void onEventReceived(ClientEvent event);
+        void onEventReceived(ServerEvent event);
     }
 }
