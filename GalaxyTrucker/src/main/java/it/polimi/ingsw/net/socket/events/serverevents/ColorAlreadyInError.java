@@ -13,7 +13,7 @@ public class ColorAlreadyInError extends ServerEvent {
     private PlayerColors color;
     private ArrayList<PlayerColors> availableColors;
     public ColorAlreadyInError(PlayerColors color,ArrayList<PlayerColors> availableColors) {
-        super(ServerEventType.COLOR_ALREADY_IN);
+        super(ServerEventType.COLOR_ALREADY_IN, false);
         this.color = color;
         this.availableColors=availableColors;
         message= color.toString()+ "already is use. Available colors: " + availableColors;
