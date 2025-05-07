@@ -26,4 +26,7 @@ public abstract class ServerEvent implements Serializable {
         return message;
     }
 
+    public boolean isForAll() {
+        return forAll;
+    }
 }
