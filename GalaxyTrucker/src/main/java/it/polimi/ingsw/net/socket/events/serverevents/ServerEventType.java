@@ -22,5 +22,7 @@ public enum ServerEventType {
     SEND_MESSAGE,
     END_GAME,
     START_BUILDING,
-    LOBBY
+    LOBBY,
+    PLAYERS_NUMBER_ERROR,
+    OK
 }

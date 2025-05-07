@@ -3,7 +3,7 @@ package it.polimi.ingsw.net.socket.client;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 
 public interface ServerEventVisitor {
-    void visit(ServerEvent event);
+
     void visit(AvailableColorsEvent event);
     void visit(BooleanRequest event);
     void visit(CheckShipsEvent event);
