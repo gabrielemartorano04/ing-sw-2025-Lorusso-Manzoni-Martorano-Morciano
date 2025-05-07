@@ -29,12 +29,13 @@ public class Game {
     private GameState gameState;
     private final Set<String> nicknames = new HashSet<>();
     private final Set<PlayerColors> usedColors = new HashSet<>();
-
+    private int numPlayers;
     /**
      * Constructor that initializes the game attributes.
      */
     public Game(int numPlayers) {
         this.truckers = new ArrayList<>(numPlayers);
+        this.numPlayers = numPlayers;
         this.truckersOut = new ArrayList<>();
         this.gameDeck = new ArrayList<>();
         this.components = new AvailableComponents();
@@ -45,6 +46,9 @@ public class Game {
         this.gameState = GameState.SETUP;
     }
 
+    public int getNumPlayers(){
+        return numPlayers;
+    }
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
