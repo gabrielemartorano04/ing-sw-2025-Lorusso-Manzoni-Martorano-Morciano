@@ -12,6 +12,11 @@ public class ClientHandlerVisitor implements ClientVisitor {
     }
 
     @Override
+    public void visit(ClientEvent event) {
+
+    }
+
+    @Override
     public void visit(SendCoordEvent event) {
 
     }

@@ -8,6 +8,7 @@ import it.polimi.ingsw.net.socket.events.clientevents.*;
  */
 
 public interface ClientVisitor {
+    public void visit(ClientEvent event);
     public void visit(SendCoordEvent event);
     public void visit(SendBooleanEvent event);
     public void visit(SendCoordListEvent event);
