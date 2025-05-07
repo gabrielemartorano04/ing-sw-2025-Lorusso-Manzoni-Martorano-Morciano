@@ -17,6 +17,7 @@ public class ComponentSelectedEvent extends ServerEvent {
     public Component getComponent() {
         return component;
     }
+    @Override
     public String getMessage() {
         return message;
     }

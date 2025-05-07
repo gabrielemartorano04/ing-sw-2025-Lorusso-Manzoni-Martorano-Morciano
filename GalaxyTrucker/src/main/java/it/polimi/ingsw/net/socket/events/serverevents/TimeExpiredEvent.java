@@ -10,6 +10,7 @@ public class TimeExpiredEvent extends ServerEvent {
         super(ServerEventType.TIME_EXPIRED);
         message = "Time is expired";
     }
+    @Override
     public String getMessage() {
         return message;
     }

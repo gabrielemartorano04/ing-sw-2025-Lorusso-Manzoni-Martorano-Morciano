@@ -9,6 +9,7 @@ public class GenericErrorInsertedData extends ServerEvent {
         super(ServerEventType.GENERIC_ERROR_INSERTED_DATA);
         message = "Error inserted data";
     }
+    @Override
     public String getMessage(){
         return message;
     }

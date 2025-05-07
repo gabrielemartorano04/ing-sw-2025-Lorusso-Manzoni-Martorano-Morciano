@@ -9,6 +9,7 @@ public class CheckShipsEvent extends ServerEvent {
         super(ServerEventType.CHECK_SHIPS);
         message = "Spaceships are checked and correctly modified";
     }
+    @Override
     public String getMessage() {
         return message;
     }

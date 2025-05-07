@@ -1,5 +1,8 @@
 package it.polimi.ingsw.net.socket.events.clientevents;
 
+import it.polimi.ingsw.net.socket.client.ClientEventVisitor;
+import it.polimi.ingsw.net.socket.server.servereventhandler.servereventhandler.ServerEventVisitor;
+
 import java.io.Serializable;
 
 /**
@@ -20,5 +23,8 @@ public abstract class ClientEvent implements Serializable {
     }
     public String getMessage() {
         return message;
+    }
+    public void call(ClientEventVisitor visitor) {
+        visitor.visit(this);
     }
 }

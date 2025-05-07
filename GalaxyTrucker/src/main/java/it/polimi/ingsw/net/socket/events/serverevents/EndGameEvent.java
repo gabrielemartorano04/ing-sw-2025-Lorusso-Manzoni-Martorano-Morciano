@@ -9,7 +9,7 @@ public class EndGameEvent extends ServerEvent {
         super(ServerEventType.END_GAME);
         message = "The game ended";
     }
-
+    @Override
     public String getMessage() {
         return message;
     }

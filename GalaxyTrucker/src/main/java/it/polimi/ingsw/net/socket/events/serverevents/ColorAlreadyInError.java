@@ -1,5 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
+import java.awt.*;
+
 /**
  * Error event from server to client. The choosen color is already in use
  */
@@ -10,6 +12,7 @@ public class ColorAlreadyInError extends ServerEvent {
         super(ServerEventType.COLOR_ALREADY_IN);
         message= color.toString()+ "already is use";
     }
+    @Override
     public String getMessage() {
         return message;
     }

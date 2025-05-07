@@ -9,6 +9,7 @@ public class ComponentLinkedEvent extends ServerEvent {
         super(ServerEventType.COMPONENT_LINKED);
         message = "Component correctly linked";
     }
+    @Override
     public String getMessage() {
         return message;
     }

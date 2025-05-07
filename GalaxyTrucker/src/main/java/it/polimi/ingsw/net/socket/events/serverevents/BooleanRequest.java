@@ -9,12 +9,14 @@ public class BooleanRequest extends ServerEvent {
         this.question = question;
         this.userId = Id;
     }
-
-    public String getQuestion() {
+    @Override
+    public String getMessage() {
         return question;
     }
 
     public int getUserId() {
         return userId;
     }
+
+
 }

@@ -9,7 +9,7 @@ public class ComponentNotAvailableError extends ServerEvent {
         super(ServerEventType.COMPONENT_NOT_AVAILABLE);
         message = "The component is not available";
     }
-
+    @Override
     public String getMessage() {
         return message;
     }

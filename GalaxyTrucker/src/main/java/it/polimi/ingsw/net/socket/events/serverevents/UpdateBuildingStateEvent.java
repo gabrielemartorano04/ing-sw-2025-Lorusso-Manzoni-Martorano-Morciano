@@ -15,6 +15,7 @@ public class UpdateBuildingStateEvent extends ServerEvent {
     public BuildingState getState() {
         return state;
     }
+    @Override
     public String getMessage() {
         return "Current building state is: " + state.toString();
     }
