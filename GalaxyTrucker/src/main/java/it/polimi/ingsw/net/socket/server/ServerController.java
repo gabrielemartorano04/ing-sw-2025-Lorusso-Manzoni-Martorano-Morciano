@@ -10,7 +10,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class ServerController {
     private final ArrayList<ClientHandlerServer> clients = new ArrayList<>();
-    private int nextId = 0;
     private final ClientHandlerVisitor visitor;
 
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
