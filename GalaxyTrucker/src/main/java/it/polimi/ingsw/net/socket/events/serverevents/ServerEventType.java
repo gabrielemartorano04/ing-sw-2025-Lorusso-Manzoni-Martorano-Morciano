@@ -18,5 +18,7 @@ public enum ServerEventType {
     GENERIC_ERROR_INSERTED_DATA,
     DISCONNECTED_USER,
     RECONNECTED_USER,
-    REQUEST
+    REQUEST,
+    SEND_MESSAGE,
+    END_GAME
 }

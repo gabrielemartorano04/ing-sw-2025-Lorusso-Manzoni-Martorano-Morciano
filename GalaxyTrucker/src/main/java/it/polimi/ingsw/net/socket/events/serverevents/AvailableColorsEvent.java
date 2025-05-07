@@ -1,14 +1,21 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
-import it.polimi.ingsw.net.socket.events.Event;
-
 import java.awt.*;
 import java.util.ArrayList;
 
-public class AvailableColorsEvent extends Event {
+public class AvailableColorsEvent extends ServerEvent {
     private ArrayList<Color> colors;
     public AvailableColorsEvent(ArrayList<Color> colors) {
-        super()
+        super(ServerEventType.SEND_MESSAGE);
         this.colors = colors;
+    }
+
+    public ArrayList<Color> getColors() {
+        return colors;
+    }
+
+    @Override
+    public String getMessage() {
+        return "Available colors: " + colors;
     }
 }
