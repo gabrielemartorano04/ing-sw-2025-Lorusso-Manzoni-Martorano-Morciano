@@ -10,11 +10,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ClientHandlerVisitor(CardControllerNew cardController) {
         this.cardController = cardController;
     }
-
-    @Override
-    public void visit(ClientEvent event) {
-
-    }
+    //se login event
 
     @Override
     public void visit(SendCoordEvent event) {
