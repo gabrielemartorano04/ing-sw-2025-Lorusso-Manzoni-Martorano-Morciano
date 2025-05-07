@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
+import it.polimi.ingsw.utilities.exceptions.WrongState;
 
 import java.util.ArrayList;
 
@@ -94,9 +95,9 @@ public class AbandonedShip extends Card{
      * @param landing: the choice taken by the current client
      * @param numPlayer: number of player in the current game
      */
-    public CardState setTruckerThatHasDecided(Trucker trucker, boolean landing, int numPlayer)  {
+    public CardState setTruckerThatHasDecided(Trucker trucker, boolean landing, int numPlayer) throws WrongState {
         if(state != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("SetTruckerThatHasDecided not callable in state: " + state);
+            throw new WrongState("SetTruckerThatHasDecided not callable in state: " + state);
         }
         if(landing) {
             truckerThatHasDecided = trucker;
@@ -116,9 +117,9 @@ public class AbandonedShip extends Card{
      * Sets the coordinates of the cabins from which he wants to remove the crew members required
      * @param coordinates list of arrays of coordinates of the cabins
      */
-    public CardState setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates {
+    public CardState setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, WrongState {
         if(state != CardState.HUMANSTOREMOVE) {
-            throw new IllegalStateException("Can't call setCoordinates in the state: " + state);
+            throw new WrongState("Can't call setCoordinates in the state: " + state);
         }
         if(coordinates==null|| coordinates.isEmpty()){
             throw new InvalidCoordinates("Coordinates is null or empty");
@@ -133,7 +134,7 @@ public class AbandonedShip extends Card{
         if(truckerThatHasDecided!=null){
             state = CardState.ESECUZIONE;
         }else{
-            throw new RuntimeException("Tried to set coordinates when truckerThatHasDecided is null");
+            throw new WrongState("Tried to set coordinates when truckerThatHasDecided is null");
         }
         return state;
     }
@@ -144,9 +145,9 @@ public class AbandonedShip extends Card{
      */
 
     @Override
-    public synchronized CardState cardEffect(Game game) {
+    public synchronized CardState cardEffect(Game game) throws WrongState {
         if(state != CardState.ESECUZIONE) {
-            throw new IllegalStateException("Non puoi settare fare CardEffect nello stato: " + state);
+            throw new WrongState("Non puoi settare fare CardEffect nello stato: " + state);
         }
         if (truckerThatHasDecided != null) {
             truckerThatHasDecided.getSpaceShip().removeNumHuman(coordinates);

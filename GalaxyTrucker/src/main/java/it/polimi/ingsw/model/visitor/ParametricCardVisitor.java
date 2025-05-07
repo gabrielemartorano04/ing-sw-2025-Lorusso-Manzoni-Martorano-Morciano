@@ -22,7 +22,7 @@ public interface ParametricCardVisitor<R> {
 
     R visitForPirates(Pirates pirates, Object... params);
 
-    R visitForPlanets(Planets planets, Object... params) throws InvalidCoordinates, InvalidPositionException, PlanetNotFreeException;
+    R visitForPlanets(Planets planets, Object... params) throws InvalidCoordinates, InvalidPositionException;
 
     R visitForSlavers(Slavers slavers, Object... params) throws InvalidCoordinates;
 

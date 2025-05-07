@@ -27,4 +27,8 @@ public interface ServerEventVisitor {
     void visit(TurnHourglassError event);
     void visit(UpdateBuildingStateEvent event);
     void visit(UpdateCardStateEvent event);
+    void visit(CoordRequest event);
+    void visit(LobbyEvent event);
+    void visit(IndexesRequest event);
+    void visit(IntRequest event);
 }
