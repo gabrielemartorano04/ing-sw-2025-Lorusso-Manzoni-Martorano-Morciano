@@ -4,8 +4,7 @@ package it.polimi.ingsw.net.socket.events;
  * enum used to indicate the type of event we are considering
  */
 public enum EventType {
-    HELLO_MESSAGE,
-    LOGIN, //data request
+    LOGIN,
     CREATE_GAME,
     NICKNAME_ALREADY_IN,
     COLOR_ALREADY_IN,
@@ -32,8 +31,9 @@ public enum EventType {
     DISCONNECTED_USER,
     RECONNECTED_USER,
     SEND_INFO_EVENT,
-    ASK_BOOLEAN,
     SHOW_STACK,
     KEEP_TILE,
-    DISCARD_TILE
+    DISCARD_TILE,
+    REQUEST,
+
 }
