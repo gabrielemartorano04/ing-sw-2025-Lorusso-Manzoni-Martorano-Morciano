@@ -10,7 +10,7 @@ public class ComponentSelectedEvent extends ServerEvent {
     private Component component;
 
     public ComponentSelectedEvent(Component component) {
-        super(ServerEventType.COMPONENT_SELECTED);
+        super(ServerEventType.COMPONENT_SELECTED, false);
         this.component = component;
         message="Component selected";
     }

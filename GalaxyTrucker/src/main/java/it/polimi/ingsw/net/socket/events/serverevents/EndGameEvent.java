@@ -11,7 +11,7 @@ public class EndGameEvent extends ServerEvent {
     private Map<String, Integer> scores;
 
     public EndGameEvent(String winner, Map<String, Integer> scores) {
-        super(ServerEventType.END_GAME);
+        super(ServerEventType.END_GAME, true);
         message = "The game ended";
         this.winner = winner;
         this.scores = scores;

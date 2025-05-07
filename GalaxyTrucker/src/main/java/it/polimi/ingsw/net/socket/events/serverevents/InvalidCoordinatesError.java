@@ -6,7 +6,7 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 public class InvalidCoordinatesError extends ServerEvent {
     private String username, message;
     public InvalidCoordinatesError(String username) {
-        super(ServerEventType.INVALID_COORDINATES_ERROR);
+        super(ServerEventType.INVALID_COORDINATES_ERROR, false);
         this.username = username;
         message = username+" inserted invalid coordinates";
     }

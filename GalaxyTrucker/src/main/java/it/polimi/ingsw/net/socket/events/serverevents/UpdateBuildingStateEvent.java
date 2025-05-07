@@ -9,7 +9,7 @@ public class UpdateBuildingStateEvent extends ServerEvent {
     private BuildingState state;
 
     public UpdateBuildingStateEvent(BuildingState state) {
-        super(ServerEventType.UPDATE_STATE);
+        super(ServerEventType.UPDATE_STATE, false);
         this.state = state;
     }
     public BuildingState getState() {

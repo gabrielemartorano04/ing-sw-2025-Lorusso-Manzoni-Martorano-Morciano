@@ -34,7 +34,7 @@ public class ServerController {
             while (true){
                 try {
                     EventWithSource entry = eventQueue.take();
-                    processeEvent(entry.getEvent(), entry.getClient());
+                    processEvent(entry.getEvent(), entry.getClient());
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
@@ -45,7 +45,7 @@ public class ServerController {
         dispatcher.start();
     }
 
-    public void processeEvent(ClientEvent event, ClientHandlerServer client) {
+    public void processEvent(ClientEvent event, ClientHandlerServer client) {
         System.out.println("[SERVER] Ricevuto evento: " + event);
         switch(event){
             case CreateGameEvent e:
