@@ -7,7 +7,7 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 public class NicknameAlreadyInError extends ServerEvent {
     String username,message;
     public NicknameAlreadyInError(String username) {
-        super(ServerEventType.NICKNAME_ALREADY_IN);
+        super(ServerEventType.NICKNAME_ALREADY_IN, false);
         this.username = username;
         message = username + " is already in use";
     }

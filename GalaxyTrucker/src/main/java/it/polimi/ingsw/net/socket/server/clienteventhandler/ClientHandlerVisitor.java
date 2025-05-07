@@ -10,9 +10,9 @@ import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
 
 public class ClientHandlerVisitor implements ClientVisitor {
     private GameController gameController;
-
+    private int numLog;
     public ClientHandlerVisitor() {
-
+        numLog = 0;
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
 
@@ -49,16 +49,19 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(LoginEvent event) {
-        String nickname = event.getUsername();
-        PlayerColors color=event.getColor();
-        try {
-            gameController.tryAddPlayer(nickname,color);
-        } catch (NicknameUsedException e) {
-            return new NicknameAlreadyInError(nickname);
-        } catch (ColorNotAvailable e) {
-            return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
+        if(numLog< gameController.getGame().getNumPlayers()){
+            String nickname = event.getUsername();
+            PlayerColors color=event.getColor();
+            try {
+                gameController.tryAddPlayer(nickname,color);
+            } catch (NicknameUsedException e) {
+                return new NicknameAlreadyInError(nickname);
+            } catch (ColorNotAvailable e) {
+                return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
+            }
+            return new PlayerJoinedEvent(nickname);
         }
-        return new PlayerJoinedEvent(nickname);
+        return new NoAvailableSpaceError();
     }
 
     @Override

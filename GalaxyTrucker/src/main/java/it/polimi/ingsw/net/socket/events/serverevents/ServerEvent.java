@@ -12,10 +12,12 @@ import java.io.Serializable;
 public abstract class ServerEvent implements Serializable {
     private final ServerEventType eventType;
     private String message;
+    private boolean forAll;
 
-    public ServerEvent(ServerEventType eventType) {
+    public ServerEvent(ServerEventType eventType, boolean forAll) {
         this.eventType = eventType;
         message="Event: " + eventType.name();
+        this.forAll=forAll;
     }
     public ServerEventType getEventType() {
         return eventType;
@@ -23,7 +25,8 @@ public abstract class ServerEvent implements Serializable {
     public String getMessage() {
         return message;
     }
-    public void call(ServerEventVisitor visitor){
-        visitor.visit(this);
+
+    public boolean isForAll() {
+        return forAll;
     }
 }

@@ -6,7 +6,7 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 public class GenericErrorInsertedData extends ServerEvent {
     private String message;
     public GenericErrorInsertedData(){
-        super(ServerEventType.GENERIC_ERROR_INSERTED_DATA);
+        super(ServerEventType.GENERIC_ERROR_INSERTED_DATA, false);
         message = "Error inserted data";
     }
     @Override

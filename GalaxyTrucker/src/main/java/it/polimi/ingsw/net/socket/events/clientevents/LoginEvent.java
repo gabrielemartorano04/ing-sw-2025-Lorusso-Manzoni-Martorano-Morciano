@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.PlayerColors;
  * client to server
  */
 public class LoginEvent extends ClientEvent {
-    private final String username;
+    private String username;
     private PlayerColors color;
     private String message;
 
@@ -14,7 +14,7 @@ public class LoginEvent extends ClientEvent {
         super(ClientEventType.LOGIN);
         this.username = username;
         this.color = color;
-        message = "Username: " + username + " , Color: " + color.toString();
+        message = "Username: " + username+ "\nColor: " + color.toString();
     }
 
     public String getUsername() {

@@ -27,7 +27,7 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showChooseColor(List<String> availableColors) {
+    public void showChooseColor(ArrayList<String> availableColors) {
         System.out.println("Colori disponibili: " + String.join(", ", availableColors));
         System.out.print("Scegli un colore: ");
     }
@@ -231,17 +231,6 @@ public class TUI extends UI {
     }
 
     @Override
-    public void askNickname() {
-        System.out.print("Inserisci il tuo nickname: ");
-    }
-
-    @Override
-    public void askColor() {
-        System.out.println("Colori disponibili: YELLOW, RED, GREEN, BLUE");
-        System.out.print("Scegli un colore: ");
-    }
-
-    @Override
     public void askStackIndex() {
         System.out.print("Scegli lo stack (0-3): ");
     }
@@ -260,8 +249,8 @@ public class TUI extends UI {
     }
 
     @Override
-    public void askGoodsIndexesToRemove(int numToRemove) {
-        System.out.println("Seleziona " + numToRemove + " merci da rimuovere (es. 0 1):");
+    public void askGoodsIndexesToRemove() {
+        System.out.println("Seleziona merci da rimuovere (es. 0 1):");
     }
 
     @Override
@@ -286,5 +275,33 @@ public class TUI extends UI {
     public void askPlacedComponent(Component[][] layout) {
         System.out.println("\nSeleziona un componente dalla tua nave (formato: x y):");
         System.out.print("Inserisci coordinate (x y): ");
+    }
+
+    @Override
+    public void showTrack(Map<String, Integer> truckers) {
+        // Mappa posizione → simbolo (numero o lettera colore)
+        Map<Integer, String> board = new HashMap<>();
+        for (int i = 1; i <= 24; i++) {
+            board.put(i, String.valueOf(i));
+        }
+        for (Map.Entry<String, Integer> entry : truckers.entrySet()) {
+            String color = entry.getKey();
+            int pos = entry.getValue();
+            if (pos >= 1 && pos <= 24) {
+                board.put(pos, color.substring(0, 1).toUpperCase());
+            }
+        }
+
+        // Stampa (6 sopra, 4x2 lati, 6 sotto)
+        System.out.printf("      [%2s] [%2s] [%2s] [%2s] [%2s] [%2s]\n",
+                board.get(1), board.get(2), board.get(3), board.get(4), board.get(5), board.get(6));
+
+        for (int i = 0; i < 4; i++) {
+            System.out.printf("[%2s]                          [%2s]\n",
+                    board.get(24 - i), board.get(7 + i));
+        }
+
+        System.out.printf("      [%2s] [%2s] [%2s] [%2s] [%2s] [%2s]\n",
+                board.get(20), board.get(19), board.get(18), board.get(17), board.get(16), board.get(15));
     }
 }

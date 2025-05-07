@@ -13,6 +13,7 @@ import java.util.Map;
 
 public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private final ClientHandler clientHandler;
+    private boolean done = false;
     private final InputReader inputReader;
     private final InputParser inputParser;
     private final UI ui;
@@ -24,6 +25,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private int cannonPower;
     private int humanCount;
     private Map<String, Integer> goodsByColor;
+    private Map<String, Integer> track;
     private ServerEventVisitor serverEventVisitor;
     private volatile boolean running;
     private ViewState viewState;
@@ -49,19 +51,36 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public void onEventReceived(ServerEvent event) {
         System.out.println("[SERVER] Messaggio ricevuto: " + event);
         //!!questa deve gestire gli eventi dal server!!
-        if (event.getEventType()== ServerEventType.UPDATE_STATE){
+        if (event.getEventType()==ServerEventType.UPDATE_STATE || event.getEventType()==ServerEventType.UPDATE_TRACK){
             event.call(serverEventVisitor);
-            ui.showShipLayout(nickname, ship);
-            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
-        }else {
-            ui.showShipLayout(nickname, ship);
-            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
+            done=true;
+        }
+        switch (viewState) {
+            case START -> {
+                event.call(serverEventVisitor);
+            }
+            case BULDING -> {
+                ui.showShipLayout(nickname, ship);
+                ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
+            }
+            case FLIGTH -> {
+                ui.showShipLayout(nickname, ship);
+                ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
+                ui.showTrack(track);
+            }
+            case END -> {
+
+            }
+        }
+        if(!done){
             event.call(serverEventVisitor);
         }
+        done=false;
     }
 
     public void start() {
         // Thread per input utente
+        ui.showWelcome();
         new Thread(() -> {
             ClientEvent event=null;
             while (running) {
@@ -97,6 +116,74 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                 Thread.currentThread().interrupt();
             }
         }
+    }
+
+    public Component[][] getShip() {
+        return ship;
+    }
+
+    public void setShip(Component[][] ship) {
+        this.ship = ship;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getBatteryCount() {
+        return batteryCount;
+    }
+
+    public void setBatteryCount(int batteryCount) {
+        this.batteryCount = batteryCount;
+    }
+
+    public int getEnginePower() {
+        return enginePower;
+    }
+
+    public void setEnginePower(int enginePower) {
+        this.enginePower = enginePower;
+    }
+
+    public int getCannonPower() {
+        return cannonPower;
+    }
+
+    public void setCannonPower(int cannonPower) {
+        this.cannonPower = cannonPower;
+    }
+
+    public int getHumanCount() {
+        return humanCount;
+    }
+
+    public void setHumanCount(int humanCount) {
+        this.humanCount = humanCount;
+    }
+
+    public Map<String, Integer> getGoodsByColor() {
+        return goodsByColor;
+    }
+
+    public void setGoodsByColor(Map<String, Integer> goodsByColor) {
+        this.goodsByColor = goodsByColor;
+    }
+
+    public Map<String, Integer> getTrack() {
+        return track;
+    }
+
+    public void setTrack(Map<String, Integer> track) {
+        this.track = track;
+    }
+
+    public void setViewState(ViewState viewState) {
+        this.viewState = viewState;
     }
 }
 
