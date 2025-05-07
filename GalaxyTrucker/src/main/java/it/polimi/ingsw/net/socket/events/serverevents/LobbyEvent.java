@@ -13,6 +13,7 @@ public class LobbyEvent extends ServerEvent {
         this.countdown = countdown;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }
