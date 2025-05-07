@@ -189,14 +189,12 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showPlayerShipStatus(String nickname, int position, int batteryCount, int humanCount, int alienCount,
-                                     int cannonPower, int shieldPower, int enginePower, Map<String, Integer> goods) {
-        System.out.println("\nStato della nave di " + nickname + ":");
+    public void showPlayerShipStatus(int position, int batteryCount, int humanCount,
+                                     int cannonPower, int enginePower, Map<String, Integer> goods) {
         System.out.println("Posizione: " + position);
         System.out.println("Batterie: " + batteryCount);
-        System.out.println("Umani: " + humanCount + ", 👽 Alieni: " + alienCount);
+        System.out.println("Umani: " + humanCount);
         System.out.println("Potenza fuoco: " + cannonPower);
-        System.out.println("Scudi: " + shieldPower);
         System.out.println("Motori: " + enginePower);
 
         System.out.println("Merci a bordo:");

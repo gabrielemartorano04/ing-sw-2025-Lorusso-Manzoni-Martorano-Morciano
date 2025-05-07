@@ -8,10 +8,10 @@ import java.util.ArrayList;
 /**
  * event from client to server
  */
-public class SendIndexesEvent extends Event {
+public class SendIndexesEvent extends ClientEvent {
     private ArrayList<Integer> indexes;
     public SendIndexesEvent(ArrayList<Integer> indexes) {
-        super(EventType.SEND_INFO_EVENT);
+        super(ClientEventType.SEND_INFO_EVENT);
         this.indexes = indexes;
     }
     public ArrayList<Integer> getIndexes() {
