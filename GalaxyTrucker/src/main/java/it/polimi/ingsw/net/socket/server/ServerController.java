@@ -5,11 +5,19 @@ import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.CreateGameEvent;
 
 import java.util.HashMap;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class ServerController {
     private final HashMap<Integer, ClientHandlerServer> clients = new HashMap<>();
     private int nextId = 0;
     private GameController gameController;
+
+    private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
+
+    public ServerController() {
+        startDispatcher();
+    }
 
     public synchronized int registerClient(ClientHandlerServer client) {
         int id = nextId++;
@@ -18,6 +26,26 @@ public class ServerController {
     }
 
     public void handleEvent(ClientEvent event, ClientHandlerServer client) {
+        eventQueue.offer(new EventWithSource(event, client));
+    }
+
+    public void startDispatcher() {
+        Thread dispatcher = new Thread(() -> {
+            while (true){
+                try {
+                    EventWithSource entry = eventQueue.take();
+                    processeEvent(entry.getEvent(), entry.getClient());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        });
+        dispatcher.setDaemon(true);
+        dispatcher.start();
+    }
+
+    public void processeEvent(ClientEvent event, ClientHandlerServer client) {
         System.out.println("[SERVER] Ricevuto evento: " + event);
         switch(event){
             case CreateGameEvent e:
