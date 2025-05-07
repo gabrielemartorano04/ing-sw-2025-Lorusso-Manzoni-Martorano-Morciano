@@ -23,6 +23,7 @@ public enum ServerEventType {
     END_GAME,
     START_BUILDING,
     LOBBY,
-    PLAYERS_NUMBER_ERROR,
-    OK
+    UPDATE_TRACK,
+    SETUP_COMPLETE,
+    AVAILABLE_COMPONENTS,
 }

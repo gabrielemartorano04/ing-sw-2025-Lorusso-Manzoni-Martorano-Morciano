@@ -5,12 +5,21 @@ package it.polimi.ingsw.net.socket.events.serverevents;
  */
 public class ComponentLinkedEvent extends ServerEvent {
     String message;
-    public ComponentLinkedEvent() {
-        super(ServerEventType.COMPONENT_LINKED, false);
+    String componentName;
+    int cordx;
+    int cordy;
+    public ComponentLinkedEvent(String component, int x, int y) {
+        super(ServerEventType.COMPONENT_LINKED);
+        componentName = component;
+        cordx = x;
+        cordy = y;
         message = "Component correctly linked";
     }
     @Override
     public String getMessage() {
         return message;
     }
+    public String getComponent() {return componentName;}
+    public int getX() {return cordx;}
+    public int getY() {return cordy;}
 }

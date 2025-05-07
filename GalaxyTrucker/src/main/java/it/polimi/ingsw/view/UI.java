@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public abstract class UI {
     public abstract void showWelcome();
 
     public abstract void showInsertNickname();
-    public abstract void showChooseColor(List<String> availableColors);
+    public abstract void showChooseColor(ArrayList<String> availableColors);
     public abstract void showColorTaken();
     public abstract void showNicknameTaken();
     public abstract void showPlayerJoined(String nickname);
@@ -34,7 +35,7 @@ public abstract class UI {
     public abstract void showSelectComponent();
     public abstract void showBuildOptions(); // (link / keep / discard)
 
-    public abstract void showComponentPlaced(Component component, int x, int y);
+    public abstract void showComponentPlaced(String component, int x, int y);
     public abstract void showInvalidPlacement(String reason);
 
     public abstract void showHourglassTurned();
@@ -67,12 +68,10 @@ public abstract class UI {
     public abstract void showInvalidCommand(String expectedFormat);
 
     //INPUT
-    public abstract void askNickname();
-    public abstract void askColor();
     public abstract void askStackIndex();
     public abstract void askCoordinates();
     public abstract void showGoodsToRemove(List<Goods> goods);
-    public abstract void askGoodsIndexesToRemove(int numToRemove);
+    public abstract void askGoodsIndexesToRemove();
     public abstract void askComponentFromStack(List<Component> stack);
     public abstract void askPlacedComponent(Component[][] layout);
 
@@ -81,4 +80,5 @@ public abstract class UI {
     public abstract void showShipLayout(String nickname, Component[][] layout);
 
     public abstract void showMessage(String message);
+    public abstract void showTrack(Map<String, Integer> truckers);
 }

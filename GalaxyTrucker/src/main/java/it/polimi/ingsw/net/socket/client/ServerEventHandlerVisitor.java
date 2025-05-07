@@ -6,6 +6,12 @@ import it.polimi.ingsw.view.text.TUI;
 
 public class ServerEventHandlerVisitor implements ServerEventVisitor{
     private final UI ui=new TUI();
+    private final ViewFlow viewFlow;
+    ServerEventHandlerVisitor(ViewFlow viewFlow){
+        this.viewFlow = viewFlow;
+    }
+    @Override
+    public void visit(ServerEvent event){}
 
     @Override
     public void visit(AvailableColorsEvent event) {
@@ -19,19 +25,19 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(CheckShipsEvent event) {
-
+        ui.showMessage(event.getMessage());
     }
 
     @Override
     public void visit(ColorAlreadyInError event) {
         ui.showError(event.getMessage());
         ui.showColorTaken();
-        ui.showChooseColor(event.ge());
+        ui.showChooseColor(event.getAvailableColors());
     }
 
     @Override
     public void visit(ComponentLinkedEvent event) {
-        ui.showMessage(event.getMessage());
+        ui.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
     }
 
     @Override
@@ -96,7 +102,18 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(ShipUpdateEvent event) {
+        viewFlow.setBatteryCount(event.numBatteries());
+        viewFlow.setCannonPower(event.cannonPower());
+        viewFlow.setShip(event.getShip());
+        viewFlow.setEnginePower(event.enginePower());
+        viewFlow.setPosition(event.truckerPosition());
+        viewFlow.setGoodsByColor(event.getGoods());
+        viewFlow.setHumanCount(event.numCrew());
+    }
 
+    @Override
+    public void visit(UpdateTrackEvent event){
+        viewFlow.setTrack(event.getTrack());
     }
 
     @Override
@@ -150,7 +167,13 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.askStackIndex();
     }
 
-    public void
+    @Override
+    public void visit(SetupCompleteEvent event) {
+        ui.showSetupComplete();
+        viewFlow.setViewState(ViewFlow.ViewState.BULDING);
+    }
 
+    @Override
+    public void visit()
 
 }
