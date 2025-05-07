@@ -1,8 +1,5 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
-import it.polimi.ingsw.net.socket.events.Event;
-import it.polimi.ingsw.net.socket.events.EventType;
-
 /**
  * Error event from server to client. The selected component is not available
  */

@@ -1,10 +1,5 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
-import it.polimi.ingsw.net.socket.events.Event;
-import it.polimi.ingsw.net.socket.events.EventType;
-
-import java.awt.*;
-
 /**
  * Error event from server to client. The choosen color is already in use
  */
