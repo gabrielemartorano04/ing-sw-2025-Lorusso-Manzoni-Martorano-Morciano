@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.text.TUI;
 
 import java.util.Map;
@@ -42,50 +44,17 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     }
 
     @Override
-    public void onEventReceived(ClientEvent event) {
+    public void onEventReceived(ServerEvent event) {
         System.out.println("[SERVER] Messaggio ricevuto: " + event);
         //!!questa deve gestire gli eventi dal server!!
-
-        switch (event.getEventType()){
-            case SHIP_UPDATE -> {
-                ship=event.getShip();
-            }
-            case SHIP_STATUS_UPDATE -> {
-                nickname = event.getNickname();
-
-            }
-            case ASK_NICKNAME -> {
-                ui.showWelcome();
-                ui.showInsertNickname();
-            }
-            case ASK_COLOR -> {
-                ui.showChooseColor(event.getColors());
-            }
-            case NICKNAME_ALREADY_IN -> {
-                ui.showError(event.getMessage());
-                ui.showInsertNickname();
-            }
-            case COLOR_ALREADY_IN -> {
-                ui.showError(event.getMessage());
-                ui.showChooseColor();
-            }
-            case PLAYER_JOINED -> {
-                ui.showPlayerJoined();
-
-            }
-            case END_GAME -> {}
-            case NEXT_TURN -> {}
-            case  -> {
-
-            }
-            case SHOW_CARD -> {}
-            case ASK_BOOLEAN -> {}
-            case CREATE_GAME -> {}
-            case SELECT_TILE -> {}
-            case  -> {}
+        if (event.getEventType()== ServerEventType.UPDATE_STATE){
+            call();
             ui.showShipLayout(nickname, ship);
             ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, );
-
+        }else {
+            ui.showShipLayout(nickname, ship);
+            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, );
+            call();
         }
     }
 

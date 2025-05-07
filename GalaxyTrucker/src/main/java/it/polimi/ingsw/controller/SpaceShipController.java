@@ -59,7 +59,13 @@ public class SpaceShipController {
     }
 
     public Component[][] getComponents() {
-        return spaceShip.getComponents();
+        Component[][] components = new Component[5][7];
+        for (int i = 0; i < 5; i++) {
+            for(int j=0;j<7;j++){
+                components[i][j]=spaceShip.getComponents()[i+5][j+4];
+            }
+        }
+        return components;
     }
 
     public int getNumDoubleCannon(){
