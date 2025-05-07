@@ -1,6 +1,6 @@
 package it.polimi.ingsw.net.socket.client;
 
-import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -28,7 +28,7 @@ public class NetworkClient {
         outputStream = new ObjectOutputStream(socket.getOutputStream());
     }
 
-    public void sendMessage(Event event) throws IOException {
+    public void sendMessage(ClientEvent event) throws IOException {
         if (socket == null || socket.isClosed()) {
             throw new IOException("Connessione non attiva");
         }

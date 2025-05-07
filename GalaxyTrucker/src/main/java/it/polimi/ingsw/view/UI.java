@@ -77,7 +77,7 @@ public abstract class UI {
     public abstract void askPlacedComponent(Component[][] layout);
 
     //PLAYER DATA
-    public abstract void showPlayerShipStatus(String nickname, int position, int batteryCount, int humanCount, int alienCount, int cannonPower, int shieldPower, int enginePower, Map<String, Integer> goodsByColor);
+    public abstract void showPlayerShipStatus(int position, int batteryCount, int humanCount, int cannonPower, int enginePower, Map<String, Integer> goodsByColor);
     public abstract void showShipLayout(String nickname, Component[][] layout);
 
 
