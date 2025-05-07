@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.callers.OpenSpaceCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
@@ -29,7 +30,7 @@ public class OpenSpace extends Card {
      * @param backImage back image of the card
      */
     public OpenSpace(boolean trialFlight, int level, String frontImage, String backImage) {
-        super("Open Space", "Empty vastness of space", trialFlight, level, frontImage, backImage);
+        super("Open Space", "Empty vastness of space", trialFlight, level, frontImage, backImage, new OpenSpaceCaller());
     }
 
     @Override

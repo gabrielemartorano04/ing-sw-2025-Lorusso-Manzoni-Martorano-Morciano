@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.callers.EpidemicCaller;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 
@@ -21,7 +22,7 @@ public class Epidemic extends Card {
      * @param backImage back image of the card
      */
     public Epidemic(boolean trialFlight, int level, String frontImage, String backImage) {
-        super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage);
+        super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage, new EpidemicCaller());
         this.state = CardState.ESECUZIONE;
     }
 

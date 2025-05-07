@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.callers.CardCaller;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 import it.polimi.ingsw.utilities.exceptions.*;
@@ -18,6 +19,7 @@ public abstract class Card {
     private final boolean  trialFlight;
     private final ImageIcon frontImage;
     private final ImageIcon backImage;
+    private final CardCaller caller;
 
     /**
      * Card constructor, initialise the attributes of this class
@@ -28,14 +30,14 @@ public abstract class Card {
      * @param name_frontImage front image of the card
      * @param name_backImage back image of the card
      */
-    public Card(String name, String description, boolean trialFlight, Integer level, String name_frontImage, String name_backImage) {
+    public Card(String name, String description, boolean trialFlight, Integer level, String name_frontImage, String name_backImage, CardCaller caller) {
         this.name = name;
         this.description = description;
         this.trialFlight = trialFlight;
         this.level = level;
         this.frontImage = new ImageIcon(getClass().getResource(name_frontImage));
         this.backImage = new ImageIcon(getClass().getResource(name_backImage));
-
+        this.caller = caller;
     }
 
     public Object accept(CardVisitor visitor) {
@@ -44,6 +46,10 @@ public abstract class Card {
 
     public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries {
         return visitor.visit(this, params);
+    }
+
+    public CardCaller getCaller() {
+        return caller;
     }
 
     /**
@@ -99,7 +105,6 @@ public abstract class Card {
      * @param game game in which the card has been drawn
      */
     public abstract CardState cardEffect(Game game);
-
 
 
 }
