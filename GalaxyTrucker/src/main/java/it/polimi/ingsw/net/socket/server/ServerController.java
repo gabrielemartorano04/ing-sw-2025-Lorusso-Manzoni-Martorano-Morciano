@@ -1,28 +1,23 @@
 package it.polimi.ingsw.net.socket.server;
 
-import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.CreateGameEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientHandlerVisitor;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ServerController {
-    private final HashMap<Integer, ClientHandlerServer> clients = new HashMap<>();
+    private final ArrayList<ClientHandlerServer> clients = new ArrayList<>();
     private int nextId = 0;
-    private GameController gameController;
+    private final ClientHandlerVisitor visitor;
 
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
 
     public ServerController() {
         startDispatcher();
-    }
-
-    public synchronized int registerClient(ClientHandlerServer client) {
-        int id = nextId++;
-        clients.put(id, client);
-        return id;
+        this.visitor = new ClientHandlerVisitor();
     }
 
     public void handleEvent(ClientEvent event, ClientHandlerServer client) {
@@ -34,7 +29,7 @@ public class ServerController {
             while (true){
                 try {
                     EventWithSource entry = eventQueue.take();
-                    processEvent(entry.getEvent(), entry.getClient());
+                    processEvent(entry, visitor);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
@@ -45,29 +40,18 @@ public class ServerController {
         dispatcher.start();
     }
 
-    public void processEvent(ClientEvent event, ClientHandlerServer client) {
-        System.out.println("[SERVER] Ricevuto evento: " + event);
-        switch(event){
-            case CreateGameEvent e:
-                gameController=new GameController();
-                System.out.println("[SERVER] Gioco creato");
-                break;
+    public void processEvent(EventWithSource eventWithSource, ClientHandlerVisitor visitor) {
+        ClientEvent event = eventWithSource.getEvent();
+        ClientHandlerServer client = eventWithSource.getClient();
 
-            default:
-                throw new IllegalStateException("Unexpected value: " + event);
+        ServerEvent response = event.call(visitor);
+        if(response.isForAll()){
+            for(ClientHandlerServer c: clients){
+                c.sendEvent(response);
+            }
+        }else{
+            client.sendEvent(response);
         }
-//        if (event instanceof) {
-//            String msg = textEvent.getMessage();
-//            System.out.println("[SERVER] Testo ricevuto: " + msg);
-//
-//            // Rispondiamo al client
-//            HelloEvent response = new HelloEvent("Server ha ricevuto il tuo messaggio: '" + msg + "'", EventType.HELLO_MESSAGE);
-//            try {
-//                client.sendEvent(response);
-//            } catch (Exception e) {
-//                System.err.println("Errore nell'invio di risposta al client: " + e.getMessage());
-//            }
-//        }
     }
 }
 
