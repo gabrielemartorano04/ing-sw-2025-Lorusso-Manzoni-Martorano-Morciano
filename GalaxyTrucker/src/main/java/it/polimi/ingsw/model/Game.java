@@ -33,8 +33,8 @@ public class Game {
     /**
      * Constructor that initializes the game attributes.
      */
-    public Game() {
-        this.truckers = new ArrayList<>();
+    public Game(int numPlayers) {
+        this.truckers = new ArrayList<>(numPlayers);
         this.truckersOut = new ArrayList<>();
         this.gameDeck = new ArrayList<>();
         this.components = new AvailableComponents();
@@ -81,7 +81,6 @@ public class Game {
      */
     public Card drawCard() {
         if (gameDeck.isEmpty()) return null;
-        Game game= new Game();
         return gameDeck.removeFirst();
     }
 

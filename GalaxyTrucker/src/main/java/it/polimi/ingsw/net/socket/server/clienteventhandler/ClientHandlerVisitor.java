@@ -1,21 +1,30 @@
 package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 
-import it.polimi.ingsw.controller.CardControllerNew;
+import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.net.socket.events.clientevents.*;
+import it.polimi.ingsw.net.socket.events.serverevents.*;
+import it.polimi.ingsw.utilities.exceptions.ColorNotAvailable;
+import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
 
 public class ClientHandlerVisitor implements ClientVisitor {
-    private final CardControllerNew cardController;
+    private GameController gameController;
 
-    public ClientHandlerVisitor(CardControllerNew cardController) {
-        this.cardController = cardController;
+    public ClientHandlerVisitor() {
+
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
 
 
     @Override
-    public void visit(CreateGameEvent event) {
-
+    public ServerEvent visit(CreateGameEvent event) {
+        int numPlayers= event.getNumberOfPlayers();
+        if (numPlayers<2 || numPlayers>4) {
+            return new NumberOfPlayersError();
+        }
+        gameController=new GameController(numPlayers);
+        return new OkEvent("Game Created correctly");
     }
 
     @Override
@@ -39,8 +48,17 @@ public class ClientHandlerVisitor implements ClientVisitor {
     }
 
     @Override
-    public void visit(LoginEvent event) {
-
+    public ServerEvent visit(LoginEvent event) {
+        String nickname = event.getUsername();
+        PlayerColors color=event.getColor();
+        try {
+            gameController.tryAddPlayer(nickname,color);
+        } catch (NicknameUsedException e) {
+            return new NicknameAlreadyInError(nickname);
+        } catch (ColorNotAvailable e) {
+            return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
+        }
+        return new PlayerJoinedEvent(nickname);
     }
 
     @Override
