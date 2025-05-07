@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
+import it.polimi.ingsw.net.socket.client.ServerEventVisitor;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
@@ -23,6 +24,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private int cannonPower;
     private int humanCount;
     private Map<String, Integer> goodsByColor;
+    private ServerEventVisitor serverEventVisitor;
     private volatile boolean running;
     private ViewState viewState;
     public enum ViewState {
@@ -48,13 +50,13 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         System.out.println("[SERVER] Messaggio ricevuto: " + event);
         //!!questa deve gestire gli eventi dal server!!
         if (event.getEventType()== ServerEventType.UPDATE_STATE){
-            call();
+            event.call(serverEventVisitor);
             ui.showShipLayout(nickname, ship);
-            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, );
+            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
         }else {
             ui.showShipLayout(nickname, ship);
-            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, );
-            call();
+            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
+            event.call(serverEventVisitor);
         }
     }
 

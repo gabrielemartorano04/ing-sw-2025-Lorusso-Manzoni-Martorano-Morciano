@@ -2,7 +2,8 @@ package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 
-public interface ClientEventVisitor {
+public interface ServerEventVisitor {
+    void visit(ServerEvent event);
     void visit(AvailableColorsEvent event);
     void visit(BooleanRequest event);
     void visit(CheckShipsEvent event);
@@ -19,7 +20,6 @@ public interface ClientEventVisitor {
     void visit(NoAvailableSpaceError event);
     void visit(PlayerJoinedEvent event);
     void visit(ReconnectedUserEvent event);
-    void visit(ShipStateUpdateEvent event);
     void visit(ShipUpdateEvent event);
     void visit(ShowCardEvent event);
     void visit(StartBuildingEvent event);
