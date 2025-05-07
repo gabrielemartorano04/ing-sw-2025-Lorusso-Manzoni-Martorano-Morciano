@@ -11,7 +11,7 @@ public class ColorAlreadyInError extends ServerEvent {
     private Color color;
     private ArrayList<String> chooseColors;
     public ColorAlreadyInError(Color color,ArrayList<Color> availableColors) {
-        super(ServerEventType.COLOR_ALREADY_IN);
+        super(ServerEventType.COLOR_ALREADY_IN, false);
         this.color = color;
         int i=0;
         for(Color colors : availableColors){

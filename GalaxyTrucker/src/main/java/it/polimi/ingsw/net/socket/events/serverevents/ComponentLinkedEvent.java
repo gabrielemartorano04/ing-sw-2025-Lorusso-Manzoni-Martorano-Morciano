@@ -9,7 +9,7 @@ public class ComponentLinkedEvent extends ServerEvent {
     int cordx;
     int cordy;
     public ComponentLinkedEvent(String component, int x, int y) {
-        super(ServerEventType.COMPONENT_LINKED);
+        super(ServerEventType.COMPONENT_LINKED, false);
         componentName = component;
         cordx = x;
         cordy = y;
