@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.callers.PlanetsCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
 import it.polimi.ingsw.utilities.exceptions.PlanetNotFreeException;
@@ -56,7 +57,7 @@ public class Planets extends Card {
      * @param backImage back image of the card
      */
     public Planets(boolean trialFlight, int daysLoss, int level, ArrayList<ArrayList<Goods>> planets, String frontImage, String backImage) {
-        super("Planets", "A new planetary system discovered", trialFlight, level, frontImage, backImage);
+        super("Planets", "A new planetary system discovered", trialFlight, level, frontImage, backImage, new PlanetsCaller());
         this.daysLoss = daysLoss;
         this.planets = planets;
         this.truckersCoordinates = new ArrayList<>();

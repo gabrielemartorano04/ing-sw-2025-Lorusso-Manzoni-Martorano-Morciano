@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Bank;
+import it.polimi.ingsw.model.callers.WarZoneCaller;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
@@ -57,7 +58,7 @@ public class WarZone extends Card {
 
 
     public WarZone(boolean trialFlight, int level, ArrayList<Condition> conditionsOrder, Map<Condition, Effect> penalties, ArrayList<int[]> shoots ,String frontImage, String backImage) {
-        super("War Zone", "A dangerous conflict zone", trialFlight, level, frontImage, backImage);
+        super("War Zone", "A dangerous conflict zone", trialFlight, level, frontImage, backImage, new WarZoneCaller());
         this.conditionsOrder = conditionsOrder;
         this.penalties = penalties;
         this.shoots = shoots;

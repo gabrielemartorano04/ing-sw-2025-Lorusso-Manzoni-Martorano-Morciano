@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.callers.SlaversCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
@@ -44,7 +45,7 @@ public class Slavers extends Card {
      * @param backImage back image of the card
      */
     public Slavers(boolean trialFlight, int level, int credits, int days, int astronautsLost, int slaversPower, String frontImage, String backImage ) {
-        super("Slavers", "Intergalactic slave traders", trialFlight, level, frontImage, backImage);
+        super("Slavers", "Intergalactic slave traders", trialFlight, level, frontImage, backImage, new SlaversCaller());
         this.credits = credits;
         this.days = days;
         this.astronautsLost = astronautsLost;
