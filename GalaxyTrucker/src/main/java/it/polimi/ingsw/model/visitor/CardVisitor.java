@@ -16,7 +16,7 @@ public interface CardVisitor<R> {
 
     R visitForEpidemic(Epidemic epidemic);
 
-    R visitForMeteorShowers(MeteorShower meteorShowers);
+    R visitForMeteorShowers(MeteorShower meteorShowers) throws GeneralError;
 
     R visitForOpenSpace(OpenSpace openSpace);
 
@@ -30,5 +30,5 @@ public interface CardVisitor<R> {
 
     R visitForStarDust(StarDust starDust);
 
-    R visitForWarZone(WarZone warZone);
+    R visitForWarZone(WarZone warZone) throws GeneralError;
 }

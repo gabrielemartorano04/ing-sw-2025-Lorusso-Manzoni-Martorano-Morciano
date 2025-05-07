@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.visitor;
 
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
@@ -47,6 +48,8 @@ public class SetDoubleEnginesCoordinatesVisitor implements ParametricCardVisitor
             return openSpace.setCoordinates(trucker, truckerCoordinate, numTrucker);
         } catch (InvalidCoordinates e) {
             throw new InvalidCoordinates(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -85,6 +88,8 @@ public class SetDoubleEnginesCoordinatesVisitor implements ParametricCardVisitor
             return null;
         } catch (InvalidComponentsException e) {
             throw new InvalidComponentsException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 }

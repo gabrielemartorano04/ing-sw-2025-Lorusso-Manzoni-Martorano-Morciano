@@ -133,7 +133,7 @@ public class GetGoodsVisitor implements CardVisitor, ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForWarZone(WarZone warZone, Object... params) {
+    public Object visitForWarZone(WarZone warZone, Object... params) throws GeneralError {
         Trucker trucker = (Trucker) params[0];
         return warZone.plotGoodsList(trucker);
     }

@@ -64,7 +64,7 @@ public class GetElementsToRemove implements CardVisitor {
     }
 
     @Override
-    public Object visitForWarZone(WarZone warZone) {
+    public Object visitForWarZone(WarZone warZone) throws GeneralError {
         return warZone.getNumOfBatteriesToRemove();
     }
 }

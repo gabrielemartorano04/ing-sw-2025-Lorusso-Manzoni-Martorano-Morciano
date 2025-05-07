@@ -92,6 +92,8 @@ public class RemoveAskingVisitor implements ParametricCardVisitor {
             throw new InvalidGoodChosen(e.getMessage());
         } catch (NotEnoughGoodsChosen e) {
             throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 }

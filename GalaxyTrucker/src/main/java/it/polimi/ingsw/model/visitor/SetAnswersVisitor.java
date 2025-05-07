@@ -68,7 +68,7 @@ public class SetAnswersVisitor implements ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForWarZone(WarZone warZone, Object... params) {
+    public Object visitForWarZone(WarZone warZone, Object... params) throws GeneralError {
         boolean answer = (boolean) params[0];
         warZone.setAnswers(answer);
         return null;

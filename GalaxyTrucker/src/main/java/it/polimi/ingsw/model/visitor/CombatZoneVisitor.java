@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.util.ArrayList;
 
@@ -66,7 +67,7 @@ public class CombatZoneVisitor implements ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForWarZone(WarZone warZone, Object... params) {
+    public Object visitForWarZone(WarZone warZone, Object... params) throws GeneralError {
         Game game = (Game) params[0];
         return warZone.combatZone(game);
     }

@@ -29,7 +29,7 @@ public class GetCurrentAttackVisitor implements CardVisitor {
     }
 
     @Override
-    public Object visitForMeteorShowers(MeteorShower meteorShowers) {
+    public Object visitForMeteorShowers(MeteorShower meteorShowers) throws GeneralError {
         return meteorShowers.getCurrentMeteor();
     }
 
@@ -64,7 +64,7 @@ public class GetCurrentAttackVisitor implements CardVisitor {
     }
 
     @Override
-    public Object visitForWarZone(WarZone warZone) {
+    public Object visitForWarZone(WarZone warZone) throws GeneralError {
         return warZone.getCurrentMeteor();
     }
 }

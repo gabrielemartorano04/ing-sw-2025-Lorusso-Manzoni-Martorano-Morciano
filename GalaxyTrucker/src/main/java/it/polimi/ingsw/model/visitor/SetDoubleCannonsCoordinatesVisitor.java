@@ -53,6 +53,10 @@ public class SetDoubleCannonsCoordinatesVisitor implements ParametricCardVisitor
             return pirates.addDoubleCannonsCoord(trucker, doubleCannonCoordinates, numPlayer);
         } catch (IllegalStateException e) {
             throw new IllegalStateException(e.getMessage());
+        } catch (InvalidComponentsException e) {
+            throw new RuntimeException(e);
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -111,6 +115,8 @@ public class SetDoubleCannonsCoordinatesVisitor implements ParametricCardVisitor
             return null;
         } catch (InvalidComponentsException e) {
             throw new InvalidComponentsException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -27,6 +27,8 @@ public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisi
             throw new InvalidCoordinates(e.getMessage());
         } catch (InvalidComponentsException e) {
             throw new InvalidComponentsException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -93,6 +95,8 @@ public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisi
             throw new InvalidComponentsException(e.getMessage());
         } catch (InvalidCoordinates e) {
             throw new InvalidCoordinates(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 }

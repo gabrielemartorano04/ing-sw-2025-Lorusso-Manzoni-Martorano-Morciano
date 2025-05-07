@@ -30,5 +30,5 @@ public interface ParametricCardVisitor<R> {
 
     R visitForStarDust(StarDust starDust, Object... params);
 
-    R visitForWarZone(WarZone warZone, Object... params) throws InvalidGoodChosen, NotEnoughGoodsChosen, InvalidCoordinates, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries;
+    R visitForWarZone(WarZone warZone, Object... params) throws InvalidGoodChosen, NotEnoughGoodsChosen, InvalidCoordinates, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries, GeneralError;
 }
