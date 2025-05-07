@@ -84,13 +84,18 @@ public class AbandonedShip extends Card{
         return numHuman;
     }
 
+    /**
+     * @return : index of the current trucker that is taken the decision whether to land or not
+     */
     public int getPlayerDecisions() {
         return playerDecisions;
     }
 
     /**
      * Sets the only trucker that has chosen to take the ship
-     * @param trucker trucker ID
+     * @param trucker: trucker current
+     * @param landing: the choice taken by the current client
+     * @param numPlayer: number of player in the current game
      */
     public CardState setTruckerThatHasDecided(Trucker trucker, boolean landing, int numPlayer)  {
         if(state != CardState.ATTESA_RISPOSTE) {
