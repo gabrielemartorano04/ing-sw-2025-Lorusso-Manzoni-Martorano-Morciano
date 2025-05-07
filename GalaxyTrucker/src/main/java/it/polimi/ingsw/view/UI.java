@@ -1,11 +1,9 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -69,14 +67,14 @@ public abstract class UI {
     public abstract void showInvalidCommand(String expectedFormat);
 
     //INPUT
-    public abstract String askNickname();
-    public abstract PlayerColors askColor();
-    public abstract int askStackIndex();
-    public abstract int[] askCoordinates();
+    public abstract void askNickname();
+    public abstract void askColor();
+    public abstract void askStackIndex();
+    public abstract void askCoordinates();
     public abstract void showGoodsToRemove(List<Goods> goods);
-    public abstract List<Integer> askGoodsIndexesToRemove(int numToRemove);
-    public abstract Component askComponentFromStack(List<Component> stack);
-    public abstract int[] askPlacedComponent(Component[][] layout);
+    public abstract void askGoodsIndexesToRemove(int numToRemove);
+    public abstract void askComponentFromStack(List<Component> stack);
+    public abstract void askPlacedComponent(Component[][] layout);
 
     //PLAYER DATA
     public abstract void showPlayerShipStatus(String nickname, int position, int batteryCount, int humanCount, int alienCount, int cannonPower, int shieldPower, int enginePower, Map<String, Integer> goodsByColor);
