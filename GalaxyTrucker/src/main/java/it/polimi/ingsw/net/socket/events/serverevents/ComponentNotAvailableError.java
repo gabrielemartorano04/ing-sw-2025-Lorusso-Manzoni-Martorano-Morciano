@@ -6,7 +6,7 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 public class ComponentNotAvailableError extends ServerEvent {
     private String message;
     public ComponentNotAvailableError() {
-        super(ServerEventType.COMPONENT_NOT_AVAILABLE);
+        super(ServerEventType.COMPONENT_NOT_AVAILABLE, false);
         message = "The component is not available";
     }
     @Override

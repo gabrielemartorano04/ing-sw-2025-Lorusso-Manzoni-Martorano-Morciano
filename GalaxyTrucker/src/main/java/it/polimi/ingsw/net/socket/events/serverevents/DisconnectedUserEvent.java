@@ -6,7 +6,7 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 public class DisconnectedUserEvent extends ServerEvent {
     String username, message;
     public DisconnectedUserEvent(String username){
-        super(ServerEventType.DISCONNECTED_USER);
+        super(ServerEventType.DISCONNECTED_USER, true);
         this.username = username;
         message = username+" disconnected";
     }

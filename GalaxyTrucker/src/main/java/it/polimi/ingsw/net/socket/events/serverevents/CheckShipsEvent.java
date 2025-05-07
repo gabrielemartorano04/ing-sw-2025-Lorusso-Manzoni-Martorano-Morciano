@@ -6,7 +6,7 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 public class CheckShipsEvent extends ServerEvent {
     private String message;
     public CheckShipsEvent() {
-        super(ServerEventType.CHECK_SHIPS);
+        super(ServerEventType.CHECK_SHIPS, false);
         message = "Spaceships are checked and correctly modified";
     }
     @Override

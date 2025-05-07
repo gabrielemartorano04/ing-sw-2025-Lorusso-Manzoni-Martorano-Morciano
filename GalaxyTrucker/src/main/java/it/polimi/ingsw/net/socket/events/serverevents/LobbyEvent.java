@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class LobbyEvent extends ServerEvent {
     public String message;
     private ArrayList<String> truckers;
-    public LobbyEvent( ArrayList<String> truckers, int countdown) {
-        super(ServerEventType.LOBBY);
+    public LobbyEvent( ArrayList<String> truckers) {
+        super(ServerEventType.LOBBY, true);
         message = "Current players: " + truckers;
         this.truckers = truckers;
     }
@@ -29,7 +29,7 @@ public class LobbyEvent extends ServerEvent {
         ArrayList<String> truckers=new ArrayList<>();
         truckers.add(trucker1.getNickname());
         truckers.add(trucker2.getNickname());
-        LobbyEvent le=new LobbyEvent( truckers, 10);
+        LobbyEvent le=new LobbyEvent( truckers);
         System.out.println(le.getMessage());
     }
 }

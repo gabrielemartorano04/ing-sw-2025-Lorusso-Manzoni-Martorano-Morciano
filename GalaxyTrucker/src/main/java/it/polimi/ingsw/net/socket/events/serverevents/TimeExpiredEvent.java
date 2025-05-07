@@ -7,7 +7,7 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 public class TimeExpiredEvent extends ServerEvent {
     String message;
     public TimeExpiredEvent() {
-        super(ServerEventType.TIME_EXPIRED);
+        super(ServerEventType.TIME_EXPIRED, true);
         message = "Time is expired";
     }
     @Override

@@ -4,7 +4,7 @@ import java.net.Socket;
 
 public class CoordListRequest extends ServerEvent{
     public CoordListRequest() {
-        super(ServerEventType.REQUEST);
+        super(ServerEventType.REQUEST, false);
     }
     @Override
     public String getMessage() {

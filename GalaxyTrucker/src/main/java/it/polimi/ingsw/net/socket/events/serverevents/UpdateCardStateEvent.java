@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.cards.CardState;
 public class UpdateCardStateEvent extends ServerEvent {
     private CardState state;
     public UpdateCardStateEvent(CardState state) {
-        super(ServerEventType.UPDATE_STATE);
+        super(ServerEventType.UPDATE_STATE, true);
         this.state = state;
     }
     public CardState getState() {
