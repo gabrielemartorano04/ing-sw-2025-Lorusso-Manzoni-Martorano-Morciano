@@ -7,8 +7,8 @@ public class CurrentPlayersEvent extends ServerEvent {
     private ArrayList<String> truckers;
     private int countdown;
     public CurrentPlayersEvent(ServerEventType eventType, ArrayList<String> truckers, int countdown) {
-        super(eventType);
-        message = "Current players: ";
+        super(ServerEventType.LOBBY);
+        message = "Current players: " + truckers + "\n Countdown:" + countdown;
         this.truckers = truckers;
         this.countdown = countdown;
     }

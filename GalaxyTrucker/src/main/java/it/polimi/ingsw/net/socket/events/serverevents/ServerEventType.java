@@ -21,5 +21,6 @@ public enum ServerEventType {
     REQUEST,
     SEND_MESSAGE,
     END_GAME,
-    START_BUILDING
+    START_BUILDING,
+    LOBBY
 }
