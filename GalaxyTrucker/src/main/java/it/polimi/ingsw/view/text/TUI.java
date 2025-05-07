@@ -93,8 +93,8 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showComponentPlaced(String component, int x, int y) {
-        System.out.println("✅ Componente " + component + " piazzato in [" + x + "," + y + "]");
+    public void showComponentPlaced(Component component, int x, int y) {
+        System.out.println("✅ Componente " + component.getType() + " piazzato in [" + x + "," + y + "]");
     }
 
     @Override
