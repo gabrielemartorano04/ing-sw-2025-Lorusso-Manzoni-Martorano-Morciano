@@ -58,7 +58,7 @@ public class SetTruckerLandingVisitor implements ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForPlanets(Planets planets, Object... params) throws PlanetNotFreeException {
+    public Object visitForPlanets(Planets planets, Object... params) {
         try {
             int indexOfLanding = (Integer) params[0];
             Trucker trucker = (Trucker) params[1];
