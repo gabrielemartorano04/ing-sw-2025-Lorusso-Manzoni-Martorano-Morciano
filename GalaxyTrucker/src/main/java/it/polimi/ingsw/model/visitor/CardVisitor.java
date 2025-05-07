@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 /**
  *
@@ -19,13 +20,13 @@ public interface CardVisitor<R> {
 
     R visitForOpenSpace(OpenSpace openSpace);
 
-    R visitForPirates(Pirates pirates);
+    R visitForPirates(Pirates pirates) throws GeneralError;
 
     R visitForPlanets(Planets planets);
 
     R visitForSlavers(Slavers slavers);
 
-    R visitForSmugglers(Smugglers smugglers);
+    R visitForSmugglers(Smugglers smugglers) throws GeneralError;
 
     R visitForStarDust(StarDust starDust);
 

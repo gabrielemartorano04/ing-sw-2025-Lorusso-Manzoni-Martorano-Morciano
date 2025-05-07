@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.callers.EpidemicCaller;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.util.List;
 
@@ -41,9 +42,9 @@ public class Epidemic extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) {
+    public CardState cardEffect(Game game) throws GeneralError {
         if(state != CardState.ESECUZIONE) {
-            throw new IllegalStateException("Non puoi settare fare CardEffect nello stato: " + state);
+            throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }
         List <Trucker> truckers = game.getTruckerList();
         for(Trucker trucker: truckers) {

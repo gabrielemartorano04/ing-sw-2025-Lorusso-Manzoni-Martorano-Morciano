@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.visitor;
 
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
@@ -70,6 +71,10 @@ public class SetDoubleCannonsCoordinatesVisitor implements ParametricCardVisitor
             return slavers.addDoubleCannonsCoord(trucker, doubleCannonCoord, numPlayer);
         } catch (IllegalStateException e) {
             throw new IllegalStateException(e.getMessage());
+        } catch (InvalidComponentsException e) {
+            throw new RuntimeException(e);
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -86,6 +91,8 @@ public class SetDoubleCannonsCoordinatesVisitor implements ParametricCardVisitor
             throw new InvalidComponentsException(e.getMessage());
         } catch (IllegalStateException e) {
             throw new IllegalStateException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 

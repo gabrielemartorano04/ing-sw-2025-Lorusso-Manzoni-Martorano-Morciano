@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.visitor;
 
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
@@ -30,7 +31,7 @@ public class SetCoordinatesToAddElementsVisitor implements ParametricCardVisitor
             return abandonedStation.setWinnerCoordinatesToAddGoods(winnerCoordinatesToAddGoods, value, trucker, bank);
         } catch (InvalidCoordinates e) {
             throw new InvalidCoordinates(e.getMessage());
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | GeneralError e) {
             throw new IllegalStateException(e.getMessage());
         }
     }
@@ -66,6 +67,8 @@ public class SetCoordinatesToAddElementsVisitor implements ParametricCardVisitor
             throw new InvalidCoordinates(e.getMessage());
         } catch (IllegalStateException e) {
             throw new IllegalStateException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -86,6 +89,8 @@ public class SetCoordinatesToAddElementsVisitor implements ParametricCardVisitor
             throw new InvalidCoordinates(e.getMessage());
         } catch (IllegalStateException e) {
             throw new IllegalStateException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 

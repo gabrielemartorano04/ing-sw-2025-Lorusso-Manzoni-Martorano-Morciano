@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 /**
  *
@@ -44,7 +45,7 @@ public class InitializeVisitor implements ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForPlanets(Planets planets, Object... params) {
+    public Object visitForPlanets(Planets planets, Object... params) throws GeneralError {
         Bank bank = (Bank) params[0];
         return planets.initialize(bank);
     }

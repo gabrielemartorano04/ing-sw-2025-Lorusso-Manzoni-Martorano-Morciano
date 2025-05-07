@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 /**
  *
@@ -50,6 +51,8 @@ public class SetChoiceToGainVisitor implements ParametricCardVisitor {
             return pirates.setChooseToGain(choice);
         } catch (IllegalStateException e) {
             throw new IllegalStateException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -61,6 +64,8 @@ public class SetChoiceToGainVisitor implements ParametricCardVisitor {
             return planets.chooseToGain(choice);
         } catch (IllegalStateException e) {
             throw new IllegalStateException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -72,6 +77,8 @@ public class SetChoiceToGainVisitor implements ParametricCardVisitor {
             return slavers.setChooseToGain(choice);
         } catch (IllegalStateException e) {
             throw new IllegalStateException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -83,6 +90,8 @@ public class SetChoiceToGainVisitor implements ParametricCardVisitor {
             return smugglers.setChoiceToGain(choice);
         } catch (IllegalStateException e) {
             throw new IllegalStateException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 

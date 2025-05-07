@@ -6,10 +6,10 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.callers.MeteorShowerCaller;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Class that manages the single card meteor shower
@@ -75,12 +75,12 @@ public class MeteorShower extends Card {
         return directions;
     }
 
-    public int[] getCurrentMeteor(){
+    public int[] getCurrentMeteor() throws GeneralError {
         if(state != CardState.PLOT_METEOR) {
-            throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
+            throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
         if(i<0 || i >= directions.size()){
-            throw new RuntimeException("Stai cercando di accedere a un meteorite che non esiste");
+            throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste");
         }
         int[] meteor = directions.get(i);
         this.meteor = meteor;
@@ -89,18 +89,18 @@ public class MeteorShower extends Card {
         return meteor;
     }
 
-    public CardState rollDice(Game game){
+    public CardState rollDice(Game game) throws GeneralError {
         if(state != CardState.ROLL_DICE){
-            throw new IllegalStateException("Non si può girare i dadi nello stato " + this.state);
+            throw new GeneralError("Non si può girare i dadi nello stato " + this.state);
         }
         this.roll = game.rollDice();
         state = CardState.ATTESA_RISPOSTE;
         return state;
     }
 
-    public CardState setAnswers(boolean answer) {
+    public CardState setAnswers(boolean answer) throws GeneralError {
         if(state != CardState.ATTESA_RISPOSTE){
-            throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
+            throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
         this.answers.addLast(answer);
         state = CardState.ESECUZIONE;
@@ -112,14 +112,14 @@ public class MeteorShower extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) {
+    public CardState cardEffect(Game game) throws GeneralError {
         if (this.state != CardState.ESECUZIONE) {
-            throw new IllegalStateException("Non è possibile eseguire card effect nello stato " + this.state);
+            throw new GeneralError("Non è possibile eseguire card effect nello stato " + this.state);
         }
 
         List<Trucker> truckers = game.getTruckerList();
         if(answers.size() != truckers.size()){
-            throw new RuntimeException("Non ho una risposta per ogni trucker");
+            throw new GeneralError("Non ho una risposta per ogni trucker");
         }
         boolean isBig = (meteor[0] == 1);
         int direction = meteor[1];

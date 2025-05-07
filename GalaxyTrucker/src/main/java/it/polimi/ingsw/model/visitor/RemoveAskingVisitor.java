@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.visitor;
 
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidGoodChosen;
 import it.polimi.ingsw.utilities.exceptions.NotEnoughGoodsChosen;
 import it.polimi.ingsw.model.Bank;
@@ -69,6 +70,8 @@ public class RemoveAskingVisitor implements ParametricCardVisitor {
             throw new InvalidGoodChosen(e.getMessage());
         } catch (NotEnoughGoodsChosen e) {
             throw new NotEnoughGoodsChosen(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 /**
  *
@@ -49,6 +50,8 @@ public class SetChoiceToGainFromListVisitor implements ParametricCardVisitor {
             return planets.chooseFromList(choice);
         } catch (IllegalStateException e) {
             throw new IllegalStateException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
 
     }

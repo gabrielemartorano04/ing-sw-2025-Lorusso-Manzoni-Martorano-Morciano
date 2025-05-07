@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 /**
  *
@@ -48,6 +49,8 @@ public class GetGoodsFromPlanetsVisitor implements CardVisitor {
             return planets.plotGoodFromPlanet();
         } catch (IllegalStateException e) {
             throw new IllegalStateException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 

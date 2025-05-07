@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.callers.PiratesCaller;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
+import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -69,12 +71,12 @@ public class Pirates extends Card {
     }
 
     @Override
-    public Object accept(CardVisitor visitor) {
+    public Object accept(CardVisitor visitor) throws GeneralError {
         return visitor.visitForPirates(this);
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) {
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws GeneralError {
         return visitor.visitForPirates(this, params);
     }
 
@@ -119,16 +121,16 @@ public class Pirates extends Card {
         this.defeatedTruckers = defeatedTruckers;
     }
 
-    public CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws IllegalStateException {
+    public CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
+            throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
         if (trucker.getSpaceShip().getNumDoubleCannon()!=0) {
             if (!doubleCannonsCoord.isEmpty() || trucker.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
                 this.doubleCannonsCoord.addLast(doubleCannonsCoord);
                 playersDecisions++;
             } else {
-                throw new IllegalArgumentException("not a double cannon");
+                throw new InvalidComponentsException("not a double cannon");
             }
         }
         if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > piratesPower) {
@@ -147,9 +149,9 @@ public class Pirates extends Card {
         return cardState;
     }
 
-    public CardState setChooseToGain(boolean choice) throws IllegalStateException {
+    public CardState setChooseToGain(boolean choice) throws GeneralError {
         if (cardState != CardState.GAIN) {
-            throw new IllegalStateException("Card state is not GAIN");
+            throw new GeneralError("Card state is not GAIN");
         }
         this.choiceToGain = choice;
         cardState = CardState.PLOT_SHOOT;
@@ -168,12 +170,12 @@ public class Pirates extends Card {
         return shoots;
     }
 
-    public int[] getCurrentShoot(){
+    public int[] getCurrentShoot() throws GeneralError {
         if(cardState != CardState.PLOT_SHOOT) {
-            throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.cardState);
+            throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
         }
         if(i<0 || i >= shoots.size()){
-            throw new RuntimeException("Stai cercando di accedere a un colpo che non esiste");
+            throw new GeneralError("Stai cercando di accedere a un colpo che non esiste");
         }
         int[] meteor = shoots.get(i);
         this.shoot = meteor;
@@ -182,18 +184,18 @@ public class Pirates extends Card {
         return meteor;
     }
 
-    public int rollDice(Game game){
+    public int rollDice(Game game) throws GeneralError {
         if(cardState != CardState.ROLL_DICE){
-            throw new IllegalStateException("Non si può girare i dadi nello stato " + this.cardState);
+            throw new GeneralError("Non si può girare i dadi nello stato " + this.cardState);
         }
         this.roll = game.rollDice();
         cardState = CardState.CHIEDI_SCUDI;
         return roll;
     }
 
-    public CardState setAnswers(boolean answers, Trucker trucker) {
+    public CardState setAnswers(boolean answers, Trucker trucker) throws GeneralError {
         if(cardState != CardState.CHIEDI_SCUDI){
-            throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.cardState);
+            throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
         }
         if (!trucker.getSpaceShip().getProtection().isEmpty()){
             this.usesShield.addLast(answers);
@@ -207,9 +209,9 @@ public class Pirates extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) throws IllegalStateException {
+    public CardState cardEffect(Game game) throws GeneralError {
         if (cardState != CardState.ESECUZIONE) {
-            throw new IllegalStateException("Card state is not ESECUZIONE");
+            throw new GeneralError("Card state is not ESECUZIONE");
         }
         if (winnerTrucker != null && choiceToGain) {
             winnerTrucker.addCosmicCredit(credits);

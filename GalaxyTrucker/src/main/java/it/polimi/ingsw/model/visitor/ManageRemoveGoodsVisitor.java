@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.visitor;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 /**
  *
@@ -55,7 +56,7 @@ public class ManageRemoveGoodsVisitor implements ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForSmugglers(Smugglers smugglers, Object... params) {
+    public Object visitForSmugglers(Smugglers smugglers, Object... params) throws GeneralError {
         Trucker trucker = (Trucker) params[0];
         Bank bank = (Bank) params[1];
         return smugglers.manageRemoveGoods(trucker, bank);

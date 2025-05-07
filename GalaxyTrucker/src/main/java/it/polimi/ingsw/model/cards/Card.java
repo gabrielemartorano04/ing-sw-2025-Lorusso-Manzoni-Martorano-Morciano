@@ -40,11 +40,11 @@ public abstract class Card {
         this.caller = caller;
     }
 
-    public Object accept(CardVisitor visitor) {
+    public Object accept(CardVisitor visitor) throws GeneralError {
         return visitor.visit(this);
     }
 
-    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries {
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries, GeneralError, PlanetNotFreeException {
         return visitor.visit(this, params);
     }
 
@@ -104,7 +104,7 @@ public abstract class Card {
      * Applies the changes provided by the card
      * @param game game in which the card has been drawn
      */
-    public abstract CardState cardEffect(Game game) throws WrongState;
+    public abstract CardState cardEffect(Game game) throws GeneralError;
 
 
 }

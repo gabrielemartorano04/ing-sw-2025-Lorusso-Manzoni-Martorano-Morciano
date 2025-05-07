@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 
@@ -68,6 +69,8 @@ public class SetCoordinatesToRemoveElementsVisitor implements ParametricCardVisi
             return slavers.addTruckersCoordinatesToRemoveHumans(trucker, truckerCoordinatesToRemoveHuman, numTrucker);
         } catch (InvalidCoordinates e) {
             throw new InvalidCoordinates(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 

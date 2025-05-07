@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 /**
  *
@@ -53,7 +54,7 @@ public class GetElementsToRemove implements CardVisitor {
     }
 
     @Override
-    public Object visitForSmugglers(Smugglers smugglers) {
+    public Object visitForSmugglers(Smugglers smugglers) throws GeneralError {
         return smugglers.getNumOfBatteriesToRemove();
     }
 

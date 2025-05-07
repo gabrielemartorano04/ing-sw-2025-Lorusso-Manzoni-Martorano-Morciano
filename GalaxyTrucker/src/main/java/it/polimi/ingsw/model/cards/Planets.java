@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -84,7 +85,7 @@ public class Planets extends Card {
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidPositionException {
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidPositionException, PlanetNotFreeException, GeneralError {
         return visitor.visitForPlanets(this, params);
     }
 
@@ -100,9 +101,9 @@ public class Planets extends Card {
         return state;
     }
 
-    public int[] getBank(Bank bank){
+    public int[] getBank(Bank bank) throws GeneralError {
         if(state != CardState.PLOT_BANK){
-            throw new IllegalStateException("Can't get bank from state " + state);
+            throw new GeneralError("Can't get bank from state " + state);
         }
         state = CardState.ATTESA_PIANETI;
         return bank.getGoods();
@@ -115,18 +116,18 @@ public class Planets extends Card {
      * @param numPlayers: number of players in the current game
      * @throws PlanetNotFreeException: the trucker decided to land on a planet that is already occupied
      */
-    public CardState setPlayerLanding(int indexOfLanding, Trucker trucker, int numPlayers) throws PlanetNotFreeException {
+    public CardState setPlayerLanding(int indexOfLanding, Trucker trucker, int numPlayers) throws PlanetNotFreeException, GeneralError {
         if(state != CardState.ATTESA_PIANETI){
-            throw new IllegalStateException("Can't land in the state: " + this.state);
+            throw new GeneralError("Can't land in the state: " + this.state);
         }
         if(indexOfLanding < -1 || indexOfLanding >= this.planets.size()){
-            throw new RuntimeException("No planets at the index: " + indexOfLanding);
+            throw new GeneralError("No planets at the index: " + indexOfLanding);
         }
         if(trucker == null){
-            throw new RuntimeException("Trucker is null");
+            throw new GeneralError("Trucker is null");
         }
         if(planetsOccupied.contains(trucker)){
-            throw new RuntimeException("This trucker has already chosen");
+            throw new GeneralError("This trucker has already chosen");
         }
         if(planetsOccupied.get(indexOfLanding)!=null){
             throw new PlanetNotFreeException("You choose a planet that was already occupied");
@@ -153,12 +154,12 @@ public class Planets extends Card {
         return state;
     }
 
-    public CardState initialize(Bank bank){
+    public CardState initialize(Bank bank) throws GeneralError{
         if(state != CardState.INITIALIZE){
-            throw new RuntimeException("Something is wrong, you called initialize in the state " + state);
+            throw new GeneralError("Something is wrong, you called initialize in the state " + state);
         }
         if(currPlayerIndex >= numOfPlayersLanded) {
-            throw new RuntimeException("All players have already added their goods");
+            throw new GeneralError("All players have already added their goods");
         }
 
         this.currTrucker = truckersLanded.get(currPlayerIndex);
@@ -200,25 +201,25 @@ public class Planets extends Card {
         return state;
     }
 
-    public Goods plotGoodFromPlanet() throws IllegalStateException {
+    public Goods plotGoodFromPlanet() throws GeneralError {
         if(state!=CardState.PLOT_GOOD){
-            throw new IllegalStateException("Not callable in state: " + state);
+            throw new GeneralError("Not callable in state: " + state);
         }
         this.currGoodToGain = currGoodsList.get(currGood);
         return currGoodToGain;
     }
 
-    public Goods plotGoodFromList() throws IllegalStateException {
+    public Goods plotGoodFromList() throws GeneralError {
         if(state!=CardState.PLOT_GOOD_FROM_LIST){
-            throw new IllegalStateException("Not callable in state: " + state);
+            throw new GeneralError("Not callable in state: " + state);
         }
         this.currGoodToGain = listToPass.get(indexOfListToPass);
         return currGoodToGain;
     }
 
-    public CardState chooseToGain (boolean choice) throws IllegalStateException {
+    public CardState chooseToGain (boolean choice) throws GeneralError {
         if(state!=CardState.CHOOSE_TO_GAIN){
-            throw new IllegalStateException("Not callable in state: " + state);
+            throw new GeneralError("Not callable in state: " + state);
         }
         if (choice) {
             state = CardState.GOODSTOADD;
@@ -235,9 +236,9 @@ public class Planets extends Card {
         return state;
     }
 
-    public CardState chooseFromList (boolean choice) throws IllegalStateException {
+    public CardState chooseFromList (boolean choice) throws GeneralError {
         if(state!=CardState.CHOOSE_FROM_LIST){
-            throw new IllegalStateException("Not callable in state: " + state);
+            throw new GeneralError("Not callable in state: " + state);
         }
         if (choice) {
             state = CardState.ADDFROMLIST;
@@ -253,9 +254,9 @@ public class Planets extends Card {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param coordinatesToAddGood list of coordinatest
      */
-    public CardState setCoordinatesToAddGoods(int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws IllegalStateException, InvalidCoordinates  {
+    public CardState setCoordinatesToAddGoods(int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws GeneralError, InvalidCoordinates  {
         if (state != CardState.GOODSTOADD) {
-            throw new IllegalStateException("Card state is not GOODSTOADD");
+            throw new GeneralError("Card state is not GOODSTOADD");
         }
         if (coordinatesToAddGood==null || (coordinatesToAddGood.length == 0) || !currTrucker.getSpaceShip().checkLoad(coordinatesToAddGood)) { //check load deve controllare il singolo componente
             throw new InvalidCoordinates("Not goods deposit");
@@ -297,9 +298,9 @@ public class Planets extends Card {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param coordinatesToAddGood list of coordinatest
      */
-    public CardState coordinatesToAddFromList(int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws IllegalStateException, InvalidCoordinates  {
+    public CardState coordinatesToAddFromList(int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws GeneralError, InvalidCoordinates  {
         if (state != CardState.ADDFROMLIST) {
-            throw new IllegalStateException("Not callable in the state: " + state);
+            throw new GeneralError("Not callable in the state: " + state);
         }
         if (coordinatesToAddGood==null || (coordinatesToAddGood.length == 0) || !currTrucker.getSpaceShip().checkLoad(coordinatesToAddGood)) { //check load deve controllare il singolo componente
             throw new InvalidCoordinates("Not goods deposit");
@@ -322,9 +323,9 @@ public class Planets extends Card {
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
-    public CardState rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
+    public CardState rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (state != CardState.REARRANGE) {
-            throw new IllegalStateException("Not callable in the state: " + state);
+            throw new GeneralError("Not callable in the state: " + state);
         }
         if (!contiune) {
             if (coord1 == null && !currTrucker.getSpaceShip().checkLoad(coord1) && coord2 == null && !currTrucker.getSpaceShip().checkLoad(coord2)) { //check load deve controllare il singolo componente
@@ -358,9 +359,9 @@ public class Planets extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) {
+    public CardState cardEffect(Game game) throws GeneralError {
         if (this.state != CardState.ESECUZIONE) {
-            throw new IllegalStateException("CardEffect not callable in the state: " + this.state);
+            throw new GeneralError("CardEffect not callable in the state: " + this.state);
         }
 
         // a questo punto potrei avere che la lista delle merci passate tra i giocatori non è vuota ma non è un problema

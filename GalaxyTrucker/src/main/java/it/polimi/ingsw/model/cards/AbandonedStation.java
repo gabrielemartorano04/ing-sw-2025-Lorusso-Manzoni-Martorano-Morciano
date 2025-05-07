@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.util.ArrayList;
 
@@ -89,9 +90,9 @@ public class AbandonedStation extends Card {
      * @param numPlayer: num of player in the game
      * @param bank: bank of the game
      */
-    public CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws IllegalStateException {
+    public CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError {
         if (cardState != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("stato non valido");
+            throw new GeneralError("stato non valido");
         }
         if(landing) {
             this.truckerThatHasDecided = trucker;
@@ -116,9 +117,9 @@ public class AbandonedStation extends Card {
         return cardState;
     }
 
-    public Goods setChoiceToGain(boolean choice) throws IllegalStateException {
+    public Goods setChoiceToGain(boolean choice) throws GeneralError {
         if(cardState!=CardState.CHOOSE_TO_GAIN){
-            throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
+            throw new GeneralError("Card state is not CHOOSE_TO_GAIN");
         }
         if (choice) {
             cardState = CardState.GOODSTOADD;
@@ -135,9 +136,9 @@ public class AbandonedStation extends Card {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param winnerCoordinatesToAddGood list of coordinatest
      */
-    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws IllegalStateException, InvalidCoordinates  {
+    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates  {
         if (cardState != CardState.GOODSTOADD) {
-            throw new IllegalStateException("Card state is not GOODSTOADD");
+            throw new GeneralError("Card state is not GOODSTOADD");
         }
         if (winnerCoordinatesToAddGood==null || !trucker.getSpaceShip().checkLoad(winnerCoordinatesToAddGood)) { //check load deve controllare il singolo componente
             throw new InvalidCoordinates("Not goods deposit");
@@ -169,9 +170,9 @@ public class AbandonedStation extends Card {
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
-    public CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
+    public CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
-            throw new IllegalStateException("Card state is not REARRANGE");
+            throw new GeneralError("Card state is not REARRANGE");
         }
         if (!contiune) {
             if (coord1 == null && !trucker.getSpaceShip().checkLoad(coord1) && coord2 == null && !trucker.getSpaceShip().checkLoad(coord2)) { //check load deve controllare il singolo componente
@@ -194,9 +195,9 @@ public class AbandonedStation extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) throws IllegalStateException {
+    public CardState cardEffect(Game game) throws GeneralError {
         if (cardState != CardState.ESECUZIONE) {
-            throw new IllegalStateException("risposte mancanti");
+            throw new GeneralError("risposte mancanti");
         }
         game.moveBackward(truckerThatHasDecided, days);
         cardState = CardState.EXIT;

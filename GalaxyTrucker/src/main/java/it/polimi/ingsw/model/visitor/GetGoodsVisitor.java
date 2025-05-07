@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 /**
  *
@@ -49,6 +50,8 @@ public class GetGoodsVisitor implements CardVisitor, ParametricCardVisitor {
             return planets.plotGoodFromList();
         } catch (IllegalStateException e) {
             throw new IllegalStateException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -119,7 +122,7 @@ public class GetGoodsVisitor implements CardVisitor, ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForSmugglers(Smugglers smugglers, Object... params) {
+    public Object visitForSmugglers(Smugglers smugglers, Object... params) throws GeneralError {
         Trucker trucker = (Trucker) params[0];
         return smugglers.plotGoodsList(trucker);
     }

@@ -9,26 +9,26 @@ import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
 import it.polimi.ingsw.utilities.exceptions.PlanetNotFreeException;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.results.CardStateResult;
 import it.polimi.ingsw.utilities.results.CoordinatesResult;
 import it.polimi.ingsw.utilities.results.GoodsResult;
-import it.polimi.ingsw.utilities.results.Result;
 
 public class PlanetsCaller implements CardCaller {
-    public CoordinatesResult callGetBank(Planets card, Bank bank){
+    public CoordinatesResult callGetBank(Planets card, Bank bank) throws GeneralError {
         int[] result = card.getBank(bank);
         return new CoordinatesResult(card.getState(), result);
     }
 
-    public CardStateResult CallInitialize(Planets card, Bank bank){
+    public CardStateResult CallInitialize(Planets card, Bank bank) throws GeneralError {
         return new CardStateResult(card.initialize(bank));
     }
 
-    public CardStateResult call(Planets card, int indexOfLanding, Trucker trucker, int numPlayers) throws PlanetNotFreeException {
+    public CardStateResult call(Planets card, int indexOfLanding, Trucker trucker, int numPlayers) throws PlanetNotFreeException, GeneralError {
         return new CardStateResult(card.setPlayerLanding(indexOfLanding, trucker, numPlayers));
     }
 
-    public GoodsResult call(Planets card){
+    public GoodsResult call(Planets card) throws GeneralError {
         if(card.getState() == CardState.PLOT_GOOD){
             Goods g = card.plotGoodFromPlanet();
             return new GoodsResult(card.getState(),g);
@@ -38,7 +38,7 @@ public class PlanetsCaller implements CardCaller {
         }
     }
 
-    public CardStateResult call(Planets card, boolean choice){
+    public CardStateResult call(Planets card, boolean choice) throws GeneralError {
         if(card.getState() == CardState.CHOOSE_TO_GAIN){
             return new CardStateResult(card.chooseToGain(choice));
         }else{
@@ -46,7 +46,7 @@ public class PlanetsCaller implements CardCaller {
         }
     }
 
-    public CardStateResult call(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws IllegalStateException, InvalidCoordinates {
+    public CardStateResult call(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws GeneralError, InvalidCoordinates {
         if (card.getState() == CardState.GOODSTOADD) {
             return new CardStateResult(card.setCoordinatesToAddGoods(coordinatesToAddGood, positionInLoad, bank));
         } else {
@@ -54,11 +54,11 @@ public class PlanetsCaller implements CardCaller {
         }
     }
 
-    public CardStateResult call(Planets card, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException{
+    public CardStateResult call(Planets card, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException{
         return new CardStateResult(card.rearrange(coord1, coord2, value1, value2, contiune));
     }
 
-    public CardStateResult call(Planets card, Game game){
+    public CardStateResult call(Planets card, Game game) throws GeneralError {
         return new CardStateResult(card.cardEffect(game));
     }
 

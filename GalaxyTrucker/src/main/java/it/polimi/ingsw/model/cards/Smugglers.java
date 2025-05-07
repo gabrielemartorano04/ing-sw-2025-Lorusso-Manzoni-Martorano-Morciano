@@ -64,12 +64,12 @@ public class Smugglers extends Card {
     }
 
     @Override
-    public Object accept(CardVisitor visitor) {
+    public Object accept(CardVisitor visitor) throws GeneralError {
         return visitor.visitForSmugglers(this);
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidGoodChosen, NotEnoughGoodsChosen, InvalidPositionException, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries {
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidGoodChosen, NotEnoughGoodsChosen, InvalidPositionException, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries, GeneralError {
         return visitor.visitForSmugglers(this, params);
     }
 
@@ -125,16 +125,16 @@ public class Smugglers extends Card {
         return cardState;
     }
 
-    public CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Bank bank) throws IllegalStateException, InvalidComponentsException{
+    public CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Bank bank) throws GeneralError, InvalidComponentsException{
         if (cardState != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
+            throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
         if (trucker.getSpaceShip().getNumDoubleCannon()!=0) {
             if (!doubleCannonsCoord.isEmpty() || trucker.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
                 this.doubleCannonsCoord.addLast(doubleCannonsCoord);
                 playersDecisions++;
             } else {
-                throw new IllegalArgumentException("not a double cannon");
+                throw new InvalidComponentsException("not a double cannon");
             }
         }
         if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > smugglersPower) {
@@ -164,17 +164,17 @@ public class Smugglers extends Card {
         return cardState;
     }
 
-    public Goods plotCurrGood(){
+    public Goods plotCurrGood() throws GeneralError{
         if(cardState!=CardState.PLOT_GOOD){
-            throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
+            throw new GeneralError("Card state is not CHOOSE_TO_GAIN");
         }
         cardState = CardState.CHOOSE_TO_GAIN;
         return goodsGained[currGood];
     }
 
-    public CardState setChoiceToGain(boolean choice) throws IllegalStateException {
+    public CardState setChoiceToGain(boolean choice) throws GeneralError {
         if(cardState!=CardState.CHOOSE_TO_GAIN){
-            throw new IllegalStateException("Card state is not CHOOSE_TO_GAIN");
+            throw new GeneralError("Card state is not CHOOSE_TO_GAIN");
         }
         if (choice) {
             if (!chooseToGain) {
@@ -195,9 +195,9 @@ public class Smugglers extends Card {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param winnerCoordinatesToAddGood list of coordinatest
      */
-    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws IllegalStateException, InvalidCoordinates  {
+    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates  {
         if (cardState != CardState.GOODSTOADD) {
-            throw new IllegalStateException("Card state is not GOODSTOADD");
+            throw new GeneralError("Card state is not GOODSTOADD");
         }
         if (winnerCoordinatesToAddGood==null || !trucker.getSpaceShip().checkLoad(winnerCoordinatesToAddGood)) { //check load deve controllare il singolo componente
             throw new InvalidCoordinates("Not goods deposit");
@@ -229,9 +229,9 @@ public class Smugglers extends Card {
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
-    public CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws IllegalStateException, InvalidCoordinates, InvalidPositionException {
+    public CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
-            throw new IllegalStateException("Card state is not REARRANGE");
+            throw new GeneralError("Card state is not REARRANGE");
         }
         if (!contiune) {
             if (coord1 == null && !trucker.getSpaceShip().checkLoad(coord1) && coord2 == null && !trucker.getSpaceShip().checkLoad(coord2)) { //check load deve controllare il singolo componente
@@ -249,12 +249,12 @@ public class Smugglers extends Card {
         return cardState;
     }
 
-    public CardState manageRemoveGoods(Trucker trucker, Bank bank){
+    public CardState manageRemoveGoods(Trucker trucker, Bank bank) throws GeneralError{
         if(cardState != CardState.REMOVE_GOODS){
-            throw new IllegalStateException("plotGoodsToRemove not callable in the state " + cardState);
+            throw new GeneralError("plotGoodsToRemove not callable in the state " + cardState);
         }
         if(trucker == null){
-            throw new RuntimeException("trucker is null");
+            throw new GeneralError("trucker is null");
         }
         ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
 
@@ -303,12 +303,12 @@ public class Smugglers extends Card {
 
     }
 
-    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank) {
+    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank) throws GeneralError{
         if(this.numOfCurrTypeOfGood == 0){
-            throw new RuntimeException("NumOfGoods is 0 but you called removeWithoutAsking");
+            throw new GeneralError("Remove without asking: NumOfGoods is 0 but you called removeWithoutAsking");
         }
         if(goodsList == null){
-            throw new RuntimeException("goodsList is null");
+            throw new GeneralError("Remove without asking: goodsList is null");
         }
         ArrayList<Goods> list = new ArrayList<>();
         for (int i = 0; i < numOfCurrTypeOfGood; i++) {
@@ -322,15 +322,15 @@ public class Smugglers extends Card {
 
     }
 
-    public ArrayList<Goods> plotGoodsList(Trucker trucker){
+    public ArrayList<Goods> plotGoodsList(Trucker trucker) throws GeneralError {
         if (cardState != CardState.PLOT_GOODSLIST){
-            throw new IllegalStateException("plotGoodsList not callable in the state " + cardState);
+            throw new GeneralError("plotGoodsList not callable in the state " + cardState);
         }
         if(trucker == null){
-            throw new RuntimeException("trucker is null");
+            throw new GeneralError("trucker is null");
         }
         if(!goodsToRemove.isEmpty()){
-            throw new RuntimeException("Tried to set a new goodsToRemove list but it isn't empty");
+            throw new GeneralError("Tried to set a new goodsToRemove list but it isn't empty");
         }
         ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
         for (int i = 0; i < numOfCurrTypeOfGood; i++) {
@@ -346,9 +346,9 @@ public class Smugglers extends Card {
      * @param trucker
      */
 
-    public CardState removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen {
+    public CardState removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
         if (cardState != CardState.REMOVE_ASKING){
-            throw new IllegalStateException("Can't call removeAsking in the state " + cardState);
+            throw new GeneralError("Can't call removeAsking in the state " + cardState);
         }
         if(indexes.size() == goodsLost){
             throw new NotEnoughGoodsChosen("The number of goods selected is not " + goodsLost);
@@ -359,7 +359,7 @@ public class Smugglers extends Card {
             }
         }
         if(trucker == null){
-            throw new RuntimeException("trucker is null");
+            throw new GeneralError("trucker is null");
         }
         goodsLost = 0;
         ArrayList<Goods> list = new ArrayList<>();
@@ -371,19 +371,19 @@ public class Smugglers extends Card {
         return cardState;
     }
 
-    public int getNumOfBatteriesToRemove(){
+    public int getNumOfBatteriesToRemove() throws GeneralError{
         if(cardState != CardState.PLOT_BATTERIES){
-            throw new IllegalStateException("Can't call getNumOfBatteriesToRemove in the state " + cardState);
+            throw new GeneralError("Can't call getNumOfBatteriesToRemove in the state " + cardState);
         }
         return goodsLost;
     }
 
-    public CardState removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
+    public CardState removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(cardState!= CardState.REMOVE_BATTERIES){
-            throw new IllegalStateException("Can't call removeBatteries in the state " + cardState);
+            throw new GeneralError("Can't call removeBatteries in the state " + cardState);
         }
         if(trucker == null){
-            throw new RuntimeException("trucker is null");
+            throw new GeneralError("trucker is null");
         }
         if(!trucker.getSpaceShip().checkBatteryStorage(coordinatesToRemoveBatteries)){
             throw new InvalidCoordinates("Not all components selected are Battery Storages");
@@ -409,7 +409,10 @@ public class Smugglers extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) {
+    public CardState cardEffect(Game game) throws GeneralError{
+        if(cardState != CardState.ESECUZIONE){
+            throw new GeneralError("Can't call cardEffect in the state " + cardState);
+        }
         if(chooseToGain){
             game.moveBackward(winnerTrucker, days);
         }

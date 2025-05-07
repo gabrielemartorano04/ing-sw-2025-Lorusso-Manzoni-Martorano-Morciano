@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.visitor;
 
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.PlanetNotFreeException;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
@@ -22,14 +23,14 @@ public class SetTruckerLandingVisitor implements ParametricCardVisitor {
             boolean landing = (Boolean) params[1];
             int numPlayers = (Integer) params[2];
             return abandonedShip.setTruckerThatHasDecided(trucker, landing, numPlayers);
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | GeneralError e) {
             throw new IllegalArgumentException(e.getMessage());
         }
 
     }
 
     @Override
-    public Object visitForAbandonedStation(AbandonedStation abandonedStation, Object... params) {
+    public Object visitForAbandonedStation(AbandonedStation abandonedStation, Object... params) throws GeneralError {
         Trucker trucker = (Trucker) params[0];
         boolean landing = (Boolean) params[1];
         int numPlayers = (Integer) params[2];
@@ -58,7 +59,7 @@ public class SetTruckerLandingVisitor implements ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForPlanets(Planets planets, Object... params) {
+    public Object visitForPlanets(Planets planets, Object... params) throws PlanetNotFreeException {
         try {
             int indexOfLanding = (Integer) params[0];
             Trucker trucker = (Trucker) params[1];
@@ -66,6 +67,8 @@ public class SetTruckerLandingVisitor implements ParametricCardVisitor {
             return planets.setPlayerLanding(indexOfLanding, trucker, numPlayers);
         } catch (PlanetNotFreeException e) {
             throw new PlanetNotFreeException(e.getMessage());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
     }
 

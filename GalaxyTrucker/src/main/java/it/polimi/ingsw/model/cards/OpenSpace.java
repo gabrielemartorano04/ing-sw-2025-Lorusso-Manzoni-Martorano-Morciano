@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +49,9 @@ public class OpenSpace extends Card {
      * @param truckerCoordinate list of arrays of coordinates
      * @param numTruckers number of truckers
      */
-    public CardState setCoordinates(Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates {
+    public CardState setCoordinates(Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, GeneralError {
         if (this.state != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("Non è possibile inserire le informazioni nello stato " + this.state);
+            throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
         if(!trucker.getSpaceShip().checkDoubleEngine(truckerCoordinate)){
             throw new InvalidCoordinates("Not all components are DoubleEngine");
@@ -60,7 +61,7 @@ public class OpenSpace extends Card {
             for (ArrayList<int[]> list : truckersCoordinates) {
                 // la lista deve essere o piena o vuota ma non può essere null
                 if (list == null) {
-                    throw new RuntimeException("A trucker's list in openspace after all answers is null");
+                    throw new GeneralError("A trucker's list in openspace after all answers is null");
                 }
             }
             this.state = CardState.ESECUZIONE;
@@ -73,9 +74,9 @@ public class OpenSpace extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) {
+    public CardState cardEffect(Game game) throws GeneralError {
         if (this.state != CardState.ESECUZIONE) {
-            throw new IllegalStateException("Non è possibile eseguire card effect nello stato " + this.state);
+            throw new GeneralError("Non è possibile eseguire card effect nello stato " + this.state);
         }
         List<Trucker> truckers = game.getTruckerList();
         int[] enginePowerPerTrucker = new int[truckers.size()];

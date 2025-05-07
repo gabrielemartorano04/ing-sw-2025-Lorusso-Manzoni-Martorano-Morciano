@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.callers.StarDustCaller;
 import it.polimi.ingsw.model.visitor.CardVisitor;
 import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.util.*;
 
@@ -14,6 +15,7 @@ import java.util.*;
  */
 public class StarDust extends Card {
 
+    private CardState cardState;
     /**
      * Star dust constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -23,6 +25,7 @@ public class StarDust extends Card {
      */
     public StarDust(boolean trialFlight, int level, String frontImage, String backImage) {
         super("Star Dust", "A cloud of cosmic dust", trialFlight, level, frontImage, backImage, new StarDustCaller());
+        this.cardState = CardState.ESECUZIONE;
     }
 
     @Override
@@ -40,7 +43,10 @@ public class StarDust extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) {
+    public CardState cardEffect(Game game) throws GeneralError {
+        if(cardState != CardState.ESECUZIONE) {
+            throw new GeneralError("Not callable in the state " + cardState);
+        }
         List<Trucker> truckers = game.getTruckerList();
         Collections.reverse(truckers);
         for (Trucker trucker : truckers) {

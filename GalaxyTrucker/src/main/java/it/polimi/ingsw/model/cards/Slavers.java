@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.callers.SlaversCaller;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
+import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
@@ -122,9 +124,9 @@ public class Slavers extends Card {
      * Sets, for each trucker, the coordinates of the cabin where he/she want to remove the crew members
      * @param truckersCoordinatesToRemoveHumans list of lists of arrays of coordinates
      */
-    public CardState addTruckersCoordinatesToRemoveHumans(Trucker trucker, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer) throws InvalidCoordinates {
+    public CardState addTruckersCoordinatesToRemoveHumans(Trucker trucker, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer) throws GeneralError, InvalidCoordinates {
         if (cardState != CardState.HUMANSTOREMOVE) {
-            throw new IllegalStateException("Card state in not HUMANSTOREMOVE");
+            throw new GeneralError("Card state in not HUMANSTOREMOVE");
         }
         if(!defeatedTruckers.isEmpty() || playersDecisions<numPlayer) {
             try {
@@ -147,16 +149,16 @@ public class Slavers extends Card {
         return cardState;
     }
 
-    public CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws IllegalStateException {
+    public CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
-            throw new IllegalStateException("Card state is not ATTESA_RISPOSTE");
+            throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
         if (trucker.getSpaceShip().getNumDoubleCannon()!=0) {
             if (!doubleCannonsCoord.isEmpty() || trucker.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
                 this.doubleCannonsCoord.addLast(doubleCannonsCoord);
                 playersDecisions++;
             } else {
-                throw new IllegalArgumentException("not a double cannon");
+                throw new InvalidComponentsException("not a double cannon");
             }
         }
         if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > slaversPower) {
@@ -177,9 +179,9 @@ public class Slavers extends Card {
         return cardState;
     }
 
-    public CardState setChooseToGain(Boolean choice) throws IllegalStateException {
+    public CardState setChooseToGain(Boolean choice) throws GeneralError {
         if (cardState != CardState.GAIN) {
-            throw new IllegalStateException("Card state is not GAIN");
+            throw new GeneralError("Card state is not GAIN");
         }
         this.choiceToGain = choice;
         cardState = CardState.ESECUZIONE;
@@ -191,9 +193,9 @@ public class Slavers extends Card {
      * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) throws IllegalStateException {
+    public CardState cardEffect(Game game) throws GeneralError {
         if (cardState != CardState.ESECUZIONE) {
-            throw new IllegalStateException("Card state is not ESECUZIONE");
+            throw new GeneralError("Card state is not ESECUZIONE");
         }
         int i = 0;
         if(winnerTrucker!=null && choiceToGain){

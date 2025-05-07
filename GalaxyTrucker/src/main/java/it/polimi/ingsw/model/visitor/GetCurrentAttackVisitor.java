@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 /**
  *
@@ -38,7 +39,7 @@ public class GetCurrentAttackVisitor implements CardVisitor {
     }
 
     @Override
-    public Object visitForPirates(Pirates pirates) {
+    public Object visitForPirates(Pirates pirates) throws GeneralError {
         return pirates.getCurrentShoot();
     }
 

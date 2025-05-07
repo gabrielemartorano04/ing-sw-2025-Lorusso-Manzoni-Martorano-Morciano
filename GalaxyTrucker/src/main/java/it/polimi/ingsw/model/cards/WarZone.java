@@ -96,9 +96,9 @@ public class WarZone extends Card {
         return shoots;
     }
 
-    public CardState combatZone(Game game){
+    public CardState combatZone(Game game) throws GeneralError{
         if(state != CardState.WARZONE){
-            throw new IllegalStateException("CombatZone not callable in the state " + state);
+            throw new GeneralError("CombatZone not callable in the state " + state);
         }
         if(game.getTruckerList().size() == 1){
             state = CardState.EXIT;
@@ -107,7 +107,7 @@ public class WarZone extends Card {
         this.currCondition = conditionsOrder.get(currConditionIndex);
         currConditionIndex++;
         if(currConditionIndex == conditionsOrder.size()){
-            throw new RuntimeException("All conditions have been verified");
+            throw new GeneralError("All conditions have been verified");
         }
         switch(currCondition){
             case HUMANS -> {
@@ -124,12 +124,12 @@ public class WarZone extends Card {
         return this.state;
     }
 
-    public void setCannonCoordinates(Game game, Trucker trucker, ArrayList<int[]> truckerCannonsCoordinates) throws InvalidComponentsException{
+    public void setCannonCoordinates(Game game, Trucker trucker, ArrayList<int[]> truckerCannonsCoordinates) throws GeneralError, InvalidComponentsException{
         if(state != CardState.WAIT_CANNONS){
-            throw new IllegalStateException("setCannonCoordinates not callable in the state " + state);
+            throw new GeneralError("setCannonCoordinates not callable in the state " + state);
         }
         if(truckerCannonsCoordinates == null){
-            throw new RuntimeException("TruckerCannonCoordinates is null");
+            throw new GeneralError("TruckerCannonCoordinates is null");
         }
         if(!trucker.getSpaceShip().checkDoubleCannon(truckerCannonsCoordinates)){
             throw new InvalidComponentsException("Not all components are double Cannons");
@@ -142,12 +142,12 @@ public class WarZone extends Card {
         }
     }
 
-    public void setEnginesCoordinates(Game game, Trucker trucker, ArrayList<int[]> truckerEnginesCoordinates) throws InvalidComponentsException{
+    public void setEnginesCoordinates(Game game, Trucker trucker, ArrayList<int[]> truckerEnginesCoordinates) throws GeneralError, InvalidComponentsException{
         if(state != CardState.WAIT_ENGINES){
-            throw new IllegalStateException("setCannonCoordinates not callable in the state " + state);
+            throw new GeneralError("setCannonCoordinates not callable in the state " + state);
         }
         if(truckerEnginesCoordinates == null){
-            throw new RuntimeException("TruckerEnginesCoordinates is null");
+            throw new GeneralError("TruckerEnginesCoordinates is null");
         }
         if(!trucker.getSpaceShip().checkDoubleCannon(truckerEnginesCoordinates)){
             throw new InvalidComponentsException("Not all components are double Cannons");
@@ -163,14 +163,14 @@ public class WarZone extends Card {
     // truckersCoordinates serve perché quando devo calcolare il weakest in base a potenza di fuoco o motrice
     // devo dare in ingresso a findWeakestTrucker la lista delle coordinate delle componenti che ogni giocatore
     // ha deciso di attivare
-    public void findWeakestTrucker(Game game, ArrayList<ArrayList<int[]>> truckersCoordinates) {
+    public void findWeakestTrucker(Game game, ArrayList<ArrayList<int[]>> truckersCoordinates)throws GeneralError {
         ArrayList<Trucker> truckers = game.getTruckerList();
         if(state != CardState.FIND_WEAKEST){
-            throw new IllegalStateException("FindWeakestTrucker not callable in the state " + state);
+            throw new GeneralError("FindWeakestTrucker not callable in the state " + state);
         }
 
         if(currCondition != Condition.HUMANS && truckersCoordinates.isEmpty()){
-            throw new RuntimeException("Not expecting an empty list of Coordinates with the condition " + currCondition);
+            throw new GeneralError("Not expecting an empty list of Coordinates with the condition " + currCondition);
         }
 
         Trucker weakestTrucker = null;
@@ -204,12 +204,12 @@ public class WarZone extends Card {
         }
     }
 
-    public CardState manageRemoveGoods(Trucker trucker, Bank bank){
+    public CardState manageRemoveGoods(Trucker trucker, Bank bank) throws GeneralError{
         if(state != CardState.REMOVE_GOODS){
-            throw new IllegalStateException("plotGoodsToRemove not callable in the state " + state);
+            throw new GeneralError("plotGoodsToRemove not callable in the state " + state);
         }
         if(trucker == null){
-            throw new RuntimeException("trucker is null");
+            throw new GeneralError("trucker is null");
         }
         ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
 
@@ -245,13 +245,13 @@ public class WarZone extends Card {
         }
         if (numOfGoodsToRemove > 0 && (trucker.getSpaceShip().getNumBatteries() > 0)) {
             if(!trucker.getSpaceShip().getGoodsList().isEmpty()){
-                throw new RuntimeException("GoodsList should be empty at this point");
+                throw new GeneralError("GoodsList should be empty at this point");
             }
             // se il colore corrente è maggiore di 3 allora vuol dire che devo togliere batterie se ho ancora merci da rimuovere
             state = CardState.PLOT_BATTERIES;
         }else if (numOfGoodsToRemove > 0 && trucker.getSpaceShip().getNumBatteries() == 0) {
             if(!trucker.getSpaceShip().getGoodsList().isEmpty()){
-                throw new RuntimeException("GoodsList should be empty at this point");
+                throw new GeneralError("GoodsList should be empty at this point");
             }
             state = CardState.WARZONE;
         }
@@ -262,12 +262,12 @@ public class WarZone extends Card {
 
     }
 
-    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank) {
+    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank)throws GeneralError {
         if(this.numOfCurrTypeOfGood == 0){
-            throw new RuntimeException("NumOfGoods is 0 but you called removeWithoutAsking");
+            throw new GeneralError("NumOfGoods is 0 but you called removeWithoutAsking");
         }
         if(goodsList == null){
-            throw new RuntimeException("goodsList is null");
+            throw new GeneralError("goodsList is null");
         }
         ArrayList<Goods> list = new ArrayList<>();
         for (int i = 0; i < numOfCurrTypeOfGood; i++) {
@@ -281,15 +281,15 @@ public class WarZone extends Card {
 
     }
 
-    public ArrayList<Goods> plotGoodsList(Trucker trucker){
+    public ArrayList<Goods> plotGoodsList(Trucker trucker)throws GeneralError {
         if (state != CardState.PLOT_GOODSLIST){
-            throw new IllegalStateException("plotGoodsList not callable in the state " + state);
+            throw new GeneralError("plotGoodsList not callable in the state " + state);
         }
         if(trucker == null){
-            throw new RuntimeException("trucker is null");
+            throw new GeneralError("trucker is null");
         }
         if(!goodsToRemove.isEmpty()){
-            throw new RuntimeException("Tried to set a new goodsToRemove list but it isn't empty");
+            throw new GeneralError("Tried to set a new goodsToRemove list but it isn't empty");
         }
         ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
         for (int i = 0; i < numOfCurrTypeOfGood; i++) {
@@ -305,9 +305,9 @@ public class WarZone extends Card {
      * @param trucker
      */
 
-    public void removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen {
+    public void removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws GeneralError, InvalidGoodChosen, NotEnoughGoodsChosen {
         if (state != CardState.REMOVE_ASKING){
-            throw new IllegalStateException("Can't call removeAsking in the state " + state);
+            throw new GeneralError("Can't call removeAsking in the state " + state);
         }
         if(indexes.size() == numOfGoodsToRemove){
             throw new NotEnoughGoodsChosen("The number of goods selected is not " + numOfGoodsToRemove);
@@ -318,7 +318,7 @@ public class WarZone extends Card {
             }
         }
         if(trucker == null){
-            throw new RuntimeException("trucker is null");
+            throw new GeneralError("trucker is null");
         }
         numOfGoodsToRemove = 0;
         ArrayList<Goods> list = new ArrayList<>();
@@ -333,19 +333,19 @@ public class WarZone extends Card {
         }
     }
 
-    public int getNumOfBatteriesToRemove(){
+    public int getNumOfBatteriesToRemove() throws GeneralError{
         if(state != CardState.PLOT_BATTERIES){
-            throw new IllegalStateException("Can't call getNumOfBatteriesToRemove in the state " + state);
+            throw new GeneralError("Can't call getNumOfBatteriesToRemove in the state " + state);
         }
         return numOfGoodsToRemove;
     }
 
-    public void removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
+    public void removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws GeneralError, InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(state!= CardState.REMOVE_BATTERIES){
-            throw new IllegalStateException("Can't call removeBatteries in the state " + state);
+            throw new GeneralError("Can't call removeBatteries in the state " + state);
         }
         if(trucker == null){
-            throw new RuntimeException("trucker is null");
+            throw new GeneralError("trucker is null");
         }
         if(!trucker.getSpaceShip().checkBatteryStorage(coordinatesToRemoveBatteries)){
             throw new InvalidCoordinates("Not all components selected are Battery Storages");
@@ -369,12 +369,12 @@ public class WarZone extends Card {
         }
     }
 
-    public int[] getCurrentMeteor(){
+    public int[] getCurrentMeteor() throws GeneralError{
         if(state != CardState.PLOT_SHOOT) {
-            throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
+            throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
         if(i<0 || i >= shoots.size()){
-            throw new RuntimeException("Stai cercando di accedere a un colpo che non esiste");
+            throw new GeneralError("Stai cercando di accedere a un colpo che non esiste");
         }
         int[] shoot = shoots.get(i);
         this.shoot = shoot;
@@ -383,28 +383,28 @@ public class WarZone extends Card {
         return shoot;
     }
 
-    public void rollDice(Game game){
+    public void rollDice(Game game) throws GeneralError {
         if(state != CardState.ROLL_DICE){
-            throw new IllegalStateException("Non si può girare i dadi nello stato " + this.state);
+            throw new GeneralError("Non si può girare i dadi nello stato " + this.state);
         }
         this.roll = game.rollDice();
         state = CardState.CHIEDI_SCUDI;
     }
 
-    public void setAnswers(boolean answers) {
+    public void setAnswers(boolean answers) throws GeneralError {
         if(state != CardState.CHIEDI_SCUDI){
-            throw new IllegalStateException("Non si può settare le decisioni nello stato" + this.state);
+            throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
         this.useShield = answers;
         state = CardState.ESECUZIONE;
     }
 
-    public synchronized CardState removeCrew(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates {
+    public synchronized CardState removeCrew(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, GeneralError {
         if(state != CardState.HUMANSTOREMOVE) {
-            throw new IllegalStateException("Can't call setCoordinates in the state: " + state);
+            throw new GeneralError("Can't call setCoordinates in the state: " + state);
         }
         if(weakestTrucker == null){
-            throw new RuntimeException("trucker is null");
+            throw new GeneralError("trucker is null");
         }
         if(coordinates==null|| coordinates.isEmpty()){
             throw new InvalidCoordinates("Coordinates is null or empty");
@@ -421,12 +421,12 @@ public class WarZone extends Card {
     }
 
     @Override
-    public CardState cardEffect(Game game) {
+    public CardState cardEffect(Game game) throws GeneralError {
         if(state != CardState.ESECUZIONE){
-            throw new IllegalStateException("Card effect not callable in the state " + state);
+            throw new GeneralError("Card effect not callable in the state " + state);
         }
         if(weakestTrucker == null){
-            throw new RuntimeException("WeakestTrucker is null");
+            throw new GeneralError("WeakestTrucker is null");
         }else {
             // devo gestire le ulteriori richieste per i casi dove vieni sparato perché devo chiedere al giocatore
             // se vuole attivare lo scudo ogni volta che il colpo è piccolo

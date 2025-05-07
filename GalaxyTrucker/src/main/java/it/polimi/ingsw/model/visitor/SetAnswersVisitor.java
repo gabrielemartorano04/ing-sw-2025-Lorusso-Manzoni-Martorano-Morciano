@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.visitor;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 /**
  *
@@ -29,7 +30,7 @@ public class SetAnswersVisitor implements ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForMeteorShowers(MeteorShower meteorShowers, Object... params) {
+    public Object visitForMeteorShowers(MeteorShower meteorShowers, Object... params) throws GeneralError {
         boolean answer = (boolean) params[0];
         return meteorShowers.setAnswers(answer);
     }
@@ -40,7 +41,7 @@ public class SetAnswersVisitor implements ParametricCardVisitor {
     }
 
     @Override
-    public Object visitForPirates(Pirates pirates, Object... params) {
+    public Object visitForPirates(Pirates pirates, Object... params) throws GeneralError {
         boolean answers = (Boolean) params[0];
         Trucker trucker = (Trucker) params[1];
         return pirates.setAnswers(answers, trucker);
