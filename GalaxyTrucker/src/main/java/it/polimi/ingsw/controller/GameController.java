@@ -2,8 +2,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
-import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
+import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +24,37 @@ public class GameController {
     private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
 
-    public GameController() {
-        this.game = new Game();
+    public GameController(int numberOfTruckers) {
+        this.game=new Game(numberOfTruckers);
     }
 
-    public synchronized boolean tryAddPlayer(String nickname, PlayerColors color) throws IllegalStateException, IllegalArgumentException {
+    public Game getGame() {
+        return game;
+    }
+
+    public ArrayList<PlayerColors> getAvailablePlayerColors() {
+        ArrayList<PlayerColors> availablePlayerColors = new ArrayList<>();
+        if(!game.isColorTaken(PlayerColors.BLUE))
+            availablePlayerColors.add(PlayerColors.BLUE);
+        if(!game.isColorTaken(PlayerColors.RED))
+            availablePlayerColors.add(PlayerColors.RED);
+        if(!game.isColorTaken(PlayerColors.GREEN))
+            availablePlayerColors.add(PlayerColors.GREEN);
+        if(!game.isColorTaken(PlayerColors.YELLOW))
+            availablePlayerColors.add(PlayerColors.YELLOW);
+        return availablePlayerColors;
+    }
+
+    public synchronized boolean tryAddPlayer(String nickname, PlayerColors color) throws GameAlreadyStartedException, IllegalArgumentException, NicknameUsedException, ColorNotAvailable {
         if (gameStarted) {
-            throw new IllegalStateException("game already started");
+            throw new GameAlreadyStartedException("game already started");
         }
 
-        if (game.isNicknameTaken(nickname) || game.isColorTaken(color)) {
-            throw new IllegalArgumentException("Nickname or color already taken.");
+        if (game.isNicknameTaken(nickname)) {
+            throw new NicknameUsedException("Nickname already taken.");
+        }
+        if ( game.isColorTaken(color)) {
+            throw new ColorNotAvailable("Color already taken.");
         }
 
         Trucker trucker = new Trucker(nickname, color);

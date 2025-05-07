@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.socket.server;
 
-import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 import java.io.IOException;
 
@@ -19,7 +20,7 @@ public class ClientHandlerServer {
         listenerThread = new Thread(() -> {
             try {
                 while (!network.isClosed()) {
-                    Event event = network.receiveMessage();
+                    ClientEvent event = network.receiveMessage();
                     controller.handleEvent(event, this); // Inoltra evento al ServerController
                 }
             } catch (IOException | ClassNotFoundException e) {
@@ -31,7 +32,7 @@ public class ClientHandlerServer {
         listenerThread.start();
     }
 
-    public void sendEvent(Event event) {
+    public void sendEvent(ServerEvent event) {
         try {
             network.sendMessage(event);
         } catch (IOException e) {

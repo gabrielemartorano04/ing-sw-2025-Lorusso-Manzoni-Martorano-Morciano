@@ -23,7 +23,5 @@ public abstract class ClientEvent implements Serializable {
     public String getMessage() {
         return message;
     }
-    public void call(ClientVisitor visitor) {
-        visitor.visit(this);
-    }
+    public void call(ClientVisitor visitor){};
 }
