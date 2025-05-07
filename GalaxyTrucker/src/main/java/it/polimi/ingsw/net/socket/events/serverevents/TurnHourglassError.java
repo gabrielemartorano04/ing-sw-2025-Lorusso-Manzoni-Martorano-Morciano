@@ -1,7 +1,5 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
-import it.polimi.ingsw.net.socket.events.Event;
-import it.polimi.ingsw.net.socket.events.EventType;
 
 /**
  * Event from server to client. A player tried to turn the hourglass but it's not possible at the moment

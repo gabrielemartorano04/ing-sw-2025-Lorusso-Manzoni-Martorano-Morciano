@@ -1,19 +1,34 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
-import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.view.text.TUI;
+
+import java.util.Map;
 
 public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private final ClientHandler clientHandler;
     private final InputReader inputReader;
     private final InputParser inputParser;
-    private final String nickname;
     private final UI ui;
+    private final String nickname;
+    private Component[][] ship;
+    private int position;
+    private int batteryCount;
+    private int enginePower;
+    private int cannonPower;
+    private int humanCount;
+    private Map<String, Integer> goodsByColor;
     private volatile boolean running;
-
-    public enum
+    private ViewState viewState;
+    public enum ViewState {
+        START,
+        BULDING,
+        FLIGTH,
+        END;
+    }
 
     public ViewFlow(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
@@ -22,27 +37,54 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.nickname = "";
         this.running = true;
         ui = new TUI();
+        this.viewState = ViewState.START;
         new Thread().start();
     }
 
     @Override
-    public void onEventReceived(Event event) {
+    public void onEventReceived(ClientEvent event) {
         System.out.println("[SERVER] Messaggio ricevuto: " + event);
         //!!questa deve gestire gli eventi dal server!!
+
         switch (event.getEventType()){
-            case LOGIN -> {
+            case SHIP_UPDATE -> {
+                ship=event.getShip();
+            }
+            case SHIP_STATUS_UPDATE -> {
+                nickname = event.getNickname();
+
+            }
+            case ASK_NICKNAME -> {
                 ui.showWelcome();
-                ui.askNickname();
+                ui.showInsertNickname();
+            }
+            case ASK_COLOR -> {
+                ui.showChooseColor(event.getColors());
+            }
+            case NICKNAME_ALREADY_IN -> {
+                ui.showError(event.getMessage());
+                ui.showInsertNickname();
+            }
+            case COLOR_ALREADY_IN -> {
+                ui.showError(event.getMessage());
+                ui.showChooseColor();
+            }
+            case PLAYER_JOINED -> {
+                ui.showPlayerJoined();
 
             }
             case END_GAME -> {}
             case NEXT_TURN -> {}
-            case LINK_TILE -> {}
+            case  -> {
+
+            }
             case SHOW_CARD -> {}
             case ASK_BOOLEAN -> {}
             case CREATE_GAME -> {}
             case SELECT_TILE -> {}
-            case END_BUILDING -> {}
+            case  -> {}
+            ui.showShipLayout(nickname, ship);
+            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, );
 
         }
     }
@@ -50,6 +92,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public void start() {
         // Thread per input utente
         new Thread(() -> {
+            ClientEvent event=null;
             while (running) {
                 String input = null;
                 try {
@@ -61,7 +104,11 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     running = false;
                     break;
                 }
-                Event event = inputParser.parse(input);
+                switch (viewState) {
+                    case START-> { event = inputParser.parseLogin(input);}
+                    case BULDING-> { event = inputParser.parseBuilding(input);}
+                    case FLIGTH-> { event = inputParser.parseFlight(input);}
+                }
                 if (event != null) {
                     clientHandler.handleEvent(event);
                 }

@@ -1,11 +1,9 @@
-package it.polimi.ingsw.model.eventhandler;
+package it.polimi.ingsw.net.socket.server.servereventhandler.servereventhandler;
 
 import it.polimi.ingsw.controller.CardControllerNew;
 import it.polimi.ingsw.net.socket.events.clientevents.*;
 
-import java.beans.EventHandler;
-
-public class EventHandlerVisitor implements EventVisitor {
+public class EventHandlerVisitor implements ServerEventVisitor {
     private final CardControllerNew cardController;
 
     public EventHandlerVisitor(CardControllerNew cardController) {

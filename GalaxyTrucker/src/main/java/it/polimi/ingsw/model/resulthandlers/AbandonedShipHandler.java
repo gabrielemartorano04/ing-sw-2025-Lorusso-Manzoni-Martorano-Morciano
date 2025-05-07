@@ -14,8 +14,6 @@ import java.util.ArrayList;
 
 public class AbandonedShipHandler implements ResultHandler {
 
-    public AbandonedShipHandler(ArrayList<Trucker> truckers) {
-    }
 
     public Event handleResult(CardStateResult result, AbandonedShip card) {
 
