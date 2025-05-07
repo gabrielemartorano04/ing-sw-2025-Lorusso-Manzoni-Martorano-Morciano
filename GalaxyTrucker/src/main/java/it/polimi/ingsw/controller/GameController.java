@@ -34,8 +34,11 @@ public class GameController {
             throw new IllegalStateException("game already started");
         }
 
-        if (game.isNicknameTaken(nickname) || game.isColorTaken(color)) {
-            throw new IllegalArgumentException("Nickname or color already taken.");
+        if (game.isNicknameTaken(nickname)) {
+            throw new IllegalArgumentException("Nickname already taken.");
+        }
+        if ( game.isColorTaken(color)) {
+            throw new IllegalArgumentException("Color already taken.");
         }
 
         Trucker trucker = new Trucker(nickname, color);

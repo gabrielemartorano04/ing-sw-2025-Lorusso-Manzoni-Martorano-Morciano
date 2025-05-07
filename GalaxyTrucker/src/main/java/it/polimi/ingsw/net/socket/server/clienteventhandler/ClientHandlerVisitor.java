@@ -10,7 +10,53 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ClientHandlerVisitor(CardControllerNew cardController) {
         this.cardController = cardController;
     }
-    //se login event
+    //se login event prendo nickname e color, controllo da model e creo evento risposta
+
+
+    @Override
+    public void visit(CreateGameEvent event) {
+
+    }
+
+    @Override
+    public void visit(DiscardTileEvent event) {
+
+    }
+
+    @Override
+    public void visit(EndBuildingEvent event) {
+
+    }
+
+    @Override
+    public void visit(KeepTileEvent event) {
+
+    }
+
+    @Override
+    public void visit(LinkTileEvent event) {
+
+    }
+
+    @Override
+    public void visit(LoginEvent event) {
+
+    }
+
+    @Override
+    public void visit(SelectTileEvent event) {
+
+    }
+
+    @Override
+    public void visit(ShowStackEvent event) {
+
+    }
+
+    @Override
+    public void visit(TurnHourglassEvent event) {
+
+    }
 
     @Override
     public void visit(SendCoordEvent event) {
