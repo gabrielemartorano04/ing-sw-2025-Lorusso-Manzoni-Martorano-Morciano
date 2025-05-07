@@ -25,7 +25,7 @@ public class LobbyEvent extends ServerEvent {
 
     public static void main(String[] args) {
         Trucker trucker1=new Trucker("frenk", PlayerColors.BLUE);
-        Trucker trucker2=new Trucker("frenk2", PlayerColors.RED);
+        Trucker trucker2=new Trucker("manzo", PlayerColors.RED);
         ArrayList<String> truckers=new ArrayList<>();
         truckers.add(trucker1.getNickname());
         truckers.add(trucker2.getNickname());
