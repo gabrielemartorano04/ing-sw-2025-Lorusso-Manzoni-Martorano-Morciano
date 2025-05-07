@@ -31,4 +31,7 @@ public interface ServerEventVisitor {
     void visit(LobbyEvent event);
     void visit(IndexesRequest event);
     void visit(IntRequest event);
+    void visit(UpdateTrackEvent event);
+    void visit(SetupCompleteEvent event);
+    void visit(AvailableComponentsEvent event);
 }

@@ -9,11 +9,15 @@ import java.util.ArrayList;
 public class ColorAlreadyInError extends ServerEvent {
     private String message;
     private Color color;
-    private ArrayList<Color> availableColors;
+    private ArrayList<String> chooseColors;
     public ColorAlreadyInError(Color color,ArrayList<Color> availableColors) {
         super(ServerEventType.COLOR_ALREADY_IN);
         this.color = color;
-        this.availableColors=availableColors;
+        int i=0;
+        for(Color colors : availableColors){
+            chooseColors.set(i, colors.toString());
+            i++;
+        }
         message= color.toString()+ "already is use. Available colors: " + availableColors;
 
     }
@@ -24,5 +28,5 @@ public class ColorAlreadyInError extends ServerEvent {
     public Color getColor() {
         return color;
     }
-    public ArrayList<Color> getAvailableColors() {return availableColors;}
+    public ArrayList<String> getAvailableColors() {return chooseColors;}
 }

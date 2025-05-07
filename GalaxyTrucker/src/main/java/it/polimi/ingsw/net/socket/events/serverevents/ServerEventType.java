@@ -22,5 +22,8 @@ public enum ServerEventType {
     SEND_MESSAGE,
     END_GAME,
     START_BUILDING,
-    LOBBY
+    LOBBY,
+    UPDATE_TRACK,
+    SETUP_COMPLETE,
+    AVAILABLE_COMPONENTS,
 }
