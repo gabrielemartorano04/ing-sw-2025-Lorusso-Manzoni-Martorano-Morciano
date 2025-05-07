@@ -11,7 +11,7 @@ public class ShowCardEvent extends ServerEvent {
     private Card card;
 
     public ShowCardEvent(Card card) {
-        super(ServerEventType.SHOW_CARD);
+        super(ServerEventType.SHOW_CARD, true);
         message = "Card description: "+ card.getDescription();
     }
     @Override

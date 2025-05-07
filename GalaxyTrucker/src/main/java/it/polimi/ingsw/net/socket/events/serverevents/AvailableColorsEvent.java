@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class AvailableColorsEvent extends ServerEvent {
     private ArrayList<Color> colors;
     public AvailableColorsEvent(ArrayList<Color> colors) {
-        super(ServerEventType.SEND_MESSAGE);
+        super(ServerEventType.SEND_MESSAGE, false);
         this.colors = colors;
     }
 

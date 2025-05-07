@@ -10,7 +10,7 @@ public class ShipUpdateEvent extends ServerEvent {
     private int truckerPosition,numBatteries,numCrew,cannonPower,enginePower;
 
     public ShipUpdateEvent(Component[][] ship, int truckerPosition, int numBatteries, int numCrew, int cannonPower, int enginePower) {
-        super(ServerEventType.UPDATE_STATE);
+        super(ServerEventType.UPDATE_STATE, false);
         message = "Ship updated";
         this.ship = ship;
         this.truckerPosition = truckerPosition;

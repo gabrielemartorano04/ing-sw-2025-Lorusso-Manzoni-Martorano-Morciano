@@ -6,7 +6,7 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 public class ComponentLinkedEvent extends ServerEvent {
     String message;
     public ComponentLinkedEvent() {
-        super(ServerEventType.COMPONENT_LINKED);
+        super(ServerEventType.COMPONENT_LINKED, false);
         message = "Component correctly linked";
     }
     @Override

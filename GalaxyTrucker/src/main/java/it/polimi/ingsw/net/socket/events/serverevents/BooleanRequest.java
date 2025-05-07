@@ -5,7 +5,7 @@ public class BooleanRequest extends ServerEvent {
     private int userId;
 
     public BooleanRequest(ServerEventType eventType, String question, int Id) {
-        super(ServerEventType.REQUEST);
+        super(ServerEventType.REQUEST, false);
         this.question = question;
         this.userId = Id;
     }

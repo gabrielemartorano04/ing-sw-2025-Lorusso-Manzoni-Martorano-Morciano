@@ -7,7 +7,7 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 public class NoAvailableSpaceError extends ServerEvent {
     private String username, message;
     public NoAvailableSpaceError(String username){
-        super(ServerEventType.NO_AVAILABLE_SPACE);
+        super(ServerEventType.NO_AVAILABLE_SPACE, false);
         this.username = username;
         message = username + " tried to join but there is no available space";
     }

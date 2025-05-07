@@ -7,7 +7,7 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 public class ReconnectedUserEvent extends ServerEvent {
     String username,message;
     public ReconnectedUserEvent(String username){
-        super(ServerEventType.RECONNECTED_USER);
+        super(ServerEventType.RECONNECTED_USER, true);
         this.username = username;
         message = username+" reconnected";
     }
