@@ -32,7 +32,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private AvailableComponents avComponents;
     private Map<String, Integer> goodsByColor;
     private Map<String, Integer> track;
-    private ServerEventVisitor serverEventVisitor;
+    private ServerEventHandlerVisitor serverEventVisitor;
     private Component selectedComponent;
     private volatile boolean running;
     private List<Component> keptComponent;
