@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 
 /**
  * Event from server to client that returns the selected successfully component
@@ -20,5 +21,10 @@ public class ComponentSelectedEvent extends ServerEvent {
     @Override
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
     }
 }
