@@ -76,7 +76,7 @@ public class TruckerController {
     private void handleTurnHourglass() throws IllegalArgumentException {
         try {
             trucker.chooseWhatToDo("Turn Hourglass");
-            gameController.turnHourglass(trucker);
+            gameController.turnHourglass();
         } catch (Exception e) {
             throw new IllegalArgumentException("can't turn hourglass");
         }
@@ -85,7 +85,7 @@ public class TruckerController {
     private void handleShowStack() throws IllegalArgumentException {
         try {
             trucker.chooseWhatToDo("Show Stack");
-            var cards = gameController.showStack(trucker, selectedStackIndex);
+            var cards = gameController.showStack(selectedStackIndex);
         } catch (Exception e) {
            throw new IllegalArgumentException("can't show stack");
         }
