@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.AvailableColorsEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.NotYourTurnError;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
@@ -38,7 +39,7 @@ public class ServerController {
     public synchronized void addClient(ClientHandlerServer client) {
         if (clients.isEmpty()) {
             EnumSet<PlayerColors> availableColors = EnumSet.allOf(PlayerColors.class);
-            AvailableColorsEvent event = new AvailableColorsEvent(
+            FirstConnectionEvent event = new FirstConnectionEvent(
                     availableColors,
                     "First player in the game, choose the total number of players of the Game"
             );
