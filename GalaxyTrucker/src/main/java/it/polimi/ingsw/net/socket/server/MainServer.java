@@ -23,8 +23,6 @@ public class MainServer {
                 NetworkServer networkServer = new NetworkServer(clientSocket);
                 ClientHandlerServer clientHandlerServer = new ClientHandlerServer(networkServer, serverController);
 
-                serverController.addClient(clientHandlerServer);
-
 
             }
         } catch (IOException e) {
