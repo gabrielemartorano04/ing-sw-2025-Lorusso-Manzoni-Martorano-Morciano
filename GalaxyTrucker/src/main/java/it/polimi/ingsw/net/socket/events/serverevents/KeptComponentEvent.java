@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public class KeptComponentEvent extends ServerEvent{
     private String message;
-    ArrayList<Component> kept;
+    Component kept;
 
-    public KeptComponentEvent(ArrayList<Component> kept) {
+    public KeptComponentEvent(Component kept) {
         super(ServerEventType.KEPT_COMPONENT, false);
         this.kept = kept;
         message = "Kept component " + kept;
@@ -19,7 +19,7 @@ public class KeptComponentEvent extends ServerEvent{
         return message;
     }
 
-    public ArrayList<Component> getKept() {
+    public Component getKept() {
         return kept;
     }
 }

@@ -84,7 +84,14 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(ComponentSelectedEvent event) {
+        viewFlow.setSelectedComponent(event.getComponent());
+        ui.showComponentOptions();
+    }
 
+    @Override
+    public void visit(DiscardSuccessEvent event) {
+        ui.showDiscardComponent(event.getComponent());
+        viewFlow.deleteSelectedComponent();
     }
 
     @Override
@@ -100,17 +107,12 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(InvalidPositionError event) {
-        ui.showError(event.getMessage());
+        ui.showInvalidPlacement(event.getMessage());
         ui.askCoordinates();
     }
 
     @Override
     public void visit(UpdateBuildingStateEvent event) {
-        ui.showMessage(event.getMessage());
-    }
-
-    @Override
-    public void visit(TimeExpiredEvent event) {
         ui.showMessage(event.getMessage());
     }
 
@@ -122,20 +124,37 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(AvailableComponentsEvent event) {
         viewFlow.setAvComponents(event.getComponents());
+        ui.showSelectComponent();
+    }
+
+    @Override
+    public void visit(TimeExpiredEvent event){
+        ui.showTimeExpired();
     }
 
     @Override
     public void visit(BuildCompleteEvent event){
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         ui.showBuildComplete();
+        ui.showWaitForOthers();
     }
 
     @Override
     public void visit(KeptComponentEvent event){
-        ui.showKeptComponents(event.getKept());
+        viewFlow.addKeptComponent(event.getKept());
+    }
+
+    @Override
+    public void visit(BuildOptionsEvent event){
+        ui.showBuildOptions();
     }
 
     // === PHASE 4: Fase di Volo ===
+    @Override
+    public void visit(SelectComponentEvent event){
+        ui.askPlacedComponent();
+    }
+
     @Override
     public void visit(ShowCardEvent event) {
         ui.showCardDrawn(event.getCard());
@@ -164,12 +183,29 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(IndexesRequest event) {
+        ui.showGoodsToRemove(event.getGoodsList());
         ui.askGoodsIndexesToRemove();
     }
 
     @Override
+    public void visit(GoodsGainedEvent event){
+        ui.showGoodsGained();
+        ui.askIndex();
+    }
+
+    @Override
+    public void visit(OkEvent event){
+        ui.showMessage(event.getMessage());
+    }
+
+    @Override
+    public void visit(FlightStartEvent event){
+        ui.showFlightPhaseStart();
+    }
+
+    @Override
     public void visit(IntRequest event) {
-        ui.askStackIndex();
+        ui.askIndex();
     }
 
     @Override

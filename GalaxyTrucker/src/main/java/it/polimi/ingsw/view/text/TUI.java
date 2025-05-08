@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.UI;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -98,9 +97,20 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showBuildOptions() {
+    public void showComponentOptions() {
         System.out.println("Opzioni disponibili: [Link] [Keep] [Discard]");
         System.out.print("Scegli azione: ");
+    }
+
+    @Override
+    public void showBuildOptions() {
+        System.out.println("Opzioni disponibili: [Turn Hourglass] [Select Component] [Show Stack] [End]");
+        System.out.print("Scegli azione: ");
+    }
+
+    @Override
+    public void showDiscardComponent(Component component) {
+        System.out.println("Discard component " + component.getType());
     }
 
     @Override
@@ -246,8 +256,8 @@ public class TUI extends UI {
     }
 
     @Override
-    public void askStackIndex() {
-        System.out.print("Scegli lo stack (0-3): ");
+    public void askIndex() {
+        System.out.print("Scegli indice: ");
     }
 
     @Override
@@ -277,17 +287,7 @@ public class TUI extends UI {
     }
 
     @Override
-    public void askComponentFromStack(List<Component> stack) {
-        System.out.println("\nComponenti disponibili nello stack:");
-        for (int i = 0; i < stack.size(); i++) {
-            System.out.println("[" + i + "] " + stack.get(i).getType());
-        }
-
-        System.out.print("Seleziona un componente dallo stack: ");
-    }
-
-    @Override
-    public void askPlacedComponent(Component[][] layout) {
+    public void askPlacedComponent() {
         System.out.println("\nSeleziona un componente dalla tua nave (formato: x y):");
         System.out.print("Inserisci coordinate (x y): ");
     }

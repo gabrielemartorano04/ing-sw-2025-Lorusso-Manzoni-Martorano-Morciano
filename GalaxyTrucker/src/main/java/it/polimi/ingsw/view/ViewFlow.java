@@ -31,7 +31,9 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private Map<String, Integer> goodsByColor;
     private Map<String, Integer> track;
     private ServerEventVisitor serverEventVisitor;
+    private Component selectedComponent;
     private volatile boolean running;
+    private List<Component> keptComponent;
     private ViewState viewState;
     public enum ViewState {
         START,
@@ -62,6 +64,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         }
         switch (viewState) {
             case START -> {
+                ui.showWelcome();
                 event.call(serverEventVisitor);
             }
             case BULDING -> {
@@ -70,6 +73,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                 }
                 ui.showShipLayout(nickname, ship);
                 ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
+                ui.showKeptComponents(keptComponent);
             }
             case FLIGTH -> {
                 ui.showShipLayout(nickname, ship);
@@ -77,7 +81,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                 ui.showTrack(track);
             }
             case END -> {
-
+                event.call(serverEventVisitor);
             }
         }
         if(!done){
@@ -104,7 +108,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                 }
                 switch (viewState) {
                     case START-> { event = inputParser.parseLogin(input);}
-                    case BULDING-> { event = inputParser.parseBuilding(input);}
+                    case BULDING-> { event = inputParser.parseBuilding(input, selectedComponent);}
                     case FLIGTH-> { event = inputParser.parseFlight(input);}
                 }
                 if (event != null) {
@@ -196,6 +200,21 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     public void setAvComponents(AvailableComponents availableComponents) {
         this.avComponents.getComponents().addAll(availableComponents.getComponents());
+    }
+    public void setSelectedComponent(Component selectedComponent) {
+        this.selectedComponent = selectedComponent;
+    }
+
+    public void deleteSelectedComponent() {
+        this.selectedComponent = null;
+    }
+
+    public Component getSelectedComponent() {
+        return selectedComponent;
+    }
+
+    public void addKeptComponent(Component keptComponent) {
+        this.keptComponent.add(keptComponent);
     }
 }
 

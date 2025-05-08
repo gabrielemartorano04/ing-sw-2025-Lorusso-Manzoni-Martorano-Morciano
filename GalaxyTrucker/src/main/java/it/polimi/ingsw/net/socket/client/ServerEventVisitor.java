@@ -29,18 +29,33 @@ public interface ServerEventVisitor {
 
     void visit(KeptComponentEvent event);
 
+    void visit(BuildOptionsEvent event);
+
+    // === PHASE 4: Fase di Volo ===
+    void visit(SelectComponentEvent event);
+
     void visit(ShowCardEvent event);
     void visit(StartBuildingEvent event);
     void visit(TimeExpiredEvent event);
     void visit(TurnHourglassError event);
     void visit(UpdateBuildingStateEvent event);
     void visit(UpdateCardStateEvent event);
+
+    void visit(DiscardSuccessEvent event);
+
     void visit(CoordRequest event);
 
     void visit(ServerEvent event);
 
     void visit(LobbyEvent event);
     void visit(IndexesRequest event);
+
+    void visit(GoodsGainedEvent event);
+
+    void visit(OkEvent event);
+
+    void visit(FlightStartEvent event);
+
     void visit(IntRequest event);
     void visit(UpdateTrackEvent event);
     void visit(SetupCompleteEvent event);
