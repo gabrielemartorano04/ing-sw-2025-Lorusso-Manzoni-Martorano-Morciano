@@ -3,6 +3,8 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.utilities.exceptions.ColorNotAvailable;
+import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,11 +16,11 @@ class GameControllerTest {
 
     @BeforeEach
     void setUp() {
-        gameController=new GameController();
+        gameController=new GameController(3);
     }
 
     @Test
-    void tryAddPlayer() {
+    void tryAddPlayer() throws ColorNotAvailable, NicknameUsedException {
         gameController.tryAddPlayer("frenk", PlayerColors.BLUE);
         try{
             gameController.tryAddPlayer("ciao", PlayerColors.BLUE);
