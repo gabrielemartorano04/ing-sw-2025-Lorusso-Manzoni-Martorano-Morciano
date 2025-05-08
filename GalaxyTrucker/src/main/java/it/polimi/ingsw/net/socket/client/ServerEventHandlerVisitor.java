@@ -146,6 +146,36 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
+    public void visit(TruckerLostCrewEvent truckerLostCrewEvent) {
+
+    }
+
+    @Override
+    public void visit(HourglassTurnEvent hourglassTurnEvent) {
+
+    }
+
+    @Override
+    public void visit(GameCreatedEvent gameCreatedEvent) {
+
+    }
+
+    @Override
+    public void visit(FirstConnectionEvent firstConnectionEvent) {
+
+    }
+
+    @Override
+    public void visit(CoordListRequest coordListRequest) {
+
+    }
+
+    @Override
+    public void visit(AvailableComponentToSelectRequest availableComponentToSelectRequest) {
+
+    }
+
+    @Override
     public void visit(TimeExpiredEvent event){
         ui.showTimeExpired();
     }

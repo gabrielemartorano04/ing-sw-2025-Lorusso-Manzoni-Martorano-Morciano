@@ -66,4 +66,16 @@ public interface ServerEventVisitor {
     void visit(ReturnStackEvent returnStackEvent);
 
     void visit(PlacedComponentRequest placedComponentRequest);
+
+    void visit(TruckerLostCrewEvent truckerLostCrewEvent);
+
+    void visit(HourglassTurnEvent hourglassTurnEvent);
+
+    void visit(GameCreatedEvent gameCreatedEvent);
+
+    void visit(FirstConnectionEvent firstConnectionEvent);
+
+    void visit(CoordListRequest coordListRequest);
+
+    void visit(AvailableComponentToSelectRequest availableComponentToSelectRequest);
 }
