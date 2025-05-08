@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.text;
 
+import it.polimi.ingsw.model.AvailableComponents;
+import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
@@ -29,7 +31,7 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showChooseColor(ArrayList<Color> availableColors) {
+    public void showChooseColor(ArrayList<PlayerColors> availableColors) {
         System.out.println("Colori disponibili: " + String.join(", ", availableColors.toString()));
         System.out.print("Scegli un colore: ");
     }
@@ -70,9 +72,16 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showAvailableComponent(Component component) {
-        System.out.println("Componenti selezionato:");
-        System.out.println(component.getType());
+    public void showAvailableComponent(AvailableComponents components) {
+        System.out.println("=== Componenti disponibili ===");
+        for (int i = 0; i < components.getComponents().size(); i++) {
+            Component c = components.getComponents().get(i);
+            String info = c.getCovered()
+                    ? c.getType() + " (coperto)"
+                    : String.format("%s [N:%s E:%s S:%s W:%s]",
+                    c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+            System.out.println(i + ") " + info);
+        }
     }
 
     @Override
@@ -96,7 +105,7 @@ public class TUI extends UI {
 
     @Override
     public void showComponentPlaced(Component component, int x, int y) {
-        System.out.println("✅ Componente " + component.getType() + " piazzato in [" + x + "," + y + "]");
+        System.out.println("Componente " + component.getType() + " piazzato in [" + x + "," + y + "]");
     }
 
     @Override
@@ -218,7 +227,11 @@ public class TUI extends UI {
             for (int j = 0; j < layout[i].length; j++) {
                 Component c = layout[i][j];
                 if (c != null) {
-                    System.out.print("[" + abbreviate(c.getType()) + "]");
+                    String info = c.getCovered()
+                            ? c.getType() + " (coperto)"
+                            : String.format("%s [N:%s E:%s S:%s W:%s]",
+                            c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+                    System.out.println(i + ") " + info);
                 } else {
                     System.out.print("[   ]");
                 }
@@ -305,5 +318,10 @@ public class TUI extends UI {
 
         System.out.printf("      [%2s] [%2s] [%2s] [%2s] [%2s] [%2s]\n",
                 board.get(20), board.get(19), board.get(18), board.get(17), board.get(16), board.get(15));
+    }
+
+    @Override
+    public void showBooleanOption(String message) {
+        System.out.println(message + " (s/n)");
     }
 }
