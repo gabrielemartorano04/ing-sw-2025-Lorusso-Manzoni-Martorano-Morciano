@@ -38,5 +38,6 @@ public enum ServerEventType {
     LOST_CREW,
     WITHDRAW,
     NOT_YOUR_TURN,
-    DISCART_SUCCESS
+    DISCART_SUCCESS,
+    FIRST_CONNECTION
 }

@@ -322,4 +322,9 @@ public class TUI extends UI {
     public void showBooleanOption(String message) {
         System.out.println(message + " (s/n)");
     }
+
+    @Override
+    public void showInsertNumPlayers() {
+        System.out.println("\nInserisci numero di player:");
+    }
 }
