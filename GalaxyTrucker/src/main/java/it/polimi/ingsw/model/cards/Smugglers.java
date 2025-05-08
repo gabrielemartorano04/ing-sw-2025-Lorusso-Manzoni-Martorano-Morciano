@@ -63,16 +63,6 @@ public class Smugglers extends Card {
         this.chooseToGain=false;
     }
 
-    @Override
-    public Object accept(CardVisitor visitor) throws GeneralError {
-        return visitor.visitForSmugglers(this);
-    }
-
-    @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidGoodChosen, NotEnoughGoodsChosen, InvalidPositionException, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries, GeneralError {
-        return visitor.visitForSmugglers(this, params);
-    }
-
     /**
      * Returns the cannon power required
      * @return cannon power required

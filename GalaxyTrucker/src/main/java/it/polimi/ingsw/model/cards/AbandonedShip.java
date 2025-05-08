@@ -46,17 +46,6 @@ public class AbandonedShip extends Card{
         this.state = CardState.ATTESA_RISPOSTE;
     }
 
-    @Override
-    public Object accept(CardVisitor visitor) {
-        return visitor.visitForAbandonedShip(this);
-    }
-
-    @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidComponentsException {
-        return visitor.visitForAbandonedShip(this, params);
-    }
-
-
     /**
      * Returns the number of days of flight to lose
      * @return days to lose

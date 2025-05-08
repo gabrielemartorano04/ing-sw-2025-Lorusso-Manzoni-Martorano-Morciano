@@ -58,16 +58,6 @@ public class Slavers extends Card {
         this.truckersCoordinatesToRemoveHumans = new ArrayList<>();
     }
 
-    @Override
-    public Object accept(CardVisitor visitor) {
-        return visitor.visitForSlavers(this);
-    }
-
-    @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates {
-        return visitor.visitForSlavers(this, params);
-    }
-
     /**
      * Returns the cannon power required
      * @return cannon power required

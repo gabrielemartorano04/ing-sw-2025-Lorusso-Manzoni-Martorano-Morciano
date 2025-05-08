@@ -74,16 +74,6 @@ public class WarZone extends Card {
         this.numOfHumanToRemove = 0;
     }
 
-    @Override
-    public Object accept(CardVisitor visitor) throws GeneralError {
-        return visitor.visitForWarZone(this);
-    }
-
-    @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries, GeneralError {
-        return visitor.visitForWarZone(this, params);
-    }
-
     public ArrayList<Condition> getConditionsOrder() {
         return conditionsOrder;
     }

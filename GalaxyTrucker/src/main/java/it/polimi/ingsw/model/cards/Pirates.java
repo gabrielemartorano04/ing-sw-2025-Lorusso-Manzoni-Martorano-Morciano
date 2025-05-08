@@ -70,16 +70,6 @@ public class Pirates extends Card {
         this.roll = 0;
     }
 
-    @Override
-    public Object accept(CardVisitor visitor) throws GeneralError {
-        return visitor.visitForPirates(this);
-    }
-
-    @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) throws GeneralError {
-        return visitor.visitForPirates(this, params);
-    }
-
     /**
      * Returns the number of cosmic credits to gain
      * @return credit to gain

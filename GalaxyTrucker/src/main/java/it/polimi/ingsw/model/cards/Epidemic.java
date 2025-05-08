@@ -27,16 +27,6 @@ public class Epidemic extends Card {
         this.state = CardState.ESECUZIONE;
     }
 
-    @Override
-    public Object accept(CardVisitor visitor) {
-        return visitor.visitForEpidemic(this);
-    }
-
-    @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) {
-        return visitor.visitForEpidemic(this, params);
-    }
-
     /**
      * Applies the changes provided by the card
      * @param game game in which the card has been drawn

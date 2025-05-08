@@ -40,14 +40,6 @@ public abstract class Card {
         this.caller = caller;
     }
 
-    public Object accept(CardVisitor visitor) throws GeneralError {
-        return visitor.visit(this);
-    }
-
-    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidPositionException, InvalidGoodChosen, NotEnoughGoodsChosen, WrongNumberOfBatteriesSelected, InvalidComponentsException, NotEnoughBatteries, GeneralError, PlanetNotFreeException {
-        return visitor.visit(this, params);
-    }
-
     public CardCaller getCaller() {
         return caller;
     }

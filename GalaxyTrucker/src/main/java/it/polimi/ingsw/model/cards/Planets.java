@@ -79,16 +79,6 @@ public class Planets extends Card {
         this.helperList = new ArrayList<>();
     }
 
-    @Override
-    public Object accept(CardVisitor visitor) {
-        return visitor.visitForPlanets(this);
-    }
-
-    @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidPositionException, PlanetNotFreeException, GeneralError {
-        return visitor.visitForPlanets(this, params);
-    }
-
     /**
      * Returns, for each planet on the card, a list of goods to gain
      * @return list of lists of good to gain

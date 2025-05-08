@@ -34,16 +34,6 @@ public class OpenSpace extends Card {
         super("Open Space", "Empty vastness of space", trialFlight, level, frontImage, backImage, new OpenSpaceCaller());
     }
 
-    @Override
-    public Object accept(CardVisitor visitor) {
-        return visitor.visitForOpenSpace(this);
-    }
-
-    @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates {
-        return visitor.visitForOpenSpace(this, params);
-    }
-
     /**
      * Sets for each trucker the coordinates of the double engines that he/she wants to activate
      * @param truckerCoordinate list of arrays of coordinates

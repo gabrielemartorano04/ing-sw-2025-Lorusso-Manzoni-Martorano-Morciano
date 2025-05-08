@@ -28,16 +28,6 @@ public class StarDust extends Card {
         this.cardState = CardState.ESECUZIONE;
     }
 
-    @Override
-    public Object accept(CardVisitor visitor) {
-        return visitor.visitForStarDust(this);
-    }
-
-    @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) {
-        return visitor.visitForStarDust(this, params);
-    }
-
     /**
      * Applies the changes provided by the card
      * @param game game in which the card has been drawn
