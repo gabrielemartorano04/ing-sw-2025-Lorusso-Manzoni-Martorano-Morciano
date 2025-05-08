@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.events.clientevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
+import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
 import it.polimi.ingsw.utilities.exceptions.ColorNotAvailable;
 import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
 
@@ -89,8 +90,12 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(TurnHourglassEvent event) {
-
-        return null;
+        try {
+            gameController.getGame().turnHourglass();
+        } catch (CannotTurnHourglassException e) {
+            return new TurnHourglassError();
+        }
+        return new OkEvent("Turn Hourglass Successful");
     }
 
     @Override
