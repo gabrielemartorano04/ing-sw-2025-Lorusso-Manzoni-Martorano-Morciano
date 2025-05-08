@@ -53,12 +53,12 @@ public class MeteorShower extends Card {
     }
 
     @Override
-    public Object accept(CardVisitor visitor) {
+    public Object accept(CardVisitor visitor) throws GeneralError {
         return visitor.visitForMeteorShowers(this);
     }
 
     @Override
-    public Object accept(ParametricCardVisitor visitor, Object... params) {
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws GeneralError {
         return visitor.visitForMeteorShowers(this, params);
     }
 
