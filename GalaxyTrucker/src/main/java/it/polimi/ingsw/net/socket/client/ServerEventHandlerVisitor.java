@@ -3,7 +3,7 @@ package it.polimi.ingsw.net.socket.client;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.view.*;
 import it.polimi.ingsw.view.text.TUI;
-import
+
 
 public class ServerEventHandlerVisitor implements ServerEventVisitor{
     private final UI ui=new TUI();

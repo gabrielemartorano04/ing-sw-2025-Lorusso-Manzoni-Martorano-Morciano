@@ -1,24 +1,20 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
+import it.polimi.ingsw.model.PlayerColors;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 public class AvailableColorsEvent extends ServerEvent {
-    private ArrayList<String> chooseColors;
-    private ArrayList<Color> colors;
-    public AvailableColorsEvent(ArrayList<Color> colors) {
+    private ArrayList<PlayerColors> colors;
+    public AvailableColorsEvent(ArrayList<PlayerColors> colors) {
         super(ServerEventType.SEND_MESSAGE, false);
         this.colors = colors;
-        ArrayList<String> chooseColors = new ArrayList<>();
-        int i=0;
-        for(Color color : colors){
-            chooseColors.set(i, color.toString());
-            i++;
-        }
+        this.colors=colors;
     }
 
-    public ArrayList<Color> getColors() {
-        return chooseColors;
+    public ArrayList<PlayerColors> getColors() {
+        return colors;
     }
 
     @Override
