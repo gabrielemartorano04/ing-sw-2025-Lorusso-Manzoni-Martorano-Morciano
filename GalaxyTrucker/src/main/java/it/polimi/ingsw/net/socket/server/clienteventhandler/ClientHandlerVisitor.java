@@ -29,7 +29,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             return new NumberOfPlayersError();
         }
         gameController=new GameController(numPlayers);
-        return new OkEvent("Game Created correctly");
+        return new OkEvent("Game Created correctly",true);
     }
 
     @Override
@@ -58,8 +58,9 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(LoginEvent event) {
+        String nickname="";
         if(numLog< gameController.getGame().getNumPlayers()){
-            String nickname = event.getUsername();
+            nickname = event.getUsername();
             PlayerColors color=event.getColor();
             try {
                 gameController.tryAddPlayer(nickname,color);
@@ -68,7 +69,21 @@ public class ClientHandlerVisitor implements ClientVisitor {
             } catch (ColorNotAvailable e) {
                 return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
             }
+            numLog++;
             return new PlayerJoinedEvent(nickname);
+        }
+        if(numLog== gameController.getGame().getNumPlayers()-1){
+            nickname = event.getUsername();
+            PlayerColors color=event.getColor();
+            try {
+                gameController.tryAddPlayer(nickname,color);
+            } catch (NicknameUsedException e) {
+                return new NicknameAlreadyInError(nickname,gameController.getAvailablePlayerColors());
+            } catch (ColorNotAvailable e) {
+                return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
+            }
+            numLog++;
+            return new StartBuildingEvent(nickname);
         }
         return new NoAvailableSpaceError();
     }
@@ -95,7 +110,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         } catch (CannotTurnHourglassException e) {
             return new TurnHourglassError();
         }
-        return new OkEvent("Turn Hourglass Successful");
+        return new OkEvent("The hourglass was turned", true);
     }
 
     @Override

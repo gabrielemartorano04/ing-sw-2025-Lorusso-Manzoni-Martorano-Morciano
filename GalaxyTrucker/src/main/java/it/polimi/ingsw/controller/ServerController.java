@@ -1,6 +1,8 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorInsertedData;
+import it.polimi.ingsw.net.socket.events.serverevents.NotYourTurnError;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientHandlerVisitor;
@@ -12,6 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ServerController {
     private final ArrayList<ClientHandlerServer> clients = new ArrayList<>();
     private final ClientHandlerVisitor visitor;
+    private TurnManager turnManager;
 
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
 
@@ -40,10 +43,22 @@ public class ServerController {
         dispatcher.start();
     }
 
+    /**
+     * method used to create the turnManager once all the players have joined the game
+     * @param players
+     */
+    private void CreateTurnManager(ArrayList<PlayerContext> players) {
+        this.turnManager = new TurnManager(players);
+    }
+
     public void processEvent(EventWithSource eventWithSource, ClientHandlerVisitor visitor) {
         ClientEvent event = eventWithSource.getEvent();
         ClientHandlerServer client = eventWithSource.getClient();
 
+        if (event.requiresTurn() && !turnManager.isPlayerTurn(client)) {
+            client.sendEvent(new NotYourTurnError("Non è il tuo turno."));
+            return;
+        }
         ServerEvent response = event.call(visitor);
         if(response.isForAll()){
             for(ClientHandlerServer c: clients){

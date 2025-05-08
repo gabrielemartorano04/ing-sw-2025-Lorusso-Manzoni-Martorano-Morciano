@@ -36,5 +36,6 @@ public enum ServerEventType {
     SHOW_STACK,
     BUILD_OPTIONS,
     LOST_CREW,
-    WITHDRAW
+    WITHDRAW,
+    NOTYOURTURN
 }
