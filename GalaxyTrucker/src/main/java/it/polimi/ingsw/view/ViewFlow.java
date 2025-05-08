@@ -59,7 +59,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     @Override
     public void onEventReceived(ServerEvent event) {
-        System.out.println("[SERVER] Messaggio ricevuto: " + event);
+        System.out.println("[SERVER] Messaggio ricevuto: " + event.getMessage());
         //!!questa deve gestire gli eventi dal server!!
         if(event.getEventType()==ServerEventType.FIRST_CONNECTION){
             ui.showWelcome();

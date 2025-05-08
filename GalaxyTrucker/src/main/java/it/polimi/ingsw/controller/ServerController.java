@@ -38,9 +38,7 @@ public class ServerController {
 
     public synchronized void addClient(ClientHandlerServer client) {
         if (clients.isEmpty()) {
-            EnumSet<PlayerColors> availableColors = EnumSet.allOf(PlayerColors.class);
             FirstConnectionEvent event = new FirstConnectionEvent(
-                    availableColors,
                     "First player in the game, choose the total number of players of the Game"
             );
             client.sendEvent(event);

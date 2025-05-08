@@ -16,6 +16,7 @@ import it.polimi.ingsw.utilities.exceptions.ColorNotAvailable;
 import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 public class ClientHandlerVisitor implements ClientVisitor {
     private int numOfPlayers;
@@ -45,7 +46,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             return new NumberOfPlayersError();
         }
         this.numOfPlayers = numPlayers;
-        return new GameCreatedEvent("Game Created correctly");
+        return new AvailableColorsEvent(EnumSet.allOf(PlayerColors.class), "First Player in the game, start login");
     }
 
     @Override
