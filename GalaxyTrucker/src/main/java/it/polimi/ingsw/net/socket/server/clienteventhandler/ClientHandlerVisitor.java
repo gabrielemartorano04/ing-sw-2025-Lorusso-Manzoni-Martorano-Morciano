@@ -10,6 +10,7 @@ import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
+import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
 import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
 import it.polimi.ingsw.utilities.exceptions.ColorNotAvailable;
 import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
@@ -19,11 +20,17 @@ import java.util.ArrayList;
 public class ClientHandlerVisitor implements ClientVisitor {
     private GameController gameController;
     private int numLog;
+    private ClientHandlerServer currentClient;
+
     public ClientHandlerVisitor() {
         numLog = 0;
+        currentClient = null;
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
 
+    public void setClientHandlerServer(ClientHandlerServer clientHandlerServer) {
+        currentClient = clientHandlerServer;
+    }
 
     @Override
     public ServerEvent visit(CreateGameEvent event) {

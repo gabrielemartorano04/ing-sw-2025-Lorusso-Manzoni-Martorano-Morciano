@@ -61,6 +61,7 @@ public class ServerController {
             client.sendEvent(new NotYourTurnError("Non è il tuo turno."));
             return;
         }
+
         ServerEvent response = event.call(visitor);
         if(response.isForAll()){
             for(ClientHandlerServer c: clients){
