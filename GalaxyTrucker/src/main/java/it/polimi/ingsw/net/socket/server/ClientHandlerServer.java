@@ -16,6 +16,7 @@ public class ClientHandlerServer {
     public ClientHandlerServer(NetworkServer network, ServerController controller) {
         this.network = network;
         this.controller = controller;
+        controller.addClient(this);
         startListener();
     }
 
@@ -32,11 +33,14 @@ public class ClientHandlerServer {
             try {
                 while (!network.isClosed()) {
                     ClientEvent event = network.receiveMessage();
-                    controller.handleEvent(event, this); // Inoltra evento al ServerController
+                    controller.handleEvent(event, this);
                 }
             } catch (IOException | ClassNotFoundException e) {
-                System.err.println("Errore ricezione evento: " + e.getMessage());
-                // TODO: notifica disconnessione
+                System.err.println("Error receiving the event: " + e.getMessage());
+            } finally {
+                System.out.println("Client disconnected.");
+                controller.removeClient(this);
+                close();
             }
         });
         listenerThread.setDaemon(true);
@@ -47,7 +51,7 @@ public class ClientHandlerServer {
         try {
             network.sendMessage(event);
         } catch (IOException e) {
-            System.err.println("Errore invio evento al client: " + e.getMessage());
+            System.err.println("Error sending the event to the client: " + e.getMessage());
         }
     }
 
