@@ -10,17 +10,17 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 public interface ClientVisitor {
     public ServerEvent visit(CreateGameEvent event);
-    public void visit(DiscardTileEvent event);
-    public void visit(EndBuildingEvent event);
-    public void visit(KeepTileEvent event);
-    public void visit(LinkTileEvent event);
+    public ServerEvent visit(DiscardTileEvent event);
+    public ServerEvent visit(EndBuildingEvent event);
+    public ServerEvent visit(KeepTileEvent event);
+    public ServerEvent visit(LinkTileEvent event);
     public ServerEvent visit(LoginEvent event);
-    public void visit(SelectTileEvent event);
-    public void visit(ShowStackEvent event);
-    public void visit(TurnHourglassEvent event);
-    public void visit(SendCoordEvent event);
-    public void visit(SendBooleanEvent event);
-    public void visit(SendCoordListEvent event);
-    public void visit(SendIndexesEvent event);
-    public void visit(SendIntEvent event);
+    public ServerEvent visit(SelectTileEvent event);
+    public ServerEvent visit(ShowStackEvent event);
+    public ServerEvent visit(TurnHourglassEvent event);
+    public ServerEvent visit(SendCoordEvent event);
+    public ServerEvent visit(SendBooleanEvent event);
+    public ServerEvent visit(SendCoordListEvent event);
+    public ServerEvent visit(SendIndexesEvent event);
+    public ServerEvent visit(SendIntEvent event);
 }

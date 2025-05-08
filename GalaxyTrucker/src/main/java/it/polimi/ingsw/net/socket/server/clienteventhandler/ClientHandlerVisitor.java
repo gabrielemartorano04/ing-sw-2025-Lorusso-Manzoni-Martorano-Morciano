@@ -28,23 +28,27 @@ public class ClientHandlerVisitor implements ClientVisitor {
     }
 
     @Override
-    public void visit(DiscardTileEvent event) {
+    public ServerEvent visit(DiscardTileEvent event) {
 
+        return null;
     }
 
     @Override
-    public void visit(EndBuildingEvent event) {
+    public ServerEvent visit(EndBuildingEvent event) {
 
+        return null;
     }
 
     @Override
-    public void visit(KeepTileEvent event) {
+    public ServerEvent visit(KeepTileEvent event) {
 
+        return null;
     }
 
     @Override
-    public void visit(LinkTileEvent event) {
+    public ServerEvent visit(LinkTileEvent event) {
 
+        return null;
     }
 
     @Override
@@ -65,42 +69,50 @@ public class ClientHandlerVisitor implements ClientVisitor {
     }
 
     @Override
-    public void visit(SelectTileEvent event) {
+    public ServerEvent visit(SelectTileEvent event) {
 
+        return null;
     }
 
     @Override
-    public void visit(ShowStackEvent event) {
+    public ServerEvent visit(ShowStackEvent event) {
 
+        return null;
     }
 
     @Override
-    public void visit(TurnHourglassEvent event) {
+    public ServerEvent visit(TurnHourglassEvent event) {
 
+        return null;
     }
 
     @Override
-    public void visit(SendCoordEvent event) {
+    public ServerEvent visit(SendCoordEvent event) {
 
+        return null;
     }
 
     @Override
-    public void visit(SendBooleanEvent event) {
+    public ServerEvent visit(SendBooleanEvent event) {
 
+        return null;
     }
 
     @Override
-    public void visit(SendCoordListEvent event) {
+    public ServerEvent visit(SendCoordListEvent event) {
 
+        return null;
     }
 
     @Override
-    public void visit(SendIndexesEvent event) {
+    public ServerEvent visit(SendIndexesEvent event) {
 
+        return null;
     }
 
     @Override
-    public void visit(SendIntEvent event) {
+    public ServerEvent visit(SendIntEvent event) {
 
+        return null;
     }
 }
