@@ -8,8 +8,6 @@ import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.visitor.CardVisitor;
-import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.util.ArrayList;

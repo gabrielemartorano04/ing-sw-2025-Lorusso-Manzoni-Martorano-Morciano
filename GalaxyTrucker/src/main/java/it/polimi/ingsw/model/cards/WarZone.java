@@ -6,8 +6,6 @@ import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.visitor.CardVisitor;
-import it.polimi.ingsw.model.visitor.ParametricCardVisitor;
 import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.util.Map;
