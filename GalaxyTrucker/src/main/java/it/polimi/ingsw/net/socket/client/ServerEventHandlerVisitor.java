@@ -84,7 +84,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(ComponentSelectedEvent event) {
-        // Vuoto
+
     }
 
     @Override
@@ -117,6 +117,17 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(TurnHourglassError event) {
         ui.showError(event.getMessage());
+    }
+
+    @Override
+    public void visit(AvailableComponentsEvent event) {
+        viewFlow.setAvComponents(event.getComponents());
+    }
+
+    @Override
+    public void visit(BuildCompleteEvent event){
+        viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
+        ui.showBuildComplete();
     }
 
     // === PHASE 4: Fase di Volo ===
@@ -182,6 +193,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(BooleanRequest event) {
-        // Vuoto
+        ui.showBooleanOption(event.getMessage());
     }
 }

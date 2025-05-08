@@ -1,25 +1,27 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
+import it.polimi.ingsw.model.components.Component;
+
 /**
  * Event from server to client when the component is correctly linked to the spaceship
  */
 public class ComponentLinkedEvent extends ServerEvent {
     String message;
-    String componentName;
-    int cordx;
-    int cordy;
-    public ComponentLinkedEvent(String component, int x, int y) {
+    int coordx;
+    int coordy;
+    Component component;
+    public ComponentLinkedEvent(Component component, int x, int y) {
         super(ServerEventType.COMPONENT_LINKED, false);
-        componentName = component;
-        cordx = x;
-        cordy = y;
+        coordx = x;
+        coordy = y;
+        this.component= component;
         message = "Component correctly linked";
     }
     @Override
     public String getMessage() {
         return message;
     }
-    public String getComponent() {return componentName;}
-    public int getX() {return cordx;}
-    public int getY() {return cordy;}
+    public Component getComponent() {return component;}
+    public int getX() {return coordx;}
+    public int getY() {return coordy;}
 }
