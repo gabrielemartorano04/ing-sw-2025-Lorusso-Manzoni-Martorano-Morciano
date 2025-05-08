@@ -9,7 +9,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorInsertedData;
 import java.util.ArrayList;
 
 public class InputParser {
-
+// TODO: AGGIUNGERE COMANDI CHE SONO VALIDI SEMPRE
     public ClientEvent parseLogin(String input){
         if (input == null || input.isEmpty()) {
             return null;
