@@ -1,5 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
+
 public class NumberOfPlayersError extends ServerEvent{
     public NumberOfPlayersError(){
         super(ServerEventType.PLAYERS_NUMBER_ERROR, false);
@@ -9,4 +11,9 @@ public class NumberOfPlayersError extends ServerEvent{
     public String getMessage(){
         return "Number of players error. It has to be between 2 and 4!";
     }
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
+    }
+
 }

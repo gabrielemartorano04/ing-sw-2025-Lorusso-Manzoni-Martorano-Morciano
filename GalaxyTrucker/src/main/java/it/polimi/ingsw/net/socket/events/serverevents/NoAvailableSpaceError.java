@@ -1,6 +1,8 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
 
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
+
 /**
  * Error event from server to client. It happens if a player try to join the game but there are already 4 players
  */
@@ -13,5 +15,10 @@ public class NoAvailableSpaceError extends ServerEvent {
     @Override
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
     }
 }

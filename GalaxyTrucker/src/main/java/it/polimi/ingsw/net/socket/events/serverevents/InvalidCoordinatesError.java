@@ -1,5 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
+
 /**
  * Error event from server to client. It signals that the player inserted invalid coordinates.
  */
@@ -16,5 +18,10 @@ public class InvalidCoordinatesError extends ServerEvent {
     @Override
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
     }
 }

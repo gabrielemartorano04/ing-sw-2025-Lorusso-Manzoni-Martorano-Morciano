@@ -126,11 +126,12 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
-    public void visit(ReturnStackEvent returnStackEvent) {
+    public void visit(NotYourTurnError notYourTurnError) {
+
     }
 
     @Override
-    public void visit(PlacedComponentRequest placedComponentRequest) {
+    public void visit(NumberOfPlayersError numberOfPlayersError) {
 
     }
 
@@ -248,5 +249,4 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(BooleanRequest event) {
         ui.showBooleanOption(event.getMessage());
     }
-
 }
