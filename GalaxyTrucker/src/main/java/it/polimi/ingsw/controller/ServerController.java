@@ -62,6 +62,7 @@ public class ServerController {
             return;
         }
 
+        visitor.setClientHandlerServer(client);
         ServerEvent response = event.call(visitor);
         if(response.isForAll()){
             for(ClientHandlerServer c: clients){
