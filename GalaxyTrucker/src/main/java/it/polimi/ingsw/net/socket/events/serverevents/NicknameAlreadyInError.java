@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -30,5 +31,10 @@ public class NicknameAlreadyInError extends ServerEvent {
 
     public EnumSet<PlayerColors> getColors() {
         return colors;
+    }
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
     }
 }

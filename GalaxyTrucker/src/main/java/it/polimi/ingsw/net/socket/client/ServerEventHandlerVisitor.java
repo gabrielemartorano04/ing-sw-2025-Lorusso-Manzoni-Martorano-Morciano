@@ -126,6 +126,16 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
+    public void visit(NotYourTurnError notYourTurnError) {
+
+    }
+
+    @Override
+    public void visit(NumberOfPlayersError numberOfPlayersError) {
+
+    }
+
+    @Override
     public void visit(TimeExpiredEvent event){
         ui.showTimeExpired();
     }
