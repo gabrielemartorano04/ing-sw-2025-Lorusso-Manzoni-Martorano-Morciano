@@ -26,7 +26,7 @@ public class AvailableColorsEvent extends ServerEvent {
     }
 
     @Override
-    public void call(ServerEventVisitor visitor){
+    public void call(ServerEventHandlerVisitor visitor){
         visitor.visit(this);
     }
 }

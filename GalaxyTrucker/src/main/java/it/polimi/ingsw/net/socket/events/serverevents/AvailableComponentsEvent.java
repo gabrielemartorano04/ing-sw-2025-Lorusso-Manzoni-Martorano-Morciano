@@ -2,6 +2,8 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.socket.client.ServerEventVisitor;
 
 import java.util.ArrayList;
 
@@ -25,5 +27,7 @@ public class AvailableComponentsEvent extends ServerEvent {
     }
 
     @Override
-    public void call
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
+    }
 }
