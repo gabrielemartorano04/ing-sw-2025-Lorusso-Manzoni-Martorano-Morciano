@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ public abstract class UI {
     public abstract void showWelcome();
 
     public abstract void showInsertNickname();
-    public abstract void showChooseColor(ArrayList<String> availableColors);
+    public abstract void showChooseColor(ArrayList<Color> availableColors);
     public abstract void showColorTaken();
     public abstract void showNicknameTaken();
     public abstract void showPlayerJoined(String nickname);

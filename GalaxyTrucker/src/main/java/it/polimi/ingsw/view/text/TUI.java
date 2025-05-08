@@ -6,7 +6,9 @@ import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.UI;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class TUI extends UI {
 
@@ -27,8 +29,8 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showChooseColor(ArrayList<String> availableColors) {
-        System.out.println("Colori disponibili: " + String.join(", ", availableColors));
+    public void showChooseColor(ArrayList<Color> availableColors) {
+        System.out.println("Colori disponibili: " + String.join(", ", availableColors.toString()));
         System.out.print("Scegli un colore: ");
     }
 

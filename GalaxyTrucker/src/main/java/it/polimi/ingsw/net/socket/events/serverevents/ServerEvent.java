@@ -29,4 +29,5 @@ public abstract class ServerEvent implements Serializable {
     public boolean isForAll() {
         return forAll;
     }
+    public void call(ServerEventVisitor visitor) {}
 }
