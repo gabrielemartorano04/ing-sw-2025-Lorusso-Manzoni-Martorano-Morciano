@@ -62,4 +62,8 @@ public interface ServerEventVisitor {
     void visit(NotYourTurnError notYourTurnError);
 
     void visit(NumberOfPlayersError numberOfPlayersError);
+
+    void visit(ReturnStackEvent returnStackEvent);
+
+    void visit(PlacedComponentRequest placedComponentRequest);
 }
