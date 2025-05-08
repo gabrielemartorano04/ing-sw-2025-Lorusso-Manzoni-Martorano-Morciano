@@ -3,10 +3,15 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.events.clientevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
+import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
 import it.polimi.ingsw.utilities.exceptions.ColorNotAvailable;
 import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
+
+import java.util.ArrayList;
 
 public class ClientHandlerVisitor implements ClientVisitor {
     private GameController gameController;
@@ -59,7 +64,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             try {
                 gameController.tryAddPlayer(nickname,color);
             } catch (NicknameUsedException e) {
-                return new NicknameAlreadyInError(nickname);
+                return new NicknameAlreadyInError(nickname,gameController.getAvailablePlayerColors());
             } catch (ColorNotAvailable e) {
                 return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
             }
@@ -71,20 +76,26 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(SelectTileEvent event) {
         int index=event.getIndex();
-        gameController.getGame().getComponents().remove();
-        return null;
+        Component component=gameController.getGame().getComponents().getComponents().get(index);
+        gameController.getGame().getComponents().remove(index);
+        return new ComponentSelectedEvent(component);
     }
 
     @Override
     public ServerEvent visit(ShowStackEvent event) {
-
-        return null;
+        int index=event.getIndex();
+        ArrayList<Card> stack= gameController.showStack(index);
+        return new ReturnStackEvent(stack);
     }
 
     @Override
     public ServerEvent visit(TurnHourglassEvent event) {
-
-        return null;
+        try {
+            gameController.getGame().turnHourglass();
+        } catch (CannotTurnHourglassException e) {
+            return new TurnHourglassError();
+        }
+        return new OkEvent("Turn Hourglass Successful");
     }
 
     @Override

@@ -1,6 +1,11 @@
-package it.polimi.ingsw.net.socket.server;
+package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
+
+/**
+ * Links a ClientEvent with the Client sending it, represented by the istance of ClientHandlerServer
+ */
 
 public class EventWithSource {
     private final ClientEvent event;

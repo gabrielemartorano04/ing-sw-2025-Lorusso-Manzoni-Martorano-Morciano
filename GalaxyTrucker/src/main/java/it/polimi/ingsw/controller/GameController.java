@@ -126,12 +126,12 @@ public class GameController {
         trucker.link(component, x, y);
     }
 
-    public void turnHourglass(Trucker trucker) throws CannotTurnHourglassException {
-        trucker.turnHourglass(game);
+    public void turnHourglass() throws CannotTurnHourglassException {
+        game.turnHourglass();
     }
 
-    public ArrayList<Card> showStack(Trucker trucker, int stackIndex) {
-        return trucker.showStack(stackIndex, game);
+    public ArrayList<Card> showStack(int stackIndex) {
+        return game.viewStack(stackIndex);
     }
 
     public synchronized void endBuildingFor(Trucker trucker) {

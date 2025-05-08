@@ -163,21 +163,7 @@ public class Trucker {
     }
 
 
-    public void turnHourglass(Game game) throws CannotTurnHourglassException{
-        if(buildingState!=BuildingState.TURN_HOURGLASS){
-            throw new IllegalStateException("Trucker is not in turn hourglass state");
-        }
-        if(game.getHourglass().getTimeTurns()==0 && game.getHourglass().timeIsUp()){
-            game.getHourglass().reset();
-            buildingState=BuildingState.BUILDING;
-        } else if (game.getHourglass().getTimeTurns()==1 && game.getHourglass().timeIsUp()){
-            game.getHourglass().reset();
-            buildingState=BuildingState.WAIT_END;
-        } else {
-            buildingState=BuildingState.BUILDING;
-            throw new CannotTurnHourglassException("You can't turn the hourglass now!");
-        }
-    }
+
 
     public void finish(){
         if(buildingState!=BuildingState.WAIT_END){

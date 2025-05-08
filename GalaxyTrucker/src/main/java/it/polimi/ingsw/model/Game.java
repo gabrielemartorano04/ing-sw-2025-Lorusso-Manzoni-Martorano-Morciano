@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
+import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
 
 import java.util.*;
 
@@ -343,6 +344,17 @@ public class Game {
             noHumans(t);
             checkOvertaken(t);
         }
+    }
+
+    public void turnHourglass() throws CannotTurnHourglassException {
+        if(hourglass.getTimeTurns()==0 && hourglass.timeIsUp()){
+            hourglass.reset();
+        } else if (hourglass.getTimeTurns()==1 && hourglass.timeIsUp()){
+            hourglass.reset();
+        } else {
+            throw new CannotTurnHourglassException("You can't turn the hourglass now!");
+        }
+
     }
 
 }
