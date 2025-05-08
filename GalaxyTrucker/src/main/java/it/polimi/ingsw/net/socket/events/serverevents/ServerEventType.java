@@ -39,5 +39,6 @@ public enum ServerEventType {
     WITHDRAW,
     NOT_YOUR_TURN,
     DISCART_SUCCESS,
-    FIRST_CONNECTION
+    FIRST_CONNECTION,
+    GAME_CREATED
 }

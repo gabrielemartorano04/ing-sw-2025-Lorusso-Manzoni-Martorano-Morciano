@@ -1,12 +1,15 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.NotYourTurnError;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientHandlerVisitor;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -15,6 +18,8 @@ public class ServerController {
     private final ClientHandlerVisitor visitor;
     private TurnManager turnManager;
     private boolean turnStarted;
+    private boolean gameCreated;
+    private GameController gameController;
 
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
 
@@ -23,6 +28,7 @@ public class ServerController {
         this.visitor = new ClientHandlerVisitor();
         this.turnStarted = false;
         this.clients = new ArrayList<>();
+        this.gameCreated = false;
     }
 
     public void handleEvent(ClientEvent event, ClientHandlerServer client) {
@@ -30,6 +36,17 @@ public class ServerController {
     }
 
     public synchronized void addClient(ClientHandlerServer client) {
+        if (clients.isEmpty()) {
+            EnumSet<PlayerColors> availableColors = EnumSet.allOf(PlayerColors.class);
+            AvailableColorsEvent event = new AvailableColorsEvent(
+                    availableColors,
+                    "First player in the game, choose the total number of players of the Game"
+            );
+            client.sendEvent(event);
+        }else{
+            AvailableColorsEvent event = new AvailableColorsEvent(gameController.getAvailablePlayerColors(),
+                    "Login");
+        }
         clients.add(client);
     }
 
@@ -74,6 +91,10 @@ public class ServerController {
 
         visitor.setClientHandlerServer(client);
         ServerEvent response = event.call(visitor);
+        if(!gameCreated && visitor.getNumOfPlayers()!=0) {
+            this.gameController = new GameController(visitor.getNumOfPlayers());
+        }
+
         if(response.isForAll()){
             for(ClientHandlerServer c: clients){
                 c.sendEvent(response);

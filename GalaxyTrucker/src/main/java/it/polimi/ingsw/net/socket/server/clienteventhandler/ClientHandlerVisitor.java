@@ -18,6 +18,7 @@ import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
 import java.util.ArrayList;
 
 public class ClientHandlerVisitor implements ClientVisitor {
+    private int numOfPlayers;
     private GameController gameController;
     private int numLog;
     private ClientHandlerServer currentClient;
@@ -25,11 +26,16 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ClientHandlerVisitor() {
         numLog = 0;
         currentClient = null;
+        numOfPlayers = 0;
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
 
     public void setClientHandlerServer(ClientHandlerServer clientHandlerServer) {
         currentClient = clientHandlerServer;
+    }
+
+    public int getNumOfPlayers() {
+        return numOfPlayers;
     }
 
     @Override
@@ -38,8 +44,8 @@ public class ClientHandlerVisitor implements ClientVisitor {
         if (numPlayers<2 || numPlayers>4) {
             return new NumberOfPlayersError();
         }
-        gameController=new GameController(numPlayers);
-        return new OkEvent("Game Created correctly",true);
+        this.numOfPlayers = numPlayers;
+        return new GameCreatedEvent("Game Created correctly");
     }
 
     @Override
