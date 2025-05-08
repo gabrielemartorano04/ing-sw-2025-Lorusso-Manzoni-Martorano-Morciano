@@ -47,7 +47,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         Component component = event.getComponent();
         component.setCovered(false);
         gameController.getGame().getComponents().getComponents().addFirst(component);
-        return new OkEvent("Tile discarded correctly",false);
+        return new DiscardSuccessEvent();
     }
 
     @Override
