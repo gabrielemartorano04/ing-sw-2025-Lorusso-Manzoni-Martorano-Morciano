@@ -1,6 +1,6 @@
 package it.polimi.ingsw.net.socket.client;
 
-import it.polimi.ingsw.net.socket.events.Event;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.view.ViewFlow;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class MainClient {
             // Crea il NetworkListenerClient per ascoltare gli eventi dal server
             NetworkListenerClient listenerClient = new NetworkListenerClient(networkClient.getSocket(), new NetworkListenerClient.EventReceiver() {
                 @Override
-                public void onEventReceived(Event event) {
+                public void onEventReceived(ServerEvent event) {
                     // Quando arriva un evento dal server, la view lo riceve e lo gestisce
                     view.onEventReceived(event);
                 }
