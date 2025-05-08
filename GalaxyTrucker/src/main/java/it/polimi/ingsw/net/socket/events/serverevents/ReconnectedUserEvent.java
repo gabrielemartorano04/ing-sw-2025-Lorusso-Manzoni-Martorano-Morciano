@@ -1,6 +1,8 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
 
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
+
 /**
  * Event server to clients. It signals that a user reconnected to the game.
  */
@@ -17,5 +19,10 @@ public class ReconnectedUserEvent extends ServerEvent {
     @Override
     public String getMessage(){
         return message;
+    }
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
     }
 }

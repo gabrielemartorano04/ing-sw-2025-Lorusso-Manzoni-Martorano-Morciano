@@ -1,6 +1,8 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
 
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
+
 /**
  * Event from server to client to notify the successful login for a player
  */
@@ -17,5 +19,10 @@ public class PlayerJoinedEvent extends ServerEvent {
     @Override
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
     }
 }

@@ -58,4 +58,8 @@ public interface ServerEventVisitor {
     void visit(UpdateTrackEvent event);
     void visit(SetupCompleteEvent event);
     void visit(AvailableComponentsEvent event);
+
+    void visit(ReturnStackEvent returnStackEvent);
+
+    void visit(PlacedComponentRequest placedComponentRequest);
 }

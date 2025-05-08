@@ -126,6 +126,15 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
+    public void visit(ReturnStackEvent returnStackEvent) {
+    }
+
+    @Override
+    public void visit(PlacedComponentRequest placedComponentRequest) {
+
+    }
+
+    @Override
     public void visit(TimeExpiredEvent event){
         ui.showTimeExpired();
     }
@@ -239,4 +248,5 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(BooleanRequest event) {
         ui.showBooleanOption(event.getMessage());
     }
+
 }

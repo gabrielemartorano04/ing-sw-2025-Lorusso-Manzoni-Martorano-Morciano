@@ -1,5 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
+
 public class TruckerWithdrawEvent extends ServerEvent{
     private String message, nickname;
 
@@ -16,5 +18,10 @@ public class TruckerWithdrawEvent extends ServerEvent{
 
     public String getTruckerWithdrawNick() {
         return nickname;
+    }
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
     }
 }

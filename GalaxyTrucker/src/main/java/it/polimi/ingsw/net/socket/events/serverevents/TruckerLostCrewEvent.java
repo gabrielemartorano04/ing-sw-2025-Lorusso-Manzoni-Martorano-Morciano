@@ -1,5 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
+
 public class TruckerLostCrewEvent extends ServerEvent{
     private String message;
     private int lostCrew;
@@ -17,5 +19,10 @@ public class TruckerLostCrewEvent extends ServerEvent{
 
     public int getLostCrew() {
         return lostCrew;
+    }
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
     }
 }

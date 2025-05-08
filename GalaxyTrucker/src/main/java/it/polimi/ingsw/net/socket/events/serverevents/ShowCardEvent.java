@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 
 /**
  * Event from server to clients. It shows the new turned card.
@@ -20,5 +21,10 @@ public class ShowCardEvent extends ServerEvent {
     }
     public Card getCard() {
         return card;
+    }
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
     }
 }
