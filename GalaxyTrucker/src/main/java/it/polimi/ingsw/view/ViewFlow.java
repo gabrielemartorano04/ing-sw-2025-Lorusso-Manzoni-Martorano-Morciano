@@ -59,36 +59,41 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public void onEventReceived(ServerEvent event) {
         System.out.println("[SERVER] Messaggio ricevuto: " + event);
         //!!questa deve gestire gli eventi dal server!!
-        if (event.getEventType()==ServerEventType.UPDATE_STATE || event.getEventType()==ServerEventType.UPDATE_TRACK){
-            event.call(serverEventVisitor);
-            done=true;
-        }
-        switch (viewState) {
-            case START -> {
-                ui.showWelcome();
+        if(event.getEventType()==ServerEventType.FIRST_CONNECTION){
+            ui.showWelcome();
+            ui.showInsertNumPlayers();
+        }else {
+            if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS) {
                 event.call(serverEventVisitor);
+                done = true;
             }
-            case BULDING -> {
-                if(!(event.getEventType()==ServerEventType.COMPONENT_SELECTED)) {
-                    ui.showAvailableComponent(avComponents);
+            switch (viewState) {
+                case START -> {
+                    ui.showWelcome();
+                    event.call(serverEventVisitor);
                 }
-                ui.showShipLayout(nickname, ship);
-                ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
-                ui.showKeptComponents(keptComponent);
+                case BULDING -> {
+                    if (!(event.getEventType() == ServerEventType.COMPONENT_SELECTED)) {
+                        ui.showAvailableComponent(avComponents);
+                    }
+                    ui.showShipLayout(nickname, ship);
+                    ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
+                    ui.showKeptComponents(keptComponent);
+                }
+                case FLIGTH -> {
+                    ui.showShipLayout(nickname, ship);
+                    ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
+                    ui.showTrack(track);
+                }
+                case END -> {
+                    event.call(serverEventVisitor);
+                }
             }
-            case FLIGTH -> {
-                ui.showShipLayout(nickname, ship);
-                ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
-                ui.showTrack(track);
-            }
-            case END -> {
+            if (!done) {
                 event.call(serverEventVisitor);
             }
+            done = false;
         }
-        if(!done){
-            event.call(serverEventVisitor);
-        }
-        done=false;
     }
 
     public void start() {

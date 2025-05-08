@@ -17,6 +17,7 @@ public abstract class UI {
 
     //SETUP
     public abstract void showWelcome();
+    public abstract void showInsertNumPlayers();
 
     public abstract void showInsertNickname();
     public abstract void showChooseColor(ArrayList<PlayerColors> availableColors);
