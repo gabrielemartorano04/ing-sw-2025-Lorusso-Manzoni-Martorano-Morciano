@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class InputParser {
 // TODO: AGGIUNGERE COMANDI CHE SONO VALIDI SEMPRE
     public ClientEvent parseFirstConnection(String input) {
-        System.out.println("Ciao");
         if (input == null || input.isEmpty()) {
             return null;
         }

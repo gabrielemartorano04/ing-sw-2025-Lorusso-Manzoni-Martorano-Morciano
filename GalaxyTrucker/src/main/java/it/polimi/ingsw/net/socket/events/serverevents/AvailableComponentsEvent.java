@@ -23,4 +23,7 @@ public class AvailableComponentsEvent extends ServerEvent {
     public AvailableComponents getComponents() {
         return components;
     }
+
+    @Override
+    public void call
 }

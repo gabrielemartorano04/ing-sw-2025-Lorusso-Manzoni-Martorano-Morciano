@@ -45,8 +45,6 @@ public interface ServerEventVisitor {
 
     void visit(CoordRequest event);
 
-    void visit(ServerEvent event);
-
     void visit(LobbyEvent event);
     void visit(IndexesRequest event);
 

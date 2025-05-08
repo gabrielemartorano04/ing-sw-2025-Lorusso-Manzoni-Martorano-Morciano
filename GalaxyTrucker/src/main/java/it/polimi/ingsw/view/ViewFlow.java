@@ -53,22 +53,25 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.running = true;
         this.avComponents = new AvailableComponents();
         ui = new TUI();
-        this.viewState = ViewState.START;
+        this.viewState = ViewState.FIRST;
         this.serverEventVisitor = new ServerEventHandlerVisitor(this);
-        new Thread().start();
+        new Thread(inputReader, "InputReaderThread").start();
     }
 
     @Override
     public void onEventReceived(ServerEvent event) {
-        System.out.println("[SERVER] Messaggio ricevuto: " + event.getMessage());
+        System.out.println("[SERVER] Messaggio ricevuto: " + event.getMessage() + ". || EventType ||: " + event.getEventType());
         //!!questa deve gestire gli eventi dal server!!
         if(event.getEventType()==ServerEventType.FIRST_CONNECTION){
             ui.showWelcome();
             ui.showInsertNumPlayers();
-        }else {
+        } else {
             if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS) {
                 event.call(serverEventVisitor);
                 done = true;
+            }
+            if(event.getEventType() == ServerEventType.CHOOSE_COLOURS){
+                viewState = ViewState.START;
             }
             switch (viewState) {
                 case START -> {

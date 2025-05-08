@@ -11,8 +11,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public ServerEventHandlerVisitor(ViewFlow viewFlow){
         this.viewFlow = viewFlow;
     }
-    @Override
-    public void visit(ServerEvent event) {}
 
     // === PHASE 1: Lobby ===
     @Override

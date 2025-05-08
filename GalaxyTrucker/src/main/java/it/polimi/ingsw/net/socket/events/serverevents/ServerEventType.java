@@ -40,5 +40,6 @@ public enum ServerEventType {
     NOT_YOUR_TURN,
     DISCART_SUCCESS,
     FIRST_CONNECTION,
-    GAME_CREATED
+    GAME_CREATED,
+    CHOOSE_COLOURS
 }
