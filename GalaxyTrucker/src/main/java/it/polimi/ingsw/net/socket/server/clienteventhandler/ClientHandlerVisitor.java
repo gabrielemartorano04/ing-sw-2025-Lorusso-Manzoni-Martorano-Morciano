@@ -75,7 +75,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             nickname = event.getUsername();
             PlayerColors color=event.getColor();
             try {
-                gameController.tryAddPlayer(nickname,color);
+                currentClient.setTrucker(gameController.tryAddPlayer(nickname,color));
             } catch (NicknameUsedException e) {
                 return new NicknameAlreadyInError(nickname,gameController.getAvailablePlayerColors());
             } catch (ColorNotAvailable e) {
@@ -88,7 +88,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             nickname = event.getUsername();
             PlayerColors color=event.getColor();
             try {
-                gameController.tryAddPlayer(nickname,color);
+                currentClient.setTrucker(gameController.tryAddPlayer(nickname,color));
             } catch (NicknameUsedException e) {
                 return new NicknameAlreadyInError(nickname,gameController.getAvailablePlayerColors());
             } catch (ColorNotAvailable e) {
