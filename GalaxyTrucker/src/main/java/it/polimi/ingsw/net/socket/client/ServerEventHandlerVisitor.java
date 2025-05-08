@@ -183,13 +183,13 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(IndexesRequest event) {
-        ui.showGoodsToRemove(event.getGoodsList());
+        ui.showGoodsToRemove(event.getGoodsToRemove());
         ui.askGoodsIndexesToRemove();
     }
 
     @Override
     public void visit(GoodsGainedEvent event){
-        ui.showGoodsGained();
+        ui.showGoodsGained(event.getGoodGained());
         ui.askIndex();
     }
 
