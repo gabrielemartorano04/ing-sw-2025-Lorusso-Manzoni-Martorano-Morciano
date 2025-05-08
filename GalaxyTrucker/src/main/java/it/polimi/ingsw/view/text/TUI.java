@@ -279,11 +279,9 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showGoodsGained(List<Goods> goods) {
+    public void showGoodsGained(Goods good) {
         System.out.println("Merci ottenute:");
-        for (Goods g : goods) {
-            System.out.println("- " + g.getColor() + " (" + g.getValue() + ")");
-        }
+        System.out.println("- " + good.getColor() + " (" + good.getValue() + ")");
     }
 
     @Override

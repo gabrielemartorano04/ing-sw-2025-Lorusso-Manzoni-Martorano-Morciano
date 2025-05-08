@@ -60,7 +60,7 @@ public abstract class UI {
     public abstract void showTruckerWithdrawn(String nickname);
     public abstract void showTruckerLostAllCrew(String nickname);
 
-    public abstract void showGoodsGained(List<Goods> goods);
+    public abstract void showGoodsGained(Goods goods);
 
     //END OF GAME
     public abstract void showGameEnded();

@@ -1,17 +1,18 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.model.components.Goods;
 
 import java.util.ArrayList;
 
 public class GoodsGainedEvent extends ServerEvent{
     private String message;
-    ArrayList<Component> components;
+    Goods good;
 
-    public GoodsGainedEvent(ArrayList<Component> components) {
+    public GoodsGainedEvent(Goods good) {
         super(ServerEventType.GOOD_GAINED, false);
-        message = "Available components gained";
-        this.components = components;
+        message = "Goods gained";
+        this.good = good;
     }
 
     @Override
@@ -19,7 +20,7 @@ public class GoodsGainedEvent extends ServerEvent{
         return message;
     }
 
-    public ArrayList<Component> getComponents() {
-        return components;
+    public Goods getGoodGained() {
+        return good;
     }
 }
