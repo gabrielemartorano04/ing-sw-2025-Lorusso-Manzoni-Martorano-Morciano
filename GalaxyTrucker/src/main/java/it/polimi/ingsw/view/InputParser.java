@@ -8,6 +8,7 @@ import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendBooleanEven
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendCoordListEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendIndexesEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendIntEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 
 import java.util.ArrayList;
 

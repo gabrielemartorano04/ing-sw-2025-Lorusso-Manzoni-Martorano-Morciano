@@ -3,6 +3,8 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
+import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 /**
