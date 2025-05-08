@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.controller.SpaceShipController;
 import it.polimi.ingsw.model.SpaceShip;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 
@@ -15,19 +16,19 @@ public class ShipUpdateEvent extends ServerEvent {
     private int truckerPosition,numBatteries,numCrew,cannonPower,enginePower;
     private Map<String, Integer> goods;
 
-    public ShipUpdateEvent(SpaceShip ship, int truckerPosition, int numBatteries, int numCrew, int cannonPower, int enginePower, ArrayList<Goods> goods) {
+    public ShipUpdateEvent(Trucker trucker) {
         super(ServerEventType.UPDATE_STATE, false);
         message = "Ship updated";
-        this.ship = ship.getComponents();
-        this.truckerPosition = truckerPosition;
-        this.numBatteries = numBatteries;
-        this.numCrew = numCrew;
-        this.cannonPower = cannonPower;
-        this.enginePower = enginePower;
-        this.goods.put("RED", ship.getRedGoods());
-        this.goods.put("YELLOW", ship.getYellowGoods());
-        this.goods.put("BLUE", ship.getBlueGoods());
-        this.goods.put("GREEN", ship.getGreenGoods());
+        this.ship = trucker.getSpaceShip().getComponents();
+        this.truckerPosition = trucker.getPosition();
+        this.numBatteries = trucker.getSpaceShip().getNumBatteries();
+        this.numCrew = trucker.getSpaceShip().getNumHuman();
+        this.cannonPower = trucker.getSpaceShip().getSingleCannonPower();
+        this.enginePower = trucker.getSpaceShip().getSingleEnginePower();
+        this.goods.put("RED", trucker.getSpaceShip().getRedGoods());
+        this.goods.put("YELLOW", trucker.getSpaceShip().getYellowGoods());
+        this.goods.put("BLUE", trucker.getSpaceShip().getBlueGoods());
+        this.goods.put("GREEN", trucker.getSpaceShip().getGreenGoods());
     }
 
     @Override

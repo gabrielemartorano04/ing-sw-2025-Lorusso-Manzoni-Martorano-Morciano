@@ -1,4 +1,7 @@
-package it.polimi.ingsw.net.socket.events.clientevents;
+package it.polimi.ingsw.net.socket.events.clientevents.buildingevents;
+
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 
 /**
  * Event client to server

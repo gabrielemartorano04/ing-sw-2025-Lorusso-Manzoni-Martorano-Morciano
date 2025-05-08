@@ -1,5 +1,7 @@
-package it.polimi.ingsw.net.socket.events.clientevents;
+package it.polimi.ingsw.net.socket.events.clientevents.setupevents;
 
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
 /**

@@ -5,8 +5,12 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.net.socket.events.clientevents.*;
+import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
+import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
+import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
 import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
 import it.polimi.ingsw.utilities.exceptions.ColorNotAvailable;
 import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
@@ -16,11 +20,17 @@ import java.util.ArrayList;
 public class ClientHandlerVisitor implements ClientVisitor {
     private GameController gameController;
     private int numLog;
+    private ClientHandlerServer currentClient;
+
     public ClientHandlerVisitor() {
         numLog = 0;
+        currentClient = null;
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
 
+    public void setClientHandlerServer(ClientHandlerServer clientHandlerServer) {
+        currentClient = clientHandlerServer;
+    }
 
     @Override
     public ServerEvent visit(CreateGameEvent event) {
@@ -34,25 +44,27 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(DiscardTileEvent event) {
-
-        return null;
+        Component component = event.getComponent();
+        component.setCovered(false);
+        gameController.getGame().getComponents().getComponents().addFirst(component);
+        return new DiscardSuccessEvent();
     }
 
     @Override
     public ServerEvent visit(EndBuildingEvent event) {
-
-        return null;
+        return new CheckShipsEvent();
     }
 
     @Override
     public ServerEvent visit(KeepTileEvent event) {
-
+        Component component = event.getComponent();
+        //fare quando c'è collegamento client-trucker
         return null;
     }
 
     @Override
     public ServerEvent visit(LinkTileEvent event) {
-
+        //fare quando c'è collegamento client-trucker
         return null;
     }
 
@@ -63,7 +75,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             nickname = event.getUsername();
             PlayerColors color=event.getColor();
             try {
-                gameController.tryAddPlayer(nickname,color);
+                currentClient.setTrucker(gameController.tryAddPlayer(nickname,color));
             } catch (NicknameUsedException e) {
                 return new NicknameAlreadyInError(nickname,gameController.getAvailablePlayerColors());
             } catch (ColorNotAvailable e) {
@@ -76,7 +88,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             nickname = event.getUsername();
             PlayerColors color=event.getColor();
             try {
-                gameController.tryAddPlayer(nickname,color);
+                currentClient.setTrucker(gameController.tryAddPlayer(nickname,color));
             } catch (NicknameUsedException e) {
                 return new NicknameAlreadyInError(nickname,gameController.getAvailablePlayerColors());
             } catch (ColorNotAvailable e) {

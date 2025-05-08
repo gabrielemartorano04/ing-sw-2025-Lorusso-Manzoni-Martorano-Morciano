@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorInsertedData;
 import it.polimi.ingsw.net.socket.events.serverevents.NotYourTurnError;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
@@ -15,12 +14,14 @@ public class ServerController {
     private final ArrayList<ClientHandlerServer> clients = new ArrayList<>();
     private final ClientHandlerVisitor visitor;
     private TurnManager turnManager;
+    private boolean turnStarted;
 
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
 
     public ServerController() {
         startDispatcher();
         this.visitor = new ClientHandlerVisitor();
+        this.turnStarted = false;
     }
 
     public void handleEvent(ClientEvent event, ClientHandlerServer client) {
@@ -47,18 +48,21 @@ public class ServerController {
      * method used to create the turnManager once all the players have joined the game
      * @param players
      */
-    private void CreateTurnManager(ArrayList<PlayerContext> players) {
+    private void CreateTurnManager(ArrayList<ClientHandlerServer> players) {
         this.turnManager = new TurnManager(players);
+        this.turnStarted = true;
     }
 
     public void processEvent(EventWithSource eventWithSource, ClientHandlerVisitor visitor) {
         ClientEvent event = eventWithSource.getEvent();
         ClientHandlerServer client = eventWithSource.getClient();
 
-        if (event.requiresTurn() && !turnManager.isPlayerTurn(client)) {
+        if (turnStarted && event.requiresTurn() && !turnManager.isPlayerTurn(client)) {
             client.sendEvent(new NotYourTurnError("Non è il tuo turno."));
             return;
         }
+
+        visitor.setClientHandlerServer(client);
         ServerEvent response = event.call(visitor);
         if(response.isForAll()){
             for(ClientHandlerServer c: clients){

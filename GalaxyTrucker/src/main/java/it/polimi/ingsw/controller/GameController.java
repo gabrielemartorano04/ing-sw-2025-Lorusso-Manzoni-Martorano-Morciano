@@ -45,7 +45,7 @@ public class GameController {
         return availablePlayerColors;
     }
 
-    public synchronized boolean tryAddPlayer(String nickname, PlayerColors color) throws GameAlreadyStartedException, IllegalArgumentException, NicknameUsedException, ColorNotAvailable {
+    public synchronized Trucker tryAddPlayer(String nickname, PlayerColors color) throws GameAlreadyStartedException, IllegalArgumentException, NicknameUsedException, ColorNotAvailable {
         if (gameStarted) {
             throw new GameAlreadyStartedException("game already started");
         }
@@ -73,7 +73,7 @@ public class GameController {
             startBuildingPhase();
         }
 
-        return true;
+        return trucker;
     }
 
     private void startCountdown() {
