@@ -6,9 +6,9 @@ package it.polimi.ingsw.net.socket.events.serverevents;
  */
 public class StartBuildingEvent extends ServerEvent {
     String message;
-    public StartBuildingEvent() {
+    public StartBuildingEvent(String username) {
         super(ServerEventType.START_BUILDING, true);
-        message = "It's time to start building";
+        message = username+ " logged\nIt's time to start building";
     }
     @Override
     public String getMessage() {

@@ -1,4 +1,7 @@
-package it.polimi.ingsw.net.socket.events.clientevents;
+package it.polimi.ingsw.net.socket.events.clientevents.cardevents;
+
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 
 import java.util.ArrayList;
 
