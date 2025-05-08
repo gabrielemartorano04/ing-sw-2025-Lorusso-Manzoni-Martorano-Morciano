@@ -1,5 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
+import it.polimi.ingsw.model.PlayerColors;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -8,8 +10,8 @@ import java.util.ArrayList;
  */
 public class NicknameAlreadyInError extends ServerEvent {
     private String username,message;
-    ArrayList<Color> colors;
-    public NicknameAlreadyInError(String username, ArrayList<Color> colors) {
+    ArrayList<PlayerColors> colors;
+    public NicknameAlreadyInError(String username, ArrayList<PlayerColors> colors) {
         super(ServerEventType.NICKNAME_ALREADY_IN, false);
         this.username = username;
         this.colors = colors;
@@ -25,7 +27,7 @@ public class NicknameAlreadyInError extends ServerEvent {
         return username;
     }
 
-    public ArrayList<Color> getColors() {
+    public ArrayList<PlayerColors> getColors() {
         return colors;
     }
 }

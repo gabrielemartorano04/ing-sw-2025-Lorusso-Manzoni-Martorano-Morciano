@@ -70,7 +70,8 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(SelectTileEvent event) {
-
+        int index=event.getIndex();
+        gameController.getGame().getComponents().remove();
         return null;
     }
 
