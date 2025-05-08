@@ -216,5 +216,9 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public void addKeptComponent(Component keptComponent) {
         this.keptComponent.add(keptComponent);
     }
+
+    public Component getSelectedKeptComponent() {
+        return selectedComponent;
+    }
 }
 
