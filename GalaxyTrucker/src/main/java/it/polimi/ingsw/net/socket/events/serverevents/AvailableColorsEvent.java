@@ -17,7 +17,7 @@ public class AvailableColorsEvent extends ServerEvent {
         }
     }
 
-    public ArrayList<String> getColors() {
+    public ArrayList<Color> getColors() {
         return chooseColors;
     }
 

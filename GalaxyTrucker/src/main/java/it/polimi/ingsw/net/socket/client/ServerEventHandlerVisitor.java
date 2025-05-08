@@ -3,6 +3,7 @@ package it.polimi.ingsw.net.socket.client;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.view.*;
 import it.polimi.ingsw.view.text.TUI;
+import
 
 public class ServerEventHandlerVisitor implements ServerEventVisitor{
     private final UI ui=new TUI();
@@ -29,10 +30,12 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(NicknameAlreadyInError event) {
         ui.showNicknameTaken();
         ui.showInsertNickname();
+        ui.showChooseColor(event.getColors());
     }
 
     @Override
     public void visit(AvailableColorsEvent event) {
+        ui.showInsertNickname();
         ui.showChooseColor(event.getColors());
     }
 
@@ -41,6 +44,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showError(event.getMessage());
         ui.showColorTaken();
         ui.showChooseColor(event.getAvailableColors());
+        ui.showInsertNickname();
     }
 
     @Override
@@ -54,10 +58,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     // === PHASE 2: Setup ===
-    @Override
-    public void visit(ShowCardEvent event) {
-        ui.showCardDrawn(event.getCard());
-    }
+
 
     @Override
     public void visit(SetupCompleteEvent event) {
@@ -119,6 +120,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     // === PHASE 4: Fase di Volo ===
+    @Override
+    public void visit(ShowCardEvent event) {
+        ui.showCardDrawn(event.getCard());
+    }
+
     @Override
     public void visit(UpdateCardStateEvent event) {
         ui.showMessage(event.getMessage());
