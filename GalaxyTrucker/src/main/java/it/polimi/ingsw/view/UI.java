@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public abstract class UI {
     public abstract void showInsertNumPlayers();
 
     public abstract void showInsertNickname();
-    public abstract void showChooseColor(ArrayList<PlayerColors> availableColors);
+    public abstract void showChooseColor(EnumSet<PlayerColors> availableColors);
     public abstract void showColorTaken();
     public abstract void showNicknameTaken();
     public abstract void showPlayerJoined(String nickname);

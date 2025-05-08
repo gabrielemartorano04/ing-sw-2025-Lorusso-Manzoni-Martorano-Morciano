@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.PlayerColors;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 /**
  * Error event from server to client. The choosen color is already in use
@@ -11,8 +12,8 @@ import java.util.ArrayList;
 public class ColorAlreadyInError extends ServerEvent {
     private String message;
     private PlayerColors color;
-    private ArrayList<PlayerColors> chooseColors;
-    public ColorAlreadyInError(PlayerColors color, ArrayList<PlayerColors> availableColors) {
+    private EnumSet<PlayerColors> chooseColors;
+    public ColorAlreadyInError(PlayerColors color, EnumSet<PlayerColors> availableColors) {
         super(ServerEventType.COLOR_ALREADY_IN, false);
         this.color = color;
         this.chooseColors = availableColors;
@@ -26,5 +27,5 @@ public class ColorAlreadyInError extends ServerEvent {
     public PlayerColors getColor() {
         return color;
     }
-    public ArrayList<PlayerColors> getAvailableColors() {return chooseColors;}
+    public EnumSet<PlayerColors> getAvailableColors() {return chooseColors;}
 }

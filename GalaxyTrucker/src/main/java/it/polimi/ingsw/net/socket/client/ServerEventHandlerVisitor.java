@@ -8,7 +8,7 @@ import it.polimi.ingsw.view.text.TUI;
 public class ServerEventHandlerVisitor implements ServerEventVisitor{
     private final UI ui=new TUI();
     private final ViewFlow viewFlow;
-    ServerEventHandlerVisitor(ViewFlow viewFlow){
+    public ServerEventHandlerVisitor(ViewFlow viewFlow){
         this.viewFlow = viewFlow;
     }
     @Override
