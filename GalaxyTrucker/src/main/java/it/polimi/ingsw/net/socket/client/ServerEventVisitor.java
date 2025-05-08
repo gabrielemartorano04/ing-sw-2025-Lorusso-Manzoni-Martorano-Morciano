@@ -13,6 +13,9 @@ public interface ServerEventVisitor {
     void visit(ComponentSelectedEvent event);
     void visit(DisconnectedUserEvent event);
     void visit(EndGameEvent event);
+
+    void visit(TruckerWithdrawEvent event);
+
     void visit(GenericErrorInsertedData event);
     void visit(InvalidCoordinatesError event);
     void visit(InvalidPositionError event);
@@ -23,6 +26,8 @@ public interface ServerEventVisitor {
     void visit(ShipUpdateEvent event);
 
     void visit(BuildCompleteEvent event);
+
+    void visit(KeptComponentEvent event);
 
     void visit(ShowCardEvent event);
     void visit(StartBuildingEvent event);
