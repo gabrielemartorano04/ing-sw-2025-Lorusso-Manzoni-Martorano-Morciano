@@ -5,7 +5,7 @@ import java.rmi.ServerError;
 public class NotYourTurnError extends ServerEvent {
     private final String message;
     public NotYourTurnError(String message) {
-        super(ServerEventType.NOTYOURTURN, false);
+        super(ServerEventType.NOT_YOUR_TURN, false);
         this.message = message;
     }
 

@@ -37,5 +37,6 @@ public enum ServerEventType {
     BUILD_OPTIONS,
     LOST_CREW,
     WITHDRAW,
-    NOTYOURTURN
+    NOT_YOUR_TURN,
+    DISCART_SUCCESS
 }
