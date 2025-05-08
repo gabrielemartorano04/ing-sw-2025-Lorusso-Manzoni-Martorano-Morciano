@@ -8,12 +8,26 @@ import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendBooleanEven
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendCoordListEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendIndexesEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendIntEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 
 import java.util.ArrayList;
 
 public class InputParser {
 // TODO: AGGIUNGERE COMANDI CHE SONO VALIDI SEMPRE
+    public ClientEvent parseFirstConnection(String input) {
+        if (input == null || input.isEmpty()) {
+            return null;
+        }
+
+        String[] tokens = input.split("\\s+", 1);
+        if (tokens.length!=1) {
+            System.out.println("Error: enter number of player");
+            return null;
+        }
+        Integer numOfPlayer = Integer.valueOf(tokens[0]);
+        return new CreateGameEvent(numOfPlayer);
+    }
     public ClientEvent parseLogin(String input){
         if (input == null || input.isEmpty()) {
             return null;
@@ -26,7 +40,7 @@ public class InputParser {
         }
         PlayerColors color=PlayerColors.BLUE;
         switch (tokens[1].toLowerCase()) {
-            case "blue":  break;
+            case "blue": color= PlayerColors.BLUE; break;
             case "red": color = PlayerColors.RED; break;
             case "green": color = PlayerColors.GREEN; break;
             case "yellow": color = PlayerColors.YELLOW; break;
