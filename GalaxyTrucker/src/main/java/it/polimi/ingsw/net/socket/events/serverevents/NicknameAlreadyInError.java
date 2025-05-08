@@ -4,14 +4,15 @@ import it.polimi.ingsw.model.PlayerColors;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 /**
  * Event from server to client. A player tried to join the game but the chosen nickname is already used.
  */
 public class NicknameAlreadyInError extends ServerEvent {
     private String username,message;
-    ArrayList<PlayerColors> colors;
-    public NicknameAlreadyInError(String username, ArrayList<PlayerColors> colors) {
+    EnumSet<PlayerColors> colors;
+    public NicknameAlreadyInError(String username, EnumSet<PlayerColors> colors) {
         super(ServerEventType.NICKNAME_ALREADY_IN, false);
         this.username = username;
         this.colors = colors;
@@ -27,7 +28,7 @@ public class NicknameAlreadyInError extends ServerEvent {
         return username;
     }
 
-    public ArrayList<PlayerColors> getColors() {
+    public EnumSet<PlayerColors> getColors() {
         return colors;
     }
 }

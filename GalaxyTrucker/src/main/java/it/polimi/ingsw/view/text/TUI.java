@@ -30,7 +30,7 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showChooseColor(ArrayList<PlayerColors> availableColors) {
+    public void showChooseColor(EnumSet<PlayerColors> availableColors) {
         System.out.println("Colori disponibili: " + String.join(", ", availableColors.toString()));
         System.out.print("Scegli un colore: ");
     }

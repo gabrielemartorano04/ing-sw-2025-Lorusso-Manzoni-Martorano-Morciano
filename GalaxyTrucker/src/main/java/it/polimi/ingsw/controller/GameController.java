@@ -29,8 +29,8 @@ public class GameController {
         return game;
     }
 
-    public ArrayList<PlayerColors> getAvailablePlayerColors() {
-        ArrayList<PlayerColors> availablePlayerColors = new ArrayList<>();
+    public EnumSet<PlayerColors> getAvailablePlayerColors() {
+        EnumSet<PlayerColors> availablePlayerColors = EnumSet.noneOf(PlayerColors.class);
         if(!game.isColorTaken(PlayerColors.BLUE))
             availablePlayerColors.add(PlayerColors.BLUE);
         if(!game.isColorTaken(PlayerColors.RED))
