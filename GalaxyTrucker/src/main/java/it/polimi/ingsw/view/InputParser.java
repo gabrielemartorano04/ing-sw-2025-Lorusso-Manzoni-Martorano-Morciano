@@ -53,7 +53,7 @@ public class InputParser {
             case "link":
                 return new LinkTileEvent(Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()));
             case "keep":
-                return new KeepTileEvent();
+                return new KeepTileEvent(component);
             case "discard":
                 return new DiscardTileEvent(component);
             default: System.out.println("Error: unknown command: " + command);
