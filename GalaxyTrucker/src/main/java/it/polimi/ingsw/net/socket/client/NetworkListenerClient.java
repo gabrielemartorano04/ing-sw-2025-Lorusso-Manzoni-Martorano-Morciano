@@ -23,9 +23,11 @@ public class NetworkListenerClient {
         listenerThread = new Thread(() -> {
             try (ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
                 while (running && !socket.isClosed()) {
-                    Object obj = inputStream.readObject();
-                    if (obj instanceof ServerEvent event) {
+                    try {
+                        ServerEvent event = (ServerEvent) inputStream.readObject();
                         receiver.onEventReceived(event);
+                    } catch (ClassCastException e) {
+                        System.err.println("Errore: oggetto ricevuto non è un ServerEvent. Tipo: " + e.getMessage());
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {
