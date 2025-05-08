@@ -1,5 +1,8 @@
-package it.polimi.ingsw.net.socket.events.clientevents;
+package it.polimi.ingsw.net.socket.events.clientevents.buildingevents;
 
+
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 
 public class KeepTileEvent extends ClientEvent {
     public KeepTileEvent() {

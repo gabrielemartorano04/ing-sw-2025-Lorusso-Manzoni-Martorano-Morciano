@@ -1,11 +1,13 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.BuildingState;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.net.socket.events.*;
 import it.polimi.ingsw.net.socket.events.clientevents.*;
-import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorInsertedData;
+import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendBooleanEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendCoordListEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendIndexesEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendIntEvent;
 
 import java.util.ArrayList;
 
