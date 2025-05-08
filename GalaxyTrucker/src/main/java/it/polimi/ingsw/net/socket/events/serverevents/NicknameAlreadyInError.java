@@ -1,21 +1,33 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
+import it.polimi.ingsw.model.PlayerColors;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Event from server to client. A player tried to join the game but the chosen nickname is already used.
  */
 public class NicknameAlreadyInError extends ServerEvent {
-    String username,message;
-    public NicknameAlreadyInError(String username) {
+    private String username,message;
+    ArrayList<PlayerColors> colors;
+    public NicknameAlreadyInError(String username, ArrayList<PlayerColors> colors) {
         super(ServerEventType.NICKNAME_ALREADY_IN, false);
         this.username = username;
+        this.colors = colors;
         message = username + " is already in use";
     }
-    public String getUsername() {
-        return username;
-    }
+
     @Override
     public String getMessage() {
         return message;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public ArrayList<PlayerColors> getColors() {
+        return colors;
     }
 }
