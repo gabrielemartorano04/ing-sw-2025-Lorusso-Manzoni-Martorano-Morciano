@@ -34,25 +34,27 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(DiscardTileEvent event) {
-
-        return null;
+        Component component = event.getComponent();
+        component.setCovered(false);
+        gameController.getGame().getComponents().getComponents().addFirst(component);
+        return new OkEvent("Tile discarded correctly",false);
     }
 
     @Override
     public ServerEvent visit(EndBuildingEvent event) {
-
-        return null;
+        return new CheckShipsEvent();
     }
 
     @Override
     public ServerEvent visit(KeepTileEvent event) {
-
+        Component component = event.getComponent();
+        //fare quando c'è collegamento client-trucker
         return null;
     }
 
     @Override
     public ServerEvent visit(LinkTileEvent event) {
-
+        //fare quando c'è collegamento client-trucker
         return null;
     }
 
