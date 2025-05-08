@@ -47,6 +47,7 @@ public class ServerController {
         }else{
             AvailableColorsEvent event = new AvailableColorsEvent(gameController.getAvailablePlayerColors(),
                     "Login");
+            client.sendEvent(event);
         }
         clients.add(client);
     }
