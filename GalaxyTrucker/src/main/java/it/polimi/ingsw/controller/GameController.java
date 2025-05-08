@@ -126,8 +126,8 @@ public class GameController {
         trucker.link(component, x, y);
     }
 
-    public void turnHourglass(Trucker trucker) throws CannotTurnHourglassException {
-        trucker.turnHourglass(game);
+    public void turnHourglass() throws CannotTurnHourglassException {
+        game.turnHourglass();
     }
 
     public ArrayList<Card> showStack(int stackIndex) {
