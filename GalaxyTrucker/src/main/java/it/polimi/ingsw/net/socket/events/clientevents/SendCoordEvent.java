@@ -4,7 +4,7 @@ public class SendCoordEvent extends ClientEvent {
     private int x;
     private int y;
     public SendCoordEvent( int x,  int y) {
-        super(ClientEventType.SEND_INFO_EVENT);
+        super(ClientEventType.SEND_INFO_EVENT, true);
         this.x = x;
         this.y = y;
     }

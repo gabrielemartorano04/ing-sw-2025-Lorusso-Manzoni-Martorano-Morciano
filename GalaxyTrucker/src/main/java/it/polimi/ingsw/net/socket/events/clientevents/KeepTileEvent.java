@@ -3,7 +3,7 @@ package it.polimi.ingsw.net.socket.events.clientevents;
 
 public class KeepTileEvent extends ClientEvent {
     public KeepTileEvent() {
-        super(ClientEventType.KEEP_TILE);
+        super(ClientEventType.KEEP_TILE, false);
     }
     @Override
     public String getMessage() {

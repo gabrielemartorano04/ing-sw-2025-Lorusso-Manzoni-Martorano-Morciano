@@ -6,7 +6,7 @@ package it.polimi.ingsw.net.socket.events.clientevents;
 public class EndBuildingEvent extends ClientEvent {
     String message;
     public EndBuildingEvent(){
-        super(ClientEventType.END_BUILDING);
+        super(ClientEventType.END_BUILDING, false);
         message="my spaceship is done";
     }
     @Override

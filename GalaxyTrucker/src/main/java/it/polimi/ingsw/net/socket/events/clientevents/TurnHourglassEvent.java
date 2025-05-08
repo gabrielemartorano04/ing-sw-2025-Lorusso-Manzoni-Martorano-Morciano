@@ -6,7 +6,7 @@ package it.polimi.ingsw.net.socket.events.clientevents;
 public class TurnHourglassEvent extends ClientEvent {
 
     public TurnHourglassEvent() {
-        super(ClientEventType.TURN_HOURGLASS);
+        super(ClientEventType.TURN_HOURGLASS, false);
     }
     @Override
     public String getMessage() {

@@ -2,14 +2,18 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.controller.SpaceShipController;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.model.components.Goods;
+
+import java.util.ArrayList;
 
 public class ShipUpdateEvent extends ServerEvent {
 
     private String message;
     private Component[][] ship;
     private int truckerPosition,numBatteries,numCrew,cannonPower,enginePower;
+    private ArrayList<Goods> goods;
 
-    public ShipUpdateEvent(Component[][] ship, int truckerPosition, int numBatteries, int numCrew, int cannonPower, int enginePower) {
+    public ShipUpdateEvent(Component[][] ship, int truckerPosition, int numBatteries, int numCrew, int cannonPower, int enginePower, ArrayList<Goods> goods) {
         super(ServerEventType.UPDATE_STATE, false);
         message = "Ship updated";
         this.ship = ship;
@@ -18,6 +22,7 @@ public class ShipUpdateEvent extends ServerEvent {
         this.numCrew = numCrew;
         this.cannonPower = cannonPower;
         this.enginePower = enginePower;
+        this.goods = goods;
     }
 
     @Override
@@ -47,5 +52,9 @@ public class ShipUpdateEvent extends ServerEvent {
 
     public int enginePower() {
         return enginePower();
+    }
+
+    public ArrayList<Goods> getGoods() {
+        return goods;
     }
 }

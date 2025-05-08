@@ -16,7 +16,7 @@ public class ColorAlreadyInError extends ServerEvent {
         super(ServerEventType.COLOR_ALREADY_IN, false);
         this.color = color;
         int i=0;
-        for(Color colors : availableColors){
+        for(PlayerColors colors : availableColors){
             chooseColors.set(i, colors.toString());
             i++;
         }
@@ -30,5 +30,5 @@ public class ColorAlreadyInError extends ServerEvent {
     public PlayerColors getColor() {
         return color;
     }
-    public ArrayList<Color> getAvailableColors() {return chooseColors;}
+    public ArrayList<String> getAvailableColors() {return chooseColors;}
 }

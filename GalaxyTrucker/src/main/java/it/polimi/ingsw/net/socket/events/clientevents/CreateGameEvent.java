@@ -10,7 +10,7 @@ public class CreateGameEvent extends ClientEvent {
     private final int numberOfPlayers;
 
     public CreateGameEvent(int numberOfPlayers) {
-        super(ClientEventType.CREATE_GAME);
+        super(ClientEventType.CREATE_GAME, false);
         this.numberOfPlayers = numberOfPlayers;
     }
 
