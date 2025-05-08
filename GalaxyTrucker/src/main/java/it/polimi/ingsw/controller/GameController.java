@@ -4,10 +4,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.utilities.exceptions.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -74,6 +71,10 @@ public class GameController {
         }
 
         return trucker;
+    }
+
+    public EnumSet<PlayerColors> showAvailableColors() {
+        return game.showAvailableColors();
     }
 
     private void startCountdown() {
