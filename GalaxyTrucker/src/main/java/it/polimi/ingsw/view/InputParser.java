@@ -16,17 +16,24 @@ import java.util.ArrayList;
 public class InputParser {
 // TODO: AGGIUNGERE COMANDI CHE SONO VALIDI SEMPRE
     public ClientEvent parseFirstConnection(String input) {
+        System.out.println("Ciao");
         if (input == null || input.isEmpty()) {
             return null;
         }
 
-        String[] tokens = input.split("\\s+", 1);
-        if (tokens.length!=1) {
+        input = input.trim();
+        if (input.isEmpty() || input.contains(" ")) {
             System.out.println("Error: enter number of player");
             return null;
         }
-        Integer numOfPlayer = Integer.valueOf(tokens[0]);
-        return new CreateGameEvent(numOfPlayer);
+
+        try {
+            Integer numOfPlayer = Integer.valueOf(input);
+            return new CreateGameEvent(numOfPlayer);
+        } catch (NumberFormatException e) {
+            System.out.println("Error: input must be a number");
+            return null;
+        }
     }
     public ClientEvent parseLogin(String input){
         if (input == null || input.isEmpty()) {

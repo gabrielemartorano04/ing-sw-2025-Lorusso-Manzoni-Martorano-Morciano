@@ -38,6 +38,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private List<Component> keptComponent;
     private ViewState viewState;
     public enum ViewState {
+        FIRST,
         START,
         BULDING,
         FLIGTH,
@@ -115,6 +116,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     break;
                 }
                 switch (viewState) {
+                    case FIRST -> event = inputParser.parseFirstConnection(input);
                     case START-> { event = inputParser.parseLogin(input);}
                     case BULDING-> { event = inputParser.parseBuilding(input, selectedComponent);}
                     case FLIGTH-> { event = inputParser.parseFlight(input);}
