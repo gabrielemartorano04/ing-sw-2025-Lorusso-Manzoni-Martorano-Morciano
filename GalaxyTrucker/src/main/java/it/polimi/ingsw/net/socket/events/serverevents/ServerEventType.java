@@ -26,5 +26,6 @@ public enum ServerEventType {
     UPDATE_TRACK,
     SETUP_COMPLETE,
     AVAILABLE_COMPONENTS,
-    SHOW_STACK
+    SHOW_STACK,
+    NOTYOURTURN
 }
