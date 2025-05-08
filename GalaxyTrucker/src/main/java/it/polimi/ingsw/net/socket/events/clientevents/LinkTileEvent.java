@@ -8,7 +8,7 @@ public class LinkTileEvent extends ClientEvent {
     private String  message;
     private int x,y;
     public LinkTileEvent( int x, int y) {
-        super(ClientEventType.LINK_TILE);
+        super(ClientEventType.LINK_TILE, false);
         this.x = x;
         this.y = y;
         message="I want to link the selected component in position ("+x+", "+y+")";

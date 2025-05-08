@@ -12,16 +12,25 @@ import java.io.Serializable;
 public abstract class ClientEvent implements Serializable {
     private final ClientEventType eventType;
     private String message;
+    private final boolean requiresTurn;
 
-    public ClientEvent(ClientEventType eventType) {
+    public ClientEvent(ClientEventType eventType, boolean requiresTurn) {
         this.eventType = eventType;
+        this.requiresTurn = requiresTurn;
         message="Event: " + eventType.name();
     }
+
     public ClientEventType getEventType() {
         return eventType;
     }
+
     public String getMessage() {
         return message;
     }
+
+    public boolean requiresTurn() {
+        return requiresTurn;
+    }
+
     public void call(ClientVisitor visitor){};
 }

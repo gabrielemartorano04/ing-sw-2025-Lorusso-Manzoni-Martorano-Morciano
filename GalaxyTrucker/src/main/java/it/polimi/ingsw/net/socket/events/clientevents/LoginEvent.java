@@ -11,7 +11,7 @@ public class LoginEvent extends ClientEvent {
     private String message;
 
     public LoginEvent(String username,PlayerColors color) {
-        super(ClientEventType.LOGIN);
+        super(ClientEventType.LOGIN, false);
         this.username = username;
         this.color = color;
         message = "Username: " + username+ "\nColor: " + color.toString();

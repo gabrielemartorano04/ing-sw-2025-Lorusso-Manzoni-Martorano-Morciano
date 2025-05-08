@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class SendCoordListEvent extends ClientEvent {
     private ArrayList<int[]> coordinates;
     public SendCoordListEvent(ArrayList<int[]> coordinates) {
-        super(ClientEventType.SEND_INFO_EVENT);
+        super(ClientEventType.SEND_INFO_EVENT, true);
         this.coordinates = coordinates;
     }
     public ArrayList<int[]> getCoordinates() {
