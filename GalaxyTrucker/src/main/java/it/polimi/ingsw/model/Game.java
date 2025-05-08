@@ -30,6 +30,7 @@ public class Game {
     private GameState gameState;
     private final Set<String> nicknames = new HashSet<>();
     private final Set<PlayerColors> usedColors = new HashSet<>();
+    private Set<PlayerColors> availableColors;
     private int numPlayers;
     /**
      * Constructor that initializes the game attributes.
@@ -45,6 +46,7 @@ public class Game {
         this.cardStacks = new ArrayList[4];
         this.bank = new Bank();
         this.gameState = GameState.SETUP;
+        this.availableColors = EnumSet.allOf(PlayerColors.class);
     }
 
     public int getNumPlayers(){
@@ -289,6 +291,10 @@ public class Game {
         return true;
     }
 
+    public Set<PlayerColors> showAvailableColors() {
+        return availableColors;
+    }
+
     public Set<PlayerColors> showUsedColors() {
         return usedColors;
     }
@@ -308,6 +314,7 @@ public class Game {
         truckers.add(trucker);
         nicknames.add(trucker.getNickname());
         usedColors.add(trucker.getColor());
+        availableColors.remove(trucker.getColor());
     }
 
     public void setupGame() throws IllegalStateException {
