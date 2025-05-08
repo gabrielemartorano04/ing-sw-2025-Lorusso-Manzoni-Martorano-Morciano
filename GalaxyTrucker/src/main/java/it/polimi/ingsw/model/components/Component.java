@@ -129,7 +129,7 @@ public abstract sealed class Component permits BatteryStorage, Cabin, Cannon, Em
     }
 
     public static void main(String[] args) {
-        Component com=new Engine(2, 0, 0, "Engine", "src/main/resources/components/tiles/GT-new_tiles_16_for web77.jpg", false);
+        Component com=new Engine(2, 0, 0, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web77.jpg", false);
         System.out.println(com.getType());
     }
 
