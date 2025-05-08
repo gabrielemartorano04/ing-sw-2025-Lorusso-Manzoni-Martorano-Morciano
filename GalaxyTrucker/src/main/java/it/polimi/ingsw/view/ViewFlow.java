@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.client.ServerEventVisitor;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
@@ -52,6 +53,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.avComponents = new AvailableComponents();
         ui = new TUI();
         this.viewState = ViewState.START;
+        this.serverEventVisitor = new ServerEventHandlerVisitor(this);
         new Thread().start();
     }
 
