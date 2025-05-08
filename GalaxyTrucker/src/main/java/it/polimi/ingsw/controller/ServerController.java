@@ -11,7 +11,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ServerController {
-    private final ArrayList<ClientHandlerServer> clients = new ArrayList<>();
+    private final ArrayList<ClientHandlerServer> clients;
     private final ClientHandlerVisitor visitor;
     private TurnManager turnManager;
     private boolean turnStarted;
@@ -22,10 +22,20 @@ public class ServerController {
         startDispatcher();
         this.visitor = new ClientHandlerVisitor();
         this.turnStarted = false;
+        this.clients = new ArrayList<>();
     }
 
     public void handleEvent(ClientEvent event, ClientHandlerServer client) {
         eventQueue.offer(new EventWithSource(event, client));
+    }
+
+    public synchronized void addClient(ClientHandlerServer client) {
+        clients.add(client);
+    }
+
+    public synchronized void removeClient(ClientHandlerServer client) {
+        clients.remove(client);
+        System.out.println("Client disconnected and removed from the game.");
     }
 
     public void startDispatcher() {
