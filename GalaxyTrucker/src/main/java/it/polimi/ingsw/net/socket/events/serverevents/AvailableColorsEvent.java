@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 public class AvailableColorsEvent extends ServerEvent {
-    private EnumSet<PlayerColors> colors;
-    public AvailableColorsEvent(EnumSet<PlayerColors> colors) {
+    private final EnumSet<PlayerColors> colors;
+    private final String message;
+    public AvailableColorsEvent(EnumSet<PlayerColors> colors, String message) {
         super(ServerEventType.SEND_MESSAGE, false);
-        this.colors = colors;
         this.colors=colors;
+        this.message = message;
     }
 
     public EnumSet<PlayerColors> getColors() {
@@ -19,6 +20,6 @@ public class AvailableColorsEvent extends ServerEvent {
 
     @Override
     public String getMessage() {
-        return "Available colors: " + colors;
+        return message;
     }
 }
