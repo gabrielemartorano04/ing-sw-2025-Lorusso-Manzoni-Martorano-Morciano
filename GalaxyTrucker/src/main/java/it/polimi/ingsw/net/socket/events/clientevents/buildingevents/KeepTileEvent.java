@@ -1,16 +1,9 @@
 package it.polimi.ingsw.net.socket.events.clientevents;
 
 
-import it.polimi.ingsw.model.components.Component;
-
 public class KeepTileEvent extends ClientEvent {
-    private Component component;
-    public KeepTileEvent(Component component) {
+    public KeepTileEvent() {
         super(ClientEventType.KEEP_TILE, false);
-        this.component = component;
-    }
-    public Component getComponent() {
-        return component;
     }
     @Override
     public String getMessage() {
