@@ -30,7 +30,7 @@ public class Game {
     private GameState gameState;
     private final Set<String> nicknames = new HashSet<>();
     private final Set<PlayerColors> usedColors = new HashSet<>();
-    private Set<PlayerColors> availableColors;
+    private EnumSet<PlayerColors> availableColors;
     private int numPlayers;
     /**
      * Constructor that initializes the game attributes.
@@ -291,7 +291,7 @@ public class Game {
         return true;
     }
 
-    public Set<PlayerColors> showAvailableColors() {
+    public EnumSet<PlayerColors> showAvailableColors() {
         return availableColors;
     }
 
