@@ -47,6 +47,18 @@ public class AbandonedStation extends Card {
         this.playerDecisions=0;
     }
 
+    @Override
+    public Object accept(CardVisitor visitor) {
+        visitor.visitForAbandonedStation(this);
+        return null;
+    }
+
+    @Override
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws InvalidCoordinates, InvalidPositionException, GeneralError {
+        return visitor.visitForAbandonedStation(this, params);
+    }
+
+
     /**
      * Returns the number of days of flight to lose
      * @return days to lose

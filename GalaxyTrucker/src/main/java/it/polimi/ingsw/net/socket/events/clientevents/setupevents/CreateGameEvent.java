@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.socket.events.clientevents.setupevents;
 
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
 /**
@@ -26,8 +27,8 @@ public class CreateGameEvent extends ClientEvent {
     }
 
     @Override
-    public void call(ClientVisitor visitor){
-        visitor.visit(this);
+    public ServerEvent call(ClientVisitor visitor){
+        return visitor.visit(this);
     };
 
 }

@@ -2,6 +2,8 @@ package it.polimi.ingsw.net.socket.events.clientevents.buildingevents;
 
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
 /**
  * Event from client to server. The player wants to link the selected component to the spaceship.
@@ -25,5 +27,10 @@ public class LinkTileEvent extends ClientEvent {
     @Override
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public ServerEvent call(ClientVisitor visitor) {
+        return visitor.visit(this);
     }
 }

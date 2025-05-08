@@ -52,6 +52,16 @@ public class MeteorShower extends Card {
         this.answers = new ArrayList<>();
     }
 
+    @Override
+    public Object accept(CardVisitor visitor) throws GeneralError {
+        return visitor.visitForMeteorShowers(this);
+    }
+
+    @Override
+    public Object accept(ParametricCardVisitor visitor, Object... params) throws GeneralError {
+        return visitor.visitForMeteorShowers(this, params);
+    }
+
     /**
      * Returns the list of arrays indicating the direction of each meteor.
      * Each position of the array represents a direction:
