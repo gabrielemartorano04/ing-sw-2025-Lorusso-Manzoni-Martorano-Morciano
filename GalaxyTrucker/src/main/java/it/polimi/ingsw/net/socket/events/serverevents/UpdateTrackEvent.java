@@ -13,7 +13,7 @@ public class UpdateTrackEvent extends ServerEvent{
         super(ServerEventType.UPDATE_TRACK, false);
         message = "Track updated";
         for (Trucker trucker : truckers){
-            track.put(trucker.getNickname(), trucker.getPosition());
+            track.put(trucker.getNickname(), trucker.getPosition()%24);
         }
     }
 

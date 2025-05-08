@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +36,9 @@ public abstract class UI {
     public abstract void showKeptComponents(List<Component> kept);
     public abstract void showSelectComponent();
     public abstract void showBuildOptions(); // (link / keep / discard)
+    public abstract void showDiscardComponent(Component component);
+
+    public abstract void showComponentOptions();
 
     public abstract void showComponentPlaced(Component component, int x, int y);
     public abstract void showInvalidPlacement(String reason);
@@ -71,12 +73,13 @@ public abstract class UI {
     public abstract void showInvalidCommand(String expectedFormat);
 
     //INPUT
-    public abstract void askStackIndex();
+    public abstract void askIndex();
+
+
     public abstract void askCoordinates();
     public abstract void showGoodsToRemove(List<Goods> goods);
     public abstract void askGoodsIndexesToRemove();
-    public abstract void askComponentFromStack(List<Component> stack);
-    public abstract void askPlacedComponent(Component[][] layout);
+    public abstract void askPlacedComponent();
 
     //PLAYER DATA
     public abstract void showPlayerShipStatus(int position, int batteryCount, int humanCount, int cannonPower, int enginePower, Map<String, Integer> goodsByColor);
