@@ -1,5 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
+
 /**
  * Event from server to client. The spaceships are checked and correctly modified.
  */
@@ -12,5 +14,10 @@ public class CheckShipsEvent extends ServerEvent {
     @Override
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
     }
 }

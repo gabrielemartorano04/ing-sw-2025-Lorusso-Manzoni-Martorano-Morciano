@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 
 /**
  * Event from server to client when the component is correctly linked to the spaceship
@@ -24,4 +25,9 @@ public class ComponentLinkedEvent extends ServerEvent {
     public Component getComponent() {return component;}
     public int getX() {return coordx;}
     public int getY() {return coordy;}
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
+    }
 }

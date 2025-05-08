@@ -1,5 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
+
 import java.util.Map;
 
 /**
@@ -28,5 +30,10 @@ public class EndGameEvent extends ServerEvent {
 
     public Map<String, Integer> getScores() {
         return scores;
+    }
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
     }
 }
