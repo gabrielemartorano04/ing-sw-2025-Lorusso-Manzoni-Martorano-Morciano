@@ -369,10 +369,10 @@ public class AvailableComponents{
 
     /**
      * Removes the component that has been chosen by the trucker for his spaceship from the whole of available components
-     * @param component component to remove
+     * @param index index of the component to remove
      */
-    public void remove(Component component) {
-        components.remove(component);
+    public void remove(int index) {
+        components.remove(index);
     }
 
 }
