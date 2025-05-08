@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.AvailableComponents;
+import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
@@ -18,7 +20,7 @@ public abstract class UI {
     public abstract void showWelcome();
 
     public abstract void showInsertNickname();
-    public abstract void showChooseColor(ArrayList<Color> availableColors);
+    public abstract void showChooseColor(ArrayList<PlayerColors> availableColors);
     public abstract void showColorTaken();
     public abstract void showNicknameTaken();
     public abstract void showPlayerJoined(String nickname);
@@ -31,12 +33,12 @@ public abstract class UI {
     //BUILDING
     public abstract void showBuildPhaseStart();
 
-    public abstract void showAvailableComponent(Component component);
+    public abstract void showAvailableComponent(AvailableComponents components);
     public abstract void showKeptComponents(List<Component> kept);
     public abstract void showSelectComponent();
     public abstract void showBuildOptions(); // (link / keep / discard)
 
-    public abstract void showComponentPlaced(String component, int x, int y);
+    public abstract void showComponentPlaced(Component component, int x, int y);
     public abstract void showInvalidPlacement(String reason);
 
     public abstract void showHourglassTurned();
@@ -82,4 +84,6 @@ public abstract class UI {
 
     public abstract void showMessage(String message);
     public abstract void showTrack(Map<String, Integer> truckers);
+
+    public abstract void showBooleanOption(String message);
 }

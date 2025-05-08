@@ -21,6 +21,9 @@ public interface ServerEventVisitor {
     void visit(PlayerJoinedEvent event);
     void visit(ReconnectedUserEvent event);
     void visit(ShipUpdateEvent event);
+
+    void visit(BuildCompleteEvent event);
+
     void visit(ShowCardEvent event);
     void visit(StartBuildingEvent event);
     void visit(TimeExpiredEvent event);
@@ -28,6 +31,9 @@ public interface ServerEventVisitor {
     void visit(UpdateBuildingStateEvent event);
     void visit(UpdateCardStateEvent event);
     void visit(CoordRequest event);
+
+    void visit(ServerEvent event);
+
     void visit(LobbyEvent event);
     void visit(IndexesRequest event);
     void visit(IntRequest event);

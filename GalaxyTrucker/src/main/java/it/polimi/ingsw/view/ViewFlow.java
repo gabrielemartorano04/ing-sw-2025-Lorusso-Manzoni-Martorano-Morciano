@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
@@ -9,6 +10,8 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.text.TUI;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ViewFlow implements NetworkListenerClient.EventReceiver {
@@ -24,6 +27,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private int enginePower;
     private int cannonPower;
     private int humanCount;
+    private AvailableComponents avComponents;
     private Map<String, Integer> goodsByColor;
     private Map<String, Integer> track;
     private ServerEventVisitor serverEventVisitor;
@@ -42,6 +46,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.inputParser = new InputParser();
         this.nickname = "";
         this.running = true;
+        this.avComponents = new AvailableComponents();
         ui = new TUI();
         this.viewState = ViewState.START;
         new Thread().start();
@@ -60,6 +65,9 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                 event.call(serverEventVisitor);
             }
             case BULDING -> {
+                if(!(event.getEventType()==ServerEventType.COMPONENT_SELECTED)) {
+                    ui.showAvailableComponent(avComponents);
+                }
                 ui.showShipLayout(nickname, ship);
                 ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
             }
@@ -184,6 +192,10 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     public void setViewState(ViewState viewState) {
         this.viewState = viewState;
+    }
+
+    public void setAvComponents(AvailableComponents availableComponents) {
+        this.avComponents.getComponents().addAll(availableComponents.getComponents());
     }
 }
 
