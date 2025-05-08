@@ -130,6 +130,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showBuildComplete();
     }
 
+    @Override
+    public void visit(KeptComponentEvent event){
+        ui.showKeptComponents(event.getKept());
+    }
+
     // === PHASE 4: Fase di Volo ===
     @Override
     public void visit(ShowCardEvent event) {
@@ -178,6 +183,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showWinner(event.getWinner());
         ui.showScores(event.getScores());
         ui.showGameEnded();
+    }
+
+    @Override
+    public void visit(TruckerWithdrawEvent event) {
+        ui.showTruckerWithdrawn(event.getTruckerWithdrawNick());
     }
 
     // === ERRORI e MESSAGGI GENERICI ===
