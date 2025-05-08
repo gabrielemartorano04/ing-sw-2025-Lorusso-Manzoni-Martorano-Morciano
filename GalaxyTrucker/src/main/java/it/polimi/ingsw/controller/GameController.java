@@ -130,8 +130,8 @@ public class GameController {
         trucker.turnHourglass(game);
     }
 
-    public ArrayList<Card> showStack(Trucker trucker, int stackIndex) {
-        return trucker.showStack(stackIndex, game);
+    public ArrayList<Card> showStack(int stackIndex) {
+        return game.viewStack(stackIndex);
     }
 
     public synchronized void endBuildingFor(Trucker trucker) {
