@@ -8,9 +8,9 @@ public class AvailableComponentsEvent extends ServerEvent {
     private String message;
     private ArrayList<Component> components;
     public AvailableComponentsEvent(ArrayList<Component> components) {
-        super(ServerEventType.AVAILABLE_COMPONENTS);
+        super(ServerEventType.AVAILABLE_COMPONENTS, false);
         this.components = components;
-        this.message = "Available components" + ;
+        this.message = "Available components" + components;
 
     }
 
