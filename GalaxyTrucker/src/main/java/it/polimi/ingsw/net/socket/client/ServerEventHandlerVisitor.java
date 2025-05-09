@@ -69,7 +69,9 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     // === PHASE 3: Costruzione nave ===
     @Override
     public void visit(StartBuildingEvent event) {
+        viewFlow.setViewState(ViewFlow.ViewState.BULDING);
         ui.showBuildPhaseStart();
+        ui.showBuildOptions();
     }
 
     @Override

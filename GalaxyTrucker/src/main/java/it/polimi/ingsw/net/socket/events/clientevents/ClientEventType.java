@@ -14,5 +14,6 @@ public enum ClientEventType {
     SEND_INFO_EVENT,
     SHOW_STACK,
     KEEP_TILE,
-    DISCARD_TILE
+    DISCARD_TILE,
+    SHOW_TILES
 }

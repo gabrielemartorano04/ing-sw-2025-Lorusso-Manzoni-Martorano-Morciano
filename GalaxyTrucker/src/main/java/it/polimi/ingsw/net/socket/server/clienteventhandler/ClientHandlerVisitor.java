@@ -44,7 +44,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(CreateGameEvent event) {
         int numPlayers= event.getNumberOfPlayers();
-        if (numPlayers<2 || numPlayers>4) {
+        if (numPlayers<0 || numPlayers>4) {
             return new NumberOfPlayersError();
         }
         this.numOfPlayers = numPlayers;
@@ -80,30 +80,33 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(LoginEvent event) {
         String nickname="";
+        numLog++;
         if(numLog< gameController.getGame().getNumPlayers()){
             nickname = event.getUsername();
             PlayerColors color=event.getColor();
             try {
                 currentClient.setTrucker(gameController.tryAddPlayer(nickname,color));
             } catch (NicknameUsedException e) {
+                numLog--;
                 return new NicknameAlreadyInError(nickname,gameController.getAvailablePlayerColors());
             } catch (ColorNotAvailable e) {
+                numLog--;
                 return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
             }
-            numLog++;
             return new PlayerJoinedEvent(nickname);
         }
-        if(numLog== gameController.getGame().getNumPlayers()-1){
+        if(numLog== gameController.getGame().getNumPlayers()){
             nickname = event.getUsername();
             PlayerColors color=event.getColor();
             try {
                 currentClient.setTrucker(gameController.tryAddPlayer(nickname,color));
             } catch (NicknameUsedException e) {
+                numLog--;
                 return new NicknameAlreadyInError(nickname,gameController.getAvailablePlayerColors());
             } catch (ColorNotAvailable e) {
+                numLog--;
                 return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
             }
-            numLog++;
             return new StartBuildingEvent(nickname);
         }
         return new NoAvailableSpaceError();
@@ -167,5 +170,10 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
+    }
+
+    @Override
+    public ServerEvent visit(ShowTilesListEvent showTilesListEvent) {
+        return null;
     }
 }

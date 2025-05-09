@@ -62,6 +62,8 @@ public class InputParser {
         String[] tokens = input.split("\\s+", 3);
         String command = tokens[0].toLowerCase();
         switch (command) {
+            case "component list":
+                return new ShowTilesListEvent();
             case "hourglass":
                 return new TurnHourglassEvent();
             case "select":

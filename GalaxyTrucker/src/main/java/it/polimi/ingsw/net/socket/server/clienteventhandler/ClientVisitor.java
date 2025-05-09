@@ -29,4 +29,6 @@ public interface ClientVisitor {
     public ServerEvent visit(SendIntEvent event);
 
     void setGameController(GameController gameController);
+
+    ServerEvent visit(ShowTilesListEvent showTilesListEvent);
 }
