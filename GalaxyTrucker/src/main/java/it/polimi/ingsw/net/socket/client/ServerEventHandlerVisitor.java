@@ -35,6 +35,8 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(AvailableColorsEvent event) {
+        ui.showWelcome();
+        System.out.println("Ho ricevuto: "+ event.getEventType());
         ui.showChooseColor(event.getColors());
     }
 

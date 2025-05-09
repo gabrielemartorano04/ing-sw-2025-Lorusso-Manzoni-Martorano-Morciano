@@ -89,8 +89,10 @@ public class ServerController {
 
         visitor.setClientHandlerServer(client);
         ServerEvent response = event.call(visitor);
-        if(!gameCreated && visitor.getNumOfPlayers()!=0) {
+        if(!gameCreated && visitor.getNumOfPlayers()>0) {
             this.gameController = new GameController(visitor.getNumOfPlayers());
+            visitor.setGameController(this.gameController);
+            this.gameCreated = true;
         }
 
         if(response.isForAll()){

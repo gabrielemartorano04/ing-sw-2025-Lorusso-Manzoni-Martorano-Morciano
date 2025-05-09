@@ -163,4 +163,9 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
         return null;
     }
+
+    @Override
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
 }

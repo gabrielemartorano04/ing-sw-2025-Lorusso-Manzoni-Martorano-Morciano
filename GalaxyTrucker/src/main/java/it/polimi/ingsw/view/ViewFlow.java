@@ -75,8 +75,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
             }
             switch (viewState) {
                 case START -> {
-                    ui.showWelcome();
                     event.call(serverEventVisitor);
+                    done = true;
                 }
                 case BULDING -> {
                     if (!(event.getEventType() == ServerEventType.COMPONENT_SELECTED)) {
@@ -85,6 +85,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     ui.showShipLayout(nickname, ship);
                     ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
                     ui.showKeptComponents(keptComponent);
+
                 }
                 case FLIGTH -> {
                     ui.showShipLayout(nickname, ship);
