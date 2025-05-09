@@ -26,7 +26,6 @@ public class GUI extends UI {
     public void init() {
         frame = new JFrame("Galaxy Trucker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
@@ -37,14 +36,47 @@ public class GUI extends UI {
 
     @Override
     public void showWelcome() {
-        JPanel welcomePanel = new JPanel(new BorderLayout());
-        JLabel label = new JLabel("Benvenuto in Galaxy Trucker!", SwingConstants.CENTER);
-        JButton startButton = new JButton("Inizia");
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/it/polimi/ingsw/view/WelcomeImage.jpeg"));
+        int originalWidth = originalIcon.getIconWidth();
+        int originalHeight = originalIcon.getIconHeight();
 
+        int scaledWidth = 700;
+        int scaledHeight = (originalHeight * scaledWidth) / originalWidth;
+
+        Image scaledImage = originalIcon.getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+        // Finestra uguale all'immagine ridimensionata
+        frame.setSize(scaledWidth, scaledHeight);
+        frame.setResizable(false);
+
+        // Pannello principale con layout a strati
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(scaledWidth, scaledHeight));
+
+        // Etichetta con immagine di sfondo
+        JLabel imageLabel = new JLabel(scaledIcon);
+        imageLabel.setBounds(0, 0, scaledWidth, scaledHeight);
+        layeredPane.add(imageLabel, JLayeredPane.DEFAULT_LAYER); // sfondo
+
+        // Bottone trasparente
+        JButton startButton = new JButton("START");
+        startButton.setFont(new Font("Super Comic", Font.BOLD, 20));
+        startButton.setForeground(new Color(255, 222, 105));
+        startButton.setOpaque(false);
+        startButton.setContentAreaFilled(false);
+        startButton.setBorderPainted(false);
+        startButton.setFocusPainted(false);
+
+        // Posizionato sotto i personaggi
+        startButton.setBounds(scaledWidth / 2 - 100, scaledHeight - 75, 200, 40);
         startButton.addActionListener(e -> showInsertNumPlayers());
 
-        welcomePanel.add(label, BorderLayout.CENTER);
-        welcomePanel.add(startButton, BorderLayout.SOUTH);
+        layeredPane.add(startButton, JLayeredPane.PALETTE_LAYER); // sopra
+
+        // Pannello container
+        JPanel welcomePanel = new JPanel(new BorderLayout());
+        welcomePanel.add(layeredPane, BorderLayout.CENTER);
 
         mainPanel.add(welcomePanel, "WELCOME");
         cardLayout.show(mainPanel, "WELCOME");
