@@ -30,13 +30,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(NicknameAlreadyInError event) {
         ui.showNicknameTaken();
-        ui.showInsertNickname();
         ui.showChooseColor(event.getColors());
     }
 
     @Override
     public void visit(AvailableColorsEvent event) {
-        ui.showInsertNickname();
         ui.showChooseColor(event.getColors());
     }
 
@@ -45,7 +43,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showError(event.getMessage());
         ui.showColorTaken();
         ui.showChooseColor(event.getAvailableColors());
-        ui.showInsertNickname();
     }
 
     @Override
