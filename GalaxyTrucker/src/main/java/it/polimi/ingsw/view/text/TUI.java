@@ -25,14 +25,9 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showInsertNickname() {
-        System.out.print("Inserisci il tuo nickname: ");
-    }
-
-    @Override
     public void showChooseColor(EnumSet<PlayerColors> availableColors) {
         System.out.println("Colori disponibili: " + String.join(", ", availableColors.toString()));
-        System.out.print("Scegli un colore: ");
+        System.out.print("Inserisci nickname e scegli un colore: ");
     }
 
     @Override

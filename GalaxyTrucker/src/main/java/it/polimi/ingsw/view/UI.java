@@ -20,7 +20,6 @@ public abstract class UI {
     public abstract void showWelcome();
     public abstract void showInsertNumPlayers();
 
-    public abstract void showInsertNickname();
     public abstract void showChooseColor(EnumSet<PlayerColors> availableColors);
     public abstract void showColorTaken();
     public abstract void showNicknameTaken();
