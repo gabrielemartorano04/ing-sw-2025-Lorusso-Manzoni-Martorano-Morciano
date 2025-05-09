@@ -1,16 +1,14 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.AvailableColorsEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.FirstConnectionEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.NotYourTurnError;
+import it.polimi.ingsw.net.socket.events.serverevents.setupevents.AvailableColorsEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.setupevents.FirstConnectionEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.flightevents.NotYourTurnError;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientHandlerVisitor;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 

@@ -1,0 +1,31 @@
+package it.polimi.ingsw.net.socket.events.serverevents.buildingevents;
+
+import it.polimi.ingsw.model.AvailableComponents;
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+
+public class AvailableComponentsEvent extends ServerEvent {
+    private String message;
+    private AvailableComponents components;
+    public AvailableComponentsEvent(AvailableComponents components) {
+        super(ServerEventType.AVAILABLE_COMPONENTS, false);
+        this.components = components;
+        this.message = "Available components" + components;
+
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    public AvailableComponents getComponents() {
+        return components;
+    }
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
+    }
+}

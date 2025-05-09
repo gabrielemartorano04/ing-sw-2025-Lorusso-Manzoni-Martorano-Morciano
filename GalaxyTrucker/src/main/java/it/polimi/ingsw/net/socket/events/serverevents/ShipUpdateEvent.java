@@ -1,13 +1,9 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
-import it.polimi.ingsw.controller.SpaceShipController;
-import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class ShipUpdateEvent extends ServerEvent {
