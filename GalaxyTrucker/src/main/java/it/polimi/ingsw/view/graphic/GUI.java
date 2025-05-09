@@ -7,19 +7,47 @@ import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.view.UI;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
 public class GUI extends UI {
 
+    private JFrame frame;
+    private JPanel mainPanel;
+    private CardLayout cardLayout; // utile per gestire schermate diverse (menu, partita, ecc)
+
     public GUI() {
 
     }
 
+    public void init() {
+        frame = new JFrame("Galaxy Trucker");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+
+        frame.add(mainPanel);
+        frame.setVisible(true);
+    }
+
     @Override
     public void showWelcome() {
+        JPanel welcomePanel = new JPanel(new BorderLayout());
+        JLabel label = new JLabel("Benvenuto in Galaxy Trucker!", SwingConstants.CENTER);
+        JButton startButton = new JButton("Inizia");
 
+        startButton.addActionListener(e -> showInsertNumPlayers());
+
+        welcomePanel.add(label, BorderLayout.CENTER);
+        welcomePanel.add(startButton, BorderLayout.SOUTH);
+
+        mainPanel.add(welcomePanel, "WELCOME");
+        cardLayout.show(mainPanel, "WELCOME");
     }
 
     @Override
@@ -245,5 +273,13 @@ public class GUI extends UI {
     @Override
     public void showBooleanOption(String message) {
 
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            GUI gui = new GUI();
+            gui.init();
+            gui.showWelcome();
+        });
     }
 }
