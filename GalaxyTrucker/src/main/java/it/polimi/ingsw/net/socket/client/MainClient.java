@@ -4,41 +4,46 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.view.ViewFlow;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * Main client application
  */
 public class MainClient {
 
-    // Parametri di connessione del server
-    private static final String SERVER_ADDRESS = "127.0.0.1"; // Indirizzo server (localhost)
-    private static final int SERVER_PORT = 12345; // Porta server
-
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Chiedi all'utente dove connettersi
+        System.out.print("Do you want to connect to the localhost? (y/n): ");
+        String answer = scanner.nextLine().trim().toLowerCase();
+
+        String serverAddress;
+        if (answer.equals("y") || answer.equals("yes")) {
+            serverAddress = "127.0.0.1"; // Localhost
+        } else {
+            System.out.print("Insert the server address: ");
+            serverAddress = scanner.nextLine().trim();
+        }
+
+        final int SERVER_PORT = 12345;
+
         // Crea il NetworkClient e si connette al server
-        NetworkClient networkClient = new NetworkClient(SERVER_ADDRESS, SERVER_PORT);
+        NetworkClient networkClient = new NetworkClient(serverAddress, SERVER_PORT);
         try {
             networkClient.connect(); // Connetti al server
 
-            // Crea il ClientHandler per inviare eventi al server
             ClientHandler clientHandler = new ClientHandler(networkClient);
-
-            // Crea la View che riceverà e mostrerà gli eventi dal server
             ViewFlow view = new ViewFlow(clientHandler);
 
-            // Crea il NetworkListenerClient per ascoltare gli eventi dal server
             NetworkListenerClient listenerClient = new NetworkListenerClient(networkClient.getSocket(), new NetworkListenerClient.EventReceiver() {
                 @Override
                 public void onEventReceived(ServerEvent event) {
-                    // Quando arriva un evento dal server, la view lo riceve e lo gestisce
                     view.onEventReceived(event);
                 }
             });
 
-            // Avvia il listener in un thread separato per ricevere eventi dal server
             listenerClient.start();
-
-            // Avvia la view per gestire l'input dell'utente e inviare eventi al server
             view.start();
 
         } catch (IOException e) {
@@ -46,3 +51,7 @@ public class MainClient {
         }
     }
 }
+
+
+
+
