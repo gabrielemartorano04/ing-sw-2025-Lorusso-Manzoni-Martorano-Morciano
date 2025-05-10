@@ -9,6 +9,7 @@ import it.polimi.ingsw.view.UI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -61,15 +62,15 @@ public class GUI extends UI {
 
         // Bottone trasparente
         JButton startButton = new JButton("START");
-        startButton.setFont(new Font("Super Comic", Font.BOLD, 20));
+        startButton.setFont(new Font("Bangers", Font.BOLD, 20));
         startButton.setForeground(new Color(255, 222, 105));
-        startButton.setOpaque(false);
-        startButton.setContentAreaFilled(false);
+        startButton.setBackground(new Color(255, 255, 255, 200)); // bianco semi-trasparente (alpha 0–255)
+        startButton.setOpaque(true);
         startButton.setBorderPainted(false);
         startButton.setFocusPainted(false);
 
         // Posizionato sotto i personaggi
-        startButton.setBounds(scaledWidth / 2 - 100, scaledHeight - 75, 200, 40);
+        startButton.setBounds(scaledWidth / 2 - 80, scaledHeight - 70, 160, 35);
         startButton.addActionListener(e -> showInsertNumPlayers());
 
         layeredPane.add(startButton, JLayeredPane.PALETTE_LAYER); // sopra
@@ -84,7 +85,83 @@ public class GUI extends UI {
 
     @Override
     public void showInsertNumPlayers() {
+        // Carica immagine di sfondo dal classpath
+        ImageIcon bgIcon = new ImageIcon(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg"));
+        Image bgImage = bgIcon.getImage();
 
+        // Pannello personalizzato con immagine di sfondo
+        JPanel insertPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        insertPanel.setLayout(new BoxLayout(insertPanel, BoxLayout.Y_AXIS));
+        insertPanel.setOpaque(false);
+
+        // Etichetta della domanda
+        JLabel questionLabel = new JLabel("Insert the number of truckers:");
+        questionLabel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+        questionLabel.setFont(new Font("Bangers", Font.BOLD, 20));
+        questionLabel.setForeground(new Color(255, 222, 105));
+        questionLabel.setBorder(BorderFactory.createEmptyBorder(30, 0, 20, 0));
+
+        // Campo di inserimento numero
+        JTextField numberField = new JTextField(10);
+        numberField.setMaximumSize(new Dimension(200, 30));
+        numberField.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+        numberField.setHorizontalAlignment(JTextField.CENTER);
+        numberField.setFont(new Font("Bangers", Font.PLAIN, 18));
+
+        // Pulsante INVIA
+        JButton submitButton = new JButton("INVIA");
+        submitButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+        submitButton.setEnabled(false);
+        submitButton.setOpaque(true);
+        submitButton.setBackground(Color.GRAY);
+        submitButton.setForeground(Color.WHITE);
+        submitButton.setFont(new Font("Arial", Font.BOLD, 16));
+        submitButton.setMaximumSize(new Dimension(150, 40));
+        submitButton.setBorderPainted(false);
+        submitButton.setFocusPainted(false);
+        submitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        // Abilita il bottone quando c'è del testo
+        numberField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            private void update() {
+                boolean enabled = !numberField.getText().trim().isEmpty();
+                submitButton.setEnabled(enabled);
+                submitButton.setBackground(enabled ? new Color(255, 222, 105) : Color.GRAY);
+            }
+            public void insertUpdate(javax.swing.event.DocumentEvent e) { update(); }
+            public void removeUpdate(javax.swing.event.DocumentEvent e) { update(); }
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { update(); }
+        });
+
+        // Azione su INVIO da tastiera o bottone
+        ActionListener confirmAction = e -> {
+            String input = numberField.getText().trim();
+            if (!input.isEmpty()) {
+                System.out.println("Numero giocatori inserito: " + input);
+                // TODO: invia input al controller
+            }
+        };
+
+        submitButton.addActionListener(confirmAction);
+        numberField.addActionListener(confirmAction);
+
+        // Aggiungi tutto al pannello
+        insertPanel.add(Box.createVerticalGlue());
+        insertPanel.add(questionLabel);
+        insertPanel.add(numberField);
+        insertPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        insertPanel.add(submitButton);
+        insertPanel.add(Box.createVerticalGlue());
+
+        // Mostra il pannello
+        mainPanel.add(insertPanel, "INSERT_NUM_PLAYERS");
+        cardLayout.show(mainPanel, "INSERT_NUM_PLAYERS");
     }
 
     @Override
