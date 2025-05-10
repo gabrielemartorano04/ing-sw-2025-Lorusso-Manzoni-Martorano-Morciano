@@ -37,47 +37,39 @@ public class GUI extends UI {
 
     @Override
     public void showWelcome() {
-        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/it/polimi/ingsw/view/WelcomeImage.jpeg"));
-        int originalWidth = originalIcon.getIconWidth();
-        int originalHeight = originalIcon.getIconHeight();
+        // Carica immagine di sfondo dal classpath
+        ImageIcon bgIcon = new ImageIcon(getClass().getResource("/it/polimi/ingsw/view/WelcomeImage.jpeg"));
+        Image bgImage = bgIcon.getImage();
 
-        int scaledWidth = 700;
-        int scaledHeight = (originalHeight * scaledWidth) / originalWidth;
+        int width = 700;
+        int height = 500;
 
-        Image scaledImage = originalIcon.getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-
-        // Finestra uguale all'immagine ridimensionata
-        frame.setSize(scaledWidth, scaledHeight);
+        frame.setSize(width, height);
         frame.setResizable(false);
 
-        // Pannello principale con layout a strati
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(scaledWidth, scaledHeight));
+        // Pannello principale con immagine di sfondo disegnata direttamente
+        JPanel welcomePanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        welcomePanel.setLayout(null); // layout assoluto per posizionare il bottone
+        welcomePanel.setPreferredSize(new Dimension(width, height));
 
-        // Etichetta con immagine di sfondo
-        JLabel imageLabel = new JLabel(scaledIcon);
-        imageLabel.setBounds(0, 0, scaledWidth, scaledHeight);
-        layeredPane.add(imageLabel, JLayeredPane.DEFAULT_LAYER); // sfondo
-
-        // Bottone trasparente
+        // Bottone START visibile
         JButton startButton = new JButton("START");
         startButton.setFont(new Font("Bangers", Font.BOLD, 20));
         startButton.setForeground(new Color(255, 222, 105));
-        startButton.setBackground(new Color(255, 255, 255, 200)); // bianco semi-trasparente (alpha 0–255)
+        startButton.setBackground(new Color(255, 255, 255, 180)); // molto trasparente
         startButton.setOpaque(true);
         startButton.setBorderPainted(false);
         startButton.setFocusPainted(false);
-
-        // Posizionato sotto i personaggi
-        startButton.setBounds(scaledWidth / 2 - 80, scaledHeight - 70, 160, 35);
+        startButton.setBounds(width / 2 - 110, height - 90, 220, 35);
         startButton.addActionListener(e -> showInsertNumPlayers());
 
-        layeredPane.add(startButton, JLayeredPane.PALETTE_LAYER); // sopra
-
-        // Pannello container
-        JPanel welcomePanel = new JPanel(new BorderLayout());
-        welcomePanel.add(layeredPane, BorderLayout.CENTER);
+        welcomePanel.add(startButton);
 
         mainPanel.add(welcomePanel, "WELCOME");
         cardLayout.show(mainPanel, "WELCOME");
@@ -99,6 +91,8 @@ public class GUI extends UI {
         };
         insertPanel.setLayout(new BoxLayout(insertPanel, BoxLayout.Y_AXIS));
         insertPanel.setOpaque(false);
+
+        insertPanel.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()));
 
         // Etichetta della domanda
         JLabel questionLabel = new JLabel("Insert the number of truckers:");
