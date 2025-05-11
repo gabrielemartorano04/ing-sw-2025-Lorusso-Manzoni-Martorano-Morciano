@@ -5,10 +5,8 @@ import java.io.Serializable;
 /**
  * Class that manages the single shield
  */
-public final class Shield extends Component implements Serializable {
+public final class Shield extends Component  {
     private Direction direction;
-    private static final long serialVersionUID = 1L;
-
     /**
      * Shield constructor, initialise the attributes of this class
      * @param linkU number of link on the top

@@ -13,9 +13,8 @@ import java.util.*;
  * */
 
 
-public class SpaceShip implements Serializable {
+public class SpaceShip {
 
-    private static final long serialVersionUID = 1L;
     private Component[][] components; //components in the matrix
     private ArrayList<Component> kept; //2 components the trucker decided to keep during the spaceship construction
     private int lost; //number of lost components

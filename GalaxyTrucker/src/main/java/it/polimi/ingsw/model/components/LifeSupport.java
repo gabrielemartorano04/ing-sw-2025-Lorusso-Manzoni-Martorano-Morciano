@@ -5,9 +5,8 @@ import java.io.Serializable;
 /**
  * Class that manages the single life support
  */
-final public class LifeSupport extends Component implements Serializable {
+final public class LifeSupport extends Component{
     private final AlienColor color;
-    private static final long serialVersionUID = 1L;
 
     /**
      * Life support constructor, initialise the attributes of this class

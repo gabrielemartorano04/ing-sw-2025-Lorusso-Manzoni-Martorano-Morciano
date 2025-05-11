@@ -10,14 +10,11 @@ import java.io.Serializable;
  * 2 = green
  * 1 = blue
  */
-public class Goods implements Serializable {
+public class Goods  {
     private final int value;
     // x e y sono le coordinate della posizione della load che tiene la merce dentro la SpaceShip. Vengono usate solo per le merci
     // dentro la SpaceShip quindi non vengono messo nel costruttore.
     private int x, y;
-
-    private static final long serialVersionUID = 1L;
-
 
     /**
      * Goods constructor, initialise the attributes of this class
