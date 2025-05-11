@@ -5,6 +5,7 @@ import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
 import it.polimi.ingsw.utilities.exceptions.NotEnoughBatteries;
 import it.polimi.ingsw.model.components.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -12,8 +13,9 @@ import java.util.*;
  * */
 
 
-public class SpaceShip {
+public class SpaceShip implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private Component[][] components; //components in the matrix
     private ArrayList<Component> kept; //2 components the trucker decided to keep during the spaceship construction
     private int lost; //number of lost components
