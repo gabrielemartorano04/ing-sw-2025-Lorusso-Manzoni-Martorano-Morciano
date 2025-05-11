@@ -29,6 +29,10 @@ public class StartBuildingEvent extends ServerEvent {
         return message;
     }
 
+    public SpaceShip getSpaceShip() {
+        return spaceShip;
+    }
+
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
