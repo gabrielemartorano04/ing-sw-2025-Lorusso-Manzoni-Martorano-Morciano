@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model.components;
 
+import java.io.Serializable;
+
 /**
  * Class that manages the cannon
  */
-final public class Cannon extends Component{
+final public class Cannon extends Component implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final boolean isDouble;
     private boolean isActive;
     private Orientation orientation;

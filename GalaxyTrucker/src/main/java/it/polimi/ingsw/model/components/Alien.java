@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model.components;
 
+import java.io.Serializable;
+
 /**
  * Class that manages the single alien
  */
-public class Alien {
+public class Alien implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final AlienColor color;
 
     /**

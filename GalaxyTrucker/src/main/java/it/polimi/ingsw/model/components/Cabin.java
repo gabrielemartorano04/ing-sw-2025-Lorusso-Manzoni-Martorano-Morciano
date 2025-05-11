@@ -2,10 +2,13 @@ package it.polimi.ingsw.model.components;
 
 import it.polimi.ingsw.model.PlayerColors;
 
+import java.io.Serializable;
+
 /**
  * Class that manages the single cabin
  */
-final public class Cabin extends Component{
+final public class Cabin extends Component implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final boolean isMain;
     private int quantity;
     private final int capacity;
