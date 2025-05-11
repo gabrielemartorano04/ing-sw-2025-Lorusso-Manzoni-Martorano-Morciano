@@ -56,6 +56,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.avComponents = new AvailableComponents();
         ui = new TUI();
         this.viewState = ViewState.FIRST;
+        this.timerDisplay = new TimerDisplay(10);
         this.serverEventVisitor = new ServerEventHandlerVisitor(this);
         new Thread(inputReader, "InputReaderThread").start();
     }
