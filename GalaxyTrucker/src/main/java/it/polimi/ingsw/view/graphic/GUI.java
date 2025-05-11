@@ -378,6 +378,11 @@ public class GUI extends UI {
 
     }
 
+    @Override
+    public void updateHourglass(int secondsLeft) {
+
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             GUI gui = new GUI();
