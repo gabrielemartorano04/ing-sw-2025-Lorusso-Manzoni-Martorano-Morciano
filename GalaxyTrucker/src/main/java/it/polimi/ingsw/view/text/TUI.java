@@ -322,4 +322,9 @@ public class TUI extends UI {
     public void showInsertNumPlayers() {
         System.out.println("\nInserisci numero di player:");
     }
+
+    @Override
+    public void updateHourglass(int secondsLeft) {
+        System.out.println("Tempo rimanente: " + secondsLeft + "s");
+    }
 }

@@ -234,5 +234,20 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public Component getSelectedKeptComponent() {
         return selectedComponent;
     }
+
+    public void startCountdown(int seconds) {
+        new Thread(() -> {
+            for (int i = seconds; i >= 0; i--) {
+                if (viewState == ViewState.BULDING) {
+                    ui.updateHourglass(i); 
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
+        }).start();
+    }
 }
 

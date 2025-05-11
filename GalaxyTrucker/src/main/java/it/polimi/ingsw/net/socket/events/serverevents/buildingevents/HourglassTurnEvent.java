@@ -6,10 +6,12 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 
 public class HourglassTurnEvent extends ServerEvent {
     private String message;
+    private int seconds;
 
-    public HourglassTurnEvent() {
+    public HourglassTurnEvent(int seconds) {
         super(ServerEventType.TURN_HOURGLASS, true);
         message = "Hourglass turned";
+        this.seconds= seconds;
     }
 
     @Override
@@ -20,5 +22,9 @@ public class HourglassTurnEvent extends ServerEvent {
     @Override
     public void call (ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
+    }
+
+    public int getSeconds() {
+        return seconds;
     }
 }

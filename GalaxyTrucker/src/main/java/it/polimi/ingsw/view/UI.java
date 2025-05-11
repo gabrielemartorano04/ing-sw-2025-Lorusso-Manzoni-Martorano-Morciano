@@ -90,4 +90,6 @@ public abstract class UI {
     public abstract void showTrack(Map<String, Integer> truckers);
 
     public abstract void showBooleanOption(String message);
+
+    public abstract void updateHourglass(int secondsLeft);
 }
