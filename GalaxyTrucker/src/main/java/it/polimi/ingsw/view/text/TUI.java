@@ -325,6 +325,7 @@ public class TUI extends UI {
 
     @Override
     public void updateHourglass(int secondsLeft) {
-        System.out.println("Tempo rimanente: " + secondsLeft + "s");
+        System.out.println("\rTempo rimanente: " + secondsLeft + "s   ");
+        System.out.flush();
     }
 }
