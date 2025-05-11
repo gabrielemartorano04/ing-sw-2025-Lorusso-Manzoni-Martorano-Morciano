@@ -70,6 +70,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(StartBuildingEvent event) {
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
+        viewFlow.setShip(event.getSpaceShip().getComponents());
         ui.showBuildPhaseStart();
         ui.showBuildOptions();
         viewFlow.getTimerDisplay().start();
