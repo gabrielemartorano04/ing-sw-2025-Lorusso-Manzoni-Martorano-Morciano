@@ -5,8 +5,7 @@ import java.io.Serializable;
 /**
  * Class that manages the cannon
  */
-final public class Cannon extends Component implements Serializable {
-    private static final long serialVersionUID = 1L;
+final public class Cannon extends Component  {
     private final boolean isDouble;
     private boolean isActive;
     private Orientation orientation;

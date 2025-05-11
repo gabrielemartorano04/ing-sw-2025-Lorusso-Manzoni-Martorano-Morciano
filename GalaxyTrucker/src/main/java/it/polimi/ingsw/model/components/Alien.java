@@ -5,8 +5,7 @@ import java.io.Serializable;
 /**
  * Class that manages the single alien
  */
-public class Alien implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Alien {
     private final AlienColor color;
 
     /**

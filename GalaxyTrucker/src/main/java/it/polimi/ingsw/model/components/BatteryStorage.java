@@ -5,8 +5,7 @@ import java.io.Serializable;
 /**
  * Class that manages the single battery storage
  */
-final public class BatteryStorage extends Component implements Serializable {
-    private static final long serialVersionUID = 1L;
+final public class BatteryStorage extends Component  {
     private final int capacity;
     private int quantity;
 

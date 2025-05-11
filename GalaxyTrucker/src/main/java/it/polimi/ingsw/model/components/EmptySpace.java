@@ -5,8 +5,7 @@ import java.io.Serializable;
 /**
  * Class that manages the space outside the spaceship's construction space
  */
-final public class EmptySpace extends Component implements Serializable {
-    private static final long serialVersionUID = 1L;
+final public class EmptySpace extends Component  {
     /**
      * Empty space constructor, initialise the attributes of this class
      */

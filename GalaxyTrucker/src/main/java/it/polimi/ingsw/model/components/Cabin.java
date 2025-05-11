@@ -7,8 +7,7 @@ import java.io.Serializable;
 /**
  * Class that manages the single cabin
  */
-final public class Cabin extends Component implements Serializable {
-    private static final long serialVersionUID = 1L;
+final public class Cabin extends Component {
     private final boolean isMain;
     private int quantity;
     private final int capacity;

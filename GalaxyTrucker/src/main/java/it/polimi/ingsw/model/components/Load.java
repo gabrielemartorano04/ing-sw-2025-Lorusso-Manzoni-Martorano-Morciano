@@ -6,9 +6,8 @@ import java.util.ArrayList;
 /**
  * Class that manages the single load
  */
-final public class Load extends Component implements Serializable {
+final public class Load extends Component {
     private final boolean isSpecial;
-    private static final long serialVersionUID = 1L;
 
     private final int capacity;
     private ArrayList<Goods> goods; //lista delle merci contenute in quel Load ordinate dalla rarità maggiore a quella minore
