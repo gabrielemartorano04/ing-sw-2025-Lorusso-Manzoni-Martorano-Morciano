@@ -11,11 +11,9 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
  */
 public class StartBuildingEvent extends ServerEvent {
     String message;
-    SpaceShip spaceShip;
-    public StartBuildingEvent(String username ,SpaceShip spaceShip) {
+    public StartBuildingEvent(String username) {
         super(ServerEventType.START_BUILDING, true);
         message = username+ " logged\nIt's time to start building";
-        this.spaceShip = spaceShip;
     }
     @Override
     public String getMessage() {
