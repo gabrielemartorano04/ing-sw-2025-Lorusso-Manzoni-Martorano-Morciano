@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.components;
 
 import javax.swing.ImageIcon;
+import java.io.Serializable;
 
 /**
  * Class that manages the single component
  */
-public abstract sealed class Component permits BatteryStorage, Cabin, Cannon, EmptySpace, Engine, LifeSupport,Load,Pipes,Shield {
+public abstract sealed class Component implements Serializable permits BatteryStorage, Cabin, Cannon, EmptySpace, Engine, LifeSupport,Load,Pipes,Shield {
+    private static final long serialVersionUID = 1L;
     protected Integer[] link;
     protected boolean selected;
     protected boolean covered;
