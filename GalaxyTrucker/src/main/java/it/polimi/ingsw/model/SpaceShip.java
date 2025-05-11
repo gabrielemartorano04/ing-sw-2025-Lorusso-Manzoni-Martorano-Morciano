@@ -13,7 +13,7 @@ import java.util.*;
  * */
 
 
-public class SpaceShip {
+public class SpaceShip implements Serializable {
 
     private Component[][] components; //components in the matrix
     private ArrayList<Component> kept; //2 components the trucker decided to keep during the spaceship construction
@@ -25,6 +25,7 @@ public class SpaceShip {
     private int numOfBattery; //number of batteries in the spaceship
     private int numAlien;
     private int numDoubleCannon, numDoubleEngine;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Spaceship constructor, it initializes the attributes of this class.

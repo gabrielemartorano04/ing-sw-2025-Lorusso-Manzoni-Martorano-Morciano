@@ -5,10 +5,12 @@ import java.io.Serializable;
 /**
  * Class that manages the cannon
  */
-final public class Cannon extends Component  {
+final public class Cannon extends Component implements Serializable  {
     private final boolean isDouble;
     private boolean isActive;
     private Orientation orientation;
+    private static final long serialVersionUID = 1L;
+
 
     /**
      * Cannon constructor, initialise the attributes of this class

@@ -5,9 +5,10 @@ import java.io.Serializable;
 /**
  * Class that manages the single battery storage
  */
-final public class BatteryStorage extends Component  {
+final public class BatteryStorage extends Component implements Serializable  {
     private final int capacity;
     private int quantity;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Battery storage constructor, initialise the attributes of this class

@@ -7,13 +7,15 @@ import java.io.Serializable;
 /**
  * Class that manages the single cabin
  */
-final public class Cabin extends Component {
+final public class Cabin extends Component implements Serializable {
     private final boolean isMain;
     private int quantity;
     private final int capacity;
     private Alien alien;
     private LifeSupport lifeSupport;
     private final PlayerColors color;
+    private static final long serialVersionUID = 1L;
+
 
     /**
      * Cabin constructor, initialise the attributes of this class

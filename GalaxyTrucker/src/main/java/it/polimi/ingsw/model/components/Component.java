@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Class that manages the single component
  */
-public abstract sealed class Component  permits BatteryStorage, Cabin, Cannon, EmptySpace, Engine, LifeSupport,Load,Pipes,Shield {
+public abstract sealed class Component implements Serializable  permits BatteryStorage, Cabin, Cannon, EmptySpace, Engine, LifeSupport,Load,Pipes,Shield {
     protected Integer[] link;
     protected boolean selected;
     protected boolean covered;
@@ -15,6 +15,7 @@ public abstract sealed class Component  permits BatteryStorage, Cabin, Cannon, E
     protected transient ImageIcon frontImage, backImage;
     private final String frontImagePath;
     private final String backImagePath;
+    private static final long serialVersionUID = 1L;
 
 
 

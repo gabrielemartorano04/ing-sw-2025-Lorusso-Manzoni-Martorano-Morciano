@@ -5,7 +5,8 @@ import java.io.Serializable;
 /**
  * Class that manages the single pipes
  */
-final public class Pipes extends Component {
+final public class Pipes extends Component implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     /**
      * Pipes constructor, initialise the attributes of this class
