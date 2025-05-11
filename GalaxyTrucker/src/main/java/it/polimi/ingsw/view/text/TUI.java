@@ -80,9 +80,11 @@ public class TUI extends UI {
 
     @Override
     public void showKeptComponents(List<Component> kept) {
-        System.out.println("Componenti tenuti: ");
-        for (Component c : kept) {
-            System.out.println("- " + c.getType());
+        if (kept!=null) {
+            System.out.println("Componenti tenuti: ");
+            for (Component c : kept) {
+                System.out.println("- " + c.getType());
+            }
         }
     }
 
