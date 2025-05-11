@@ -219,8 +219,10 @@ public class TUI extends UI {
         System.out.println("Motori: " + enginePower);
 
         System.out.println("Merci a bordo:");
-        for (Map.Entry<String, Integer> entry : goods.entrySet()) {
-            System.out.println("  - " + entry.getKey() + ": " + entry.getValue());
+        if (goods != null) {
+            for (Map.Entry<String, Integer> entry : goods.entrySet()) {
+                System.out.println("  - " + entry.getKey() + ": " + entry.getValue());
+            }
         }
     }
 
