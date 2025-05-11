@@ -15,11 +15,13 @@ import java.io.IOException;
 
 
 public class StartBuildingEvent extends ServerEvent {
-    String message;
+    private String message;
+    private final SpaceShip spaceShip;
 
-    public StartBuildingEvent(String username) {
+    public StartBuildingEvent(String username, SpaceShip spaceShip) {
         super(ServerEventType.START_BUILDING, true);
         message = username + " logged\nIt's time to start building";
+        this.spaceShip = spaceShip;
     }
 
     @Override

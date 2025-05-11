@@ -107,7 +107,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 numLog--;
                 return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
             }
-            return new StartBuildingEvent(nickname);
+            return new StartBuildingEvent(nickname, currentClient.getTrucker().getSpaceShip());
         }
         return new NoAvailableSpaceError();
     }
