@@ -1,10 +1,13 @@
 package it.polimi.ingsw.model.components;
 
+import java.io.Serializable;
+
 /**
  * Class that manages the single shield
  */
-public final class Shield extends Component{
+public final class Shield extends Component implements Serializable {
     private Direction direction;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Shield constructor, initialise the attributes of this class

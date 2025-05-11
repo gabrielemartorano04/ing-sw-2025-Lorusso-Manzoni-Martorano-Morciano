@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.components;
 
+import java.io.Serializable;
+
 /**
  * Class that manages the single good
  * Value represents the color of the good:
@@ -8,11 +10,14 @@ package it.polimi.ingsw.model.components;
  * 2 = green
  * 1 = blue
  */
-public class Goods {
+public class Goods implements Serializable {
     private final int value;
     // x e y sono le coordinate della posizione della load che tiene la merce dentro la SpaceShip. Vengono usate solo per le merci
     // dentro la SpaceShip quindi non vengono messo nel costruttore.
     private int x, y;
+
+    private static final long serialVersionUID = 1L;
+
 
     /**
      * Goods constructor, initialise the attributes of this class
