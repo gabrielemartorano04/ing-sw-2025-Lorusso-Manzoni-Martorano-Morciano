@@ -325,9 +325,32 @@ public class TUI extends UI {
 
     @Override
     public void updateHourglass(int secondsLeft) {
-        System.out.print("\033[1A");
-        System.out.print("\rTempo rimanente: " + secondsLeft + "s   ");
-        System.out.print("\n> ");
-        System.out.flush();
+        Scanner scanner = new Scanner(System.in);
+
+        // Stampa prima il timer in alto
+        System.out.println("⏳ Tempo: ");
+
+        // Thread per il timer (simulato)
+        new Thread(() -> {
+            for (int i = 10; i >= 0; i--) {
+                System.out.print("\033[1A");     // Vai su
+                System.out.print("\r\033[2K");   // Cancella riga
+                System.out.println("⏳ Tempo: " + i + "s");
+                System.out.print("> ");          // Ripristina prompt
+                System.out.flush();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
+        }).start();
+
+        // Leggi input dell’utente (non bloccante per il timer)
+        while (true) {
+            System.out.print("> ");
+            String line = scanner.nextLine();
+            System.out.println("Hai scritto: " + line);
+        }
     }
 }
