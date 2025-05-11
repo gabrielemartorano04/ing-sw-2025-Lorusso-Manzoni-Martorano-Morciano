@@ -13,7 +13,10 @@ public abstract sealed class Component implements Serializable permits BatterySt
     protected boolean covered;
     private boolean visited;
     protected String type;
-    protected final ImageIcon frontImage, backImage;
+    protected transient ImageIcon frontImage, backImage;
+    private final String frontImagePath;
+    private final String backImagePath;
+
 
 
     /**
@@ -31,9 +34,15 @@ public abstract sealed class Component implements Serializable permits BatterySt
         this.covered = true;
         this.visited = false;
         this.type = type;
-        this.frontImage = new ImageIcon(getClass().getResource(frontImagePath));
-        this.backImage = new ImageIcon(getClass().getResource("/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web157.jpg"));
+        this.frontImagePath = frontImagePath;
+        this.backImagePath = "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web157.jpg";
     }
+
+    public void loadImages() {
+        this.frontImage = new ImageIcon(getClass().getResource(frontImagePath));
+        this.backImage = new ImageIcon(getClass().getResource(backImagePath));
+    }
+
 
     /**
      * Returns the front image of the component
