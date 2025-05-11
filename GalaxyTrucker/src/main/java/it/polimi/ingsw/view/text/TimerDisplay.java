@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.text;
 
 public class TimerDisplay {
     private final int durationSeconds;
