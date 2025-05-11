@@ -11,6 +11,7 @@ import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.text.TUI;
+import it.polimi.ingsw.view.text.TimerDisplay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private volatile boolean running;
     private List<Component> keptComponent;
     private ViewState viewState;
+    private TimerDisplay timerDisplay;
     public enum ViewState {
         FIRST,
         START,
@@ -235,19 +237,9 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         return selectedComponent;
     }
 
-    public void startCountdown(int seconds) {
-        new Thread(() -> {
-            for (int i = seconds; i >= 0; i--) {
-                if (viewState == ViewState.BULDING) {
-                    ui.updateHourglass(i); 
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    break;
-                }
-            }
-        }).start();
+    public TimerDisplay getTimerDisplay() {
+        return timerDisplay;
     }
+
 }
 

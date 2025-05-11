@@ -72,7 +72,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
         ui.showBuildPhaseStart();
         ui.showBuildOptions();
-        viewFlow.startCountdown(60);
+        viewFlow.getTimerDisplay().start();
     }
 
     @Override
@@ -157,7 +157,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(HourglassTurnEvent event) {
-        viewFlow.startCountdown(event.getSeconds());
+        viewFlow.getTimerDisplay().start();
     }
 
     @Override
