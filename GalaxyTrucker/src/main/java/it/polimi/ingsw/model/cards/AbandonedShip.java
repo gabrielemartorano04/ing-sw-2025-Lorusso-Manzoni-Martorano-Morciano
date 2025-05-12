@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +15,8 @@ import java.util.ArrayList;
  * In order of position, starting from the leader, the trucker decides, checking the crew members requirement, if he/she wants to lose members of the crew and days of flight in exchange for cosmic credits.
  * Only one trucker car take the station and is possible that nobody wants to take it
  */
-public class AbandonedShip extends Card{
+public class AbandonedShip extends Card implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final int days;
     private final int credits;
     private final int numHuman;

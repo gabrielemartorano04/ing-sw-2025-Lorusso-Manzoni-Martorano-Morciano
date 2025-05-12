@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,8 @@ import java.util.List;
  * In order of position, starting from the leader, each trucker decides which double engine wants to activate, using batteries, for the calculation of the total engine power.
  * The total engine power of the trucker is the number of days of flight that his/her spaceship will gain on the dashboard
  */
-public class OpenSpace extends Card {
+public class OpenSpace extends Card implements Serializable {
+    private static final long serialVersionUID = 1L;
     private ArrayList<ArrayList<int[]>> truckersCoordinates = new ArrayList<>();
     private CardState state;
     //lista che contiene per ogni trucker la lista di coordinates dei motori doppi che vuole attivare

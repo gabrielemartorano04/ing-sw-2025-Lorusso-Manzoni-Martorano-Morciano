@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.callers.MeteorShowerCaller;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,8 @@ import java.util.List;
  * If it's a small meteor, the trucker doesn't have to worry if he/she has a well assembled ship, otherwise can use a battery to activate a shield oriented in that direction to protect the ship.
  * If it's a big meteor, the trucker can use, or activate if is double, a cannon to destroy the meteor; a cannon protects only one column or 3 row (his own and the 2 adjacent ones) if rotated;
  */
-public class MeteorShower extends Card {
+public class MeteorShower extends Card implements Serializable {
+    private static final long serialVersionUID = 1L;
     public CardState state = CardState.PLOT_METEOR;
     // variabile utilizzata per tenere conto delle decisioni prese dai giocatori a ogni aggiornamento dello stato del model
     // dopo la comunicazione del meteorite corrente alla view

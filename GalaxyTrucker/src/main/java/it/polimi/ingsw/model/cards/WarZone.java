@@ -8,13 +8,15 @@ import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.utilities.exceptions.*;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.ArrayList;
 
 /**
  *
  */
-public class WarZone extends Card {
+public class WarZone extends Card implements Serializable {
+    private static final long serialVersionUID = 1L;
     private CardState state;
     private int currConditionIndex;
     private ArrayList<Condition> conditionsOrder;
