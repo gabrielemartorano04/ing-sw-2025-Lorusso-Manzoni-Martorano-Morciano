@@ -7,13 +7,13 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 import java.io.IOException;
 
-public class ClientHandlerServer {
+public class ClientHandlerSocket {
     private final NetworkServer network;
     private final ServerController controller;
     private Thread listenerThread;
     private Trucker trucker;
 
-    public ClientHandlerServer(NetworkServer network, ServerController controller) {
+    public ClientHandlerSocket(NetworkServer network, ServerController controller) {
         this.network = network;
         this.controller = controller;
         controller.addClient(this);

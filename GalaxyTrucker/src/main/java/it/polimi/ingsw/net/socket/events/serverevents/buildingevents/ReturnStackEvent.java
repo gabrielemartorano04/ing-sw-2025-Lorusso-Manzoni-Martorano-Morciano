@@ -13,9 +13,11 @@ public class ReturnStackEvent extends ServerEvent {
         super(ServerEventType.SHOW_STACK,false);
         this.stack = stack;
     }
+
     public ArrayList<Card> getStack() {
         return stack;
     }
+
     @Override
     public String getMessage() {
         String message = "Cards in the stack:\n";

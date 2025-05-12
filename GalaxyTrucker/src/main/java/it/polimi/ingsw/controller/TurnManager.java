@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
+import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 import java.util.ArrayList;
 
@@ -11,17 +11,17 @@ import java.util.ArrayList;
  */
 
 public class TurnManager {
-    private final ArrayList<ClientHandlerServer> players;
+    private final ArrayList<ClientHandlerSocket> players;
     private int currentTurnIndex = 0;
 
-    public TurnManager(ArrayList<ClientHandlerServer> players) {
+    public TurnManager(ArrayList<ClientHandlerSocket> players) {
         this.players = new ArrayList<>(players);
     }
 
     /**
      * @return the ClientHandlerServer of the current player
      */
-    public ClientHandlerServer getCurrentClient() {
+    public ClientHandlerSocket getCurrentClient() {
         return players.get(currentTurnIndex);
     }
 
@@ -37,7 +37,7 @@ public class TurnManager {
      * @return if it is the turn of the client sending the event
      */
 
-    public boolean isPlayerTurn(ClientHandlerServer client) {
+    public boolean isPlayerTurn(ClientHandlerSocket client) {
         return getCurrentClient().equals(client);
     }
 

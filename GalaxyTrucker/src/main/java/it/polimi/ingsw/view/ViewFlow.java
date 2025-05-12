@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
@@ -39,6 +40,12 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private List<Component> keptComponent;
     private ViewState viewState;
     private TimerDisplay timerDisplay;
+    private ArrayList<Card>[] stacks;
+
+    public void setStacks(ArrayList<Card>[] stacks) {
+        this.stacks=stacks;
+    }
+
     public enum ViewState {
         FIRST,
         START,

@@ -12,7 +12,7 @@ import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
-import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
+import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
 import it.polimi.ingsw.utilities.exceptions.ColorNotAvailable;
 import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
@@ -24,30 +24,35 @@ public class ClientHandlerVisitor implements ClientVisitor {
     private int numOfPlayers;
     private GameController gameController;
     private int numLog;
-    private ClientHandlerServer currentClient;
+    private ClientHandlerSocket currentClient;
+    private int gameLevel;
 
     public ClientHandlerVisitor() {
         numLog = 0;
         currentClient = null;
         numOfPlayers = 0;
+        gameLevel=0;
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
 
-    public void setClientHandlerServer(ClientHandlerServer clientHandlerServer) {
+    public void setClientHandlerServer(ClientHandlerSocket clientHandlerServer) {
         currentClient = clientHandlerServer;
     }
 
     public int getNumOfPlayers() {
         return numOfPlayers;
     }
+    public int getGameLevel(){return gameLevel;}
 
     @Override
     public ServerEvent visit(CreateGameEvent event) {
         int numPlayers= event.getNumberOfPlayers();
+        gameLevel=event.getGameLevel();
         if (numPlayers<0 || numPlayers>4) {
             return new NumberOfPlayersError();
         }
         this.numOfPlayers = numPlayers;
+        this.gameLevel = gameLevel;
         return new AvailableColorsEvent(EnumSet.allOf(PlayerColors.class), "First Player in the game, start login");
     }
 
@@ -61,6 +66,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(EndBuildingEvent event) {
+        gameController.getGame().startFlightPhase();
         return new CheckShipsEvent();
     }
 
@@ -107,7 +113,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 numLog--;
                 return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
             }
-            return new StartBuildingEvent(nickname, currentClient.getTrucker().getSpaceShip());
+            return new StartBuildingEvent(nickname, currentClient.getTrucker().getSpaceShip(), gameController.getGame().viewStacks());
         }
         return new NoAvailableSpaceError();
     }

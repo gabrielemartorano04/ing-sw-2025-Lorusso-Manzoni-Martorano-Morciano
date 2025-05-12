@@ -15,25 +15,38 @@ import java.util.ArrayList;
 
 public class InputParser {
 // TODO: AGGIUNGERE COMANDI CHE SONO VALIDI SEMPRE
-    public ClientEvent parseFirstConnection(String input) {
-        if (input == null || input.isEmpty()) {
-            return null;
-        }
-
-        input = input.trim();
-        if (input.isEmpty() || input.contains(" ")) {
-            System.out.println("Error: enter number of player");
-            return null;
-        }
-
-        try {
-            Integer numOfPlayer = Integer.valueOf(input);
-            return new CreateGameEvent(numOfPlayer);
-        } catch (NumberFormatException e) {
-            System.out.println("Error: input must be a number");
-            return null;
-        }
+public ClientEvent parseFirstConnection(String input) {
+    if (input == null || input.isEmpty()) {
+        return null;
     }
+
+    input = input.trim();
+    String[] tokens = input.split("\\s+");
+
+    if (tokens.length != 2) {
+        System.out.println("Error: inserire numero giocatori e livello separati da spazio (es: 3 2)");
+        return null;
+    }
+
+    try {
+        int numOfPlayers = Integer.parseInt(tokens[0]);
+        int level = Integer.parseInt(tokens[1]);
+
+        if (numOfPlayers < 1 || numOfPlayers > 4) {
+            System.out.println("Errore: numero di giocatori non valido (2-4)");
+            return null;
+        }
+        if (level < 1 || level > 3) {
+            System.out.println("Errore: livello non valido (1-3)");
+            return null;
+        }
+
+        return new CreateGameEvent(numOfPlayers, level);
+    } catch (NumberFormatException e) {
+        System.out.println("Errore: entrambi i valori devono essere numeri interi");
+        return null;
+    }
+}
     public ClientEvent parseLogin(String input){
         if (input == null || input.isEmpty()) {
             return null;

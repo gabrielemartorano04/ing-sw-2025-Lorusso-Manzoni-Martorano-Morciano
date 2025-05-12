@@ -71,6 +71,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(StartBuildingEvent event) {
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
         viewFlow.setShip(event.getSpaceShip().getComponents());
+        viewFlow.setStacks(event.getStacks());
         ui.showBuildPhaseStart();
         ui.showBuildOptions();
         viewFlow.getTimerDisplay().start();

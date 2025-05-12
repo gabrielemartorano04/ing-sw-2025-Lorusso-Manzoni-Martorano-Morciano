@@ -5,15 +5,16 @@ import it.polimi.ingsw.net.socket.events.serverevents.setupevents.AvailableColor
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.NotYourTurnError;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
+import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientHandlerVisitor;
 
+import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ServerController {
-    private final ArrayList<ClientHandlerServer> clients;
+    private final ArrayList<ClientHandlerSocket> clients;
     private final ClientHandlerVisitor visitor;
     private TurnManager turnManager;
     private boolean turnStarted;
@@ -30,11 +31,11 @@ public class ServerController {
         this.gameCreated = false;
     }
 
-    public void handleEvent(ClientEvent event, ClientHandlerServer client) {
+    public void handleEvent(ClientEvent event, ClientHandlerSocket client) {
         eventQueue.offer(new EventWithSource(event, client));
     }
 
-    public synchronized void addClient(ClientHandlerServer client) {
+    public synchronized void addClient(ClientHandlerSocket client) {
         if (clients.isEmpty()) {
             FirstConnectionEvent event = new FirstConnectionEvent(
                     "First player in the game, choose the total number of players of the Game"
@@ -48,7 +49,7 @@ public class ServerController {
         clients.add(client);
     }
 
-    public synchronized void removeClient(ClientHandlerServer client) {
+    public synchronized void removeClient(ClientHandlerSocket client) {
         clients.remove(client);
         System.out.println("Client disconnected and removed from the game.");
     }
@@ -73,14 +74,14 @@ public class ServerController {
      * method used to create the turnManager once all the players have joined the game
      * @param players
      */
-    private void CreateTurnManager(ArrayList<ClientHandlerServer> players) {
+    private void CreateTurnManager(ArrayList<ClientHandlerSocket> players) {
         this.turnManager = new TurnManager(players);
         this.turnStarted = true;
     }
 
     public void processEvent(EventWithSource eventWithSource, ClientHandlerVisitor visitor) {
         ClientEvent event = eventWithSource.getEvent();
-        ClientHandlerServer client = eventWithSource.getClient();
+        ClientHandlerSocket client = eventWithSource.getClient();
 
         if (turnStarted && event.requiresTurn() && !turnManager.isPlayerTurn(client)) {
             client.sendEvent(new NotYourTurnError("Non è il tuo turno."));
@@ -89,14 +90,20 @@ public class ServerController {
 
         visitor.setClientHandlerServer(client);
         ServerEvent response = event.call(visitor);
-        if(!gameCreated && visitor.getNumOfPlayers()>0) {
-            this.gameController = new GameController(visitor.getNumOfPlayers());
-            visitor.setGameController(this.gameController);
-            this.gameCreated = true;
+        if (!gameCreated && visitor.getNumOfPlayers() > 0) {
+            try {
+                this.gameController = new GameController(visitor.getNumOfPlayers(), visitor.getGameLevel());
+                visitor.setGameController(this.gameController);
+                this.gameCreated = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                client.sendEvent(response);
+                return;
+            }
         }
 
         if(response.isForAll()){
-            for(ClientHandlerServer c: clients){
+            for(ClientHandlerSocket c: clients){
                 c.sendEvent(response);
             }
         }else{
