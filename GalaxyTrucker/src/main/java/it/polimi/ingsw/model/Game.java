@@ -35,7 +35,7 @@ public class Game {
     /**
      * Constructor that initializes the game attributes.
      */
-    public Game(int numPlayers) {
+    public Game(int numPlayers, int gameLevel) {
         this.truckers = new ArrayList<>(numPlayers);
         this.numPlayers = numPlayers;
         this.truckersOut = new ArrayList<>();
@@ -44,9 +44,13 @@ public class Game {
         this.hourglass = new Hourglass(this);
         this.deck = new Deck();
         this.cardStacks = new ArrayList[4];
+        for (int i = 0; i < 4; i++) {
+            cardStacks[i] = new ArrayList<>();
+        }
         this.bank = new Bank();
         this.gameState = GameState.SETUP;
         this.availableColors = EnumSet.allOf(PlayerColors.class);
+        this.gameLevel = gameLevel;
     }
 
     public int getNumPlayers(){
@@ -159,13 +163,39 @@ public class Game {
      * Creates stacks of cards from the deck.
      */
     public void makeStacks() {
+        List<Card> mainDeck = deck.getDeck();
+
+
+        if (mainDeck == null || mainDeck.size() < 39) {
+            throw new IllegalStateException("Il mazzo non contiene abbastanza carte (almeno 39 richieste).");
+        }
+
+
+        List<Card> zone1 = new ArrayList<>(mainDeck.subList(0, 19));   // [0–18]
+        List<Card> zone2 = new ArrayList<>(mainDeck.subList(20, 39));  // [20–38]
+
         Random rand = new Random();
-        for(ArrayList<Card> cardStack: cardStacks ) {
-            cardStack.addFirst(deck.getDeck().remove(rand.nextInt(19)));
-            for (int i=0; i<2; i++){
-                cardStack.addFirst(deck.getDeck().remove(rand.nextInt(19) + 20));
+
+        for (int j = 0; j < 4; j++) {
+            ArrayList<Card> cardStack = cardStacks[j];
+
+
+            int i1 = rand.nextInt(zone1.size());
+            cardStack.add(0, zone1.remove(i1));
+
+
+            for (int i = 0; i < 2; i++) {
+                int i2 = rand.nextInt(zone2.size());
+                cardStack.add(0, zone2.remove(i2));
             }
         }
+
+        // Ricostruisci il mazzo togliendo le carte usate da zone1 e zone2
+
+        mainDeck.subList(0, 39).clear();
+        // Reinserisci le carte rimaste
+        mainDeck.addAll(zone1);
+        mainDeck.addAll(zone2);
     }
 
     /**
@@ -177,6 +207,7 @@ public class Game {
         }
         do{
             Collections.shuffle(gameDeck);
+            System.out.println("sto mescolando");
         }while(gameDeck.getFirst().getLevel() != gameLevel);
     }
 
@@ -321,8 +352,9 @@ public class Game {
         if (gameState!= GameState.SETUP){
             throw new IllegalStateException("Game has already been started");
         }
-        makeGameDeck();
         makeStacks();
+        makeGameDeck();
+        System.out.println("game created");
         gameState = GameState.BUILDING;
     }
 
@@ -364,5 +396,8 @@ public class Game {
 
     }
 
+    public ArrayList<Card>[] viewStacks() {
+        return cardStacks;
+    }
 }
 

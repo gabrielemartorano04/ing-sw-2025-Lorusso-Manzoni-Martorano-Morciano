@@ -324,7 +324,7 @@ public class TUI extends UI {
 
     @Override
     public void showInsertNumPlayers() {
-        System.out.println("\nInserisci numero di player:");
+        System.out.println("\nInserisci numero di player e il livello di gioco:");
     }
 
     @Override

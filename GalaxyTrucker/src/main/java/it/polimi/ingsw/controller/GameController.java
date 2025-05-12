@@ -14,15 +14,18 @@ import java.util.concurrent.TimeUnit;
  */
 public class GameController {
     private final Game game;
+    private int count=0;
     private final List<TruckerController> truckerControllers = new ArrayList<>();
     private final Timer startTimer = new Timer();
     private boolean timerStarted = false;
     private boolean gameStarted = false;
+    private int numOfPlayers;
     private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
 
-    public GameController(int numberOfTruckers) {
-        this.game=new Game(numberOfTruckers);
+    public GameController(int numberOfTruckers, int gameLevel) {
+        this.game=new Game(numberOfTruckers, gameLevel);
+        this.numOfPlayers=numberOfTruckers;
     }
 
     public Game getGame() {
@@ -59,13 +62,13 @@ public class GameController {
         truckerControllers.add(tc);
         game.addTrucker(trucker);
 
-        int count = game.getTruckers().size();
+        count++;
 
         if (count == 2 && !timerStarted) {
             startCountdown();
         }
 
-        if (count == 4) {
+        if (count == 4 || count==numOfPlayers) {
             startTimer.cancel();
             startBuildingPhase();
         }
