@@ -1,10 +1,13 @@
 package it.polimi.ingsw.net.rmi;
 
+import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.view.ViewFlow;
 
 import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -12,7 +15,7 @@ import java.rmi.registry.Registry;
 
 // problema: risolvere la generalizzazione tramite interfacce di modo di trattare i tipi dinamici come statici
 
-public class RmiClient{
+public class RmiClient implements Remote {
     private RmiServer server;
     private final ViewFlow view;
 
@@ -21,12 +24,6 @@ public class RmiClient{
         this.view = view;
     }
 
-    public static void main(String[] args) throws RemoteException, NotBoundException {
-        final String serverName = "GTServer";
-        Registry registry = LocateRegistry.getRegistry(args[0], 1234);
-        RmiServer server = (RmiServer) registry.lookup(serverName);
-        // new RmiClient(server).run();
-    }
 
     public void run() throws RemoteException {
 
