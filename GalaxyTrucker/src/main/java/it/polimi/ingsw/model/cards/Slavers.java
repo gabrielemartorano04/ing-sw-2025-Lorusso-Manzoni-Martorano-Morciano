@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -18,7 +19,8 @@ import java.util.Objects;
  * If the trucker's cannon power is equal to the slavers' one, nothing happens to the trucker, but the slavers continue to attack
  * For all the defeated truckers, they have to remove some crew members
  */
-public class Slavers extends Card {
+public class Slavers extends Card implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final int slaversPower;
     private final int credits;
     private final int days;

@@ -5,13 +5,15 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.callers.EpidemicCaller;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Class that manages the single card epidemic
  * Every trucker has to remove a crew member from each occupied cabin that is connected to another occupied cabin
  */
-public class Epidemic extends Card {
+public class Epidemic extends Card implements Serializable {
+    private static final long serialVersionUID = 1L;
     public CardState state;
     /**
      * Epidemic constructor, initialise the attributes of this class

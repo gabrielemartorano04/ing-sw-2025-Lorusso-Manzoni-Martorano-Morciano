@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +17,8 @@ import java.util.ArrayList;
  * In order of position, starting from the leader, the trucker decides, checking the crew members requirement, if he/she wants to lose days of flight in exchange for goods.
  * Only one trucker car take the station and is possible that nobody wants to take it
  */
-public class AbandonedStation extends Card {
+public class AbandonedStation extends Card implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final int days;
     private final int numHuman;
     private final ArrayList<Goods> goods;

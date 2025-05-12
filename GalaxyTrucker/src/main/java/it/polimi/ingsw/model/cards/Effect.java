@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model.cards;
 
+import java.io.Serializable;
+
 /**
  * Class that manages the effects
  */
-public class Effect {
+public class Effect implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final TypeOfEffect type;
     private final int value;
 

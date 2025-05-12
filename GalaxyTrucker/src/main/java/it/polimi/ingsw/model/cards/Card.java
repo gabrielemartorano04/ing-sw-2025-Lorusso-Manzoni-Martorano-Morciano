@@ -6,11 +6,14 @@ import it.polimi.ingsw.utilities.exceptions.*;
 
 import javafx.scene.image.Image;
 
+import java.io.Serializable;
+
 
 /**
  * Class that manages the single adventure card
  */
-public abstract class Card {
+public abstract class Card implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final String name;
     private final String description;
     private final Integer level;
