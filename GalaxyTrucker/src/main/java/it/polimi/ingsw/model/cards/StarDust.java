@@ -5,13 +5,15 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.callers.StarDustCaller;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Class that manages the single card star dust
  * In reverse order of position, the truckers lose as many days of flight as the number of connectors exposed
  */
-public class StarDust extends Card {
+public class StarDust extends Card implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private CardState cardState;
     /**

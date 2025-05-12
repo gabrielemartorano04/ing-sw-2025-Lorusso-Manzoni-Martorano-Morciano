@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Trucker;
 import it. polimi.ingsw.model.Bank;
 import it.polimi.ingsw.utilities.exceptions.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -18,7 +19,8 @@ import java.util.Objects;
  * If the trucker's cannon power is equal to the smugglers' one, nothing happens to the trucker, but the smugglers continue to attack
  * For all the defeated truckers, they have to lose some of their most valuable goods.
  */
-public class Smugglers extends Card {
+public class Smugglers extends Card implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final int smugglersPower;
     private int goodsLost;
     private final int days;

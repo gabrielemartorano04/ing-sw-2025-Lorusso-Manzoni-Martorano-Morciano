@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.callers.PiratesCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -19,7 +20,8 @@ import java.util.Objects;
  * If it's a small shoot, the trucker can use a battery to activate a shield oriented in that direction to protect the ship.
  * If it's a big shoot, there is no way possible for the trucker to protect his/her ship.
  */
-public class Pirates extends Card {
+public class Pirates extends Card implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final int credits;
     private final int days;
     private final int piratesPower;

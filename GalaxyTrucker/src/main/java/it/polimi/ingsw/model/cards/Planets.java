@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -19,7 +20,8 @@ import java.util.Comparator;
  * Once everybody has decided, in reverse order of position, the truckers lose their days of flight.
  * Is possible that nobody wants to land on a planet.
  */
-public class Planets extends Card {
+public class Planets extends Card implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final ArrayList<ArrayList<Goods>> planets;
     private final int daysLoss;
 
