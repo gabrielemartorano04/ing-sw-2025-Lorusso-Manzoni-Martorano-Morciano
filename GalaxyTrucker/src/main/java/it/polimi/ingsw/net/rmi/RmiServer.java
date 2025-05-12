@@ -8,6 +8,10 @@ import java.net.ServerSocket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+
+// problema: risolvere la generalizzazione tramite interfacce di modo di trattare i tipi dinamici come statici
+
+
 public class RmiServer {
     private final ServerController serverController;
     private final RmiClient client;

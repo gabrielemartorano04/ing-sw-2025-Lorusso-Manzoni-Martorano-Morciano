@@ -9,6 +9,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+
+// problema: risolvere la generalizzazione tramite interfacce di modo di trattare i tipi dinamici come statici
+
 public class RmiClient{
     private RmiServer server;
     private final ViewFlow view;
