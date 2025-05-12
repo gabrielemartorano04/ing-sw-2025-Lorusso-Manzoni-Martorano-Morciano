@@ -14,7 +14,10 @@ import it.polimi.ingsw.utilities.results.CardStateResult;
 import it.polimi.ingsw.utilities.results.CoordinatesResult;
 import it.polimi.ingsw.utilities.results.GoodsResult;
 
-public class PlanetsCaller implements CardCaller {
+import java.io.Serializable;
+
+public class PlanetsCaller implements CardCaller , Serializable {
+    private static final long serialVersionUID = 1L;
     public CoordinatesResult callGetBank(Planets card, Bank bank) throws GeneralError {
         int[] result = card.getBank(bank);
         return new CoordinatesResult(card.getState(), result);

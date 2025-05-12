@@ -1,5 +1,6 @@
 package it.polimi.ingsw.net.socket.client;
 
+import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.ShowStackEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.*;

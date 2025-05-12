@@ -12,7 +12,6 @@ public abstract sealed class Component implements Serializable  permits BatteryS
     protected boolean covered;
     private boolean visited;
     protected String type;
-    protected transient Image frontImage, backImage;
     private final String frontImagePath;
     private final String backImagePath;
     private static final long serialVersionUID = 1L;
@@ -38,9 +37,12 @@ public abstract sealed class Component implements Serializable  permits BatteryS
         this.backImagePath = "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web157.jpg";
     }
 
-    public void loadImages() {
-        this.frontImage = new Image(getClass().getResourceAsStream(frontImagePath));
-        this.backImage = new Image(getClass().getResourceAsStream(backImagePath));
+    /**
+     * Returns the rear image of the component
+     * @return rear image
+     */
+    public Image getBackImage() {
+        return new Image(getClass().getResourceAsStream(backImagePath));
     }
 
 
@@ -49,7 +51,7 @@ public abstract sealed class Component implements Serializable  permits BatteryS
      * @return front image
      */
     public Image getFrontImage() {
-        return frontImage;
+        return new Image(getClass().getResourceAsStream(frontImagePath));
     }
 
     /**
@@ -66,14 +68,6 @@ public abstract sealed class Component implements Serializable  permits BatteryS
      */
     public boolean isVisited() {
         return visited;
-    }
-
-    /**
-     * Returns the rear image of the component
-     * @return rear image
-     */
-    public Image getRearImage() {
-        return backImage;
     }
 
     /**

@@ -7,7 +7,10 @@ import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.results.CardStateResult;
 import it.polimi.ingsw.utilities.results.CoordinatesResult;
 
-public class MeteorShowerCaller implements CardCaller{
+import java.io.Serializable;
+
+public class MeteorShowerCaller implements CardCaller , Serializable {
+    private static final long serialVersionUID = 1L;
     public CoordinatesResult call(MeteorShower card) throws GeneralError {
         int[] result = card.getCurrentMeteor();
         return new CoordinatesResult(card.getCardState(), result);

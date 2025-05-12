@@ -92,4 +92,6 @@ public abstract class UI {
     public abstract void showBooleanOption(String message);
 
     public abstract void updateHourglass(int secondsLeft);
+
+    public abstract void showStack(ArrayList<Card> stack);
 }

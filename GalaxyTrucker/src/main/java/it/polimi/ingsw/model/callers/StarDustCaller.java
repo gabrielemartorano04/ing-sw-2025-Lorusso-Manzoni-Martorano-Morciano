@@ -7,7 +7,10 @@ import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.results.CardStateResult;
 import it.polimi.ingsw.utilities.results.Result;
 
-public class StarDustCaller implements CardCaller {
+import java.io.Serializable;
+
+public class StarDustCaller implements CardCaller , Serializable {
+    private static final long serialVersionUID = 1L;
     public CardStateResult call(StarDust card, Game game) throws GeneralError {
         return new CardStateResult(card.cardEffect(game));
     }
