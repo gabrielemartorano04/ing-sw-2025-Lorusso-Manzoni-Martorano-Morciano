@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.callers.CardCaller;
 import it.polimi.ingsw.utilities.exceptions.*;
 
-import javax.swing.ImageIcon;
+import javafx.scene.image.Image;
 
 
 /**
@@ -15,8 +15,8 @@ public abstract class Card {
     private final String description;
     private final Integer level;
     private final boolean  trialFlight;
-    private final ImageIcon frontImage;
-    private final ImageIcon backImage;
+    private final Image frontImage;
+    private final Image backImage;
     private final CardCaller caller;
 
     /**
@@ -33,8 +33,8 @@ public abstract class Card {
         this.description = description;
         this.trialFlight = trialFlight;
         this.level = level;
-        this.frontImage = new ImageIcon(getClass().getResource(name_frontImage));
-        this.backImage = new ImageIcon(getClass().getResource(name_backImage));
+        this.frontImage = new Image(getClass().getResourceAsStream(name_frontImage));
+        this.backImage = new Image(getClass().getResourceAsStream(name_backImage));
         this.caller = caller;
     }
 
@@ -78,7 +78,7 @@ public abstract class Card {
      * Returns the front image of the card
      * @return front image
      */
-    public ImageIcon getFrontImage() {
+    public Image getFrontImage() {
         return frontImage;
     }
 
@@ -86,7 +86,7 @@ public abstract class Card {
      * Returns the back image of the card
      * @return back image
      */
-    public ImageIcon getBackImage() {
+    public Image getBackImage() {
         return backImage;
     }
 
