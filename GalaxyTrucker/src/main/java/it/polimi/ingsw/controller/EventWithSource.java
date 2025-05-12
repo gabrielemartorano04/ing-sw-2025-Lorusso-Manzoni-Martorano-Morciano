@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
+import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 /**
  * Links a ClientEvent with the Client sending it, represented by the istance of ClientHandlerServer
@@ -9,9 +9,9 @@ import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
 
 public class EventWithSource {
     private final ClientEvent event;
-    private final ClientHandlerServer client;
+    private final ClientHandlerSocket client;
 
-    public EventWithSource(ClientEvent event, ClientHandlerServer client) {
+    public EventWithSource(ClientEvent event, ClientHandlerSocket client) {
         this.event = event;
         this.client = client;
     }
@@ -20,7 +20,7 @@ public class EventWithSource {
         return event;
     }
 
-    public ClientHandlerServer getClient() {
+    public ClientHandlerSocket getClient() {
         return client;
     }
 }

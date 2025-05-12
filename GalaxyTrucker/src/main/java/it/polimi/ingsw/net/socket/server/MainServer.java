@@ -21,7 +21,7 @@ public class MainServer {
                 System.out.println("Nuovo client connesso: " + clientSocket.getInetAddress());
 
                 NetworkServer networkServer = new NetworkServer(clientSocket);
-                ClientHandlerServer clientHandlerServer = new ClientHandlerServer(networkServer, serverController);
+                ClientHandlerSocket clientHandlerSocket = new ClientHandlerSocket(networkServer, serverController);
 
             }
         } catch (IOException e) {
