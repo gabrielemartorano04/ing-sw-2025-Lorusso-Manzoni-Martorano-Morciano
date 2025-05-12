@@ -12,7 +12,7 @@ import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
-import it.polimi.ingsw.net.socket.server.ClientHandlerServer;
+import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
 import it.polimi.ingsw.utilities.exceptions.ColorNotAvailable;
 import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
@@ -24,7 +24,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     private int numOfPlayers;
     private GameController gameController;
     private int numLog;
-    private ClientHandlerServer currentClient;
+    private ClientHandlerSocket currentClient;
 
     public ClientHandlerVisitor() {
         numLog = 0;
@@ -33,8 +33,8 @@ public class ClientHandlerVisitor implements ClientVisitor {
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
 
-    public void setClientHandlerServer(ClientHandlerServer clientHandlerServer) {
-        currentClient = clientHandlerServer;
+    public void setClientHandlerServer(ClientHandlerSocket clientHandlerSocket) {
+        currentClient = clientHandlerSocket;
     }
 
     public int getNumOfPlayers() {
