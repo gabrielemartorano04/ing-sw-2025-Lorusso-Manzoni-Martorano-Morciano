@@ -61,8 +61,8 @@ public class GUI extends UI {
         // Bottone START visibile
         JButton startButton = new JButton("START");
         startButton.setFont(new Font("Bangers", Font.BOLD, 20));
-        startButton.setForeground(new Color(255, 222, 105));
-        startButton.setBackground(new Color(255, 255, 255, 180)); // molto trasparente
+        startButton.setForeground(new Color(255, 255, 255));
+        startButton.setBackground(new Color(255, 222, 105, 180));
         startButton.setOpaque(true);
         startButton.setBorderPainted(false);
         startButton.setFocusPainted(false);
