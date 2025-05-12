@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.FirstConnectionEvent;
@@ -14,7 +15,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ServerController {
-    private final ArrayList<ClientHandlerSocket> clients;
+    private final ArrayList<ClientHandler> clients;
     private final ClientHandlerVisitor visitor;
     private TurnManager turnManager;
     private boolean turnStarted;
@@ -35,7 +36,7 @@ public class ServerController {
         eventQueue.offer(new EventWithSource(event, client));
     }
 
-    public synchronized void addClient(ClientHandlerSocket client) {
+    public synchronized void addClient(ClientHandler client) {
         if (clients.isEmpty()) {
             FirstConnectionEvent event = new FirstConnectionEvent(
                     "First player in the game, choose the total number of players of the Game"
@@ -49,7 +50,7 @@ public class ServerController {
         clients.add(client);
     }
 
-    public synchronized void removeClient(ClientHandlerSocket client) {
+    public synchronized void removeClient(ClientHandler client) {
         clients.remove(client);
         System.out.println("Client disconnected and removed from the game.");
     }
@@ -103,7 +104,7 @@ public class ServerController {
         }
 
         if(response.isForAll()){
-            for(ClientHandlerSocket c: clients){
+            for(ClientHandler c: clients){
                 c.sendEvent(response);
             }
         }else{
