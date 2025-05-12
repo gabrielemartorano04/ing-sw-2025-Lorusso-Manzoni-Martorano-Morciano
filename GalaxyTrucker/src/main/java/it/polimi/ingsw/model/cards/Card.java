@@ -18,8 +18,8 @@ public abstract class Card implements Serializable {
     private final String description;
     private final Integer level;
     private final boolean  trialFlight;
-    private final Image frontImage;
-    private final Image backImage;
+    private final String frontImagePath;
+    private final String backImagePath;
     private final CardCaller caller;
 
     /**
@@ -36,8 +36,8 @@ public abstract class Card implements Serializable {
         this.description = description;
         this.trialFlight = trialFlight;
         this.level = level;
-        this.frontImage = new Image(getClass().getResourceAsStream(name_frontImage));
-        this.backImage = new Image(getClass().getResourceAsStream(name_backImage));
+        this.frontImagePath = name_frontImage;
+        this.backImagePath = name_backImage;
         this.caller = caller;
     }
 
@@ -78,19 +78,19 @@ public abstract class Card implements Serializable {
     }
 
     /**
-     * Returns the front image of the card
-     * @return front image
+     * Returns the rear image of the Card
+     * @return rear image
      */
-    public Image getFrontImage() {
-        return frontImage;
+    public Image getBackImage() {
+        return new Image(getClass().getResourceAsStream(backImagePath));
     }
 
     /**
-     * Returns the back image of the card
-     * @return back image
+     * Returns the front image of the Card
+     * @return front image
      */
-    public Image getBackImage() {
-        return backImage;
+    public Image getFrontImage() {
+        return new Image(getClass().getResourceAsStream(frontImagePath));
     }
 
     /**

@@ -9,9 +9,11 @@ import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.utilities.exceptions.*;
 import it.polimi.ingsw.utilities.results.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class SmugglersCaller implements CardCaller{
+public class SmugglersCaller implements CardCaller, Serializable {
+    private static final long serialVersionUID = 1L;
     public CardStateResult call(Smugglers card, Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Bank bank) throws GeneralError, InvalidComponentsException{
         return new CardStateResult(card.addDoubleCannonsCoord(trucker, doubleCannonsCoord, numPlayer, bank));
     }

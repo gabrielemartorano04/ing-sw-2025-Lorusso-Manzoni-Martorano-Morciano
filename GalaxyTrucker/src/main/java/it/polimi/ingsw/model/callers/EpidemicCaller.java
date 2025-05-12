@@ -6,7 +6,10 @@ import it.polimi.ingsw.utilities.exceptions.WrongCallerException;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.results.CardStateResult;
 
-public class EpidemicCaller implements CardCaller{
+import java.io.Serializable;
+
+public class EpidemicCaller implements CardCaller, Serializable {
+    private static final long serialVersionUID = 1L;
     @Override
     public CardStateResult call(Epidemic card, Game game) throws WrongCallerException, GeneralError {
         return new CardStateResult(card.cardEffect(game));

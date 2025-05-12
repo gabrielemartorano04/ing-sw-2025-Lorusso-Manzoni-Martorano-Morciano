@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.model.components.EmptySpace;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.UI;
@@ -232,17 +233,22 @@ public class TUI extends UI {
     public void showShipLayout(String nickname, Component[][] layout) {
         System.out.println("\nLayout nave di " + nickname + ":");
 
-        for (int i = 0; i < layout.length; i++) {
-            for (int j = 0; j < layout[i].length; j++) {
+        for (int i = 5; i < 10; i++) {
+            for (int j = 4; j < 11; j++) {
                 Component c = layout[i][j];
-                if (c != null) {
-                    String info = c.getCovered()
-                            ? c.getType() + " (coperto)"
-                            : String.format("%s [N:%s E:%s S:%s W:%s]",
-                            c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
-                    System.out.println(i + ") " + info);
-                } else {
+
+                if (c == null) {
                     System.out.print("[   ]");
+                } else {
+                    switch(c){
+                        case EmptySpace e->{
+                            System.out.print("[ . ]");
+                        }
+
+                        default -> {
+                            System.out.printf("[ %c ]", c.getType().charAt(0));
+                        }
+                    }
                 }
             }
             System.out.println();
@@ -330,5 +336,21 @@ public class TUI extends UI {
     @Override
     public void updateHourglass(int secondsLeft) {
 
+    }
+
+    @Override
+    public void showStack(ArrayList<Card> stack) {
+        System.out.println("\nCarte nella pila:");
+
+        if (stack == null || stack.isEmpty()) {
+            System.out.println("[ Pila vuota ]");
+            return;
+        }
+
+        for (int i = 0; i < stack.size(); i++) {
+            Card card = stack.get(i);
+            System.out.printf(" [%02d] %-15s (Livello %d)%n",
+                    i, card.getName(), card.getLevel());
+        }
     }
 }

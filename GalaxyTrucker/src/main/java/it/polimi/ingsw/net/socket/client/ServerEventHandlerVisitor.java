@@ -1,5 +1,6 @@
 package it.polimi.ingsw.net.socket.client;
 
+import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.ShowStackEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.*;
@@ -139,11 +140,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(NumberOfPlayersError numberOfPlayersError) {
-
-    }
-
-    @Override
-    public void visit(ReturnStackEvent returnStackEvent) {
 
     }
 
@@ -295,5 +291,10 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(BooleanRequest event) {
         ui.showBooleanOption(event.getMessage());
+    }
+
+    @Override
+    public void visit(ReturnStackEvent event){
+        ui.showStack(event.getStack());
     }
 }
