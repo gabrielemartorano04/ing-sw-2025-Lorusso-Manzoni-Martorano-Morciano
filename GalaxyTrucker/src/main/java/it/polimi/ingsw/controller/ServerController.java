@@ -8,6 +8,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientHandlerVisitor;
 
+import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -89,10 +90,16 @@ public class ServerController {
 
         visitor.setClientHandlerServer(client);
         ServerEvent response = event.call(visitor);
-        if(!gameCreated && visitor.getNumOfPlayers()>0) {
-            this.gameController = new GameController(visitor.getNumOfPlayers());
-            visitor.setGameController(this.gameController);
-            this.gameCreated = true;
+        if (!gameCreated && visitor.getNumOfPlayers() > 0) {
+            try {
+                this.gameController = new GameController(visitor.getNumOfPlayers(), visitor.getGameLevel());
+                visitor.setGameController(this.gameController);
+                this.gameCreated = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                client.sendEvent(response);
+                return;
+            }
         }
 
         if(response.isForAll()){

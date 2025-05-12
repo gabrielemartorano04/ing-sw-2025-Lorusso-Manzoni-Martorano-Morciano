@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.components;
 
-import javax.swing.ImageIcon;
+import javafx.scene.image.Image;
 import java.io.Serializable;
 
 /**
@@ -12,7 +12,7 @@ public abstract sealed class Component implements Serializable  permits BatteryS
     protected boolean covered;
     private boolean visited;
     protected String type;
-    protected transient ImageIcon frontImage, backImage;
+    protected transient Image frontImage, backImage;
     private final String frontImagePath;
     private final String backImagePath;
     private static final long serialVersionUID = 1L;
@@ -39,8 +39,8 @@ public abstract sealed class Component implements Serializable  permits BatteryS
     }
 
     public void loadImages() {
-        this.frontImage = new ImageIcon(getClass().getResource(frontImagePath));
-        this.backImage = new ImageIcon(getClass().getResource(backImagePath));
+        this.frontImage = new Image(getClass().getResourceAsStream(frontImagePath));
+        this.backImage = new Image(getClass().getResourceAsStream(backImagePath));
     }
 
 
@@ -48,7 +48,7 @@ public abstract sealed class Component implements Serializable  permits BatteryS
      * Returns the front image of the component
      * @return front image
      */
-    public ImageIcon getFrontImage() {
+    public Image getFrontImage() {
         return frontImage;
     }
 
@@ -72,7 +72,7 @@ public abstract sealed class Component implements Serializable  permits BatteryS
      * Returns the rear image of the component
      * @return rear image
      */
-    public ImageIcon getRearImage() {
+    public Image getRearImage() {
         return backImage;
     }
 

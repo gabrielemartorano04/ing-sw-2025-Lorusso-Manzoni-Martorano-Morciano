@@ -11,15 +11,18 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
 public class CreateGameEvent extends ClientEvent {
     private final int numberOfPlayers;
-
-    public CreateGameEvent(int numberOfPlayers) {
+    private final int gameLevel;
+    public CreateGameEvent(int numberOfPlayers, int gameLevel) {
         super(ClientEventType.CREATE_GAME, false);
         this.numberOfPlayers = numberOfPlayers;
+        this.gameLevel = gameLevel;
     }
 
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
+
+    public int getGameLevel() {return gameLevel;}
 
     @Override
     public String getMessage() {
