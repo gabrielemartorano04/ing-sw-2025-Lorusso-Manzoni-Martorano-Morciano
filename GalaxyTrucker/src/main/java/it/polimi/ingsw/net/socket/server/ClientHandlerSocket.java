@@ -2,12 +2,13 @@ package it.polimi.ingsw.net.socket.server;
 
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 import java.io.IOException;
 
-public class ClientHandlerSocket {
+public class ClientHandlerSocket implements ClientHandler {
     private final NetworkServer network;
     private final ServerController controller;
     private Thread listenerThread;
@@ -20,10 +21,12 @@ public class ClientHandlerSocket {
         startListener();
     }
 
+    @Override
     public void setTrucker(Trucker trucker) {
         this.trucker = trucker;
     }
 
+    @Override
     public Trucker getTrucker() {
         return trucker;
     }
@@ -47,6 +50,7 @@ public class ClientHandlerSocket {
         listenerThread.start();
     }
 
+    @Override
     public void sendEvent(ServerEvent event) {
         try {
             network.sendMessage(event);
