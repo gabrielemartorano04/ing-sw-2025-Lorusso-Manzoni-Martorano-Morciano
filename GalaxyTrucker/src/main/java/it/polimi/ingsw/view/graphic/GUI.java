@@ -7,38 +7,38 @@ import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.view.UI;
 
-import javafx.animation.PauseTransition;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 
 public class GUI extends UI {
 
     private Stage stage;
     private Scene mainScene;
-    private final CountDownLatch latch = new CountDownLatch(1);
-
 
     public GUI(Stage stage) {
         this.stage = stage;
-        this.mainScene = new Scene(new StackPane(), 900, 500);
+        this.mainScene = new Scene(new StackPane(), 800, 500);
         this.stage.setScene(mainScene);
         this.stage.setTitle("Galaxy Trucker");
         this.stage.setResizable(false);
@@ -46,60 +46,43 @@ public class GUI extends UI {
     }
 
     @Override
-    public void pause(int seconds) {
-        PauseTransition pause = new PauseTransition(Duration.seconds(seconds));
-        pause.setOnFinished(e -> {});
-        pause.play();
-    }
-
-    @Override
     public void showWelcome() {
         double width = 800;
         double height = 500;
 
-        CountDownLatch latch = new CountDownLatch(1);
+        // Immagine di sfondo
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/WelcomeImage.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
 
-        Platform.runLater(() -> {
-            Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/WelcomeImage.jpeg").toExternalForm());
-            ImageView backgroundView = new ImageView(backgroundImage);
-            backgroundView.setFitWidth(width);
-            backgroundView.setFitHeight(height);
-            backgroundView.setPreserveRatio(false);
-            backgroundView.setMouseTransparent(true);
+        // Bottone START (solo visivo)
+        Button continueButton = new Button("START");
+        continueButton.setFont(Font.font("Bangers", 20));
+        continueButton.setTextFill(Color.WHITE);
+        continueButton.setStyle("-fx-background-color: rgba(255,222,105,0.7);");
 
-            Button continueButton = new Button("START");
-            continueButton.setFont(Font.font("Bangers", 20));
-            continueButton.setTextFill(Color.WHITE);
-            continueButton.setStyle("-fx-background-color: rgba(255,222,105,0.7);");
-            continueButton.setOnAction(e -> latch.countDown());
+        // Layout
+        StackPane root = new StackPane(backgroundView, continueButton);
+        StackPane.setAlignment(continueButton, Pos.BOTTOM_CENTER);
+        StackPane.setMargin(continueButton, new Insets(0, 0, 25, 0));
 
-            StackPane root = new StackPane(backgroundView, continueButton);
-            StackPane.setAlignment(continueButton, Pos.BOTTOM_CENTER);
-            StackPane.setMargin(continueButton, new Insets(0, 0, 25, 0));
-
-            Scene scene = new Scene(root, width, height);
-            stage.setScene(scene);
-            stage.centerOnScreen();
-        });
-
-        new Thread(() -> {
-            try {
-                latch.await();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-
-            // Dopo il clic, torniamo sul JavaFX Thread per continuare
-            Platform.runLater(this::showInsertNumPlayers);
-        }).start();
+        Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.setWidth(width);
+        stage.setHeight(height);
+        stage.centerOnScreen();
+        stage.show();
     }
+
 
     public void showInsertNumPlayers() {
         double width = 800;
         double height = 500;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(width);
         backgroundView.setFitHeight(height);
@@ -109,16 +92,16 @@ public class GUI extends UI {
         VBox content = new VBox(20);
         content.setAlignment(Pos.CENTER);
 
-        Label questionLabel = new Label("Insert the number of truckers:");
-        questionLabel.setFont(Font.font("Bangers", 20));
+        Label questionLabel = new Label("Insert the number of truckers");
+        questionLabel.setFont(Font.font("Bangers", javafx.scene.text.FontWeight.BOLD, 20));
         questionLabel.setTextFill(Color.web("#FFDE69"));
 
         TextField numberField = new TextField();
         numberField.setMaxWidth(200);
         numberField.setAlignment(Pos.CENTER);
 
-        Button submitButton = new Button("INVIA");
-        submitButton.setFont(Font.font("Arial", 16));
+        Button submitButton = new Button("START");
+        submitButton.setFont(Font.font("Bangers", 16));
         submitButton.setDisable(true);
         submitButton.setStyle("-fx-background-color: gray; -fx-text-fill: white;");
 
@@ -130,9 +113,6 @@ public class GUI extends UI {
 
         submitButton.setOnAction(e -> {
             String input = numberField.getText().trim();
-            if (!input.isEmpty()) {
-                System.out.println("Numero giocatori inserito: " + input);
-            }
         });
 
         content.getChildren().addAll(questionLabel, numberField, submitButton);
@@ -145,7 +125,68 @@ public class GUI extends UI {
 
     @Override
     public void showChooseColor(EnumSet<PlayerColors> availableColors) {
+        double width = 800;
+        double height = 500;
 
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        // Scritta in alto
+        Label titleLabel = new Label("Choose your colour");
+        titleLabel.setFont(Font.font("Bangers", javafx.scene.text.FontWeight.BOLD, 28));
+        titleLabel.setTextFill(Color.web("#FFDE69"));
+        titleLabel.setAlignment(Pos.CENTER);
+
+        // Griglia dei colori
+        TilePane colorPane = new TilePane();
+        colorPane.setHgap(15);
+        colorPane.setVgap(15);
+        colorPane.setAlignment(Pos.CENTER);
+
+        for (PlayerColors color : availableColors) {
+            Rectangle rect = new Rectangle(60, 60);
+            rect.setArcWidth(18);
+            rect.setArcHeight(18);
+
+            Color fxColor;
+            switch (color) {
+                case RED -> fxColor = Color.RED;
+                case GREEN -> fxColor = Color.LIMEGREEN;
+                case BLUE -> fxColor = Color.DODGERBLUE;
+                case YELLOW -> fxColor = Color.GOLD;
+                default -> fxColor = Color.GRAY;
+            }
+
+            rect.setFill(fxColor);
+
+            // Button trasparente sopra il rettangolo
+            Button colorButton = new Button();
+            colorButton.setPrefSize(60, 60);
+            colorButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+            colorButton.setGraphic(rect);
+
+            colorButton.setOnAction(e -> {
+                // clientHandler.sendEvent(new ColorChosenEvent(color));
+            });
+
+            colorPane.getChildren().add(colorButton);
+        }
+
+        VBox content = new VBox(20);
+        content.setAlignment(Pos.CENTER);
+        content.setPadding(new Insets(40));
+        content.getChildren().addAll(titleLabel, colorPane);
+
+        StackPane root = new StackPane(backgroundView, content);
+        StackPane.setAlignment(content, Pos.CENTER);
+
+        Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
     }
 
     @Override
@@ -160,12 +201,71 @@ public class GUI extends UI {
 
     @Override
     public void showPlayerJoined(String nickname) {
+        // Etichetta del messaggio
+        Label message = new Label(nickname + " has joined");
+        message.setStyle(
+                "-fx-background-color: rgba(0, 0, 0, 0.8); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-padding: 10px 15px; " +
+                        "-fx-background-radius: 10px;"
+        );
+        message.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 14));
 
+        // Notifica in StackPane dedicato per posizionamento
+        StackPane notificationWrapper = new StackPane(message);
+        notificationWrapper.setMouseTransparent(true);
+        StackPane.setAlignment(message, Pos.TOP_RIGHT);
+        StackPane.setMargin(message, new Insets(15, 15, 0, 0));
+
+        // Prendi il root e fai cast diretto
+        StackPane root = (StackPane) stage.getScene().getRoot();
+        root.getChildren().add(notificationWrapper);
+
+        // Rimuovi la notifica dopo 5 secondi
+        PauseTransition delay = new PauseTransition(Duration.seconds(5));
+        delay.setOnFinished(e -> root.getChildren().remove(notificationWrapper));
+        delay.play();
     }
 
     @Override
     public void showWaitingForPlayers(int currentPlayers) {
+        double width = 800;
+        double height = 500;
 
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        Label loadingLabel = new Label("Waiting for truckers to join");
+        loadingLabel.setFont(Font.font("Bangers", javafx.scene.text.FontWeight.BOLD, 26));
+        loadingLabel.setTextFill(Color.web("#FFDE69"));
+        loadingLabel.setAlignment(Pos.CENTER);
+
+        // VBox per centratura verticale
+        VBox content = new VBox(loadingLabel);
+        content.setAlignment(Pos.CENTER);
+
+        StackPane root = new StackPane(backgroundView, content);
+        StackPane.setAlignment(content, Pos.CENTER);
+
+        Scene scene = new Scene(root, width, height);
+        Platform.runLater(() -> {
+            stage.setScene(scene);
+            stage.centerOnScreen();
+        });
+
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0), e -> loadingLabel.setText("Waiting for truckers to join")),
+                new KeyFrame(Duration.seconds(0.5), e -> loadingLabel.setText("Waiting for truckers to join.")),
+                new KeyFrame(Duration.seconds(1), e -> loadingLabel.setText("Waiting for truckers to join..")),
+                new KeyFrame(Duration.seconds(1.5), e -> loadingLabel.setText("Waiting for truckers to join...")),
+                new KeyFrame(Duration.seconds(2.0),   e -> {})
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
 
     @Override
@@ -185,7 +285,71 @@ public class GUI extends UI {
 
     @Override
     public void showAvailableComponent(AvailableComponents components) {
+        double width = 800;
+        double height = 500;
 
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(20));
+        grid.setHgap(15);
+        grid.setVgap(15);
+        grid.setAlignment(Pos.CENTER); // Centra il contenuto nella GridPane
+
+        int col = 0;
+        int row = 0;
+        for (Component component : components.getComponents()) {
+            ImageView imgView = new ImageView(
+                    component.getCovered() ? component.getBackImage() : component.getFrontImage()
+            );
+            imgView.setFitWidth(100);
+            imgView.setFitHeight(100);
+
+            Rectangle clip = new Rectangle(100, 100);
+            clip.setArcWidth(16);
+            clip.setArcHeight(16);
+            imgView.setClip(clip);
+
+            Button button = new Button();
+            button.setGraphic(imgView);
+            button.setPrefSize(100, 100);
+            button.setStyle(
+                    "-fx-background-color: transparent;" +
+                            "-fx-border-color: #cccccc;" +
+                            "-fx-border-radius: 8px;" +
+                            "-fx-cursor: hand;" +
+                            "-fx-padding: 0px;"
+            );
+
+            button.setOnAction(e -> {
+                System.out.println("Hai cliccato: " + component.getType());
+                // gestisci selezione...
+            });
+
+            grid.add(button, col, row);
+            col++;
+            if (col == 6) {
+                col = 0;
+                row++;
+            }
+        }
+
+        StackPane centeredGrid = new StackPane(grid); // Avvolge la GridPane per centrarla
+        centeredGrid.setPadding(new Insets(20));
+
+        ScrollPane scrollPane = new ScrollPane(centeredGrid);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+
+        StackPane root = new StackPane(backgroundView, scrollPane);
+        Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
     }
 
     @Override
@@ -230,7 +394,32 @@ public class GUI extends UI {
 
     @Override
     public void showTimeExpired() {
+        // Etichetta TIME EXPIRED
+        Label message = new Label("TIME EXPIRED");
+        message.setTextFill(Color.RED);
+        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 100));
 
+        // Animazione lampeggiante
+        FadeTransition blink = new FadeTransition(Duration.seconds(0.4), message);
+        blink.setFromValue(1.0);
+        blink.setToValue(0.0);
+        blink.setCycleCount(Animation.INDEFINITE);
+        blink.setAutoReverse(true);
+        blink.play();
+
+        // Overlay centrale
+        StackPane overlay = new StackPane(message);
+        overlay.setAlignment(Pos.CENTER);
+        overlay.setMouseTransparent(true);
+
+        // Recupera root (assunto StackPane)
+        StackPane root = (StackPane) stage.getScene().getRoot();
+        root.getChildren().add(overlay);
+
+        // Rimuovi dopo 3 secondi
+        PauseTransition wait = new PauseTransition(Duration.seconds(5));
+        wait.setOnFinished(e -> root.getChildren().remove(overlay));
+        wait.play();
     }
 
     @Override
@@ -270,7 +459,30 @@ public class GUI extends UI {
 
     @Override
     public void showTruckerWithdrawn(String nickname) {
+        // Etichetta del messaggio
+        Label message = new Label(nickname + " has withdrawn");
+        message.setStyle(
+                "-fx-background-color: rgba(0, 0, 0, 0.8); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-padding: 10px 15px; " +
+                        "-fx-background-radius: 10px;"
+        );
+        message.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 14));
 
+        // Notifica in StackPane dedicato per posizionamento
+        StackPane notificationWrapper = new StackPane(message);
+        notificationWrapper.setMouseTransparent(true);
+        StackPane.setAlignment(message, Pos.TOP_RIGHT);
+        StackPane.setMargin(message, new Insets(15, 15, 0, 0));
+
+        // Prendi il root e fai cast diretto
+        StackPane root = (StackPane) stage.getScene().getRoot();
+        root.getChildren().add(notificationWrapper);
+
+        // Rimuovi la notifica dopo 5 secondi
+        PauseTransition delay = new PauseTransition(Duration.seconds(5));
+        delay.setOnFinished(e -> root.getChildren().remove(notificationWrapper));
+        delay.play();
     }
 
     @Override
@@ -372,12 +584,4 @@ public class GUI extends UI {
     public void showStack(ArrayList<Card> stack) {
 
     }
-
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            GUI gui = new GUI();
-//            gui.init();
-//            gui.showWelcome();
-//        });
-//    }
 }

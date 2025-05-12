@@ -21,15 +21,6 @@ public class TUI extends UI {
     }
 
     @Override
-    public void pause(int seconds) {
-        try {
-            Thread.sleep(seconds * 1000L); // pausa bloccante
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // buona pratica
-        }
-    }
-
-    @Override
     public void showWelcome() {
         System.out.println("Benvenuto in Galaxy Trucker! (by Cranio creations)");
     }
