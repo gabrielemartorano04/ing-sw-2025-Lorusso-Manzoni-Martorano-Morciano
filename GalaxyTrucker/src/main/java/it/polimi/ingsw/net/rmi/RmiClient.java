@@ -1,25 +1,21 @@
 package it.polimi.ingsw.net.rmi;
 
-import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.net.ClientHandler;
+import it.polimi.ingsw.net.rmi.server.ClientHandlerRMI;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.view.ViewFlow;
 
-import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 
 
 // problema: risolvere la generalizzazione tramite interfacce di modo di trattare i tipi dinamici come statici
 
 public class RmiClient implements Remote {
-    private RmiServer server;
+    private ClientHandlerRMI server;
     private final ViewFlow view;
 
-    public RmiClient(RmiServer server, ViewFlow view){
+    public RmiClient(ClientHandlerRMI server, ViewFlow view){
         this.server=server;
         this.view = view;
     }
