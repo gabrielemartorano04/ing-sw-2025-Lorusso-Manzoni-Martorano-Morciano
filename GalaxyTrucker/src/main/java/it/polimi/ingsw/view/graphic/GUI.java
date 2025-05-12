@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.view.UI;
 
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,59 +16,98 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 public class GUI extends UI {
 
     private Stage stage;
     private Scene mainScene;
+    private final CountDownLatch latch = new CountDownLatch(1);
+
 
     public GUI(Stage stage) {
         this.stage = stage;
-        this.mainScene = new Scene(new StackPane(), 700, 500);
+        this.mainScene = new Scene(new StackPane(), 900, 500);
         this.stage.setScene(mainScene);
         this.stage.setTitle("Galaxy Trucker");
         this.stage.setResizable(false);
         this.stage.show();
     }
 
+    @Override
+    public void pause(int seconds) {
+        PauseTransition pause = new PauseTransition(Duration.seconds(seconds));
+        pause.setOnFinished(e -> {});
+        pause.play();
+    }
+
+    @Override
     public void showWelcome() {
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/WelcomeImage.jpeg").toExternalForm());
-        BackgroundImage bg = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+        double width = 800;
+        double height = 500;
 
-        StackPane welcomePane = new StackPane();
-        welcomePane.setBackground(new Background(bg));
+        CountDownLatch latch = new CountDownLatch(1);
 
-        Button startButton = new Button("START");
-        startButton.setFont(Font.font("Bangers", 20));
-        startButton.setTextFill(Color.WHITE);
-        startButton.setStyle("-fx-background-color: rgba(255,222,105,0.7);");
-        startButton.setOnAction(e -> showInsertNumPlayers());
+        Platform.runLater(() -> {
+            Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/WelcomeImage.jpeg").toExternalForm());
+            ImageView backgroundView = new ImageView(backgroundImage);
+            backgroundView.setFitWidth(width);
+            backgroundView.setFitHeight(height);
+            backgroundView.setPreserveRatio(false);
+            backgroundView.setMouseTransparent(true);
 
-        welcomePane.getChildren().add(startButton);
-        StackPane.setAlignment(startButton, Pos.BOTTOM_CENTER);
-        StackPane.setMargin(startButton, new Insets(0, 0, 50, 0));
+            Button continueButton = new Button("START");
+            continueButton.setFont(Font.font("Bangers", 20));
+            continueButton.setTextFill(Color.WHITE);
+            continueButton.setStyle("-fx-background-color: rgba(255,222,105,0.7);");
+            continueButton.setOnAction(e -> latch.countDown());
 
-        mainScene.setRoot(welcomePane);
+            StackPane root = new StackPane(backgroundView, continueButton);
+            StackPane.setAlignment(continueButton, Pos.BOTTOM_CENTER);
+            StackPane.setMargin(continueButton, new Insets(0, 0, 25, 0));
+
+            Scene scene = new Scene(root, width, height);
+            stage.setScene(scene);
+            stage.centerOnScreen();
+        });
+
+        new Thread(() -> {
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
+            // Dopo il clic, torniamo sul JavaFX Thread per continuare
+            Platform.runLater(this::showInsertNumPlayers);
+        }).start();
     }
 
     public void showInsertNumPlayers() {
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-        BackgroundImage bg = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+        double width = 800;
+        double height = 500;
 
-        VBox insertPane = new VBox(20);
-        insertPane.setBackground(new Background(bg));
-        insertPane.setPadding(new Insets(30));
-        insertPane.setAlignment(Pos.CENTER);
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        VBox content = new VBox(20);
+        content.setAlignment(Pos.CENTER);
 
         Label questionLabel = new Label("Insert the number of truckers:");
         questionLabel.setFont(Font.font("Bangers", 20));
@@ -91,12 +132,15 @@ public class GUI extends UI {
             String input = numberField.getText().trim();
             if (!input.isEmpty()) {
                 System.out.println("Numero giocatori inserito: " + input);
-                // TODO: invia input al controller
             }
         });
 
-        insertPane.getChildren().addAll(questionLabel, numberField, submitButton);
-        mainScene.setRoot(insertPane);
+        content.getChildren().addAll(questionLabel, numberField, submitButton);
+
+        StackPane insertPane = new StackPane();
+        insertPane.getChildren().addAll(backgroundView, content);
+
+        stage.getScene().setRoot(insertPane);
     }
 
     @Override
@@ -321,6 +365,11 @@ public class GUI extends UI {
 
     @Override
     public void updateHourglass(int secondsLeft) {
+
+    }
+
+    @Override
+    public void showStack(ArrayList<Card> stack) {
 
     }
 

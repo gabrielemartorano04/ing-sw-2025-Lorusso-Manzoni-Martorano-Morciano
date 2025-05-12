@@ -17,6 +17,8 @@ import java.util.Map;
 public abstract class UI {
 
     //SETUP
+    public abstract void pause(int seconds);
+
     public abstract void showWelcome();
     public abstract void showInsertNumPlayers();
 

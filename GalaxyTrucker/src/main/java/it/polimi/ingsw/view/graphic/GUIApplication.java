@@ -9,6 +9,7 @@ public class GUIApplication extends Application {
     public void start(Stage primaryStage) {
         GUI gui = new GUI(primaryStage);
         gui.showWelcome();
+        gui.showInsertNumPlayers();
     }
 
     public static void main(String[] args) {
