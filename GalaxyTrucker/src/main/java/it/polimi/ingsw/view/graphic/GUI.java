@@ -18,6 +18,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -38,7 +41,7 @@ public class GUI extends UI {
 
     public GUI(Stage stage) {
         this.stage = stage;
-        this.mainScene = new Scene(new StackPane(), 800, 500);
+        this.mainScene = new Scene(new StackPane(), 800, 600);
         this.stage.setScene(mainScene);
         this.stage.setTitle("Galaxy Trucker");
         this.stage.setResizable(false);
@@ -48,7 +51,7 @@ public class GUI extends UI {
     @Override
     public void showWelcome() {
         double width = 800;
-        double height = 500;
+        double height = 550;
 
         // Immagine di sfondo
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/WelcomeImage.jpeg").toExternalForm());
@@ -80,7 +83,7 @@ public class GUI extends UI {
 
     public void showInsertNumPlayers() {
         double width = 800;
-        double height = 500;
+        double height = 550;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
@@ -126,7 +129,7 @@ public class GUI extends UI {
     @Override
     public void showChooseColor(EnumSet<PlayerColors> availableColors) {
         double width = 800;
-        double height = 500;
+        double height = 550;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
@@ -230,7 +233,7 @@ public class GUI extends UI {
     @Override
     public void showWaitingForPlayers(int currentPlayers) {
         double width = 800;
-        double height = 500;
+        double height = 550;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
@@ -279,14 +282,14 @@ public class GUI extends UI {
     }
 
     @Override
-    public void showBuildPhaseStart() {
+    public void showBuildPhaseStart(AvailableComponents availableComponents) {
 
     }
 
     @Override
     public void showAvailableComponent(AvailableComponents components) {
         double width = 800;
-        double height = 500;
+        double height = 550;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
@@ -361,6 +364,7 @@ public class GUI extends UI {
     public void showSelectComponent() {
 
     }
+    //Viene chiamato subito dopo available components (ma non devi farlo tu) e attraverso drag and drop, quando viene selezionato il componente si chiude l'elenco dei componenti creato in showAvailableCompionent e viene mostrata la nave alla quale si può agganciare
 
     @Override
     public void showBuildOptions() {
@@ -394,12 +398,12 @@ public class GUI extends UI {
 
     @Override
     public void showTimeExpired() {
-        // Etichetta TIME EXPIRED
+        // Crea la scritta TIME EXPIRED
         Label message = new Label("TIME EXPIRED");
         message.setTextFill(Color.RED);
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 100));
 
-        // Animazione lampeggiante
+        // Effetto lampeggiante
         FadeTransition blink = new FadeTransition(Duration.seconds(0.4), message);
         blink.setFromValue(1.0);
         blink.setToValue(0.0);
@@ -407,16 +411,22 @@ public class GUI extends UI {
         blink.setAutoReverse(true);
         blink.play();
 
-        // Overlay centrale
-        StackPane overlay = new StackPane(message);
+        // Crea un rettangolo grigio semitrasparente come sfondo
+        Rectangle dimBackground = new Rectangle(stage.getWidth(), stage.getHeight());
+        dimBackground.setFill(Color.rgb(50, 50, 50, 0.6)); // grigio con opacità 60%
+        dimBackground.widthProperty().bind(stage.getScene().widthProperty());
+        dimBackground.heightProperty().bind(stage.getScene().heightProperty());
+
+        // Overlay con sfondo e scritta
+        StackPane overlay = new StackPane(dimBackground, message);
         overlay.setAlignment(Pos.CENTER);
         overlay.setMouseTransparent(true);
 
-        // Recupera root (assunto StackPane)
+        // Recupera root (deve essere uno StackPane)
         StackPane root = (StackPane) stage.getScene().getRoot();
         root.getChildren().add(overlay);
 
-        // Rimuovi dopo 3 secondi
+        // Rimuove l'overlay dopo 5 secondi
         PauseTransition wait = new PauseTransition(Duration.seconds(5));
         wait.setOnFinished(e -> root.getChildren().remove(overlay));
         wait.play();
@@ -557,7 +567,73 @@ public class GUI extends UI {
 
     @Override
     public void showShipLayout(String nickname, Component[][] layout) {
+        double width = 800;
+        double height = 550;
 
+        // Sfondo
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        // Matrice attiva (celle cliccabili)
+        boolean[][] validCells = {
+                {false, false, true,  false,  true, false, false},
+                {false, true,  true,  true,  true, true,  false},
+                {true,  true,  true,  true,  true, true,  true },
+                {true,  true,  true,  true,  true, true,  true },
+                {true,  true,  true,  false,  true, true,  true }
+        };
+
+        GridPane grid = new GridPane();
+        grid.setHgap(2);
+        grid.setVgap(2);
+        grid.setAlignment(Pos.CENTER);
+
+        for (int row = 0; row < 5; row++) {
+            for (int col = 0; col < 7; col++) {
+                if (validCells[row][col]) {
+                    StackPane cell = new StackPane();
+                    cell.setPrefSize(100, 110);
+                    cell.setStyle(
+                            "-fx-background-color: rgba(255,255,255,0.1);" +
+                                    "-fx-border-color: white;" +
+                                    "-fx-border-radius: 12px;" +
+                                    "-fx-background-radius: 12px;"
+                    );
+
+                    // Mostra componente se presente
+                    Component c = layout[row][col];
+                    if (c != null && !c.getCovered()) {
+                        ImageView imageView = new ImageView(c.getFrontImage());
+                        imageView.setFitWidth(70);
+                        imageView.setFitHeight(70);
+
+                        // Clip con angoli smussati
+                        Rectangle clip = new Rectangle(65, 65);
+                        clip.setArcWidth(16);
+                        clip.setArcHeight(16);
+                        imageView.setClip(clip);
+
+                        cell.getChildren().add(imageView);
+                    }
+
+                    grid.add(cell, col, row);
+                } else {
+                    // Spazio vuoto per mantenere la griglia centrata
+                    Region spacer = new Region();
+                    spacer.setPrefSize(80, 80);
+                    grid.add(spacer, col, row);
+                }
+            }
+        }
+
+        StackPane root = new StackPane(backgroundView, grid);
+        Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
     }
 
     @Override
