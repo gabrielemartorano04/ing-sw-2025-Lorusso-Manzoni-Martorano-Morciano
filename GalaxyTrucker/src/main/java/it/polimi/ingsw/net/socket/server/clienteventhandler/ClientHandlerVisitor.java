@@ -62,6 +62,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         component.setCovered(false);
         component.setSelected(false);
         gameController.getGame().getComponents().getComponents().add(component);
+        currentClient.getTrucker().setBuildingState(BuildingState.BUILDING);
         return new DiscardSuccessEvent();
     }
 
@@ -74,6 +75,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(KeepTileEvent event) {
         Component component = event.getComponent();
+        currentClient.getTrucker().setBuildingState(BuildingState.KEEP);
         try {
             currentClient.getTrucker().keep(component,gameController.getGame());
             return new KeptComponentEvent(component);
@@ -138,22 +140,33 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(SelectTileEvent event) {
         int index=event.getIndex();
+        Trucker trucker=currentClient.getTrucker();
         Component component=gameController.getGame().getComponents().getComponents().get(index);
-        gameController.getGame().getComponents().getComponents().get(index).setSelected(true);
-        gameController.getGame().getComponents().getComponents().remove(component);
+        trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
+        try {
+            trucker.selectComponent(index,gameController.getGame());
+        } catch (InvalidComponentsException e) {
+            return new ComponentNotAvailableError();
+        } catch (InvalidStateException e) {
+            return new BuildingStateError();
+        }
+
         return new ComponentSelectedEvent(component);
     }
 
     @Override
     public ServerEvent visit(ShowStackEvent event) {
         int index=event.getIndex();
-        ArrayList<Card> stack= gameController.showStack(index);
+        Trucker trucker=currentClient.getTrucker();
+        trucker.setBuildingState(BuildingState.SHOW_STACK);
+        ArrayList<Card> stack=trucker.showStack(index,gameController.getGame());
         return new ReturnStackEvent(stack);
     }
 
     @Override
     public ServerEvent visit(TurnHourglassEvent event) {
         try {
+            currentClient.getTrucker().setBuildingState(BuildingState.TURN_HOURGLASS);
             gameController.getGame().turnHourglass();
         } catch (CannotTurnHourglassException e) {
             return new TurnHourglassError();
