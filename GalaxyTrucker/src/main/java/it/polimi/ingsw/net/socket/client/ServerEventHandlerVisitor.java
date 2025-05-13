@@ -40,6 +40,16 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showWelcome();
         System.out.println("Ho ricevuto: "+ event.getEventType());
         ui.showChooseColor(event.getColors());
+        ui.showcolor
+                tui
+                    ui.showWelcome();
+                    System.out.println("Ho ricevuto: "+ event.getEventType());
+                    ui.showChooseColor(event.getColors());
+                gui
+                    ui.showWelcome();
+                    start -- b..
+                    System.out.println("Ho ricevuto: "+ event.getEventType());
+                    ui.showChooseColor(event.getColors());
     }
 
     @Override
@@ -89,6 +99,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(ComponentNotAvailableError event) {
         ui.showError(event.getMessage());
+        ui.showMessage("Please select a component between 0 and " + (viewFlow.getAvComponents().getComponents().size()-1));
     }
 
     @Override
