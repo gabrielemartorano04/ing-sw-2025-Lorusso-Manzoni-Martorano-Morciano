@@ -146,10 +146,10 @@ public class ClientHandlerVisitor implements ClientVisitor {
             return new ComponentNotAvailableError();
         }
         Trucker trucker=currentClient.getTrucker();
-        Component component=gameController.getGame().getComponents().getComponents().get(index);
         trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
+        Component component=null;
         try {
-            trucker.selectComponent(index,gameController.getGame());
+            component = trucker.selectComponent(index,gameController.getGame());
         } catch (InvalidComponentsException e) {
             return new ComponentNotAvailableError();
         } catch (InvalidStateException e) {
