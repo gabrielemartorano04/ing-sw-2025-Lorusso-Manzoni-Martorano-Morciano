@@ -12,21 +12,16 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 public class ComponentSelectedEvent extends ServerEvent {
     private String message;
     private Component component;
-    private AvailableComponents components;
 
-    public ComponentSelectedEvent(Component component, AvailableComponents components) {
+    public ComponentSelectedEvent(Component component) {
         super(ServerEventType.COMPONENT_SELECTED, false);
         this.component = component;
         message="Component selected";
-        this.components = components;
     }
     public Component getComponent() {
         return component;
     }
 
-    public AvailableComponents getComponents() {
-        return components;
-    }
 
     @Override
     public String getMessage() {

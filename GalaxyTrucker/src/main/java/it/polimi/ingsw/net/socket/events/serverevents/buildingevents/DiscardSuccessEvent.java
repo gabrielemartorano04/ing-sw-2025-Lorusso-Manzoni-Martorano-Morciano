@@ -1,5 +1,6 @@
 package it.polimi.ingsw.net.socket.events.serverevents.buildingevents;
 
+import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
@@ -7,10 +8,15 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 public class DiscardSuccessEvent extends ServerEvent {
 
     private String message;
-
-    public DiscardSuccessEvent() {
+    private AvailableComponents avComponents;
+    public DiscardSuccessEvent(AvailableComponents avComponents) {
         super(ServerEventType.DISCART_SUCCESS, false);
         message = "Discard success";
+        this.avComponents = avComponents;
+    }
+
+    public AvailableComponents getAvComponents() {
+        return avComponents;
     }
 
     @Override

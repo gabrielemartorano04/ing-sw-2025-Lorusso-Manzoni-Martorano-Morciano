@@ -134,15 +134,12 @@ public class Trucker {
 
     }
 
-    public void link(Component component, int x, int y) throws InvalidStateException {
+    public void link(Component component, int x, int y) throws InvalidStateException, InvalidCoordinates {
         if(buildingState!=BuildingState.LINK){
             throw new InvalidStateException("Trucker is not in link component state");
         }
-        try{
-            spaceShip.addComponent(component,x,y);
-        } catch (InvalidCoordinates e) {
-            buildingState=BuildingState.LINK;
-        }
+
+        spaceShip.addComponent(component,x,y);
         buildingState=BuildingState.BUILDING;
     }
 

@@ -126,7 +126,7 @@ public class GameController {
         t.keep(c, game);
     }
 
-    public void linkComponent(Trucker trucker, Component component, int x, int y) throws InvalidStateException {
+    public void linkComponent(Trucker trucker, Component component, int x, int y) throws InvalidStateException, InvalidCoordinates {
         trucker.link(component, x, y);
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.net.socket.events.serverevents.buildingevents;
 
+import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
@@ -14,15 +15,21 @@ public class ComponentLinkedEvent extends ServerEvent {
     int coordx;
     int coordy;
     Component component;
+    private AvailableComponents avComponents;
 
-
-    public ComponentLinkedEvent(Component component, int x, int y) {
+    public ComponentLinkedEvent(Component component, int x, int y, AvailableComponents avComponents) {
         super(ServerEventType.COMPONENT_LINKED, false);
         coordx = x;
         coordy = y;
         this.component= component;
+        this.avComponents = avComponents;
         message = "Component correctly linked";
     }
+
+    public AvailableComponents getAvComponents() {
+        return avComponents;
+    }
+
     @Override
     public String getMessage() {
         return message;
