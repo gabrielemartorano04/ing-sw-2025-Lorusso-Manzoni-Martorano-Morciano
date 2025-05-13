@@ -74,27 +74,33 @@ public ClientEvent parseFirstConnection(String input) {
         }
         String[] tokens = input.split("\\s+", 3);
         String command = tokens[0].toLowerCase();
-        switch (command) {
-            case "component list":
-                return new ShowTilesListEvent();
-            case "hourglass":
-                return new TurnHourglassEvent();
-            case "select":
-                return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
-            case "stack":
-                return new ShowStackEvent(Integer.parseInt(tokens[1].trim()));
-            case "end":
-                return new EndBuildingEvent();
-            case "link":
-                return new LinkTileEvent(Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()));
-            case "keep":
-                return new KeepTileEvent(component);
-            case "discard":
-                return new DiscardTileEvent(component);
-            default: System.out.println("Error: unknown command: " + command);
-                return null;
+        if(component!=null){
+            switch (command){
+                case "link":
+                    return new LinkTileEvent(Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()));
+                case "keep":
+                    return new KeepTileEvent(component);
+                case "discard":
+                    return new DiscardTileEvent(component);
+                default: System.out.println("Error: unknown command: " + command);
+                    return null;
+            }
+        }else {
+            switch (command) {
+                case "component list":
+                    return new ShowTilesListEvent();
+                case "hourglass":
+                    return new TurnHourglassEvent();
+                case "select":
+                    return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
+                case "stack":
+                    return new ShowStackEvent(Integer.parseInt(tokens[1].trim()));
+                case "end":
+                    return new EndBuildingEvent();
+                default: System.out.println("Error: unknown command: " + command);
+                    return null;
+            }
         }
-
     }
     public ClientEvent parseFlight(String input) {
         if (input == null || input.isEmpty()) {
