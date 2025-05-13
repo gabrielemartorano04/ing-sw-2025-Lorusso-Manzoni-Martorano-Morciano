@@ -3,6 +3,7 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
@@ -74,17 +75,21 @@ public class ClientHandlerVisitor implements ClientVisitor {
         try {
             currentClient.getTrucker().keep(component,gameController.getGame());
         } catch (InvalidComponentsException e) {
-
+            return new OkEvent("Component correctly kept",false);
         }
         catch (InvalidStateException e) {
-
+            return new BuildingStateError();
         }
         return null;
     }
 
     @Override
     public ServerEvent visit(LinkTileEvent event) {
-        //fare quando c'è collegamento client-trucker
+        Component component = event.getComponent();
+        int x=event.getX();
+        int y=event.getY();
+        Trucker trucker= currentClient.getTrucker();
+        trucker.link(component,x,y);
         return null;
     }
 

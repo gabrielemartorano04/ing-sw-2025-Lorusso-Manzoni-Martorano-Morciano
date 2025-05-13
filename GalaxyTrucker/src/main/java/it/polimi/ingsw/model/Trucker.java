@@ -134,9 +134,9 @@ public class Trucker {
 
     }
 
-    public void link(Component component, int x, int y){
+    public void link(Component component, int x, int y) throws InvalidStateException {
         if(buildingState!=BuildingState.LINK){
-            throw new IllegalStateException("Trucker is not in link component state");
+            throw new InvalidStateException("Trucker is not in link component state");
         }
         try{
             spaceShip.addComponent(component,x,y);
@@ -146,9 +146,9 @@ public class Trucker {
         buildingState=BuildingState.BUILDING;
     }
 
-    public Component selectComponent(int index, Game game) throws InvalidComponentsException {
+    public Component selectComponent(int index, Game game) throws InvalidComponentsException, InvalidStateException {
         if(buildingState!=BuildingState.SELECT_COMPONENT){
-            throw new IllegalStateException("Trucker is not in select component state");
+            throw new InvalidStateException("Trucker is not in select component state");
         }
         if (index > 0 && index < game.getComponents().getComponents().size()) {
             Component selectedComponent;
@@ -166,9 +166,9 @@ public class Trucker {
 
 
 
-    public void finish(){
+    public void finish() throws InvalidStateException {
         if(buildingState!=BuildingState.WAIT_END){
-            throw new IllegalStateException("Trucker is not in finish state");
+            throw new InvalidStateException("Trucker is not in finish state");
         }
         if(!spaceShip.wellDone()){
             spaceShip.increaseLost(spaceShip.getKept().size());
