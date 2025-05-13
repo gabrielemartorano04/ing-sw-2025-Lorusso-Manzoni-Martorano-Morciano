@@ -96,10 +96,14 @@ public ClientEvent parseFirstConnection(String input) {
                 case "select":
                     return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
                 case "stack":
-                    return new ShowStackEvent(Integer.parseInt(tokens[1].trim()));
+                    if(Integer.parseInt(tokens[1].trim())>=1 && Integer.parseInt(tokens[1].trim())<=3) {
+                        return new ShowStackEvent(Integer.parseInt(tokens[1].trim()) - 1);
+                    }else{
+                        System.out.println("Error: illegal stack number. Please select a stack between 1 and 3 or choose another command");
+                    }
                 case "end":
                     return new EndBuildingEvent();
-                default: System.out.println("Error: unknown command: " + command);
+                default: System.out.println("Error: unknown command: " + command + ". Please select a valid command");
                     return null;
             }
         }
