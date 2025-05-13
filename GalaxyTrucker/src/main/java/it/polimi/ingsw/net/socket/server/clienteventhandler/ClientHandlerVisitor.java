@@ -99,6 +99,8 @@ public class ClientHandlerVisitor implements ClientVisitor {
             return new ComponentLinkedEvent(component, x, y);
         } catch (InvalidStateException e) {
             return new BuildingStateError();
+        } catch (InvalidCoordinates e) {
+            return new InvalidCoordinatesError(trucker.getNickname());
         }
     }
 
