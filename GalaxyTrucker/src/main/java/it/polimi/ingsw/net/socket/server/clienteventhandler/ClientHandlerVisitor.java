@@ -151,7 +151,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             return new BuildingStateError();
         }
 
-        return new ComponentSelectedEvent(component);
+        return new ComponentSelectedEvent(component, gameController.getGame().getComponents());
     }
 
     @Override

@@ -76,7 +76,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
             ui.showWelcome();
             ui.showInsertNumPlayers();
         } else {
-            if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS) {
+            if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS || event.getEventType()==ServerEventType.COMPONENT_LINKED
+            || event.getEventType()==ServerEventType.COMPONENT_SELECTED) {
                 event.call(serverEventVisitor);
                 done = true;
             }
@@ -228,6 +229,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     }
 
     public void setAvComponents(AvailableComponents availableComponents) {
+        this.avComponents.getComponents().clear();
         this.avComponents.getComponents().addAll(availableComponents.getComponents());
     }
     public void setSelectedComponent(Component selectedComponent) {

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.net.socket.client;
 
+import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.ShowStackEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
@@ -93,6 +94,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(ComponentSelectedEvent event) {
         viewFlow.setSelectedComponent(event.getComponent());
+        viewFlow.setAvComponents(event.getComponents());
         ui.showComponentOptions();
     }
 
