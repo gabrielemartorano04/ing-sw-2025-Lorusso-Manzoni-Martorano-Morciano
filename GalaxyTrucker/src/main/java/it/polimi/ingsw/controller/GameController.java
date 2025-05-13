@@ -118,7 +118,7 @@ public class GameController {
         scheduler.shutdown(); // ferma il controllo
     }
 
-    public Component selectComponent(Trucker t, int index) throws InvalidComponentsException {
+    public Component selectComponent(Trucker t, int index) throws InvalidComponentsException, InvalidStateException {
         return t.selectComponent(index, game);
     }
 
@@ -126,7 +126,7 @@ public class GameController {
         t.keep(c, game);
     }
 
-    public void linkComponent(Trucker trucker, Component component, int x, int y) {
+    public void linkComponent(Trucker trucker, Component component, int x, int y) throws InvalidStateException {
         trucker.link(component, x, y);
     }
 
@@ -138,7 +138,7 @@ public class GameController {
         return game.viewStack(stackIndex);
     }
 
-    public synchronized void endBuildingFor(Trucker trucker) {
+    public synchronized void endBuildingFor(Trucker trucker) throws InvalidStateException {
         trucker.finish(); // FSM: controlla che sia valido e marca END
 
         if (game.allPlayersReady()) {

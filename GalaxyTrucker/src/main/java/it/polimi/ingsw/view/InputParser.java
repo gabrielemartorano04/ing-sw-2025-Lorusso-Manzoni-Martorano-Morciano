@@ -4,10 +4,7 @@ import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.events.clientevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
-import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendBooleanEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendCoordListEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendIndexesEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendIntEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 
@@ -24,7 +21,7 @@ public ClientEvent parseFirstConnection(String input) {
     String[] tokens = input.split("\\s+");
 
     if (tokens.length != 2) {
-        System.out.println("Error: inserire numero giocatori e livello separati da spazio (es: 3 2)");
+        System.out.println("Error: inserire numero giocatori (1-4) e livello (0 o 2) separati da spazio ");
         return null;
     }
 
@@ -36,8 +33,8 @@ public ClientEvent parseFirstConnection(String input) {
             System.out.println("Errore: numero di giocatori non valido (2-4)");
             return null;
         }
-        if (level < 1 || level > 3) {
-            System.out.println("Errore: livello non valido (1-3)");
+        if (level != 0 && level != 2) {
+            System.out.println("Errore: livello non valido (0 o 2)");
             return null;
         }
 
@@ -78,7 +75,7 @@ public ClientEvent parseFirstConnection(String input) {
             switch (command){
                 case "link":
 
-                    return new LinkTileEvent(Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()));
+                    return new LinkTileEvent(component, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()));
                 case "keep":
                     return new KeepTileEvent(component);
                 case "discard":
@@ -119,7 +116,7 @@ public ClientEvent parseFirstConnection(String input) {
                     System.out.println("Coordinates required.");
                     return null;
                 }
-                return new LinkTileEvent(Integer.parseInt(tokens[1]),Integer.parseInt(tokens[2]));
+                return new SendCoordEvent(Integer.parseInt(tokens[1]),Integer.parseInt(tokens[2]));
             case "coordlist":
                 int cont=1;
                 ArrayList<int[]> coords=new ArrayList<>();
