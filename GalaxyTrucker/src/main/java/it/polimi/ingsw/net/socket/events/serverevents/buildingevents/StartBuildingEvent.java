@@ -1,9 +1,11 @@
 package it.polimi.ingsw.net.socket.events.serverevents.buildingevents;
 
 
+import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
@@ -22,11 +24,12 @@ public class StartBuildingEvent extends ServerEvent {
     private
     ArrayList<Card>[] stacks;
     private final SpaceShip spaceShip;
-
-    public StartBuildingEvent(String username, SpaceShip spaceShip, ArrayList<Card>[] stacks) {
+    private AvailableComponents components;
+    public StartBuildingEvent(String username, SpaceShip spaceShip, ArrayList<Card>[] stacks, AvailableComponents availableComponents) {
         super(ServerEventType.START_BUILDING, true);
         message = username + " logged\nIt's time to start building";
         this.spaceShip = spaceShip;
+        this.components = availableComponents;
         this.stacks = stacks;
     }
 
@@ -40,6 +43,8 @@ public class StartBuildingEvent extends ServerEvent {
     }
 
     public ArrayList<Card>[] getStacks() {return stacks;}
+
+    public AvailableComponents getComponents() {return components;}
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {

@@ -94,8 +94,12 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     }
                     ui.showShipLayout(nickname, ship);
                     ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, null);
-                    ui.showKeptComponents(keptComponent);
-
+                    if (keptComponent != null) {
+                        ui.showKeptComponents(keptComponent);
+                    }
+                    if (selectedComponent==null) {
+                        ui.showBuildOptions();
+                    }
                 }
                 case FLIGTH -> {
                     ui.showShipLayout(nickname, ship);
@@ -130,7 +134,9 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     break;
                 }
                 switch (viewState) {
-                    case FIRST -> event = inputParser.parseFirstConnection(input);
+                    case FIRST -> {
+                        event = inputParser.parseFirstConnection(input);
+                    }
                     case START-> { event = inputParser.parseLogin(input);}
                     case BULDING-> { event = inputParser.parseBuilding(input, selectedComponent);}
                     case FLIGTH-> { event = inputParser.parseFlight(input);}
