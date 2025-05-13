@@ -344,6 +344,9 @@ public class AvailableComponents{
         components.add(batteryStorage17);
 
         shuffle();
+        if (components.size() > 156) {
+            components = new ArrayList<>(components.subList(0, 156));
+        }
     }
 
     /**
