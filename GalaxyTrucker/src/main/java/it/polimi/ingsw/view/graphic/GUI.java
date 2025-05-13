@@ -23,6 +23,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -302,7 +303,7 @@ public class GUI extends UI {
         grid.setPadding(new Insets(20));
         grid.setHgap(15);
         grid.setVgap(15);
-        grid.setAlignment(Pos.CENTER); // Centra il contenuto nella GridPane
+        grid.setAlignment(Pos.CENTER);
 
         int col = 0;
         int row = 0;
@@ -329,9 +330,17 @@ public class GUI extends UI {
                             "-fx-padding: 0px;"
             );
 
-            button.setOnAction(e -> {
-                System.out.println("Hai cliccato: " + component.getType());
-                // gestisci selezione...
+            // DRAG & DROP
+            Component selected = component;
+            button.setOnDragDetected(event -> {
+                Dragboard db = button.startDragAndDrop(TransferMode.MOVE);
+                ClipboardContent content = new ClipboardContent();
+                content.putString("component-selected"); // puoi migliorare l'identificazione
+                db.setContent(content);
+                db.setDragView(imgView.getImage());
+                // puoi anche notificare il ViewFlow direttamente qui
+                // esempio: viewFlow.componentSelected(selected);
+                event.consume();
             });
 
             grid.add(button, col, row);
@@ -342,7 +351,7 @@ public class GUI extends UI {
             }
         }
 
-        StackPane centeredGrid = new StackPane(grid); // Avvolge la GridPane per centrarla
+        StackPane centeredGrid = new StackPane(grid);
         centeredGrid.setPadding(new Insets(20));
 
         ScrollPane scrollPane = new ScrollPane(centeredGrid);
@@ -588,20 +597,19 @@ public class GUI extends UI {
         };
 
         GridPane grid = new GridPane();
-        grid.setHgap(2);
-        grid.setVgap(2);
+        grid.setHgap(3);
+        grid.setVgap(3);
         grid.setAlignment(Pos.CENTER);
 
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 7; col++) {
                 if (validCells[row][col]) {
                     StackPane cell = new StackPane();
-                    cell.setPrefSize(100, 110);
+                    cell.setPrefSize(103, 97);
                     cell.setStyle(
-                            "-fx-background-color: rgba(255,255,255,0.1);" +
-                                    "-fx-border-color: white;" +
-                                    "-fx-border-radius: 12px;" +
-                                    "-fx-background-radius: 12px;"
+                            "-fx-border-color: white;" +
+                                    "-fx-border-radius: 4px;" +
+                                    "-fx-background-radius: 4px;"
                     );
 
                     // Mostra componente se presente
@@ -643,12 +651,124 @@ public class GUI extends UI {
 
     @Override
     public void showTrack(Map<String, Integer> truckers) {
+        double width = 800;
+        double height = 550;
 
+        // 1. Sfondo standard
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+
+        // 2. Immagine della board (centrata sopra)
+        Image boardImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-5.png").toExternalForm());
+        ImageView boardView = new ImageView(boardImage);
+        boardView.setFitWidth(width);
+        boardView.setFitHeight(height);
+        boardView.setPreserveRatio(false);
+        boardView.setMouseTransparent(true);
+
+        // 3. Overlay dei triangoli
+        Pane overlay = new Pane();
+        double centerX = width / 2;
+        double centerY = height / 2;
+        double radiusX = 300;
+        double radiusY = 200;
+
+        // Mappa colori giocatori (puoi renderla dinamica)
+        Map<String, Color> playerColors = Map.of(
+                "RED", Color.RED,
+                "GREEN", Color.LIMEGREEN,
+                "BLUE", Color.DODGERBLUE,
+                "YELLOW", Color.GOLD
+        );
+
+        // 4. Disegna i triangoli
+        for (int i = 0; i < 24; i++) {
+            double angle = 2 * Math.PI * i / 24 - Math.PI / 2;
+            double x = centerX + radiusX * Math.cos(angle);
+            double y = centerY + radiusY * Math.sin(angle);
+
+            Polygon triangle = new Polygon();
+            triangle.getPoints().addAll(
+                    x, y - 10,
+                    x - 8, y + 6,
+                    x + 8, y + 6
+            );
+
+            triangle.setFill(Color.TRANSPARENT);
+            triangle.setStroke(Color.WHITE);
+            triangle.setStrokeWidth(2);
+
+            // Colora se qualcuno è su questa posizione
+            for (Map.Entry<String, Integer> entry : truckers.entrySet()) {
+                if (entry.getValue() == i) {
+                    String name = entry.getKey().toUpperCase();
+                    triangle.setFill(playerColors.getOrDefault(name, Color.GRAY));
+                    break;
+                }
+            }
+
+            overlay.getChildren().add(triangle);
+        }
+
+        // 5. Stack finale
+        StackPane root = new StackPane(backgroundView, boardView, overlay);
+        Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
     }
 
     @Override
     public void showBooleanOption(String message) {
+        Platform.runLater(() -> {
+            // Contenitore dell'overlay completo
+            BorderPane overlay = new BorderPane();
+            overlay.setPickOnBounds(false);
+            overlay.setMouseTransparent(false);
+            overlay.setPadding(new Insets(20));
 
+            // Titolo in alto
+            Label label = new Label(message);
+            label.setFont(Font.font("Bangers", FontWeight.BOLD, 30));
+            label.setTextFill(Color.web("#FFDE69"));
+            BorderPane.setAlignment(label, Pos.TOP_CENTER);
+            overlay.setTop(label);
+
+            // Pulsanti
+            Button acceptButton = new Button("ACCEPT");
+            Button declineButton = new Button("DECLINE");
+
+            acceptButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;"); // Verde
+            declineButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;"); // Rosso
+
+            for (Button btn : List.of(acceptButton, declineButton)) {
+                btn.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+                btn.setPrefWidth(120);
+                btn.setPrefHeight(40);
+            }
+
+            HBox buttonBox = new HBox(30, acceptButton, declineButton);
+            buttonBox.setAlignment(Pos.CENTER);
+            buttonBox.setPadding(new Insets(20, 0, 0, 0));
+            overlay.setBottom(buttonBox);
+
+            // Recupera il root corrente (StackPane)
+            StackPane root = (StackPane) stage.getScene().getRoot();
+            root.getChildren().add(overlay);
+
+            // Callback alla tua logica (da definire tu)
+            acceptButton.setOnAction(e -> {
+                root.getChildren().remove(overlay);
+                //Notifica al ViewFlow
+            });
+
+            declineButton.setOnAction(e -> {
+                root.getChildren().remove(overlay);
+                //Notifica al ViewFlow
+            });
+        });
     }
 
     @Override
@@ -658,6 +778,44 @@ public class GUI extends UI {
 
     @Override
     public void showStack(ArrayList<Card> stack) {
+        // Crea overlay grigio semi-trasparente
+        StackPane overlay = new StackPane();
+        overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6);");
+        overlay.setPickOnBounds(true); // intercetta i click
+        overlay.setMouseTransparent(false);
 
+        // Contenitore carte in orizzontale
+        HBox cardBox = new HBox(20);
+        cardBox.setAlignment(Pos.CENTER);
+
+        for (Card card : stack) {
+            ImageView cardView = new ImageView(card.getFrontImage());
+            cardView.setFitWidth(200);
+            cardView.setFitHeight(320);
+
+            // Eventuale bordo o ombra
+            cardView.setStyle("-fx-effect: dropshadow(one-pass-box, white, 6, 0, 0, 0);");
+
+            cardBox.getChildren().add(cardView);
+        }
+
+        overlay.getChildren().add(cardBox);
+        StackPane.setAlignment(cardBox, Pos.CENTER);
+
+        // Click per rimuovere overlay
+        overlay.setOnMouseClicked(e -> {
+            StackPane root = (StackPane) stage.getScene().getRoot();
+            root.getChildren().remove(overlay);
+        });
+
+        // Aggiunta al layout esistente
+        Scene currentScene = stage.getScene();
+        if (currentScene.getRoot() instanceof StackPane root) {
+            root.getChildren().add(overlay);
+        } else {
+            // Se root non è StackPane, avvolgilo
+            StackPane newRoot = new StackPane(currentScene.getRoot(), overlay);
+            currentScene.setRoot(newRoot);
+        }
     }
 }
