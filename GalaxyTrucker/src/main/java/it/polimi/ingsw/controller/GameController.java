@@ -122,7 +122,7 @@ public class GameController {
         return t.selectComponent(index, game);
     }
 
-    public void keepComponent(Trucker t, Component c) throws InvalidComponentsException {
+    public void keepComponent(Trucker t, Component c) throws InvalidComponentsException, InvalidStateException {
         t.keep(c, game);
     }
 
