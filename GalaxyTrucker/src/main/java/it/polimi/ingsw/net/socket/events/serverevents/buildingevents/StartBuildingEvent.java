@@ -24,13 +24,15 @@ public class StartBuildingEvent extends ServerEvent {
     private
     ArrayList<Card>[] stacks;
     private final SpaceShip spaceShip;
+    private int seconds;
     private AvailableComponents components;
-    public StartBuildingEvent(String username, SpaceShip spaceShip, ArrayList<Card>[] stacks, AvailableComponents availableComponents) {
+    public StartBuildingEvent(String username, SpaceShip spaceShip, ArrayList<Card>[] stacks, AvailableComponents availableComponents, int seconds) {
         super(ServerEventType.START_BUILDING, true);
         message = username + " logged\nIt's time to start building";
         this.spaceShip = spaceShip;
         this.components = availableComponents;
         this.stacks = stacks;
+        this.seconds = seconds;
     }
 
     @Override
@@ -51,4 +53,7 @@ public class StartBuildingEvent extends ServerEvent {
         visitor.visit(this);
     }
 
+    public int getSeconds() {
+        return seconds;
+    }
 }

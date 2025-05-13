@@ -63,4 +63,8 @@ public class Hourglass {
         secondiRimanenti = 90;
         startTimer(); // Avvia il nuovo timer
     }
+
+    public int getSecondiRimanenti() {
+        return secondiRimanenti;
+    }
 }

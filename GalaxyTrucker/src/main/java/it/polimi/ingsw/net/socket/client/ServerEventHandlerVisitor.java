@@ -75,11 +75,12 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.setStacks(event.getStacks());
         ui.showBuildPhaseStart(event.getComponents());
         ui.showBuildOptions();
-        viewFlow.getTimerDisplay().start();
+        viewFlow.getTimerDisplay().start(event.getSeconds());
     }
 
     @Override
     public void visit(ComponentLinkedEvent event) {
+        viewFlow.getShip()[event.getX()][event.getY()]=event.getComponent();
         ui.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
     }
 
@@ -155,7 +156,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(HourglassTurnEvent event) {
-        viewFlow.getTimerDisplay().start();
+        viewFlow.getTimerDisplay().start(event.getSeconds());
     }
 
     @Override

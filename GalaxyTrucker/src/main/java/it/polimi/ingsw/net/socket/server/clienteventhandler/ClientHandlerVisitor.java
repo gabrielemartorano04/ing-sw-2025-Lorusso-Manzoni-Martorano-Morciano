@@ -59,7 +59,8 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(DiscardTileEvent event) {
         Component component = event.getComponent();
         component.setCovered(false);
-        gameController.getGame().getComponents().getComponents().addFirst(component);
+        component.setSelected(false);
+        gameController.getGame().getComponents().getComponents().add(component);
         return new DiscardSuccessEvent();
     }
 
@@ -74,13 +75,13 @@ public class ClientHandlerVisitor implements ClientVisitor {
         Component component = event.getComponent();
         try {
             currentClient.getTrucker().keep(component,gameController.getGame());
+            return new KeptComponentEvent(component);
         } catch (InvalidComponentsException e) {
-            return new OkEvent("Component correctly kept",false);
+            return new NoAvailableSpaceError();
         }
         catch (InvalidStateException e) {
             return new BuildingStateError();
         }
-        return null;
     }
 
     @Override
@@ -91,10 +92,10 @@ public class ClientHandlerVisitor implements ClientVisitor {
         Trucker trucker= currentClient.getTrucker();
         try {
             trucker.link(component,x,y);
+            return new ComponentLinkedEvent(component, x, y);
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         }
-        return null;
     }
 
     @Override
@@ -127,7 +128,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 numLog--;
                 return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
             }
-            return new StartBuildingEvent(nickname, currentClient.getTrucker().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents());
+            return new StartBuildingEvent(nickname, currentClient.getTrucker().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents(), gameController.getGame().getHourglass().getSecondiRimanenti());
         }
         return new NoAvailableSpaceError();
     }
@@ -136,7 +137,8 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(SelectTileEvent event) {
         int index=event.getIndex();
         Component component=gameController.getGame().getComponents().getComponents().get(index);
-        gameController.getGame().getComponents().remove(index);
+        gameController.getGame().getComponents().getComponents().get(index).setSelected(true);
+        gameController.getGame().getComponents().getComponents().remove(component);
         return new ComponentSelectedEvent(component);
     }
 
@@ -154,7 +156,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         } catch (CannotTurnHourglassException e) {
             return new TurnHourglassError();
         }
-        return new OkEvent("The hourglass was turned", true);
+        return new HourglassTurnEvent(gameController.getGame().getHourglass().getSecondiRimanenti());
     }
 
     @Override

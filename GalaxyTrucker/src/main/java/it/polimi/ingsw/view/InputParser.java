@@ -54,15 +54,19 @@ public ClientEvent parseFirstConnection(String input) {
             System.out.println("Error: username and color are required.");
             return null;
         }
-        PlayerColors color=PlayerColors.BLUE;
+        PlayerColors color=null;
         switch (tokens[1].toLowerCase()) {
             case "blue": color= PlayerColors.BLUE; break;
             case "red": color = PlayerColors.RED; break;
             case "green": color = PlayerColors.GREEN; break;
             case "yellow": color = PlayerColors.YELLOW; break;
-        }
-        return new LoginEvent(tokens[0].trim(),color);
 
+        }
+        if(color!=null) {
+            return new LoginEvent(tokens[0].trim(), color);
+        }
+        System.out.println("Errore: illegal color, please write an available color");
+        return null;
     }
 
     public ClientEvent parseBuilding(String input, Component component){
