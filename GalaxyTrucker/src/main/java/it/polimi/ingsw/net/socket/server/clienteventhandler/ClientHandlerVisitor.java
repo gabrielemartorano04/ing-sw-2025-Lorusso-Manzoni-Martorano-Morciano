@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.model.BuildingState;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
@@ -89,6 +90,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         int x=event.getX();
         int y=event.getY();
         Trucker trucker= currentClient.getTrucker();
+        trucker.setBuildingState(BuildingState.LINK);
         try {
             trucker.link(component,x,y);
         } catch (InvalidStateException e) {
