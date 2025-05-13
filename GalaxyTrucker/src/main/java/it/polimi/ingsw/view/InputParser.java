@@ -33,8 +33,8 @@ public ClientEvent parseFirstConnection(String input) {
             System.out.println("Errore: numero di giocatori non valido (2-4)");
             return null;
         }
-        if (level != 0 && level != 3) {
-            System.out.println("Errore: livello non valido (0 o 3)");
+        if (level != 0 && level != 2) {
+            System.out.println("Errore: livello non valido (0 o 2)");
             return null;
         }
 

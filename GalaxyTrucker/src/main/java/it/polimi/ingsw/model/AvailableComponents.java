@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.components.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,7 +10,9 @@ import java.util.Random;
  * Class that manages the components as a whole
  */
 
-public class AvailableComponents{
+public class AvailableComponents implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private ArrayList<Component> components;
 
     /**
