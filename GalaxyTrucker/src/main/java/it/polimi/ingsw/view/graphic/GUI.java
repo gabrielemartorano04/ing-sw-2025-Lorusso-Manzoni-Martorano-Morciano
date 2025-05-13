@@ -140,6 +140,11 @@ public class GUI extends UI {
 
 
     @Override
+    public void showWelcome() {
+
+    }
+
+    @Override
     public void showInsertNumPlayers() {
         double width = 800;
         double height = 550;

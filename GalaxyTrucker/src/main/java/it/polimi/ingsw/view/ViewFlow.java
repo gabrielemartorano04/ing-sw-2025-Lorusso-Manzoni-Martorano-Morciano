@@ -31,7 +31,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private int enginePower;
     private int cannonPower;
     private int humanCount;
-    private AvailableComponents avComponents;
     private Map<String, Integer> goodsByColor;
     private Map<String, Integer> track;
     private ServerEventHandlerVisitor serverEventVisitor;
@@ -60,7 +59,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.inputParser = new InputParser();
         this.nickname = "";
         this.running = true;
-        this.avComponents = new AvailableComponents();
         ui = new TUI();
         this.viewState = ViewState.FIRST;
         this.timerDisplay = new TimerDisplay();
@@ -90,16 +88,19 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     done = true;
                 }
                 case BULDING -> {
-                    if (!(event.getEventType() == ServerEventType.COMPONENT_SELECTED)) {
-                        ui.showAvailableComponent(avComponents);
-                    }
+//                    if (!(event.getEventType() == ServerEventType.COMPONENT_SELECTED)) {
+//                        ui.showAvailableComponent(avComponents);
+//                    }
                     ui.showShipLayout(nickname, ship);
                     if (keptComponent != null) {
                         ui.showKeptComponents(keptComponent);
                     }
-                    if (selectedComponent==null) {
+                    if (getSelectedComponent() == null) {
                         ui.showBuildOptions();
                     }
+
+                    ui.showShipLayout(nickname, ship);
+
                 }
                 case FLIGTH -> {
                     ui.showShipLayout(nickname, ship);
@@ -228,10 +229,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.viewState = viewState;
     }
 
-    public void setAvComponents(AvailableComponents availableComponents) {
-        this.avComponents.getComponents().clear();
-        this.avComponents.getComponents().addAll(availableComponents.getComponents());
-    }
     public void setSelectedComponent(Component selectedComponent) {
         this.selectedComponent = selectedComponent;
     }
@@ -256,9 +253,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         return timerDisplay;
     }
 
-    public AvailableComponents getAvComponents() {
-        return avComponents;
-    }
-
+//    public void setAvComponents(AvailableComponents avComponents) {
+//        this.avComponents.getComponents().addAll(avComponents.getComponents());
+//    }
 }
 
