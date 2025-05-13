@@ -18,6 +18,7 @@ public abstract class UI {
 
     //SETUP
     public abstract void showWelcome();
+    public abstract void showWelcome(EnumSet<PlayerColors> availableColors);
     public abstract void showInsertNumPlayers();
 
     public abstract void showChooseColor(EnumSet<PlayerColors> availableColors);
@@ -94,4 +95,8 @@ public abstract class UI {
     public abstract void updateHourglass(int secondsLeft);
 
     public abstract void showStack(ArrayList<Card> stack);
+
+    public void showComponentSelected(Component component) {
+
+    }
 }

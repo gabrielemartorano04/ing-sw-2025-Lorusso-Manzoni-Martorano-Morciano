@@ -26,6 +26,11 @@ public class TUI extends UI {
     }
 
     @Override
+    public void showWelcome(EnumSet<PlayerColors> availableColors) {
+
+    }
+
+    @Override
     public void showChooseColor(EnumSet<PlayerColors> availableColors) {
         System.out.println("Colori disponibili: " + String.join(", ", availableColors.toString()));
         System.out.print("Inserisci nickname e scegli un colore: ");
@@ -368,5 +373,14 @@ public class TUI extends UI {
             System.out.printf(" [%02d] %-15s (Livello %d)%n",
                     i, card.getName(), card.getLevel());
         }
+    }
+
+    @Override
+    public void showComponentSelected(Component c) {
+        String info;
+
+        info = String.format("%s [N:%s E:%s S:%s W:%s]", c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+
+        System.out.printf(info);
     }
 }

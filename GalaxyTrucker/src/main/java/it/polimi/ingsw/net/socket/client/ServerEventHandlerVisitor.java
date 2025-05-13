@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.model.AvailableComponents;
+import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.ShowStackEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
@@ -84,18 +85,19 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.getShip()[event.getX()][event.getY()]=event.getComponent();
         viewFlow.deleteSelectedComponent();
         ui.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
+        ui.showAvailableComponent(event.getAvComponents());
     }
 
     @Override
     public void visit(ComponentNotAvailableError event) {
         ui.showError(event.getMessage());
-        ui.showMessage("Please select a component between 0 and " + (viewFlow.getAvComponents().getComponents().size()-1));
+        ui.showMessage("Please select a component between 0 and " + (event.getSize()-1));
     }
 
     @Override
     public void visit(ComponentSelectedEvent event) {
         viewFlow.setSelectedComponent(event.getComponent());
-        viewFlow.setAvComponents(event.getComponents());
+        ui.showComponentSelected(event.getComponent());
         ui.showComponentOptions();
     }
 
@@ -103,6 +105,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(DiscardSuccessEvent event) {
         ui.showDiscardComponent(viewFlow.getSelectedComponent());
         viewFlow.deleteSelectedComponent();
+        ui.showAvailableComponent(event.getAvComponents());
     }
 
     @Override
@@ -134,7 +137,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(AvailableComponentsEvent event) {
-        viewFlow.setAvComponents(event.getComponents());
         ui.showSelectComponent();
     }
 
@@ -199,6 +201,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(KeptComponentEvent event){
         viewFlow.addKeptComponent(event.getKept());
         viewFlow.deleteSelectedComponent();
+        ui.showAvailableComponent(event.getAvComponents());
     }
 
     @Override
