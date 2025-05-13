@@ -297,4 +297,9 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(ReturnStackEvent event){
         ui.showStack(event.getStack());
     }
+
+    @Override
+    public void visit(BuildingStateError event){
+        ui.showError(event.getMessage());
+    }
 }
