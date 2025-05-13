@@ -5,17 +5,22 @@ import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendBooleanEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.view.UI;
 
 import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -30,15 +35,13 @@ import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GUI extends UI {
 
     private Stage stage;
     private Scene mainScene;
+    private ClientEvent currentEvent;
 
     public GUI(Stage stage) {
         this.stage = stage;
@@ -49,8 +52,53 @@ public class GUI extends UI {
         this.stage.show();
     }
 
+    public void setCurrentEvent(ClientEvent currentEvent) {
+        this.currentEvent = currentEvent;
+    }
+
+    public ClientEvent getCurrentEvent() {
+        return currentEvent;
+    }
+
+//    @Override
+//    public void showFirstWelcome() {
+//        double width = 800;
+//        double height = 550;
+//
+//        // Immagine di sfondo
+//        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/WelcomeImage.jpeg").toExternalForm());
+//        ImageView backgroundView = new ImageView(backgroundImage);
+//        backgroundView.setFitWidth(width);
+//        backgroundView.setFitHeight(height);
+//        backgroundView.setPreserveRatio(false);
+//        backgroundView.setMouseTransparent(true);
+//
+//        // Bottone START (interattivo)
+//        Button continueButton = new Button("START");
+//        continueButton.setFont(Font.font("Bangers", 20));
+//        continueButton.setTextFill(Color.WHITE);
+//        continueButton.setStyle("-fx-background-color: rgba(255,222,105,0.7);");
+//
+//        // Azione quando si clicca il pulsante
+//        continueButton.setOnAction(e -> {
+//            showInsertNumPlayers();
+//        });
+//
+//        // Layout
+//        StackPane root = new StackPane(backgroundView, continueButton);
+//        StackPane.setAlignment(continueButton, Pos.BOTTOM_CENTER);
+//        StackPane.setMargin(continueButton, new Insets(0, 0, 25, 0));
+//
+//        Scene scene = new Scene(root, width, height);
+//        stage.setScene(scene);
+//        stage.setWidth(width);
+//        stage.setHeight(height);
+//        stage.centerOnScreen();
+//        stage.show();
+//    }
+
     @Override
-    public void showWelcome() {
+    public void showWelcome(EnumSet<PlayerColors> availableColors) {
         double width = 800;
         double height = 550;
 
@@ -62,19 +110,28 @@ public class GUI extends UI {
         backgroundView.setPreserveRatio(false);
         backgroundView.setMouseTransparent(true);
 
-        // Bottone START (solo visivo)
+        // Bottone START (interattivo)
         Button continueButton = new Button("START");
         continueButton.setFont(Font.font("Bangers", 20));
         continueButton.setTextFill(Color.WHITE);
         continueButton.setStyle("-fx-background-color: rgba(255,222,105,0.7);");
+
+        // Azione quando si clicca il pulsante
+        continueButton.setOnAction(e -> {
+            showChooseColor(availableColors);
+        });
 
         // Layout
         StackPane root = new StackPane(backgroundView, continueButton);
         StackPane.setAlignment(continueButton, Pos.BOTTOM_CENTER);
         StackPane.setMargin(continueButton, new Insets(0, 0, 25, 0));
 
-        Scene scene = new Scene(root, width, height);
-        stage.setScene(scene);
+        if (stage.getScene() == null) {
+            Scene scene = new Scene(root, width, height);
+            stage.setScene(scene);
+        } else {
+            stage.getScene().setRoot(root);
+        }
         stage.setWidth(width);
         stage.setHeight(height);
         stage.centerOnScreen();
@@ -82,6 +139,7 @@ public class GUI extends UI {
     }
 
 
+    @Override
     public void showInsertNumPlayers() {
         double width = 800;
         double height = 550;
@@ -96,13 +154,31 @@ public class GUI extends UI {
         VBox content = new VBox(20);
         content.setAlignment(Pos.CENTER);
 
-        Label questionLabel = new Label("Insert the number of truckers");
+        Label questionLabel = new Label("Insert the number of truckers and flight mode");
         questionLabel.setFont(Font.font("Bangers", javafx.scene.text.FontWeight.BOLD, 20));
         questionLabel.setTextFill(Color.web("#FFDE69"));
 
         TextField numberField = new TextField();
         numberField.setMaxWidth(200);
         numberField.setAlignment(Pos.CENTER);
+
+        ToggleGroup levelGroup = new ToggleGroup();
+        RadioButton trialButton = new RadioButton("Trial Flight");
+        trialButton.setToggleGroup(levelGroup);
+        trialButton.setUserData(0);
+        trialButton.setTextFill(Color.WHITE);
+
+        RadioButton fullButton = new RadioButton("Full Game");
+        fullButton.setToggleGroup(levelGroup);
+        fullButton.setUserData(2);
+        fullButton.setTextFill(Color.WHITE);
+
+        HBox levelBox = new HBox(20, trialButton, fullButton);
+        levelBox.setAlignment(Pos.CENTER);
+
+        Label errorLabel = new Label();
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Arial", 12));
 
         Button submitButton = new Button("START");
         submitButton.setFont(Font.font("Bangers", 16));
@@ -111,20 +187,49 @@ public class GUI extends UI {
 
         numberField.textProperty().addListener((obs, oldText, newText) -> {
             boolean valid = !newText.trim().isEmpty();
-            submitButton.setDisable(!valid);
-            submitButton.setStyle(valid ? "-fx-background-color: #FFDE69;" : "-fx-background-color: gray; -fx-text-fill: white;");
+            submitButton.setDisable(!valid || levelGroup.getSelectedToggle() == null);
+            submitButton.setStyle((valid && levelGroup.getSelectedToggle() != null) ?
+                    "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
+                    "-fx-background-color: gray; -fx-text-fill: white;");
+        });
+
+        levelGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            boolean valid = !numberField.getText().trim().isEmpty();
+            submitButton.setDisable(newToggle == null || !valid);
+            submitButton.setStyle((newToggle != null && valid) ?
+                    "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
+                    "-fx-background-color: gray; -fx-text-fill: white;");
         });
 
         submitButton.setOnAction(e -> {
             String input = numberField.getText().trim();
+            Toggle selected = levelGroup.getSelectedToggle();
+            try {
+                int num = Integer.parseInt(input);
+                if (num < 2 || num > 4) {
+                    errorLabel.setText("Number must be between 2 and 4.");
+                } else if (selected == null) {
+                    errorLabel.setText("Please select a level.");
+                } else {
+                    int level = (int) selected.getUserData();
+                    errorLabel.setText("");
+                    setCurrentEvent(new CreateGameEvent(num, level));
+                }
+            } catch (NumberFormatException ex) {
+                errorLabel.setText("Please enter a valid number.");
+            }
         });
 
-        content.getChildren().addAll(questionLabel, numberField, submitButton);
+        content.getChildren().addAll(questionLabel, numberField, levelBox, errorLabel, submitButton);
 
-        StackPane insertPane = new StackPane();
-        insertPane.getChildren().addAll(backgroundView, content);
-
-        stage.getScene().setRoot(insertPane);
+        StackPane insertPane = new StackPane(backgroundView, content);
+        if (stage.getScene() == null) {
+            Scene scene = new Scene(insertPane, width, height);
+            stage.setScene(scene);
+        } else {
+            stage.getScene().setRoot(insertPane);
+        }
+        stage.centerOnScreen();
     }
 
     @Override
@@ -139,68 +244,185 @@ public class GUI extends UI {
         backgroundView.setPreserveRatio(false);
         backgroundView.setMouseTransparent(true);
 
-        // Scritta in alto
-        Label titleLabel = new Label("Choose your colour");
-        titleLabel.setFont(Font.font("Bangers", javafx.scene.text.FontWeight.BOLD, 28));
-        titleLabel.setTextFill(Color.web("#FFDE69"));
-        titleLabel.setAlignment(Pos.CENTER);
+        Label nicknameLabel = new Label("Insert your nickname and choose a color");
+        nicknameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 24));
+        nicknameLabel.setTextFill(Color.web("#FFDE69"));
+        nicknameLabel.setAlignment(Pos.CENTER);
 
-        // Griglia dei colori
+        TextField nicknameField = new TextField();
+        nicknameField.setPromptText("Enter your nickname");
+        nicknameField.setMaxWidth(200);
+        nicknameField.setAlignment(Pos.CENTER);
+
+        Label errorLabel = new Label();
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Arial", 12));
+
         TilePane colorPane = new TilePane();
         colorPane.setHgap(15);
         colorPane.setVgap(15);
         colorPane.setAlignment(Pos.CENTER);
+
+        Map<PlayerColors, StackPane> colorBoxes = new HashMap<>();
+        final PlayerColors[] selectedColor = {null};
+
+        Button doneButton = new Button("DONE");
+        doneButton.setFont(Font.font("Bangers", 16));
+        doneButton.setDisable(true);
+        doneButton.setStyle("-fx-background-color: gray; -fx-text-fill: white;");
 
         for (PlayerColors color : availableColors) {
             Rectangle rect = new Rectangle(60, 60);
             rect.setArcWidth(18);
             rect.setArcHeight(18);
 
-            Color fxColor;
-            switch (color) {
-                case RED -> fxColor = Color.RED;
-                case GREEN -> fxColor = Color.LIMEGREEN;
-                case BLUE -> fxColor = Color.DODGERBLUE;
-                case YELLOW -> fxColor = Color.GOLD;
-                default -> fxColor = Color.GRAY;
-            }
+            Color fxColor = switch (color) {
+                case RED -> Color.RED;
+                case GREEN -> Color.LIMEGREEN;
+                case BLUE -> Color.DODGERBLUE;
+                case YELLOW -> Color.GOLD;
+                default -> Color.GRAY;
+            };
 
             rect.setFill(fxColor);
 
-            // Button trasparente sopra il rettangolo
-            Button colorButton = new Button();
-            colorButton.setPrefSize(60, 60);
-            colorButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
-            colorButton.setGraphic(rect);
+            Label checkmark = new Label("✓");
+            checkmark.setTextFill(Color.WHITE);
+            checkmark.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+            checkmark.setVisible(false);
 
-            colorButton.setOnAction(e -> {
-                // clientHandler.sendEvent(new ColorChosenEvent(color));
+            StackPane stack = new StackPane(rect, checkmark);
+            stack.setPrefSize(60, 60);
+            stack.setCursor(Cursor.HAND);
+
+            stack.setOnMouseClicked(e -> {
+                colorBoxes.values().forEach(box -> ((Label) box.getChildren().get(1)).setVisible(false));
+                checkmark.setVisible(true);
+                selectedColor[0] = color;
+
+                boolean nicknameOk = !nicknameField.getText().trim().isEmpty();
+                doneButton.setDisable(!nicknameOk);
+                doneButton.setStyle(nicknameOk ?
+                        "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
+                        "-fx-background-color: gray; -fx-text-fill: white;");
             });
 
-            colorPane.getChildren().add(colorButton);
+            colorBoxes.put(color, stack);
+            colorPane.getChildren().add(stack);
         }
 
-        VBox content = new VBox(20);
+        doneButton.setOnAction(e -> {
+            String nickname = nicknameField.getText().trim();
+            if (nickname.isEmpty()) {
+                errorLabel.setText("Please enter a nickname.");
+            } else if (selectedColor[0] == null) {
+                errorLabel.setText("Please choose a color.");
+            } else {
+                errorLabel.setText("");
+                setCurrentEvent(new LoginEvent(nickname, selectedColor[0]));
+            }
+        });
+
+        nicknameField.textProperty().addListener((obs, oldText, newText) -> {
+            boolean nicknameOk = !newText.trim().isEmpty();
+            boolean colorOk = selectedColor[0] != null;
+            doneButton.setDisable(!(nicknameOk && colorOk));
+            doneButton.setStyle((nicknameOk && colorOk) ?
+                    "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
+                    "-fx-background-color: gray; -fx-text-fill: white;");
+        });
+
+        VBox content = new VBox();
         content.setAlignment(Pos.CENTER);
         content.setPadding(new Insets(40));
-        content.getChildren().addAll(titleLabel, colorPane);
+
+        // Controlla la distanza tra i singoli elementi
+        VBox.setMargin(nicknameLabel, new Insets(0, 0, 30, 0));
+        VBox.setMargin(nicknameField, new Insets(0, 0, 30, 0));
+        VBox.setMargin(colorPane, new Insets(0, 0, 20, 0));
+        VBox.setMargin(doneButton, new Insets(5, 0, 0, 0));
+        VBox.setMargin(errorLabel, new Insets(5, 0, 0, 0));
+
+        content.getChildren().addAll(
+                nicknameLabel,
+                nicknameField,
+                colorPane,
+                doneButton,
+                errorLabel
+        );
 
         StackPane root = new StackPane(backgroundView, content);
         StackPane.setAlignment(content, Pos.CENTER);
 
-        Scene scene = new Scene(root, width, height);
-        stage.setScene(scene);
+        if (stage.getScene() == null) {
+            Scene scene = new Scene(root, width, height);
+            stage.setScene(scene);
+        } else {
+            stage.getScene().setRoot(root);
+        }
         stage.centerOnScreen();
     }
 
     @Override
     public void showColorTaken() {
+        // Overlay grigio trasparente
+        Rectangle overlay = new Rectangle(stage.getScene().getWidth(), stage.getScene().getHeight());
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4)); // grigio semi-trasparente
 
+        // Messaggio di errore
+        Label errorLabel = new Label("ERROR! Color already taken");
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 28));
+        errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
+
+        StackPane popup = new StackPane(overlay, errorLabel);
+        popup.setMouseTransparent(true); // non blocca i click
+        StackPane.setAlignment(errorLabel, Pos.CENTER);
+
+        // Recupera il root corrente
+        Parent currentRoot = stage.getScene().getRoot();
+        if (currentRoot instanceof Pane parent) {
+            parent.getChildrenUnmodifiable().addListener((ListChangeListener<Node>) change -> {
+                // evita il crash se la GUI cambia in mezzo
+                if (!parent.getChildren().contains(popup)) return;
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                delay.setOnFinished(e -> parent.getChildren().remove(popup));
+                delay.play();
+            });
+
+            parent.getChildren().add(popup);
+        }
     }
 
     @Override
     public void showNicknameTaken() {
+        // Overlay grigio trasparente
+        Rectangle overlay = new Rectangle(stage.getScene().getWidth(), stage.getScene().getHeight());
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4)); // grigio semi-trasparente
 
+        // Messaggio di errore
+        Label errorLabel = new Label("ERROR! Nickname already taken");
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 28));
+        errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
+
+        StackPane popup = new StackPane(overlay, errorLabel);
+        popup.setMouseTransparent(true); // non blocca i click
+        StackPane.setAlignment(errorLabel, Pos.CENTER);
+
+        // Recupera il root corrente
+        Parent currentRoot = stage.getScene().getRoot();
+        if (currentRoot instanceof Pane parent) {
+            parent.getChildrenUnmodifiable().addListener((ListChangeListener<Node>) change -> {
+                // evita il crash se la GUI cambia in mezzo
+                if (!parent.getChildren().contains(popup)) return;
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                delay.setOnFinished(e -> parent.getChildren().remove(popup));
+                delay.play();
+            });
+
+            parent.getChildren().add(popup);
+        }
     }
 
     @Override
@@ -274,17 +496,123 @@ public class GUI extends UI {
 
     @Override
     public void showStartCountdown(int secondsLeft) {
+        double width = 800;
+        double height = 550;
 
+        // Sfondo
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        // Testo statico
+        Label message = new Label("The flight will start in...");
+        message.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
+        message.setTextFill(Color.web("#FFDE69"));
+
+        // Etichetta countdown
+        Label countdownLabel = new Label();
+        countdownLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 80));
+        countdownLabel.setTextFill(Color.WHITE);
+
+        VBox content = new VBox(30, message, countdownLabel);
+        content.setAlignment(Pos.CENTER);
+
+        StackPane root = new StackPane(backgroundView, content);
+        Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+
+        // Timeline per il countdown
+        Timeline timeline = new Timeline();
+        for (int i = secondsLeft; i > 0; i--) {
+            int current = i;
+            timeline.getKeyFrames().add(
+                    new KeyFrame(Duration.seconds(secondsLeft - i), e -> {
+                        countdownLabel.setText(String.valueOf(current));
+                        countdownLabel.setTextFill(Color.web("#FFDE69"));
+                    })
+            );
+        }
+
+        // Mostra GO!
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(secondsLeft), e -> {
+                    countdownLabel.setText("GO!");
+                    countdownLabel.setTextFill(Color.web("#FFDE69"));
+                })
+        );
+
+        // Mantiene visibile "GO!" per un altro secondo
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(secondsLeft + 1))
+        );
+
+        timeline.play();
     }
 
     @Override
     public void showSetupComplete() {
+        double width = 800;
+        double height = 550;
 
+        // Sfondo
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        // Testo centrale
+        Label message = new Label("Everything is ready to play");
+        message.setFont(Font.font("Bangers", FontWeight.BOLD, 40));
+        message.setTextFill(Color.web("#FFDE69"));
+
+        StackPane root = new StackPane(backgroundView, message);
+        StackPane.setAlignment(message, Pos.CENTER);
+
+        Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
     }
 
     @Override
     public void showBuildPhaseStart(AvailableComponents availableComponents) {
+        double width = 800;
+        double height = 550;
 
+        // Sfondo
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        // Testo centrale
+        Label message = new Label("Start building your spaceship");
+        message.setFont(Font.font("Bangers", FontWeight.BOLD, 40));
+        message.setTextFill(Color.web("#FFDE69"));
+
+        StackPane root = new StackPane(backgroundView, message);
+        StackPane.setAlignment(message, Pos.CENTER);
+
+        // Mostra la scena (solo se non esiste già)
+        if (stage.getScene() == null) {
+            Scene scene = new Scene(root, width, height);
+            stage.setScene(scene);
+        } else {
+            stage.getScene().setRoot(root);
+        }
+        stage.centerOnScreen();
+
+        // Dopo 3 secondi, mostra i componenti disponibili
+        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+        delay.setOnFinished(e -> showAvailableComponent(availableComponents));
+        delay.play();
     }
 
     @Override
@@ -366,14 +694,107 @@ public class GUI extends UI {
 
     @Override
     public void showKeptComponents(List<Component> kept) {
+        double width = 800;
+        double height = 550;
 
+        // Sfondo della griglia
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        // Container dei due slot
+        HBox keptSlots = new HBox(10);
+        keptSlots.setMaxWidth(200);
+        keptSlots.setAlignment(Pos.TOP_RIGHT);
+
+        for (int i = 0; i < 2; i++) {
+            StackPane slot = new StackPane();
+            slot.setPrefSize(85, 85);
+            slot.setMinSize(85, 85);
+            slot.setMaxSize(85, 85);
+            slot.setStyle("-fx-background-color: transparent;");
+
+            Rectangle border = new Rectangle(85, 85);
+            border.setArcWidth(12);
+            border.setArcHeight(12);
+            border.setFill(Color.TRANSPARENT);
+            border.setStroke(Color.WHITE);
+            border.setStrokeWidth(2);
+
+            int index = i;
+
+            // Se esiste un componente, mostralo
+            if (i < kept.size() && kept.get(i) != null) {
+                Component comp = kept.get(i);
+                ImageView imageView = new ImageView(comp.getFrontImage());
+                imageView.setFitWidth(85);
+                imageView.setFitHeight(85);
+
+                // Clip con angoli smussati
+                Rectangle clip = new Rectangle(85, 85);
+                clip.setArcWidth(16);
+                clip.setArcHeight(16);
+                imageView.setClip(clip);
+
+                // Drag source
+                imageView.setOnDragDetected(event -> {
+                    Dragboard db = imageView.startDragAndDrop(TransferMode.MOVE);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putString("kept:" + index); // es. "kept:0"
+                    db.setContent(content);
+                    db.setDragView(imageView.snapshot(null, null));
+                    event.consume();
+                });
+
+                slot.getChildren().addAll(border, imageView);
+            } else {
+                // Slot vuoto solo con bordo
+                slot.getChildren().add(border);
+            }
+
+            // Drop target
+            slot.setOnDragOver(event -> {
+                if (event.getGestureSource() != slot && event.getDragboard().hasString()) {
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                event.consume();
+            });
+
+            slot.setOnDragDropped(event -> {
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                if (db.hasString()) {
+                    String data = db.getString(); // es. "component:42" oppure "kept:0"
+                    System.out.println("Drop sul kept slot " + index + ": " + data);
+                    success = true;
+                }
+                event.setDropCompleted(success);
+                event.consume();
+            });
+
+            keptSlots.getChildren().add(slot);
+        }
+
+        // Posizionamento preciso in alto a destra
+        StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
+        StackPane.setMargin(keptSlots, new Insets(25, 30, 0, 0));
+
+        // Layout principale
+        StackPane root = new StackPane(backgroundView);
+        root.getChildren().add(keptSlots);
+
+        Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
     }
 
     @Override
     public void showSelectComponent() {
 
     }
-    //Viene chiamato subito dopo available components (ma non devi farlo tu) e attraverso drag and drop, quando viene selezionato il componente si chiude l'elenco dei componenti creato in showAvailableCompionent e viene mostrata la nave alla quale si può agganciare
 
     @Override
     public void showBuildOptions() {
@@ -722,52 +1143,50 @@ public class GUI extends UI {
 
     @Override
     public void showBooleanOption(String message) {
-        Platform.runLater(() -> {
-            // Contenitore dell'overlay completo
-            BorderPane overlay = new BorderPane();
-            overlay.setPickOnBounds(false);
-            overlay.setMouseTransparent(false);
-            overlay.setPadding(new Insets(20));
+        // Contenitore dell'overlay completo
+        BorderPane overlay = new BorderPane();
+        overlay.setPickOnBounds(false);
+        overlay.setMouseTransparent(false);
+        overlay.setPadding(new Insets(20));
 
-            // Titolo in alto
-            Label label = new Label(message);
-            label.setFont(Font.font("Bangers", FontWeight.BOLD, 30));
-            label.setTextFill(Color.web("#FFDE69"));
-            BorderPane.setAlignment(label, Pos.TOP_CENTER);
-            overlay.setTop(label);
+        // Titolo in alto
+        Label label = new Label(message);
+        label.setFont(Font.font("Bangers", FontWeight.BOLD, 30));
+        label.setTextFill(Color.web("#FFDE69"));
+        BorderPane.setAlignment(label, Pos.TOP_CENTER);
+        overlay.setTop(label);
 
-            // Pulsanti
-            Button acceptButton = new Button("ACCEPT");
-            Button declineButton = new Button("DECLINE");
+        // Pulsanti
+        Button acceptButton = new Button("ACCEPT");
+        Button declineButton = new Button("DECLINE");
 
-            acceptButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;"); // Verde
-            declineButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;"); // Rosso
+        acceptButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;"); // Verde
+        declineButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;"); // Rosso
 
-            for (Button btn : List.of(acceptButton, declineButton)) {
-                btn.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-                btn.setPrefWidth(120);
-                btn.setPrefHeight(40);
-            }
+        for (Button btn : List.of(acceptButton, declineButton)) {
+            btn.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+            btn.setPrefWidth(120);
+            btn.setPrefHeight(40);
+        }
 
-            HBox buttonBox = new HBox(30, acceptButton, declineButton);
-            buttonBox.setAlignment(Pos.CENTER);
-            buttonBox.setPadding(new Insets(20, 0, 0, 0));
-            overlay.setBottom(buttonBox);
+        HBox buttonBox = new HBox(30, acceptButton, declineButton);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(20, 0, 0, 0));
+        overlay.setBottom(buttonBox);
 
-            // Recupera il root corrente (StackPane)
-            StackPane root = (StackPane) stage.getScene().getRoot();
-            root.getChildren().add(overlay);
+        // Recupera il root corrente (StackPane)
+        StackPane root = (StackPane) stage.getScene().getRoot();
+        root.getChildren().add(overlay);
 
-            // Callback alla tua logica (da definire tu)
-            acceptButton.setOnAction(e -> {
-                root.getChildren().remove(overlay);
-                //Notifica al ViewFlow
-            });
+        // Callback alla tua logica (da definire tu)
+        acceptButton.setOnAction(e -> {
+            root.getChildren().remove(overlay);
+            setCurrentEvent(new SendBooleanEvent(true));
+        });
 
-            declineButton.setOnAction(e -> {
-                root.getChildren().remove(overlay);
-                //Notifica al ViewFlow
-            });
+        declineButton.setOnAction(e -> {
+            root.getChildren().remove(overlay);
+            setCurrentEvent(new SendBooleanEvent(false));
         });
     }
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.model.components.Component;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -19,20 +20,32 @@ public class GUIApplication extends Application {
     private SpaceShip spaceship;
     private ArrayList<Card> stack;
     private Map<String, Integer> mockTrack;
+    private ArrayList<Component> kept;
 
 
     @Override
     public void start(Stage primaryStage) {
         AvailableComponents components = new AvailableComponents();
         SpaceShip spaceship = new SpaceShip();
+        ArrayList<Component> kept = new ArrayList<>();
+        kept.add(components.getComponents().get(15));
+        kept.add(components.getComponents().get(130));
         Map<String, Integer> mockTrack = new HashMap<>();
         mockTrack.put("RED", 0);
         mockTrack.put("GREEN", 5);
         mockTrack.put("BLUE", 12);
         mockTrack.put("YELLOW", 20);
         GUI gui = new GUI(primaryStage);
+
         //gui.showTrack(mockTrack);
         gui.showShipLayout("Luca", spaceship.getComponents());
+        //gui.showChooseColor(EnumSet.allOf(PlayerColors.class));
+        //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
+        //gui.showInsertNumPlayers();
+        //gui.showNicknameTaken();
+        //gui.showStartCountdown(3);
+        //gui.showBuildPhaseStart(components);
+        gui.showKeptComponents(kept);
     }
 
     public static void main(String[] args) {
