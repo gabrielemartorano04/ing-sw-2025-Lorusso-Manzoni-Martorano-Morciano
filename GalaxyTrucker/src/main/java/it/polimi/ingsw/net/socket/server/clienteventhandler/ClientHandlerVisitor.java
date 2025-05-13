@@ -156,7 +156,11 @@ public class ClientHandlerVisitor implements ClientVisitor {
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         }
-
+        int i=0;
+        for(Component c: gameController.getGame().getComponents().getComponents()){
+            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
+            i++;
+        }
         return new ComponentSelectedEvent(component);
     }
 

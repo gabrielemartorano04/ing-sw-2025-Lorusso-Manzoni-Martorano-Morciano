@@ -99,8 +99,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                         ui.showBuildOptions();
                     }
 
-                    ui.showShipLayout(nickname, ship);
-
                 }
                 case FLIGTH -> {
                     ui.showShipLayout(nickname, ship);
