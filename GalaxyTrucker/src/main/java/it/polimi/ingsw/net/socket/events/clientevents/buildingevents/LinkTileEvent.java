@@ -1,5 +1,6 @@
 package it.polimi.ingsw.net.socket.events.clientevents.buildingevents;
 
+import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
@@ -11,9 +12,11 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
  */
 public class LinkTileEvent extends ClientEvent {
     private String  message;
+    private Component component;
     private int x,y;
-    public LinkTileEvent( int x, int y) {
+    public LinkTileEvent(Component component, int x, int y) {
         super(ClientEventType.LINK_TILE, false);
+        this.component = component;
         this.x = x;
         this.y = y;
         message="I want to link the selected component in position ("+x+", "+y+")";
@@ -24,6 +27,11 @@ public class LinkTileEvent extends ClientEvent {
     public int getY() {
         return y;
     }
+
+    public Component getComponent() {
+        return component;
+    }
+
     @Override
     public String getMessage() {
         return message;
