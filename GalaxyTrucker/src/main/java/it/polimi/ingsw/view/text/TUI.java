@@ -62,20 +62,36 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showBuildPhaseStart() {
+    public void showBuildPhaseStart(AvailableComponents availableComponents) {
         System.out.println("\nInizio della fase di BUILDING. Costruisci la tua nave!");
+        showAvailableComponent(availableComponents);
     }
 
     @Override
     public void showAvailableComponent(AvailableComponents components) {
         System.out.println("=== Componenti disponibili ===");
-        for (int i = 0; i < components.getComponents().size(); i++) {
-            Component c = components.getComponents().get(i);
-            String info = c.getCovered()
-                    ? c.getType() + " (coperto)"
-                    : String.format("%s [N:%s E:%s S:%s W:%s]",
-                    c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
-            System.out.println(i + ") " + info);
+        ArrayList<Component> compList = components.getComponents();
+
+        int numCols = 3;
+        int total = compList.size();
+
+        for (int i = 0; i < total; i++) {
+            Component c = compList.get(i);
+            String info;
+
+            if (c.getCovered()) {
+                info = "coperto";
+            } else {
+                info = String.format("%s [N:%s E:%s S:%s W:%s]",
+                        c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+            }
+
+            System.out.printf("%2d) %-30s", i, info);
+
+            // Vai a capo ogni 3 elementi
+            if ((i + 1) % numCols == 0 || i == total - 1) {
+                System.out.println();
+            }
         }
     }
 
@@ -96,13 +112,13 @@ public class TUI extends UI {
 
     @Override
     public void showComponentOptions() {
-        System.out.println("Opzioni disponibili: [Link] [Keep] [Discard]");
+        System.out.println("Opzioni disponibili: [Link x y (to link the component in the position x y of your spaceship)] [Keep] [Discard]");
         System.out.print("Scegli azione: ");
     }
 
     @Override
     public void showBuildOptions() {
-        System.out.println("Opzioni disponibili: [Turn Hourglass] [Select Component] [Show Stack] [End]");
+        System.out.println("Opzioni disponibili: [Hourglass (to turn hourglass when ended] [Component x (to select component x form the list)] [Stack x (to show stack x)] [End]");
         System.out.print("Scegli azione: ");
     }
 

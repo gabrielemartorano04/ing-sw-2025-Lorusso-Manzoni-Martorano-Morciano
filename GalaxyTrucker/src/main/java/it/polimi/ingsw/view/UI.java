@@ -31,7 +31,7 @@ public abstract class UI {
     public abstract void showSetupComplete();
 
     //BUILDING
-    public abstract void showBuildPhaseStart();
+    public abstract void showBuildPhaseStart(AvailableComponents availableComponents);
 
     public abstract void showAvailableComponent(AvailableComponents components);
     public abstract void showKeptComponents(List<Component> kept);
