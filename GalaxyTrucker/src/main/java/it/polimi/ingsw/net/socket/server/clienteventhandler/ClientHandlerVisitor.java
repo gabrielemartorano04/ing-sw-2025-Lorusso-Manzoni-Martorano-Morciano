@@ -74,7 +74,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         try {
             currentClient.getTrucker().keep(component,gameController.getGame());
         } catch (InvalidComponentsException e) {
-            return new
+
         }
         catch (InvalidStateException e) {
 

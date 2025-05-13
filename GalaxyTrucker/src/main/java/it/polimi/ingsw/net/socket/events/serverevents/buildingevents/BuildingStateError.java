@@ -11,6 +11,11 @@ public class BuildingStateError extends ServerEvent {
     }
 
     @Override
+    public String getMessage() {
+        return "You are in the wrong state";
+    }
+
+    @Override
     public void call(ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
     }
