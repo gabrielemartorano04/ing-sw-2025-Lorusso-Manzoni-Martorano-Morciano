@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.DiscardTileEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.KeepTileEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.LinkTileEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendBooleanEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
@@ -42,6 +45,7 @@ public class GUI extends UI {
     private Stage stage;
     private Scene mainScene;
     private ClientEvent currentEvent;
+    private Component selectedComponent;
 
     public GUI(Stage stage) {
         this.stage = stage;
@@ -630,7 +634,6 @@ public class GUI extends UI {
         backgroundView.setFitWidth(width);
         backgroundView.setFitHeight(height);
         backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20));
@@ -641,9 +644,7 @@ public class GUI extends UI {
         int col = 0;
         int row = 0;
         for (Component component : components.getComponents()) {
-            ImageView imgView = new ImageView(
-                    component.getCovered() ? component.getBackImage() : component.getFrontImage()
-            );
+            ImageView imgView = new ImageView(component.getCovered() ? component.getBackImage() : component.getFrontImage());
             imgView.setFitWidth(100);
             imgView.setFitHeight(100);
 
@@ -655,25 +656,20 @@ public class GUI extends UI {
             Button button = new Button();
             button.setGraphic(imgView);
             button.setPrefSize(100, 100);
-            button.setStyle(
-                    "-fx-background-color: transparent;" +
-                            "-fx-border-color: #cccccc;" +
-                            "-fx-border-radius: 8px;" +
-                            "-fx-cursor: hand;" +
-                            "-fx-padding: 0px;"
-            );
+            button.setStyle("-fx-background-color: transparent; -fx-border-color: #cccccc; -fx-border-radius: 8px; -fx-cursor: hand; -fx-padding: 0px;");
 
-            // DRAG & DROP
-            Component selected = component;
-            button.setOnDragDetected(event -> {
-                Dragboard db = button.startDragAndDrop(TransferMode.MOVE);
-                ClipboardContent content = new ClipboardContent();
-                content.putString("component-selected"); // puoi migliorare l'identificazione
-                db.setContent(content);
-                db.setDragView(imgView.getImage());
-                // puoi anche notificare il ViewFlow direttamente qui
-                // esempio: viewFlow.componentSelected(selected);
-                event.consume();
+            button.setOnAction(e -> {
+                selectedComponent = component;
+                if (component.getCovered()) {
+                    showSelectComponent();
+                } else {
+                    // Start drag directly
+                    Dragboard db = button.startDragAndDrop(TransferMode.MOVE);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putString("component");
+                    db.setContent(content);
+                    db.setDragView(imgView.getImage());
+                }
             });
 
             grid.add(button, col, row);
@@ -684,10 +680,7 @@ public class GUI extends UI {
             }
         }
 
-        StackPane centeredGrid = new StackPane(grid);
-        centeredGrid.setPadding(new Insets(20));
-
-        ScrollPane scrollPane = new ScrollPane(centeredGrid);
+        ScrollPane scrollPane = new ScrollPane(new StackPane(grid));
         scrollPane.setFitToWidth(true);
         scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 
@@ -699,18 +692,6 @@ public class GUI extends UI {
 
     @Override
     public void showKeptComponents(List<Component> kept) {
-        double width = 800;
-        double height = 550;
-
-        // Sfondo della griglia
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
-
-        // Container dei due slot
         HBox keptSlots = new HBox(10);
         keptSlots.setMaxWidth(200);
         keptSlots.setAlignment(Pos.TOP_RIGHT);
@@ -731,36 +712,32 @@ public class GUI extends UI {
 
             int index = i;
 
-            // Se esiste un componente, mostralo
             if (i < kept.size() && kept.get(i) != null) {
                 Component comp = kept.get(i);
                 ImageView imageView = new ImageView(comp.getFrontImage());
                 imageView.setFitWidth(85);
                 imageView.setFitHeight(85);
 
-                // Clip con angoli smussati
                 Rectangle clip = new Rectangle(85, 85);
                 clip.setArcWidth(16);
                 clip.setArcHeight(16);
                 imageView.setClip(clip);
 
-                // Drag source
                 imageView.setOnDragDetected(event -> {
                     Dragboard db = imageView.startDragAndDrop(TransferMode.MOVE);
                     ClipboardContent content = new ClipboardContent();
-                    content.putString("kept:" + index); // es. "kept:0"
+                    content.putString("kept:" + index);
                     db.setContent(content);
                     db.setDragView(imageView.snapshot(null, null));
+                    selectedComponent = comp;
                     event.consume();
                 });
 
                 slot.getChildren().addAll(border, imageView);
             } else {
-                // Slot vuoto solo con bordo
                 slot.getChildren().add(border);
             }
 
-            // Drop target
             slot.setOnDragOver(event -> {
                 if (event.getGestureSource() != slot && event.getDragboard().hasString()) {
                     event.acceptTransferModes(TransferMode.MOVE);
@@ -770,35 +747,77 @@ public class GUI extends UI {
 
             slot.setOnDragDropped(event -> {
                 Dragboard db = event.getDragboard();
-                boolean success = false;
                 if (db.hasString()) {
-                    String data = db.getString(); // es. "component:42" oppure "kept:0"
-                    System.out.println("Drop sul kept slot " + index + ": " + data);
-                    success = true;
+                    setCurrentEvent(new KeepTileEvent(selectedComponent));
+                    selectedComponent = null;
+                    event.setDropCompleted(true);
                 }
-                event.setDropCompleted(success);
                 event.consume();
             });
 
             keptSlots.getChildren().add(slot);
         }
 
-        // Posizionamento preciso in alto a destra
         StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
         StackPane.setMargin(keptSlots, new Insets(25, 30, 0, 0));
 
-        // Layout principale
-        StackPane root = new StackPane(backgroundView);
-        root.getChildren().add(keptSlots);
-
-        Scene scene = new Scene(root, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
+        Platform.runLater(() -> {
+            Node rootNode = stage.getScene().getRoot();
+            if (rootNode instanceof StackPane stackRoot) {
+                if (!stackRoot.getChildren().contains(keptSlots)) {
+                    stackRoot.getChildren().add(keptSlots);
+                }
+            }
+        });
     }
 
     @Override
     public void showSelectComponent() {
+        double width = 800;
+        double height = 550;
+        if (selectedComponent == null) return;
 
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+
+        ImageView imgView = new ImageView(selectedComponent.getFrontImage());
+        imgView.setFitWidth(150);
+        imgView.setFitHeight(150);
+        Rectangle clip = new Rectangle(150, 150);
+        clip.setArcWidth(20);
+        clip.setArcHeight(20);
+        imgView.setClip(clip);
+
+        // Drag and drop da questa view
+        imgView.setOnDragDetected(e -> {
+            Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.putString("component");
+            db.setContent(content);
+            db.setDragView(imgView.snapshot(null, null));
+            e.consume();
+        });
+
+        // Pulsante per scartare
+        Button discardButton = new Button("DISCARD");
+        discardButton.setStyle("-fx-background-color: darkred; -fx-text-fill: white; -fx-font-weight: bold;");
+        discardButton.setOnAction(e -> {
+            setCurrentEvent(new DiscardTileEvent(selectedComponent));
+        });
+
+        layout.getChildren().addAll(imgView, discardButton);
+
+        StackPane root = new StackPane(backgroundView, layout);
+        Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
     }
 
     @Override
@@ -808,7 +827,8 @@ public class GUI extends UI {
 
     @Override
     public void showDiscardComponent(Component component) {
-
+        selectedComponent = component;
+        showSelectComponent();
     }
 
     @Override
@@ -1005,7 +1025,6 @@ public class GUI extends UI {
         double width = 800;
         double height = 550;
 
-        // Sfondo
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpg").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(width);
@@ -1013,7 +1032,6 @@ public class GUI extends UI {
         backgroundView.setPreserveRatio(false);
         backgroundView.setMouseTransparent(true);
 
-        // Matrice attiva (celle cliccabili)
         boolean[][] validCells = {
                 {false, false, true,  false,  true, false, false},
                 {false, true,  true,  true,  true, true,  false},
@@ -1029,38 +1047,47 @@ public class GUI extends UI {
 
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 7; col++) {
-                if (validCells[row][col]) {
-                    StackPane cell = new StackPane();
-                    cell.setPrefSize(103, 97);
-                    cell.setStyle(
-                            "-fx-border-color: white;" +
-                                    "-fx-border-radius: 4px;" +
-                                    "-fx-background-radius: 4px;"
-                    );
+                StackPane cell = new StackPane();
+                cell.setPrefSize(103, 97);
 
-                    // Mostra componente se presente
+                if (validCells[row][col]) {
+                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 4px; -fx-background-radius: 4px;");
+
                     Component c = layout[row][col];
                     if (c != null && !c.getCovered()) {
                         ImageView imageView = new ImageView(c.getFrontImage());
                         imageView.setFitWidth(70);
                         imageView.setFitHeight(70);
-
-                        // Clip con angoli smussati
                         Rectangle clip = new Rectangle(65, 65);
                         clip.setArcWidth(16);
                         clip.setArcHeight(16);
                         imageView.setClip(clip);
-
                         cell.getChildren().add(imageView);
                     }
 
-                    grid.add(cell, col, row);
+                    final int r = row;
+                    final int cIndex = col;
+                    cell.setOnDragOver(event -> {
+                        if (event.getGestureSource() != cell && event.getDragboard().hasString()) {
+                            event.acceptTransferModes(TransferMode.MOVE);
+                        }
+                        event.consume();
+                    });
+
+                    cell.setOnDragDropped(event -> {
+                        Dragboard db = event.getDragboard();
+                        if (db.hasString()) {
+                            setCurrentEvent(new LinkTileEvent(selectedComponent, r, cIndex));
+                            selectedComponent = null;
+                            event.setDropCompleted(true);
+                        }
+                        event.consume();
+                    });
                 } else {
-                    // Spazio vuoto per mantenere la griglia centrata
-                    Region spacer = new Region();
-                    spacer.setPrefSize(80, 80);
-                    grid.add(spacer, col, row);
+                    cell.setStyle("-fx-background-color: transparent;");
                 }
+
+                grid.add(cell, col, row);
             }
         }
 
