@@ -150,6 +150,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         Component component=null;
         try {
             component = trucker.selectComponent(index,gameController.getGame());
+            component.setSelected(true);
         } catch (InvalidComponentsException e) {
             return new ComponentNotAvailableError();
         } catch (InvalidStateException e) {
