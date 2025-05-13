@@ -63,7 +63,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         component.setSelected(false);
         gameController.getGame().getComponents().getComponents().add(component);
         currentClient.getTrucker().setBuildingState(BuildingState.BUILDING);
-        return new DiscardSuccessEvent();
+        return new DiscardSuccessEvent(gameController.getGame().getComponents());
     }
 
     @Override
@@ -78,7 +78,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         currentClient.getTrucker().setBuildingState(BuildingState.KEEP);
         try {
             currentClient.getTrucker().keep(component,gameController.getGame());
-            return new KeptComponentEvent(component);
+            return new KeptComponentEvent(component,gameController.getGame().getComponents());
         } catch (InvalidComponentsException e) {
             return new NoAvailableSpaceError();
         }
@@ -96,7 +96,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         trucker.setBuildingState(BuildingState.LINK);
         try {
             trucker.link(component,x,y);
-            return new ComponentLinkedEvent(component, x, y);
+            return new ComponentLinkedEvent(component, x, y,gameController.getGame().getComponents());
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         } catch (InvalidCoordinates e) {
@@ -157,7 +157,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             return new BuildingStateError();
         }
 
-        return new ComponentSelectedEvent(component, gameController.getGame().getComponents());
+        return new ComponentSelectedEvent(component);
     }
 
     @Override
