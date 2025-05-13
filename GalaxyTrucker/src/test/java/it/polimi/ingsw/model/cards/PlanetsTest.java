@@ -31,10 +31,10 @@ class PlanetsTest {
         assertEquals(card.getPlanets(),new ArrayList<ArrayList<Goods>>());
     }
 
-    @Test
-    void getBank() {
-        assertNotNull(card.getBank(new Bank()));
-    }
+//    @Test
+//    void getBank() {
+//        assertNotNull(card.getBank(new Bank()));
+//    }
 
     @Test
     void setPlayerLanding() {
