@@ -40,16 +40,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showWelcome();
         System.out.println("Ho ricevuto: "+ event.getEventType());
         ui.showChooseColor(event.getColors());
-        ui.showcolor
-                tui
-                    ui.showWelcome();
-                    System.out.println("Ho ricevuto: "+ event.getEventType());
-                    ui.showChooseColor(event.getColors());
-                gui
-                    ui.showWelcome();
-                    start -- b..
-                    System.out.println("Ho ricevuto: "+ event.getEventType());
-                    ui.showChooseColor(event.getColors());
     }
 
     @Override

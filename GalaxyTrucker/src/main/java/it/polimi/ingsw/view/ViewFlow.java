@@ -75,14 +75,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         if(event.getEventType()==ServerEventType.FIRST_CONNECTION){
             ui.showWelcome();
             ui.showInsertNumPlayers();
-            ui.showfirst
-                    tui
-                        ui.showWelcome();
-                        ui.showInsertNumPlayers();
-                    gui
-                        ui.showWelcome();
-                        start buttom -- se premuto chiama:
-                        ui.showInsertNumPlayers();
         } else {
             if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS || event.getEventType()==ServerEventType.COMPONENT_LINKED
             || event.getEventType()==ServerEventType.COMPONENT_SELECTED || event.getEventType()==ServerEventType.DISCART_SUCCESS) {
