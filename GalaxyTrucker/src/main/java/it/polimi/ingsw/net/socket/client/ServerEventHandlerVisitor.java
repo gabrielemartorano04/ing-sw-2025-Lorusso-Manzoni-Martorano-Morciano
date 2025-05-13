@@ -81,6 +81,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(ComponentLinkedEvent event) {
         viewFlow.getShip()[event.getX()][event.getY()]=event.getComponent();
+        viewFlow.deleteSelectedComponent();
         ui.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
     }
 
@@ -194,6 +195,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(KeptComponentEvent event){
         viewFlow.addKeptComponent(event.getKept());
+        viewFlow.deleteSelectedComponent();
     }
 
     @Override

@@ -93,7 +93,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                         ui.showAvailableComponent(avComponents);
                     }
                     ui.showShipLayout(nickname, ship);
-                    ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, null);
                     if (keptComponent != null) {
                         ui.showKeptComponents(keptComponent);
                     }
