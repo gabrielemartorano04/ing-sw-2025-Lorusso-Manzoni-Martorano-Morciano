@@ -142,6 +142,9 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(SelectTileEvent event) {
         int index=event.getIndex();
+        if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
+            return new ComponentNotAvailableError();
+        }
         Trucker trucker=currentClient.getTrucker();
         Component component=gameController.getGame().getComponents().getComponents().get(index);
         trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
