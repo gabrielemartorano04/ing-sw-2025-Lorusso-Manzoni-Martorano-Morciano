@@ -143,7 +143,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(SelectTileEvent event) {
         int index=event.getIndex();
         if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
-            return new ComponentNotAvailableError();
+            return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents().size());
         }
         Trucker trucker=currentClient.getTrucker();
         trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
@@ -152,7 +152,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             component = trucker.selectComponent(index,gameController.getGame());
             component.setSelected(true);
         } catch (InvalidComponentsException e) {
-            return new ComponentNotAvailableError();
+            return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents().size());
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         }

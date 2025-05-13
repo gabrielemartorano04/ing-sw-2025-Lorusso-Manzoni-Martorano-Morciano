@@ -9,9 +9,15 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
  */
 public class ComponentNotAvailableError extends ServerEvent {
     private String message;
-    public ComponentNotAvailableError() {
+    private int sizeAvComponents;
+    public ComponentNotAvailableError(int size) {
         super(ServerEventType.COMPONENT_NOT_AVAILABLE, false);
         message = "The component is not available";
+        this.sizeAvComponents = size;
+    }
+
+    public int getSize(){
+        return sizeAvComponents;
     }
     @Override
     public String getMessage() {
