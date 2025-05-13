@@ -13,9 +13,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
-import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
-import it.polimi.ingsw.utilities.exceptions.ColorNotAvailable;
-import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
+import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -73,7 +71,14 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(KeepTileEvent event) {
         Component component = event.getComponent();
-        //fare quando c'è collegamento client-trucker
+        try {
+            currentClient.getTrucker().keep(component,gameController.getGame());
+        } catch (InvalidComponentsException e) {
+            return new
+        }
+        catch (InvalidStateException e) {
+
+        }
         return null;
     }
 

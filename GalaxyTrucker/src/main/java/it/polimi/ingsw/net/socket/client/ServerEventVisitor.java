@@ -82,4 +82,6 @@ public interface ServerEventVisitor {
     void visit(CoordListRequest coordListRequest);
 
     void visit(AvailableComponentToSelectRequest availableComponentToSelectRequest);
+
+    void visit(BuildingStateError buildingStateError);
 }

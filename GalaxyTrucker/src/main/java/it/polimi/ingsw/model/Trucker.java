@@ -5,6 +5,7 @@ import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.utilities.exceptions.InvalidStateException;
 
 import java.util.ArrayList;
 
@@ -116,9 +117,9 @@ public class Trucker {
 
     }
 
-    public void keep(Component component, Game game) throws InvalidComponentsException{
+    public void keep(Component component, Game game) throws InvalidComponentsException, InvalidStateException {
         if(buildingState!=BuildingState.KEEP){
-            throw new IllegalStateException("Trucker is not in keep component state");
+            throw new InvalidStateException("Trucker is not in keep component state");
         }
         if(spaceShip.getKept().size()<2){
             spaceShip.getKept().add(component);
