@@ -89,7 +89,11 @@ public class ClientHandlerVisitor implements ClientVisitor {
         int x=event.getX();
         int y=event.getY();
         Trucker trucker= currentClient.getTrucker();
-        trucker.link(component,x,y);
+        try {
+            trucker.link(component,x,y);
+        } catch (InvalidStateException e) {
+            return new BuildingStateError();
+        }
         return null;
     }
 
