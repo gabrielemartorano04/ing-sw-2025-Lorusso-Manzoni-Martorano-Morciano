@@ -44,7 +44,7 @@ public class GameController {
         return availablePlayerColors;
     }
 
-    public synchronized TurnManager.TruckerController tryAddPlayer(String nickname, PlayerColors color) throws GameAlreadyStartedException, IllegalArgumentException, NicknameUsedException, ColorNotAvailable {
+    public synchronized TruckerController tryAddPlayer(String nickname, PlayerColors color) throws GameAlreadyStartedException, IllegalArgumentException, NicknameUsedException, ColorNotAvailable {
         if (gameStarted) {
             throw new GameAlreadyStartedException("game already started");
         }
@@ -56,7 +56,7 @@ public class GameController {
             throw new ColorNotAvailable("Color already taken.");
         }
 
-        TurnManager.TruckerController truckerController = new TurnManager.TruckerController(nickname, color);
+        TruckerController truckerController = new TruckerController(nickname, color);
         game.addTrucker(truckerController);
 
         count++;
@@ -107,7 +107,7 @@ public class GameController {
     }
 
     private synchronized void forcePlayersToWaitEnd() {
-        for (TurnManager.TruckerController t : game.getTruckers()) {
+        for (TruckerController t : game.getTruckers()) {
             if (t.getBuildingState() != BuildingState.WAIT_END) {
                 t.setBuildingState(BuildingState.WAIT_END);
             }
@@ -115,15 +115,15 @@ public class GameController {
         scheduler.shutdown(); // ferma il controllo
     }
 
-    public Component selectComponent(TurnManager.TruckerController t, int index) throws InvalidComponentsException, InvalidStateException {
+    public Component selectComponent(TruckerController t, int index) throws InvalidComponentsException, InvalidStateException {
         return t.selectComponent(index, game.getComponents());
     }
 
-    public void keepComponent(TurnManager.TruckerController t, Component c) throws InvalidComponentsException, InvalidStateException {
+    public void keepComponent(TruckerController t, Component c) throws InvalidComponentsException, InvalidStateException {
         t.keep(c, game);
     }
 
-    public void linkComponent(TurnManager.TruckerController truckerController, Component component, int x, int y) throws InvalidStateException, InvalidCoordinates {
+    public void linkComponent(TruckerController truckerController, Component component, int x, int y) throws InvalidStateException, InvalidCoordinates {
         truckerController.link(component, x, y);
     }
 
@@ -135,7 +135,7 @@ public class GameController {
         return game.viewStack(stackIndex);
     }
 
-    public synchronized void endBuildingFor(TurnManager.TruckerController truckerController) throws InvalidStateException {
+    public synchronized void endBuildingFor(TruckerController truckerController) throws InvalidStateException {
         truckerController.finish(); // FSM: controlla che sia valido e marca END
 
         if (game.allPlayersReady()) {
