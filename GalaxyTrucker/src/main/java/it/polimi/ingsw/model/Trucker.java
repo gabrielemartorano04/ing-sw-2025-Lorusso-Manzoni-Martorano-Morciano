@@ -25,7 +25,7 @@ public class Trucker {
     public Trucker(String nickName, PlayerColors color) {
         this.nickname = nickName;
         this.color = color;
-        this.spaceShip = new SpaceShip();
+        this.spaceShip = new SpaceShip(color);
         this.cosmicCredit = 0;
         buildingState=BuildingState.BUILDING;
     }

@@ -28,9 +28,9 @@ public class GUIApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws InvalidCoordinates {
         availableComponents = new AvailableComponents();
-        Trucker trucker= new Trucker("luca", PlayerColors.RED);
+        Trucker trucker= new Trucker("luca", PlayerColors.BLUE);
         kept = new Component[2];
-        spaceship = new SpaceShip();
+        spaceship = new SpaceShip(PlayerColors.RED);
 //        Cabin cabin = new Cabin(3, 3, 3, 3, "Main Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
 //        trucker.getSpaceShip().addComponent(cabin, 7,7);
         kept[0] = availableComponents.getComponents().get(15);
@@ -53,10 +53,10 @@ public class GUIApplication extends Application {
         //gui.showBuildPhaseStart(components);
         //gui.showKeptComponents(kept);
 
-//        gui.showKeptComponents(kept);
-//        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
+        gui.showKeptComponents(kept);
+        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
 //        gui.showWaitForOthers();
-        gui.showBuildComplete();
+//        gui.showBuildComplete();
 
     }
 

@@ -1121,10 +1121,10 @@ public class GUI extends UI {
         };
 
         GridPane grid = new GridPane();
-        grid.setHgap(3);
-        grid.setVgap(3);
+        grid.setHgap(2.5);
+        grid.setVgap(2.5);
         grid.setAlignment(Pos.TOP_LEFT);
-        grid.setTranslateX(30);
+        grid.setTranslateX(30.5);
         grid.setTranslateY(26);
 
         for (int row = 5; row < 10; row++) {
@@ -1133,16 +1133,16 @@ public class GUI extends UI {
                 cell.setPrefSize(103, 97);
 
                 if (validCells[row][col]) {
-                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 4px; -fx-background-radius: 4px;");
+                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 3px; -fx-background-radius: 3px;");
 
                     Component c = layout[row][col];
                     if (c != null ) {
                         ImageView imageView = new ImageView(c.getFrontImage());
-                        imageView.setFitWidth(70);
-                        imageView.setFitHeight(70);
-                        Rectangle clip = new Rectangle(65, 65);
-                        clip.setArcWidth(16);
-                        clip.setArcHeight(16);
+                        imageView.setFitWidth(103);
+                        imageView.setFitHeight(97);
+                        Rectangle clip = new Rectangle(103, 97);
+                        clip.setArcWidth(6);
+                        clip.setArcHeight(6);
                         imageView.setClip(clip);
                         cell.getChildren().add(imageView);
                     }
