@@ -3,8 +3,11 @@ package it.polimi.ingsw.view.graphic;
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.SpaceShip;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.model.components.Cabin;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -20,16 +23,20 @@ public class GUIApplication extends Application {
     private SpaceShip spaceship;
     private ArrayList<Card> stack;
     private Map<String, Integer> mockTrack;
-    private ArrayList<Component> kept;
+    private Component[] kept;
 
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws InvalidCoordinates {
         availableComponents = new AvailableComponents();
+        Trucker trucker= new Trucker("luca", PlayerColors.RED);
+        kept = new Component[2];
         spaceship = new SpaceShip();
-        kept = new ArrayList<>();
-        kept.add(availableComponents.getComponents().get(15));
-        kept.add(availableComponents.getComponents().get(130));
+//        Cabin cabin = new Cabin(3, 3, 3, 3, "Main Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
+//        trucker.getSpaceShip().addComponent(cabin, 2,2);
+        kept[0] = availableComponents.getComponents().get(15);
+        kept[1] = availableComponents.getComponents().get(130);
+
         mockTrack = new HashMap<>();
         mockTrack.put("RED", 0);
         mockTrack.put("GREEN", 5);
@@ -48,7 +55,7 @@ public class GUIApplication extends Application {
         //gui.showKeptComponents(kept);
 
         gui.showKeptComponents(kept);
-        gui.showShipLayout("RED", spaceship.getComponents());
+        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
 
     }
 

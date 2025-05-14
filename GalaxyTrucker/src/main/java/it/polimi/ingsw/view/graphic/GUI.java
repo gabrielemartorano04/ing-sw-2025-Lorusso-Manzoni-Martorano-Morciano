@@ -691,7 +691,7 @@ public class GUI extends UI {
     }
 
     @Override
-    public void showKeptComponents(List<Component> kept) {
+    public void showKeptComponents(Component[] kept) {
         HBox keptSlots = new HBox(10);
         keptSlots.setMaxWidth(200);
         keptSlots.setAlignment(Pos.TOP_RIGHT);
@@ -1033,11 +1033,16 @@ public class GUI extends UI {
         backgroundView.setMouseTransparent(true);
 
         boolean[][] validCells = {
-                {false, false, true,  false,  true, false, false},
-                {false, true,  true,  true,  true, true,  false},
-                {true,  true,  true,  true,  true, true,  true },
-                {true,  true,  true,  true,  true, true,  true },
-                {true,  true,  true,  false,  true, true,  true }
+                {false, false, false, false, false, false, false,  false,  false, false, false},
+                {false, false, false, false, false, false, false,  false,  false, false, false},
+                {false, false, false, false, false, false, false,  false,  false, false, false},
+                {false, false, false, false, false, false, false,  false,  false, false, false},
+                {false, false, false, false, false, false, false,  false,  false, false, false},
+                {false, false, false, false, false, false, true,  false,  true, false, false},
+                {false, false, false, false, false, true,  true,  true,  true, true,  false},
+                {false, false, false, false, true,  true,  true,  true, true, true,  true },
+                {false, false, false, false, true,  true,  true,  true,  true, true,  true },
+                {false, false, false, false, true,  true,  true,  false,  true, true,  true }
         };
 
         GridPane grid = new GridPane();
@@ -1045,8 +1050,8 @@ public class GUI extends UI {
         grid.setVgap(3);
         grid.setAlignment(Pos.CENTER);
 
-        for (int row = 0; row < 5; row++) {
-            for (int col = 0; col < 7; col++) {
+        for (int row = 5; row < 10; row++) {
+            for (int col = 4; col < 11; col++) {
                 StackPane cell = new StackPane();
                 cell.setPrefSize(103, 97);
 
@@ -1054,7 +1059,7 @@ public class GUI extends UI {
                     cell.setStyle("-fx-border-color: white; -fx-border-radius: 4px; -fx-background-radius: 4px;");
 
                     Component c = layout[row][col];
-                    if (c != null && !c.getCovered()) {
+                    if (c != null ) {
                         ImageView imageView = new ImageView(c.getFrontImage());
                         imageView.setFitWidth(70);
                         imageView.setFitHeight(70);
@@ -1077,7 +1082,7 @@ public class GUI extends UI {
                     cell.setOnDragDropped(event -> {
                         Dragboard db = event.getDragboard();
                         if (db.hasString()) {
-                            setCurrentEvent(new LinkTileEvent(selectedComponent, r, cIndex));
+                            setCurrentEvent(new LinkTileEvent(selectedComponent, r + 4, cIndex + 5));
                             selectedComponent = null;
                             event.setDropCompleted(true);
                         }
