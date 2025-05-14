@@ -28,50 +28,50 @@ public class TruckerController  {
     }
 
     public int getPosition() {
-        return 0;
+        return trucker.getPosition();
     }
 
     public PlayerColors getColor() {
-        return null;
+        return trucker.getColor();
     }
 
     public void addCosmicCredit(int cosmicCredit) {
-
+        trucker.addCosmicCredit(cosmicCredit);
     }
 
     public int getCosmicCredit() {
-        return 0;
+        return trucker.getCosmicCredit();
     }
 
     public String getNickname() {
-        return "";
+        return trucker.getNickname();
     }
 
     public SpaceShip getSpaceShip() {
-        return null;
+        return trucker.getSpaceShip();
     }
 
     public ArrayList<Card> showStack(int index, Game game) {
-        return null;
+        return trucker.showStack(index, game);
     }
 
     public void keep(Component component, Game game) throws InvalidComponentsException, InvalidStateException {
-
+        trucker.keep(component, game);
     }
 
     public void link(Component component, int x, int y) throws InvalidStateException, InvalidCoordinates {
-
+        trucker.link(component, x, y);
     }
 
     public Component selectComponent(int index, AvailableComponents availableComponents) throws InvalidComponentsException, InvalidStateException {
-        return null;
+        return trucker.selectComponent(index, availableComponents);
     }
 
     public void finish() throws InvalidStateException {
-
+        trucker.finish();
     }
 
     public void fillSpaceship(ArrayList<int[]> coordAliens) {
-
+        trucker.fillSpaceship(coordAliens);
     }
 }
