@@ -107,12 +107,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(ComponentSelectedEvent event) {
         viewFlow.componentAsUncovered(event.getIndex());
         viewFlow.componentAsSelected(event.getIndex());
-        System.out.println("Nickname salvato in view: " + viewFlow.getNickname());
-        System.out.println("Nickname dall'evento " + event.getNickname());
-        System.out.println(viewFlow.getNickname().equals(event.getNickname()));
-
         if(viewFlow.getNickname().equals(event.getNickname())) {
-            System.out.println("Sono entrato perche i due nick name sono uguali");
             viewFlow.setSelectedComponent(event.getIndex());
             ui.showComponentSelected(viewFlow.getSelectedComponent());
             ui.showComponentOptions();
