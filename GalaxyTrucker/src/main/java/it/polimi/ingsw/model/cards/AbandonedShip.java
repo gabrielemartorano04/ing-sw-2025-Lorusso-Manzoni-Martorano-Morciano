@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.controller.Trucker;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.callers.AbandonedShipCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;

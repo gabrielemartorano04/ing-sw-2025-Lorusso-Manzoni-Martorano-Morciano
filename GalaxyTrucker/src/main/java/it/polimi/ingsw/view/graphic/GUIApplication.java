@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.graphic;
 
-import it.polimi.ingsw.controller.Trucker;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.SpaceShip;

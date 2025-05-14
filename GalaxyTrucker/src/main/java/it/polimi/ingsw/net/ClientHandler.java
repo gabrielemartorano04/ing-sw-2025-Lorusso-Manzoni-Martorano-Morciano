@@ -1,6 +1,6 @@
 package it.polimi.ingsw.net;
 
-import it.polimi.ingsw.controller.Trucker;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 /**

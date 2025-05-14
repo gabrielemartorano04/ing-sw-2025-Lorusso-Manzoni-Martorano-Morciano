@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 import java.util.ArrayList;

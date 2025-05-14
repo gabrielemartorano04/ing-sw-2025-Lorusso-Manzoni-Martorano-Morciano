@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.callers;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.controller.Trucker;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.AbandonedShip;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
