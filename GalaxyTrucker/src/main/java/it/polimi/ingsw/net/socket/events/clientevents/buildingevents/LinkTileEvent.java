@@ -9,14 +9,16 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 /**
  * Event from client to server. The player wants to link the selected component to the spaceship.
  * The player gives the coordinates.
+ * The attribute index represents the index between 0 and 151 of the component that the trucker has currently as selected
+ * so that the server can try to link it
  */
 public class LinkTileEvent extends ClientEvent {
     private String  message;
-    private Component component;
+    private int index;
     private int x,y;
-    public LinkTileEvent(Component component, int x, int y) {
+    public LinkTileEvent(int index, int x, int y) {
         super(ClientEventType.LINK_TILE, false);
-        this.component = component;
+        this.index = index;
         this.x = x;
         this.y = y;
         message="I want to link the selected component in position ("+x+", "+y+")";
@@ -28,8 +30,8 @@ public class LinkTileEvent extends ClientEvent {
         return y;
     }
 
-    public Component getComponent() {
-        return component;
+    public int getIndex() {
+        return index;
     }
 
     @Override

@@ -100,23 +100,27 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(LinkTileEvent event) {
-        Component component = event.getComponent();
+        int index = event.getIndex();
         int x=event.getX();
         int y=event.getY();
-        TruckerController trucker= currentClient.getTruckerController();
-        trucker.setBuildingState(BuildingState.LINK);
+        if(index != currentClient.getTruckerController().getSelectedComponentIndex()){
+            System.out.println(currentClient.getTruckerController().getSelectedComponentIndex() + " " + event.getIndex());
+            //TODO: lanciare errore del tipo il selected del trucker lato server è diverso da quello lato view
+        }
+        currentClient.getTruckerController().setBuildingState(BuildingState.LINK);
         try {
-            trucker.link(component,x,y);
+            Component c = currentClient.getTruckerController().getSelectedComponent();
+            currentClient.getTruckerController().link(c,x,y);
             int i=0;
-            for(Component c: gameController.getGame().getComponents().getComponents()){
-                System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
+            for(Component c1: gameController.getGame().getComponents().getComponents()){
+                System.out.println(i+") tipo: "+c1.getType()+" covered:"+ c1.getCovered()+ " selected: "+c1.getSelected()+"\n");
                 i++;
             }
-            return new ComponentLinkedEvent(component, x, y, gameController.getGame().getComponents().getComponents());
+            return new ComponentLinkedEvent(c, x, y, gameController.getGame().getComponents().getComponents());
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesError(trucker.getNickname());
+            return new InvalidCoordinatesError(currentClient.getTruckerController().getNickname());
         }
     }
 

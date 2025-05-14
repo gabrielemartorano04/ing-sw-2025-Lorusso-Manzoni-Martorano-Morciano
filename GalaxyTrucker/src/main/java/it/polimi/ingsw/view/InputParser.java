@@ -79,7 +79,7 @@ public ClientEvent parseFirstConnection(String input) {
         if(component!=null){
             switch (command){
                 case "link":
-                    return new LinkTileEvent(component, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()));
+                    return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()));
                 case "keep":
                     return new KeepTileEvent(component);
                 case "discard":

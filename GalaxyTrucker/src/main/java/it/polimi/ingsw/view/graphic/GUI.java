@@ -1320,7 +1320,8 @@ public class GUI extends UI {
                     cell.setOnDragDropped(event -> {
                         Dragboard db = event.getDragboard();
                         if (db.hasString()) {
-                            setCurrentEvent(new LinkTileEvent(selectedComponent, r, cIndex));
+                            // TODO: allineare ai cambiamenti
+                            //setCurrentEvent(new LinkTileEvent(selectedComponent, r, cIndex));
                             selectedComponent = null;
                             event.setDropCompleted(true);
                         }

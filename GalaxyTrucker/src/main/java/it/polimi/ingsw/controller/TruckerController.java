@@ -11,7 +11,16 @@ import java.util.ArrayList;
 
 public class TruckerController  {
     private Trucker trucker;
+
+    /**
+     * we keep both selectedComponent and its index so that we use selectedComponent for the methods that need it
+     * and we use its index to check every time that the selectedComponent on the server is the same as the one
+     * on the view for that client, given the fact that the index is relative to the list that never changes its size
+     * the check clientIndex = selectedComponentIndex is valid and works. In fact we couldn't compare this selectedComponent
+     * with a copy coming from the net.
+     */
     private Component selectedComponent;
+    private int selectedComponentIndex;
 
     public TruckerController(String nickname, PlayerColors color){
         trucker=new Trucker(nickname,color);
@@ -71,6 +80,11 @@ public class TruckerController  {
 
     public void selectComponent(int index, AvailableComponents availableComponents) throws InvalidStateException {
         selectedComponent = trucker.selectComponent(index, availableComponents);
+        this.selectedComponentIndex = index;
+    }
+
+    public int getSelectedComponentIndex() {
+        return selectedComponentIndex;
     }
 
     public void finish() throws InvalidStateException {
