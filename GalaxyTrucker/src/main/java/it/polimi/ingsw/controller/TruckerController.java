@@ -140,7 +140,5 @@ public class TruckerController {
         spaceShip.setNumHuman();
     }
 
-    //FSM ingresso
-
 }
 
