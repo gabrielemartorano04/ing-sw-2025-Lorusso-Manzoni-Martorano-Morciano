@@ -977,7 +977,8 @@ public class GUI extends UI {
         discardButton.setId("discardBtn");
 
         discardButton.setOnAction(e -> {
-            setCurrentEvent(new DiscardTileEvent(component));
+            // TODO: allineare con modifiche
+            // setCurrentEvent(new DiscardTileEvent(component));
             selectedComponent = null;
 
             Node root = stage.getScene().getRoot();
