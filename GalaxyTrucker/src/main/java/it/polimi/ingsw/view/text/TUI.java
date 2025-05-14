@@ -377,7 +377,7 @@ public class TUI extends UI {
     public void showComponentSelected(Component c) {
         String info;
 
-        info = String.format("%s [N:%s E:%s S:%s W:%s]", c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+        info = String.format("%s [N:%s E:%s S:%s W:%s]\n", c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
 
         System.out.printf(info);
     }
