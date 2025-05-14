@@ -134,6 +134,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+
+                //TODO: in che senso input == null implica running = false
                 if (input == null || input.equalsIgnoreCase("exit")) {
                     running = false;
                     break;

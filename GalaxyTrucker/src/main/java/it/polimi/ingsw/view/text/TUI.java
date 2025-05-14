@@ -78,21 +78,24 @@ public class TUI extends UI {
 
         for (Component c : components) {
             String info;
+            if(!c.getSelected()) {
+                if (c.getCovered()) {
+                    info = "coperto";
+                } else {
+                    info = String.format("%s [N:%s E:%s S:%s W:%s]",
+                            c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+                }
 
-            if (c.getCovered()) {
-                info = "coperto";
-            } else {
-                info = String.format("%s [N:%s E:%s S:%s W:%s]",
-                        c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+                System.out.printf("%2d) %-30s", i, info);
+
+                // Vai a capo ogni 3 elementi
+                if ((i + 1) % numCols == 0 || i == components.size() - 1) {
+                    System.out.println();
+                }
+                i++;
+            } else{
+
             }
-
-            System.out.printf("%2d) %-30s", i, info);
-
-            // Vai a capo ogni 3 elementi
-            if ((i + 1) % numCols == 0 || i == components.size() - 1) {
-                System.out.println();
-            }
-            i++;
         }
     }
 
