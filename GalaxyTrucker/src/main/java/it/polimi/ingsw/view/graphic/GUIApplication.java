@@ -59,13 +59,14 @@ public class GUIApplication extends Application {
         //gui.showBuildPhaseStart(components);
         //gui.showKeptComponents(kept);
 
-//        gui.showKeptComponents(kept);
-//        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
+        gui.showKeptComponents(kept);
+        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
 //        gui.showWaitForOthers();
 //        gui.showBuildComplete();
         //gui.showSelectComponent();
-        gui.showAvailableComponent(availableComponents.getComponents());
-        gui.showStack(stack);
+        //gui.showAvailableComponent(availableComponents.getComponents());
+        //gui.showStack(stack);
+        gui.showBuildOptions();
 
     }
 
