@@ -147,7 +147,7 @@ public class Trucker {
         if(buildingState!=BuildingState.SELECT_COMPONENT){
             throw new InvalidStateException("Trucker is not in select component state");
         }
-        if (index > 0 && index < game.getComponents().getComponents().size()) {
+        if (index >= 0 && index < game.getComponents().getComponents().size()) {
             Component selectedComponent;
             selectedComponent = game.getComponents().getComponents().get(index);
             game.getComponents().getComponents().remove(index);
