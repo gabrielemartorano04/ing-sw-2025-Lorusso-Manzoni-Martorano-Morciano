@@ -29,6 +29,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(PlayerJoinedEvent event) {
         ui.showPlayerJoined(event.getUsername());
+        viewFlow.setNickname(event.getUsername());
     }
 
     @Override
@@ -73,6 +74,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     // === PHASE 3: Costruzione nave ===
     @Override
     public void visit(StartBuildingEvent event) {
+        viewFlow.setNickname(event.getNickname());
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
         viewFlow.setShip(event.getSpaceShip().getComponents());
         viewFlow.setStacks(event.getStacks());
@@ -103,10 +105,14 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(ComponentSelectedEvent event) {
-        System.out.println(event.getIndex() + event.getNickname());
         viewFlow.componentAsUncovered(event.getIndex());
         viewFlow.componentAsSelected(event.getIndex());
+        System.out.println("Nickname salvato in view: " + viewFlow.getNickname());
+        System.out.println("Nickname dall'evento " + event.getNickname());
+        System.out.println(viewFlow.getNickname().equals(event.getNickname()));
+
         if(viewFlow.getNickname().equals(event.getNickname())) {
+            System.out.println("Sono entrato perche i due nick name sono uguali");
             viewFlow.setSelectedComponent(event.getIndex());
             ui.showComponentSelected(viewFlow.getSelectedComponent());
             ui.showComponentOptions();

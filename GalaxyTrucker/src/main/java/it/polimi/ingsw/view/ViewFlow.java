@@ -24,7 +24,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private final InputReader inputReader;
     private final InputParser inputParser;
     private final UI ui;
-    private final String nickname;
+    private String nickname;
     private Component[][] ship;
     private int position;
     private int batteryCount;
@@ -275,6 +275,10 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     public ArrayList<Component> getAvailableComponents() {
         return availableComponents;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getNickname(){

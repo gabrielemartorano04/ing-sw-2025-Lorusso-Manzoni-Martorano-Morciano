@@ -26,13 +26,20 @@ public class StartBuildingEvent extends ServerEvent {
     private final SpaceShip spaceShip;
     private int seconds;
     private ArrayList<Component> components;
+    private final String nickname;
+
     public StartBuildingEvent(String username, SpaceShip spaceShip, ArrayList<Card>[] stacks, ArrayList<Component> availableComponents, int seconds) {
         super(ServerEventType.START_BUILDING, true);
         message = username + " logged\nIt's time to start building";
+        this.nickname = username;
         this.spaceShip = spaceShip;
         this.components = availableComponents;
         this.stacks = stacks;
         this.seconds = seconds;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     @Override
