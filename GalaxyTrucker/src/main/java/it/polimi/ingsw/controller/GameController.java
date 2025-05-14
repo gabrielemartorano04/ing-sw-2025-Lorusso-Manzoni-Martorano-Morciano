@@ -119,7 +119,7 @@ public class GameController {
     }
 
     public Component selectComponent(Trucker t, int index) throws InvalidComponentsException, InvalidStateException {
-        return t.selectComponent(index, game);
+        return t.selectComponent(index, game.getComponents());
     }
 
     public void keepComponent(Trucker t, Component c) throws InvalidComponentsException, InvalidStateException {
