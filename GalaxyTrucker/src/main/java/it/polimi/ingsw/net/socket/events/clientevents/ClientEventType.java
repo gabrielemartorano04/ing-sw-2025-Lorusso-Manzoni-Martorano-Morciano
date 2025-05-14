@@ -9,6 +9,7 @@ public enum ClientEventType {
     START_BUILDING,
     TURN_HOURGLASS,
     SELECT_TILE,
+    SELECT_KEPT_TILE,
     LINK_TILE,
     END_BUILDING,
     SEND_INFO_EVENT,
