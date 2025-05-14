@@ -4,7 +4,7 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.BuildingState;
 import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.TruckerController;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Cannon;
 import it.polimi.ingsw.model.components.Component;
@@ -106,7 +106,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         Component component = event.getComponent();
         int x=event.getX();
         int y=event.getY();
-        Trucker trucker= currentClient.getTrucker();
+        TruckerController trucker= currentClient.getTrucker();
         trucker.setBuildingState(BuildingState.LINK);
         try {
             trucker.link(component,x,y);
@@ -165,7 +165,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
             return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());
         }
-        Trucker trucker=currentClient.getTrucker();
+        TruckerController trucker=currentClient.getTrucker();
         trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
         try {
             trucker.selectComponent(index,gameController.getGame().getComponents());
@@ -185,7 +185,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(ShowStackEvent event) {
         int index=event.getIndex();
-        Trucker trucker=currentClient.getTrucker();
+        TruckerController trucker=currentClient.getTrucker();
         trucker.setBuildingState(BuildingState.SHOW_STACK);
         ArrayList<Card> stack=trucker.showStack(index,gameController.getGame());
         return new ReturnStackEvent(stack);
