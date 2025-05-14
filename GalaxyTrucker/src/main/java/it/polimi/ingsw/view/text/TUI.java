@@ -71,12 +71,12 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showAvailableComponent(AvailableComponents components) {
+    public void showAvailableComponent(ArrayList<Component> components) {
         System.out.println("=== Componenti disponibili ===");
         int i =0;
         int numCols = 3;
 
-        for (Component c : components.getComponents()) {
+        for (Component c : components) {
             String info;
 
             if (c.getCovered()) {
@@ -89,7 +89,7 @@ public class TUI extends UI {
             System.out.printf("%2d) %-30s", i, info);
 
             // Vai a capo ogni 3 elementi
-            if ((i + 1) % numCols == 0 || i == components.getComponents().size() - 1) {
+            if ((i + 1) % numCols == 0 || i == components.size() - 1) {
                 System.out.println();
             }
             i++;

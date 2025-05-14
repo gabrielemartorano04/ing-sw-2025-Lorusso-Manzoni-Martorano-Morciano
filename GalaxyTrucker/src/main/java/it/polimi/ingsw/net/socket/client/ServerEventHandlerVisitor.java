@@ -12,10 +12,11 @@ import it.polimi.ingsw.view.text.TUI;
 
 
 public class ServerEventHandlerVisitor implements ServerEventVisitor{
-    private final UI ui=new TUI();
+    private final UI ui;
     private final ViewFlow viewFlow;
     public ServerEventHandlerVisitor(ViewFlow viewFlow){
         this.viewFlow = viewFlow;
+        ui = new TUI();
     }
 
     // === PHASE 1: Lobby ===
