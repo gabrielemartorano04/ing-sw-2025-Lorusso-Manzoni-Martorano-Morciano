@@ -12,6 +12,9 @@ import it.polimi.ingsw.utilities.results.CardStateResult;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class AbandonedShipCaller implements CardCaller, Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult call(AbandonedShip card, Trucker trucker, boolean landing, int numplayer) throws WrongCallerException, GeneralError {

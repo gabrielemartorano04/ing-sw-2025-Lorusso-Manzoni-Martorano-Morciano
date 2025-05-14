@@ -17,7 +17,7 @@ class SpaceShipTest {
 
     @BeforeEach
     void setUp() {
-        spaceShip = new SpaceShip();
+        spaceShip = new SpaceShip(PlayerColors.BLUE);
     }
 
     @Test

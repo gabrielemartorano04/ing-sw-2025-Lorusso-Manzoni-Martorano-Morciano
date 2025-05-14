@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.components.Goods;
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +52,11 @@ class AbandonedStationTest {
     @Test
     void setChoiceToGain() {
         card.setCardState(CardState.CHOOSE_TO_GAIN);
-        assertNull(card.setChoiceToGain(false));
+        try {
+            assertNull(card.setChoiceToGain(false));
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

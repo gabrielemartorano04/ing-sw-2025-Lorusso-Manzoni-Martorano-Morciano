@@ -21,9 +21,9 @@ class GameTest {
 
     @BeforeEach
     void setUp() {
-        game = new Game();
+        game = new Game(2,2);
         deck = new ArrayList<Card>();
-        ship = new SpaceShip();
+        ship = new SpaceShip(PlayerColors.BLUE);
         hourglass = new Hourglass(game);
         trucker1 = new Trucker("frenk", PlayerColors.BLUE);
         game.addTrucker(trucker1);

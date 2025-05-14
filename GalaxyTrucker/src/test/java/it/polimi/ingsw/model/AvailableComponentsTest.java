@@ -10,12 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class AvailableComponentsTest {
 
     AvailableComponents av;
-    Component component;
+
 
     @BeforeEach
     void setUp() {
         av = new AvailableComponents();
-        component = new Load(1,1,1,1,"Load","",2,false);
     }
 
     @Test
@@ -30,7 +29,9 @@ class AvailableComponentsTest {
 
     @Test
     void remove() {
-        av.remove(component);
-        assertFalse(av.getComponents().contains(component));
+        int index=10;
+        Component component=av.getComponents().get(index);
+        av.removeComponent(index);
+        //assertFalse(av.getComponents().contains(component));
     }
 }

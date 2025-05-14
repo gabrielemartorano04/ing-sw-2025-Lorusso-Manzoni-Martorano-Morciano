@@ -9,6 +9,9 @@ import it.polimi.ingsw.utilities.results.CoordinatesResult;
 
 import java.io.Serializable;
 
+/**
+ *
+ */
 public class MeteorShowerCaller implements CardCaller , Serializable {
     private static final long serialVersionUID = 1L;
     public CoordinatesResult call(MeteorShower card) throws GeneralError {
