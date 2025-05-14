@@ -67,47 +67,6 @@ public class TruckerController {
     }
 
 
-
-
-
-    //FSM
-
-    public void chooseWhatToDo(String cmd){
-        switch(buildingState){
-            case BUILDING:
-                switch (cmd){
-                    case "Turn Hourglass":
-                        buildingState=BuildingState.TURN_HOURGLASS;
-                        break;
-                    case "Select Component":
-                        buildingState=BuildingState.SELECT_COMPONENT;
-                        break;
-                    case "Show Stack":
-                        buildingState=BuildingState.SHOW_STACK;
-                        break;
-                    case "End":
-                        buildingState=BuildingState.WAIT_END;
-
-                }
-            case SELECT_COMPONENT:
-                switch (cmd){
-                    case "Link":
-                        buildingState=BuildingState.LINK;
-                        break;
-                    case "Keep":
-                        buildingState=BuildingState.KEEP;
-                        break;
-                    case "Discard":
-                        buildingState=BuildingState.BUILDING;
-                        break;
-                }
-
-        }
-
-
-    }
-
-
     public ArrayList<Card> showStack(int index, Game game){
         if(buildingState!=BuildingState.SHOW_STACK){
             throw new IllegalStateException("Trucker is not in show stack state");
