@@ -174,29 +174,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         }
-        int i=0;
-        for(Component c: gameController.getGame().getComponents().getComponents()){
-            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-            i++;
-            String info;
-
-            if ("engine".equalsIgnoreCase(c.getType())) {
-                Engine engine = (Engine) c;
-                info = String.format("ENGINE [N:%s E:%s S:%s W:%s] (Double: %s)\n",
-                        engine.getLink()[0], engine.getLink()[1], engine.getLink()[2], engine.getLink()[3],
-                        engine.getIsDouble());
-            } else if ("cannon".equalsIgnoreCase(c.getType())) {
-                Cannon cannon = (Cannon) c;
-                info = String.format("CANNON [N:%s E:%s S:%s W:%s] (Double: %s)\n",
-                        cannon.getLink()[0], cannon.getLink()[1], cannon.getLink()[2], cannon.getLink()[3],
-                        cannon.getIsDouble());
-            } else {
-                info = String.format("%s [N:%s E:%s S:%s W:%s]\n",
-                        c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
-            }
-
-            System.out.println(info);
-        }
         return new ComponentSelectedEvent(component);
     }
 
