@@ -10,6 +10,9 @@ import it.polimi.ingsw.utilities.results.CardStateResult;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class OpenSpaceCaller implements CardCaller, Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult call(OpenSpace card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws GeneralError, InvalidCoordinates {

@@ -12,6 +12,9 @@ import it.polimi.ingsw.utilities.results.CardStateResult;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class SlaversCaller implements CardCaller, Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult call(Slavers card, Trucker trucker, ArrayList<int[]> coord, int numPlayer) throws InvalidCoordinates, GeneralError, InvalidComponentsException {

@@ -12,6 +12,9 @@ import it.polimi.ingsw.utilities.results.IntResult;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class PiratesCaller implements CardCaller, Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult call(Pirates card, Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {

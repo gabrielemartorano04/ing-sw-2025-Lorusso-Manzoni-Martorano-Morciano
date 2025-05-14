@@ -14,6 +14,9 @@ import it.polimi.ingsw.utilities.results.GoodsResult;
 
 import java.io.Serializable;
 
+/**
+ *
+ */
 public class AbandonedStationCaller implements CardCaller, Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult call(AbandonedStation card, Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError, WrongThreadException {

@@ -9,6 +9,9 @@ import it.polimi.ingsw.utilities.results.Result;
 
 import java.io.Serializable;
 
+/**
+ *
+ */
 public class StarDustCaller implements CardCaller , Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult call(StarDust card, Game game) throws GeneralError {

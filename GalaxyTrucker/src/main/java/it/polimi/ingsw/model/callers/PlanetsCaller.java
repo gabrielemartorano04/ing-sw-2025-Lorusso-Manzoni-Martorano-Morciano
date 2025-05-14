@@ -16,6 +16,9 @@ import it.polimi.ingsw.utilities.results.GoodsResult;
 
 import java.io.Serializable;
 
+/**
+ *
+ */
 public class PlanetsCaller implements CardCaller , Serializable {
     private static final long serialVersionUID = 1L;
     public CoordinatesResult callGetBank(Planets card, Bank bank) throws GeneralError {

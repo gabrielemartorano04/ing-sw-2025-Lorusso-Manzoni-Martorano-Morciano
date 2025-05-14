@@ -8,6 +8,9 @@ import it.polimi.ingsw.utilities.results.CardStateResult;
 
 import java.io.Serializable;
 
+/**
+ *
+ */
 public class EpidemicCaller implements CardCaller, Serializable {
     private static final long serialVersionUID = 1L;
     @Override

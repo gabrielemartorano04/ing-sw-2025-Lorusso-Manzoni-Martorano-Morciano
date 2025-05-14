@@ -12,6 +12,9 @@ import it.polimi.ingsw.utilities.results.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class WarZoneCaller implements CardCaller , Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult call(WarZone card, Game game) throws WrongCallerException, GeneralError {
