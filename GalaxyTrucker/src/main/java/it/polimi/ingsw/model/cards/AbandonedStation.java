@@ -45,6 +45,7 @@ public class AbandonedStation extends Card implements Serializable {
         this.goods = goods;
         this.cardState = CardState.ATTESA_RISPOSTE;
         this.playerDecisions=0;
+        this.currGood=0;
     }
 
 

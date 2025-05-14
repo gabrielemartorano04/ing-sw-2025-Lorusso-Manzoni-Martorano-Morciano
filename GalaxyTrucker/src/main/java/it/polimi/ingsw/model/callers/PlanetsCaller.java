@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.callers;
 
-import it.polimi.ingsw.controller.TurnManager;
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.CardState;
@@ -30,7 +30,7 @@ public class PlanetsCaller implements CardCaller , Serializable {
         return new CardStateResult(card.initialize(bank));
     }
 
-    public CardStateResult call(Planets card, int indexOfLanding, TurnManager.TruckerController truckerController, int numPlayers) throws PlanetNotFreeException, GeneralError {
+    public CardStateResult call(Planets card, int indexOfLanding, TruckerController truckerController, int numPlayers) throws PlanetNotFreeException, GeneralError {
         return new CardStateResult(card.setPlayerLanding(indexOfLanding, truckerController, numPlayers));
     }
 

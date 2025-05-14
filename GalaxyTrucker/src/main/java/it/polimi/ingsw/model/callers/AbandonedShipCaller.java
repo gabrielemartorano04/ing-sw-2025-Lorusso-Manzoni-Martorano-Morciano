@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.callers;
 
-import it.polimi.ingsw.controller.TurnManager;
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.AbandonedShip;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class AbandonedShipCaller implements CardCaller, Serializable {
     private static final long serialVersionUID = 1L;
-    public CardStateResult call(AbandonedShip card, TurnManager.TruckerController truckerController, boolean landing, int numplayer) throws WrongCallerException, GeneralError {
+    public CardStateResult call(AbandonedShip card, TruckerController truckerController, boolean landing, int numplayer) throws WrongCallerException, GeneralError {
         return new CardStateResult(card.setTruckerThatHasDecided(truckerController, landing, numplayer));
     }
     public CardStateResult call(AbandonedShip card, ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, WrongCallerException, GeneralError {
