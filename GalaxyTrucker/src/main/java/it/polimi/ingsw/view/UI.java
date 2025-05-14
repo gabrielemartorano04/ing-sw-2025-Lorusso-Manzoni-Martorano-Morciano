@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -34,7 +35,7 @@ public abstract class UI {
     //BUILDING
     public abstract void showBuildPhaseStart(AvailableComponents availableComponents);
 
-    public abstract void showAvailableComponent(AvailableComponents components);
+    public abstract void showAvailableComponent(ArrayList<Component> components);
     public abstract void showKeptComponents(Component[] kept);
     public abstract void showSelectComponent();
     public abstract void showBuildOptions(); // (link / keep / discard)
