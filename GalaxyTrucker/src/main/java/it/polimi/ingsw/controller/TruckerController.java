@@ -15,8 +15,8 @@ import java.util.ArrayList;
 public class TruckerController {
 
 
-    private PlayerColors color;
-    private String nickname;
+    private final PlayerColors color;
+    private final String nickname;
     private final SpaceShip spaceShip;
     private int position; //posizione assoluta
     private int cosmicCredit;
@@ -139,8 +139,6 @@ public class TruckerController {
         spaceShip.setNumAlien(coordAliens);
         spaceShip.setNumHuman();
     }
-
-    //FSM ingresso
 
 }
 
