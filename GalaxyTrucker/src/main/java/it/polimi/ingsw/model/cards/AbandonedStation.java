@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.callers.AbandonedShipCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
@@ -22,7 +23,7 @@ public class AbandonedStation extends Card implements Serializable {
     private final int days;
     private final int numHuman;
     private final ArrayList<Goods> goods;
-    private TurnManager.TruckerController truckerControllerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
+    private TruckerController truckerControllerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
     private ArrayList<int[]> coordinates = null; //coordinates sono le coordinate dei Load dove inserire le merci. Viene settato dal Card controller, se è vuoto vuol dire che nessun giocatore ha voluto accettare la carta
     private CardState cardState;
     private int currGood;
@@ -80,7 +81,7 @@ public class AbandonedStation extends Card implements Serializable {
      * @param numPlayer: num of player in the game
      * @param bank: bank of the game
      */
-    public CardState truckerLanding(TurnManager.TruckerController truckerController, boolean landing, int numPlayer, Bank bank) throws GeneralError {
+    public CardState truckerLanding(TruckerController truckerController, boolean landing, int numPlayer, Bank bank) throws GeneralError {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("stato non valido");
         }
@@ -126,7 +127,7 @@ public class AbandonedStation extends Card implements Serializable {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param winnerCoordinatesToAddGood list of coordinatest
      */
-    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, TurnManager.TruckerController truckerController, Bank bank) throws GeneralError, InvalidCoordinates  {
+    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, TruckerController truckerController, Bank bank) throws GeneralError, InvalidCoordinates  {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
@@ -160,7 +161,7 @@ public class AbandonedStation extends Card implements Serializable {
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
-    public CardState rearrange(TurnManager.TruckerController truckerController, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public CardState rearrange(TruckerController truckerController, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
             throw new GeneralError("Card state is not REARRANGE");
         }

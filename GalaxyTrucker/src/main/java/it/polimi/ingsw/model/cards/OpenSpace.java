@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.callers.OpenSpaceCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
@@ -39,7 +40,7 @@ public class OpenSpace extends Card implements Serializable {
      * @param truckerCoordinate list of arrays of coordinates
      * @param numTruckers number of truckers
      */
-    public CardState setCoordinates(TurnManager.TruckerController truckerController, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, GeneralError {
+    public CardState setCoordinates(TruckerController truckerController, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, GeneralError {
         if (this.state != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
@@ -68,10 +69,10 @@ public class OpenSpace extends Card implements Serializable {
         if (this.state != CardState.ESECUZIONE) {
             throw new GeneralError("Non è possibile eseguire card effect nello stato " + this.state);
         }
-        List<TurnManager.TruckerController> truckerControllers = game.getTruckerList();
+        List<TruckerController> truckerControllers = game.getTruckerList();
         int[] enginePowerPerTrucker = new int[truckerControllers.size()];
         int i = 0;
-        for (TurnManager.TruckerController truckerController : truckerControllers) {
+        for (TruckerController truckerController : truckerControllers) {
             enginePowerPerTrucker[i] = truckerController.getSpaceShip().getTotalEnginePower(truckersCoordinates.get(i));
             if(enginePowerPerTrucker[i] == 0){
                 game.withdraw(truckerController);
