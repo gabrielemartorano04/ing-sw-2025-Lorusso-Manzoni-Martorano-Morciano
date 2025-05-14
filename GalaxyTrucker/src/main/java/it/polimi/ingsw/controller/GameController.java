@@ -115,21 +115,27 @@ public class GameController {
         scheduler.shutdown(); // ferma il controllo
     }
 
-    public Component selectComponent(Trucker t, int index) throws InvalidComponentsException, InvalidStateException {
-        return t.selectComponent(index, game.getComponents());
-    }
+//TODO: eliminare questi
 
-    public void keepComponent(Trucker t, Component c) throws InvalidComponentsException, InvalidStateException {
-        t.keep(c, game);
-    }
-
-    public void linkComponent(Trucker trucker, Component component, int x, int y) throws InvalidStateException, InvalidCoordinates {
-        trucker.link(component, x, y);
-    }
-
-    public void turnHourglass() throws CannotTurnHourglassException {
-        game.turnHourglass();
-    }
+//    // ?????????????????????????????
+//    public Component selectComponent(Trucker t, int index) throws InvalidComponentsException, InvalidStateException {
+//        return t.selectComponent(index, game.getComponents());
+//    }
+//
+//    // ?????????????????????????????
+//    public void keepComponent(Trucker t, Component c) throws InvalidComponentsException, InvalidStateException {
+//        t.keep(c, game);
+//    }
+//
+//    // ?????????????????????????????
+//    public void linkComponent(Trucker trucker, Component component, int x, int y) throws InvalidStateException, InvalidCoordinates {
+//        trucker.link(component, x, y);
+//    }
+//
+//    // ????????????????????????????
+//    public void turnHourglass() throws CannotTurnHourglassException {
+//        game.turnHourglass();
+//    }
 
     public ArrayList<Card> showStack(int stackIndex) {
         return game.viewStack(stackIndex);
