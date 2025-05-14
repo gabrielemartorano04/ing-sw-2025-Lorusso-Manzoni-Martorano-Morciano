@@ -44,7 +44,7 @@ public class GameController {
         return availablePlayerColors;
     }
 
-    public synchronized Trucker tryAddPlayer(String nickname, PlayerColors color) throws GameAlreadyStartedException, IllegalArgumentException, NicknameUsedException, ColorNotAvailable {
+    public synchronized TruckerController tryAddPlayer(String nickname, PlayerColors color) throws GameAlreadyStartedException, IllegalArgumentException, NicknameUsedException, ColorNotAvailable {
         if (gameStarted) {
             throw new GameAlreadyStartedException("game already started");
         }
@@ -56,8 +56,8 @@ public class GameController {
             throw new ColorNotAvailable("Color already taken.");
         }
 
-        Trucker trucker = new Trucker(nickname, color);
-        game.addTrucker(trucker);
+        TruckerController truckerController = new TruckerController(nickname, color);
+        game.addTrucker(truckerController.getTrucker());
 
         count++;
 
@@ -70,7 +70,7 @@ public class GameController {
             startBuildingPhase();
         }
 
-        return trucker;
+        return truckerController;
     }
 
     public EnumSet<PlayerColors> showAvailableColors() {

@@ -28,7 +28,7 @@ public class TurnManager {
     /**
      * @return the current player
      */
-    public Trucker getCurrentTrucker() {
+    public TruckerController getCurrentTrucker() {
         return getCurrentClient().getTruckerController();
     }
 

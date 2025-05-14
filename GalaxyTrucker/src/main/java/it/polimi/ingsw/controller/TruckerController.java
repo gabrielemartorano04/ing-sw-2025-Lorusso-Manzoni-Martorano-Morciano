@@ -74,4 +74,9 @@ public class TruckerController  {
     public void fillSpaceship(ArrayList<int[]> coordAliens) {
         trucker.fillSpaceship(coordAliens);
     }
+
+    public Trucker getTrucker() {
+        return trucker;
+    }
+
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.rmi.server;
 
 import it.polimi.ingsw.controller.ServerController;
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.rmi.RmiClientInterface;
@@ -14,7 +15,7 @@ import java.rmi.server.UnicastRemoteObject;
 public class ClientHandlerRmi extends UnicastRemoteObject implements RmiServerInterface, ClientHandler {
     private final ServerController controller;
     private final RmiClientInterface client;
-    private Trucker truckerController;
+    private TruckerController truckerController;
 
     public ClientHandlerRmi(ServerController controller, RmiClientInterface client) throws RemoteException {
         this.controller = controller;
@@ -27,12 +28,12 @@ public class ClientHandlerRmi extends UnicastRemoteObject implements RmiServerIn
     }
 
     @Override
-    public void setTruckerController(Trucker truckerController) {
+    public void setTruckerController(TruckerController truckerController) {
         this.truckerController = truckerController;
     }
 
     @Override
-    public Trucker getTruckerController() {
+    public TruckerController getTruckerController() {
         return truckerController;
     }
 
