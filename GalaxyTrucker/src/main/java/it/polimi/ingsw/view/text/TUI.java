@@ -3,9 +3,7 @@ package it.polimi.ingsw.view.text;
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.model.components.EmptySpace;
-import it.polimi.ingsw.model.components.Goods;
+import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.UI;
 
@@ -379,8 +377,21 @@ public class TUI extends UI {
     public void showComponentSelected(Component c) {
         String info;
 
-        info = String.format("%s [N:%s E:%s S:%s W:%s]\n", c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+        if ("engine".equalsIgnoreCase(c.getType())) {
+            Engine engine = (Engine) c;
+            info = String.format("ENGINE [N:%s E:%s S:%s W:%s] (Double: %s)\n",
+                    engine.getLink()[0], engine.getLink()[1], engine.getLink()[2], engine.getLink()[3],
+                    engine.getIsDouble());
+        } else if ("cannon".equalsIgnoreCase(c.getType())) {
+            Cannon cannon = (Cannon) c;
+            info = String.format("CANNON [N:%s E:%s S:%s W:%s] (Double: %s)\n",
+                    cannon.getLink()[0], cannon.getLink()[1], cannon.getLink()[2], cannon.getLink()[3],
+                    cannon.getIsDouble());
+        } else {
+            info = String.format("%s [N:%s E:%s S:%s W:%s]\n",
+                    c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+        }
 
-        System.out.printf(info);
+        System.out.print(info);
     }
 }
