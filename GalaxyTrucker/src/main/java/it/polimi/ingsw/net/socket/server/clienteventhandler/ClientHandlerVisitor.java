@@ -3,7 +3,6 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.BuildingState;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.cards.Card;
@@ -163,11 +162,10 @@ public class ClientHandlerVisitor implements ClientVisitor {
         if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
             return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());
         }
-        TruckerController trucker=currentClient.getTruckerController();
-        trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
+        currentClient.getTruckerController().setBuildingState(BuildingState.SELECT_COMPONENT);
         try {
-            trucker.selectComponent(index,gameController.getGame().getComponents());
-            gameController.getGame().getComponents().getComponents().get(index).setSelected(true);
+            currentClient.getTruckerController().selectComponent(index,gameController.getGame().getComponents());
+            gameController.getGame().getComponents().setComponentAsSelected(index);
         } catch (InvalidComponentsException e) {
             return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());
         } catch (InvalidStateException e) {

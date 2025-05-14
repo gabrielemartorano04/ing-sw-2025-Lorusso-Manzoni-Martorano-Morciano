@@ -359,14 +359,39 @@ public class AvailableComponents implements Serializable {
         Collections.shuffle(components);
     }
 
+
     /**
-     * Removes the component that has been chosen by the trucker for his spaceship from the whole of available components
-     * @param index index of the component to remove
+     * probably useless considering the new idea of not removing but just changing the selcted attribute of the component
+     * @param index
      */
     public void removeComponent(int index) {
         components.remove(index);
     }
     public void addComponent(Component component) {
         components.addFirst(component);
+    }
+
+    /**
+     * sets that component as selected by a client
+     * @param index: index of component
+     */
+    public void setComponentAsSelected(int index) {
+        components.get(index).setSelected(true);
+    }
+
+    /**
+     * sets that component as available because a client has discarded it
+     * @param index: index of component
+     */
+    public void setComponentAsUnselected(int index) {
+        components.get(index).setSelected(false);
+    }
+
+    /**
+     * We can only set a component as Uncovered, we can't set back a component as Covered given game's rules
+     * @param index: index of the component
+     */
+    public void setComponentAsUncovered(int index) {
+        components.get(index).setCovered(false);
     }
 }

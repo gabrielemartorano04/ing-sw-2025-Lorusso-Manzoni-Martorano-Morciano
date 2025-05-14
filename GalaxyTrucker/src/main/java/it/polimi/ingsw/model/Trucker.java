@@ -101,20 +101,12 @@ public class Trucker {
         buildingState=BuildingState.BUILDING;
     }
 
-    public Component selectComponent(int index, AvailableComponents availableComponents) throws InvalidComponentsException, InvalidStateException {
+    public Component selectComponent(int index, AvailableComponents availableComponents) throws InvalidStateException {
         if(buildingState!=BuildingState.SELECT_COMPONENT){
             throw new InvalidStateException("Trucker is not in select component state");
         }
-        if (index >= 0 && index < availableComponents.getComponents().size()) {
-            Component selectedComponent;
-            selectedComponent = availableComponents.getComponents().get(index);
-            availableComponents.removeComponent(index);
-            buildingState=BuildingState.SELECT_COMPONENT;
-            return selectedComponent;
-        } else {
-            buildingState=BuildingState.SELECT_COMPONENT;
-            throw new InvalidComponentsException("You're not in the range of components");
-        }
+        buildingState=BuildingState.SELECT_COMPONENT;
+        return availableComponents.getComponents().get(index);
 
     }
 
