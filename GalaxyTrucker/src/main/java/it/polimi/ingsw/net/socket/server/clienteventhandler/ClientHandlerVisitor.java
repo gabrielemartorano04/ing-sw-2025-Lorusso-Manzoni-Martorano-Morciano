@@ -61,8 +61,13 @@ public class ClientHandlerVisitor implements ClientVisitor {
         Component component = event.getComponent();
         component.setCovered(false);
         component.setSelected(false);
-        gameController.getGame().getComponents().getComponents().add(component);
+        gameController.getGame().getComponents().getComponents().addFirst(component);
         currentClient.getTrucker().setBuildingState(BuildingState.BUILDING);
+        int i=0;
+        for(Component c: gameController.getGame().getComponents().getComponents()){
+            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
+            i++;
+        }
         return new DiscardSuccessEvent(gameController.getGame().getComponents());
     }
 
@@ -78,6 +83,11 @@ public class ClientHandlerVisitor implements ClientVisitor {
         currentClient.getTrucker().setBuildingState(BuildingState.KEEP);
         try {
             currentClient.getTrucker().keep(component,gameController.getGame());
+            int i = 0;
+            for(Component c: gameController.getGame().getComponents().getComponents()){
+                System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
+                i++;
+            }
             return new KeptComponentEvent(component,gameController.getGame().getComponents());
         } catch (InvalidComponentsException e) {
             return new NoAvailableSpaceError();
@@ -96,6 +106,11 @@ public class ClientHandlerVisitor implements ClientVisitor {
         trucker.setBuildingState(BuildingState.LINK);
         try {
             trucker.link(component,x,y);
+            int i=0;
+            for(Component c: gameController.getGame().getComponents().getComponents()){
+                System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
+                i++;
+            }
             return new ComponentLinkedEvent(component, x, y,gameController.getGame().getComponents());
         } catch (InvalidStateException e) {
             return new BuildingStateError();
