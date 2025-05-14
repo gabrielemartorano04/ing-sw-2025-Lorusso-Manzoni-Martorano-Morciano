@@ -169,17 +169,13 @@ public class ClientHandlerVisitor implements ClientVisitor {
         trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
         try {
             trucker.selectComponent(index,gameController.getGame().getComponents());
-            int i=0;
-            for(Component c: gameController.getGame().getComponents().getComponents()){
-                System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-                i++;
-            }
-            return new ComponentSelectedEvent(index, currentClient.getTrucker().getNickname());
+            gameController.getGame().getComponents().getComponents().get(index).setSelected(true);
         } catch (InvalidComponentsException e) {
             return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         }
+        return new ComponentSelectedEvent(index, currentClient.getTrucker().getNickname());
     }
 
     @Override
