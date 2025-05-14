@@ -1,12 +1,7 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
-import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
-import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.utilities.exceptions.InvalidStateException;
 
 import java.util.ArrayList;
 
@@ -33,7 +28,7 @@ public class TurnManager {
     /**
      * @return the current player
      */
-    public TruckerController getCurrentTrucker() {
+    public Trucker getCurrentTrucker() {
         return getCurrentClient().getTruckerController();
     }
 

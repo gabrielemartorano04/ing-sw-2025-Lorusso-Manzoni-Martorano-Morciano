@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.controller.TurnManager;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.callers.OpenSpaceCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
@@ -40,11 +39,11 @@ public class OpenSpace extends Card implements Serializable {
      * @param truckerCoordinate list of arrays of coordinates
      * @param numTruckers number of truckers
      */
-    public CardState setCoordinates(TruckerController truckerController, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, GeneralError {
+    public CardState setCoordinates(Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, GeneralError {
         if (this.state != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
-        if(!truckerController.getSpaceShip().checkDoubleEngine(truckerCoordinate)){
+        if(!trucker.getSpaceShip().checkDoubleEngine(truckerCoordinate)){
             throw new InvalidCoordinates("Not all components are DoubleEngine");
         }
         this.truckersCoordinates.addLast(truckerCoordinate);
@@ -69,18 +68,18 @@ public class OpenSpace extends Card implements Serializable {
         if (this.state != CardState.ESECUZIONE) {
             throw new GeneralError("Non è possibile eseguire card effect nello stato " + this.state);
         }
-        List<TruckerController> truckerControllers = game.getTruckerList();
-        int[] enginePowerPerTrucker = new int[truckerControllers.size()];
+        List<Trucker> truckers = game.getTruckerList();
+        int[] enginePowerPerTrucker = new int[truckers.size()];
         int i = 0;
-        for (TruckerController truckerController : truckerControllers) {
-            enginePowerPerTrucker[i] = truckerController.getSpaceShip().getTotalEnginePower(truckersCoordinates.get(i));
+        for (Trucker trucker : truckers) {
+            enginePowerPerTrucker[i] = trucker.getSpaceShip().getTotalEnginePower(truckersCoordinates.get(i));
             if(enginePowerPerTrucker[i] == 0){
-                game.withdraw(truckerController);
+                game.withdraw(trucker);
             }
             i++;
         }
         for (i = 0; i < enginePowerPerTrucker.length; i++) {
-            game.moveForward(truckerControllers.get(i), enginePowerPerTrucker[i]);
+            game.moveForward(truckers.get(i), enginePowerPerTrucker[i]);
         }
         state = CardState.EXIT;
         return state;

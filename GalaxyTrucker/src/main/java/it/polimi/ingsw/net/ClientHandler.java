@@ -1,7 +1,6 @@
 package it.polimi.ingsw.net;
 
-import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.controller.TurnManager;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 /**
@@ -9,7 +8,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
  * The interface is used to permit us to not distinguish between RMI and Socket type of connection
  */
 public interface ClientHandler {
-    public void setTruckerController(TruckerController truckerController);
-    public TruckerController getTruckerController();
+    public void setTruckerController(Trucker truckerController);
+    public Trucker getTruckerController();
     public void sendEvent(ServerEvent event);
 }

@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.callers;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.controller.TruckerController;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.AbandonedShip;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
@@ -20,14 +20,14 @@ class AbandonedShipCallerTest {
 
     private AbandonedShipCaller caller;
     private AbandonedShip card;
-    private TruckerController trucker;
+    private Trucker trucker;
     private Game game;
 
     @BeforeEach
     void setUp() {
         caller = new AbandonedShipCaller();
         card = new AbandonedShip(false, 1, 2, 3, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0117.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg");
-        trucker = new TruckerController("gabri", PlayerColors.RED);
+        trucker = new Trucker("gabri", PlayerColors.RED);
         game = new Game(1, 2);
     }
 

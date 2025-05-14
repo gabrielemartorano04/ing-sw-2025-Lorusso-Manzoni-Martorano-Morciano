@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.controller.TurnManager;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.callers.WarZoneCaller;
 import it.polimi.ingsw.model.components.Goods;
@@ -22,7 +21,7 @@ public class WarZone extends Card implements Serializable {
     private int currConditionIndex;
     private ArrayList<Condition> conditionsOrder;
     private Condition currCondition;
-    private TruckerController weakestTruckerController;
+    private Trucker weakestTrucker;
     private Map<Condition, Effect> penalties;
     private int[] shoot;
     private int numOfGoodsToRemove;
@@ -65,7 +64,7 @@ public class WarZone extends Card implements Serializable {
         this.shoots = shoots;
         this.state = CardState.WARZONE;
         this.currConditionIndex = 0;
-        this.weakestTruckerController = null;
+        this.weakestTrucker = null;
         this.i = 0;
         this.truckersCannonsCoordinates = new ArrayList<>();
         this.truckersEnginesCoordinates = new ArrayList<>();
@@ -115,14 +114,14 @@ public class WarZone extends Card implements Serializable {
         return this.state;
     }
 
-    public void setCannonCoordinates(Game game, TruckerController truckerController, ArrayList<int[]> truckerCannonsCoordinates) throws GeneralError, InvalidComponentsException{
+    public void setCannonCoordinates(Game game, Trucker trucker, ArrayList<int[]> truckerCannonsCoordinates) throws GeneralError, InvalidComponentsException{
         if(state != CardState.WAIT_CANNONS){
             throw new GeneralError("setCannonCoordinates not callable in the state " + state);
         }
         if(truckerCannonsCoordinates == null){
             throw new GeneralError("TruckerCannonCoordinates is null");
         }
-        if(!truckerController.getSpaceShip().checkDoubleCannon(truckerCannonsCoordinates)){
+        if(!trucker.getSpaceShip().checkDoubleCannon(truckerCannonsCoordinates)){
             throw new InvalidComponentsException("Not all components are double Cannons");
         }
 
@@ -133,14 +132,14 @@ public class WarZone extends Card implements Serializable {
         }
     }
 
-    public void setEnginesCoordinates(Game game, TruckerController truckerController, ArrayList<int[]> truckerEnginesCoordinates) throws GeneralError, InvalidComponentsException{
+    public void setEnginesCoordinates(Game game, Trucker trucker, ArrayList<int[]> truckerEnginesCoordinates) throws GeneralError, InvalidComponentsException{
         if(state != CardState.WAIT_ENGINES){
             throw new GeneralError("setCannonCoordinates not callable in the state " + state);
         }
         if(truckerEnginesCoordinates == null){
             throw new GeneralError("TruckerEnginesCoordinates is null");
         }
-        if(!truckerController.getSpaceShip().checkDoubleCannon(truckerEnginesCoordinates)){
+        if(!trucker.getSpaceShip().checkDoubleCannon(truckerEnginesCoordinates)){
             throw new InvalidComponentsException("Not all components are double Cannons");
         }
         truckersEnginesCoordinates.addLast(truckerEnginesCoordinates);
@@ -155,7 +154,7 @@ public class WarZone extends Card implements Serializable {
     // devo dare in ingresso a findWeakestTrucker la lista delle coordinate delle componenti che ogni giocatore
     // ha deciso di attivare
     public void findWeakestTrucker(Game game, ArrayList<ArrayList<int[]>> truckersCoordinates)throws GeneralError {
-        ArrayList<TruckerController> truckerControllers = game.getTruckerList();
+        ArrayList<Trucker> truckers = game.getTruckerList();
         if(state != CardState.FIND_WEAKEST){
             throw new GeneralError("FindWeakestTrucker not callable in the state " + state);
         }
@@ -164,14 +163,14 @@ public class WarZone extends Card implements Serializable {
             throw new GeneralError("Not expecting an empty list of Coordinates with the condition " + currCondition);
         }
 
-        TruckerController weakestTruckerController = null;
+        Trucker weakestTrucker = null;
         int i = 0;
         int minValueCurrCondition = Integer.MAX_VALUE;
-        for (TruckerController truckerController : truckerControllers) {
+        for (Trucker trucker : truckers) {
             int currValue = switch (currCondition) {
-                case HUMANS -> truckerController.getSpaceShip().getNumHuman();
-                case CANNONS -> truckerController.getSpaceShip().getTotalCannonPower(truckersCoordinates.get(i));
-                case ENGINES -> truckerController.getSpaceShip().getTotalEnginePower(truckersCoordinates.get(i));
+                case HUMANS -> trucker.getSpaceShip().getNumHuman();
+                case CANNONS -> trucker.getSpaceShip().getTotalCannonPower(truckersCoordinates.get(i));
+                case ENGINES -> trucker.getSpaceShip().getTotalEnginePower(truckersCoordinates.get(i));
             };
 
             // in caso di parità di criteri subisce la penitenza quello più avanti nel percorso quindi quando cerco
@@ -179,11 +178,11 @@ public class WarZone extends Card implements Serializable {
             // numero di umani scelgo sempre il trucker più a sinistra nella lista cioè quello più avanti sulla plancia
             if (currValue < minValueCurrCondition) {
                 minValueCurrCondition = currValue;
-                weakestTruckerController = truckerController;
+                weakestTrucker = trucker;
             }
             i++;
         }
-        this.weakestTruckerController = weakestTruckerController;
+        this.weakestTrucker = weakestTrucker;
         if(penalties.get(currCondition).getType().equals(TypeOfEffect.LOSE_DAYS)){
             state = CardState.ESECUZIONE;
             cardEffect(game);
@@ -195,32 +194,32 @@ public class WarZone extends Card implements Serializable {
         }
     }
 
-    public CardState manageRemoveGoods(TruckerController truckerController, Bank bank) throws GeneralError{
+    public CardState manageRemoveGoods(Trucker trucker, Bank bank) throws GeneralError{
         if(state != CardState.REMOVE_GOODS){
             throw new GeneralError("plotGoodsToRemove not callable in the state " + state);
         }
-        if(truckerController == null){
+        if(trucker == null){
             throw new GeneralError("trucker is null");
         }
-        ArrayList<Goods> goodsList = truckerController.getSpaceShip().getGoodsList();
+        ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
 
         // se il colore corrente è minore uguale a 3 allora devo togliere le merci
         while(colorOfCurrGoodToRemove<=3 && numOfGoodsToRemove>0) {
             switch (colorOfCurrGoodToRemove) {
                 case 0 -> {
-                    numOfCurrTypeOfGood = truckerController.getSpaceShip().getRedGoods();
+                    numOfCurrTypeOfGood = trucker.getSpaceShip().getRedGoods();
                     colorOfCurrGoodToRemove++;
                 }
                 case 1 -> {
-                    numOfCurrTypeOfGood = truckerController.getSpaceShip().getYellowGoods();
+                    numOfCurrTypeOfGood = trucker.getSpaceShip().getYellowGoods();
                     colorOfCurrGoodToRemove++;
                 }
                 case 2 -> {
-                    numOfCurrTypeOfGood = truckerController.getSpaceShip().getGreenGoods();
+                    numOfCurrTypeOfGood = trucker.getSpaceShip().getGreenGoods();
                     colorOfCurrGoodToRemove++;
                 }
                 case 3 -> {
-                    numOfCurrTypeOfGood = truckerController.getSpaceShip().getBlueGoods();
+                    numOfCurrTypeOfGood = trucker.getSpaceShip().getBlueGoods();
                     colorOfCurrGoodToRemove++;
                 }
             }
@@ -228,20 +227,20 @@ public class WarZone extends Card implements Serializable {
                 break;
             }
             if (numOfCurrTypeOfGood <= numOfGoodsToRemove) {
-                removeWithoutAsking(truckerController,goodsList,bank);
+                removeWithoutAsking(trucker,goodsList,bank);
             } else {
                 state = CardState.PLOT_GOODSLIST;
                 break;
             }
         }
-        if (numOfGoodsToRemove > 0 && (truckerController.getSpaceShip().getNumBatteries() > 0)) {
-            if(!truckerController.getSpaceShip().getGoodsList().isEmpty()){
+        if (numOfGoodsToRemove > 0 && (trucker.getSpaceShip().getNumBatteries() > 0)) {
+            if(!trucker.getSpaceShip().getGoodsList().isEmpty()){
                 throw new GeneralError("GoodsList should be empty at this point");
             }
             // se il colore corrente è maggiore di 3 allora vuol dire che devo togliere batterie se ho ancora merci da rimuovere
             state = CardState.PLOT_BATTERIES;
-        }else if (numOfGoodsToRemove > 0 && truckerController.getSpaceShip().getNumBatteries() == 0) {
-            if(!truckerController.getSpaceShip().getGoodsList().isEmpty()){
+        }else if (numOfGoodsToRemove > 0 && trucker.getSpaceShip().getNumBatteries() == 0) {
+            if(!trucker.getSpaceShip().getGoodsList().isEmpty()){
                 throw new GeneralError("GoodsList should be empty at this point");
             }
             state = CardState.WARZONE;
@@ -253,7 +252,7 @@ public class WarZone extends Card implements Serializable {
 
     }
 
-    private void removeWithoutAsking(TruckerController truckerController, ArrayList<Goods> goodsList, Bank bank)throws GeneralError {
+    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank)throws GeneralError {
         if(this.numOfCurrTypeOfGood == 0){
             throw new GeneralError("NumOfGoods is 0 but you called removeWithoutAsking");
         }
@@ -268,21 +267,21 @@ public class WarZone extends Card implements Serializable {
             goodsList.removeFirst();
             numOfGoodsToRemove--;
         }
-        truckerController.getSpaceShip().removeGoods(list);
+        trucker.getSpaceShip().removeGoods(list);
 
     }
 
-    public ArrayList<Goods> plotGoodsList(TruckerController truckerController)throws GeneralError {
+    public ArrayList<Goods> plotGoodsList(Trucker trucker)throws GeneralError {
         if (state != CardState.PLOT_GOODSLIST){
             throw new GeneralError("plotGoodsList not callable in the state " + state);
         }
-        if(truckerController == null){
+        if(trucker == null){
             throw new GeneralError("trucker is null");
         }
         if(!goodsToRemove.isEmpty()){
             throw new GeneralError("Tried to set a new goodsToRemove list but it isn't empty");
         }
-        ArrayList<Goods> goodsList = truckerController.getSpaceShip().getGoodsList();
+        ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
         for (int i = 0; i < numOfCurrTypeOfGood; i++) {
             goodsToRemove.add(goodsList.getFirst());
         }
@@ -293,10 +292,10 @@ public class WarZone extends Card implements Serializable {
     /**
      *
      * @param indexes: contains the indexes of the Goods within the list displayed on the screen that the player wants to remove from his ship
-     * @param truckerController
+     * @param trucker
      */
 
-    public void removeAsking(ArrayList<Integer> indexes, TruckerController truckerController, Bank bank) throws GeneralError, InvalidGoodChosen, NotEnoughGoodsChosen {
+    public void removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws GeneralError, InvalidGoodChosen, NotEnoughGoodsChosen {
         if (state != CardState.REMOVE_ASKING){
             throw new GeneralError("Can't call removeAsking in the state " + state);
         }
@@ -308,7 +307,7 @@ public class WarZone extends Card implements Serializable {
                 throw new InvalidGoodChosen("A good with an index out of range has been chosen");
             }
         }
-        if(truckerController == null){
+        if(trucker == null){
             throw new GeneralError("trucker is null");
         }
         numOfGoodsToRemove = 0;
@@ -316,7 +315,7 @@ public class WarZone extends Card implements Serializable {
         for(Integer index : indexes){
             list.add(goodsToRemove.get(index));
         }
-        removeWithoutAsking(truckerController,list, bank);
+        removeWithoutAsking(trucker,list, bank);
         if(currConditionIndex == conditionsOrder.size()){
             state = CardState.EXIT;
         }else {
@@ -331,14 +330,14 @@ public class WarZone extends Card implements Serializable {
         return numOfGoodsToRemove;
     }
 
-    public void removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, TruckerController truckerController) throws GeneralError, InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
+    public void removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws GeneralError, InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(state!= CardState.REMOVE_BATTERIES){
             throw new GeneralError("Can't call removeBatteries in the state " + state);
         }
-        if(truckerController == null){
+        if(trucker == null){
             throw new GeneralError("trucker is null");
         }
-        if(!truckerController.getSpaceShip().checkBatteryStorage(coordinatesToRemoveBatteries)){
+        if(!trucker.getSpaceShip().checkBatteryStorage(coordinatesToRemoveBatteries)){
             throw new InvalidCoordinates("Not all components selected are Battery Storages");
         }
         int counterOfBatteriesSelectedByPlayer = 0;
@@ -349,7 +348,7 @@ public class WarZone extends Card implements Serializable {
             throw new WrongNumberOfBatteriesSelected("The total number of batteries you selected to remove is not " + numOfGoodsToRemove);
         }
         try{
-            truckerController.getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);
+            trucker.getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);
         }catch(NotEnoughBatteries e){
             throw new NotEnoughBatteries("Not enough batteries");
         }
@@ -394,19 +393,19 @@ public class WarZone extends Card implements Serializable {
         if(state != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Can't call setCoordinates in the state: " + state);
         }
-        if(weakestTruckerController == null){
+        if(weakestTrucker == null){
             throw new GeneralError("trucker is null");
         }
         if(coordinates==null|| coordinates.isEmpty()){
             throw new InvalidCoordinates("Coordinates is null or empty");
         }
         try{
-            weakestTruckerController.getSpaceShip().checkCabin(coordinates, this.numOfHumanToRemove);
+            weakestTrucker.getSpaceShip().checkCabin(coordinates, this.numOfHumanToRemove);
         }catch(InvalidCoordinates e){
             throw new InvalidCoordinates(e.getMessage());
         }
         this.coordinatesToRemoveCrew = coordinates;
-        weakestTruckerController.getSpaceShip().removeNumHuman(coordinatesToRemoveCrew);
+        weakestTrucker.getSpaceShip().removeNumHuman(coordinatesToRemoveCrew);
         state = CardState.ESECUZIONE;
         return state;
     }
@@ -416,7 +415,7 @@ public class WarZone extends Card implements Serializable {
         if(state != CardState.ESECUZIONE){
             throw new GeneralError("Card effect not callable in the state " + state);
         }
-        if(weakestTruckerController == null){
+        if(weakestTrucker == null){
             throw new GeneralError("WeakestTrucker is null");
         }else {
             // devo gestire le ulteriori richieste per i casi dove vieni sparato perché devo chiedere al giocatore
@@ -425,7 +424,7 @@ public class WarZone extends Card implements Serializable {
             Effect effect = penalties.get(currCondition);
             switch(effect.getType()){
                 case LOSE_DAYS ->{
-                    game.moveBackward(weakestTruckerController, effect.getValue());
+                    game.moveBackward(weakestTrucker, effect.getValue());
                     state = CardState.WARZONE;
                 }
 
@@ -440,7 +439,7 @@ public class WarZone extends Card implements Serializable {
                 }
 
                 case GET_SHOT -> {
-                    SpaceShip ship = weakestTruckerController.getSpaceShip();
+                    SpaceShip ship = weakestTrucker.getSpaceShip();
                     boolean isHeavy = (this.shoot[0] == 1);
                     int direction = this.shoot[1];
                     if (ship.isHit(this.roll, direction)) {

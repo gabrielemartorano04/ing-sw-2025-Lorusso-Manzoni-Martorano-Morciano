@@ -1,8 +1,7 @@
 package it.polimi.ingsw.net.socket.server;
 
 import it.polimi.ingsw.controller.ServerController;
-import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.controller.TurnManager;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
@@ -13,7 +12,7 @@ public class ClientHandlerSocket implements ClientHandler {
     private final NetworkServer network;
     private final ServerController controller;
     private Thread listenerThread;
-    private TruckerController truckerController;
+    private Trucker truckerController;
 
     public ClientHandlerSocket(NetworkServer network, ServerController controller) {
         this.network = network;
@@ -23,12 +22,12 @@ public class ClientHandlerSocket implements ClientHandler {
     }
 
     @Override
-    public void setTruckerController(TruckerController truckerController) {
+    public void setTruckerController(Trucker truckerController) {
         this.truckerController = truckerController;
     }
 
     @Override
-    public TruckerController getTruckerController() {
+    public Trucker getTruckerController() {
         return truckerController;
     }
 
