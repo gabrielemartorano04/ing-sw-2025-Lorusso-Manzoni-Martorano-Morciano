@@ -90,7 +90,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
                 i++;
             }
-            return new KeptComponentEvent(component,gameController.getGame().getComponents());
+            return new KeptComponentEvent(component,gameController.getGame().getComponents().getComponents());
         } catch (InvalidComponentsException e) {
             return new NoAvailableSpaceError();
         }
