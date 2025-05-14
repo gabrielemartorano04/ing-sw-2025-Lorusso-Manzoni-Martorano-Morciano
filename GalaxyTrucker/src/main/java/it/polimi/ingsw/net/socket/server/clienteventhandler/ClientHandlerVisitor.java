@@ -136,6 +136,8 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 numLog--;
                 return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
             }
+
+            // TODO: verificare che il nickname venga salvato bene dalla viewFlow con entrambi i tipi di eventi ritornati
             return new PlayerJoinedEvent(nickname);
         }
         if(numLog== gameController.getGame().getNumPlayers()){
