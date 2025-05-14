@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.callers.SlaversCaller;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
@@ -25,8 +26,8 @@ public class Slavers extends Card implements Serializable {
     private final int credits;
     private final int days;
     private final int astronautsLost;
-    private TurnManager.TruckerController winnerTruckerController = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
-    private ArrayList<TurnManager.TruckerController> defeatedTruckerControllers = new ArrayList<>();
+    private TruckerController winnerTruckerController = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
+    private ArrayList<TruckerController> defeatedTruckerControllers = new ArrayList<>();
     private ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveHumans;
     // contiene le coordinate delle cabine scelte dall'utente per rimuovere gli umani. Queste coordinate sono organizzate
     // in liste di liste. La lista esterna è una per ogni trucker, la lista interna contiene la lista di coordinate per quel
@@ -99,7 +100,7 @@ public class Slavers extends Card implements Serializable {
      * Sets the list of defeated truckers
      * @param defeatedTruckerControllers list of truckers ID
      */
-    public void setDefeatedTruckers(ArrayList<TurnManager.TruckerController> defeatedTruckerControllers) {
+    public void setDefeatedTruckers(ArrayList<TruckerController> defeatedTruckerControllers) {
         this.defeatedTruckerControllers = defeatedTruckerControllers;
     }
 
@@ -107,7 +108,7 @@ public class Slavers extends Card implements Serializable {
      * Sets the trucker that defeat the pirates
      * @param winnerTruckerController trucker ID
      */
-    public void setWinnerTrucker(TurnManager.TruckerController winnerTruckerController) {
+    public void setWinnerTrucker(TruckerController winnerTruckerController) {
         this.winnerTruckerController = winnerTruckerController;
     }
 
@@ -115,7 +116,7 @@ public class Slavers extends Card implements Serializable {
      * Sets, for each trucker, the coordinates of the cabin where he/she want to remove the crew members
      * @param truckersCoordinatesToRemoveHumans list of lists of arrays of coordinates
      */
-    public CardState addTruckersCoordinatesToRemoveHumans(TurnManager.TruckerController truckerController, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer) throws GeneralError, InvalidCoordinates {
+    public CardState addTruckersCoordinatesToRemoveHumans(TruckerController truckerController, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer) throws GeneralError, InvalidCoordinates {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Card state in not HUMANSTOREMOVE");
         }
@@ -140,7 +141,7 @@ public class Slavers extends Card implements Serializable {
         return cardState;
     }
 
-    public CardState addDoubleCannonsCoord(TurnManager.TruckerController truckerController, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
+    public CardState addDoubleCannonsCoord(TruckerController truckerController, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
@@ -194,7 +195,7 @@ public class Slavers extends Card implements Serializable {
             game.moveBackward(winnerTruckerController, days);
         }
         if(!defeatedTruckerControllers.isEmpty()) {
-            for (TurnManager.TruckerController truckerController : defeatedTruckerControllers) {
+            for (TruckerController truckerController : defeatedTruckerControllers) {
                 truckerController.getSpaceShip().removeNumHuman(truckersCoordinatesToRemoveHumans.get(i));
                 i++;
             }
