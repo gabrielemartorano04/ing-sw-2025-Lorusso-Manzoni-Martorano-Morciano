@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.graphic;
 
-import it.polimi.ingsw.controller.TurnManager;
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.SpaceShip;
@@ -27,7 +27,7 @@ public class GUIApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws InvalidCoordinates {
         availableComponents = new AvailableComponents();
-        TurnManager.TruckerController truckerController = new TurnManager.TruckerController("luca", PlayerColors.BLUE);
+        TruckerController truckerController = new TruckerController("luca", PlayerColors.BLUE);
         kept = new Component[2];
         stack = new ArrayList<>();
         Card card1 = new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "");
