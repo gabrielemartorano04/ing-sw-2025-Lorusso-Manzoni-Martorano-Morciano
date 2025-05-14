@@ -11,8 +11,14 @@ import java.util.ArrayList;
 
 public class TruckerController  {
     private Trucker trucker;
+    private Component selectedComponent;
+
     public TruckerController(String nickname, PlayerColors color){
         trucker=new Trucker(nickname,color);
+    }
+
+    public Component getSelectedComponent() {
+        return selectedComponent;
     }
 
     public BuildingState getBuildingState() {
@@ -63,8 +69,8 @@ public class TruckerController  {
         trucker.link(component, x, y);
     }
 
-    public Component selectComponent(int index, AvailableComponents availableComponents) throws InvalidComponentsException, InvalidStateException {
-        return trucker.selectComponent(index, availableComponents);
+    public void selectComponent(int index, AvailableComponents availableComponents) throws InvalidStateException {
+        selectedComponent = trucker.selectComponent(index, availableComponents);
     }
 
     public void finish() throws InvalidStateException {
