@@ -5,7 +5,7 @@ import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.TruckerController;
+import it.polimi.ingsw.controller.TruckerController;
 
 
 import java.io.Serializable;

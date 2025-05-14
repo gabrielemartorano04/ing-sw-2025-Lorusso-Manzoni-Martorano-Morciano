@@ -7,7 +7,7 @@ import it.polimi.ingsw.utilities.exceptions.PlanetNotFreeException;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.components.*;
-import it.polimi.ingsw.model.TruckerController;
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.io.Serializable;

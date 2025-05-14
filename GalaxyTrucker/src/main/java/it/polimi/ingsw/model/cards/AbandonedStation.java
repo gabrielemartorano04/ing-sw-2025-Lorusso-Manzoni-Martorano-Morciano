@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.callers.AbandonedShipCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.TruckerController;
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;

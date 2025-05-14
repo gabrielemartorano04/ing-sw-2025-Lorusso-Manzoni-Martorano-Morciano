@@ -4,7 +4,7 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.BuildingState;
 import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.model.TruckerController;
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;

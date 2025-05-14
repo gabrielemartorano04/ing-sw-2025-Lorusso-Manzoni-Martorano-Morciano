@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.callers;
 
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.TruckerController;
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.cards.WarZone;
 import it.polimi.ingsw.model.components.Goods;

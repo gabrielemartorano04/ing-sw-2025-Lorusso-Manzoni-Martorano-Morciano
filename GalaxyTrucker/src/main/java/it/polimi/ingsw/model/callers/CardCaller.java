@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.callers;
 
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.TruckerController;
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.utilities.exceptions.*;
 import it.polimi.ingsw.utilities.results.*;

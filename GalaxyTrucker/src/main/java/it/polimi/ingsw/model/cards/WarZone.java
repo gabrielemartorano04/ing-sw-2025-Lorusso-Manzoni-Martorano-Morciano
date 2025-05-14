@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.callers.WarZoneCaller;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.model.TruckerController;
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.io.Serializable;

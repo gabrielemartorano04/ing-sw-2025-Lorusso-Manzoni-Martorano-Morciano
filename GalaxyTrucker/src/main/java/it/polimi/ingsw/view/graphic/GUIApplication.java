@@ -3,7 +3,7 @@ package it.polimi.ingsw.view.graphic;
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.model.TruckerController;
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
