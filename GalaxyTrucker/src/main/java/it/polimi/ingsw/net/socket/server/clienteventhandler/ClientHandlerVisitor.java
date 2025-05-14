@@ -166,8 +166,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
         try {
             currentClient.getTruckerController().selectComponent(index,gameController.getGame().getComponents());
             gameController.getGame().getComponents().setComponentAsSelected(index);
-        } catch (InvalidComponentsException e) {
-            return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         }
