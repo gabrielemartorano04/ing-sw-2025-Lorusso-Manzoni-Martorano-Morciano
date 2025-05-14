@@ -712,8 +712,8 @@ public class GUI extends UI {
 
             int index = i;
 
-            if (i < kept.size() && kept.get(i) != null) {
-                Component comp = kept.get(i);
+            if (i < 2 && kept[i] != null) {
+                Component comp = kept[i];
                 ImageView imageView = new ImageView(comp.getFrontImage());
                 imageView.setFitWidth(85);
                 imageView.setFitHeight(85);
