@@ -38,11 +38,6 @@ public class AvailableComponents implements Serializable {
         Component cabin16 = new Cabin(1, 2, 0, 2, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web42.jpg", null, false);
         Component cabin17 = new Cabin(3, 0, 0, 2, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web44.jpg", null, false);
 
-        Component mainCabin1 = new Cabin(3, 3, 3, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
-        Component mainCabin2 = new Cabin(3, 3, 3, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web34.jpg", PlayerColors.GREEN, true);
-        Component mainCabin3 = new Cabin(3, 3, 3, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web33.jpg", PlayerColors.BLUE, true);
-        Component mainCabin4 = new Cabin(3, 3, 3, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web61.jpg", PlayerColors.YELLOW, true);
-
         Component pipes1 = new Pipes(3, 2, 0, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web59.jpg");
         Component pipes2 = new Pipes(3, 1, 2, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web58.jpg");
         Component pipes3 = new Pipes(1, 3, 0, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web54.jpg");
@@ -206,10 +201,6 @@ public class AvailableComponents implements Serializable {
         components.add(cabin15);
         components.add(cabin16);
         components.add(cabin17);
-        components.add(mainCabin1);
-        components.add(mainCabin2);
-        components.add(mainCabin3);
-        components.add(mainCabin4);
         components.add(pipes1);
         components.add(pipes2);
         components.add(pipes3);
@@ -347,8 +338,8 @@ public class AvailableComponents implements Serializable {
         components.add(batteryStorage17);
 
         shuffle();
-        if (components.size() > 156) {
-            components = new ArrayList<>(components.subList(0, 156));
+        if (components.size() > 152) {
+            components = new ArrayList<>(components.subList(0, 152));
         }
     }
 

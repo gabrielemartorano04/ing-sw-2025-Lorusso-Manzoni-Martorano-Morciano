@@ -30,6 +30,13 @@ public class GUIApplication extends Application {
         availableComponents = new AvailableComponents();
         Trucker trucker= new Trucker("luca", PlayerColors.BLUE);
         kept = new Component[2];
+        stack = new ArrayList<>();
+        Card card1 = new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "");
+        Card card2 = new Epidemic(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_015.jpg", "");
+        Card card3 = new AbandonedShip(false, 2, 4, 6, 1, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0117.jpg", "");
+        stack.add(card1);
+        stack.add(card2);
+        stack.add(card3);
         spaceship = new SpaceShip(PlayerColors.RED);
 //        Cabin cabin = new Cabin(3, 3, 3, 3, "Main Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
 //        trucker.getSpaceShip().addComponent(cabin, 7,7);
@@ -53,10 +60,13 @@ public class GUIApplication extends Application {
         //gui.showBuildPhaseStart(components);
         //gui.showKeptComponents(kept);
 
-        gui.showKeptComponents(kept);
-        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
+//        gui.showKeptComponents(kept);
+//        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
 //        gui.showWaitForOthers();
 //        gui.showBuildComplete();
+        //gui.showSelectComponent();
+        gui.showAvailableComponent(availableComponents.getComponents());
+        gui.showStack(stack);
 
     }
 
