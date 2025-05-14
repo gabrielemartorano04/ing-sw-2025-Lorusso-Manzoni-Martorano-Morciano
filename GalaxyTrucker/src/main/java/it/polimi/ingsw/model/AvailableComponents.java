@@ -377,8 +377,10 @@ public class AvailableComponents implements Serializable {
      * Removes the component that has been chosen by the trucker for his spaceship from the whole of available components
      * @param index index of the component to remove
      */
-    public void remove(int index) {
+    public void removeComponent(int index) {
         components.remove(index);
     }
-
+    public void addComponent(Component component) {
+        components.addFirst(component);
+    }
 }

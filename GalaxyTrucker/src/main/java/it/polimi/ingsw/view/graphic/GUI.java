@@ -589,7 +589,7 @@ public class GUI extends UI {
     }
 
     @Override
-    public void showBuildPhaseStart(AvailableComponents availableComponents) {
+    public void showBuildPhaseStart(ArrayList<Component> availableComponents) {
         double width = 800;
         double height = 550;
 
@@ -625,7 +625,7 @@ public class GUI extends UI {
     }
 
     @Override
-    public void showAvailableComponent(AvailableComponents components) {
+    public void showAvailableComponent(ArrayList<Component> components) {
         double width = 800;
         double height = 550;
 
@@ -643,7 +643,7 @@ public class GUI extends UI {
 
         int col = 0;
         int row = 0;
-        for (Component component : components.getComponents()) {
+        for (Component component : components) {
             ImageView imgView = new ImageView(component.getCovered() ? component.getBackImage() : component.getFrontImage());
             imgView.setFitWidth(100);
             imgView.setFitHeight(100);
@@ -889,12 +889,87 @@ public class GUI extends UI {
 
     @Override
     public void showWaitForOthers() {
+        Label message = new Label("Waiting for other truckers to finish");
+        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
+        message.setTextFill(Color.web("#FFDE69"));
 
+        // Label per i puntini animati
+        Label dots = new Label(".");
+        dots.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
+        dots.setTextFill(Color.web("#FFDE69"));
+
+        HBox textBox = new HBox(5, message, dots);
+        textBox.setAlignment(Pos.CENTER);
+
+        // Sfondo trasparente grigio
+        Rectangle overlayBg = new Rectangle(stage.getScene().getWidth(), stage.getScene().getHeight());
+        overlayBg.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlayBg.widthProperty().bind(stage.getScene().widthProperty());
+        overlayBg.heightProperty().bind(stage.getScene().heightProperty());
+
+        StackPane overlay = new StackPane(overlayBg, textBox);
+        overlay.setMouseTransparent(true); // così non blocca l'interazione
+        overlay.setAlignment(Pos.CENTER);
+
+        // Animazione dei puntini "..." → ".." → "." → "..."
+        Timeline animation = new Timeline(
+                new KeyFrame(Duration.seconds(0), e -> dots.setText("")),
+                new KeyFrame(Duration.seconds(0.5), e -> dots.setText(".")),
+                new KeyFrame(Duration.seconds(1.0), e -> dots.setText("..")),
+                new KeyFrame(Duration.seconds(1.5), e -> dots.setText("...")),
+                new KeyFrame(Duration.seconds(2.0), e -> dots.setText(""))
+        );
+        animation.setCycleCount(Animation.INDEFINITE);
+        animation.play();
+
+        // Aggiungi alla scena attuale
+        Platform.runLater(() -> {
+            Node rootNode = stage.getScene().getRoot();
+            if (rootNode instanceof StackPane root) {
+                if (!root.getChildren().contains(overlay)) {
+                    root.getChildren().add(overlay);
+                }
+            } else {
+                System.err.println("[showWaitForOthers] Root non è uno StackPane");
+            }
+        });
     }
 
     @Override
     public void showBuildComplete() {
+        double width = 800;
+        double height = 550;
 
+        // Sfondo
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        // Testi
+        Label line1 = new Label("WELL DONE!");
+        line1.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 40));
+        line1.setTextFill(Color.web("#FFDE69"));
+
+        Label line2 = new Label("Spaceship built");
+        line2.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
+        line2.setTextFill(Color.web("#FFDE69"));
+
+        Label line3 = new Label("Get ready for launch!");
+        line3.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
+        line3.setTextFill(Color.web("#FFDE69"));
+
+        VBox textBox = new VBox(10, line1, line2, line3);
+        textBox.setAlignment(Pos.CENTER);
+
+        StackPane root = new StackPane(backgroundView, textBox);
+        StackPane.setAlignment(textBox, Pos.CENTER);
+
+        Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
     }
 
     @Override
@@ -1046,9 +1121,11 @@ public class GUI extends UI {
         };
 
         GridPane grid = new GridPane();
-        grid.setHgap(3);
-        grid.setVgap(3);
-        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(2.5);
+        grid.setVgap(2.5);
+        grid.setAlignment(Pos.TOP_LEFT);
+        grid.setTranslateX(30.5);
+        grid.setTranslateY(26);
 
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {
@@ -1056,16 +1133,16 @@ public class GUI extends UI {
                 cell.setPrefSize(103, 97);
 
                 if (validCells[row][col]) {
-                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 4px; -fx-background-radius: 4px;");
+                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 3px; -fx-background-radius: 3px;");
 
                     Component c = layout[row][col];
                     if (c != null ) {
                         ImageView imageView = new ImageView(c.getFrontImage());
-                        imageView.setFitWidth(70);
-                        imageView.setFitHeight(70);
-                        Rectangle clip = new Rectangle(65, 65);
-                        clip.setArcWidth(16);
-                        clip.setArcHeight(16);
+                        imageView.setFitWidth(103);
+                        imageView.setFitHeight(97);
+                        Rectangle clip = new Rectangle(103, 97);
+                        clip.setArcWidth(6);
+                        clip.setArcHeight(6);
                         imageView.setClip(clip);
                         cell.getChildren().add(imageView);
                     }
@@ -1082,7 +1159,7 @@ public class GUI extends UI {
                     cell.setOnDragDropped(event -> {
                         Dragboard db = event.getDragboard();
                         if (db.hasString()) {
-                            setCurrentEvent(new LinkTileEvent(selectedComponent, r + 4, cIndex + 5));
+                            setCurrentEvent(new LinkTileEvent(selectedComponent, r, cIndex));
                             selectedComponent = null;
                             event.setDropCompleted(true);
                         }
@@ -1092,7 +1169,7 @@ public class GUI extends UI {
                     cell.setStyle("-fx-background-color: transparent;");
                 }
 
-                grid.add(cell, col, row);
+                grid.add(cell, col - 4, row - 5);
             }
         }
 

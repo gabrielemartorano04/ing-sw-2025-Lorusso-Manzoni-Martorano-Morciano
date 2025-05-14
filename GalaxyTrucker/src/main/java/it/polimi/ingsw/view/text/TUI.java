@@ -65,7 +65,7 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showBuildPhaseStart(AvailableComponents availableComponents) {
+    public void showBuildPhaseStart(ArrayList<Component> availableComponents) {
         System.out.println("\nInizio della fase di BUILDING. Costruisci la tua nave!");
         showAvailableComponent(availableComponents);
     }

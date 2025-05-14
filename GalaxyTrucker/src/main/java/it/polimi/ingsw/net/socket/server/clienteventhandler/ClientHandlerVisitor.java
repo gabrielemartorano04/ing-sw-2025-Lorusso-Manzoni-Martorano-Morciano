@@ -63,7 +63,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         Component component = event.getComponent();
         component.setCovered(false);
         component.setSelected(false);
-        gameController.getGame().getComponents().getComponents().addFirst(component);
+        gameController.getGame().getComponents().addComponent(component);
         currentClient.getTrucker().setBuildingState(BuildingState.BUILDING);
         int i=0;
         for(Component c: gameController.getGame().getComponents().getComponents()){
@@ -90,7 +90,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
                 i++;
             }
-            return new KeptComponentEvent(component,gameController.getGame().getComponents());
+            return new KeptComponentEvent(component,gameController.getGame().getComponents().getComponents());
         } catch (InvalidComponentsException e) {
             return new NoAvailableSpaceError();
         }
@@ -113,7 +113,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
                 i++;
             }
-            return new ComponentLinkedEvent(component, x, y,gameController.getGame().getComponents().getComponents());
+            return new ComponentLinkedEvent(component, x, y, gameController.getGame().getComponents().getComponents());
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         } catch (InvalidCoordinates e) {
@@ -167,35 +167,12 @@ public class ClientHandlerVisitor implements ClientVisitor {
         trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
         Component component=null;
         try {
-            component = trucker.selectComponent(index,gameController.getGame());
+            component = trucker.selectComponent(index,gameController.getGame().getComponents());
             component.setSelected(true);
         } catch (InvalidComponentsException e) {
             return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());
         } catch (InvalidStateException e) {
             return new BuildingStateError();
-        }
-        int i=0;
-        for(Component c: gameController.getGame().getComponents().getComponents()){
-            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-            i++;
-            String info;
-
-            if ("engine".equalsIgnoreCase(c.getType())) {
-                Engine engine = (Engine) c;
-                info = String.format("ENGINE [N:%s E:%s S:%s W:%s] (Double: %s)\n",
-                        engine.getLink()[0], engine.getLink()[1], engine.getLink()[2], engine.getLink()[3],
-                        engine.getIsDouble());
-            } else if ("cannon".equalsIgnoreCase(c.getType())) {
-                Cannon cannon = (Cannon) c;
-                info = String.format("CANNON [N:%s E:%s S:%s W:%s] (Double: %s)\n",
-                        cannon.getLink()[0], cannon.getLink()[1], cannon.getLink()[2], cannon.getLink()[3],
-                        cannon.getIsDouble());
-            } else {
-                info = String.format("%s [N:%s E:%s S:%s W:%s]\n",
-                        c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
-            }
-
-            System.out.println(info);
         }
         return new ComponentSelectedEvent(component);
     }
