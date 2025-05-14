@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.components.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -355,13 +356,7 @@ public class AvailableComponents implements Serializable {
      * Shuffles the components that are available before the truckers start the game
      */
     public void shuffle() {
-        Random random = new Random();
-        for (int i = components.size() - 1; i > 0; i--) {
-            int j = random.nextInt(i + 1);  // Indice casuale tra 0 e i
-            Component tmp = components.get(i);
-            components.add(i,components.get(j));
-            components.add(j,tmp);
-        }
+        Collections.shuffle(components);
     }
 
     /**
