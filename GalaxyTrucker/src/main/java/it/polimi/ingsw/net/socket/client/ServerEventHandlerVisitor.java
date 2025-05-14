@@ -12,10 +12,11 @@ import it.polimi.ingsw.view.text.TUI;
 
 
 public class ServerEventHandlerVisitor implements ServerEventVisitor{
-    private final UI ui=new TUI();
+    private final UI ui;
     private final ViewFlow viewFlow;
     public ServerEventHandlerVisitor(ViewFlow viewFlow){
         this.viewFlow = viewFlow;
+        ui = new TUI();
     }
 
     // === PHASE 1: Lobby ===
@@ -106,6 +107,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(DiscardSuccessEvent event) {
         ui.showDiscardComponent(viewFlow.getSelectedComponent());
         viewFlow.deleteSelectedComponent();
+        int i=0;
+        for(Component c: event.getAvComponents().getComponents()){
+            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
+            i++;
+        }
         ui.showAvailableComponent(event.getAvComponents());
     }
 

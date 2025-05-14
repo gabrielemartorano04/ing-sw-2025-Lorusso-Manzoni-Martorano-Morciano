@@ -41,6 +41,11 @@ public class Game {
         this.truckersOut = new ArrayList<>();
         this.gameDeck = new ArrayList<>();
         this.components = new AvailableComponents();
+        int j=0;
+        for(Component c: components.getComponents()){
+            System.out.println(j+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
+            j++;
+        }
         this.hourglass = new Hourglass(this);
         this.deck = new Deck();
         this.cardStacks = new ArrayList[4];

@@ -6,7 +6,9 @@ import it.polimi.ingsw.model.BuildingState;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.components.Cannon;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.model.components.Engine;
 import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
@@ -157,6 +159,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(SelectTileEvent event) {
         int index=event.getIndex();
+        System.out.println("\n" + index + "\n");
         if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
             return new ComponentNotAvailableError(gameController.getGame().getComponents());
         }
@@ -175,6 +178,24 @@ public class ClientHandlerVisitor implements ClientVisitor {
         for(Component c: gameController.getGame().getComponents().getComponents()){
             System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
             i++;
+            String info;
+
+            if ("engine".equalsIgnoreCase(c.getType())) {
+                Engine engine = (Engine) c;
+                info = String.format("ENGINE [N:%s E:%s S:%s W:%s] (Double: %s)\n",
+                        engine.getLink()[0], engine.getLink()[1], engine.getLink()[2], engine.getLink()[3],
+                        engine.getIsDouble());
+            } else if ("cannon".equalsIgnoreCase(c.getType())) {
+                Cannon cannon = (Cannon) c;
+                info = String.format("CANNON [N:%s E:%s S:%s W:%s] (Double: %s)\n",
+                        cannon.getLink()[0], cannon.getLink()[1], cannon.getLink()[2], cannon.getLink()[3],
+                        cannon.getIsDouble());
+            } else {
+                info = String.format("%s [N:%s E:%s S:%s W:%s]\n",
+                        c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+            }
+
+            System.out.println(info);
         }
         return new ComponentSelectedEvent(component);
     }
