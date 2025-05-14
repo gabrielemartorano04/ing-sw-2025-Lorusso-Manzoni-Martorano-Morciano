@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.callers.PiratesCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
@@ -25,8 +25,8 @@ public class Pirates extends Card implements Serializable {
     private final int credits;
     private final int days;
     private final int piratesPower;
-    private TruckerController winnerTruckerController = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
-    private ArrayList<TruckerController> defeatedTruckerControllers;
+    private TurnManager.TruckerController winnerTruckerController = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
+    private ArrayList<TurnManager.TruckerController> defeatedTruckerControllers;
     private final ArrayList<int[]> shoots;
     private CardState cardState;
     private ArrayList<ArrayList<int[]>> doubleCannonsCoord; // coordinates of the double cannons the trucker wants to activate
@@ -107,11 +107,11 @@ public class Pirates extends Card implements Serializable {
      * Sets the list of defeated truckers
      * @param defeatedTruckerControllers list of truckers ID
      */
-    public void setDefeatedTruckers(ArrayList<TruckerController> defeatedTruckerControllers) {
+    public void setDefeatedTruckers(ArrayList<TurnManager.TruckerController> defeatedTruckerControllers) {
         this.defeatedTruckerControllers = defeatedTruckerControllers;
     }
 
-    public CardState addDoubleCannonsCoord(TruckerController truckerController, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
+    public CardState addDoubleCannonsCoord(TurnManager.TruckerController truckerController, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
@@ -152,7 +152,7 @@ public class Pirates extends Card implements Serializable {
      * Sets the trucker that defeat the pirates
      * @param winnerTruckerController trucker ID
      */
-    public void setWinnerTrucker(TruckerController winnerTruckerController) {
+    public void setWinnerTrucker(TurnManager.TruckerController winnerTruckerController) {
         this.winnerTruckerController = winnerTruckerController;
     }
 
@@ -183,7 +183,7 @@ public class Pirates extends Card implements Serializable {
         return roll;
     }
 
-    public CardState setAnswers(boolean answers, TruckerController truckerController) throws GeneralError {
+    public CardState setAnswers(boolean answers, TurnManager.TruckerController truckerController) throws GeneralError {
         if(cardState != CardState.CHIEDI_SCUDI){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
         }
@@ -214,7 +214,7 @@ public class Pirates extends Card implements Serializable {
             int j =0;
             boolean isBig = (shoot[0] == 1);
             int direction = shoot[1];
-            for (TruckerController truckerController : defeatedTruckerControllers) {
+            for (TurnManager.TruckerController truckerController : defeatedTruckerControllers) {
                 SpaceShip ship = truckerController.getSpaceShip();
                 if (ship.isHit(roll, direction)) {
                     if (isBig) {

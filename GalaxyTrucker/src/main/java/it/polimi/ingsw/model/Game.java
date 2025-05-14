@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.TruckerController;
+import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
@@ -17,8 +17,8 @@ import java.util.*;
 
 public class Game {
     //attributi
-    private ArrayList<TruckerController> truckerControllers;
-    private ArrayList<TruckerController> truckersOut;
+    private ArrayList<TurnManager.TruckerController> truckerControllers;
+    private ArrayList<TurnManager.TruckerController> truckersOut;
     private ArrayList<Card>[] cardStacks;
     private ArrayList<Card> gameDeck;
     private AvailableComponents components;
@@ -79,7 +79,7 @@ public class Game {
      * Sorts truckers in descending order based on their position.
      */
     public void sortTruckers() {
-        truckerControllers.sort(Comparator.comparingInt(TruckerController::getPosition).reversed());
+        truckerControllers.sort(Comparator.comparingInt(TurnManager.TruckerController::getPosition).reversed());
     }
 
     /**
@@ -105,8 +105,8 @@ public class Game {
      * Removes truckers with no astronauts left on their spaceship.
      * @param truckerController the trucker to check
      */
-    public void noHumans(TruckerController truckerController) {
-        for(TruckerController t: truckerControllers){
+    public void noHumans(TurnManager.TruckerController truckerController) {
+        for(TurnManager.TruckerController t: truckerControllers){
             if (t.getSpaceShip().getNumHuman() == 0)
                 withdraw(t);
         }
@@ -127,8 +127,8 @@ public class Game {
      * Checks if a trucker has been overtaken by 24+ positions and removes them.
      * @param truckerController the trucker to check
      */
-    public void checkOvertaken(TruckerController truckerController) {
-        for(TruckerController t: truckerControllers) {
+    public void checkOvertaken(TurnManager.TruckerController truckerController) {
+        for(TurnManager.TruckerController t: truckerControllers) {
             if(t.getPosition() - truckerController.getPosition() >= 24){
                 withdraw(truckerController);
                 break;
@@ -140,7 +140,7 @@ public class Game {
      * Moves a trucker to the 'out' list and removes them from the active game.
      * @param truckerController the trucker to withdraw
      */
-    public void withdraw(TruckerController truckerController) {
+    public void withdraw(TurnManager.TruckerController truckerController) {
         truckersOut.add(truckerController);
         truckerControllers.remove(truckerController);
     }
@@ -151,11 +151,11 @@ public class Game {
      * @param i index of the trucker
      * @return the trucker at the specified position
      */
-    public TruckerController getTrucker(int i) {
+    public TurnManager.TruckerController getTrucker(int i) {
         return truckerControllers.get(i);
     }
 
-    public ArrayList<TruckerController> getTruckers() {return truckerControllers;}
+    public ArrayList<TurnManager.TruckerController> getTruckers() {return truckerControllers;}
 
     /**
      * Returns the list of available components.
@@ -220,7 +220,7 @@ public class Game {
     /**
      * Moves a trucker forward by a specified number of days.
      */
-    public ArrayList<TruckerController> getTruckerList() {
+    public ArrayList<TurnManager.TruckerController> getTruckerList() {
         return truckerControllers;
     }
 
@@ -228,11 +228,11 @@ public class Game {
     /**
      * Moves a trucker forward by a specified number of days.
      */
-    public void moveForward(TruckerController truckerController, int days){
+    public void moveForward(TurnManager.TruckerController truckerController, int days){
         int finalPos = truckerController.getPosition();
         for (int i=0; i<days; i++){
             finalPos ++;
-            for(TruckerController t: truckerControllers){
+            for(TurnManager.TruckerController t: truckerControllers){
                 if (t.getPosition() == finalPos && truckerController !=t){
                     finalPos++;
                 }
@@ -245,11 +245,11 @@ public class Game {
     /**
      * Moves a trucker backward by a specified number of days.
      */
-    public void moveBackward(TruckerController truckerController, int days){
+    public void moveBackward(TurnManager.TruckerController truckerController, int days){
         int finalPos = truckerController.getPosition();
         for (int i=0; i<days; i++){
             finalPos --;
-            for(TruckerController t: truckerControllers){
+            for(TurnManager.TruckerController t: truckerControllers){
                 if (t.getPosition() == finalPos && truckerController !=t){
                     finalPos--;
                 }
@@ -263,7 +263,7 @@ public class Game {
      * @param truckerController the trucker to check
      * @return false (to be implemented)
      */
-    public boolean ready(TruckerController truckerController){
+    public boolean ready(TurnManager.TruckerController truckerController){
         return false;
     } //trucker's ship is ready
 
@@ -288,7 +288,7 @@ public class Game {
         int i=0;
         int[] scores = new int[numPlayer];
         ArrayList<Goods> goodsList = new ArrayList<>();
-        for(TruckerController t: truckerControllers) {
+        for(TurnManager.TruckerController t: truckerControllers) {
             if(t.getCosmicCredit()<t.getSpaceShip().getLost()) {
                 scores[i] -= (t.getSpaceShip().getLost()-t.getCosmicCredit());
             }
@@ -303,7 +303,7 @@ public class Game {
             i++;
         }
         //non sicuro
-        for (TruckerController t: truckersOut) {
+        for (TurnManager.TruckerController t: truckersOut) {
             scores[i] -= (t.getSpaceShip().getLost()-t.getCosmicCredit());
             goodsList = t.getSpaceShip().getGoodsList();
             for(Goods g: goodsList) {
@@ -319,8 +319,8 @@ public class Game {
      * @param truckerController the trucker to check
      * @return true if the trucker's spaceship has the fewest exposed connectors
      */
-    public boolean bestSpaceShip(TruckerController truckerController) {
-        for(TruckerController t: truckerControllers) {
+    public boolean bestSpaceShip(TurnManager.TruckerController truckerController) {
+        for(TurnManager.TruckerController t: truckerControllers) {
             if (truckerController.getSpaceShip().countExposedConnectors() > t.getSpaceShip().countExposedConnectors()){
                 return false;
             }
@@ -344,7 +344,7 @@ public class Game {
         return usedColors.contains(color);
     }
 
-    public synchronized void addTrucker(TruckerController truckerController) throws IllegalStateException {
+    public synchronized void addTrucker(TurnManager.TruckerController truckerController) throws IllegalStateException {
         if (gameState!= GameState.SETUP){
             throw new IllegalStateException("Game has already been started");
         }
@@ -385,7 +385,7 @@ public class Game {
     }
 
     public void endTurn(){
-        for(TruckerController t: truckerControllers) {
+        for(TurnManager.TruckerController t: truckerControllers) {
             noHumans(t);
             checkOvertaken(t);
         }

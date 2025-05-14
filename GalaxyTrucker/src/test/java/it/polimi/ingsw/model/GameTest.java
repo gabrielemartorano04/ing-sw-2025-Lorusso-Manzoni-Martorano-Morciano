@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.TruckerController;
+import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.OpenSpace;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,7 @@ class GameTest {
     private Game game;
     private ArrayList<Card> deck;
     private SpaceShip ship;
-    private TruckerController truckerController1, truckerController2;
+    private TurnManager.TruckerController truckerController1, truckerController2;
     private Hourglass hourglass;
 
     @BeforeEach
@@ -26,9 +26,9 @@ class GameTest {
         deck = new ArrayList<Card>();
         ship = new SpaceShip(PlayerColors.BLUE);
         hourglass = new Hourglass(game);
-        truckerController1 = new TruckerController("frenk", PlayerColors.BLUE);
+        truckerController1 = new TurnManager.TruckerController("frenk", PlayerColors.BLUE);
         game.addTrucker(truckerController1);
-        truckerController2 = new TruckerController("manzo", PlayerColors.RED);
+        truckerController2 = new TurnManager.TruckerController("manzo", PlayerColors.RED);
         game.addTrucker(truckerController2);
     }
 
@@ -85,7 +85,7 @@ class GameTest {
 
     @Test
     void checkOvertaken() {
-        TruckerController t1 = truckerController1;
+        TurnManager.TruckerController t1 = truckerController1;
         truckerController1.setPosition(1);
         truckerController2.setPosition(27);
         game.checkOvertaken(truckerController1);
@@ -94,7 +94,7 @@ class GameTest {
 
     @Test
     void withdraw() {
-        TruckerController t1 = truckerController1;
+        TurnManager.TruckerController t1 = truckerController1;
         game.withdraw(truckerController1);
         assertFalse(game.getTruckers().contains(t1));
         assertNotNull(game.getTrucker(0).getNickname());
@@ -198,7 +198,7 @@ class GameTest {
 
     @Test
     void addTrucker() {
-        TruckerController truckerController = new TruckerController("gabri", PlayerColors.YELLOW);
+        TurnManager.TruckerController truckerController = new TurnManager.TruckerController("gabri", PlayerColors.YELLOW);
         game.addTrucker(truckerController);
         assertTrue(game.getTruckers().contains(truckerController));
     }
@@ -238,7 +238,7 @@ class GameTest {
 
     @Test
     void allPlayersReady() {
-        for (TruckerController truckerController : game.getTruckers()) {
+        for (TurnManager.TruckerController truckerController : game.getTruckers()) {
             truckerController.setBuildingState(BuildingState.END);
         }
         assertTrue(game.allPlayersReady());

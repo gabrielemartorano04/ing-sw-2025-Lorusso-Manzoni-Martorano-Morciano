@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.TruckerController;
+import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.model.components.*;
@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TruckerTest {
-    private TruckerController truckerController;
+    private TurnManager.TruckerController truckerController;
 
     @BeforeEach
     public void setup(){
 
-        this.truckerController =new TruckerController("frenk", PlayerColors.BLUE);
+        this.truckerController =new TurnManager.TruckerController("frenk", PlayerColors.BLUE);
     }
 
     @Test

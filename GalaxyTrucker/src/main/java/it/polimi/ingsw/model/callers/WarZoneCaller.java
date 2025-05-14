@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.callers;
 
+import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.cards.WarZone;
 import it.polimi.ingsw.model.components.Goods;
@@ -28,7 +28,7 @@ public class WarZoneCaller implements CardCaller , Serializable {
         }
     }
 
-    public CardStateResult call(WarZone card, Game game, TruckerController truckerController, ArrayList<int[]> coord) throws InvalidComponentsException, WrongCallerException, GeneralError {
+    public CardStateResult call(WarZone card, Game game, TurnManager.TruckerController truckerController, ArrayList<int[]> coord) throws InvalidComponentsException, WrongCallerException, GeneralError {
         if(card.getCardState()== CardState.WAIT_CANNONS){
             card.setCannonCoordinates(game, truckerController, coord);
         }else {
@@ -42,16 +42,16 @@ public class WarZoneCaller implements CardCaller , Serializable {
         return new CardStateResult(card.getCardState());
     }
 
-    public CardStateResult call(WarZone card, TruckerController truckerController, Bank bank) throws WrongCallerException, GeneralError {
+    public CardStateResult call(WarZone card, TurnManager.TruckerController truckerController, Bank bank) throws WrongCallerException, GeneralError {
         return new CardStateResult(card.manageRemoveGoods(truckerController, bank));
     }
 
-    public GoodsListResult call(WarZone card, TruckerController truckerController) throws WrongCallerException, GeneralError {
+    public GoodsListResult call(WarZone card, TurnManager.TruckerController truckerController) throws WrongCallerException, GeneralError {
         ArrayList<Goods> goodsList = card.plotGoodsList(truckerController);
         return new GoodsListResult(card.getCardState(), goodsList);
     }
 
-    public CardStateResult call(WarZone card, ArrayList<Integer> indexes, TruckerController truckerController, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen, WrongCallerException, GeneralError {
+    public CardStateResult call(WarZone card, ArrayList<Integer> indexes, TurnManager.TruckerController truckerController, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen, WrongCallerException, GeneralError {
         card.removeAsking(indexes, truckerController, bank);
         return new CardStateResult(card.getCardState());
     }
@@ -66,7 +66,7 @@ public class WarZoneCaller implements CardCaller , Serializable {
         return new CoordinatesResult(card.getCardState(), result);
     }
 
-    public CardStateResult call(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, TruckerController truckerController) throws InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries, WrongCallerException, GeneralError {
+    public CardStateResult call(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, TurnManager.TruckerController truckerController) throws InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries, WrongCallerException, GeneralError {
         card.removeBatteries(coordinatesToRemoveBatteries, truckerController);
         return new CardStateResult(card.getCardState());
     }

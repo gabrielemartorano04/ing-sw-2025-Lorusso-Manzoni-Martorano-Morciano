@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.callers.PlanetsCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
@@ -7,7 +8,6 @@ import it.polimi.ingsw.utilities.exceptions.PlanetNotFreeException;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.components.*;
-import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.io.Serializable;
@@ -26,11 +26,11 @@ public class Planets extends Card implements Serializable {
     private final int daysLoss;
 
     // planetsOccupied.get(i) è il trucker che ha deciso di atterrare nel pianeta i-esimo, oppure null se nessuno è voluto atterrare su quel pianeta
-    private ArrayList<TruckerController> planetsOccupied;
+    private ArrayList<TurnManager.TruckerController> planetsOccupied;
 
     // truckersLanded tiene conto dei trucker che hanno deciso di atterrare in ordine di decisione, quindi il primo trucker in
     // truckersLanded è il primo trucker che è atterrato effettivamente in un pianeta
-    private ArrayList<TruckerController> truckersLanded;
+    private ArrayList<TurnManager.TruckerController> truckersLanded;
     private int numOfCurrPlayer = 0;
     private ArrayList<ArrayList<int[]>> truckersCoordinates; // solita convenzione per salvarmi le coordinate di dove aggiungere le merci per ogni trucker
     private CardState state;
@@ -40,7 +40,7 @@ public class Planets extends Card implements Serializable {
     //variabili per la addGood
     private int currGood;
     private int currPlayerIndex;
-    private TruckerController currTruckerController;
+    private TurnManager.TruckerController currTruckerController;
     private Goods currGoodToGain;
     private ArrayList<Goods> currGoodsList;
     private ArrayList<Goods> listToPass;
@@ -106,7 +106,7 @@ public class Planets extends Card implements Serializable {
      * @param numPlayers: number of players in the current game
      * @throws PlanetNotFreeException: the trucker decided to land on a planet that is already occupied
      */
-    public CardState setPlayerLanding(int indexOfLanding, TruckerController truckerController, int numPlayers) throws PlanetNotFreeException, GeneralError {
+    public CardState setPlayerLanding(int indexOfLanding, TurnManager.TruckerController truckerController, int numPlayers) throws PlanetNotFreeException, GeneralError {
         if(state != CardState.ATTESA_PIANETI){
             throw new GeneralError("Can't land in the state: " + this.state);
         }

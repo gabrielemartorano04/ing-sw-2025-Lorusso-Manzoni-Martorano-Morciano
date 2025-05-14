@@ -1,6 +1,6 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
-import it.polimi.ingsw.controller.TruckerController;
+import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 
@@ -13,7 +13,7 @@ public class ShipUpdateEvent extends ServerEvent {
     private int truckerPosition,numBatteries,numCrew,cannonPower,enginePower;
     private Map<String, Integer> goods;
 
-    public ShipUpdateEvent(TruckerController truckerController) {
+    public ShipUpdateEvent(TurnManager.TruckerController truckerController) {
         super(ServerEventType.UPDATE_STATE, false);
         message = "Ship updated";
         this.ship = truckerController.getSpaceShip().getComponents();

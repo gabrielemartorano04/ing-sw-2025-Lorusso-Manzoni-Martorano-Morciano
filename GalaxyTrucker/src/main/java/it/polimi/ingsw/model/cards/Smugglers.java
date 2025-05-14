@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.callers.SmugglersCaller;
 import it.polimi.ingsw.model.components.*;
-import it.polimi.ingsw.controller.TruckerController;
 import it. polimi.ingsw.model.Bank;
 import it.polimi.ingsw.utilities.exceptions.*;
 
@@ -25,8 +25,8 @@ public class Smugglers extends Card implements Serializable {
     private int goodsLost;
     private final int days;
     private Goods[] goodsGained = new Goods[3];
-    private TruckerController winnerTruckerController = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
-    private ArrayList<TruckerController> defeatedTruckerControllers;
+    private TurnManager.TruckerController winnerTruckerController = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
+    private ArrayList<TurnManager.TruckerController> defeatedTruckerControllers;
     private CardState cardState;
     private ArrayList<ArrayList<int[]>> doubleCannonsCoord; // coordinates of the double cannons the trucker wants to activate
     private int playersDecisions; // number of players that gave a choice
@@ -99,7 +99,7 @@ public class Smugglers extends Card implements Serializable {
      * Sets the list of defeated truckers
      * @param defeatedTruckerControllers list of truckers ID
      */
-    public void setDefeatedTruckers(ArrayList<TruckerController> defeatedTruckerControllers) {
+    public void setDefeatedTruckers(ArrayList<TurnManager.TruckerController> defeatedTruckerControllers) {
         this.defeatedTruckerControllers = defeatedTruckerControllers;
     }
 
@@ -107,7 +107,7 @@ public class Smugglers extends Card implements Serializable {
      * Sets the trucker that defeat the pirates
      * @param winnerTruckerController trucker ID
      */
-    public void setWinnerTrucker(TruckerController winnerTruckerController) {
+    public void setWinnerTrucker(TurnManager.TruckerController winnerTruckerController) {
         this.winnerTruckerController = winnerTruckerController;
     }
 
@@ -115,7 +115,7 @@ public class Smugglers extends Card implements Serializable {
         return cardState;
     }
 
-    public CardState addDoubleCannonsCoord(TruckerController truckerController, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Bank bank) throws GeneralError, InvalidComponentsException{
+    public CardState addDoubleCannonsCoord(TurnManager.TruckerController truckerController, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Bank bank) throws GeneralError, InvalidComponentsException{
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
@@ -185,7 +185,7 @@ public class Smugglers extends Card implements Serializable {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param winnerCoordinatesToAddGood list of coordinatest
      */
-    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, TruckerController truckerController, Bank bank) throws GeneralError, InvalidCoordinates  {
+    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, TurnManager.TruckerController truckerController, Bank bank) throws GeneralError, InvalidCoordinates  {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
@@ -219,7 +219,7 @@ public class Smugglers extends Card implements Serializable {
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
-    public CardState rearrange(TruckerController truckerController, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public CardState rearrange(TurnManager.TruckerController truckerController, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
             throw new GeneralError("Card state is not REARRANGE");
         }
@@ -239,7 +239,7 @@ public class Smugglers extends Card implements Serializable {
         return cardState;
     }
 
-    public CardState manageRemoveGoods(TruckerController truckerController, Bank bank) throws GeneralError{
+    public CardState manageRemoveGoods(TurnManager.TruckerController truckerController, Bank bank) throws GeneralError{
         if(cardState != CardState.REMOVE_GOODS){
             throw new GeneralError("plotGoodsToRemove not callable in the state " + cardState);
         }
@@ -293,7 +293,7 @@ public class Smugglers extends Card implements Serializable {
 
     }
 
-    private void removeWithoutAsking(TruckerController truckerController, ArrayList<Goods> goodsList, Bank bank) throws GeneralError{
+    private void removeWithoutAsking(TurnManager.TruckerController truckerController, ArrayList<Goods> goodsList, Bank bank) throws GeneralError{
         if(this.numOfCurrTypeOfGood == 0){
             throw new GeneralError("Remove without asking: NumOfGoods is 0 but you called removeWithoutAsking");
         }
@@ -312,7 +312,7 @@ public class Smugglers extends Card implements Serializable {
 
     }
 
-    public ArrayList<Goods> plotGoodsList(TruckerController truckerController) throws GeneralError {
+    public ArrayList<Goods> plotGoodsList(TurnManager.TruckerController truckerController) throws GeneralError {
         if (cardState != CardState.PLOT_GOODSLIST){
             throw new GeneralError("plotGoodsList not callable in the state " + cardState);
         }
@@ -336,7 +336,7 @@ public class Smugglers extends Card implements Serializable {
      * @param truckerController
      */
 
-    public CardState removeAsking(ArrayList<Integer> indexes, TruckerController truckerController, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
+    public CardState removeAsking(ArrayList<Integer> indexes, TurnManager.TruckerController truckerController, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
         if (cardState != CardState.REMOVE_ASKING){
             throw new GeneralError("Can't call removeAsking in the state " + cardState);
         }
@@ -368,7 +368,7 @@ public class Smugglers extends Card implements Serializable {
         return goodsLost;
     }
 
-    public CardState removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, TruckerController truckerController) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
+    public CardState removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, TurnManager.TruckerController truckerController) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(cardState!= CardState.REMOVE_BATTERIES){
             throw new GeneralError("Can't call removeBatteries in the state " + cardState);
         }

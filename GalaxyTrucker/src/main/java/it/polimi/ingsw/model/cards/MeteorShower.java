@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.callers.MeteorShowerCaller;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
@@ -107,14 +107,14 @@ public class MeteorShower extends Card implements Serializable {
             throw new GeneralError("Non è possibile eseguire card effect nello stato " + this.state);
         }
 
-        List<TruckerController> truckerControllers = game.getTruckerList();
+        List<TurnManager.TruckerController> truckerControllers = game.getTruckerList();
         if(answers.size() != truckerControllers.size()){
             throw new GeneralError("Non ho una risposta per ogni trucker");
         }
         boolean isBig = (meteor[0] == 1);
         int direction = meteor[1];
         int j = 0;
-        for (TruckerController truckerController : truckerControllers) {
+        for (TurnManager.TruckerController truckerController : truckerControllers) {
             SpaceShip ship = truckerController.getSpaceShip();
             if (ship.isHit(roll, direction)) {
                 if (isBig) {

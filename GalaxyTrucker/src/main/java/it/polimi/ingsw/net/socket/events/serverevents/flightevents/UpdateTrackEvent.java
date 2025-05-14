@@ -1,6 +1,6 @@
 package it.polimi.ingsw.net.socket.events.serverevents.flightevents;
 
-import it.polimi.ingsw.controller.TruckerController;
+import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
@@ -12,10 +12,10 @@ public class UpdateTrackEvent extends ServerEvent {
     private String message;
     private Map<String, Integer> track;
 
-    public UpdateTrackEvent(ArrayList<TruckerController> truckerControllers) {
+    public UpdateTrackEvent(ArrayList<TurnManager.TruckerController> truckerControllers) {
         super(ServerEventType.UPDATE_TRACK, false);
         message = "Track updated";
-        for (TruckerController truckerController : truckerControllers){
+        for (TurnManager.TruckerController truckerController : truckerControllers){
             track.put(truckerController.getNickname(), truckerController.getPosition()%24);
         }
     }

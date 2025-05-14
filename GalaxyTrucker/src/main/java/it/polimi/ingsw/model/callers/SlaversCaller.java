@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.callers;
 
+import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.cards.Slavers;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class SlaversCaller implements CardCaller, Serializable {
     private static final long serialVersionUID = 1L;
-    public CardStateResult call(Slavers card, TruckerController truckerController, ArrayList<int[]> coord, int numPlayer) throws InvalidCoordinates, GeneralError, InvalidComponentsException {
+    public CardStateResult call(Slavers card, TurnManager.TruckerController truckerController, ArrayList<int[]> coord, int numPlayer) throws InvalidCoordinates, GeneralError, InvalidComponentsException {
         if(card.getCardState() == CardState.HUMANSTOREMOVE){
             return new CardStateResult(card.addTruckersCoordinatesToRemoveHumans(truckerController, coord, numPlayer));
         }else{

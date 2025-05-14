@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.callers;
 
+import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.cards.Pirates;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class PiratesCaller implements CardCaller, Serializable {
     private static final long serialVersionUID = 1L;
-    public CardStateResult call(Pirates card, TruckerController truckerController, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
+    public CardStateResult call(Pirates card, TurnManager.TruckerController truckerController, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
         return new CardStateResult(card.addDoubleCannonsCoord(truckerController, doubleCannonsCoord, numPlayer));
     }
     public CardStateResult call(Pirates card, boolean choice) throws GeneralError {
@@ -37,7 +37,7 @@ public class PiratesCaller implements CardCaller, Serializable {
         return new CardStateResult(card.cardEffect(game));
     }
 
-    public CardStateResult call(Pirates card, boolean answers, TruckerController turcker) throws GeneralError {
+    public CardStateResult call(Pirates card, boolean answers, TurnManager.TruckerController turcker) throws GeneralError {
         return new CardStateResult(card.setAnswers(answers, turcker));
     }
 
