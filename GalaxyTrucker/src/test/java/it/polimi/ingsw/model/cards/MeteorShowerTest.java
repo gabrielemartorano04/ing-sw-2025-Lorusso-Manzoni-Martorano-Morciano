@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +35,11 @@ class MeteorShowerTest {
 
     @Test
     void getCurrentMeteor() {
-        assertNotNull(card.getCurrentMeteor());
+        try {
+            assertNotNull(card.getCurrentMeteor());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
