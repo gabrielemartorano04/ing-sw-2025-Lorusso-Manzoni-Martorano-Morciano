@@ -26,7 +26,7 @@ public class MainClient {
             serverAddress = scanner.nextLine().trim();
         }
 
-        final int SERVER_PORT = 12345;
+        final int SERVER_PORT = 12346;
 
         // Crea il NetworkClient e si connette al server
         NetworkClient networkClient = new NetworkClient(serverAddress, SERVER_PORT);

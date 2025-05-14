@@ -11,15 +11,21 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
  */
 public class ComponentSelectedEvent extends ServerEvent {
     private String message;
-    private Component component;
+    private int index;
+    private String nickname;
 
-    public ComponentSelectedEvent(Component component) {
-        super(ServerEventType.COMPONENT_SELECTED, false);
-        this.component = component;
+    public ComponentSelectedEvent(int index, String nickname) {
+        super(ServerEventType.COMPONENT_SELECTED, true);
+        this.index=index;
+        this.nickname=nickname;
         message="Component selected";
     }
-    public Component getComponent() {
-        return component;
+    public int getIndex() {
+        return index;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
 

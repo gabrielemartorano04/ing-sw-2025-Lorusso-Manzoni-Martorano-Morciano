@@ -231,8 +231,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.viewState = viewState;
     }
 
-    public void setSelectedComponent(Component selectedComponent) {
-        this.selectedComponent = selectedComponent;
+    public void setSelectedComponent(int index) {
+        this.selectedComponent = availableComponents.get(index);
     }
 
     public void deleteSelectedComponent() {
@@ -265,11 +265,28 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     public void fillAvailableComponents(ArrayList<Component> availableComponents) {
         this.availableComponents.clear();
+        this.availableComponents.addAll(availableComponents);
         int i=0;
         for(Component c: availableComponents){
             System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
             i++;
         }
+    }
+
+    public ArrayList<Component> getAvailableComponents() {
+        return availableComponents;
+    }
+
+    public String getNickname(){
+        return nickname;
+    }
+
+    public void componentIsSelected(int index, boolean val){
+        availableComponents.get(index).setSelected(val);
+    }
+
+    public void componentIsCovered(int index, boolean val){
+        availableComponents.get(index).setCovered(val);
     }
 
 }

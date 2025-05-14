@@ -48,6 +48,7 @@ public class ServerController {
             client.sendEvent(event);
         }
         clients.add(client);
+
     }
 
     public synchronized void removeClient(ClientHandler client) {

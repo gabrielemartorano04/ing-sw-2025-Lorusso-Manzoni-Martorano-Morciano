@@ -9,9 +9,10 @@ import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEven
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class InputParser {
-// TODO: AGGIUNGERE COMANDI CHE SONO VALIDI SEMPRE
+    // TODO: AGGIUNGERE COMANDI CHE SONO VALIDI SEMPRE
 public ClientEvent parseFirstConnection(String input) {
     if (input == null || input.isEmpty()) {
         return null;
@@ -78,7 +79,6 @@ public ClientEvent parseFirstConnection(String input) {
         if(component!=null){
             switch (command){
                 case "link":
-
                     return new LinkTileEvent(component, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()));
                 case "keep":
                     return new KeepTileEvent(component);

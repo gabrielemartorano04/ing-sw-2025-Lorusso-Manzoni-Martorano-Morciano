@@ -9,7 +9,7 @@ import java.net.Socket;
 
 public class MainServer {
     public static void main(String[] args) {
-        final int PORT = 12345;
+        final int PORT = 12346;
 
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server in ascolto sulla porta " + PORT + "...");

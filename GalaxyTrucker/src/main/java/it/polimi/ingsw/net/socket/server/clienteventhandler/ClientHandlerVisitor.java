@@ -28,7 +28,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
     private GameController gameController;
     private int numLog;
     private ClientHandlerSocket currentClient;
-    private ArrayList<ClientHandler> clients;
     private int gameLevel;
 
     public ClientHandlerVisitor() {
@@ -36,9 +35,9 @@ public class ClientHandlerVisitor implements ClientVisitor {
         currentClient = null;
         numOfPlayers = 0;
         gameLevel=0;
+
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
-
 
     public void setClientHandlerServer(ClientHandlerSocket clientHandlerServer) {
         currentClient = clientHandlerServer;
@@ -168,16 +167,19 @@ public class ClientHandlerVisitor implements ClientVisitor {
         }
         Trucker trucker=currentClient.getTrucker();
         trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
-        Component component=null;
         try {
-            component = trucker.selectComponent(index,gameController.getGame().getComponents());
-            component.setSelected(true);
+            trucker.selectComponent(index,gameController.getGame().getComponents());
+            int i=0;
+            for(Component c: gameController.getGame().getComponents().getComponents()){
+                System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
+                i++;
+            }
+            return new ComponentSelectedEvent(index, currentClient.getTrucker().getNickname());
         } catch (InvalidComponentsException e) {
             return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         }
-        return new ComponentSelectedEvent(component);
     }
 
     @Override

@@ -118,8 +118,8 @@ public class GameController {
         scheduler.shutdown(); // ferma il controllo
     }
 
-    public Component selectComponent(Trucker t, int index) throws InvalidComponentsException, InvalidStateException {
-        return t.selectComponent(index, game.getComponents());
+    public void selectComponent(Trucker t, int index) throws InvalidComponentsException, InvalidStateException {
+        t.selectComponent(index, game.getComponents());
     }
 
     public void keepComponent(Trucker t, Component c) throws InvalidComponentsException, InvalidStateException {
