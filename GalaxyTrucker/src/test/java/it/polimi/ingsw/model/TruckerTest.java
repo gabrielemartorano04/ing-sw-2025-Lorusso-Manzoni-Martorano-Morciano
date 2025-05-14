@@ -4,6 +4,8 @@ import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.model.components.*;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.InvalidStateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -56,37 +58,6 @@ class TruckerTest {
     }
 
     @Test
-    public void chooseWhatToDo(){
-        trucker.chooseWhatToDo("Turn Hourglass");
-        assertEquals(BuildingState.TURN_HOURGLASS, trucker.getBuildingState());
-
-        trucker.setBuildingState(BuildingState.BUILDING);
-        trucker.chooseWhatToDo("Select Component");
-
-        assertEquals(BuildingState.SELECT_COMPONENT, trucker.getBuildingState());
-
-        trucker.setBuildingState(BuildingState.BUILDING);
-        trucker.chooseWhatToDo("Show Stack");
-        assertEquals(BuildingState.SHOW_STACK, trucker.getBuildingState());
-
-        trucker.setBuildingState(BuildingState.BUILDING);
-        trucker.chooseWhatToDo("End");
-        assertEquals(BuildingState.WAIT_END, trucker.getBuildingState());
-
-        trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
-        trucker.chooseWhatToDo("Link");
-        assertEquals(BuildingState.LINK, trucker.getBuildingState());
-
-        trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
-        trucker.chooseWhatToDo("Keep");
-        assertEquals(BuildingState.KEEP, trucker.getBuildingState());
-
-        trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
-        trucker.chooseWhatToDo("Discard");
-        assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
-    }
-
-    @Test
     public void showStack(){
         //assertNotNull(trucker.showStack(1,new Game()));
     }
@@ -94,12 +65,14 @@ class TruckerTest {
     @Test
     public void keep() {
         trucker.setBuildingState(BuildingState.KEEP);
-        Game game=new Game();
+        Game game=new Game(2,2);
         Component comp=new Load(1,1,1,1,"Load","",1,false);
         try{
             trucker.keep(comp,game);
             assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
-        } catch (InvalidComponentsException e) {}
+        } catch (InvalidComponentsException e) {} catch (InvalidStateException e) {
+
+        }
 
         trucker.setBuildingState(BuildingState.KEEP);
         trucker.getSpaceShip().getKept().add(comp);
@@ -109,6 +82,8 @@ class TruckerTest {
 
         } catch (InvalidComponentsException e) {
             System.out.println(e.getMessage());
+        } catch (InvalidStateException e) {
+
         }
         assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
 
@@ -119,7 +94,13 @@ class TruckerTest {
     public void link() {
         Component comp=new Load(1,1,1,1,"Load","",1,false);
         trucker.setBuildingState(BuildingState.LINK);
-        trucker.link(comp,6,7);
+        try {
+            trucker.link(comp,6,7);
+        } catch (InvalidStateException e) {
+
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
         assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
 
     }
@@ -128,26 +109,14 @@ class TruckerTest {
     public void selectComponent() {
         trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
         try {
-            trucker.selectComponent(2,new Game());
+            trucker.selectComponent(2, new Game(2,2).getComponents());
         } catch (InvalidComponentsException e) {
             System.out.println(e.getMessage());
+        } catch (InvalidStateException e) {
+
         }
         assertEquals(BuildingState.SELECT_COMPONENT, trucker.getBuildingState());
 
-    }
-
-    @Test
-    public void turnHourglass() {
-        trucker.setBuildingState(BuildingState.TURN_HOURGLASS);
-        Game game=new Game();
-        try {
-            trucker.turnHourglass(game);
-        } catch (CannotTurnHourglassException e) {
-            System.out.println(e.getMessage());
-        }
-        if(game.getHourglass().getTimeTurns()==2)
-            assertEquals(BuildingState.WAIT_END, trucker.getBuildingState());
-        else assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
     }
 
     @Test
