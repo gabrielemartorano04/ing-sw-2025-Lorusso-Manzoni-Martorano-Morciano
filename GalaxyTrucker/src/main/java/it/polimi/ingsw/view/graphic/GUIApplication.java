@@ -12,7 +12,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +32,7 @@ public class GUIApplication extends Application {
         kept = new Component[2];
         spaceship = new SpaceShip();
 //        Cabin cabin = new Cabin(3, 3, 3, 3, "Main Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
-//        trucker.getSpaceShip().addComponent(cabin, 2,2);
+//        trucker.getSpaceShip().addComponent(cabin, 7,7);
         kept[0] = availableComponents.getComponents().get(15);
         kept[1] = availableComponents.getComponents().get(130);
 
@@ -54,8 +53,10 @@ public class GUIApplication extends Application {
         //gui.showBuildPhaseStart(components);
         //gui.showKeptComponents(kept);
 
-        gui.showKeptComponents(kept);
-        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
+//        gui.showKeptComponents(kept);
+//        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
+//        gui.showWaitForOthers();
+        gui.showBuildComplete();
 
     }
 
