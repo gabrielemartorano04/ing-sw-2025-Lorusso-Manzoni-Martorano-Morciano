@@ -143,14 +143,14 @@ public class Trucker {
         buildingState=BuildingState.BUILDING;
     }
 
-    public Component selectComponent(int index, Game game) throws InvalidComponentsException, InvalidStateException {
+    public Component selectComponent(int index, AvailableComponents availableComponents) throws InvalidComponentsException, InvalidStateException {
         if(buildingState!=BuildingState.SELECT_COMPONENT){
             throw new InvalidStateException("Trucker is not in select component state");
         }
-        if (index >= 0 && index < game.getComponents().getComponents().size()) {
+        if (index >= 0 && index < availableComponents.getComponents().size()) {
             Component selectedComponent;
-            selectedComponent = game.getComponents().getComponents().get(index);
-            game.getComponents().getComponents().remove(index);
+            selectedComponent = availableComponents.getComponents().get(index);
+            availableComponents.removeComponent(index);
             buildingState=BuildingState.SELECT_COMPONENT;
             return selectedComponent;
         } else {

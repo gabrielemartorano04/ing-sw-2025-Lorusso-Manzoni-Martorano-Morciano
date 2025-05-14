@@ -63,7 +63,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         Component component = event.getComponent();
         component.setCovered(false);
         component.setSelected(false);
-        gameController.getGame().getComponents().getComponents().addFirst(component);
+        gameController.getGame().getComponents().addComponent(component);
         currentClient.getTrucker().setBuildingState(BuildingState.BUILDING);
         int i=0;
         for(Component c: gameController.getGame().getComponents().getComponents()){
@@ -167,7 +167,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
         Component component=null;
         try {
-            component = trucker.selectComponent(index,gameController.getGame());
+            component = trucker.selectComponent(index,gameController.getGame().getComponents());
             component.setSelected(true);
         } catch (InvalidComponentsException e) {
             return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());

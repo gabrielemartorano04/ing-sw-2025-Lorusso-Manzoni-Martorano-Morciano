@@ -87,6 +87,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.deleteSelectedComponent();
         ui.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
         ui.showAvailableComponent(event.getAvComponents());
+        int i=0;
+        for(Component c: event.getAvComponents()){
+            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
+            i++;
+        }
     }
 
     @Override
@@ -108,6 +113,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showDiscardComponent(viewFlow.getSelectedComponent());
         viewFlow.deleteSelectedComponent();
         ui.showAvailableComponent(event.getAvComponents());
+        int i=0;
+        for(Component c: event.getAvComponents()){
+            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
+            i++;
+        }
     }
 
     @Override
