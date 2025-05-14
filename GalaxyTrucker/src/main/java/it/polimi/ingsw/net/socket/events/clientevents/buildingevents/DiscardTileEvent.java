@@ -26,14 +26,6 @@ public class DiscardTileEvent extends ClientEvent {
 
     @Override
     public ServerEvent call(ClientVisitor visitor){
-        ServerEvent e = visitor.visit(this);
-        int i=0;
-        DiscardSuccessEvent e1 = (DiscardSuccessEvent) e;
-        System.out.println("Dentro call di DiscardTileEvent");
-        for(Component c: e1.getAvComponents().getComponents()){
-            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-            i++;
-        }
         return visitor.visit(this);
     }
 }
