@@ -36,7 +36,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private ServerEventHandlerVisitor serverEventVisitor;
     private Component selectedComponent;
     private volatile boolean running;
-    private List<Component> keptComponent;
+    private Component[] keptComponent= new Component[2];
     private ViewState viewState;
     private TimerDisplay timerDisplay;
     private ArrayList<Card>[] stacks;
@@ -63,6 +63,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.viewState = ViewState.FIRST;
         this.timerDisplay = new TimerDisplay();
         this.serverEventVisitor = new ServerEventHandlerVisitor(this);
+        this.keptComponent[0]=null;
+        this.keptComponent[1]=null;
         new Thread(inputReader, "InputReaderThread").start();
     }
 
@@ -239,8 +241,16 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         return selectedComponent;
     }
 
-    public void addKeptComponent(Component keptComponent) {
-        this.keptComponent.add(keptComponent);
+    public void addKeptComponent(Component keptComponent) throws IllegalArgumentException{
+        if(this.keptComponent[0]==null) {
+            this.keptComponent[0]=keptComponent;
+        } else if (this.keptComponent[1]==null) {
+            this.keptComponent[1]=keptComponent;
+        }else throw new IllegalArgumentException("no more psace to keep components");
+    }
+
+    public void removeKeptComponent(int index) {
+        this.keptComponent[index]=null;
     }
 
     public Component getSelectedKeptComponent() {
