@@ -23,12 +23,12 @@ public class ClientHandlerSocket implements ClientHandler {
     }
 
     @Override
-    public void setTrucker(TruckerController truckerController) {
+    public void setTruckerController(TruckerController truckerController) {
         this.truckerController = truckerController;
     }
 
     @Override
-    public TruckerController getTrucker() {
+    public TruckerController getTruckerController() {
         return truckerController;
     }
 

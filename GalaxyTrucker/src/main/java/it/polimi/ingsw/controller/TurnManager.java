@@ -34,7 +34,7 @@ public class TurnManager {
      * @return the current player
      */
     public TruckerController getCurrentTrucker() {
-        return getCurrentClient().getTrucker();
+        return getCurrentClient().getTruckerController();
     }
 
     /**
@@ -59,7 +59,7 @@ public class TurnManager {
      */
 
     public void reorderPlayersByPosition() {
-        players.sort((a, b) -> Integer.compare(a.getTrucker().getPosition(), b.getTrucker().getPosition()));
+        players.sort((a, b) -> Integer.compare(a.getTruckerController().getPosition(), b.getTruckerController().getPosition()));
         currentTurnIndex = 0; // reset del turno
     }
 
