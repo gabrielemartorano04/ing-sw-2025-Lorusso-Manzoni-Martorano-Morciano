@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.callers.WarZoneCaller;
@@ -21,7 +22,7 @@ public class WarZone extends Card implements Serializable {
     private int currConditionIndex;
     private ArrayList<Condition> conditionsOrder;
     private Condition currCondition;
-    private TurnManager.TruckerController weakestTruckerController;
+    private TruckerController weakestTruckerController;
     private Map<Condition, Effect> penalties;
     private int[] shoot;
     private int numOfGoodsToRemove;
@@ -114,7 +115,7 @@ public class WarZone extends Card implements Serializable {
         return this.state;
     }
 
-    public void setCannonCoordinates(Game game, TurnManager.TruckerController truckerController, ArrayList<int[]> truckerCannonsCoordinates) throws GeneralError, InvalidComponentsException{
+    public void setCannonCoordinates(Game game, TruckerController truckerController, ArrayList<int[]> truckerCannonsCoordinates) throws GeneralError, InvalidComponentsException{
         if(state != CardState.WAIT_CANNONS){
             throw new GeneralError("setCannonCoordinates not callable in the state " + state);
         }
@@ -132,7 +133,7 @@ public class WarZone extends Card implements Serializable {
         }
     }
 
-    public void setEnginesCoordinates(Game game, TurnManager.TruckerController truckerController, ArrayList<int[]> truckerEnginesCoordinates) throws GeneralError, InvalidComponentsException{
+    public void setEnginesCoordinates(Game game, TruckerController truckerController, ArrayList<int[]> truckerEnginesCoordinates) throws GeneralError, InvalidComponentsException{
         if(state != CardState.WAIT_ENGINES){
             throw new GeneralError("setCannonCoordinates not callable in the state " + state);
         }
@@ -154,7 +155,7 @@ public class WarZone extends Card implements Serializable {
     // devo dare in ingresso a findWeakestTrucker la lista delle coordinate delle componenti che ogni giocatore
     // ha deciso di attivare
     public void findWeakestTrucker(Game game, ArrayList<ArrayList<int[]>> truckersCoordinates)throws GeneralError {
-        ArrayList<TurnManager.TruckerController> truckerControllers = game.getTruckerList();
+        ArrayList<TruckerController> truckerControllers = game.getTruckerList();
         if(state != CardState.FIND_WEAKEST){
             throw new GeneralError("FindWeakestTrucker not callable in the state " + state);
         }
@@ -163,10 +164,10 @@ public class WarZone extends Card implements Serializable {
             throw new GeneralError("Not expecting an empty list of Coordinates with the condition " + currCondition);
         }
 
-        TurnManager.TruckerController weakestTruckerController = null;
+        TruckerController weakestTruckerController = null;
         int i = 0;
         int minValueCurrCondition = Integer.MAX_VALUE;
-        for (TurnManager.TruckerController truckerController : truckerControllers) {
+        for (TruckerController truckerController : truckerControllers) {
             int currValue = switch (currCondition) {
                 case HUMANS -> truckerController.getSpaceShip().getNumHuman();
                 case CANNONS -> truckerController.getSpaceShip().getTotalCannonPower(truckersCoordinates.get(i));
@@ -194,7 +195,7 @@ public class WarZone extends Card implements Serializable {
         }
     }
 
-    public CardState manageRemoveGoods(TurnManager.TruckerController truckerController, Bank bank) throws GeneralError{
+    public CardState manageRemoveGoods(TruckerController truckerController, Bank bank) throws GeneralError{
         if(state != CardState.REMOVE_GOODS){
             throw new GeneralError("plotGoodsToRemove not callable in the state " + state);
         }
@@ -252,7 +253,7 @@ public class WarZone extends Card implements Serializable {
 
     }
 
-    private void removeWithoutAsking(TurnManager.TruckerController truckerController, ArrayList<Goods> goodsList, Bank bank)throws GeneralError {
+    private void removeWithoutAsking(TruckerController truckerController, ArrayList<Goods> goodsList, Bank bank)throws GeneralError {
         if(this.numOfCurrTypeOfGood == 0){
             throw new GeneralError("NumOfGoods is 0 but you called removeWithoutAsking");
         }
@@ -271,7 +272,7 @@ public class WarZone extends Card implements Serializable {
 
     }
 
-    public ArrayList<Goods> plotGoodsList(TurnManager.TruckerController truckerController)throws GeneralError {
+    public ArrayList<Goods> plotGoodsList(TruckerController truckerController)throws GeneralError {
         if (state != CardState.PLOT_GOODSLIST){
             throw new GeneralError("plotGoodsList not callable in the state " + state);
         }
@@ -295,7 +296,7 @@ public class WarZone extends Card implements Serializable {
      * @param truckerController
      */
 
-    public void removeAsking(ArrayList<Integer> indexes, TurnManager.TruckerController truckerController, Bank bank) throws GeneralError, InvalidGoodChosen, NotEnoughGoodsChosen {
+    public void removeAsking(ArrayList<Integer> indexes, TruckerController truckerController, Bank bank) throws GeneralError, InvalidGoodChosen, NotEnoughGoodsChosen {
         if (state != CardState.REMOVE_ASKING){
             throw new GeneralError("Can't call removeAsking in the state " + state);
         }
@@ -330,7 +331,7 @@ public class WarZone extends Card implements Serializable {
         return numOfGoodsToRemove;
     }
 
-    public void removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, TurnManager.TruckerController truckerController) throws GeneralError, InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
+    public void removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, TruckerController truckerController) throws GeneralError, InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(state!= CardState.REMOVE_BATTERIES){
             throw new GeneralError("Can't call removeBatteries in the state " + state);
         }

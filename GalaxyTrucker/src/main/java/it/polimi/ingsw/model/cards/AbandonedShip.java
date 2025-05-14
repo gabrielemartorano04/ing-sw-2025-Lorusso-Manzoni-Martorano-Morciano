@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.callers.AbandonedShipCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
@@ -20,7 +21,7 @@ public class AbandonedShip extends Card implements Serializable {
     private final int days;
     private final int credits;
     private final int numHuman;
-    private TurnManager.TruckerController truckerControllerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
+    private TruckerController truckerControllerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
     private ArrayList<int[]> coordinates = null; //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
     private CardState state = CardState.ATTESA_RISPOSTE;
     private int playerDecisions;
@@ -83,7 +84,7 @@ public class AbandonedShip extends Card implements Serializable {
      * @param landing: the choice taken by the current client
      * @param numPlayer: number of player in the current game
      */
-    public CardState setTruckerThatHasDecided(TurnManager.TruckerController truckerController, boolean landing, int numPlayer) throws GeneralError {
+    public CardState setTruckerThatHasDecided(TruckerController truckerController, boolean landing, int numPlayer) throws GeneralError {
         if(state != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }

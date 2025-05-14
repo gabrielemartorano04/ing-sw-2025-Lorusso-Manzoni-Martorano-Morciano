@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.callers.StarDustCaller;
@@ -37,9 +38,9 @@ public class StarDust extends Card implements Serializable {
         if(cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Not callable in the state " + cardState);
         }
-        List<TurnManager.TruckerController> truckerControllers = game.getTruckerList();
+        List<TruckerController> truckerControllers = game.getTruckerList();
         Collections.reverse(truckerControllers);
-        for (TurnManager.TruckerController truckerController : truckerControllers) {
+        for (TruckerController truckerController : truckerControllers) {
             int exposedConnectors = truckerController.getSpaceShip().countExposedConnectors();
             game.moveBackward(truckerController, exposedConnectors);
         }
