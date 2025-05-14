@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class TruckerController {
+public class Trucker {
 
 
     private final PlayerColors color;
@@ -22,7 +22,7 @@ public class TruckerController {
     private int cosmicCredit;
     private BuildingState buildingState;
 
-    public TruckerController(String nickName, PlayerColors color) {
+    public Trucker(String nickName, PlayerColors color) {
         this.nickname = nickName;
         this.color = color;
         this.spaceShip = new SpaceShip(color);

@@ -7,7 +7,7 @@ public class CardControllerNew {
     private Card currentCard;
     private Game game;
     private int numPlayers;
-    private TruckerController currentTruckerController;
+    private Trucker currentTrucker;
 
     public CardControllerNew(Card card, Game game) {
         this.currentCard = card;
@@ -31,11 +31,11 @@ public class CardControllerNew {
         this.numPlayers = numPlayers;
     }
 
-    public TruckerController getCurrentTrucker() {
-        return currentTruckerController;
+    public Trucker getCurrentTrucker() {
+        return currentTrucker;
     }
 
-    public void setCurrentTrucker(TruckerController currentTruckerController) {
-        this.currentTruckerController = currentTruckerController;
+    public void setCurrentTrucker(Trucker currentTrucker) {
+        this.currentTrucker = currentTrucker;
     }
 }

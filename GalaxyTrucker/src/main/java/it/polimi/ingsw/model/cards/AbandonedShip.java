@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.controller.TurnManager;
+import it.polimi.ingsw.controller.Trucker;
 import it.polimi.ingsw.model.callers.AbandonedShipCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
@@ -21,7 +20,7 @@ public class AbandonedShip extends Card implements Serializable {
     private final int days;
     private final int credits;
     private final int numHuman;
-    private TruckerController truckerControllerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
+    private Trucker truckerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
     private ArrayList<int[]> coordinates = null; //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
     private CardState state = CardState.ATTESA_RISPOSTE;
     private int playerDecisions;
@@ -42,7 +41,7 @@ public class AbandonedShip extends Card implements Serializable {
         this.numHuman = numHuman;
         this.credits = credits;
         this.days = days;
-        this.truckerControllerThatHasDecided = null;
+        this.truckerThatHasDecided = null;
         this.playerDecisions = 0;
         this.state = CardState.ATTESA_RISPOSTE;
     }
@@ -80,16 +79,16 @@ public class AbandonedShip extends Card implements Serializable {
 
     /**
      * Sets the only trucker that has chosen to take the ship
-     * @param truckerController: trucker current
+     * @param trucker: trucker current
      * @param landing: the choice taken by the current client
      * @param numPlayer: number of player in the current game
      */
-    public CardState setTruckerThatHasDecided(TruckerController truckerController, boolean landing, int numPlayer) throws GeneralError {
+    public CardState setTruckerThatHasDecided(Trucker trucker, boolean landing, int numPlayer) throws GeneralError {
         if(state != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }
         if(landing) {
-            truckerControllerThatHasDecided = truckerController;
+            truckerThatHasDecided = trucker;
             state = CardState.HUMANSTOREMOVE;
         }else{
             if (playerDecisions == numPlayer){
@@ -114,13 +113,13 @@ public class AbandonedShip extends Card implements Serializable {
             throw new InvalidCoordinates("Coordinates is null or empty");
         }
         try{
-            truckerControllerThatHasDecided.getSpaceShip().checkCabin(coordinates, numHuman);
+            truckerThatHasDecided.getSpaceShip().checkCabin(coordinates, numHuman);
         }catch (InvalidCoordinates e){
             throw new InvalidCoordinates(e.getMessage());
         }
         this.coordinates = coordinates;
 
-        if(truckerControllerThatHasDecided !=null){
+        if(truckerThatHasDecided !=null){
             state = CardState.ESECUZIONE;
         }else{
             throw new GeneralError("Tried to set coordinates when truckerThatHasDecided is null");
@@ -138,10 +137,10 @@ public class AbandonedShip extends Card implements Serializable {
         if(state != CardState.ESECUZIONE) {
             throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }
-        if (truckerControllerThatHasDecided != null) {
-            truckerControllerThatHasDecided.getSpaceShip().removeNumHuman(coordinates);
-            game.moveBackward(truckerControllerThatHasDecided,days);
-            truckerControllerThatHasDecided.addCosmicCredit(credits);
+        if (truckerThatHasDecided != null) {
+            truckerThatHasDecided.getSpaceShip().removeNumHuman(coordinates);
+            game.moveBackward(truckerThatHasDecided,days);
+            truckerThatHasDecided.addCosmicCredit(credits);
         }
         state = CardState.EXIT;
         return state;

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.controller.TurnManager;
+import it.polimi.ingsw.controller.Trucker;
 import it.polimi.ingsw.model.callers.SlaversCaller;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
@@ -26,8 +25,8 @@ public class Slavers extends Card implements Serializable {
     private final int credits;
     private final int days;
     private final int astronautsLost;
-    private TruckerController winnerTruckerController = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
-    private ArrayList<TruckerController> defeatedTruckerControllers = new ArrayList<>();
+    private Trucker winnerTrucker = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
+    private ArrayList<Trucker> defeatedTruckers = new ArrayList<>();
     private ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveHumans;
     // contiene le coordinate delle cabine scelte dall'utente per rimuovere gli umani. Queste coordinate sono organizzate
     // in liste di liste. La lista esterna è una per ogni trucker, la lista interna contiene la lista di coordinate per quel
@@ -98,71 +97,71 @@ public class Slavers extends Card implements Serializable {
 
     /**
      * Sets the list of defeated truckers
-     * @param defeatedTruckerControllers list of truckers ID
+     * @param defeatedTruckers list of truckers ID
      */
-    public void setDefeatedTruckers(ArrayList<TruckerController> defeatedTruckerControllers) {
-        this.defeatedTruckerControllers = defeatedTruckerControllers;
+    public void setDefeatedTruckers(ArrayList<Trucker> defeatedTruckers) {
+        this.defeatedTruckers = defeatedTruckers;
     }
 
     /**
      * Sets the trucker that defeat the pirates
-     * @param winnerTruckerController trucker ID
+     * @param winnerTrucker trucker ID
      */
-    public void setWinnerTrucker(TruckerController winnerTruckerController) {
-        this.winnerTruckerController = winnerTruckerController;
+    public void setWinnerTrucker(Trucker winnerTrucker) {
+        this.winnerTrucker = winnerTrucker;
     }
 
     /**
      * Sets, for each trucker, the coordinates of the cabin where he/she want to remove the crew members
      * @param truckersCoordinatesToRemoveHumans list of lists of arrays of coordinates
      */
-    public CardState addTruckersCoordinatesToRemoveHumans(TruckerController truckerController, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer) throws GeneralError, InvalidCoordinates {
+    public CardState addTruckersCoordinatesToRemoveHumans(Trucker trucker, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer) throws GeneralError, InvalidCoordinates {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Card state in not HUMANSTOREMOVE");
         }
-        if(!defeatedTruckerControllers.isEmpty() || playersDecisions<numPlayer) {
+        if(!defeatedTruckers.isEmpty() || playersDecisions<numPlayer) {
             try {
-                truckerController.getSpaceShip().checkCabin(truckersCoordinatesToRemoveHumans, astronautsLost);
+                trucker.getSpaceShip().checkCabin(truckersCoordinatesToRemoveHumans, astronautsLost);
                 this.truckersCoordinatesToRemoveHumans.add(truckersCoordinatesToRemoveHumans);
                 playersDecisions++;
             } catch (InvalidCoordinates e) {
                 throw new InvalidCoordinates(e.getMessage());
             }
             if (playersDecisions==numPlayer) {
-                if(winnerTruckerController !=null) {
+                if(winnerTrucker !=null) {
                     cardState = CardState.CHOOSE_TO_GAIN;
                 }else cardState = CardState.ESECUZIONE;
             }
         }else{
-            if(winnerTruckerController !=null) {
+            if(winnerTrucker !=null) {
                 cardState = CardState.CHOOSE_TO_GAIN;
             }else cardState = CardState.ESECUZIONE;
         }
         return cardState;
     }
 
-    public CardState addDoubleCannonsCoord(TruckerController truckerController, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
+    public CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
-        if (truckerController.getSpaceShip().getNumDoubleCannon()!=0) {
-            if (!doubleCannonsCoord.isEmpty() || truckerController.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
+        if (trucker.getSpaceShip().getNumDoubleCannon()!=0) {
+            if (!doubleCannonsCoord.isEmpty() || trucker.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
                 this.doubleCannonsCoord.addLast(doubleCannonsCoord);
                 playersDecisions++;
             } else {
                 throw new InvalidComponentsException("not a double cannon");
             }
         }
-        if (truckerController.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > slaversPower) {
-            winnerTruckerController = truckerController;
+        if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > slaversPower) {
+            winnerTrucker = trucker;
             cardState = CardState.HUMANSTOREMOVE;
-        }else if(truckerController.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == slaversPower){
+        }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == slaversPower){
             if (playersDecisions == numPlayer) {
                 playersDecisions=0;
                 cardState = CardState.HUMANSTOREMOVE;
             }else cardState = CardState.ATTESA_RISPOSTE;
         }else {
-            defeatedTruckerControllers.add(truckerController);
+            defeatedTruckers.add(trucker);
             if (playersDecisions == numPlayer) {
                 playersDecisions=0;
                 cardState = CardState.HUMANSTOREMOVE;
@@ -190,13 +189,13 @@ public class Slavers extends Card implements Serializable {
             throw new GeneralError("Card state is not ESECUZIONE");
         }
         int i = 0;
-        if(winnerTruckerController !=null && choiceToGain){
-            winnerTruckerController.addCosmicCredit(credits);
-            game.moveBackward(winnerTruckerController, days);
+        if(winnerTrucker !=null && choiceToGain){
+            winnerTrucker.addCosmicCredit(credits);
+            game.moveBackward(winnerTrucker, days);
         }
-        if(!defeatedTruckerControllers.isEmpty()) {
-            for (TruckerController truckerController : defeatedTruckerControllers) {
-                truckerController.getSpaceShip().removeNumHuman(truckersCoordinatesToRemoveHumans.get(i));
+        if(!defeatedTruckers.isEmpty()) {
+            for (Trucker trucker : defeatedTruckers) {
+                trucker.getSpaceShip().removeNumHuman(truckersCoordinatesToRemoveHumans.get(i));
                 i++;
             }
         }

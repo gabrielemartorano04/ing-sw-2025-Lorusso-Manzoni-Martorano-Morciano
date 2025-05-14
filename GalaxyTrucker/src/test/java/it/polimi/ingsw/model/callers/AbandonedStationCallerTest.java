@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.callers;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.controller.TruckerController;
+import it.polimi.ingsw.controller.Trucker;
 import it.polimi.ingsw.model.cards.AbandonedStation;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.components.Goods;
@@ -24,7 +24,7 @@ class AbandonedStationCallerTest {
 
     private AbandonedStationCaller caller;
     private AbandonedStation card;
-    private TruckerController trucker;
+    private Trucker trucker;
     private Bank bank;
     private Game game;
 
@@ -35,7 +35,7 @@ class AbandonedStationCallerTest {
         goods1.addLast(new Goods(3));
         goods1.addLast(new Goods(2));
         card=new AbandonedStation(true, 1,goods1 , 1,5, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0119.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg");
-        trucker = new TruckerController("gabri", PlayerColors.RED);
+        trucker = new Trucker("gabri", PlayerColors.RED);
         bank=new Bank();
         game=new Game(1,2);
     }

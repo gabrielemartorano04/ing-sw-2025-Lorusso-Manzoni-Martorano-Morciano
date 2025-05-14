@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.callers;
 
-import it.polimi.ingsw.controller.TruckerController;
+import it.polimi.ingsw.controller.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.Pirates;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
@@ -17,8 +17,8 @@ import java.util.ArrayList;
  */
 public class PiratesCaller implements CardCaller, Serializable {
     private static final long serialVersionUID = 1L;
-    public CardStateResult call(Pirates card, TruckerController truckerController, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
-        return new CardStateResult(card.addDoubleCannonsCoord(truckerController, doubleCannonsCoord, numPlayer));
+    public CardStateResult call(Pirates card, Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
+        return new CardStateResult(card.addDoubleCannonsCoord(trucker, doubleCannonsCoord, numPlayer));
     }
     public CardStateResult call(Pirates card, boolean choice) throws GeneralError {
         return new CardStateResult(card.setChooseToGain(choice));
@@ -37,7 +37,7 @@ public class PiratesCaller implements CardCaller, Serializable {
         return new CardStateResult(card.cardEffect(game));
     }
 
-    public CardStateResult call(Pirates card, boolean answers, TruckerController turcker) throws GeneralError {
+    public CardStateResult call(Pirates card, boolean answers, Trucker turcker) throws GeneralError {
         return new CardStateResult(card.setAnswers(answers, turcker));
     }
 

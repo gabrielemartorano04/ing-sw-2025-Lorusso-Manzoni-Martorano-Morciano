@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.controller.TurnManager;
+import it.polimi.ingsw.controller.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.callers.PiratesCaller;
@@ -26,8 +25,8 @@ public class Pirates extends Card implements Serializable {
     private final int credits;
     private final int days;
     private final int piratesPower;
-    private TruckerController winnerTruckerController = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
-    private ArrayList<TruckerController> defeatedTruckerControllers;
+    private Trucker winnerTrucker = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
+    private ArrayList<Trucker> defeatedTruckers;
     private final ArrayList<int[]> shoots;
     private CardState cardState;
     private ArrayList<ArrayList<int[]>> doubleCannonsCoord; // coordinates of the double cannons the trucker wants to activate
@@ -106,33 +105,33 @@ public class Pirates extends Card implements Serializable {
 
     /**
      * Sets the list of defeated truckers
-     * @param defeatedTruckerControllers list of truckers ID
+     * @param defeatedTruckers list of truckers ID
      */
-    public void setDefeatedTruckers(ArrayList<TruckerController> defeatedTruckerControllers) {
-        this.defeatedTruckerControllers = defeatedTruckerControllers;
+    public void setDefeatedTruckers(ArrayList<Trucker> defeatedTruckers) {
+        this.defeatedTruckers = defeatedTruckers;
     }
 
-    public CardState addDoubleCannonsCoord(TruckerController truckerController, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
+    public CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
-        if (truckerController.getSpaceShip().getNumDoubleCannon()!=0) {
-            if (!doubleCannonsCoord.isEmpty() || truckerController.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
+        if (trucker.getSpaceShip().getNumDoubleCannon()!=0) {
+            if (!doubleCannonsCoord.isEmpty() || trucker.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
                 this.doubleCannonsCoord.addLast(doubleCannonsCoord);
                 playersDecisions++;
             } else {
                 throw new InvalidComponentsException("not a double cannon");
             }
         }
-        if (truckerController.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > piratesPower) {
-            winnerTruckerController = truckerController;
+        if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > piratesPower) {
+            winnerTrucker = trucker;
             cardState = CardState.GAIN;
-        }else if(truckerController.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == piratesPower){
+        }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == piratesPower){
             if (playersDecisions == numPlayer) {
                 cardState = CardState.GAIN;
             }else cardState = CardState.ATTESA_RISPOSTE;
         }else {
-            defeatedTruckerControllers.add(truckerController);
+            defeatedTruckers.add(trucker);
             if (playersDecisions == numPlayer) {
                 cardState = CardState.GAIN;
             }else cardState = CardState.ATTESA_RISPOSTE;
@@ -151,10 +150,10 @@ public class Pirates extends Card implements Serializable {
 
     /**
      * Sets the trucker that defeat the pirates
-     * @param winnerTruckerController trucker ID
+     * @param winnerTrucker trucker ID
      */
-    public void setWinnerTrucker(TruckerController winnerTruckerController) {
-        this.winnerTruckerController = winnerTruckerController;
+    public void setWinnerTrucker(Trucker winnerTrucker) {
+        this.winnerTrucker = winnerTrucker;
     }
 
     public ArrayList<int[]> getDirections() {
@@ -184,11 +183,11 @@ public class Pirates extends Card implements Serializable {
         return roll;
     }
 
-    public CardState setAnswers(boolean answers, TruckerController truckerController) throws GeneralError {
+    public CardState setAnswers(boolean answers, Trucker trucker) throws GeneralError {
         if(cardState != CardState.CHIEDI_SCUDI){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
         }
-        if (!truckerController.getSpaceShip().getProtection().isEmpty()){
+        if (!trucker.getSpaceShip().getProtection().isEmpty()){
             this.usesShield.addLast(answers);
         }
         cardState = CardState.ESECUZIONE;
@@ -204,19 +203,19 @@ public class Pirates extends Card implements Serializable {
         if (cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Card state is not ESECUZIONE");
         }
-        if (winnerTruckerController != null && choiceToGain) {
-            winnerTruckerController.addCosmicCredit(credits);
-            game.moveBackward(winnerTruckerController, days);
+        if (winnerTrucker != null && choiceToGain) {
+            winnerTrucker.addCosmicCredit(credits);
+            game.moveBackward(winnerTrucker, days);
         }
 
         //colpisco le navi solo se c'è qualcuno da colpire
-        if (!defeatedTruckerControllers.isEmpty()) {
+        if (!defeatedTruckers.isEmpty()) {
             int roll = game.rollDice();
             int j =0;
             boolean isBig = (shoot[0] == 1);
             int direction = shoot[1];
-            for (TruckerController truckerController : defeatedTruckerControllers) {
-                SpaceShip ship = truckerController.getSpaceShip();
+            for (Trucker trucker : defeatedTruckers) {
+                SpaceShip ship = trucker.getSpaceShip();
                 if (ship.isHit(roll, direction)) {
                     if (isBig) {
                         // colpo grande non può essere stoppato quindi devo distruggere il componente

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.controller.TurnManager;
+import it.polimi.ingsw.controller.Trucker;
 import it.polimi.ingsw.model.callers.AbandonedShipCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
@@ -23,7 +22,7 @@ public class AbandonedStation extends Card implements Serializable {
     private final int days;
     private final int numHuman;
     private final ArrayList<Goods> goods;
-    private TruckerController truckerControllerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
+    private Trucker truckerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
     private ArrayList<int[]> coordinates = null; //coordinates sono le coordinate dei Load dove inserire le merci. Viene settato dal Card controller, se è vuoto vuol dire che nessun giocatore ha voluto accettare la carta
     private CardState cardState;
     private int currGood;
@@ -76,17 +75,17 @@ public class AbandonedStation extends Card implements Serializable {
 
     /**
      * Sets the only trucker that has chosen to take the station
-     * @param truckerController: current trucker that is deciding whether to land or not
+     * @param trucker: current trucker that is deciding whether to land or not
      * @param landing: choice taken
      * @param numPlayer: num of player in the game
      * @param bank: bank of the game
      */
-    public CardState truckerLanding(TruckerController truckerController, boolean landing, int numPlayer, Bank bank) throws GeneralError {
+    public CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("stato non valido");
         }
         if(landing) {
-            this.truckerControllerThatHasDecided = truckerController;
+            this.truckerThatHasDecided = trucker;
             do {
                 if (bank.getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
                     cardState = CardState.CHOOSE_TO_GAIN;
@@ -127,15 +126,15 @@ public class AbandonedStation extends Card implements Serializable {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param winnerCoordinatesToAddGood list of coordinatest
      */
-    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, TruckerController truckerController, Bank bank) throws GeneralError, InvalidCoordinates  {
+    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates  {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
-        if (winnerCoordinatesToAddGood==null || !truckerController.getSpaceShip().checkLoad(winnerCoordinatesToAddGood)) { //check load deve controllare il singolo componente
+        if (winnerCoordinatesToAddGood==null || !trucker.getSpaceShip().checkLoad(winnerCoordinatesToAddGood)) { //check load deve controllare il singolo componente
             throw new InvalidCoordinates("Not goods deposit");
         }
         try{
-            truckerController.getSpaceShip().addGood(goods.get(currGood), winnerCoordinatesToAddGood, value, bank);
+            trucker.getSpaceShip().addGood(goods.get(currGood), winnerCoordinatesToAddGood, value, bank);
             bank.removeGoodsInBank(goods.get(currGood).getValue());
         }catch (InvalidPositionException e) {
             cardState = CardState.GOODSTOADD;
@@ -161,16 +160,16 @@ public class AbandonedStation extends Card implements Serializable {
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
-    public CardState rearrange(TruckerController truckerController, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
             throw new GeneralError("Card state is not REARRANGE");
         }
         if (!contiune) {
-            if (coord1 == null && !truckerController.getSpaceShip().checkLoad(coord1) && coord2 == null && !truckerController.getSpaceShip().checkLoad(coord2)) { //check load deve controllare il singolo componente
+            if (coord1 == null && !trucker.getSpaceShip().checkLoad(coord1) && coord2 == null && !trucker.getSpaceShip().checkLoad(coord2)) { //check load deve controllare il singolo componente
                 throw new InvalidCoordinates("Not goods deposit");
             }
             try {
-                truckerController.getSpaceShip().swapGoods(coord1, value1, coord2, value2);
+                trucker.getSpaceShip().swapGoods(coord1, value1, coord2, value2);
             } catch (InvalidPositionException e) {
                 cardState = CardState.REARRANGE;
                 throw new InvalidPositionException("invalid positions");
@@ -190,7 +189,7 @@ public class AbandonedStation extends Card implements Serializable {
         if (cardState != CardState.ESECUZIONE) {
             throw new GeneralError("risposte mancanti");
         }
-        game.moveBackward(truckerControllerThatHasDecided, days);
+        game.moveBackward(truckerThatHasDecided, days);
         cardState = CardState.EXIT;
         return cardState;
     }
