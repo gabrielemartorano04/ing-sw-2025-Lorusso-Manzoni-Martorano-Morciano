@@ -9,14 +9,14 @@ import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.DiscardSucc
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
 public class DiscardTileEvent extends ClientEvent {
-    private Component component;
-    public DiscardTileEvent(Component component) {
+    private int index;
+    public DiscardTileEvent(int index) {
         super(ClientEventType.DISCARD_TILE, false);
-        this.component = component;
+            this.index = index;
     }
 
-    public Component getComponent() {
-        return component;
+    public int getIndex() {
+        return index;
     }
 
     @Override

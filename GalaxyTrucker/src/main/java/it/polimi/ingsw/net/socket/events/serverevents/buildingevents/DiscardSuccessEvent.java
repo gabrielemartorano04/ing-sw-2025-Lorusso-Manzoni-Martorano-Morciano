@@ -11,15 +11,15 @@ import java.util.ArrayList;
 public class DiscardSuccessEvent extends ServerEvent {
 
     private String message;
-    private ArrayList<Component> avComponents;
-    public DiscardSuccessEvent(ArrayList<Component> avComponents) {
-        super(ServerEventType.DISCART_SUCCESS, false);
+    private int index;
+    public DiscardSuccessEvent(int index) {
+        super(ServerEventType.DISCART_SUCCESS, true);
         message = "Discard success";
-        this.avComponents = avComponents;
+        this.index = index;
     }
 
-    public ArrayList<Component> getAvComponents() {
-        return avComponents;
+    public int getIndex() {
+        return index;
     }
 
     @Override

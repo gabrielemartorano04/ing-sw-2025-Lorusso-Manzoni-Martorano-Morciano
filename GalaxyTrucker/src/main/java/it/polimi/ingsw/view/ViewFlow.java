@@ -35,6 +35,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private Map<String, Integer> track;
     private ServerEventHandlerVisitor serverEventVisitor;
     private Component selectedComponent;
+    private int selectedComponentIndex; // is equal -1 if selectedComponent is null
     private ArrayList<Component> availableComponents;
     private volatile boolean running;
     private Component[] keptComponent= new Component[2];
@@ -68,6 +69,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.keptComponent[1]=null;
         this.availableComponents= new ArrayList<>();
         new Thread(inputReader, "InputReaderThread").start();
+        this.selectedComponentIndex = -1;
     }
 
     @Override
@@ -141,7 +143,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                         event = inputParser.parseFirstConnection(input);
                     }
                     case START-> { event = inputParser.parseLogin(input);}
-                    case BULDING-> { event = inputParser.parseBuilding(input, selectedComponent);}
+                    case BULDING-> { event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex);}
                     case FLIGTH-> { event = inputParser.parseFlight(input);}
                 }
                 if (event != null) {
@@ -233,14 +235,17 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     public void setSelectedComponent(int index) {
         this.selectedComponent = availableComponents.get(index);
+        this.selectedComponentIndex = index;
     }
 
     public void deleteSelectedComponent() {
         this.selectedComponent = null;
+        this.selectedComponentIndex = -1;
     }
 
     public Component getSelectedComponent() {
         return selectedComponent;
+
     }
 
     public void addKeptComponent(Component keptComponent) throws IllegalArgumentException{
@@ -251,13 +256,15 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         }else throw new IllegalArgumentException("no more psace to keep components");
     }
 
-    public void removeKeptComponent(int index) {
-        this.keptComponent[index]=null;
-    }
+    //TODO: sistemare questa cosa. Non credo che gestire con un array sia una giusta idea, e usare il null pure
 
-    public Component getSelectedKeptComponent() {
-        return selectedComponent;
-    }
+//    public void removeKeptComponent(int index) {
+//        this.keptComponent[index]=null;
+//    }
+//
+//    public Component[] getSelectedKeptComponent() {
+//        return keptComponent;
+//    }
 
     public TimerDisplay getTimerDisplay() {
         return timerDisplay;

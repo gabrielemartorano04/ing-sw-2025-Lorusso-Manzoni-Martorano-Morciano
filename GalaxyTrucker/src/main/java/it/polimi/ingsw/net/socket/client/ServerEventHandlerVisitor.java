@@ -118,12 +118,8 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(DiscardSuccessEvent event) {
         ui.showDiscardComponent(viewFlow.getSelectedComponent());
         viewFlow.deleteSelectedComponent();
-        ui.showAvailableComponent(event.getAvComponents());
-        int i=0;
-        for(Component c: event.getAvComponents()){
-            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-            i++;
-        }
+        viewFlow.componentAsUnselectedSelected(event.getIndex());
+        ui.showAvailableComponent(viewFlow.getAvailableComponents());
     }
 
     @Override

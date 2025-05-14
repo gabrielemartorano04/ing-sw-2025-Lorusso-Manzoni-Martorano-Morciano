@@ -59,17 +59,17 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(DiscardTileEvent event) {
-        Component component = event.getComponent();
-        component.setCovered(false);
-        component.setSelected(false);
-        gameController.getGame().getComponents().addComponent(component);
+        // The component is already set as uncovered by the select handle, because we can't have a discard before a select
+        gameController.getGame().getComponents().setComponentAsUnselected(event.getIndex());
         currentClient.getTruckerController().setBuildingState(BuildingState.BUILDING);
-        int i=0;
-        for(Component c: gameController.getGame().getComponents().getComponents()){
-            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-            i++;
-        }
-        return new DiscardSuccessEvent(gameController.getGame().getComponents().getComponents());
+
+        // Print if we need it
+//        int i=0;
+//        for(Component c: gameController.getGame().getComponents().getComponents()){
+//            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
+//            i++;
+//        }
+        return new DiscardSuccessEvent(event.getIndex());
     }
 
     @Override

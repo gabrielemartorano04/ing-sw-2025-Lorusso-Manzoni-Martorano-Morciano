@@ -70,7 +70,7 @@ public ClientEvent parseFirstConnection(String input) {
         return null;
     }
 
-    public ClientEvent parseBuilding(String input, Component component){
+    public ClientEvent parseBuilding(String input, Component component, int index){
         if (input == null || input.isEmpty()) {
             return null;
         }
@@ -83,7 +83,7 @@ public ClientEvent parseFirstConnection(String input) {
                 case "keep":
                     return new KeepTileEvent(component);
                 case "discard":
-                    return new DiscardTileEvent(component);
+                    return new DiscardTileEvent(index);
                 default: System.out.println("Error: unknown command: " + command);
                     return null;
             }
