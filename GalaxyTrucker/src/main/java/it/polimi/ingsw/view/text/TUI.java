@@ -3,9 +3,7 @@ package it.polimi.ingsw.view.text;
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.model.components.EmptySpace;
-import it.polimi.ingsw.model.components.Goods;
+import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.UI;
 
@@ -73,12 +71,12 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showAvailableComponent(AvailableComponents components) {
+    public void showAvailableComponent(ArrayList<Component> components) {
         System.out.println("=== Componenti disponibili ===");
         int i =0;
         int numCols = 3;
 
-        for (Component c : components.getComponents()) {
+        for (Component c : components) {
             String info;
 
             if (c.getCovered()) {
@@ -91,7 +89,7 @@ public class TUI extends UI {
             System.out.printf("%2d) %-30s", i, info);
 
             // Vai a capo ogni 3 elementi
-            if ((i + 1) % numCols == 0 || i == components.getComponents().size() - 1) {
+            if ((i + 1) % numCols == 0 || i == components.size() - 1) {
                 System.out.println();
             }
             i++;
@@ -100,10 +98,12 @@ public class TUI extends UI {
 
     @Override
     public void showKeptComponents(Component[] kept) {
-        if (kept!=null) {
+        if (kept[0]!=null || kept[1]!=null) {
             System.out.println("Componenti tenuti: ");
-            for (Component c : kept) {
-                System.out.println("- " + c.getType());
+            for (int i=0; i<kept.length; i++) {
+                if(kept[i]!=null) {
+                    System.out.println("- " + kept[i].getType());
+                }
             }
         }
     }
@@ -377,8 +377,21 @@ public class TUI extends UI {
     public void showComponentSelected(Component c) {
         String info;
 
-        info = String.format("%s [N:%s E:%s S:%s W:%s]\n", c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+        if ("engine".equalsIgnoreCase(c.getType())) {
+            Engine engine = (Engine) c;
+            info = String.format("ENGINE [N:%s E:%s S:%s W:%s] (Double: %s)\n",
+                    engine.getLink()[0], engine.getLink()[1], engine.getLink()[2], engine.getLink()[3],
+                    engine.getIsDouble());
+        } else if ("cannon".equalsIgnoreCase(c.getType())) {
+            Cannon cannon = (Cannon) c;
+            info = String.format("CANNON [N:%s E:%s S:%s W:%s] (Double: %s)\n",
+                    cannon.getLink()[0], cannon.getLink()[1], cannon.getLink()[2], cannon.getLink()[3],
+                    cannon.getIsDouble());
+        } else {
+            info = String.format("%s [N:%s E:%s S:%s W:%s]\n",
+                    c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+        }
 
-        System.out.printf(info);
+        System.out.print(info);
     }
 }
