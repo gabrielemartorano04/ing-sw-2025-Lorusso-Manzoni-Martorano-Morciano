@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.TruckerController;
 import it.polimi.ingsw.model.callers.EpidemicCaller;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
@@ -36,9 +36,9 @@ public class Epidemic extends Card implements Serializable {
         if(state != CardState.ESECUZIONE) {
             throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }
-        List <Trucker> truckers = game.getTruckerList();
-        for(Trucker trucker: truckers) {
-            trucker.getSpaceShip().epidemic();
+        List <TruckerController> truckerControllers = game.getTruckerList();
+        for(TruckerController truckerController : truckerControllers) {
+            truckerController.getSpaceShip().epidemic();
         }
         state = CardState.EXIT;
         return state;

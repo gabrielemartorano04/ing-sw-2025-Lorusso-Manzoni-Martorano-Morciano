@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.callers.SmugglersCaller;
 import it.polimi.ingsw.model.components.*;
-import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.TruckerController;
 import it. polimi.ingsw.model.Bank;
 import it.polimi.ingsw.utilities.exceptions.*;
 
@@ -25,8 +25,8 @@ public class Smugglers extends Card implements Serializable {
     private int goodsLost;
     private final int days;
     private Goods[] goodsGained = new Goods[3];
-    private Trucker winnerTrucker = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
-    private ArrayList<Trucker> defeatedTruckers;
+    private TruckerController winnerTruckerController = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
+    private ArrayList<TruckerController> defeatedTruckerControllers;
     private CardState cardState;
     private ArrayList<ArrayList<int[]>> doubleCannonsCoord; // coordinates of the double cannons the trucker wants to activate
     private int playersDecisions; // number of players that gave a choice
@@ -59,7 +59,7 @@ public class Smugglers extends Card implements Serializable {
         this.cardState = CardState.ATTESA_RISPOSTE;
         this.playersDecisions = 0;
         this.currGood=0;
-        this.winnerTrucker=null;
+        this.winnerTruckerController =null;
         this.chooseToGain=false;
     }
 
@@ -97,38 +97,38 @@ public class Smugglers extends Card implements Serializable {
 
     /**
      * Sets the list of defeated truckers
-     * @param defeatedTruckers list of truckers ID
+     * @param defeatedTruckerControllers list of truckers ID
      */
-    public void setDefeatedTruckers(ArrayList<Trucker> defeatedTruckers) {
-        this.defeatedTruckers = defeatedTruckers;
+    public void setDefeatedTruckers(ArrayList<TruckerController> defeatedTruckerControllers) {
+        this.defeatedTruckerControllers = defeatedTruckerControllers;
     }
 
     /**
      * Sets the trucker that defeat the pirates
-     * @param winnerTrucker trucker ID
+     * @param winnerTruckerController trucker ID
      */
-    public void setWinnerTrucker(Trucker winnerTrucker) {
-        this.winnerTrucker = winnerTrucker;
+    public void setWinnerTrucker(TruckerController winnerTruckerController) {
+        this.winnerTruckerController = winnerTruckerController;
     }
 
     public CardState getCardState() {
         return cardState;
     }
 
-    public CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Bank bank) throws GeneralError, InvalidComponentsException{
+    public CardState addDoubleCannonsCoord(TruckerController truckerController, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Bank bank) throws GeneralError, InvalidComponentsException{
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
-        if (trucker.getSpaceShip().getNumDoubleCannon()!=0) {
-            if (!doubleCannonsCoord.isEmpty() || trucker.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
+        if (truckerController.getSpaceShip().getNumDoubleCannon()!=0) {
+            if (!doubleCannonsCoord.isEmpty() || truckerController.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
                 this.doubleCannonsCoord.addLast(doubleCannonsCoord);
                 playersDecisions++;
             } else {
                 throw new InvalidComponentsException("not a double cannon");
             }
         }
-        if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > smugglersPower) {
-            winnerTrucker = trucker;
+        if (truckerController.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > smugglersPower) {
+            winnerTruckerController = truckerController;
             do {
                 if (bank.getGoodsInBank(goodsGained[currGood].getValue()) >= 1) {
                     cardState = CardState.REMOVE_GOODS;
@@ -139,13 +139,13 @@ public class Smugglers extends Card implements Serializable {
                     }
                 }
             }while(currGood<goodsGained.length && cardState!=CardState.REMOVE_GOODS);
-        }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == smugglersPower){
+        }else if(truckerController.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == smugglersPower){
             if (playersDecisions == numPlayer) {
                 playersDecisions=0;
                 cardState = CardState.REMOVE_GOODS;
             }else cardState = CardState.ATTESA_RISPOSTE;
         }else {
-            defeatedTruckers.add(trucker);
+            defeatedTruckerControllers.add(truckerController);
             if (playersDecisions == numPlayer) {
                 playersDecisions=0;
                 cardState = CardState.REMOVE_GOODS;
@@ -185,15 +185,15 @@ public class Smugglers extends Card implements Serializable {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param winnerCoordinatesToAddGood list of coordinatest
      */
-    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates  {
+    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, TruckerController truckerController, Bank bank) throws GeneralError, InvalidCoordinates  {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
-        if (winnerCoordinatesToAddGood==null || !trucker.getSpaceShip().checkLoad(winnerCoordinatesToAddGood)) { //check load deve controllare il singolo componente
+        if (winnerCoordinatesToAddGood==null || !truckerController.getSpaceShip().checkLoad(winnerCoordinatesToAddGood)) { //check load deve controllare il singolo componente
             throw new InvalidCoordinates("Not goods deposit");
         }
         try{
-            trucker.getSpaceShip().addGood(goodsGained[currGood], winnerCoordinatesToAddGood, value, bank);
+            truckerController.getSpaceShip().addGood(goodsGained[currGood], winnerCoordinatesToAddGood, value, bank);
             bank.removeGoodsInBank(goodsGained[currGood].getValue());
         }catch (InvalidPositionException e) {
             cardState = CardState.GOODSTOADD;
@@ -219,16 +219,16 @@ public class Smugglers extends Card implements Serializable {
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
-    public CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public CardState rearrange(TruckerController truckerController, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
             throw new GeneralError("Card state is not REARRANGE");
         }
         if (!contiune) {
-            if (coord1 == null && !trucker.getSpaceShip().checkLoad(coord1) && coord2 == null && !trucker.getSpaceShip().checkLoad(coord2)) { //check load deve controllare il singolo componente
+            if (coord1 == null && !truckerController.getSpaceShip().checkLoad(coord1) && coord2 == null && !truckerController.getSpaceShip().checkLoad(coord2)) { //check load deve controllare il singolo componente
                 throw new InvalidCoordinates("Not goods deposit");
             }
             try {
-                trucker.getSpaceShip().swapGoods(coord1, value1, coord2, value2);
+                truckerController.getSpaceShip().swapGoods(coord1, value1, coord2, value2);
             } catch (InvalidPositionException e) {
                 cardState = CardState.REARRANGE;
                 throw new InvalidPositionException("invalid positions");
@@ -239,39 +239,39 @@ public class Smugglers extends Card implements Serializable {
         return cardState;
     }
 
-    public CardState manageRemoveGoods(Trucker trucker, Bank bank) throws GeneralError{
+    public CardState manageRemoveGoods(TruckerController truckerController, Bank bank) throws GeneralError{
         if(cardState != CardState.REMOVE_GOODS){
             throw new GeneralError("plotGoodsToRemove not callable in the state " + cardState);
         }
-        if(trucker == null){
+        if(truckerController == null){
             throw new GeneralError("trucker is null");
         }
-        ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
+        ArrayList<Goods> goodsList = truckerController.getSpaceShip().getGoodsList();
 
-        if(!defeatedTruckers.isEmpty()) {
+        if(!defeatedTruckerControllers.isEmpty()) {
             // se il colore corrente è minore uguale a 3 allora devo togliere le merci
             while (colorOfCurrGoodToRemove <= 3 && goodsLost > 0) {
                 switch (colorOfCurrGoodToRemove) {
                     case 0 -> {
-                        numOfCurrTypeOfGood = trucker.getSpaceShip().getRedGoods();
+                        numOfCurrTypeOfGood = truckerController.getSpaceShip().getRedGoods();
                         colorOfCurrGoodToRemove++;
                     }
                     case 1 -> {
-                        numOfCurrTypeOfGood = trucker.getSpaceShip().getYellowGoods();
+                        numOfCurrTypeOfGood = truckerController.getSpaceShip().getYellowGoods();
                         colorOfCurrGoodToRemove++;
                     }
                     case 2 -> {
-                        numOfCurrTypeOfGood = trucker.getSpaceShip().getGreenGoods();
+                        numOfCurrTypeOfGood = truckerController.getSpaceShip().getGreenGoods();
                         colorOfCurrGoodToRemove++;
                     }
                     case 3 -> {
-                        numOfCurrTypeOfGood = trucker.getSpaceShip().getBlueGoods();
+                        numOfCurrTypeOfGood = truckerController.getSpaceShip().getBlueGoods();
                         colorOfCurrGoodToRemove++;
                     }
                 }
 
                 if (numOfCurrTypeOfGood <= goodsLost) {
-                    removeWithoutAsking(trucker, goodsList, bank);
+                    removeWithoutAsking(truckerController, goodsList, bank);
                 } else {
                     cardState = CardState.PLOT_GOODSLIST;
                     break;
@@ -282,9 +282,9 @@ public class Smugglers extends Card implements Serializable {
                 cardState = CardState.PLOT_BATTERIES;
             }
             if (goodsLost == 0) {
-                defeatedTruckers.removeFirst();
+                defeatedTruckerControllers.removeFirst();
             }else {
-                if (winnerTrucker!=null) {
+                if (winnerTruckerController !=null) {
                     cardState = CardState.PLOT_GOOD;
                 }else cardState=CardState.ESECUZIONE;
             }
@@ -293,7 +293,7 @@ public class Smugglers extends Card implements Serializable {
 
     }
 
-    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank) throws GeneralError{
+    private void removeWithoutAsking(TruckerController truckerController, ArrayList<Goods> goodsList, Bank bank) throws GeneralError{
         if(this.numOfCurrTypeOfGood == 0){
             throw new GeneralError("Remove without asking: NumOfGoods is 0 but you called removeWithoutAsking");
         }
@@ -308,21 +308,21 @@ public class Smugglers extends Card implements Serializable {
             goodsList.removeFirst();
             goodsLost--;
         }
-        trucker.getSpaceShip().removeGoods(list);
+        truckerController.getSpaceShip().removeGoods(list);
 
     }
 
-    public ArrayList<Goods> plotGoodsList(Trucker trucker) throws GeneralError {
+    public ArrayList<Goods> plotGoodsList(TruckerController truckerController) throws GeneralError {
         if (cardState != CardState.PLOT_GOODSLIST){
             throw new GeneralError("plotGoodsList not callable in the state " + cardState);
         }
-        if(trucker == null){
+        if(truckerController == null){
             throw new GeneralError("trucker is null");
         }
         if(!goodsToRemove.isEmpty()){
             throw new GeneralError("Tried to set a new goodsToRemove list but it isn't empty");
         }
-        ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
+        ArrayList<Goods> goodsList = truckerController.getSpaceShip().getGoodsList();
         for (int i = 0; i < numOfCurrTypeOfGood; i++) {
             goodsToRemove.add(goodsList.getFirst());
         }
@@ -333,10 +333,10 @@ public class Smugglers extends Card implements Serializable {
     /**
      *
      * @param indexes: contains the indexes of the Goods within the list displayed on the screen that the player wants to remove from his ship
-     * @param trucker
+     * @param truckerController
      */
 
-    public CardState removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
+    public CardState removeAsking(ArrayList<Integer> indexes, TruckerController truckerController, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
         if (cardState != CardState.REMOVE_ASKING){
             throw new GeneralError("Can't call removeAsking in the state " + cardState);
         }
@@ -348,7 +348,7 @@ public class Smugglers extends Card implements Serializable {
                 throw new InvalidGoodChosen("A good with an index out of range has been chosen");
             }
         }
-        if(trucker == null){
+        if(truckerController == null){
             throw new GeneralError("trucker is null");
         }
         goodsLost = 0;
@@ -356,7 +356,7 @@ public class Smugglers extends Card implements Serializable {
         for(Integer index : indexes){
             list.add(goodsToRemove.get(index));
         }
-        removeWithoutAsking(trucker,list,bank);
+        removeWithoutAsking(truckerController,list,bank);
         cardState = CardState.REMOVE_GOODS;
         return cardState;
     }
@@ -368,14 +368,14 @@ public class Smugglers extends Card implements Serializable {
         return goodsLost;
     }
 
-    public CardState removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
+    public CardState removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, TruckerController truckerController) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(cardState!= CardState.REMOVE_BATTERIES){
             throw new GeneralError("Can't call removeBatteries in the state " + cardState);
         }
-        if(trucker == null){
+        if(truckerController == null){
             throw new GeneralError("trucker is null");
         }
-        if(!trucker.getSpaceShip().checkBatteryStorage(coordinatesToRemoveBatteries)){
+        if(!truckerController.getSpaceShip().checkBatteryStorage(coordinatesToRemoveBatteries)){
             throw new InvalidCoordinates("Not all components selected are Battery Storages");
         }
         int counterOfBatteriesSelectedByPlayer = 0;
@@ -386,7 +386,7 @@ public class Smugglers extends Card implements Serializable {
             throw new WrongNumberOfBatteriesSelected("The total number of batteries you selected to remove is not " + goodsLost);
         }
         try{
-            trucker.getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);
+            truckerController.getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);
         }catch(NotEnoughBatteries e){
             throw new NotEnoughBatteries("Not enough batteries");
         }
@@ -404,7 +404,7 @@ public class Smugglers extends Card implements Serializable {
             throw new GeneralError("Can't call cardEffect in the state " + cardState);
         }
         if(chooseToGain){
-            game.moveBackward(winnerTrucker, days);
+            game.moveBackward(winnerTruckerController, days);
         }
         cardState = CardState.EXIT;
         return cardState;

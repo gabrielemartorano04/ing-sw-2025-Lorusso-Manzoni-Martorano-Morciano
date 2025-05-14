@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 public class GameController {
     private final Game game;
     private int count=0;
-    private final List<TruckerController> truckerControllers = new ArrayList<>();
     private final Timer startTimer = new Timer();
     private boolean timerStarted = false;
     private boolean gameStarted = false;
@@ -45,7 +44,7 @@ public class GameController {
         return availablePlayerColors;
     }
 
-    public synchronized Trucker tryAddPlayer(String nickname, PlayerColors color) throws GameAlreadyStartedException, IllegalArgumentException, NicknameUsedException, ColorNotAvailable {
+    public synchronized TruckerController tryAddPlayer(String nickname, PlayerColors color) throws GameAlreadyStartedException, IllegalArgumentException, NicknameUsedException, ColorNotAvailable {
         if (gameStarted) {
             throw new GameAlreadyStartedException("game already started");
         }
@@ -57,10 +56,8 @@ public class GameController {
             throw new ColorNotAvailable("Color already taken.");
         }
 
-        Trucker trucker = new Trucker(nickname, color);
-        TruckerController tc = new TruckerController(trucker, this);
-        truckerControllers.add(tc);
-        game.addTrucker(trucker);
+        TruckerController truckerController = new TruckerController(nickname, color);
+        game.addTrucker(truckerController);
 
         count++;
 
@@ -73,7 +70,7 @@ public class GameController {
             startBuildingPhase();
         }
 
-        return trucker;
+        return truckerController;
     }
 
     public EnumSet<PlayerColors> showAvailableColors() {
@@ -110,7 +107,7 @@ public class GameController {
     }
 
     private synchronized void forcePlayersToWaitEnd() {
-        for (Trucker t : game.getTruckers()) {
+        for (TruckerController t : game.getTruckers()) {
             if (t.getBuildingState() != BuildingState.WAIT_END) {
                 t.setBuildingState(BuildingState.WAIT_END);
             }
@@ -118,16 +115,16 @@ public class GameController {
         scheduler.shutdown(); // ferma il controllo
     }
 
-    public void selectComponent(Trucker t, int index) throws InvalidComponentsException, InvalidStateException {
-        t.selectComponent(index, game.getComponents());
+    public Component selectComponent(TruckerController t, int index) throws InvalidComponentsException, InvalidStateException {
+        return t.selectComponent(index, game.getComponents());
     }
 
-    public void keepComponent(Trucker t, Component c) throws InvalidComponentsException, InvalidStateException {
+    public void keepComponent(TruckerController t, Component c) throws InvalidComponentsException, InvalidStateException {
         t.keep(c, game);
     }
 
-    public void linkComponent(Trucker trucker, Component component, int x, int y) throws InvalidStateException, InvalidCoordinates {
-        trucker.link(component, x, y);
+    public void linkComponent(TruckerController truckerController, Component component, int x, int y) throws InvalidStateException, InvalidCoordinates {
+        truckerController.link(component, x, y);
     }
 
     public void turnHourglass() throws CannotTurnHourglassException {
@@ -138,8 +135,8 @@ public class GameController {
         return game.viewStack(stackIndex);
     }
 
-    public synchronized void endBuildingFor(Trucker trucker) throws InvalidStateException {
-        trucker.finish(); // FSM: controlla che sia valido e marca END
+    public synchronized void endBuildingFor(TruckerController truckerController) throws InvalidStateException {
+        truckerController.finish(); // FSM: controlla che sia valido e marca END
 
         if (game.allPlayersReady()) {
             game.startFlightPhase();

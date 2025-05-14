@@ -1,14 +1,10 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.utilities.exceptions.ColorNotAvailable;
 import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class GameControllerTest {
 

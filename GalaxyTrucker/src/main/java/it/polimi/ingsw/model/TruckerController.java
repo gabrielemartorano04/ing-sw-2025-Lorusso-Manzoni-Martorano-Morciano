@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.cards.Card;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class Trucker {
+public class TruckerController {
 
 
     private PlayerColors color;
@@ -22,7 +21,7 @@ public class Trucker {
     private int cosmicCredit;
     private BuildingState buildingState;
 
-    public Trucker(String nickName, PlayerColors color) {
+    public TruckerController(String nickName, PlayerColors color) {
         this.nickname = nickName;
         this.color = color;
         this.spaceShip = new SpaceShip(color);

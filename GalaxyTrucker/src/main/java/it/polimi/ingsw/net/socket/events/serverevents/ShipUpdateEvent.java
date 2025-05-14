@@ -1,6 +1,6 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
-import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.TruckerController;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 
@@ -13,19 +13,19 @@ public class ShipUpdateEvent extends ServerEvent {
     private int truckerPosition,numBatteries,numCrew,cannonPower,enginePower;
     private Map<String, Integer> goods;
 
-    public ShipUpdateEvent(Trucker trucker) {
+    public ShipUpdateEvent(TruckerController truckerController) {
         super(ServerEventType.UPDATE_STATE, false);
         message = "Ship updated";
-        this.ship = trucker.getSpaceShip().getComponents();
-        this.truckerPosition = trucker.getPosition();
-        this.numBatteries = trucker.getSpaceShip().getNumBatteries();
-        this.numCrew = trucker.getSpaceShip().getNumHuman();
-        this.cannonPower = trucker.getSpaceShip().getSingleCannonPower();
-        this.enginePower = trucker.getSpaceShip().getSingleEnginePower();
-        this.goods.put("RED", trucker.getSpaceShip().getRedGoods());
-        this.goods.put("YELLOW", trucker.getSpaceShip().getYellowGoods());
-        this.goods.put("BLUE", trucker.getSpaceShip().getBlueGoods());
-        this.goods.put("GREEN", trucker.getSpaceShip().getGreenGoods());
+        this.ship = truckerController.getSpaceShip().getComponents();
+        this.truckerPosition = truckerController.getPosition();
+        this.numBatteries = truckerController.getSpaceShip().getNumBatteries();
+        this.numCrew = truckerController.getSpaceShip().getNumHuman();
+        this.cannonPower = truckerController.getSpaceShip().getSingleCannonPower();
+        this.enginePower = truckerController.getSpaceShip().getSingleEnginePower();
+        this.goods.put("RED", truckerController.getSpaceShip().getRedGoods());
+        this.goods.put("YELLOW", truckerController.getSpaceShip().getYellowGoods());
+        this.goods.put("BLUE", truckerController.getSpaceShip().getBlueGoods());
+        this.goods.put("GREEN", truckerController.getSpaceShip().getGreenGoods());
     }
 
     @Override

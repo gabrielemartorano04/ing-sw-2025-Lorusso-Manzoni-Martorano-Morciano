@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.TruckerController;
 import it.polimi.ingsw.model.callers.MeteorShowerCaller;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
@@ -107,15 +107,15 @@ public class MeteorShower extends Card implements Serializable {
             throw new GeneralError("Non è possibile eseguire card effect nello stato " + this.state);
         }
 
-        List<Trucker> truckers = game.getTruckerList();
-        if(answers.size() != truckers.size()){
+        List<TruckerController> truckerControllers = game.getTruckerList();
+        if(answers.size() != truckerControllers.size()){
             throw new GeneralError("Non ho una risposta per ogni trucker");
         }
         boolean isBig = (meteor[0] == 1);
         int direction = meteor[1];
         int j = 0;
-        for (Trucker trucker : truckers) {
-            SpaceShip ship = trucker.getSpaceShip();
+        for (TruckerController truckerController : truckerControllers) {
+            SpaceShip ship = truckerController.getSpaceShip();
             if (ship.isHit(roll, direction)) {
                 if (isBig) {
                     // qui assumo che il meteorite grande possa essere distrutto da un cannone ma è da rivedere

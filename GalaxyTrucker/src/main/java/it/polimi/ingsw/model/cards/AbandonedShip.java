@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.callers.AbandonedShipCaller;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.TruckerController;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.io.Serializable;
@@ -20,7 +20,7 @@ public class AbandonedShip extends Card implements Serializable {
     private final int days;
     private final int credits;
     private final int numHuman;
-    private Trucker truckerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
+    private TruckerController truckerControllerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
     private ArrayList<int[]> coordinates = null; //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
     private CardState state = CardState.ATTESA_RISPOSTE;
     private int playerDecisions;
@@ -41,7 +41,7 @@ public class AbandonedShip extends Card implements Serializable {
         this.numHuman = numHuman;
         this.credits = credits;
         this.days = days;
-        this.truckerThatHasDecided = null;
+        this.truckerControllerThatHasDecided = null;
         this.playerDecisions = 0;
         this.state = CardState.ATTESA_RISPOSTE;
     }
@@ -79,16 +79,16 @@ public class AbandonedShip extends Card implements Serializable {
 
     /**
      * Sets the only trucker that has chosen to take the ship
-     * @param trucker: trucker current
+     * @param truckerController: trucker current
      * @param landing: the choice taken by the current client
      * @param numPlayer: number of player in the current game
      */
-    public CardState setTruckerThatHasDecided(Trucker trucker, boolean landing, int numPlayer) throws GeneralError {
+    public CardState setTruckerThatHasDecided(TruckerController truckerController, boolean landing, int numPlayer) throws GeneralError {
         if(state != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }
         if(landing) {
-            truckerThatHasDecided = trucker;
+            truckerControllerThatHasDecided = truckerController;
             state = CardState.HUMANSTOREMOVE;
         }else{
             if (playerDecisions == numPlayer){
@@ -113,13 +113,13 @@ public class AbandonedShip extends Card implements Serializable {
             throw new InvalidCoordinates("Coordinates is null or empty");
         }
         try{
-            truckerThatHasDecided.getSpaceShip().checkCabin(coordinates, numHuman);
+            truckerControllerThatHasDecided.getSpaceShip().checkCabin(coordinates, numHuman);
         }catch (InvalidCoordinates e){
             throw new InvalidCoordinates(e.getMessage());
         }
         this.coordinates = coordinates;
 
-        if(truckerThatHasDecided!=null){
+        if(truckerControllerThatHasDecided !=null){
             state = CardState.ESECUZIONE;
         }else{
             throw new GeneralError("Tried to set coordinates when truckerThatHasDecided is null");
@@ -137,10 +137,10 @@ public class AbandonedShip extends Card implements Serializable {
         if(state != CardState.ESECUZIONE) {
             throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }
-        if (truckerThatHasDecided != null) {
-            truckerThatHasDecided.getSpaceShip().removeNumHuman(coordinates);
-            game.moveBackward(truckerThatHasDecided,days);
-            truckerThatHasDecided.addCosmicCredit(credits);
+        if (truckerControllerThatHasDecided != null) {
+            truckerControllerThatHasDecided.getSpaceShip().removeNumHuman(coordinates);
+            game.moveBackward(truckerControllerThatHasDecided,days);
+            truckerControllerThatHasDecided.addCosmicCredit(credits);
         }
         state = CardState.EXIT;
         return state;

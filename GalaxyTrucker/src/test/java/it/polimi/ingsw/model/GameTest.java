@@ -16,7 +16,7 @@ class GameTest {
     private Game game;
     private ArrayList<Card> deck;
     private SpaceShip ship;
-    private Trucker trucker1, trucker2;
+    private TruckerController truckerController1, truckerController2;
     private Hourglass hourglass;
 
     @BeforeEach
@@ -25,10 +25,10 @@ class GameTest {
         deck = new ArrayList<Card>();
         ship = new SpaceShip(PlayerColors.BLUE);
         hourglass = new Hourglass(game);
-        trucker1 = new Trucker("frenk", PlayerColors.BLUE);
-        game.addTrucker(trucker1);
-        trucker2 = new Trucker("manzo", PlayerColors.RED);
-        game.addTrucker(trucker2);
+        truckerController1 = new TruckerController("frenk", PlayerColors.BLUE);
+        game.addTrucker(truckerController1);
+        truckerController2 = new TruckerController("manzo", PlayerColors.RED);
+        game.addTrucker(truckerController2);
     }
 
     @Test
@@ -84,17 +84,17 @@ class GameTest {
 
     @Test
     void checkOvertaken() {
-        Trucker t1 = trucker1;
-        trucker1.setPosition(1);
-        trucker2.setPosition(27);
-        game.checkOvertaken(trucker1);
+        TruckerController t1 = truckerController1;
+        truckerController1.setPosition(1);
+        truckerController2.setPosition(27);
+        game.checkOvertaken(truckerController1);
         assertFalse(game.getTruckers().contains(t1));
     }
 
     @Test
     void withdraw() {
-        Trucker t1 = trucker1;
-        game.withdraw(trucker1);
+        TruckerController t1 = truckerController1;
+        game.withdraw(truckerController1);
         assertFalse(game.getTruckers().contains(t1));
         assertNotNull(game.getTrucker(0).getNickname());
         //invertiti perche ho fatto sort sopra
@@ -138,22 +138,22 @@ class GameTest {
 
     @Test
     void moveForward() {
-        trucker1.setPosition(1);
-        trucker2.setPosition(2);
-        game.moveForward(trucker2, 1);
-        game.moveForward(trucker1, 3);
-        assertEquals(3, trucker2.getPosition());
-        assertEquals(5, trucker1.getPosition());
+        truckerController1.setPosition(1);
+        truckerController2.setPosition(2);
+        game.moveForward(truckerController2, 1);
+        game.moveForward(truckerController1, 3);
+        assertEquals(3, truckerController2.getPosition());
+        assertEquals(5, truckerController1.getPosition());
     }
 
     @Test
     void moveBackward() {
-        trucker1.setPosition(5);
-        trucker2.setPosition(4);
-        game.moveBackward(trucker2, 1);
-        game.moveBackward(trucker1, 3);
-        assertEquals(3, trucker2.getPosition());
-        assertEquals(1, trucker1.getPosition());
+        truckerController1.setPosition(5);
+        truckerController2.setPosition(4);
+        game.moveBackward(truckerController2, 1);
+        game.moveBackward(truckerController1, 3);
+        assertEquals(3, truckerController2.getPosition());
+        assertEquals(1, truckerController1.getPosition());
     }
 
     @Test
@@ -179,7 +179,7 @@ class GameTest {
     @Test
     void showUsedColors() {
         Set<PlayerColors> colors = game.showUsedColors();
-        assertTrue(colors.contains(trucker1.getColor()));
+        assertTrue(colors.contains(truckerController1.getColor()));
         assertFalse(colors.contains(PlayerColors.YELLOW));
     }
 
@@ -197,9 +197,9 @@ class GameTest {
 
     @Test
     void addTrucker() {
-        Trucker trucker = new Trucker("gabri", PlayerColors.YELLOW);
-        game.addTrucker(trucker);
-        assertTrue(game.getTruckers().contains(trucker));
+        TruckerController truckerController = new TruckerController("gabri", PlayerColors.YELLOW);
+        game.addTrucker(truckerController);
+        assertTrue(game.getTruckers().contains(truckerController));
     }
 
     @Test
@@ -237,8 +237,8 @@ class GameTest {
 
     @Test
     void allPlayersReady() {
-        for (Trucker trucker : game.getTruckers()) {
-            trucker.setBuildingState(BuildingState.END);
+        for (TruckerController truckerController : game.getTruckers()) {
+            truckerController.setBuildingState(BuildingState.END);
         }
         assertTrue(game.allPlayersReady());
     }

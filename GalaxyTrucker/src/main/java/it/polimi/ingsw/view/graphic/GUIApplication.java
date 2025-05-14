@@ -3,9 +3,8 @@ package it.polimi.ingsw.view.graphic;
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.TruckerController;
 import it.polimi.ingsw.model.cards.*;
-import it.polimi.ingsw.model.components.Cabin;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import javafx.application.Application;
@@ -28,7 +27,7 @@ public class GUIApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws InvalidCoordinates {
         availableComponents = new AvailableComponents();
-        Trucker trucker= new Trucker("luca", PlayerColors.BLUE);
+        TruckerController truckerController = new TruckerController("luca", PlayerColors.BLUE);
         kept = new Component[2];
         stack = new ArrayList<>();
         Card card1 = new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "");

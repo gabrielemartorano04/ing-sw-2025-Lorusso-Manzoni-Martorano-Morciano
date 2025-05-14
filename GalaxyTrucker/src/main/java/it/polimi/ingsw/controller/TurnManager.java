@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.TruckerController;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class TurnManager {
     /**
      * @return the current player
      */
-    public Trucker getCurrentTrucker() {
+    public TruckerController getCurrentTrucker() {
         return getCurrentClient().getTrucker();
     }
 

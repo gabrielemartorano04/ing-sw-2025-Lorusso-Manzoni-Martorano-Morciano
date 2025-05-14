@@ -1,8 +1,7 @@
 package it.polimi.ingsw.net.rmi.server;
 
 import it.polimi.ingsw.controller.ServerController;
-import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.TruckerController;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.rmi.RmiClientInterface;
 import it.polimi.ingsw.net.rmi.RmiServerInterface;
@@ -38,12 +37,12 @@ public class ClientHandlerRmi extends UnicastRemoteObject implements RmiServerIn
     }
 
     @Override
-    public void setTruckerController(TruckerController truckerController) {
+    public void setTrucker(TruckerController truckerController) {
         this.truckerController = truckerController;
     }
 
     @Override
-    public TruckerController getTruckerController() {
+    public TruckerController getTrucker() {
         return truckerController;
     }
 
