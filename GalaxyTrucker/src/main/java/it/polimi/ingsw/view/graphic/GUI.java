@@ -2,13 +2,14 @@ package it.polimi.ingsw.view.graphic;
 
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.cards.AbandonedShip;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.Epidemic;
+import it.polimi.ingsw.model.cards.OpenSpace;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.DiscardTileEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.KeepTileEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.LinkTileEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendBooleanEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
@@ -16,7 +17,8 @@ import it.polimi.ingsw.view.UI;
 
 import javafx.animation.*;
 import javafx.application.Platform;
-import javafx.collections.ListChangeListener;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -39,6 +41,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class GUI extends UI {
 
@@ -639,25 +642,25 @@ public class GUI extends UI {
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20));
-        grid.setHgap(15);
-        grid.setVgap(15);
+        grid.setHgap(10);
+        grid.setVgap(10);
         grid.setAlignment(Pos.CENTER);
 
         int col = 0;
         int row = 0;
         for (Component component : components) {
             ImageView imgView = new ImageView(component.getCovered() ? component.getBackImage() : component.getFrontImage());
-            imgView.setFitWidth(100);
-            imgView.setFitHeight(100);
+            imgView.setFitWidth(70);
+            imgView.setFitHeight(70);
 
-            Rectangle clip = new Rectangle(100, 100);
+            Rectangle clip = new Rectangle(75, 75);
             clip.setArcWidth(16);
             clip.setArcHeight(16);
             imgView.setClip(clip);
 
             Button button = new Button();
             button.setGraphic(imgView);
-            button.setPrefSize(100, 100);
+            button.setPrefSize(75, 75);
             button.setStyle("-fx-background-color: transparent; -fx-border-color: #cccccc; -fx-border-radius: 8px; -fx-cursor: hand; -fx-padding: 0px;");
 
             button.setOnAction(e -> {
@@ -677,7 +680,7 @@ public class GUI extends UI {
 
             grid.add(button, col, row);
             col++;
-            if (col == 6) {
+            if (col == 8) {
                 col = 0;
                 row++;
             }
@@ -701,12 +704,12 @@ public class GUI extends UI {
 
         for (int i = 0; i < 2; i++) {
             StackPane slot = new StackPane();
-            slot.setPrefSize(85, 85);
-            slot.setMinSize(85, 85);
-            slot.setMaxSize(85, 85);
+            slot.setPrefSize(80, 80);
+            slot.setMinSize(80, 80);
+            slot.setMaxSize(80, 80);
             slot.setStyle("-fx-background-color: transparent;");
 
-            Rectangle border = new Rectangle(85, 85);
+            Rectangle border = new Rectangle(80, 80);
             border.setArcWidth(3);
             border.setArcHeight(3);
             border.setFill(Color.TRANSPARENT);
@@ -718,10 +721,10 @@ public class GUI extends UI {
             if (kept[i] != null) {
                 Component comp = kept[i];
                 ImageView imageView = new ImageView(comp.getFrontImage());
-                imageView.setFitWidth(85);
-                imageView.setFitHeight(85);
+                imageView.setFitWidth(80);
+                imageView.setFitHeight(80);
 
-                Rectangle clip = new Rectangle(85, 85);
+                Rectangle clip = new Rectangle(80, 80);
                 clip.setArcWidth(6);
                 clip.setArcHeight(6);
                 imageView.setClip(clip);
@@ -762,7 +765,7 @@ public class GUI extends UI {
         }
 
         StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
-        StackPane.setMargin(keptSlots, new Insets(25, 32, 0, 0));
+        StackPane.setMargin(keptSlots, new Insets(28, 36, 0, 0));
 
         Platform.runLater(() -> {
             StackPane stackRoot = (StackPane) stage.getScene().getRoot();  // Assunto sempre valido
@@ -826,7 +829,142 @@ public class GUI extends UI {
 
     @Override
     public void showBuildOptions() {
+        VBox optionsBox = new VBox(8);
+        optionsBox.setPadding(new Insets(10));
+        optionsBox.setAlignment(Pos.TOP_LEFT);
 
+        // Stile compatto per bottoni
+        Consumer<Button> styleButton = (btn) -> {
+            btn.setFont(Font.font("Bangers", 12));
+            btn.setTextFill(Color.BLACK);
+            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), CornerRadii.EMPTY, Insets.EMPTY)));
+            btn.setCursor(Cursor.HAND);
+            btn.setPrefWidth(120);
+        };
+
+        // Pulsante Select Component
+        Button selectComponentBtn = new Button("Select component");
+        styleButton.accept(selectComponentBtn);
+        AvailableComponents availableComponents = new AvailableComponents();
+        selectComponentBtn.setOnAction(e -> showAvailableComponent(availableComponents.getComponents()));
+
+        // Pulsante Finish Ship
+        Button finishBtn = new Button("Finish spaceschip");
+        styleButton.accept(finishBtn);
+        finishBtn.setOnAction(e -> {
+            StackPane confirmation = new StackPane();
+            Rectangle bg = new Rectangle(800, 550, Color.rgb(0, 0, 0, 0.4));
+
+            VBox box = new VBox(20);
+            box.setAlignment(Pos.CENTER);
+
+            Label confirm = new Label("Confirm finish building?");
+            confirm.setTextFill(Color.web("#FFDE69"));
+            confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
+
+            Button yes = new Button("YES");
+            yes.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+            yes.setTextFill(Color.WHITE);
+            yes.setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+            yes.setCursor(Cursor.HAND);
+            yes.setPrefWidth(100);
+
+            Button no = new Button("NO");
+            no.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+            no.setTextFill(Color.WHITE);
+            no.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+            no.setCursor(Cursor.HAND);
+            no.setPrefWidth(100);
+
+            yes.setOnAction(ev -> {
+                setCurrentEvent(new EndBuildingEvent());
+                ((StackPane) stage.getScene().getRoot()).getChildren().remove(confirmation);
+            });
+
+            no.setOnAction(ev -> ((StackPane) stage.getScene().getRoot()).getChildren().remove(confirmation));
+
+            HBox buttons = new HBox(20, yes, no);
+            buttons.setAlignment(Pos.CENTER);
+
+            box.getChildren().addAll(confirm, buttons);
+            confirmation.getChildren().addAll(bg, box);
+
+            ((StackPane) stage.getScene().getRoot()).getChildren().add(confirmation);
+        });
+
+        // Pulsante Show Stack
+        Button stackBtn = new Button("Show stack");
+        styleButton.accept(stackBtn);
+        stackBtn.setOnAction(e -> {
+            VBox stackChoices = new VBox(15);
+            stackChoices.setAlignment(Pos.CENTER);
+
+            for (int i = 0; i < 3; i++) {
+                Button pile = new Button("Stack " + (i + 1));
+                styleButton.accept(pile);
+                pile.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+                int index = i;
+                pile.setOnAction(ev -> {
+                    ArrayList<Card> stack = new ArrayList<>();
+                    Card card1 = new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "");
+                    Card card2 = new Epidemic(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_015.jpg", "");
+                    Card card3 = new AbandonedShip(false, 2, 4, 6, 1, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0117.jpg", "");
+                    stack.add(card1);
+                    stack.add(card2);
+                    stack.add(card3);
+                    setCurrentEvent(new ShowStackEvent(index));
+                    showStack(stack);
+                    ((StackPane) stage.getScene().getRoot()).getChildren().remove(stackChoices.getParent());
+                });
+                stackChoices.getChildren().add(pile);
+            }
+
+            StackPane popup = new StackPane(new Rectangle(800, 550, Color.rgb(0, 0, 0, 0.4)), stackChoices);
+            popup.setOnMouseClicked(ev -> ((StackPane) stage.getScene().getRoot()).getChildren().remove(popup));
+            ((StackPane) stage.getScene().getRoot()).getChildren().add(popup);
+        });
+
+        // Pulsante Hourglass con countdown
+        Button hourglassBtn = new Button("⏳");
+        hourglassBtn.setFont(Font.font("Bangers", 20));
+        hourglassBtn.setTextFill(Color.BLACK);
+        hourglassBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), CornerRadii.EMPTY, Insets.EMPTY)));
+        hourglassBtn.setPrefWidth(70);
+        hourglassBtn.setCursor(Cursor.HAND);
+
+        hourglassBtn.setOnAction(e -> {
+            hourglassBtn.setDisable(true);
+            setCurrentEvent(new TurnHourglassEvent());
+
+            IntegerProperty seconds = new SimpleIntegerProperty(90);
+            hourglassBtn.textProperty().bind(seconds.asString("%ds"));
+
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+                seconds.set(seconds.get() - 1);
+                if (seconds.get() <= 0) {
+                    hourglassBtn.setDisable(false);
+                    hourglassBtn.textProperty().unbind();
+                    hourglassBtn.setText("⏳");
+                }
+            }));
+            timeline.setCycleCount(90);
+            timeline.play();
+        });
+
+        // Ordine: Select - Finish - Stack - Hourglass
+        optionsBox.getChildren().addAll(selectComponentBtn, finishBtn, stackBtn, hourglassBtn);
+
+        Platform.runLater(() -> {
+            Node rootNode = stage.getScene().getRoot();
+            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
+                StackPane root = (StackPane) rootNode;
+                if (!root.getChildren().contains(optionsBox)) {
+                    StackPane.setAlignment(optionsBox, Pos.TOP_RIGHT);
+                    StackPane.setMargin(optionsBox, new Insets(18, 0, 0, 18));  // più staccato dal bordo
+                    root.getChildren().add(optionsBox);
+                }
+            }
+        });
     }
 
     @Override
