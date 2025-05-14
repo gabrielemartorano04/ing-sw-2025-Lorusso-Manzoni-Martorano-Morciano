@@ -589,7 +589,7 @@ public class GUI extends UI {
     }
 
     @Override
-    public void showBuildPhaseStart(AvailableComponents availableComponents) {
+    public void showBuildPhaseStart(ArrayList<Component> availableComponents) {
         double width = 800;
         double height = 550;
 
@@ -625,7 +625,7 @@ public class GUI extends UI {
     }
 
     @Override
-    public void showAvailableComponent(AvailableComponents components) {
+    public void showAvailableComponent(ArrayList<Component> components) {
         double width = 800;
         double height = 550;
 
@@ -643,7 +643,7 @@ public class GUI extends UI {
 
         int col = 0;
         int row = 0;
-        for (Component component : components.getComponents()) {
+        for (Component component : components) {
             ImageView imgView = new ImageView(component.getCovered() ? component.getBackImage() : component.getFrontImage());
             imgView.setFitWidth(100);
             imgView.setFitHeight(100);
