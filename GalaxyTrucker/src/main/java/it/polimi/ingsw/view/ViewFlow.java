@@ -281,12 +281,20 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         return nickname;
     }
 
-    public void componentIsSelected(int index, boolean val){
-        availableComponents.get(index).setSelected(val);
+    public void componentAsSelected(int index){
+        availableComponents.get(index).setSelected(true);
     }
 
-    public void componentIsCovered(int index, boolean val){
-        availableComponents.get(index).setCovered(val);
+    public void componentAsUnselectedSelected(int index){
+        availableComponents.get(index).setSelected(false);
+    }
+
+    /**
+     * sets the component at the index as not Covered since it has been selected by a client
+     * @param index
+     */
+    public void componentAsUncovered(int index){
+        availableComponents.get(index).setCovered(false);
     }
 
 }

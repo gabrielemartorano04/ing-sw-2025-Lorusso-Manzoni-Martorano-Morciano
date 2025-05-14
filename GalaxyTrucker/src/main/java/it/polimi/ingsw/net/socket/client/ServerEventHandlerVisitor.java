@@ -104,8 +104,8 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(ComponentSelectedEvent event) {
         System.out.println(event.getIndex() + event.getNickname());
-        viewFlow.componentIsCovered(event.getIndex(), false);
-        viewFlow.componentIsSelected(event.getIndex(), true);
+        viewFlow.componentAsUncovered(event.getIndex());
+        viewFlow.componentAsSelected(event.getIndex());
         if(viewFlow.getNickname().equals(event.getNickname())) {
             viewFlow.setSelectedComponent(event.getIndex());
             ui.showComponentSelected(viewFlow.getSelectedComponent());
