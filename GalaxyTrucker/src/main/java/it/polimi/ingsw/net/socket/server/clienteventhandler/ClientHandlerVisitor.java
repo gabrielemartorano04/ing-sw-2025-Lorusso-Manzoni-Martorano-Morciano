@@ -68,7 +68,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
             i++;
         }
-        return new DiscardSuccessEvent(gameController.getGame().getComponents());
+        return new DiscardSuccessEvent(gameController.getGame().getComponents().getComponents());
     }
 
     @Override
@@ -111,7 +111,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
                 i++;
             }
-            return new ComponentLinkedEvent(component, x, y,gameController.getGame().getComponents());
+            return new ComponentLinkedEvent(component, x, y,gameController.getGame().getComponents().getComponents());
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         } catch (InvalidCoordinates e) {
@@ -149,7 +149,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 numLog--;
                 return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
             }
-            return new StartBuildingEvent(nickname, currentClient.getTrucker().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents(), gameController.getGame().getHourglass().getSecondiRimanenti());
+            return new StartBuildingEvent(nickname, currentClient.getTrucker().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondiRimanenti());
         }
         return new NoAvailableSpaceError();
     }
@@ -158,7 +158,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(SelectTileEvent event) {
         int index=event.getIndex();
         if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
-            return new ComponentNotAvailableError(gameController.getGame().getComponents());
+            return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());
         }
         Trucker trucker=currentClient.getTrucker();
         trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
@@ -167,7 +167,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             component = trucker.selectComponent(index,gameController.getGame());
             component.setSelected(true);
         } catch (InvalidComponentsException e) {
-            return new ComponentNotAvailableError(gameController.getGame().getComponents());
+            return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         }

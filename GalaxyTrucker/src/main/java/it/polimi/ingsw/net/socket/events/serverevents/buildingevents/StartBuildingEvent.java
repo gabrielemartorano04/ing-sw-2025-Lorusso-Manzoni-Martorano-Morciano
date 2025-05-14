@@ -25,8 +25,8 @@ public class StartBuildingEvent extends ServerEvent {
     ArrayList<Card>[] stacks;
     private final SpaceShip spaceShip;
     private int seconds;
-    private AvailableComponents components;
-    public StartBuildingEvent(String username, SpaceShip spaceShip, ArrayList<Card>[] stacks, AvailableComponents availableComponents, int seconds) {
+    private ArrayList<Component> components;
+    public StartBuildingEvent(String username, SpaceShip spaceShip, ArrayList<Card>[] stacks, ArrayList<Component> availableComponents, int seconds) {
         super(ServerEventType.START_BUILDING, true);
         message = username + " logged\nIt's time to start building";
         this.spaceShip = spaceShip;
@@ -46,7 +46,7 @@ public class StartBuildingEvent extends ServerEvent {
 
     public ArrayList<Card>[] getStacks() {return stacks;}
 
-    public AvailableComponents getComponents() {return components;}
+    public ArrayList<Component> getComponents() {return components;}
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {

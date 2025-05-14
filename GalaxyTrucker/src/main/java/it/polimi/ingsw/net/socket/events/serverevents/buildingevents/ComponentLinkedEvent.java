@@ -7,6 +7,8 @@ import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 
+import java.util.ArrayList;
+
 /**
  * Event from server to client when the component is correctly linked to the spaceship
  */
@@ -15,9 +17,9 @@ public class ComponentLinkedEvent extends ServerEvent {
     int coordx;
     int coordy;
     Component component;
-    private AvailableComponents avComponents;
+    private ArrayList<Component> avComponents;
 
-    public ComponentLinkedEvent(Component component, int x, int y, AvailableComponents avComponents) {
+    public ComponentLinkedEvent(Component component, int x, int y, ArrayList<Component> avComponents) {
         super(ServerEventType.COMPONENT_LINKED, false);
         coordx = x;
         coordy = y;
@@ -26,7 +28,7 @@ public class ComponentLinkedEvent extends ServerEvent {
         message = "Component correctly linked";
     }
 
-    public AvailableComponents getAvComponents() {
+    public ArrayList<Component> getAvComponents() {
         return avComponents;
     }
 
