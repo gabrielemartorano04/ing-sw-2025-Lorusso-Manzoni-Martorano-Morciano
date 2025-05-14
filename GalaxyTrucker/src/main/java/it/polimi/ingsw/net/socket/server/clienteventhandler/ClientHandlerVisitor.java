@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Cannon;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Engine;
+import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
@@ -27,6 +28,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     private GameController gameController;
     private int numLog;
     private ClientHandlerSocket currentClient;
+    private ArrayList<ClientHandler> clients;
     private int gameLevel;
 
     public ClientHandlerVisitor() {
@@ -36,6 +38,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         gameLevel=0;
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
+
 
     public void setClientHandlerServer(ClientHandlerSocket clientHandlerServer) {
         currentClient = clientHandlerServer;

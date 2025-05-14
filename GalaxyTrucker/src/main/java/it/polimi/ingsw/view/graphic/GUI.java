@@ -374,40 +374,45 @@ public class GUI extends UI {
 
     @Override
     public void showColorTaken() {
+        double width = stage.getScene().getWidth();
+        double height = stage.getScene().getHeight();
+
         // Overlay grigio trasparente
-        Rectangle overlay = new Rectangle(stage.getScene().getWidth(), stage.getScene().getHeight());
-        overlay.setFill(Color.rgb(0, 0, 0, 0.4)); // grigio semi-trasparente
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlay.setMouseTransparent(true);
 
         // Messaggio di errore
-        Label errorLabel = new Label("ERROR! Color already taken");
+        Label errorLabel = new Label("ERROR! Colour already taken");
         errorLabel.setTextFill(Color.RED);
         errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 28));
         errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
 
         StackPane popup = new StackPane(overlay, errorLabel);
-        popup.setMouseTransparent(true); // non blocca i click
+        popup.setMouseTransparent(true);
         StackPane.setAlignment(errorLabel, Pos.CENTER);
 
-        // Recupera il root corrente
-        Parent currentRoot = stage.getScene().getRoot();
-        if (currentRoot instanceof Pane parent) {
-            parent.getChildrenUnmodifiable().addListener((ListChangeListener<Node>) change -> {
-                // evita il crash se la GUI cambia in mezzo
-                if (!parent.getChildren().contains(popup)) return;
+        // Aggiunge e rimuove automaticamente dopo 2s
+        Platform.runLater(() -> {
+            Pane parent = (Pane) stage.getScene().getRoot();  // assumiamo sempre un Pane
+            if (!parent.getChildren().contains(popup)) {
+                parent.getChildren().add(popup);
                 PauseTransition delay = new PauseTransition(Duration.seconds(2));
                 delay.setOnFinished(e -> parent.getChildren().remove(popup));
                 delay.play();
-            });
-
-            parent.getChildren().add(popup);
-        }
+            }
+        });
     }
 
     @Override
     public void showNicknameTaken() {
+        double width = stage.getScene().getWidth();
+        double height = stage.getScene().getHeight();
+
         // Overlay grigio trasparente
-        Rectangle overlay = new Rectangle(stage.getScene().getWidth(), stage.getScene().getHeight());
-        overlay.setFill(Color.rgb(0, 0, 0, 0.4)); // grigio semi-trasparente
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlay.setMouseTransparent(true);
 
         // Messaggio di errore
         Label errorLabel = new Label("ERROR! Nickname already taken");
@@ -416,22 +421,19 @@ public class GUI extends UI {
         errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
 
         StackPane popup = new StackPane(overlay, errorLabel);
-        popup.setMouseTransparent(true); // non blocca i click
+        popup.setMouseTransparent(true);
         StackPane.setAlignment(errorLabel, Pos.CENTER);
 
-        // Recupera il root corrente
-        Parent currentRoot = stage.getScene().getRoot();
-        if (currentRoot instanceof Pane parent) {
-            parent.getChildrenUnmodifiable().addListener((ListChangeListener<Node>) change -> {
-                // evita il crash se la GUI cambia in mezzo
-                if (!parent.getChildren().contains(popup)) return;
+        // Aggiunge e rimuove automaticamente dopo 2s
+        Platform.runLater(() -> {
+            Pane parent = (Pane) stage.getScene().getRoot();  // assumiamo sempre un Pane
+            if (!parent.getChildren().contains(popup)) {
+                parent.getChildren().add(popup);
                 PauseTransition delay = new PauseTransition(Duration.seconds(2));
                 delay.setOnFinished(e -> parent.getChildren().remove(popup));
                 delay.play();
-            });
-
-            parent.getChildren().add(popup);
-        }
+            }
+        });
     }
 
     @Override
@@ -660,10 +662,11 @@ public class GUI extends UI {
 
             button.setOnAction(e -> {
                 selectedComponent = component;
-                if (component.getCovered()) {
-                    showSelectComponent();
-                } else {
-                    // Start drag directly
+                showSelectComponent();  // Mostra sempre in overlay
+                showDiscardComponent(component);
+
+                // Se già scoperta, avvia drag subito
+                if (!component.getCovered()) {
                     Dragboard db = button.startDragAndDrop(TransferMode.MOVE);
                     ClipboardContent content = new ClipboardContent();
                     content.putString("component");
@@ -704,23 +707,23 @@ public class GUI extends UI {
             slot.setStyle("-fx-background-color: transparent;");
 
             Rectangle border = new Rectangle(85, 85);
-            border.setArcWidth(12);
-            border.setArcHeight(12);
+            border.setArcWidth(3);
+            border.setArcHeight(3);
             border.setFill(Color.TRANSPARENT);
             border.setStroke(Color.WHITE);
             border.setStrokeWidth(2);
 
             int index = i;
 
-            if (i < 2 && kept[i] != null) {
+            if (kept[i] != null) {
                 Component comp = kept[i];
                 ImageView imageView = new ImageView(comp.getFrontImage());
                 imageView.setFitWidth(85);
                 imageView.setFitHeight(85);
 
                 Rectangle clip = new Rectangle(85, 85);
-                clip.setArcWidth(16);
-                clip.setArcHeight(16);
+                clip.setArcWidth(6);
+                clip.setArcHeight(6);
                 imageView.setClip(clip);
 
                 imageView.setOnDragDetected(event -> {
@@ -759,65 +762,66 @@ public class GUI extends UI {
         }
 
         StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
-        StackPane.setMargin(keptSlots, new Insets(25, 30, 0, 0));
+        StackPane.setMargin(keptSlots, new Insets(25, 32, 0, 0));
 
         Platform.runLater(() -> {
-            Node rootNode = stage.getScene().getRoot();
-            if (rootNode instanceof StackPane stackRoot) {
-                if (!stackRoot.getChildren().contains(keptSlots)) {
-                    stackRoot.getChildren().add(keptSlots);
-                }
+            StackPane stackRoot = (StackPane) stage.getScene().getRoot();  // Assunto sempre valido
+            if (!stackRoot.getChildren().contains(keptSlots)) {
+                stackRoot.getChildren().add(keptSlots);
             }
         });
     }
 
     @Override
     public void showSelectComponent() {
-        double width = 800;
-        double height = 550;
+
         if (selectedComponent == null) return;
 
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
+        double width = 800;
+        double height = 550;
 
-        VBox layout = new VBox(10);
-        layout.setAlignment(Pos.CENTER);
+        // Overlay trasparente grigio
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlay.setMouseTransparent(true);
 
+        // Immagine componente selezionato
         ImageView imgView = new ImageView(selectedComponent.getFrontImage());
         imgView.setFitWidth(150);
         imgView.setFitHeight(150);
+
         Rectangle clip = new Rectangle(150, 150);
         clip.setArcWidth(20);
         clip.setArcHeight(20);
         imgView.setClip(clip);
 
-        // Drag and drop da questa view
+        StackPane popup = new StackPane(imgView);
+        popup.setAlignment(Pos.CENTER);
+
         imgView.setOnDragDetected(e -> {
             Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
             content.putString("component");
             db.setContent(content);
             db.setDragView(imgView.snapshot(null, null));
+
+            // Rimuove overlay e popup
+            Parent rootNode = stage.getScene().getRoot();
+            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
+                ((StackPane) rootNode).getChildren().removeAll(overlay, popup);
+            }
+
             e.consume();
         });
 
-        // Pulsante per scartare
-        Button discardButton = new Button("DISCARD");
-        discardButton.setStyle("-fx-background-color: darkred; -fx-text-fill: white; -fx-font-weight: bold;");
-        discardButton.setOnAction(e -> {
-            setCurrentEvent(new DiscardTileEvent(selectedComponent));
+        Platform.runLater(() -> {
+            Parent rootNode = stage.getScene().getRoot();
+            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
+                ((StackPane) rootNode).getChildren().addAll(overlay, popup);
+            } else {
+                System.err.println("Root non è uno StackPane");
+            }
         });
-
-        layout.getChildren().addAll(imgView, discardButton);
-
-        StackPane root = new StackPane(backgroundView, layout);
-        Scene scene = new Scene(root, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
     }
 
     @Override
@@ -828,7 +832,33 @@ public class GUI extends UI {
     @Override
     public void showDiscardComponent(Component component) {
         selectedComponent = component;
-        showSelectComponent();
+
+        Button discardButton = new Button("Discard");
+        discardButton.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+        discardButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+        discardButton.setId("discardBtn");
+
+        discardButton.setOnAction(e -> {
+            setCurrentEvent(new DiscardTileEvent(component));
+            selectedComponent = null;
+
+            Node root = stage.getScene().getRoot();
+            Node toRemove = root.lookup("#discardBtn");
+            if (toRemove != null) {
+                ((Pane) root).getChildren().remove(toRemove);
+            }
+        });
+
+        VBox buttonBox = new VBox(discardButton);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(250, 0, 0, 0));
+
+        Platform.runLater(() -> {
+            Node root = stage.getScene().getRoot();
+            if (root.lookup("#discardBtn") == null) {
+                ((Pane) root).getChildren().add(buttonBox);
+            }
+        });
     }
 
     @Override
@@ -893,7 +923,6 @@ public class GUI extends UI {
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
         message.setTextFill(Color.web("#FFDE69"));
 
-        // Label per i puntini animati
         Label dots = new Label(".");
         dots.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
         dots.setTextFill(Color.web("#FFDE69"));
@@ -901,17 +930,15 @@ public class GUI extends UI {
         HBox textBox = new HBox(5, message, dots);
         textBox.setAlignment(Pos.CENTER);
 
-        // Sfondo trasparente grigio
         Rectangle overlayBg = new Rectangle(stage.getScene().getWidth(), stage.getScene().getHeight());
         overlayBg.setFill(Color.rgb(0, 0, 0, 0.4));
         overlayBg.widthProperty().bind(stage.getScene().widthProperty());
         overlayBg.heightProperty().bind(stage.getScene().heightProperty());
 
         StackPane overlay = new StackPane(overlayBg, textBox);
-        overlay.setMouseTransparent(true); // così non blocca l'interazione
+        overlay.setMouseTransparent(true);
         overlay.setAlignment(Pos.CENTER);
 
-        // Animazione dei puntini "..." → ".." → "." → "..."
         Timeline animation = new Timeline(
                 new KeyFrame(Duration.seconds(0), e -> dots.setText("")),
                 new KeyFrame(Duration.seconds(0.5), e -> dots.setText(".")),
@@ -922,15 +949,10 @@ public class GUI extends UI {
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
 
-        // Aggiungi alla scena attuale
         Platform.runLater(() -> {
-            Node rootNode = stage.getScene().getRoot();
-            if (rootNode instanceof StackPane root) {
-                if (!root.getChildren().contains(overlay)) {
-                    root.getChildren().add(overlay);
-                }
-            } else {
-                System.err.println("[showWaitForOthers] Root non è uno StackPane");
+            Pane parent = (Pane) stage.getScene().getRoot();
+            if (!parent.getChildren().contains(overlay)) {
+                parent.getChildren().add(overlay);
             }
         });
     }
@@ -1311,13 +1333,12 @@ public class GUI extends UI {
 
     @Override
     public void showStack(ArrayList<Card> stack) {
-        // Crea overlay grigio semi-trasparente
+        // Overlay grigio trasparente
         StackPane overlay = new StackPane();
         overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6);");
-        overlay.setPickOnBounds(true); // intercetta i click
+        overlay.setPickOnBounds(true);
         overlay.setMouseTransparent(false);
 
-        // Contenitore carte in orizzontale
         HBox cardBox = new HBox(20);
         cardBox.setAlignment(Pos.CENTER);
 
@@ -1325,30 +1346,22 @@ public class GUI extends UI {
             ImageView cardView = new ImageView(card.getFrontImage());
             cardView.setFitWidth(200);
             cardView.setFitHeight(320);
-
-            // Eventuale bordo o ombra
             cardView.setStyle("-fx-effect: dropshadow(one-pass-box, white, 6, 0, 0, 0);");
-
             cardBox.getChildren().add(cardView);
         }
 
         overlay.getChildren().add(cardBox);
         StackPane.setAlignment(cardBox, Pos.CENTER);
 
-        // Click per rimuovere overlay
         overlay.setOnMouseClicked(e -> {
-            StackPane root = (StackPane) stage.getScene().getRoot();
+            Pane root = (Pane) stage.getScene().getRoot();
             root.getChildren().remove(overlay);
         });
 
-        // Aggiunta al layout esistente
-        Scene currentScene = stage.getScene();
-        if (currentScene.getRoot() instanceof StackPane root) {
+        // Aggiungi l'overlay sopra al root corrente
+        Platform.runLater(() -> {
+            Pane root = (Pane) stage.getScene().getRoot();
             root.getChildren().add(overlay);
-        } else {
-            // Se root non è StackPane, avvolgilo
-            StackPane newRoot = new StackPane(currentScene.getRoot(), overlay);
-            currentScene.setRoot(newRoot);
-        }
+        });
     }
 }
