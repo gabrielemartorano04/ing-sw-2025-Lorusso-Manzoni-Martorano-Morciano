@@ -113,7 +113,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
                 i++;
             }
-            return new ComponentLinkedEvent(component, x, y,gameController.getGame().getComponents().getComponents());
+            return new ComponentLinkedEvent(component, x, y, gameController.getGame().getComponents().getComponents());
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         } catch (InvalidCoordinates e) {
