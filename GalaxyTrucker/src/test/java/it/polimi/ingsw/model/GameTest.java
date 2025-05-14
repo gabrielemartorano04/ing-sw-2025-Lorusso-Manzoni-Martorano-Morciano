@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.TurnManager;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.OpenSpace;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,7 @@ class GameTest {
     private Game game;
     private ArrayList<Card> deck;
     private SpaceShip ship;
-    private TurnManager.TruckerController truckerController1, truckerController2;
+    private Trucker trucker1, trucker2;
     private Hourglass hourglass;
 
     @BeforeEach
@@ -26,10 +26,10 @@ class GameTest {
         deck = new ArrayList<Card>();
         ship = new SpaceShip(PlayerColors.BLUE);
         hourglass = new Hourglass(game);
-        truckerController1 = new TurnManager.TruckerController("frenk", PlayerColors.BLUE);
-        game.addTrucker(truckerController1);
-        truckerController2 = new TurnManager.TruckerController("manzo", PlayerColors.RED);
-        game.addTrucker(truckerController2);
+        trucker1 = new Trucker("frenk", PlayerColors.BLUE);
+        game.addTrucker(trucker1);
+        trucker2 = new Trucker("manzo", PlayerColors.RED);
+        game.addTrucker(trucker2);
     }
 
     @Test
@@ -85,17 +85,17 @@ class GameTest {
 
     @Test
     void checkOvertaken() {
-        TurnManager.TruckerController t1 = truckerController1;
-        truckerController1.setPosition(1);
-        truckerController2.setPosition(27);
-        game.checkOvertaken(truckerController1);
+        Trucker t1 = trucker1;
+        trucker1.setPosition(1);
+        trucker2.setPosition(27);
+        game.checkOvertaken(trucker1);
         assertFalse(game.getTruckers().contains(t1));
     }
 
     @Test
     void withdraw() {
-        TurnManager.TruckerController t1 = truckerController1;
-        game.withdraw(truckerController1);
+        Trucker t1 = trucker1;
+        game.withdraw(trucker1);
         assertFalse(game.getTruckers().contains(t1));
         assertNotNull(game.getTrucker(0).getNickname());
         //invertiti perche ho fatto sort sopra
@@ -139,22 +139,22 @@ class GameTest {
 
     @Test
     void moveForward() {
-        truckerController1.setPosition(1);
-        truckerController2.setPosition(2);
-        game.moveForward(truckerController2, 1);
-        game.moveForward(truckerController1, 3);
-        assertEquals(3, truckerController2.getPosition());
-        assertEquals(5, truckerController1.getPosition());
+        trucker1.setPosition(1);
+        trucker2.setPosition(2);
+        game.moveForward(trucker2, 1);
+        game.moveForward(trucker1, 3);
+        assertEquals(3, trucker2.getPosition());
+        assertEquals(5, trucker1.getPosition());
     }
 
     @Test
     void moveBackward() {
-        truckerController1.setPosition(5);
-        truckerController2.setPosition(4);
-        game.moveBackward(truckerController2, 1);
-        game.moveBackward(truckerController1, 3);
-        assertEquals(3, truckerController2.getPosition());
-        assertEquals(1, truckerController1.getPosition());
+        trucker1.setPosition(5);
+        trucker2.setPosition(4);
+        game.moveBackward(trucker2, 1);
+        game.moveBackward(trucker1, 3);
+        assertEquals(3, trucker2.getPosition());
+        assertEquals(1, trucker1.getPosition());
     }
 
     @Test
@@ -180,7 +180,7 @@ class GameTest {
     @Test
     void showUsedColors() {
         Set<PlayerColors> colors = game.showUsedColors();
-        assertTrue(colors.contains(truckerController1.getColor()));
+        assertTrue(colors.contains(trucker1.getColor()));
         assertFalse(colors.contains(PlayerColors.YELLOW));
     }
 
@@ -198,9 +198,9 @@ class GameTest {
 
     @Test
     void addTrucker() {
-        TurnManager.TruckerController truckerController = new TurnManager.TruckerController("gabri", PlayerColors.YELLOW);
-        game.addTrucker(truckerController);
-        assertTrue(game.getTruckers().contains(truckerController));
+        Trucker trucker = new Trucker("gabri", PlayerColors.YELLOW);
+        game.addTrucker(trucker);
+        assertTrue(game.getTruckers().contains(trucker));
     }
 
     @Test
@@ -238,8 +238,8 @@ class GameTest {
 
     @Test
     void allPlayersReady() {
-        for (TurnManager.TruckerController truckerController : game.getTruckers()) {
-            truckerController.setBuildingState(BuildingState.END);
+        for (Trucker trucker : game.getTruckers()) {
+            trucker.setBuildingState(BuildingState.END);
         }
         assertTrue(game.allPlayersReady());
     }

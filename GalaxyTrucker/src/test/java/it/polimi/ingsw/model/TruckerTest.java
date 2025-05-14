@@ -10,80 +10,80 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TruckerTest {
-    private TurnManager.TruckerController truckerController;
+    private Trucker trucker;
 
     @BeforeEach
     public void setup(){
 
-        this.truckerController =new TurnManager.TruckerController("frenk", PlayerColors.BLUE);
+        this.trucker =new Trucker("frenk", PlayerColors.BLUE);
     }
 
     @Test
     public void setAndGetBuildingState(){
-        assertEquals(BuildingState.BUILDING, truckerController.getBuildingState());
-        truckerController.setBuildingState(BuildingState.END);
-        assertEquals(BuildingState.END, truckerController.getBuildingState());
+        assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
+        trucker.setBuildingState(BuildingState.END);
+        assertEquals(BuildingState.END, trucker.getBuildingState());
     }
 
     @Test
     public void setAndGetPosition(){
-        truckerController.setPosition(2);
-        assertEquals(2, truckerController.getPosition());
+        trucker.setPosition(2);
+        assertEquals(2, trucker.getPosition());
     }
 
     @Test
     public void getColor(){
-        assertEquals(PlayerColors.BLUE, truckerController.getColor());
+        assertEquals(PlayerColors.BLUE, trucker.getColor());
     }
 
     @Test
     public void getNickname(){
-        assertEquals("frenk", truckerController.getNickname());
+        assertEquals("frenk", trucker.getNickname());
     }
 
     @Test
     public void addAndGetCosmicCredit(){
-        assertEquals(0, truckerController.getCosmicCredit());
-        truckerController.addCosmicCredit(2);
-        assertEquals(2, truckerController.getCosmicCredit());
-        truckerController.addCosmicCredit(3);
-        assertEquals(5, truckerController.getCosmicCredit());
+        assertEquals(0, trucker.getCosmicCredit());
+        trucker.addCosmicCredit(2);
+        assertEquals(2, trucker.getCosmicCredit());
+        trucker.addCosmicCredit(3);
+        assertEquals(5, trucker.getCosmicCredit());
     }
 
     @Test
     public void getSpaceship(){
-        assertNotNull(truckerController.getSpaceShip());
+        assertNotNull(trucker.getSpaceShip());
     }
 
     @Test
     public void chooseWhatToDo(){
-        truckerController.chooseWhatToDo("Turn Hourglass");
-        assertEquals(BuildingState.TURN_HOURGLASS, truckerController.getBuildingState());
+        trucker.chooseWhatToDo("Turn Hourglass");
+        assertEquals(BuildingState.TURN_HOURGLASS, trucker.getBuildingState());
 
-        truckerController.setBuildingState(BuildingState.BUILDING);
-        truckerController.chooseWhatToDo("Select Component");
+        trucker.setBuildingState(BuildingState.BUILDING);
+        trucker.chooseWhatToDo("Select Component");
 
-        assertEquals(BuildingState.SELECT_COMPONENT, truckerController.getBuildingState());
+        assertEquals(BuildingState.SELECT_COMPONENT, trucker.getBuildingState());
 
-        truckerController.setBuildingState(BuildingState.BUILDING);
-        truckerController.chooseWhatToDo("Show Stack");
-        assertEquals(BuildingState.SHOW_STACK, truckerController.getBuildingState());
+        trucker.setBuildingState(BuildingState.BUILDING);
+        trucker.chooseWhatToDo("Show Stack");
+        assertEquals(BuildingState.SHOW_STACK, trucker.getBuildingState());
 
-        truckerController.setBuildingState(BuildingState.BUILDING);
-        truckerController.chooseWhatToDo("End");
-        assertEquals(BuildingState.WAIT_END, truckerController.getBuildingState());
+        trucker.setBuildingState(BuildingState.BUILDING);
+        trucker.chooseWhatToDo("End");
+        assertEquals(BuildingState.WAIT_END, trucker.getBuildingState());
 
-        truckerController.setBuildingState(BuildingState.SELECT_COMPONENT);
-        truckerController.chooseWhatToDo("Link");
-        assertEquals(BuildingState.LINK, truckerController.getBuildingState());
+        trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
+        trucker.chooseWhatToDo("Link");
+        assertEquals(BuildingState.LINK, trucker.getBuildingState());
 
-        truckerController.setBuildingState(BuildingState.SELECT_COMPONENT);
-        truckerController.chooseWhatToDo("Keep");
-        assertEquals(BuildingState.KEEP, truckerController.getBuildingState());
+        trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
+        trucker.chooseWhatToDo("Keep");
+        assertEquals(BuildingState.KEEP, trucker.getBuildingState());
 
-        truckerController.setBuildingState(BuildingState.SELECT_COMPONENT);
-        truckerController.chooseWhatToDo("Discard");
-        assertEquals(BuildingState.BUILDING, truckerController.getBuildingState());
+        trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
+        trucker.chooseWhatToDo("Discard");
+        assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
     }
 
     @Test
@@ -93,24 +93,24 @@ class TruckerTest {
 
     @Test
     public void keep() {
-        truckerController.setBuildingState(BuildingState.KEEP);
+        trucker.setBuildingState(BuildingState.KEEP);
         Game game=new Game();
         Component comp=new Load(1,1,1,1,"Load","",1,false);
         try{
-            truckerController.keep(comp,game);
-            assertEquals(BuildingState.BUILDING, truckerController.getBuildingState());
+            trucker.keep(comp,game);
+            assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
         } catch (InvalidComponentsException e) {}
 
-        truckerController.setBuildingState(BuildingState.KEEP);
-        truckerController.getSpaceShip().getKept().add(comp);
-        truckerController.getSpaceShip().getKept().add(comp);
+        trucker.setBuildingState(BuildingState.KEEP);
+        trucker.getSpaceShip().getKept().add(comp);
+        trucker.getSpaceShip().getKept().add(comp);
         try{
-            truckerController.keep(comp,game);
+            trucker.keep(comp,game);
 
         } catch (InvalidComponentsException e) {
             System.out.println(e.getMessage());
         }
-        assertEquals(BuildingState.BUILDING, truckerController.getBuildingState());
+        assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
 
 
     }
@@ -118,36 +118,36 @@ class TruckerTest {
     @Test
     public void link() {
         Component comp=new Load(1,1,1,1,"Load","",1,false);
-        truckerController.setBuildingState(BuildingState.LINK);
-        truckerController.link(comp,6,7);
-        assertEquals(BuildingState.BUILDING, truckerController.getBuildingState());
+        trucker.setBuildingState(BuildingState.LINK);
+        trucker.link(comp,6,7);
+        assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
 
     }
 
     @Test
     public void selectComponent() {
-        truckerController.setBuildingState(BuildingState.SELECT_COMPONENT);
+        trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
         try {
-            truckerController.selectComponent(2,new Game());
+            trucker.selectComponent(2,new Game());
         } catch (InvalidComponentsException e) {
             System.out.println(e.getMessage());
         }
-        assertEquals(BuildingState.SELECT_COMPONENT, truckerController.getBuildingState());
+        assertEquals(BuildingState.SELECT_COMPONENT, trucker.getBuildingState());
 
     }
 
     @Test
     public void turnHourglass() {
-        truckerController.setBuildingState(BuildingState.TURN_HOURGLASS);
+        trucker.setBuildingState(BuildingState.TURN_HOURGLASS);
         Game game=new Game();
         try {
-            truckerController.turnHourglass(game);
+            trucker.turnHourglass(game);
         } catch (CannotTurnHourglassException e) {
             System.out.println(e.getMessage());
         }
         if(game.getHourglass().getTimeTurns()==2)
-            assertEquals(BuildingState.WAIT_END, truckerController.getBuildingState());
-        else assertEquals(BuildingState.BUILDING, truckerController.getBuildingState());
+            assertEquals(BuildingState.WAIT_END, trucker.getBuildingState());
+        else assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
     }
 
     @Test
