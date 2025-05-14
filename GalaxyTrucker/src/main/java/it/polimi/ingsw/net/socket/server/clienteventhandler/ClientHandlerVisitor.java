@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.BuildingState;
 import it.polimi.ingsw.model.PlayerColors;
@@ -66,7 +67,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         component.setCovered(false);
         component.setSelected(false);
         gameController.getGame().getComponents().addComponent(component);
-        currentClient.getTrucker().setBuildingState(BuildingState.BUILDING);
+        currentClient.getTruckerController().setBuildingState(BuildingState.BUILDING);
         int i=0;
         for(Component c: gameController.getGame().getComponents().getComponents()){
             System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
@@ -84,9 +85,9 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(KeepTileEvent event) {
         Component component = event.getComponent();
-        currentClient.getTrucker().setBuildingState(BuildingState.KEEP);
+        currentClient.getTruckerController().setBuildingState(BuildingState.KEEP);
         try {
-            currentClient.getTrucker().keep(component,gameController.getGame());
+            currentClient.getTruckerController().keep(component,gameController.getGame());
             int i = 0;
             for(Component c: gameController.getGame().getComponents().getComponents()){
                 System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
@@ -106,7 +107,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         Component component = event.getComponent();
         int x=event.getX();
         int y=event.getY();
-        TurnManager.TruckerController trucker= currentClient.getTrucker();
+        TruckerController trucker= currentClient.getTruckerController();
         trucker.setBuildingState(BuildingState.LINK);
         try {
             trucker.link(component,x,y);
@@ -131,7 +132,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             nickname = event.getUsername();
             PlayerColors color=event.getColor();
             try {
-                currentClient.setTrucker(gameController.tryAddPlayer(nickname,color));
+                currentClient.setTruckerController(gameController.tryAddPlayer(nickname,color));
             } catch (NicknameUsedException e) {
                 numLog--;
                 return new NicknameAlreadyInError(nickname,gameController.getAvailablePlayerColors());
@@ -145,7 +146,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             nickname = event.getUsername();
             PlayerColors color=event.getColor();
             try {
-                currentClient.setTrucker(gameController.tryAddPlayer(nickname,color));
+                currentClient.setTruckerController(gameController.tryAddPlayer(nickname,color));
             } catch (NicknameUsedException e) {
                 numLog--;
                 return new NicknameAlreadyInError(nickname,gameController.getAvailablePlayerColors());
@@ -153,7 +154,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 numLog--;
                 return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
             }
-            return new StartBuildingEvent(nickname, currentClient.getTrucker().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondiRimanenti());
+            return new StartBuildingEvent(nickname, currentClient.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondiRimanenti());
         }
         return new NoAvailableSpaceError();
     }
@@ -165,7 +166,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
             return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());
         }
-        TurnManager.TruckerController trucker=currentClient.getTrucker();
+        TruckerController trucker=currentClient.getTruckerController();
         trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
         try {
             trucker.selectComponent(index,gameController.getGame().getComponents());
@@ -175,13 +176,13 @@ public class ClientHandlerVisitor implements ClientVisitor {
         } catch (InvalidStateException e) {
             return new BuildingStateError();
         }
-        return new ComponentSelectedEvent(index, currentClient.getTrucker().getNickname());
+        return new ComponentSelectedEvent(index, currentClient.getTruckerController().getNickname());
     }
 
     @Override
     public ServerEvent visit(ShowStackEvent event) {
         int index=event.getIndex();
-        TurnManager.TruckerController trucker=currentClient.getTrucker();
+        TruckerController trucker=currentClient.getTruckerController();
         trucker.setBuildingState(BuildingState.SHOW_STACK);
         ArrayList<Card> stack=trucker.showStack(index,gameController.getGame());
         return new ReturnStackEvent(stack);
@@ -190,7 +191,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(TurnHourglassEvent event) {
         try {
-            currentClient.getTrucker().setBuildingState(BuildingState.TURN_HOURGLASS);
+            currentClient.getTruckerController().setBuildingState(BuildingState.TURN_HOURGLASS);
             gameController.getGame().turnHourglass();
         } catch (CannotTurnHourglassException e) {
             return new TurnHourglassError();
