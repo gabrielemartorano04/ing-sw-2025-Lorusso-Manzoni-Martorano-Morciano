@@ -76,11 +76,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
         viewFlow.setShip(event.getSpaceShip().getComponents());
         viewFlow.setStacks(event.getStacks());
+        viewFlow.fillAvailableComponents(event.getComponents());
         ui.showBuildPhaseStart(event.getComponents());
         ui.showBuildOptions();
         viewFlow.getTimerDisplay().start(event.getSeconds());
     }
-
     @Override
     public void visit(ComponentLinkedEvent event) {
         viewFlow.getShip()[event.getX()][event.getY()]=event.getComponent();
@@ -209,6 +209,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showBuildComplete();
         ui.showWaitForOthers();
     }
+
 
     @Override
     public void visit(KeptComponentEvent event){

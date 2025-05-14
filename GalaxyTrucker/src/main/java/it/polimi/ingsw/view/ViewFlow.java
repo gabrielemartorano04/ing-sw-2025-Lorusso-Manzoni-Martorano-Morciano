@@ -35,6 +35,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private Map<String, Integer> track;
     private ServerEventHandlerVisitor serverEventVisitor;
     private Component selectedComponent;
+    private ArrayList<Component> availableComponents;
     private volatile boolean running;
     private Component[] keptComponent= new Component[2];
     private ViewState viewState;
@@ -65,6 +66,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.serverEventVisitor = new ServerEventHandlerVisitor(this);
         this.keptComponent[0]=null;
         this.keptComponent[1]=null;
+        this.availableComponents= new ArrayList<>();
         new Thread(inputReader, "InputReaderThread").start();
     }
 
@@ -261,8 +263,14 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         return timerDisplay;
     }
 
-//    public void setAvComponents(AvailableComponents avComponents) {
-//        this.avComponents.getComponents().addAll(avComponents.getComponents());
-//    }
+    public void fillAvailableComponents(ArrayList<Component> availableComponents) {
+        this.availableComponents.clear();
+        int i=0;
+        for(Component c: availableComponents){
+            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
+            i++;
+        }
+    }
+
 }
 
