@@ -162,6 +162,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
             return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());
         }
+        // credo sia abbastanza inutile avere questi stati ora
         currentClient.getTruckerController().setBuildingState(BuildingState.SELECT_COMPONENT);
         try {
             currentClient.getTruckerController().selectComponent(index,gameController.getGame().getComponents());
