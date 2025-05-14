@@ -100,10 +100,12 @@ public class TUI extends UI {
 
     @Override
     public void showKeptComponents(Component[] kept) {
-        if (kept!=null) {
+        if (kept[0]!=null || kept[1]!=null) {
             System.out.println("Componenti tenuti: ");
-            for (Component c : kept) {
-                System.out.println("- " + c.getType());
+            for (int i=0; i<kept.length; i++) {
+                if(kept[i]!=null) {
+                    System.out.println("- " + kept[i].getType());
+                }
             }
         }
     }
