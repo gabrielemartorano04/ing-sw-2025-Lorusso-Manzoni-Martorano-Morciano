@@ -63,6 +63,7 @@ public class TruckerController  {
 
     public void link(Component component, int x, int y) throws InvalidCoordinates {
         trucker.link(component, x, y);
+        selectedComponentIndex = -1;
     }
 
     public void selectComponent(int index, AvailableComponents availableComponents) throws ComponentNotAvailable {

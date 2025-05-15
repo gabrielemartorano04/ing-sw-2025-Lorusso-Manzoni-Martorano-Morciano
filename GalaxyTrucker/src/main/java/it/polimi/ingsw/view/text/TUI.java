@@ -75,7 +75,6 @@ public class TUI extends UI {
         System.out.println("=== Componenti disponibili ===");
         int i = 0;
         int numCols = 3;
-        HashMap<Integer, Integer> visualToActualIndex = new HashMap<>();
 
         for (int originalIndex = 0; originalIndex < components.size(); originalIndex++) {
             Component c = components.get(originalIndex);
@@ -90,7 +89,6 @@ public class TUI extends UI {
                 }
 
                 System.out.printf("%2d) %-30s", i, info);
-                visualToActualIndex.put(i, originalIndex);
 
                 if ((i + 1) % numCols == 0 || originalIndex == components.size() - 1) {
                     System.out.println();

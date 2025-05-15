@@ -88,6 +88,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(LinkTileEvent event) {
+
         int index = event.getIndex();
         int x=event.getX();
         int y=event.getY();
@@ -103,14 +104,13 @@ public class ClientHandlerVisitor implements ClientVisitor {
             }
         }
         try {
-            Component c = currentClient.getTruckerController().getSelectedComponent();
-            currentClient.getTruckerController().link(c,x,y);
-            int i=0;
-            for(Component c1: gameController.getGame().getComponents().getComponents()){
-                System.out.println(i+") tipo: "+c1.getType()+" covered:"+ c1.getCovered()+ " selected: "+c1.getSelected()+"\n");
-                i++;
-            }
-            return new ComponentLinkedEvent(c, x, y, gameController.getGame().getComponents().getComponents());
+            currentClient.getTruckerController().link(event.getComponent(),x,y);
+//            int i=0;
+//            for(Component c1: gameController.getGame().getComponents().getComponents()){
+//                System.out.println(i+") tipo: "+c1.getType()+" covered:"+ c1.getCovered()+ " selected: "+c1.getSelected()+"\n");
+//                i++;
+//            }
+            return new ComponentLinkedEvent(event.getComponent(), x, y, gameController.getGame().getComponents().getComponents());
         }  catch (InvalidCoordinates e) {
             return new InvalidCoordinatesError(currentClient.getTruckerController().getNickname());
         }

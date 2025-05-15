@@ -14,15 +14,22 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
  */
 public class LinkTileEvent extends ClientEvent {
     private String  message;
+    private final Component component;
     private int index;
     private int x,y;
-    public LinkTileEvent(int index, int x, int y) {
+    public LinkTileEvent(int index, int x, int y, Component component) {
         super(ClientEventType.LINK_TILE, false);
+        this.component = component;
         this.index = index;
         this.x = x;
         this.y = y;
         message="I want to link the selected component in position ("+x+", "+y+")";
     }
+
+    public Component getComponent() {
+        return component;
+    }
+
     public int getX() {
         return x;
     }
