@@ -74,7 +74,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(KeepTileEvent event) {
         Component component = event.getComponent();
         try {
-            currentClient.getTruckerController().keep(component,gameController.getGame());
+            currentClient.getTruckerController().keep(component);
             int i = 0;
             for(Component c: gameController.getGame().getComponents().getComponents()){
                 System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");

@@ -75,7 +75,7 @@ public class Trucker {
         return game.viewStack(index);
     }
 
-    public void keep(Component component, Game game) throws InvalidComponentsException {
+    public void keep(Component component) throws InvalidComponentsException {
         if(keptComponents.size()<2){
             keptComponents.add(component);
         }

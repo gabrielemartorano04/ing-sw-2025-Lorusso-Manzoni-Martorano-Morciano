@@ -62,17 +62,16 @@ class TruckerTest {
     @Test
     public void keep() throws GeneralError {
         trucker.setBuildingState(BuildingState.KEEP);
-        Game game=new Game(2,2);
         Component comp=new Load(1,1,1,1,"Load","",1,false);
         try{
-            trucker.keep(comp,game);
+            trucker.keep(comp);
             assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
         } catch (InvalidComponentsException e) {}
 
         trucker.setBuildingState(BuildingState.KEEP);
         trucker.addKeptComponent(comp);
         try{
-            trucker.keep(comp,game);
+            trucker.keep(comp);
 
         } catch (InvalidComponentsException e) {
             System.out.println(e.getMessage());
