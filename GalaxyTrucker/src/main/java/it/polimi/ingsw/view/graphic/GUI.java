@@ -694,6 +694,7 @@ public class GUI extends UI {
         Scene scene = new Scene(root, width, height);
         stage.setScene(scene);
         stage.centerOnScreen();
+
     }
 
     @Override

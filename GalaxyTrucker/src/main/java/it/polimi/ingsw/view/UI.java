@@ -7,10 +7,7 @@ import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * All methods used to print something on the screen, implemented by the TUI or the GUI

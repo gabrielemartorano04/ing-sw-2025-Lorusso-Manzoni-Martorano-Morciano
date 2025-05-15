@@ -15,6 +15,7 @@ import it.polimi.ingsw.view.text.TUI;
 import it.polimi.ingsw.view.text.TimerDisplay;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private ViewState viewState;
     private TimerDisplay timerDisplay;
     private ArrayList<Card>[] stacks;
+
+
 
     public void setStacks(ArrayList<Card>[] stacks) {
         this.stacks=stacks;
@@ -309,6 +312,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public void componentAsUncovered(int index){
         availableComponents.get(index).setCovered(false);
     }
+
 
 }
 
