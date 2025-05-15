@@ -121,7 +121,7 @@ public class TUI extends UI {
 
     @Override
     public void showBuildOptions() {
-        System.out.println("Opzioni disponibili: [Hourglass (to turn hourglass when ended] [Component x (to select component x form the list)] [Stack x (to show stack x)] [End]");
+        System.out.println("Opzioni disponibili: [Hourglass] [select x] [Stack x] [End] [selectKept x]");
         System.out.print("Scegli azione: ");
     }
 

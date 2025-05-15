@@ -103,7 +103,7 @@ public ClientEvent parseFirstConnection(String input) {
                     }
                 case "selectkept":
                     int ind=Integer.parseInt(tokens[1].trim());
-                    if(ind > 1)
+                    if(ind > 1 || ind<0)
                         System.out.println("Please type a valid index.");
                     else {
                         if(kept.isEmpty())
