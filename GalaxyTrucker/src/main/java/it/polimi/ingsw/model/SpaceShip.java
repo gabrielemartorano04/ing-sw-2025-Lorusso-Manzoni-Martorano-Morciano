@@ -589,7 +589,7 @@ public class SpaceShip implements Serializable {
             return true;
         else {
             if (l1 == 1) {
-                if (l2 == 2) return false;
+                if (l2 == 2 || l2==0) return false;
             }
             if (l1 == 2) {
                 if (l2 == 1) return false;
