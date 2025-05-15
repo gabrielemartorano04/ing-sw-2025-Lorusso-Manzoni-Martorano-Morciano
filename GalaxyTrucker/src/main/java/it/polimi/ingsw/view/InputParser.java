@@ -91,7 +91,7 @@ public ClientEvent parseFirstConnection(String input) {
             }
         }else {
             switch (command) {
-                case "component list":
+                case "componentlist":
                     return new ShowTilesListEvent();
                 case "hourglass":
                     return new TurnHourglassEvent();
