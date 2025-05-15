@@ -1474,7 +1474,85 @@ public class GUI extends UI {
 
     @Override
     public void showPlayerShipStatus(int position, int batteryCount, int humanCount, int cannonPower, int enginePower, Map<String, Integer> goodsByColor) {
+        // Carica le icone
+        ImageView posIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
+        ImageView batteryIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
+        ImageView humanIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
+        ImageView cannonIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
+        ImageView engineIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
 
+        List<ImageView> mainIcons = List.of(posIcon, batteryIcon, humanIcon, cannonIcon, engineIcon);
+        for (ImageView icon : mainIcons) {
+            icon.setFitWidth(15);
+            icon.setPreserveRatio(true);
+        }
+
+        // Crea le etichette
+        Label posLabel = new Label(String.valueOf(position));
+        Label battLabel = new Label(String.valueOf(batteryCount));
+        Label humanLabel = new Label(String.valueOf(humanCount));
+        Label cannonLabel = new Label(String.valueOf(cannonPower));
+        Label engineLabel = new Label(String.valueOf(enginePower));
+
+        List<Label> labels = List.of(posLabel, battLabel, humanLabel, cannonLabel, engineLabel);
+        for (Label label : labels) {
+            label.setFont(Font.font("Arial", FontWeight.NORMAL, 13));
+            label.setTextFill(Color.WHITE);
+        }
+
+        // Crea blocchi icona + etichetta
+        HBox posBox = new HBox(5, posIcon, posLabel);
+        HBox battBox = new HBox(5, batteryIcon, battLabel);
+        HBox humanBox = new HBox(5, humanIcon, humanLabel);
+        HBox cannonBox = new HBox(5, cannonIcon, cannonLabel);
+        HBox engineBox = new HBox(5, engineIcon, engineLabel);
+
+        List<HBox> infoBoxes = List.of(posBox, battBox, humanBox, cannonBox, engineBox);
+        for (HBox box : infoBoxes) {
+            box.setAlignment(Pos.CENTER);
+        }
+
+        // Beni per colore
+        HBox goodsBox = new HBox(10);
+        goodsBox.setAlignment(Pos.CENTER);
+
+        for (Map.Entry<String, Integer> entry : goodsByColor.entrySet()) {
+            String color = entry.getKey();
+            Integer quantity = entry.getValue();
+
+            //Image icon = new Image(getClass().getResource("/it/polimi/ingsw/view/goods_" + color + ".png").toExternalForm());
+            Image icon = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
+            ImageView goodIcon = new ImageView(icon);
+            goodIcon.setFitWidth(15);
+            goodIcon.setPreserveRatio(true);
+
+            Label qtyLabel = new Label(String.valueOf(quantity));
+            qtyLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 13));
+            qtyLabel.setTextFill(Color.WHITE);
+
+            HBox singleGood = new HBox(4, goodIcon, qtyLabel);
+            singleGood.setAlignment(Pos.CENTER); // Allineamento centrale
+            goodsBox.getChildren().add(singleGood);
+        }
+
+        // Contenitore orizzontale finale
+        HBox statusBar = new HBox(20);
+        statusBar.getChildren().addAll(posBox, battBox, humanBox, cannonBox, engineBox, goodsBox);
+        statusBar.setAlignment(Pos.CENTER);
+        statusBar.setPadding(new Insets(6, 12, 6, 12));
+        statusBar.setMouseTransparent(true);
+
+        Platform.runLater(() -> {
+            Node rootNode = stage.getScene().getRoot();
+            if (rootNode.getClass().equals(StackPane.class)) {
+                StackPane root = (StackPane) rootNode;
+                StackPane.setAlignment(statusBar, Pos.BOTTOM_CENTER);
+                StackPane.setMargin(statusBar, new Insets(0, 0, 8, 0));
+                if (!root.getChildren().contains(statusBar)) {
+                    root.getChildren().add(statusBar);
+                }
+            }
+        });
     }
 
     @Override
@@ -1564,38 +1642,42 @@ public class GUI extends UI {
 
     @Override
     public void showMessage(String message) {
-        // Titolo bold
+        // Titolo (bold)
         Label title = new Label("New message:");
         title.setTextFill(Color.WHITE);
         title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        title.setTextAlignment(TextAlignment.RIGHT);
-        title.setAlignment(Pos.CENTER_RIGHT);
 
-        // Messaggio normale
+        // Messaggio (normale)
         Label content = new Label(message);
         content.setTextFill(Color.WHITE);
         content.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
         content.setTextAlignment(TextAlignment.RIGHT);
-        content.setAlignment(Pos.CENTER_RIGHT);
 
         VBox messageBox = new VBox(2, title, content);
         messageBox.setAlignment(Pos.CENTER_RIGHT);
+
         messageBox.setStyle(
-                "-fx-background-color: rgba(0, 0, 0, 0.8); " +
+                "-fx-background-color: rgba(0, 0, 0, 0.85); " +
                         "-fx-padding: 10px 15px; " +
                         "-fx-background-radius: 10px;"
         );
 
+        // Assicura dimensione del VBox
+        messageBox.setMaxWidth(Region.USE_PREF_SIZE);
+        messageBox.setMaxHeight(Region.USE_PREF_SIZE);
+
         Platform.runLater(() -> {
             Node rootNode = stage.getScene().getRoot();
+
             if (rootNode.getClass().equals(StackPane.class)) {
                 StackPane root = (StackPane) rootNode;
 
+                // Posiziona il messaggio in alto a destra
                 StackPane.setAlignment(messageBox, Pos.TOP_RIGHT);
-                StackPane.setMargin(messageBox, new Insets(15, 15, 0, 0));
+                StackPane.setMargin(messageBox, new Insets(20, 20, 0, 0));
                 root.getChildren().add(messageBox);
 
-                PauseTransition delay = new PauseTransition(Duration.seconds(5));
+                PauseTransition delay = new PauseTransition(Duration.seconds(10));
                 delay.setOnFinished(e -> root.getChildren().remove(messageBox));
                 delay.play();
             }
