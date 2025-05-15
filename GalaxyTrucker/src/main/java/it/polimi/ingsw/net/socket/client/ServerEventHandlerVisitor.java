@@ -334,7 +334,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     public void visit(SuccessSelectKept event){
         viewFlow.setSelectedComponent(event.getComponent());
-        ui.showSelectComponent();
+        ui.showComponentSelected(viewFlow.getSelectedComponent());
     }
 
     public void visit(ShowOtherShipResponse showOtherShipResponse) {
