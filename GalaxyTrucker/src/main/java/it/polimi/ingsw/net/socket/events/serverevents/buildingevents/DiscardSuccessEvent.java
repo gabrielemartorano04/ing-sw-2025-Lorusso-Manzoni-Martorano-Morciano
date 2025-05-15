@@ -12,10 +12,12 @@ public class DiscardSuccessEvent extends ServerEvent {
 
     private String message;
     private int index;
-    public DiscardSuccessEvent(int index) {
+    private String nickname;
+    public DiscardSuccessEvent(int index, String nickname) {
         super(ServerEventType.DISCART_SUCCESS, true);
         message = "Discard success";
         this.index = index;
+        this.nickname = nickname;
     }
 
     public int getIndex() {
@@ -30,5 +32,9 @@ public class DiscardSuccessEvent extends ServerEvent {
     @Override
     public void call (ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 }
