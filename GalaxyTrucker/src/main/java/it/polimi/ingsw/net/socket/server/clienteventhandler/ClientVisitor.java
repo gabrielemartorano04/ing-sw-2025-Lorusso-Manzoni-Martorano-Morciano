@@ -21,7 +21,7 @@ public interface ClientVisitor {
     public ServerEvent visit(LoginEvent event);
     public ServerEvent visit(SelectTileEvent event);
 
-    ServerEvent visit(SelectKeptTileEvent);
+    public ServerEvent visit(SelectKeptTileEvent event);
 
     public ServerEvent visit(ShowStackEvent event);
     public ServerEvent visit(TurnHourglassEvent event);
