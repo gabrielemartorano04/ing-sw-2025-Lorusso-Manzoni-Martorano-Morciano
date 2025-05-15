@@ -252,10 +252,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     }
 
     public void addKeptComponent(Component keptComponent) throws IllegalArgumentException{
-        if(this.keptComponent[0]==null) {
-            this.keptComponent[0]=keptComponent;
-        } else if (this.keptComponent[1]==null) {
-            this.keptComponent[1]=keptComponent;
+        if(this.keptComponent.size()<2) {
+            this.keptComponent.add(keptComponent);
         }else throw new IllegalArgumentException("no more psace to keep components");
     }
 
