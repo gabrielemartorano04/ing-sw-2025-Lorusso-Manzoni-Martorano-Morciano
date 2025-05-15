@@ -82,7 +82,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
 //            }
             return new KeptComponentEvent(component,gameController.getGame().getComponents().getComponents());
         } catch (InvalidComponentsException e) {
-            return new GenericErrorEvent(e.getMessage());
+            return new GenericErrorEvent(e.getMessage(), false);
         }
     }
 
@@ -181,7 +181,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             currentClient.getTruckerController().getKeptComponent(index);
             return new SuccessSelectKept(currentClient.getTruckerController().getKeptComponent(index));
         } catch (GeneralError e) {
-            return new GenericErrorEvent(e.getMessage());
+            return new GenericErrorEvent(e.getMessage(), false);
         }
     }
 
