@@ -729,8 +729,8 @@ public class GUI extends UI {
 
             int index = i;
 
-            if (kept[i] != null) {
-                Component comp = kept[i];
+            if (kept.get(i) != null) {
+                Component comp = kept.get(i);
                 ImageView imageView = new ImageView(comp.getFrontImage());
                 imageView.setFitWidth(80);
                 imageView.setFitHeight(80);
@@ -1564,14 +1564,14 @@ public class GUI extends UI {
 
     @Override
     public void showMessage(String message) {
-        // Etichetta del titolo
+        // Titolo bold
         Label title = new Label("New message:");
         title.setTextFill(Color.WHITE);
         title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         title.setTextAlignment(TextAlignment.RIGHT);
         title.setAlignment(Pos.CENTER_RIGHT);
 
-        // Etichetta del contenuto (non in grassetto)
+        // Messaggio normale
         Label content = new Label(message);
         content.setTextFill(Color.WHITE);
         content.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
@@ -1586,20 +1586,17 @@ public class GUI extends UI {
                         "-fx-background-radius: 10px;"
         );
 
-        // Contenitore per posizionamento in alto a destra
-        StackPane notificationWrapper = new StackPane(messageBox);
-        notificationWrapper.setMouseTransparent(true);
-        StackPane.setAlignment(messageBox, Pos.TOP_RIGHT);
-        StackPane.setMargin(messageBox, new Insets(15, 15, 0, 0));
-
         Platform.runLater(() -> {
             Node rootNode = stage.getScene().getRoot();
             if (rootNode.getClass().equals(StackPane.class)) {
                 StackPane root = (StackPane) rootNode;
-                root.getChildren().add(notificationWrapper);
+
+                StackPane.setAlignment(messageBox, Pos.TOP_RIGHT);
+                StackPane.setMargin(messageBox, new Insets(15, 15, 0, 0));
+                root.getChildren().add(messageBox);
 
                 PauseTransition delay = new PauseTransition(Duration.seconds(5));
-                delay.setOnFinished(e -> root.getChildren().remove(notificationWrapper));
+                delay.setOnFinished(e -> root.getChildren().remove(messageBox));
                 delay.play();
             }
         });
