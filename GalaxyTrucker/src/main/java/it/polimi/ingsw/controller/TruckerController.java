@@ -57,8 +57,8 @@ public class TruckerController  {
         return trucker.showStack(index, game);
     }
 
-    public void keep(Component component, Game game) throws InvalidComponentsException {
-        trucker.keep(component, game);
+    public void keep(Component component) throws InvalidComponentsException {
+        trucker.keep(component);
     }
 
     public void link(Component component, int x, int y) throws InvalidCoordinates {
