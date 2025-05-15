@@ -80,6 +80,8 @@ public ClientEvent parseFirstConnection(String input) {
         String command = tokens[0].toLowerCase();
         if(component!=null){
             switch (command){
+                case "ship":
+                    return new ShowOtherShipEvent(tokens[1]);
                 case "link":
                     return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
                 case "keep":
