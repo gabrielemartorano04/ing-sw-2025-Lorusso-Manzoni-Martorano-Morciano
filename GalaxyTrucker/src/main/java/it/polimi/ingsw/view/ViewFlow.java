@@ -44,6 +44,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private TimerDisplay timerDisplay;
     private ArrayList<Card>[] stacks;
     private boolean isFromKept;
+    private boolean nameAlreadySet;
 
 
 
@@ -73,6 +74,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         new Thread(inputReader, "InputReaderThread").start();
         this.selectedComponentIndex = -1;
         this.isFromKept = false;
+        this.nameAlreadySet = false;
     }
 
     @Override
@@ -311,6 +313,11 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+        this.nameAlreadySet = true;
+    }
+
+    public boolean getNameAlreadySet() {
+        return nameAlreadySet;
     }
 
     public String getNickname(){

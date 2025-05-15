@@ -29,7 +29,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(PlayerJoinedEvent event) {
         ui.showPlayerJoined(event.getUsername());
-        if(viewFlow.getNickname()==null){
+        if(!viewFlow.getNameAlreadySet()){
             viewFlow.setNickname(event.getUsername());
         }
 
