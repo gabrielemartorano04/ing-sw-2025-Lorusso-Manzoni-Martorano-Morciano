@@ -62,7 +62,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.clientHandler = clientHandler;
         this.inputReader = new InputReader();
         this.inputParser = new InputParser();
-        this.nickname = "";
+        this.nickname = null;
         this.running = true;
         ui = new TUI();
         this.viewState = ViewState.FIRST;
