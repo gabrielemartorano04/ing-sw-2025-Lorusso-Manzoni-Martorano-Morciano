@@ -96,8 +96,9 @@ public class TUI extends UI {
                     System.out.println();
                 }
 
-                i++;
             }
+            i++;
+
         }
     }
 
