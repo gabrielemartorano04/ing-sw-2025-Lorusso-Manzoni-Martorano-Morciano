@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.utilities.exceptions.ComponentNotAvailable;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidStateException;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 
 public class TruckerController  {
     private Trucker trucker;
+    private int selectedComponentIndex;
 
     /**
      * we keep both selectedComponent and its index so that we use selectedComponent for the methods that need it
@@ -19,24 +21,11 @@ public class TruckerController  {
      * the check clientIndex = selectedComponentIndex is valid and works. In fact we couldn't compare this selectedComponent
      * with a copy coming from the net.
      */
-    private Component selectedComponent;
-    private int selectedComponentIndex;
 
     public TruckerController(String nickname, PlayerColors color){
         trucker=new Trucker(nickname,color);
     }
 
-    public Component getSelectedComponent() {
-        return selectedComponent;
-    }
-
-    public BuildingState getBuildingState() {
-        return trucker.getBuildingState();
-    }
-
-    public void setBuildingState(BuildingState buildingState) {
-        trucker.setBuildingState(buildingState);
-    }
 
     public void setPosition(int position) {
         trucker.setPosition(position);
@@ -70,21 +59,29 @@ public class TruckerController  {
         return trucker.showStack(index, game);
     }
 
-    public void keep(Component component, Game game) throws InvalidComponentsException, InvalidStateException {
+    public void keep(Component component, Game game) throws InvalidComponentsException {
         trucker.keep(component, game);
     }
 
-    public void link(Component component, int x, int y) throws InvalidStateException, InvalidCoordinates {
+    public void link(Component component, int x, int y) throws InvalidCoordinates {
         trucker.link(component, x, y);
     }
 
-    public void selectComponent(int index, AvailableComponents availableComponents) throws InvalidStateException {
-        selectedComponent = trucker.selectComponent(index, availableComponents);
+    public void selectComponent(int index, AvailableComponents availableComponents) throws ComponentNotAvailable {
+        trucker.selectComponent(index, availableComponents);
         this.selectedComponentIndex = index;
+    }
+
+    public Component getSelectedComponent() {
+        return trucker.getSelectedComponent();
     }
 
     public int getSelectedComponentIndex() {
         return selectedComponentIndex;
+    }
+
+    public void selectKeptComponent(int index){
+
     }
 
     public void finish() throws InvalidStateException {
