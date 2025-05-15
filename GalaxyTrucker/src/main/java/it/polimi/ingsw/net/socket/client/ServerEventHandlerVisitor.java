@@ -110,7 +110,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.componentAsUncovered(event.getIndex());
         viewFlow.componentAsSelected(event.getIndex());
         if(viewFlow.getNickname().equals(event.getNickname())) {
-            viewFlow.setSelectedComponent(event.getIndex());
+            viewFlow.setSelectedComponent(event.getIndex(), false);
             ui.showComponentSelected(viewFlow.getSelectedComponent());
             ui.showComponentOptions();
         }
@@ -337,7 +337,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     public void visit(SuccessSelectKept event){
-        viewFlow.setSelectedComponent(event.getComponent());
+        viewFlow.setSelectedComponent(event.getComponent(), true);
         ui.showComponentSelected(viewFlow.getSelectedComponent());
     }
 

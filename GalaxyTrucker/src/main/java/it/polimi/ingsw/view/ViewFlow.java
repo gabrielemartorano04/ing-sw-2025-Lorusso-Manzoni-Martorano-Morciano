@@ -43,6 +43,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private ViewState viewState;
     private TimerDisplay timerDisplay;
     private ArrayList<Card>[] stacks;
+    private boolean isFromKept;
 
 
 
@@ -71,6 +72,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.availableComponents= new ArrayList<>();
         new Thread(inputReader, "InputReaderThread").start();
         this.selectedComponentIndex = -1;
+        this.isFromKept = false;
     }
 
     @Override
@@ -157,7 +159,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                             ui.showComponentSelected(selectedComponent);
                             event=null;
                         }
-                        else event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex,keptComponent);
+                        else event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex,keptComponent, isFromKept);
                     }
                     case FLIGTH-> { event = inputParser.parseFlight(input);}
                 }
@@ -248,17 +250,19 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.viewState = viewState;
     }
 
-    public void setSelectedComponent(int index) {
+    public void setSelectedComponent(int index, boolean isFromKept) {
         this.selectedComponent = availableComponents.get(index);
         this.selectedComponentIndex = index;
+        this.isFromKept = isFromKept;
     }
 
     /**
      * serve anche cosi
      * @param component
      */
-    public void setSelectedComponent(Component component) {
+    public void setSelectedComponent(Component component, boolean isFromKept) {
         this.selectedComponent = component;
+        this.isFromKept = isFromKept;
     }
 
     public void deleteSelectedComponent() {

@@ -72,16 +72,32 @@ public ClientEvent parseFirstConnection(String input) {
         return null;
     }
 
-    public ClientEvent parseBuilding(String input, Component component, int index,ArrayList<Component> kept){
+    public ClientEvent parseBuilding(String input, Component component, int index,ArrayList<Component> kept, boolean isFromKept){
         if (input == null || input.isEmpty()) {
             return null;
         }
         String[] tokens = input.split("\\s+", 3);
         String command = tokens[0].toLowerCase();
         if(component!=null){
+            if(isFromKept){
+                switch (command){
+                    case "link":
+                        return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
+                    case "keep":
+                        return new KeepTileEvent(component);
+                    case "turn":
+                        // mettere un local event che semplicemente dopo aver turnato
+                    case "ship":
+                        return new ShowOtherShipEvent(tokens[1].trim());
+                }
+            }
             switch (command){
+                case "turn":
+                    // mettere un local event che semplicemente dopo aver turnato
+
                 case "ship":
                     return new ShowOtherShipEvent(tokens[1].trim());
+
                 case "link":
                     return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
                 case "keep":
@@ -93,6 +109,8 @@ public ClientEvent parseFirstConnection(String input) {
             }
         }else {
             switch (command) {
+                case "ship":
+                    return new ShowOtherShipEvent(tokens[1].trim());
                 case "componentlist":
                     return new ShowTilesListEvent();
                 case "hourglass":
