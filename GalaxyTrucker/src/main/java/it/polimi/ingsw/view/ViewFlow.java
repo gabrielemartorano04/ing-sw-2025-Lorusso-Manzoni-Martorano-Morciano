@@ -278,11 +278,11 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public void fillAvailableComponents(ArrayList<Component> availableComponents) {
         this.availableComponents.clear();
         this.availableComponents.addAll(availableComponents);
-        int i=0;
-        for(Component c: availableComponents){
-            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-            i++;
-        }
+//        int i=0;
+//        for(Component c: availableComponents){
+//            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
+//            i++;
+//        }
     }
 
     public ArrayList<Component> getAvailableComponents() {

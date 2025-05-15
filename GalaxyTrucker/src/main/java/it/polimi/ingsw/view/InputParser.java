@@ -95,7 +95,11 @@ public ClientEvent parseFirstConnection(String input) {
                 case "hourglass":
                     return new TurnHourglassEvent();
                 case "select":
-                    return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
+                    if(tokens.length==2){
+                        return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
+                    }else{
+                        System.out.println("Please select an index");
+                    }
                 case "selectkept":
                     return new SelectKeptTileEvent(Integer.parseInt(tokens[1].trim()));
                 case "stack":
