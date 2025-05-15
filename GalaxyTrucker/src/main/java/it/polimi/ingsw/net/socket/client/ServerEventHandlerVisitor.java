@@ -337,7 +337,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showComponentSelected(viewFlow.getSelectedComponent());
     }
 
-    public void visit(ShowOtherShipResponse showOtherShipResponse) {
-        //TODO: completa
+    public void visit(ShowOtherShipResponse event) {
+        ui.showShipLayout(event.getNickname(), event.getSpaceship());
     }
 }
