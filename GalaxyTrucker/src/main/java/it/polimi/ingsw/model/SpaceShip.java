@@ -599,7 +599,7 @@ public class SpaceShip implements Serializable {
             if(l2!=0) return true;
         if(l2==3)
             if(l1!=0) return true;
-        return l1 == l2;
+        return l1 == l2 && l1!=0;
     }
 //in ingresso coordinate dei cannoni doppi che vogliamo attivare (da controller)
 
