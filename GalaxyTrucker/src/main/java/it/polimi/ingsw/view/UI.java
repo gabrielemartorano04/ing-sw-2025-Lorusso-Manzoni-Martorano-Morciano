@@ -33,7 +33,7 @@ public abstract class UI {
     public abstract void showBuildPhaseStart(ArrayList<Component> availableComponents);
 
     public abstract void showAvailableComponent(ArrayList<Component> components);
-    public abstract void showKeptComponents(Component[] kept);
+    public abstract void showKeptComponents(ArrayList<Component> kept);
     public abstract void showSelectComponent();
     public abstract void showBuildOptions(); // (link / keep / discard)
     public abstract void showDiscardComponent(Component component);

@@ -99,8 +99,8 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(ComponentNotAvailableError event) {
         ui.showError(event.getMessage());
-        ui.showAvailableComponent(event.getAvComponents());
-        ui.showMessage("Please select a component between 0 and " + (event.getAvComponents().size()-1));
+        ui.showAvailableComponent(viewFlow.getAvailableComponents());
+        ui.showMessage("Please select a component between 0 and " + (viewFlow.getAvailableComponents().size()-1));
     }
 
     @Override

@@ -39,7 +39,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private int selectedComponentIndex; // is equal -1 if selectedComponent is null
     private ArrayList<Component> availableComponents;
     private volatile boolean running;
-    private Component[] keptComponent= new Component[2];
+    private ArrayList<Component> keptComponent= new ArrayList<>();
     private ViewState viewState;
     private TimerDisplay timerDisplay;
     private ArrayList<Card>[] stacks;
@@ -68,8 +68,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.viewState = ViewState.FIRST;
         this.timerDisplay = new TimerDisplay();
         this.serverEventVisitor = new ServerEventHandlerVisitor(this);
-        this.keptComponent[0]=null;
-        this.keptComponent[1]=null;
         this.availableComponents= new ArrayList<>();
         new Thread(inputReader, "InputReaderThread").start();
         this.selectedComponentIndex = -1;
@@ -148,7 +146,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                         event = inputParser.parseFirstConnection(input);
                     }
                     case START-> { event = inputParser.parseLogin(input);}
-                    case BULDING-> { event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex);}
+                    case BULDING-> { event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex,keptComponent);}
                     case FLIGTH-> { event = inputParser.parseFlight(input);}
                 }
                 if (event != null) {
