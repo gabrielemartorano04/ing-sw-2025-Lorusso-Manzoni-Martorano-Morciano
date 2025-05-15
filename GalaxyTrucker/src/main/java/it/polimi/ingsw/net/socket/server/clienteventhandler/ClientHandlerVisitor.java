@@ -170,8 +170,8 @@ public class ClientHandlerVisitor implements ClientVisitor {
             gameController.getGame().getComponents().setComponentAsUncovered(index);
             return new ComponentSelectedEvent(index, currentClient.getTruckerController().getNickname());
 
-        } catch (ComponentNotAvailable e) {
-            return new ComponentNotAvailableError();
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), false);
         }
     }
 

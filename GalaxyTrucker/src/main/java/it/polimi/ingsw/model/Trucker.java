@@ -89,9 +89,9 @@ public class Trucker {
         spaceShip.addComponent(component,x,y);
     }
 
-    public void selectComponent(int index, AvailableComponents availableComponents) throws ComponentNotAvailable {
+    public void selectComponent(int index, AvailableComponents availableComponents) throws GeneralError {
         if(availableComponents.getComponents().get(index).getSelected()){
-            throw new ComponentNotAvailable("Error");
+            throw new GeneralError("Component already selected");
         }
         this.selectedComponent =  availableComponents.getComponents().get(index);
     }
