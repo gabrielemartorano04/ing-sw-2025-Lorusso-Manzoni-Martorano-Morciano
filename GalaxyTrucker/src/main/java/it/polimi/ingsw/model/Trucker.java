@@ -20,6 +20,8 @@ public class Trucker {
     private int position; //posizione assoluta
     private int cosmicCredit;
     private BuildingState buildingState;
+    private ArrayList<Component> keptComponents;
+    private Component selectedComponent;
 
     public Trucker(String nickName, PlayerColors color) {
         this.nickname = nickName;
@@ -55,6 +57,14 @@ public class Trucker {
 
     public int getCosmicCredit() {
         return cosmicCredit;
+    }
+
+    public void setSelectedComponent(Component selectedComponent) {
+        this.selectedComponent = selectedComponent;
+    }
+
+    public Component getSelectedComponent() {
+        return selectedComponent;
     }
 
 

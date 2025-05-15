@@ -16,7 +16,6 @@ import java.util.*;
 public class SpaceShip implements Serializable {
 
     private Component[][] components; //components in the matrix
-    private ArrayList<Component> kept; //2 components the trucker decided to keep during the spaceship construction
     private int lost; //number of lost components
     private int redGoods, greenGoods, blueGoods, yellowGoods; // number of goods for each type color
     private int numHuman; //number of astronauts on the spaceship
@@ -38,7 +37,6 @@ public class SpaceShip implements Serializable {
 
     public SpaceShip(PlayerColors color) {
         components = new Component[10][11];
-        kept = new ArrayList<>();
         for(int i=0;i<5;i++){
             for(int j=0;j<11;j++){
                 components[i][j]=new EmptySpace();
@@ -91,10 +89,6 @@ public class SpaceShip implements Serializable {
         numOfBattery = 0;
         numDoubleCannon=0;
         numDoubleEngine=0;
-    }
-
-    public ArrayList<Component> getKept() {
-        return kept;
     }
 
     public void increaseLost(int lost) {

@@ -99,7 +99,6 @@ public class TUI extends UI {
                 j++;
             }
             i++;
-
         }
     }
 
