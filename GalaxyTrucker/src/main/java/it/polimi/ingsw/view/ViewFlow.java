@@ -146,7 +146,14 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                         event = inputParser.parseFirstConnection(input);
                     }
                     case START-> { event = inputParser.parseLogin(input);}
-                    case BULDING-> { event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex,keptComponent);}
+                    case BULDING-> {
+                        if(input.equalsIgnoreCase("turn")){
+                            selectedComponent.turn();
+                            ui.showComponentSelected(selectedComponent);
+                            event=null;
+                        }
+                        else event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex,keptComponent);
+                    }
                     case FLIGTH-> { event = inputParser.parseFlight(input);}
                 }
                 if (event != null) {
