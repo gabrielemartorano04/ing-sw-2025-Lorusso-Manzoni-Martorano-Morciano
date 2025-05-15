@@ -248,6 +248,14 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.selectedComponentIndex = index;
     }
 
+    /**
+     * serve anche cosi
+     * @param component
+     */
+    public void setSelectedComponent(Component component) {
+        this.selectedComponent = component;
+    }
+
     public void deleteSelectedComponent() {
         this.selectedComponent = null;
         this.selectedComponentIndex = -1;
@@ -316,8 +324,5 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         availableComponents.get(index).setCovered(false);
     }
 
-    public void setSelectedComponent(Component component) {
-        this.selectedComponent = component;
-    }
 }
 
