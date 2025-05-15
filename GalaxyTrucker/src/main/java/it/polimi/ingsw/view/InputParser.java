@@ -7,6 +7,7 @@ import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorInsertedData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,7 +72,7 @@ public ClientEvent parseFirstConnection(String input) {
         return null;
     }
 
-    public ClientEvent parseBuilding(String input, Component component, int index){
+    public ClientEvent parseBuilding(String input, Component component, int index,ArrayList<Component> kept){
         if (input == null || input.isEmpty()) {
             return null;
         }
@@ -98,10 +99,20 @@ public ClientEvent parseFirstConnection(String input) {
                     if(tokens.length==2){
                         return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
                     }else{
-                        System.out.println("Please select an index");
+                        System.out.println("Please select an index.");
                     }
                 case "selectkept":
-                    return new SelectKeptTileEvent(Integer.parseInt(tokens[1].trim()));
+                    int ind=Integer.parseInt(tokens[1].trim());
+                    if(ind > 1)
+                        System.out.println("Please type a valid index.");
+                    else {
+                        if(kept.isEmpty())
+                            System.out.println("You have no kept components.");
+                        else if(ind>kept.size()-1)
+                            System.out.println("Please type a valid index.");
+                        else return new SelectKeptTileEvent(ind);
+                    }
+
                 case "stack":
                     if(Integer.parseInt(tokens[1].trim())>=1 && Integer.parseInt(tokens[1].trim())<=3) {
                         return new ShowStackEvent(Integer.parseInt(tokens[1].trim()) - 1);

@@ -62,13 +62,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
         // The component is already set as uncovered by the select handle, because we can't have a discard before a select
         gameController.getGame().getComponents().setComponentAsUnselected(event.getIndex());
         currentClient.getTruckerController().setBuildingState(BuildingState.BUILDING);
-
-        // Print if we need it
-//        int i=0;
-//        for(Component c: gameController.getGame().getComponents().getComponents()){
-//            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-//            i++;
-//        }
         return new DiscardSuccessEvent(event.getIndex());
     }
 
@@ -105,7 +98,14 @@ public class ClientHandlerVisitor implements ClientVisitor {
         int y=event.getY();
         if(index != currentClient.getTruckerController().getSelectedComponentIndex()){
             System.out.println(currentClient.getTruckerController().getSelectedComponentIndex() + " " + event.getIndex());
-            //TODO: lanciare errore del tipo il selected del trucker lato server è diverso da quello lato view
+            //TODO: TOGLI DOPO DEBUG
+            try {
+                // Simula un punto di rottura
+                System.out.println("DEBUG: Errore rilevato, L'INDICE DEL COMPONENTE SELEZIONATO NON CORRISPONDE CON QUELLO DEL TRUCKER,blocco in corso...");
+                Thread.sleep(Long.MAX_VALUE); // blocca il thread all'infinito
+            } catch (InterruptedException e) {
+                // Eventuale gestione per interrompere il blocco (facoltativa)
+            }
         }
         currentClient.getTruckerController().setBuildingState(BuildingState.LINK);
         try {
@@ -163,7 +163,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(SelectTileEvent event) {
-        int index=event.getIndex();
+        int index=event.getIndex()
         System.out.println("\n" + index + "\n");
         if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
             return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());
@@ -180,6 +180,12 @@ public class ClientHandlerVisitor implements ClientVisitor {
             return new BuildingStateError();
         }
         return new ComponentSelectedEvent(index, currentClient.getTruckerController().getNickname());
+    }
+
+    @Override
+    public ServerEvent visit(SelectKeptTileEvent event){
+        int index=event.getIndex();
+        currentClient.getTruckerController().select
     }
 
     @Override
