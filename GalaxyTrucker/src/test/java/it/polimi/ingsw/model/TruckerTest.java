@@ -60,7 +60,7 @@ class TruckerTest {
     }
 
     @Test
-    public void keep() {
+    public void keep() throws GeneralError {
         trucker.setBuildingState(BuildingState.KEEP);
         Game game=new Game(2,2);
         Component comp=new Load(1,1,1,1,"Load","",1,false);
