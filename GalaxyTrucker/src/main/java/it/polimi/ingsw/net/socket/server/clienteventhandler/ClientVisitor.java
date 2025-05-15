@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.net.socket.events.clientevents.ShowOtherShipEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
@@ -34,4 +35,6 @@ public interface ClientVisitor {
     void setGameController(GameController gameController);
 
     ServerEvent visit(ShowTilesListEvent showTilesListEvent);
+
+    ServerEvent visit(ShowOtherShipEvent showOtherShipEvent);
 }

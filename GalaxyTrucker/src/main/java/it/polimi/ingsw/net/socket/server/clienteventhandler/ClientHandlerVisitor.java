@@ -5,8 +5,10 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.BuildingState;
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.socket.events.clientevents.ShowOtherShipEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
@@ -241,5 +243,18 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(ShowTilesListEvent showTilesListEvent) {
         return null;
+    }
+
+    @Override
+    public ServerEvent visit(ShowOtherShipEvent showOtherShipEvent) {
+        String nickname=showOtherShipEvent.getNickname();
+        Component[][] spaceship=null;
+        for(Trucker t:gameController.getGame().getTruckers()){
+            if(t.getNickname().equals(nickname)){
+                spaceship=t.getSpaceShip().getComponents();
+                break;
+            }
+        }
+        return new ShowOtherShipResponse(spaceship,nickname);
     }
 }

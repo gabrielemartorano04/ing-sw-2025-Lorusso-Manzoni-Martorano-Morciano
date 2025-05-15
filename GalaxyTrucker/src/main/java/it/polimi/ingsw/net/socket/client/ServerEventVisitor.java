@@ -84,4 +84,6 @@ public interface ServerEventVisitor {
     void visit(AvailableComponentToSelectRequest availableComponentToSelectRequest);
 
     void visit(BuildingStateError buildingStateError);
+
+    void visit(ShowOtherShipResponse showOtherShipResponse);
 }

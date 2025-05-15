@@ -337,4 +337,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showSelectComponent();
     }
 
+    public void visit(ShowOtherShipResponse showOtherShipResponse) {
+        //TODO: completa
+    }
 }

@@ -16,5 +16,6 @@ public enum ClientEventType {
     SHOW_STACK,
     KEEP_TILE,
     DISCARD_TILE,
-    SHOW_TILES
+    SHOW_TILES,
+    SHOW_OTHER_SHIP
 }
