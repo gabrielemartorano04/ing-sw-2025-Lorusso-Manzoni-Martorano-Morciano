@@ -26,6 +26,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -36,6 +37,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -52,7 +54,7 @@ public class GUI extends UI {
 
     public GUI(Stage stage) {
         this.stage = stage;
-        this.mainScene = new Scene(new StackPane(), 800, 600);
+        this.mainScene = new Scene(new StackPane(), 850, 550);
         this.stage.setScene(mainScene);
         this.stage.setTitle("Galaxy Trucker");
         this.stage.setResizable(false);
@@ -106,7 +108,7 @@ public class GUI extends UI {
 
     @Override
     public void showWelcome(EnumSet<PlayerColors> availableColors) {
-        double width = 800;
+        double width = 850;
         double height = 550;
 
         // Immagine di sfondo
@@ -153,7 +155,7 @@ public class GUI extends UI {
 
     @Override
     public void showInsertNumPlayers() {
-        double width = 800;
+        double width = 850;
         double height = 550;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
@@ -246,7 +248,7 @@ public class GUI extends UI {
 
     @Override
     public void showChooseColor(EnumSet<PlayerColors> availableColors) {
-        double width = 800;
+        double width = 850;
         double height = 550;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
@@ -441,7 +443,6 @@ public class GUI extends UI {
 
     @Override
     public void showPlayerJoined(String nickname) {
-        // Etichetta del messaggio
         Label message = new Label(nickname + " has joined");
         message.setStyle(
                 "-fx-background-color: rgba(0, 0, 0, 0.8); " +
@@ -449,27 +450,36 @@ public class GUI extends UI {
                         "-fx-padding: 10px 15px; " +
                         "-fx-background-radius: 10px;"
         );
-        message.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 14));
+        message.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
-        // Notifica in StackPane dedicato per posizionamento
-        StackPane notificationWrapper = new StackPane(message);
-        notificationWrapper.setMouseTransparent(true);
+        StackPane overlay = new StackPane(message);
+        overlay.setMouseTransparent(true);
         StackPane.setAlignment(message, Pos.TOP_RIGHT);
         StackPane.setMargin(message, new Insets(15, 15, 0, 0));
 
-        // Prendi il root e fai cast diretto
-        StackPane root = (StackPane) stage.getScene().getRoot();
-        root.getChildren().add(notificationWrapper);
+        Platform.runLater(() -> {
+            Scene scene = stage.getScene();
+            Node currentRoot = scene.getRoot();
 
-        // Rimuovi la notifica dopo 5 secondi
-        PauseTransition delay = new PauseTransition(Duration.seconds(5));
-        delay.setOnFinished(e -> root.getChildren().remove(notificationWrapper));
-        delay.play();
+            StackPane newRoot;
+            if (!currentRoot.getClass().getName().equals("javafx.scene.layout.StackPane")) {
+                newRoot = new StackPane(currentRoot);
+                scene.setRoot(newRoot);
+            } else {
+                newRoot = (StackPane) currentRoot;
+            }
+
+            newRoot.getChildren().add(overlay);
+
+            PauseTransition delay = new PauseTransition(Duration.seconds(5));
+            delay.setOnFinished(e -> newRoot.getChildren().remove(overlay));
+            delay.play();
+        });
     }
 
     @Override
     public void showWaitingForPlayers(int currentPlayers) {
-        double width = 800;
+        double width = 850;
         double height = 550;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
@@ -510,7 +520,7 @@ public class GUI extends UI {
 
     @Override
     public void showStartCountdown(int secondsLeft) {
-        double width = 800;
+        double width = 850;
         double height = 550;
 
         // Sfondo
@@ -569,7 +579,7 @@ public class GUI extends UI {
 
     @Override
     public void showSetupComplete() {
-        double width = 800;
+        double width = 850;
         double height = 550;
 
         // Sfondo
@@ -595,7 +605,7 @@ public class GUI extends UI {
 
     @Override
     public void showBuildPhaseStart(ArrayList<Component> availableComponents) {
-        double width = 800;
+        double width = 850;
         double height = 550;
 
         // Sfondo
@@ -631,7 +641,7 @@ public class GUI extends UI {
 
     @Override
     public void showAvailableComponent(ArrayList<Component> components) {
-        double width = 800;
+        double width = 850;
         double height = 550;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
@@ -698,7 +708,7 @@ public class GUI extends UI {
     }
 
     @Override
-    public void showKeptComponents(Component[] kept) {
+    public void showKeptComponents(ArrayList<Component> kept) {
         HBox keptSlots = new HBox(10);
         keptSlots.setMaxWidth(200);
         keptSlots.setAlignment(Pos.TOP_RIGHT);
@@ -781,7 +791,7 @@ public class GUI extends UI {
 
         if (selectedComponent == null) return;
 
-        double width = 800;
+        double width = 850;
         double height = 550;
 
         // Overlay trasparente grigio
@@ -1099,7 +1109,7 @@ public class GUI extends UI {
 
     @Override
     public void showBuildComplete() {
-        double width = 800;
+        double width = 850;
         double height = 550;
 
         // Sfondo
@@ -1141,17 +1151,122 @@ public class GUI extends UI {
 
     @Override
     public void showCardDrawn(Card card) {
+        double width = stage.getScene().getWidth();
+        double height = stage.getScene().getHeight();
 
+        // Sfondo grigio trasparente
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlay.setMouseTransparent(true);
+
+        // Titolo sopra
+        Label title = new Label("Card Drawn");
+        title.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 36));
+        title.setTextFill(Color.web("#FFDE69"));
+        title.setEffect(new DropShadow(3, Color.BLACK));
+
+        // Immagine della carta
+        ImageView cardView = new ImageView(card.getFrontImage());
+        cardView.setFitWidth(250);
+        cardView.setFitHeight(400);
+        cardView.setPreserveRatio(true);
+        cardView.setEffect(new DropShadow(10, Color.BLACK));
+
+        VBox popup = new VBox(20, title, cardView);
+        popup.setAlignment(Pos.CENTER);
+
+        StackPane container = new StackPane(overlay, popup);
+        container.setMouseTransparent(false);
+
+        Platform.runLater(() -> {
+            Node rootNode = stage.getScene().getRoot();
+            if (rootNode.getClass().equals(StackPane.class)) {
+                StackPane root = (StackPane) rootNode;
+                root.getChildren().add(container);
+
+                // Dopo 5 secondi, rimuove il popup e mostra l'effetto
+                PauseTransition delay = new PauseTransition(Duration.seconds(5));
+                delay.setOnFinished(e -> {
+                    root.getChildren().remove(container);
+                    showCardEffectStart(card);
+                });
+                delay.play();
+            }
+        });
     }
 
     @Override
     public void showCardEffectStart(Card card) {
+        double width = stage.getScene().getWidth();
+        double height = stage.getScene().getHeight();
 
+        // Sfondo grigio trasparente
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlay.setMouseTransparent(true);
+
+        // Etichetta centrale
+        Label message = new Label("Effect incoming...");
+        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 36));
+        message.setTextFill(Color.web("#FFDE69"));
+        message.setEffect(new DropShadow(3, Color.BLACK));
+
+        StackPane container = new StackPane(overlay, message);
+        container.setAlignment(Pos.CENTER);
+
+        // Rimozione automatica dopo 2 secondi
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+        pause.setOnFinished(e -> {
+            Node rootNode = stage.getScene().getRoot();
+            if (rootNode.getClass().equals(StackPane.class)) {
+                ((StackPane) rootNode).getChildren().remove(container);
+            }
+        });
+
+        Platform.runLater(() -> {
+            Node rootNode = stage.getScene().getRoot();
+            if (rootNode.getClass().equals(StackPane.class)) {
+                ((StackPane) rootNode).getChildren().add(container);
+                pause.play();
+            }
+        });
     }
 
     @Override
     public void showCardEffectEnd(Card card) {
+        double width = stage.getScene().getWidth();
+        double height = stage.getScene().getHeight();
 
+        // Sfondo grigio trasparente
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlay.setMouseTransparent(true);
+
+        // Etichetta centrale
+        Label message = new Label("Effect ended");
+        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 36));
+        message.setTextFill(Color.web("#FFDE69"));
+        message.setEffect(new DropShadow(3, Color.BLACK));
+
+        StackPane container = new StackPane(overlay, message);
+        container.setAlignment(Pos.CENTER);
+
+        // Rimozione automatica dopo 2 secondi
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+        pause.setOnFinished(e -> {
+            Node rootNode = stage.getScene().getRoot();
+            if (rootNode.getClass().equals(StackPane.class)) {
+                ((StackPane) rootNode).getChildren().remove(container);
+            }
+        });
+
+        Platform.runLater(() -> {
+            Node rootNode = stage.getScene().getRoot();
+            if (rootNode.getClass().equals(StackPane.class)) {
+                ((StackPane) rootNode).getChildren().add(container);
+                pause.play();
+            }
+        });
     }
 
     @Override
@@ -1161,7 +1276,6 @@ public class GUI extends UI {
 
     @Override
     public void showTruckerWithdrawn(String nickname) {
-        // Etichetta del messaggio
         Label message = new Label(nickname + " has withdrawn");
         message.setStyle(
                 "-fx-background-color: rgba(0, 0, 0, 0.8); " +
@@ -1169,27 +1283,68 @@ public class GUI extends UI {
                         "-fx-padding: 10px 15px; " +
                         "-fx-background-radius: 10px;"
         );
-        message.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 14));
+        message.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
-        // Notifica in StackPane dedicato per posizionamento
-        StackPane notificationWrapper = new StackPane(message);
-        notificationWrapper.setMouseTransparent(true);
+        StackPane overlay = new StackPane(message);
+        overlay.setMouseTransparent(true);
         StackPane.setAlignment(message, Pos.TOP_RIGHT);
         StackPane.setMargin(message, new Insets(15, 15, 0, 0));
 
-        // Prendi il root e fai cast diretto
-        StackPane root = (StackPane) stage.getScene().getRoot();
-        root.getChildren().add(notificationWrapper);
+        Platform.runLater(() -> {
+            Scene scene = stage.getScene();
+            Node currentRoot = scene.getRoot();
 
-        // Rimuovi la notifica dopo 5 secondi
-        PauseTransition delay = new PauseTransition(Duration.seconds(5));
-        delay.setOnFinished(e -> root.getChildren().remove(notificationWrapper));
-        delay.play();
+            StackPane newRoot;
+            if (!currentRoot.getClass().getName().equals("javafx.scene.layout.StackPane")) {
+                newRoot = new StackPane(currentRoot);
+                scene.setRoot(newRoot);
+            } else {
+                newRoot = (StackPane) currentRoot;
+            }
+
+            newRoot.getChildren().add(overlay);
+
+            PauseTransition delay = new PauseTransition(Duration.seconds(5));
+            delay.setOnFinished(e -> newRoot.getChildren().remove(overlay));
+            delay.play();
+        });
     }
 
     @Override
     public void showTruckerLostAllCrew(String nickname) {
+        Label message = new Label(nickname + " has lost all crew\nand is out");
+        message.setStyle(
+                "-fx-background-color: rgba(0, 0, 0, 0.8); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-padding: 10px 15px; " +
+                        "-fx-background-radius: 10px;"
+        );
+        message.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        message.setTextAlignment(TextAlignment.RIGHT);
 
+        StackPane overlay = new StackPane(message);
+        overlay.setMouseTransparent(true);
+        StackPane.setAlignment(message, Pos.TOP_RIGHT);
+        StackPane.setMargin(message, new Insets(15, 15, 0, 0));
+
+        Platform.runLater(() -> {
+            Scene scene = stage.getScene();
+            Node currentRoot = scene.getRoot();
+
+            StackPane newRoot;
+            if (!currentRoot.getClass().getName().equals("javafx.scene.layout.StackPane")) {
+                newRoot = new StackPane(currentRoot);
+                scene.setRoot(newRoot);
+            } else {
+                newRoot = (StackPane) currentRoot;
+            }
+
+            newRoot.getChildren().add(overlay);
+
+            PauseTransition delay = new PauseTransition(Duration.seconds(5));
+            delay.setOnFinished(e -> newRoot.getChildren().remove(overlay));
+            delay.play();
+        });
     }
 
     @Override
@@ -1219,7 +1374,72 @@ public class GUI extends UI {
 
     @Override
     public void showConnectionLost() {
+        double width = stage.getScene().getWidth();
+        double height = stage.getScene().getHeight();
 
+        // Sfondo con immagine EmptyWallpaper
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        // Scritta "Connection Lost"
+        Label title = new Label("CONNECTION LOST!");
+        title.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 48));
+        title.setTextFill(Color.web("#FFDE69"));
+        title.setEffect(new DropShadow(5, Color.BLACK));
+
+        // Barrette Wi-Fi orizzontali con angoli smussati
+        Rectangle bar1 = new Rectangle(10, 10, Color.web("#FFDE69"));
+        Rectangle bar2 = new Rectangle(10, 20, Color.web("#FFDE69"));
+        Rectangle bar3 = new Rectangle(10, 30, Color.web("#FFDE69"));
+        Rectangle bar4 = new Rectangle(10, 40, Color.web("#FFDE69"));
+
+        List<Rectangle> barsList = Arrays.asList(bar1, bar2, bar3, bar4);
+        for (Rectangle bar : barsList) {
+            bar.setArcWidth(4);
+            bar.setArcHeight(4);
+        }
+
+        HBox bars = new HBox(8, bar1, bar2, bar3, bar4);
+        bars.setAlignment(Pos.BOTTOM_CENTER);
+
+        // Animazione barrette
+        Timeline animation = new Timeline(
+                new KeyFrame(Duration.seconds(0), e -> {
+                    bar1.setOpacity(1); bar2.setOpacity(0.3); bar3.setOpacity(0.3); bar4.setOpacity(0.3);
+                }),
+                new KeyFrame(Duration.seconds(0.5), e -> {
+                    bar1.setOpacity(1); bar2.setOpacity(1); bar3.setOpacity(0.3); bar4.setOpacity(0.3);
+                }),
+                new KeyFrame(Duration.seconds(1), e -> {
+                    bar1.setOpacity(1); bar2.setOpacity(1); bar3.setOpacity(1); bar4.setOpacity(0.3);
+                }),
+                new KeyFrame(Duration.seconds(1.5), e -> {
+                    bar1.setOpacity(1); bar2.setOpacity(1); bar3.setOpacity(1); bar4.setOpacity(1);
+                }),
+                new KeyFrame(Duration.seconds(2), e -> {
+                    bar1.setOpacity(1); bar2.setOpacity(1); bar3.setOpacity(1); bar4.setOpacity(1);
+                })
+        );
+        animation.setCycleCount(Animation.INDEFINITE);
+        animation.play();
+
+        VBox popup = new VBox(25, title, bars);
+        popup.setAlignment(Pos.CENTER);
+
+        StackPane container = new StackPane(backgroundView, popup);
+        container.setMouseTransparent(false);
+
+        // Mostra sopra ogni cosa
+        Platform.runLater(() -> {
+            Node rootNode = stage.getScene().getRoot();
+            if (rootNode.getClass().equals(StackPane.class)) {
+                ((StackPane) rootNode).getChildren().add(container);
+            }
+        });
     }
 
     @Override
@@ -1259,7 +1479,7 @@ public class GUI extends UI {
 
     @Override
     public void showShipLayout(String nickname, Component[][] layout) {
-        double width = 800;
+        double width = 850;
         double height = 550;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpg").toExternalForm());
@@ -1286,13 +1506,13 @@ public class GUI extends UI {
         grid.setHgap(2.5);
         grid.setVgap(2.5);
         grid.setAlignment(Pos.TOP_LEFT);
-        grid.setTranslateX(30.5);
+        grid.setTranslateX(33);
         grid.setTranslateY(26);
 
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {
                 StackPane cell = new StackPane();
-                cell.setPrefSize(103, 97);
+                cell.setPrefSize(105, 97);
 
                 if (validCells[row][col]) {
                     cell.setStyle("-fx-border-color: white; -fx-border-radius: 3px; -fx-background-radius: 3px;");
@@ -1300,9 +1520,9 @@ public class GUI extends UI {
                     Component c = layout[row][col];
                     if (c != null ) {
                         ImageView imageView = new ImageView(c.getFrontImage());
-                        imageView.setFitWidth(103);
+                        imageView.setFitWidth(105);
                         imageView.setFitHeight(97);
-                        Rectangle clip = new Rectangle(103, 97);
+                        Rectangle clip = new Rectangle(105, 97);
                         clip.setArcWidth(6);
                         clip.setArcHeight(6);
                         imageView.setClip(clip);
@@ -1344,12 +1564,50 @@ public class GUI extends UI {
 
     @Override
     public void showMessage(String message) {
+        // Etichetta del titolo
+        Label title = new Label("New message:");
+        title.setTextFill(Color.WHITE);
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        title.setTextAlignment(TextAlignment.RIGHT);
+        title.setAlignment(Pos.CENTER_RIGHT);
 
+        // Etichetta del contenuto (non in grassetto)
+        Label content = new Label(message);
+        content.setTextFill(Color.WHITE);
+        content.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        content.setTextAlignment(TextAlignment.RIGHT);
+        content.setAlignment(Pos.CENTER_RIGHT);
+
+        VBox messageBox = new VBox(2, title, content);
+        messageBox.setAlignment(Pos.CENTER_RIGHT);
+        messageBox.setStyle(
+                "-fx-background-color: rgba(0, 0, 0, 0.8); " +
+                        "-fx-padding: 10px 15px; " +
+                        "-fx-background-radius: 10px;"
+        );
+
+        // Contenitore per posizionamento in alto a destra
+        StackPane notificationWrapper = new StackPane(messageBox);
+        notificationWrapper.setMouseTransparent(true);
+        StackPane.setAlignment(messageBox, Pos.TOP_RIGHT);
+        StackPane.setMargin(messageBox, new Insets(15, 15, 0, 0));
+
+        Platform.runLater(() -> {
+            Node rootNode = stage.getScene().getRoot();
+            if (rootNode.getClass().equals(StackPane.class)) {
+                StackPane root = (StackPane) rootNode;
+                root.getChildren().add(notificationWrapper);
+
+                PauseTransition delay = new PauseTransition(Duration.seconds(5));
+                delay.setOnFinished(e -> root.getChildren().remove(notificationWrapper));
+                delay.play();
+            }
+        });
     }
 
     @Override
     public void showTrack(Map<String, Integer> truckers) {
-        double width = 800;
+        double width = 850;
         double height = 550;
 
         // 1. Sfondo standard

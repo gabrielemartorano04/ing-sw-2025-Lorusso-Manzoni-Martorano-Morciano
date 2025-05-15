@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,15 +60,19 @@ public class GUIApplication extends Application {
         //gui.showBuildPhaseStart(components);
         //gui.showKeptComponents(kept);
 
-        gui.showKeptComponents(kept);
-        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
+        //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
+        //gui.showKeptComponents(kept);
+        //gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
 //        gui.showWaitForOthers();
 //        gui.showBuildComplete();
         //gui.showSelectComponent();
         //gui.showAvailableComponent(availableComponents.getComponents());
         //gui.showStack(stack);
-        gui.showBuildOptions();
-
+        //gui.showBuildOptions();
+        //gui.showCardDrawn(card2);
+        //gui.showTruckerLostAllCrew(trucker.getNickname());
+        gui.showConnectionLost();
+        gui.showMessage("luca ha perso tutte le merci");
     }
 
     public static void main(String[] args) {
