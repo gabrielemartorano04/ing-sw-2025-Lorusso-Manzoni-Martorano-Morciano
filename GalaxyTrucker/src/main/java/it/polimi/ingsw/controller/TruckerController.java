@@ -1,12 +1,10 @@
 package it.polimi.ingsw.controller;
 
+import com.sun.javafx.stage.WindowEventDispatcher;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.utilities.exceptions.ComponentNotAvailable;
-import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
-import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.utilities.exceptions.InvalidStateException;
+import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.util.ArrayList;
 
@@ -80,8 +78,12 @@ public class TruckerController  {
         return selectedComponentIndex;
     }
 
-    public void selectKeptComponent(int index){
+    public Component getKeptComponent(int index) throws GeneralError {
+        trucker.getKeptComponent(index);
+    }
 
+    public void addKeptComponent(Component component) throws GeneralError {
+        trucker.addKeptComponent(component);
     }
 
     public void finish() throws InvalidStateException {

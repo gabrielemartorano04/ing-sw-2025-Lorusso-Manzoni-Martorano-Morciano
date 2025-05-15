@@ -1,11 +1,8 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.utilities.exceptions.ComponentNotAvailable;
-import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
-import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.utilities.exceptions.InvalidStateException;
 
 import java.util.ArrayList;
 
@@ -65,9 +62,6 @@ public class Trucker {
         return selectedComponent;
     }
 
-    public void addKeptComponent(Component keptComponent) {
-        this.keptComponents.add(keptComponent);
-    }
 
 
     public String getNickname() {return nickname;}
@@ -117,8 +111,19 @@ public class Trucker {
         spaceShip.setNumHuman();
     }
 
-    public void rotateComponent(){
-        // TODO: method that rotate a componente
+    public Component getKeptComponent(int index) throws GeneralError{
+        if(!(0 <= index && index < keptComponents.size())){
+            throw new GeneralError("There isn't a kept component at this index " + index);
+        }
+        return keptComponents.get(index);
+    }
+
+    public void addKeptComponent(Component keptComponent) throws GeneralError {
+        if(keptComponents.size()<2){
+            this.keptComponents.add(keptComponent);
+        }else{
+            throw new GeneralError("Can't add kept component to the list cause it's already full");
+        }
     }
 
 }
