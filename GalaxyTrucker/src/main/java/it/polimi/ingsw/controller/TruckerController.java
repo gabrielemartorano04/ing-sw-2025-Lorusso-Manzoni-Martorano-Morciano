@@ -66,7 +66,7 @@ public class TruckerController  {
         selectedComponentIndex = -1;
     }
 
-    public void selectComponent(int index, AvailableComponents availableComponents) throws ComponentNotAvailable {
+    public void selectComponent(int index, AvailableComponents availableComponents) throws GeneralError {
         trucker.selectComponent(index, availableComponents);
         this.selectedComponentIndex = index;
     }
