@@ -180,6 +180,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(SelectKeptTileEvent event){
         int index=event.getIndex();
         try {
+            System.out.println("\n" + "Entrato nel try di KeptTileEvent" + "\n");
             currentClient.getTruckerController().getKeptComponent(index);
             return new SuccessSelectKept(currentClient.getTruckerController().getKeptComponent(index));
         } catch (GeneralError e) {
