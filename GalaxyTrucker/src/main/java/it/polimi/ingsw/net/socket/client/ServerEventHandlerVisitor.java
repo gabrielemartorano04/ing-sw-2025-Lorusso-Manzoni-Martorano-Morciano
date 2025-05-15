@@ -77,7 +77,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     // === PHASE 3: Costruzione nave ===
     @Override
     public void visit(StartBuildingEvent event) {
-        if(viewFlow==null){
+        if(!viewFlow.getNameAlreadySet()){
             viewFlow.setNickname(event.getNickname());
         }
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
