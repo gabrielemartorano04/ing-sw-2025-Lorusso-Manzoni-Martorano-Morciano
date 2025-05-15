@@ -72,7 +72,8 @@ public class GUIApplication extends Application {
         //gui.showCardDrawn(card2);
         //gui.showTruckerLostAllCrew(trucker.getNickname());
         gui.showConnectionLost();
-        gui.showMessage("luca ha perso tutte le merci");
+        //gui.showMessage("luca ha perso tutte le merci");
+        gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
     }
 
     public static void main(String[] args) {
