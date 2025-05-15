@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.utilities.exceptions.ComponentNotAvailable;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.cards.Card;
@@ -20,6 +21,8 @@ public class Trucker {
     private int position; //posizione assoluta
     private int cosmicCredit;
     private BuildingState buildingState;
+    private ArrayList<Component> keptComponents;
+    private Component selectedComponent;
 
     public Trucker(String nickName, PlayerColors color) {
         this.nickname = nickName;
@@ -27,6 +30,7 @@ public class Trucker {
         this.spaceShip = new SpaceShip(color);
         this.cosmicCredit = 0;
         buildingState=BuildingState.BUILDING;
+        keptComponents = new ArrayList<>();
     }
 
     public BuildingState getBuildingState() {
@@ -57,6 +61,13 @@ public class Trucker {
         return cosmicCredit;
     }
 
+    public Component getSelectedComponent() {
+        return selectedComponent;
+    }
+
+    public void addKeptComponent(Component keptComponent) {
+        this.keptComponents.add(keptComponent);
+    }
 
 
     public String getNickname() {return nickname;}
@@ -67,61 +78,36 @@ public class Trucker {
 
 
     public ArrayList<Card> showStack(int index, Game game){
-        if(buildingState!=BuildingState.SHOW_STACK){
-            throw new IllegalStateException("Trucker is not in show stack state");
-        }
-        buildingState=BuildingState.BUILDING;
         return game.viewStack(index);
-
     }
 
-    public void keep(Component component, Game game) throws InvalidComponentsException, InvalidStateException {
-        if(buildingState!=BuildingState.KEEP){
-            throw new InvalidStateException("Trucker is not in keep component state");
+    public void keep(Component component, Game game) throws InvalidComponentsException {
+        if(keptComponents.size()<2){
+            keptComponents.add(component);
         }
-        if(spaceShip.getKept().size()<2){
-            spaceShip.getKept().add(component);
-            buildingState=BuildingState.BUILDING;
-        }
-        else {
-            component.setCovered(false);
-            game.getComponents().getComponents().addFirst(component);
-            buildingState=BuildingState.BUILDING;
-            throw new InvalidComponentsException("No available space in kept component");
+        else { //non c'è spazio per tenerlo quindi lancio eccezione
+            throw new InvalidComponentsException("No available spots to keep this component cause both places are taken");
         }
 
     }
 
-    public void link(Component component, int x, int y) throws InvalidStateException, InvalidCoordinates {
-        if(buildingState!=BuildingState.LINK){
-            throw new InvalidStateException("Trucker is not in link component state");
-        }
-
+    public void link(Component component, int x, int y) throws InvalidCoordinates {
         spaceShip.addComponent(component,x,y);
-        buildingState=BuildingState.BUILDING;
     }
 
-    public Component selectComponent(int index, AvailableComponents availableComponents) throws InvalidStateException {
-        if(buildingState!=BuildingState.SELECT_COMPONENT){
-            throw new InvalidStateException("Trucker is not in select component state");
+    public void selectComponent(int index, AvailableComponents availableComponents) throws ComponentNotAvailable {
+        if(availableComponents.getComponents().get(index).getSelected()){
+            throw new ComponentNotAvailable("Error");
         }
-        buildingState=BuildingState.SELECT_COMPONENT;
-        return availableComponents.getComponents().get(index);
-
+        this.selectedComponent =  availableComponents.getComponents().get(index);
     }
 
 
-
-
-    public void finish() throws InvalidStateException {
-        if(buildingState!=BuildingState.WAIT_END){
-            throw new InvalidStateException("Trucker is not in finish state");
-        }
+    public void finish() {
         if(!spaceShip.wellDone()){
-            spaceShip.increaseLost(spaceShip.getKept().size());
-            spaceShip.getKept().removeAll(spaceShip.getKept());
+            spaceShip.increaseLost(keptComponents.size());
+            keptComponents.clear();
         }
-        buildingState=BuildingState.END;
     }
 
     public void fillSpaceship(ArrayList<int[]> coordAliens){
@@ -129,6 +115,10 @@ public class Trucker {
         int goodsCapacity = spaceShip.getGoodsCapacity();
         spaceShip.setNumAlien(coordAliens);
         spaceShip.setNumHuman();
+    }
+
+    public void rotateComponent(){
+        // TODO: method that rotate a componente
     }
 
 }

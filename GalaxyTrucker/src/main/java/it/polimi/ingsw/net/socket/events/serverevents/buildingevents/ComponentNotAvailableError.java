@@ -13,16 +13,11 @@ import java.util.ArrayList;
  */
 public class ComponentNotAvailableError extends ServerEvent {
     private String message;
-    private ArrayList<Component> avComponents;
-    public ComponentNotAvailableError(ArrayList<Component> components) {
+    public ComponentNotAvailableError() {
         super(ServerEventType.COMPONENT_NOT_AVAILABLE, false);
         message = "The component is not available";
-        this.avComponents = components;
     }
 
-    public ArrayList<Component> getAvComponents() {
-        return avComponents;
-    }
     @Override
     public String getMessage() {
         return message;

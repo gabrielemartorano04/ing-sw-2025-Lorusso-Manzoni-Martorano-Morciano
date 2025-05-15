@@ -61,14 +61,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(DiscardTileEvent event) {
         // The component is already set as uncovered by the select handle, because we can't have a discard before a select
         gameController.getGame().getComponents().setComponentAsUnselected(event.getIndex());
-        currentClient.getTruckerController().setBuildingState(BuildingState.BUILDING);
-
-        // Print if we need it
-//        int i=0;
-//        for(Component c: gameController.getGame().getComponents().getComponents()){
-//            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-//            i++;
-//        }
         return new DiscardSuccessEvent(event.getIndex());
     }
 
@@ -81,7 +73,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(KeepTileEvent event) {
         Component component = event.getComponent();
-        currentClient.getTruckerController().setBuildingState(BuildingState.KEEP);
         try {
             currentClient.getTruckerController().keep(component,gameController.getGame());
             int i = 0;
@@ -93,9 +84,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
         } catch (InvalidComponentsException e) {
             return new NoAvailableSpaceError();
         }
-        catch (InvalidStateException e) {
-            return new BuildingStateError();
-        }
     }
 
     @Override
@@ -105,9 +93,15 @@ public class ClientHandlerVisitor implements ClientVisitor {
         int y=event.getY();
         if(index != currentClient.getTruckerController().getSelectedComponentIndex()){
             System.out.println(currentClient.getTruckerController().getSelectedComponentIndex() + " " + event.getIndex());
-            //TODO: lanciare errore del tipo il selected del trucker lato server è diverso da quello lato view
+            //TODO: TOGLI DOPO DEBUG
+            try {
+                // Simula un punto di rottura
+                System.out.println("DEBUG: Errore rilevato, L'INDICE DEL COMPONENTE SELEZIONATO NON CORRISPONDE CON QUELLO DEL TRUCKER,blocco in corso...");
+                Thread.sleep(Long.MAX_VALUE); // blocca il thread all'infinito
+            } catch (InterruptedException e) {
+                // Eventuale gestione per interrompere il blocco (facoltativa)
+            }
         }
-        currentClient.getTruckerController().setBuildingState(BuildingState.LINK);
         try {
             Component c = currentClient.getTruckerController().getSelectedComponent();
             currentClient.getTruckerController().link(c,x,y);
@@ -117,9 +111,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 i++;
             }
             return new ComponentLinkedEvent(c, x, y, gameController.getGame().getComponents().getComponents());
-        } catch (InvalidStateException e) {
-            return new BuildingStateError();
-        } catch (InvalidCoordinates e) {
+        }  catch (InvalidCoordinates e) {
             return new InvalidCoordinatesError(currentClient.getTruckerController().getNickname());
         }
     }
@@ -166,27 +158,34 @@ public class ClientHandlerVisitor implements ClientVisitor {
         int index=event.getIndex();
         System.out.println("\n" + index + "\n");
         if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
-            return new ComponentNotAvailableError(gameController.getGame().getComponents().getComponents());
+            return new ComponentNotAvailableError();
         }
-        // credo sia abbastanza inutile avere questi stati ora
-        currentClient.getTruckerController().setBuildingState(BuildingState.SELECT_COMPONENT);
+
         try {
             currentClient.getTruckerController().selectComponent(index,gameController.getGame().getComponents());
-            gameController.getGame().getComponents().setComponentAsSelected(index);
+        } catch (ComponentNotAvailable e) {
+            return new ComponentNotAvailableError();
+        }
+        gameController.getGame().getComponents().setComponentAsSelected(index);
             // probabilmente evitabile considerando che il fatto di essere covered o meno basta salvarlo lato view
             // ma meglio tenere view e server completamente sincronizzati per ora
             gameController.getGame().getComponents().setComponentAsUncovered(index);
-        } catch (InvalidStateException e) {
-            return new BuildingStateError();
-        }
+
         return new ComponentSelectedEvent(index, currentClient.getTruckerController().getNickname());
+    }
+
+
+    @Override
+    public ServerEvent visit(SelectKeptTileEvent event){
+        int index=event.getIndex();
+        //currentClient.getTruckerController().selectkept();
+        return null;
     }
 
     @Override
     public ServerEvent visit(ShowStackEvent event) {
         int index=event.getIndex();
         TruckerController trucker=currentClient.getTruckerController();
-        trucker.setBuildingState(BuildingState.SHOW_STACK);
         ArrayList<Card> stack=trucker.showStack(index,gameController.getGame());
         return new ReturnStackEvent(stack);
     }
@@ -194,7 +193,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(TurnHourglassEvent event) {
         try {
-            currentClient.getTruckerController().setBuildingState(BuildingState.TURN_HOURGLASS);
             gameController.getGame().turnHourglass();
         } catch (CannotTurnHourglassException e) {
             return new TurnHourglassError();
