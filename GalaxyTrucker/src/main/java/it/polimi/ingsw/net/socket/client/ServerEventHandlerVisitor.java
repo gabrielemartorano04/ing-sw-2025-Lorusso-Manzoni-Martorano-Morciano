@@ -327,4 +327,14 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(BuildingStateError event){
         ui.showError(event.getMessage());
     }
+
+    public void visit(GenericErrorEvent event){
+        ui.showError(event.getMessage());
+    }
+
+    public void visit(SuccessSelectKept event){
+        viewFlow.setSelectedComponent(event.getComponent());
+        ui.showSelectComponent();
+    }
+
 }

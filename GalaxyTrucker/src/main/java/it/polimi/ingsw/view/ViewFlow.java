@@ -316,6 +316,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         availableComponents.get(index).setCovered(false);
     }
 
-
+    public void setSelectedComponent(Component component) {
+        this.selectedComponent = component;
+    }
 }
 

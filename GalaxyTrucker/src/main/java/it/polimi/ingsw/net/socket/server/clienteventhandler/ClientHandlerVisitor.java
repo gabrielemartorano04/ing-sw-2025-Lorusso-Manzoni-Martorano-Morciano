@@ -82,7 +82,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
 //            }
             return new KeptComponentEvent(component,gameController.getGame().getComponents().getComponents());
         } catch (InvalidComponentsException e) {
-            return new NoAvailableSpaceError();
+            return new GenericErrorEvent(e.getMessage());
         }
     }
 
@@ -177,8 +177,12 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(SelectKeptTileEvent event){
         int index=event.getIndex();
-        //currentClient.getTruckerController().selectkept();
-        return null;
+        try {
+            currentClient.getTruckerController().getKeptComponent(index);
+            return new SuccessSelectKept(currentClient.getTruckerController().getKeptComponent(index));
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage());
+        }
     }
 
     @Override
