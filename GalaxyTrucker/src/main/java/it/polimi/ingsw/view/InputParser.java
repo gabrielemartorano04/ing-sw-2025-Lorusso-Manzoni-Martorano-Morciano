@@ -112,7 +112,6 @@ public ClientEvent parseFirstConnection(String input) {
                             System.out.println("Please type a valid index.");
                         else return new SelectKeptTileEvent(ind);
                     }
-
                 case "stack":
                     if(Integer.parseInt(tokens[1].trim())>=1 && Integer.parseInt(tokens[1].trim())<=3) {
                         return new ShowStackEvent(Integer.parseInt(tokens[1].trim()) - 1);
