@@ -78,6 +78,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(StartBuildingEvent event) {
         if(!viewFlow.getNameAlreadySet()){
+            System.out.println("Dentro");
             viewFlow.setNickname(event.getNickname());
         }
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
