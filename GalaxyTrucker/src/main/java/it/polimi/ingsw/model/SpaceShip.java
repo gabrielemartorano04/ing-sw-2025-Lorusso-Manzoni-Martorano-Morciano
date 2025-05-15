@@ -585,7 +585,7 @@ public class SpaceShip implements Serializable {
     }
 
     private boolean compatibleLinks(int l1, int l2) {
-        if (l1 == l2 || l1 == 3 || l2 == 3)
+        if (l1 == l2 || (l1 == 3 && l2!=0) || (l2 == 3 && l1!=0))
             return true;
         else {
             if (l1 == 1) {
