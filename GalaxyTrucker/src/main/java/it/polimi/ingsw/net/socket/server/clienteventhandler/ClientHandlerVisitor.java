@@ -184,6 +184,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             currentClient.getTruckerController().getKeptComponent(index);
             return new SuccessSelectKept(currentClient.getTruckerController().getKeptComponent(index));
         } catch (GeneralError e) {
+            System.out.println("\n" + "Entrato nel catch di KeptTileEvent" + "\n");
             return new GenericErrorEvent(e.getMessage(), false);
         }
     }
