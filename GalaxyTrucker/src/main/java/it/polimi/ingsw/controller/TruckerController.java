@@ -79,7 +79,7 @@ public class TruckerController  {
     }
 
     public Component getKeptComponent(int index) throws GeneralError {
-        trucker.getKeptComponent(index);
+        return trucker.getKeptComponent(index);
     }
 
     public void addKeptComponent(Component component) throws GeneralError {

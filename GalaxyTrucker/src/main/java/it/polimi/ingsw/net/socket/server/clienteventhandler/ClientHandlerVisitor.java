@@ -160,7 +160,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
         if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
             return new ComponentNotAvailableError();
         }
-
         try {
             currentClient.getTruckerController().selectComponent(index,gameController.getGame().getComponents());
         } catch (ComponentNotAvailable e) {
@@ -169,8 +168,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         gameController.getGame().getComponents().setComponentAsSelected(index);
             // probabilmente evitabile considerando che il fatto di essere covered o meno basta salvarlo lato view
             // ma meglio tenere view e server completamente sincronizzati per ora
-            gameController.getGame().getComponents().setComponentAsUncovered(index);
-
+        gameController.getGame().getComponents().setComponentAsUncovered(index);
         return new ComponentSelectedEvent(index, currentClient.getTruckerController().getNickname());
     }
 
