@@ -325,9 +325,13 @@ public class SpaceShip implements Serializable {
                     || (components[x][y+1]!=null && !components[x][y+1].getType().equals("Empty Space") && compatibleLinks(component.getLink()[1],components[x][y+1].getLink()[3]))
                     || (components[x][y-1]!=null && !components[x][y-1].getType().equals("Empty Space") && compatibleLinks(component.getLink()[3],components[x][y-1].getLink()[1]))
             ){
+                if(components[x+1][y]!=null)
                 System.out.println("link compatibili: "+component.getLink()[2] +" e "+ components[x+1][y].getLink()[0]);
+                if(components[x-1][y]!=null)
                 System.out.println("link compatibili: "+component.getLink()[0] +" e "+ components[x-1][y].getLink()[2]);
+                if(components[x][y+1]!=null)
                 System.out.println("link compatibili: "+component.getLink()[1]+" e "+ components[x][y+1].getLink()[3]);
+                if(components[x][y-1]!=null)
                 System.out.println("link compatibili: "+component.getLink()[3] +" e "+ components[x][y-1].getLink()[1]);
 
                 System.out.println("Ho controllato e sto linkando");
@@ -591,17 +595,11 @@ public class SpaceShip implements Serializable {
     }
 
     private boolean compatibleLinks(int l1, int l2) {
-        if (l1 == l2 || (l1 == 3 && l2!=0) || (l2 == 3 && l1!=0))
-            return true;
-        else {
-            if (l1 == 1) {
-                if (l2 == 2 || l2==0) return false;
-            }
-            if (l1 == 2) {
-                if (l2 == 1) return false;
-            }
-        }
-        return true;
+        if(l1==3)
+            if(l2!=0) return true;
+        if(l2==3)
+            if(l1!=0) return true;
+        return l1 == l2;
     }
 //in ingresso coordinate dei cannoni doppi che vogliamo attivare (da controller)
 
