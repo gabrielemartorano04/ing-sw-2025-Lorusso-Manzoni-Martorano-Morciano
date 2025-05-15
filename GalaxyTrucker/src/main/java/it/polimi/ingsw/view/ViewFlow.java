@@ -312,7 +312,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         availableComponents.get(index).setSelected(true);
     }
 
-    public void componentAsUnselectedSelected(int index){
+    public void componentAsUnselected(int index){
         availableComponents.get(index).setSelected(false);
     }
 
