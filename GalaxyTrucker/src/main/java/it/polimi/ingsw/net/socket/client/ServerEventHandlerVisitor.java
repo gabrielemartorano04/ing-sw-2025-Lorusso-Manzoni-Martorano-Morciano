@@ -122,8 +122,8 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(DiscardSuccessEvent event) {
         if(viewFlow.getNickname().equals(event.getNickname())){
-            viewFlow.deleteSelectedComponent();
             ui.showDiscardComponent(viewFlow.getSelectedComponent());
+            viewFlow.deleteSelectedComponent();
         }
         viewFlow.componentAsUnselected(event.getIndex());
         ui.showAvailableComponent(viewFlow.getAvailableComponents());
