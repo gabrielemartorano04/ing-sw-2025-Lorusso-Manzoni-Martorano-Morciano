@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.callers.SmugglersCaller;
 import it.polimi.ingsw.model.components.*;
 import it. polimi.ingsw.model.Bank;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.io.Serializable;
@@ -408,5 +409,10 @@ public class Smugglers extends Card implements Serializable {
         }
         cardState = CardState.EXIT;
         return cardState;
+    }
+
+    @Override
+    public ServerEvent startCard(String currPlayerNickname) {
+        return null;
     }
 }

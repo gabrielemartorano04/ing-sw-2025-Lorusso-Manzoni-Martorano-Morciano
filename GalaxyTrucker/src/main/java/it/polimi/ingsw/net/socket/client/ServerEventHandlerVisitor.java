@@ -340,9 +340,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showError(event.getMessage());
     }
 
+
     @Override
     public void visit(SuccessSelectKept event){
         viewFlow.setSelectedComponent(event.getComponent(), true);
+        viewFlow.getSelectedKeptComponent().remove(event.getComponent());
         ui.showComponentSelected(viewFlow.getSelectedComponent());
     }
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.callers.SlaversCaller;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
@@ -201,6 +202,11 @@ public class Slavers extends Card implements Serializable {
         }
         cardState=CardState.EXIT;
         return cardState;
+    }
+
+    @Override
+    public ServerEvent startCard(String currPlayerNickname) {
+        return null;
     }
 
 }
