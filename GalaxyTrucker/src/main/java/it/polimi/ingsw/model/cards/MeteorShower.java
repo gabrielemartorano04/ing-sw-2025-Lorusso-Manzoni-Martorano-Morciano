@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.callers.MeteorShowerCaller;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.flightevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.io.Serializable;
@@ -63,6 +65,28 @@ public class MeteorShower extends Card implements Serializable {
      */
     public ArrayList<int[]> getDirections() {
         return directions;
+    }
+
+    @Override
+    public ServerEvent startCard(String currPlayerNickname) {
+        return new StartCardEvent(
+                this.getName(),
+                this.getDescription(),
+                currPlayerNickname,
+                "Ready for the Epidemic effect?",
+                -1,
+                -1,
+                -1,
+                null,
+                directions,
+                -1,
+                -1,
+                -1,
+                null,
+                null,
+                null,
+                null
+        );
     }
 
     public int[] getCurrentMeteor() throws GeneralError {
@@ -138,6 +162,7 @@ public class MeteorShower extends Card implements Serializable {
         }
         return state;
     }
+
 
     public CardState getCardState() {
         return state;
