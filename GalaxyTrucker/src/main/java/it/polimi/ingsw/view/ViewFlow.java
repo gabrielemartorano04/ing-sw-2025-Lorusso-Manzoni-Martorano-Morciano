@@ -161,6 +161,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                         if(command.equalsIgnoreCase("turn") && selectedComponent!=null){
                             selectedComponent.turn();
                             ui.showComponentSelected(selectedComponent);
+                            event=null;
                         }else {
                         event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex,keptComponent, isFromKept);
                         }
