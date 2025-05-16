@@ -95,24 +95,8 @@ public class ClientHandlerVisitor implements ClientVisitor {
         int index = event.getIndex();
         int x=event.getX();
         int y=event.getY();
-        if(index != currentClient.getTruckerController().getSelectedComponentIndex()){
-            System.out.println(currentClient.getTruckerController().getSelectedComponentIndex() + " " + event.getIndex());
-            //TODO: TOGLI DOPO DEBUG
-            try {
-                // Simula un punto di rottura
-                System.out.println("DEBUG: Errore rilevato, L'INDICE DEL COMPONENTE SELEZIONATO NON CORRISPONDE CON QUELLO DEL TRUCKER,blocco in corso...");
-                Thread.sleep(Long.MAX_VALUE); // blocca il thread all'infinito
-            } catch (InterruptedException e) {
-                // Eventuale gestione per interrompere il blocco (facoltativa)
-            }
-        }
         try {
             currentClient.getTruckerController().link(event.getComponent(),x,y);
-//            int i=0;
-//            for(Component c1: gameController.getGame().getComponents().getComponents()){
-//                System.out.println(i+") tipo: "+c1.getType()+" covered:"+ c1.getCovered()+ " selected: "+c1.getSelected()+"\n");
-//                i++;
-//            }
             return new ComponentLinkedEvent(event.getComponent(), x, y, gameController.getGame().getComponents().getComponents());
         }  catch (InvalidCoordinates e) {
             return new InvalidCoordinatesError(currentClient.getTruckerController().getNickname());
