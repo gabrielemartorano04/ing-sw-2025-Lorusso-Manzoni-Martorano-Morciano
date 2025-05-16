@@ -85,16 +85,11 @@ public ClientEvent parseFirstConnection(String input) {
                         return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
                     case "keep":
                         return new KeepTileEvent(component);
-                    case "turn":
-                        // mettere un local event che semplicemente dopo aver turnato
                     case "ship":
                         return new ShowOtherShipEvent(tokens[1].trim());
                 }
             }
             switch (command){
-                case "turn":
-                    // mettere un local event che semplicemente dopo aver turnato
-
                 case "ship":
                     return new ShowOtherShipEvent(tokens[1].trim());
 
