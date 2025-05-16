@@ -115,24 +115,26 @@ public ClientEvent parseFirstConnection(String input) {
                         return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
                     }else{
                         System.out.println("Please select an index.");
-                    }
+                    } return null;
                 case "selectkept":
                     int ind=Integer.parseInt(tokens[1].trim());
-                    if(ind > 1 || ind<0)
-                        System.out.println("Please type a valid index.");
+                    if(ind >=0 && ind<kept.size()-1){
+                        return new SelectKeptTileEvent(ind);
+                    }
                     else {
                         if(kept.isEmpty())
                             System.out.println("You have no kept components.");
                         else if(ind>kept.size()-1)
                             System.out.println("Please type a valid index.");
-                        else return new SelectKeptTileEvent(ind);
-                    }
+
+                    } return null;
+
                 case "stack":
                     if(Integer.parseInt(tokens[1].trim())>=1 && Integer.parseInt(tokens[1].trim())<=3) {
                         return new ShowStackEvent(Integer.parseInt(tokens[1].trim()) - 1);
                     }else{
                         System.out.println("Error: illegal stack number. Please select a stack between 1 and 3 or choose another command");
-                    }
+                    } return null;
                 case "end":
                     return new EndBuildingEvent();
                 default: System.out.println("Error: unknown command: " + command + ". Please select a valid command");
