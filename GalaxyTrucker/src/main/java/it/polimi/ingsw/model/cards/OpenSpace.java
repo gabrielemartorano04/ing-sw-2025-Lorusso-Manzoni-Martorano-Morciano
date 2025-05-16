@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.callers.OpenSpaceCaller;
+import it.polimi.ingsw.model.callers.OpenSpaceController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
@@ -32,7 +32,7 @@ public class OpenSpace extends Card implements Serializable {
      * @param backImage back image of the card
      */
     public OpenSpace(boolean trialFlight, int level, String frontImage, String backImage) {
-        super("Open Space", "Empty vastness of space", trialFlight, level, frontImage, backImage, new OpenSpaceCaller());
+        super("Open Space", "Empty vastness of space", trialFlight, level, frontImage, backImage, new OpenSpaceController());
     }
 
     /**

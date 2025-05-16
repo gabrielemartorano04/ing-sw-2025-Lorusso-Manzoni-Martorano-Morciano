@@ -17,7 +17,7 @@ import java.io.Serializable;
 /**
  *
  */
-public class AbandonedStationCaller implements CardCaller, Serializable {
+public class AbandonedStationController implements CardController, Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult call(AbandonedStation card, Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError, WrongThreadException {
         return new CardStateResult(card.truckerLanding(trucker,landing,numPlayer,bank));

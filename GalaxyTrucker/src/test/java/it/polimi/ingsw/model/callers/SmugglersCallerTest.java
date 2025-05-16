@@ -3,13 +3,11 @@ package it.polimi.ingsw.model.callers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class SmugglersCallerTest {
 
     @BeforeEach
     void setUp() {
-        new SmugglersCaller();
+        new SmugglersController();
     }
 
     @Test

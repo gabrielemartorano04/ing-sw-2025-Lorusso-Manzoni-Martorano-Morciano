@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.callers.AbandonedShipCaller;
+import it.polimi.ingsw.model.callers.AbandonedShipController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
@@ -13,7 +13,6 @@ import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Class that manages the single card abandoned ship
@@ -42,7 +41,7 @@ public class AbandonedStation extends Card implements Serializable {
      * @param backIMage back image of the card
      */
     public AbandonedStation(boolean trialFlight, int level, ArrayList<Goods> goods, int days, int numHuman,String frontImage, String backIMage) {
-        super("Abandoned Station", "A derelict space station", trialFlight, level, frontImage, backIMage, new AbandonedShipCaller());
+        super("Abandoned Station", "A derelict space station", trialFlight, level, frontImage, backIMage, new AbandonedShipController());
         this.days = days;
         this.numHuman = numHuman;
         this.goods = goods;

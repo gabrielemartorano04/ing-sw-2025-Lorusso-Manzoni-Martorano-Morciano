@@ -9,7 +9,7 @@ import it.polimi.ingsw.utilities.results.*;
 
 import java.util.ArrayList;
 
-public interface CardCaller {
+public interface CardController {
     default CardStateResult call(Epidemic card, Game game) throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card " + card.getName());};
     default CardStateResult call(AbandonedShip card, Trucker trucker, boolean landing, int numplayer)throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card " + card.getName());};
     default CardStateResult call(AbandonedShip card, ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card " + card.getName());};

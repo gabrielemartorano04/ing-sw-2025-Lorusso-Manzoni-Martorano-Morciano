@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  *
  */
-public class EpidemicCaller implements CardCaller, Serializable {
+public class EpidemicController implements CardController, Serializable {
     private static final long serialVersionUID = 1L;
     @Override
     public CardStateResult call(Epidemic card, Game game) throws WrongCallerException, GeneralError {

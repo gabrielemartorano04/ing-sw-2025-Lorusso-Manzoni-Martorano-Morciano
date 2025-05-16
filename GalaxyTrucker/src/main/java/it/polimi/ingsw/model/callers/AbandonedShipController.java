@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class AbandonedShipCaller implements CardCaller, Serializable {
+public class AbandonedShipController implements CardController, Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult call(AbandonedShip card, Trucker trucker, boolean landing, int numplayer) throws WrongCallerException, GeneralError {
         return new CardStateResult(card.setTruckerThatHasDecided(trucker, landing, numplayer));

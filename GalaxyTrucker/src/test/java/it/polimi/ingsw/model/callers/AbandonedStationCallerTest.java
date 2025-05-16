@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AbandonedStationCallerTest {
 
-    private AbandonedStationCaller caller;
+    private AbandonedStationController caller;
     private AbandonedStation card;
     private Trucker trucker;
     private Bank bank;
@@ -30,7 +30,7 @@ class AbandonedStationCallerTest {
 
     @BeforeEach
     void setUp() {
-        caller=new AbandonedStationCaller();
+        caller=new AbandonedStationController();
         ArrayList<Goods> goods1 = new ArrayList<>();
         goods1.addLast(new Goods(3));
         goods1.addLast(new Goods(2));

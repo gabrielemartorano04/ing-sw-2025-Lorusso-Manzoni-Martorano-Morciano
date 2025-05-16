@@ -18,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AbandonedShipCallerTest {
 
-    private AbandonedShipCaller caller;
+    private AbandonedShipController caller;
     private AbandonedShip card;
     private Trucker trucker;
     private Game game;
 
     @BeforeEach
     void setUp() {
-        caller = new AbandonedShipCaller();
+        caller = new AbandonedShipController();
         card = new AbandonedShip(false, 1, 2, 3, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0117.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg");
         trucker = new Trucker("gabri", PlayerColors.RED);
         game = new Game(1, 2);

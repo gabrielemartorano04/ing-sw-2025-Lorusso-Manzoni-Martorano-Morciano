@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.callers.StarDustCaller;
+import it.polimi.ingsw.model.callers.StarDustController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
@@ -25,7 +25,7 @@ public class StarDust extends Card implements Serializable {
      * @param backImage back image of the card
      */
     public StarDust(boolean trialFlight, int level, String frontImage, String backImage) {
-        super("Star Dust", "A cloud of cosmic dust", trialFlight, level, frontImage, backImage, new StarDustCaller());
+        super("Star Dust", "A cloud of cosmic dust", trialFlight, level, frontImage, backImage, new StarDustController());
         this.cardState = CardState.ESECUZIONE;
     }
 

@@ -2,14 +2,12 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.callers.EpidemicCaller;
+import it.polimi.ingsw.model.callers.EpidemicController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,7 +25,7 @@ public class Epidemic extends Card implements Serializable {
      * @param backImage back image of the card
      */
     public Epidemic(boolean trialFlight, int level, String frontImage, String backImage) {
-        super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage, new EpidemicCaller());
+        super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage, new EpidemicController());
         this.state = CardState.ESECUZIONE;
     }
 

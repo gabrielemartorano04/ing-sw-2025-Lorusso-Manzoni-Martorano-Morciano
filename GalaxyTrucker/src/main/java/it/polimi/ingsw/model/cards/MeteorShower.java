@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.model.callers.MeteorShowerCaller;
+import it.polimi.ingsw.model.callers.MeteorShowerController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
@@ -49,7 +49,7 @@ public class MeteorShower extends Card implements Serializable {
      * @param backImage back image of the card
      */
     public MeteorShower(boolean trialFlight, ArrayList<int[]> direction, int level, String frontImage, String backImage) {
-        super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImage, backImage, new MeteorShowerCaller());
+        super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImage, backImage, new MeteorShowerController());
         this.directions = direction;
         this.answers = new ArrayList<>();
     }
@@ -73,7 +73,7 @@ public class MeteorShower extends Card implements Serializable {
                 this.getName(),
                 this.getDescription(),
                 currPlayerNickname,
-                "Ready for the Epidemic effect?",
+                "Roll the dice",
                 -1,
                 -1,
                 -1,
@@ -157,6 +157,7 @@ public class MeteorShower extends Card implements Serializable {
         }
         if (directions.size()==(i+1)) {
             this.state = CardState.EXIT;
+            this.setIsCardFinished(true);
         }else {
             this.state = CardState.PLOT_METEOR;
         }

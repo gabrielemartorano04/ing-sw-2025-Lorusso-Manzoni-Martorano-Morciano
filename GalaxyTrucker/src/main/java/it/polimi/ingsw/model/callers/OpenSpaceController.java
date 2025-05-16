@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class OpenSpaceCaller implements CardCaller, Serializable {
+public class OpenSpaceController implements CardController, Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult call(OpenSpace card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws GeneralError, InvalidCoordinates {
         return new CardStateResult(card.setCoordinates(trucker, truckerCoordinate, numTruckers));

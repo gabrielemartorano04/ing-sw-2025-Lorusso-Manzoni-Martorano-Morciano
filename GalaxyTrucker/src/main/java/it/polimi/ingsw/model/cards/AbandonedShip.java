@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.callers.AbandonedShipCaller;
-import it.polimi.ingsw.model.components.Goods;
+import it.polimi.ingsw.model.callers.AbandonedShipController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
@@ -12,7 +11,6 @@ import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Class that manages the single card abandoned ship
@@ -41,7 +39,7 @@ public class AbandonedShip extends Card implements Serializable {
      * @param backImage back image of the card
      */
     public AbandonedShip(boolean trialFlight, int level, int numHuman, int credits, int days, String frontImage, String backImage) {
-        super("Abandoned Ship", "A drifting ghost ship",  trialFlight, level, frontImage, backImage, new AbandonedShipCaller());
+        super("Abandoned Ship", "A drifting ghost ship",  trialFlight, level, frontImage, backImage, new AbandonedShipController());
         this.numHuman = numHuman;
         this.credits = credits;
         this.days = days;

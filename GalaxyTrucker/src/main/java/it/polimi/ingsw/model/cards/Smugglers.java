@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.callers.SmugglersCaller;
+import it.polimi.ingsw.model.callers.SmugglersController;
 import it.polimi.ingsw.model.components.*;
 import it. polimi.ingsw.model.Bank;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
@@ -51,7 +51,7 @@ public class Smugglers extends Card implements Serializable {
      * @param backImage back image of the card
      */
     public Smugglers(boolean trialFlight, int smugglersPower, int goodsLost, int days, Goods[] goodsGained, int level, String frontImage, String backImage) {
-        super("Smugglers", "Illegal traders of goods", trialFlight, level, frontImage, backImage, new SmugglersCaller());
+        super("Smugglers", "Illegal traders of goods", trialFlight, level, frontImage, backImage, new SmugglersController());
         this.smugglersPower = smugglersPower;
         this.goodsLost = goodsLost;
         this.days = days;
