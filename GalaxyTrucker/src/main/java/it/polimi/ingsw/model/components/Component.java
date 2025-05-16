@@ -14,6 +14,7 @@ public abstract sealed class Component implements Serializable  permits BatteryS
     private String type;
     private final String frontImagePath;
     private final String backImagePath;
+    private int rotationAngle;
     private static final long serialVersionUID = 1L;
 
 
@@ -35,6 +36,7 @@ public abstract sealed class Component implements Serializable  permits BatteryS
         this.type = type;
         this.frontImagePath = frontImagePath;
         this.backImagePath = "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web157.jpg";
+        this.rotationAngle = 0;
     }
 
     /**
@@ -123,6 +125,15 @@ public abstract sealed class Component implements Serializable  permits BatteryS
         link[2]=link[1];
         link[1]=link[0];
         link[0]=tmp;
+        rotationAngle = (rotationAngle + 90) % 360;
+    }
+    //serve per resettare immagine view ma bisogna resettare anche i link
+    public void setRotationAngle(int rotationAngle) {
+        this.rotationAngle = rotationAngle;
+    }
+
+    public int getRotationAngle() {
+        return rotationAngle;
     }
 
     /**
