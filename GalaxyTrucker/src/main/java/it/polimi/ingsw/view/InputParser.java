@@ -134,7 +134,7 @@ public ClientEvent parseFirstConnection(String input) {
                     }else{
                         System.out.println("Error: illegal stack number. Please select a stack between 1 and 3 or choose another command");
                     } return null;
-                case "end":
+                case "end":// il client finisce e aspetta o che tutti finiscono o che il timer
                     return new EndBuildingEvent();
                 default: System.out.println("Error: unknown command: " + command + ". Please select a valid command");
                     return null;
