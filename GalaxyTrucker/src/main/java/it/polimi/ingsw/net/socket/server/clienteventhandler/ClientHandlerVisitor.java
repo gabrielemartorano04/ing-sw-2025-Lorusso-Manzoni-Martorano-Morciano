@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.socket.events.clientevents.GeneriErrorFromClient;
 import it.polimi.ingsw.net.socket.events.clientevents.ShowOtherShipEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
@@ -263,6 +264,11 @@ public class ClientHandlerVisitor implements ClientVisitor {
             }
         }
         return new ShowOtherShipResponse(spaceship,nickname);
+    }
+
+    @Override
+    public ServerEvent visit(GeneriErrorFromClient event){
+        return new GenericErrorEvent("error \n>",false);
     }
 
 }

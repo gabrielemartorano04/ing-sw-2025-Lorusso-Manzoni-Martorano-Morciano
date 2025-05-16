@@ -87,6 +87,9 @@ public ClientEvent parseFirstConnection(String input) {
                         return new KeepTileEvent(component);
                     case "ship":
                         return new ShowOtherShipEvent(tokens[1].trim());
+                    default:
+                        System.out.println("Error: unknown command: " + command);
+                        return null;
                 }
             }
             switch (command){
@@ -118,16 +121,12 @@ public ClientEvent parseFirstConnection(String input) {
                     } return null;
                 case "selectkept":
                     int ind=Integer.parseInt(tokens[1].trim());
-                    if(ind >=0 && ind<kept.size()-1){
-                        return new SelectKeptTileEvent(ind);
-                    }
-                    else {
-                        if(kept.isEmpty())
-                            System.out.println("You have no kept components.");
-                        else if(ind>kept.size()-1)
-                            System.out.println("Please type a valid index.");
 
-                    } return null;
+                    if(ind<0 || ind>kept.size()-1){
+                        System.out.println("Please type a valid index.");
+                        return null;
+                    }
+                    return new SelectKeptTileEvent(ind);
 
                 case "stack":
                     if(Integer.parseInt(tokens[1].trim())>=1 && Integer.parseInt(tokens[1].trim())<=3) {
