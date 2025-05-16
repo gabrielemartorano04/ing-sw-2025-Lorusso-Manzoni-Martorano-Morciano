@@ -286,15 +286,13 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         }else throw new IllegalArgumentException("no more psace to keep components");
     }
 
-    //TODO: sistemare questa cosa. Non credo che gestire con un array sia una giusta idea, e usare il null pure
+    public void removeKeptComponent(int index) {
+        this.keptComponent.remove(index);
+    }
 
-//    public void removeKeptComponent(int index) {
-//        this.keptComponent[index]=null;
-//    }
-//
-//    public Component[] getSelectedKeptComponent() {
-//        return keptComponent;
-//    }
+    public ArrayList<Component> getSelectedKeptComponent() {
+        return keptComponent;
+    }
 
     public TimerDisplay getTimerDisplay() {
         return timerDisplay;
@@ -303,11 +301,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public void fillAvailableComponents(ArrayList<Component> availableComponents) {
         this.availableComponents.clear();
         this.availableComponents.addAll(availableComponents);
-//        int i=0;
-//        for(Component c: availableComponents){
-//            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-//            i++;
-//        }
     }
 
     public ArrayList<Component> getAvailableComponents() {
