@@ -29,7 +29,6 @@ public class StartCardEvent extends ServerEvent {
 
     private final List<Goods> goods;
     private final List<int[]> meteorites;
-    private final Goods[] goodsGained;
     private final List<int[]> shoots;
     private final List<List<Goods>> planets;
     private final List<Condition> conditionsOrder;
@@ -48,7 +47,6 @@ public class StartCardEvent extends ServerEvent {
             int power,
             int astronautsLost,
             int goodsLost,
-            Goods[] goodsGained,
             List<int[]> shoots,
             List<List<Goods>> planets,
             List<Condition> conditionsOrder,
@@ -66,7 +64,6 @@ public class StartCardEvent extends ServerEvent {
         this.power = power;
         this.astronautsLost = astronautsLost;
         this.goodsLost = goodsLost;
-        this.goodsGained = goodsGained;
         this.shoots = shoots;
         this.planets = planets;
         this.conditionsOrder = conditionsOrder;
@@ -117,10 +114,6 @@ public class StartCardEvent extends ServerEvent {
 
     public int getGoodsLost() {
         return goodsLost;
-    }
-
-    public Goods[] getGoodsGained() {
-        return goodsGained;
     }
 
     public List<int[]> getShoots() {
