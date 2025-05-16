@@ -1,0 +1,150 @@
+package it.polimi.ingsw.net.socket.events.serverevents.flightevents;
+
+import it.polimi.ingsw.model.cards.Condition;
+import it.polimi.ingsw.model.cards.Effect;
+import it.polimi.ingsw.model.components.Goods;
+import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Event sent when a new card is drawn and needs to be shown to all clients.
+ * Only the client with matching nickname should answer, if applicable.
+ */
+public class StartCardEvent extends ServerEvent {
+    private final String cardName;
+    private final String cardDescription;
+    private final String firstPlayerNickname;
+    private final String question;
+
+    private final int days;
+    private final int credits;
+    private final int numHumans;
+    private final int power;
+    private final int astronautsLost;
+    private final int goodsLost;
+
+    private final List<Goods> goods;
+    private final List<int[]> meteorites;
+    private final Goods[] goodsGained;
+    private final List<int[]> shoots;
+    private final List<List<Goods>> planets;
+    private final List<Condition> conditionsOrder;
+    private final Map<Condition, Effect> penalties;
+
+    public StartCardEvent(
+            String cardName,
+            String cardDescription,
+            String firstPlayerNickname,
+            String question,
+            int days,
+            int credits,
+            int numHumans,
+            List<Goods> goods,
+            List<int[]> meteorites,
+            int power,
+            int astronautsLost,
+            int goodsLost,
+            Goods[] goodsGained,
+            List<int[]> shoots,
+            List<List<Goods>> planets,
+            List<Condition> conditionsOrder,
+            Map<Condition, Effect> penalties
+    ) {
+        super(ServerEventType.START_CARD, true);
+        this.cardName = cardName;
+        this.cardDescription = cardDescription;
+        this.firstPlayerNickname = firstPlayerNickname;
+        this.days = days;
+        this.credits = credits;
+        this.numHumans = numHumans;
+        this.goods = goods;
+        this.meteorites = meteorites;
+        this.power = power;
+        this.astronautsLost = astronautsLost;
+        this.goodsLost = goodsLost;
+        this.goodsGained = goodsGained;
+        this.shoots = shoots;
+        this.planets = planets;
+        this.conditionsOrder = conditionsOrder;
+        this.penalties = penalties;
+        this.question = question;
+    }
+
+    // Getters
+    public String getCardName() {
+        return cardName;
+    }
+
+    public String getCardDescription() {
+        return cardDescription;
+    }
+
+    public String getFirstPlayerNickname() {
+        return firstPlayerNickname;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public int getNumHumans() {
+        return numHumans;
+    }
+
+    public List<Goods> getGoods() {
+        return goods;
+    }
+
+    public List<int[]> getMeteorites() {
+        return meteorites;
+    }
+
+    public int getPower() {
+        return power;
+    }
+
+    public int getAstronautsLost() {
+        return astronautsLost;
+    }
+
+    public int getGoodsLost() {
+        return goodsLost;
+    }
+
+    public Goods[] getGoodsGained() {
+        return goodsGained;
+    }
+
+    public List<int[]> getShoots() {
+        return shoots;
+    }
+
+    public List<List<Goods>> getPlanets() {
+        return planets;
+    }
+
+    public List<Condition> getConditionsOrder() {
+        return conditionsOrder;
+    }
+
+    public Map<Condition, Effect> getPenalties() {
+        return penalties;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    @Override
+    public void call(ServerEventHandlerVisitor visitor) {
+        // TODO: FARE QUESTO METODO
+    }
+}
