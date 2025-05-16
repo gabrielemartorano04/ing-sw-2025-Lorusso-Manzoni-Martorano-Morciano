@@ -126,5 +126,8 @@ public class Trucker {
         }
     }
 
+    public void removeKeptComponent(int index) {
+        keptComponents.remove(index);
+    }
 }
 
