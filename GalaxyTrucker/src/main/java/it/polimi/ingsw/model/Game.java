@@ -117,7 +117,7 @@ public class Game {
      * @return the requested card stack or null if index is invalid
      */
     public ArrayList<Card> viewStack(int i) {
-        if (i != 3)
+        if (i < 3)
             return cardStacks[i];
         else return null;
     }

@@ -99,8 +99,8 @@ class TruckerTest {
         trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
         try {
             trucker.selectComponent(2, new Game(2,2).getComponents());
-        }   catch (ComponentNotAvailable e) {
-
+        }  catch (GeneralError e) {
+            throw new RuntimeException(e);
         }
         assertEquals(BuildingState.SELECT_COMPONENT, trucker.getBuildingState());
 
