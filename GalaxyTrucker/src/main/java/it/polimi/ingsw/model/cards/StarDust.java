@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.callers.StarDustCaller;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.io.Serializable;
@@ -45,5 +46,10 @@ public class StarDust extends Card implements Serializable {
         }
         Collections.reverse(truckers); //rigiro i Truckers così ritorno all'ordine originale della lista
         return CardState.EXIT;
+    }
+
+    @Override
+    public ServerEvent startCard(String currPlayerNickname) {
+        return null;
     }
 }

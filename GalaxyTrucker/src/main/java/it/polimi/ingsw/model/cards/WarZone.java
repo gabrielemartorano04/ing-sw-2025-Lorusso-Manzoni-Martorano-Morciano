@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.callers.WarZoneCaller;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.io.Serializable;
@@ -462,6 +463,11 @@ public class WarZone extends Card implements Serializable {
             }
         }
         return state;
+    }
+
+    @Override
+    public ServerEvent startCard(String currPlayerNickname) {
+        return null;
     }
 
     public CardState getCardState() {
