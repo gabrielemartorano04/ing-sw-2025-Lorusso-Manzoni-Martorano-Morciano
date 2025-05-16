@@ -87,14 +87,14 @@ public class AbandonedStation extends Card implements Serializable {
                 -1,
                 numHuman,
                 goods,
-                new ArrayList<>(),
+                null,
                 -1,
                 -1,
                 -1,
-                new ArrayList<>(),
-                new ArrayList<>(),
-                new ArrayList<>(),
-                new HashMap<>()
+                null,
+                null,
+                null,
+                null
         );
     }
 
@@ -216,6 +216,7 @@ public class AbandonedStation extends Card implements Serializable {
         }
         game.moveBackward(truckerThatHasDecided, days);
         cardState = CardState.EXIT;
+        this.setIsCardFinished(true);
         return cardState;
     }
 

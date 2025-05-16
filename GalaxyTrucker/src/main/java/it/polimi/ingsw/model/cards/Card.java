@@ -22,6 +22,7 @@ public abstract class Card implements Serializable {
     private final String frontImagePath;
     private final String backImagePath;
     private final CardCaller caller;
+    private boolean isCardFinished;
 
     /**
      * Card constructor, initialise the attributes of this class
@@ -40,10 +41,19 @@ public abstract class Card implements Serializable {
         this.frontImagePath = name_frontImage;
         this.backImagePath = name_backImage;
         this.caller = caller;
+        this.isCardFinished = false;
     }
 
     public CardCaller getCaller() {
         return caller;
+    }
+
+    public void setIsCardFinished(boolean isCardFinished) {
+        this.isCardFinished = isCardFinished;
+    }
+
+    public boolean getIsCardFinished() {
+        return isCardFinished;
     }
 
     /**

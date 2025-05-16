@@ -91,15 +91,15 @@ public class AbandonedShip extends Card implements Serializable {
                 days,
                 credits,
                 numHuman,
-                new ArrayList<>(),
-                new ArrayList<>(),
+                null,
+                null,
                 -1,
                 -1,
                 -1,
-                new ArrayList<>(),
-                new ArrayList<>(),
-                new ArrayList<>(),
-                new HashMap<>()
+                null,
+                null,
+                null,
+                null
         );
     }
 
@@ -170,6 +170,7 @@ public class AbandonedShip extends Card implements Serializable {
             truckerThatHasDecided.addCosmicCredit(credits);
         }
         state = CardState.EXIT;
+        this.setIsCardFinished(true);
         return state;
     }
 

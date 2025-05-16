@@ -3,9 +3,13 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.callers.EpidemicCaller;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.flightevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,6 +31,28 @@ public class Epidemic extends Card implements Serializable {
         this.state = CardState.ESECUZIONE;
     }
 
+    @Override
+    public ServerEvent startCard(String currPlayerNickname) {
+        return new StartCardEvent(
+                this.getName(),
+                this.getDescription(),
+                currPlayerNickname,
+                "Ready for the Epidemic effect?",
+                -1,
+                -1,
+                -1,
+                null,
+                null,
+                -1,
+                -1,
+                -1,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
     /**
      * Applies the changes provided by the card
      * @param game game in which the card has been drawn
@@ -41,8 +67,10 @@ public class Epidemic extends Card implements Serializable {
             trucker.getSpaceShip().epidemic();
         }
         state = CardState.EXIT;
+        this.setIsCardFinished(true);
         return state;
     }
+
 
     public CardState getCardState() {
         return state;
