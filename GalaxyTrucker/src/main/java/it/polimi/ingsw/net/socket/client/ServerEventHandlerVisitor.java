@@ -1,8 +1,5 @@
 package it.polimi.ingsw.net.socket.client;
 
-import it.polimi.ingsw.model.AvailableComponents;
-import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.ShowStackEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.*;
@@ -336,16 +333,21 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showError(event.getMessage());
     }
 
+    @Override
     public void visit(GenericErrorEvent event){
         ui.showError(event.getMessage());
     }
 
+    @Override
     public void visit(SuccessSelectKept event){
         viewFlow.setSelectedComponent(event.getComponent(), true);
         ui.showComponentSelected(viewFlow.getSelectedComponent());
     }
 
+    @Override
     public void visit(ShowOtherShipResponse event) {
         ui.showShipLayout(event.getNickname(), event.getSpaceship());
     }
+
+
 }

@@ -85,5 +85,9 @@ public interface ServerEventVisitor {
 
     void visit(BuildingStateError buildingStateError);
 
+    void visit(GenericErrorEvent event);
+
+    void visit(SuccessSelectKept event);
+
     void visit(ShowOtherShipResponse showOtherShipResponse);
 }

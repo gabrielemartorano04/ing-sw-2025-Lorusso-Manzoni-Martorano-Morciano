@@ -3,7 +3,6 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.model.BuildingState;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
@@ -260,4 +259,5 @@ public class ClientHandlerVisitor implements ClientVisitor {
         }
         return new ShowOtherShipResponse(spaceship,nickname);
     }
+
 }
