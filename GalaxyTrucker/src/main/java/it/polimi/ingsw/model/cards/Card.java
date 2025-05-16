@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.callers.CardCaller;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.utilities.exceptions.*;
 
 import javafx.scene.image.Image;
@@ -21,6 +22,7 @@ public abstract class Card implements Serializable {
     private final String frontImagePath;
     private final String backImagePath;
     private final CardCaller caller;
+    private boolean isCardFinished;
 
     /**
      * Card constructor, initialise the attributes of this class
@@ -39,10 +41,19 @@ public abstract class Card implements Serializable {
         this.frontImagePath = name_frontImage;
         this.backImagePath = name_backImage;
         this.caller = caller;
+        this.isCardFinished = false;
     }
 
     public CardCaller getCaller() {
         return caller;
+    }
+
+    public void setIsCardFinished(boolean isCardFinished) {
+        this.isCardFinished = isCardFinished;
+    }
+
+    public boolean getIsCardFinished() {
+        return isCardFinished;
     }
 
     /**
@@ -99,5 +110,8 @@ public abstract class Card implements Serializable {
      */
     public abstract CardState cardEffect(Game game) throws GeneralError;
 
-
+    /**
+     * method to be called after the card is picked from the deck, it returns the event to be sent to the clients
+     */
+    public abstract ServerEvent startCard(String currPlayerNickname);
 }

@@ -45,5 +45,6 @@ public enum ServerEventType {
     BUILDING_STATE_ERROR,
     GENERIC_ERROR,
     SUCCESS_KEPT,
-    SHOW_OTHER_SHIP
+    SHOW_OTHER_SHIP,
+    START_CARD
 }

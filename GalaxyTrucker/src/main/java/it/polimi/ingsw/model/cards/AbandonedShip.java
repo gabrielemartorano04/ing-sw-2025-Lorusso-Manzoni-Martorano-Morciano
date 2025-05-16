@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.callers.AbandonedShipCaller;
+import it.polimi.ingsw.model.components.Goods;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.flightevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
@@ -9,6 +12,7 @@ import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Class that manages the single card abandoned ship
@@ -77,6 +81,29 @@ public class AbandonedShip extends Card implements Serializable {
         return playerDecisions;
     }
 
+    @Override
+    public ServerEvent startCard(String currPlayerNickName) {
+        return new StartCardEvent(
+                this.getName(),
+                this.getDescription(),
+                currPlayerNickName,
+                "Do you want to land on this Abandoned Ship?",
+                days,
+                credits,
+                numHuman,
+                null,
+                null,
+                -1,
+                -1,
+                -1,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+
     /**
      * Sets the only trucker that has chosen to take the ship
      * @param trucker: trucker current
@@ -143,8 +170,10 @@ public class AbandonedShip extends Card implements Serializable {
             truckerThatHasDecided.addCosmicCredit(credits);
         }
         state = CardState.EXIT;
+        this.setIsCardFinished(true);
         return state;
     }
+
 
     public CardState getCardState() {
         return state;

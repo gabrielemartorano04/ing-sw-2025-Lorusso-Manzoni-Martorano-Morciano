@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.callers.AbandonedShipCaller;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.flightevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
 import it.polimi.ingsw.model.Game;
@@ -11,6 +13,7 @@ import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Class that manages the single card abandoned ship
@@ -71,6 +74,28 @@ public class AbandonedStation extends Card implements Serializable {
      */
     public ArrayList<Goods> getGoods() {
         return goods;
+    }
+
+    @Override
+    public ServerEvent startCard(String currPlayerNickname) {
+        return new StartCardEvent(
+                this.getName(),
+                this.getDescription(),
+                currPlayerNickname,
+                "Do you want to land on this Abandoned Station?",
+                days,
+                -1,
+                numHuman,
+                goods,
+                null,
+                -1,
+                -1,
+                -1,
+                null,
+                null,
+                null,
+                null
+        );
     }
 
     /**
@@ -191,8 +216,10 @@ public class AbandonedStation extends Card implements Serializable {
         }
         game.moveBackward(truckerThatHasDecided, days);
         cardState = CardState.EXIT;
+        this.setIsCardFinished(true);
         return cardState;
     }
+
 
     public CardState getCardState() {
         return cardState;
