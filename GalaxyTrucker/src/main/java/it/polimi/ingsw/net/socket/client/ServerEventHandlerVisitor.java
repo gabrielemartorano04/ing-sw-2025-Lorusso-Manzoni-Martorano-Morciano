@@ -77,10 +77,12 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     // === PHASE 3: Costruzione nave ===
     @Override
     public void visit(StartBuildingEvent event) {
+        //potrebbe non funzionare come player joined
         if(!viewFlow.getNameAlreadySet()){
             System.out.println("Dentro");
             viewFlow.setNickname(event.getNickname());
         }
+        ui.showPlayers(event.getPlayers());
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
         viewFlow.setShip(event.getSpaceShip().getComponents());
         viewFlow.setStacks(event.getStacks());

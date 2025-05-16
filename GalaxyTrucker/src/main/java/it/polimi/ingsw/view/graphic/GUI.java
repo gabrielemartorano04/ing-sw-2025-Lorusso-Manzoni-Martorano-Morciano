@@ -604,6 +604,11 @@ public class GUI extends UI {
     }
 
     @Override
+    public void showPlayers(ArrayList<String> players) {
+
+    }
+
+    @Override
     public void showBuildPhaseStart(ArrayList<Component> availableComponents) {
         double width = 850;
         double height = 550;

@@ -11,9 +11,9 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 public class PlayerJoinedEvent extends ServerEvent {
     String username,message;
     public PlayerJoinedEvent(String username) {
-        super(ServerEventType.PLAYER_JOINED, true);
+        super(ServerEventType.PLAYER_JOINED, false);
         this.username = username;
-        message = username+" has joined the game";
+        message = username+", you joined the game";
     }
     public String getUsername() {
         return username;

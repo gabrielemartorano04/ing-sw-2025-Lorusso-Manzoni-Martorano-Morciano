@@ -46,7 +46,7 @@ public class TUI extends UI {
 
     @Override
     public void showPlayerJoined(String nickname) {
-        System.out.println("Giocatore " + nickname + " si è unito alla partita.");
+        System.out.println("Congratulation " + nickname + "! You've joined the game!.");
     }
 
     @Override
@@ -62,6 +62,14 @@ public class TUI extends UI {
     @Override
     public void showSetupComplete() {
         System.out.println("Setup completato. Inizio costruzione nave.");
+    }
+
+    @Override
+    public void showPlayers(ArrayList<String> players) {
+        System.out.println("Players in the game:");
+        for(String player : players) {
+            System.out.println(player);
+        }
     }
 
     @Override
