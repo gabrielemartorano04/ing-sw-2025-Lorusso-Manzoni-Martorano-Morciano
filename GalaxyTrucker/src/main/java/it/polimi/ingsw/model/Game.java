@@ -46,7 +46,6 @@ public class Game {
             System.out.println(j+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
             j++;
         }
-        this.hourglass = new Hourglass(this);
         this.deck = new Deck();
         this.cardStacks = new ArrayList[4];
         for (int i = 0; i < 4; i++) {
@@ -56,6 +55,10 @@ public class Game {
         this.gameState = GameState.SETUP;
         this.availableColors = EnumSet.allOf(PlayerColors.class);
         this.gameLevel = gameLevel;
+    }
+
+    public void startHourglass(){
+        hourglass=new Hourglass(this);
     }
 
     public int getNumPlayers(){

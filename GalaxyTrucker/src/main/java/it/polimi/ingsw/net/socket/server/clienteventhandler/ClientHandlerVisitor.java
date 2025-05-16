@@ -139,6 +139,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             for(Trucker t:gameController.getGame().getTruckers()){
                 players.add(t.getNickname());
             }
+            gameController.getGame().startHourglass();
             return new StartBuildingEvent(nickname, currentClient.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondiRimanenti(),players);
         }
         return new NoAvailableSpaceError();
