@@ -142,7 +142,7 @@ public ClientEvent parseFirstConnection(String input) {
                 }
             }
         }
-        return null;
+        else System.out.println("You can only wait for others to finish buildin");return null;
     }
     public ClientEvent parseFlight(String input) {
         if (input == null || input.isEmpty()) {
