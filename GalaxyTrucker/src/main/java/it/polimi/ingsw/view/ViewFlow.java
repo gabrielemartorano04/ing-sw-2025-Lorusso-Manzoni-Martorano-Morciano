@@ -47,8 +47,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private ArrayList<Card>[] stacks;
     private boolean isFromKept;
     private boolean nameAlreadySet;
-
-
+    private boolean end;
 
     public void setStacks(ArrayList<Card>[] stacks) {
         this.stacks=stacks;
@@ -77,6 +76,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.selectedComponentIndex = -1;
         this.isFromKept = false;
         this.nameAlreadySet = false;
+        this.end = false;
     }
 
     @Override
@@ -243,6 +243,10 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     public void setGoodsByColor(Map<String, Integer> goodsByColor) {
         this.goodsByColor = goodsByColor;
+    }
+
+    public void setEnd() {
+        this.end = true;
     }
 
     public Map<String, Integer> getTrack() {
