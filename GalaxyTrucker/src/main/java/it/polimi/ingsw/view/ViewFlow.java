@@ -249,6 +249,9 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public void setEnd() {
         this.end = true;
     }
+    public boolean getEnd(){
+        return end;
+    }
 
     public Map<String, Integer> getTrack() {
         return track;
