@@ -24,6 +24,10 @@ public class AbandonedShipController extends CardController implements Serializa
         super();
     }
 
+    public ServerEvent handle(AbandonedShip card, BooleanAnswer e) throws WrongCallerException, GeneralError {
+        return new CardStateResult(card.setTruckerThatHasDecided(trucker, landing, numplayer));
+    }
+
     public CardStateResult handle(AbandonedShip card, Trucker trucker, boolean landing, int numplayer) throws WrongCallerException, GeneralError {
         return new CardStateResult(card.setTruckerThatHasDecided(trucker, landing, numplayer));
     }

@@ -91,15 +91,10 @@ public class ServerController {
             client.sendEvent(new NotYourTurnError("Non è il tuo turno."));
             return;
         }
-        ServerEvent response;
 
-        if(!(gameController == null) && gameController.getGame().getGameState() == GameState.FLIGHT){
-            // TODO: response = gameController.getCurrCard().getController().handle(gameController.getCurrCard(), event);
-            response = null;
-        }else{
-            visitor.setClientHandlerServer(client);
-            response = event.call(visitor);
-        }
+        visitor.setClientHandlerServer(client);
+        ServerEvent response = event.call(visitor);
+
         if (!gameCreated && visitor.getNumOfPlayers() > 0) {
             try {
                 this.gameController = new GameController(visitor.getNumOfPlayers(), visitor.getGameLevel());

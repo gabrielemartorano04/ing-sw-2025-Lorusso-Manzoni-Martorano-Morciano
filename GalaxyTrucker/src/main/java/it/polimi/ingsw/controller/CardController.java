@@ -59,8 +59,8 @@ public class CardController implements CardControllerInterface {
      * @return if it is the turn of the client sending the event
      */
 
-    public boolean isPlayerTurn(Trucker t) {
-        return this.currentTrucker.equals(t);
+    public boolean isPlayerTurn(String nickname) {
+        return this.currentTrucker.getNickname().equals(nickname);
     }
 
     /**
