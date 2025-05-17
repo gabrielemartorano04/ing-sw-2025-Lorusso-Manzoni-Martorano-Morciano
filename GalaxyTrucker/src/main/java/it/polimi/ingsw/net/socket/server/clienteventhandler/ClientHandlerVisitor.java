@@ -209,7 +209,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         } catch (CannotTurnHourglassException e) {
             return new TurnHourglassError();
         }
-        if (serverEvent == null) {
+        if (serverEvent != null) {
             return serverEvent;
         }
         return new HourglassTurnEvent(gameController.getGame().getHourglass().getSecondiRimanenti());
