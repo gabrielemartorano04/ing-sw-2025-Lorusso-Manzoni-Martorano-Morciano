@@ -30,11 +30,11 @@ public class PlanetsController implements CardController, Serializable {
         return new CardStateResult(card.initialize(bank));
     }
 
-    public CardStateResult call(Planets card, int indexOfLanding, Trucker trucker, int numPlayers) throws PlanetNotFreeException, GeneralError {
+    public CardStateResult handle(Planets card, int indexOfLanding, Trucker trucker, int numPlayers) throws PlanetNotFreeException, GeneralError {
         return new CardStateResult(card.setPlayerLanding(indexOfLanding, trucker, numPlayers));
     }
 
-    public GoodsResult call(Planets card) throws GeneralError {
+    public GoodsResult handle(Planets card) throws GeneralError {
         if(card.getState() == CardState.PLOT_GOOD){
             Goods g = card.plotGoodFromPlanet();
             return new GoodsResult(card.getState(),g);
@@ -44,7 +44,7 @@ public class PlanetsController implements CardController, Serializable {
         }
     }
 
-    public CardStateResult call(Planets card, boolean choice) throws GeneralError {
+    public CardStateResult handle(Planets card, boolean choice) throws GeneralError {
         if(card.getState() == CardState.CHOOSE_TO_GAIN){
             return new CardStateResult(card.chooseToGain(choice));
         }else{
@@ -52,7 +52,7 @@ public class PlanetsController implements CardController, Serializable {
         }
     }
 
-    public CardStateResult call(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws GeneralError, InvalidCoordinates {
+    public CardStateResult handle(Planets card, int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws GeneralError, InvalidCoordinates {
         if (card.getState() == CardState.GOODSTOADD) {
             return new CardStateResult(card.setCoordinatesToAddGoods(coordinatesToAddGood, positionInLoad, bank));
         } else {
@@ -60,11 +60,11 @@ public class PlanetsController implements CardController, Serializable {
         }
     }
 
-    public CardStateResult call(Planets card, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException{
+    public CardStateResult handle(Planets card, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException{
         return new CardStateResult(card.rearrange(coord1, coord2, value1, value2, contiune));
     }
 
-    public CardStateResult call(Planets card, Game game) throws GeneralError {
+    public CardStateResult handle(Planets card, Game game) throws GeneralError {
         return new CardStateResult(card.cardEffect(game));
     }
 

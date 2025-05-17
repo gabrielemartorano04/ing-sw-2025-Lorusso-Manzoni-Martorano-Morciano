@@ -17,13 +17,13 @@ import java.util.ArrayList;
  */
 public class AbandonedShipController implements CardController, Serializable {
     private static final long serialVersionUID = 1L;
-    public CardStateResult call(AbandonedShip card, Trucker trucker, boolean landing, int numplayer) throws WrongCallerException, GeneralError {
+    public CardStateResult handle(AbandonedShip card, Trucker trucker, boolean landing, int numplayer) throws WrongCallerException, GeneralError {
         return new CardStateResult(card.setTruckerThatHasDecided(trucker, landing, numplayer));
     }
-    public CardStateResult call(AbandonedShip card, ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, WrongCallerException, GeneralError {
+    public CardStateResult handle(AbandonedShip card, ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, WrongCallerException, GeneralError {
         return new CardStateResult(card.setCoordinates(coordinates));
     }
-    public CardStateResult call(AbandonedShip card, Game game)throws WrongCallerException, GeneralError {
+    public CardStateResult handle(AbandonedShip card, Game game)throws WrongCallerException, GeneralError {
         return new CardStateResult(card.cardEffect(game));
     }
     // si potrebbe aggiungere il visit per i vari metodi getter ma secondo me non li usiamo mai

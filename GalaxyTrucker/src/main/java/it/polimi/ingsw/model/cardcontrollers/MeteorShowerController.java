@@ -14,11 +14,11 @@ import java.io.Serializable;
  */
 public class MeteorShowerController implements CardController, Serializable {
     private static final long serialVersionUID = 1L;
-    public CoordinatesResult call(MeteorShower card) throws GeneralError {
+    public CoordinatesResult handle(MeteorShower card) throws GeneralError {
         int[] result = card.getCurrentMeteor();
         return new CoordinatesResult(card.getCardState(), result);
     }
-    public CardStateResult call(MeteorShower card, Game game) throws GeneralError {
+    public CardStateResult handle(MeteorShower card, Game game) throws GeneralError {
         CardStateResult result = null;
         if(card.getCardState() == CardState.ROLL_DICE){
             result =  new CardStateResult(card.rollDice(game));
@@ -27,7 +27,7 @@ public class MeteorShowerController implements CardController, Serializable {
         }
         return result;
     }
-    public CardStateResult call(MeteorShower card, boolean answer) throws GeneralError {
+    public CardStateResult handle(MeteorShower card, boolean answer) throws GeneralError {
         return new CardStateResult(card.setAnswers(answer));
     }
 }

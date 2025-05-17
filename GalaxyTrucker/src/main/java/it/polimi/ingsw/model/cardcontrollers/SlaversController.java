@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class SlaversController implements CardController, Serializable {
     private static final long serialVersionUID = 1L;
-    public CardStateResult call(Slavers card, Trucker trucker, ArrayList<int[]> coord, int numPlayer) throws InvalidCoordinates, GeneralError, InvalidComponentsException {
+    public CardStateResult handle(Slavers card, Trucker trucker, ArrayList<int[]> coord, int numPlayer) throws InvalidCoordinates, GeneralError, InvalidComponentsException {
         if(card.getCardState() == CardState.HUMANSTOREMOVE){
             return new CardStateResult(card.addTruckersCoordinatesToRemoveHumans(trucker, coord, numPlayer));
         }else{
@@ -25,11 +25,11 @@ public class SlaversController implements CardController, Serializable {
         }
     }
 
-    public CardStateResult call(Slavers card, boolean choice) throws GeneralError {
+    public CardStateResult handle(Slavers card, boolean choice) throws GeneralError {
         return new CardStateResult(card.setChooseToGain(choice));
     }
 
-    public CardStateResult call(Slavers card, Game game) throws GeneralError {
+    public CardStateResult handle(Slavers card, Game game) throws GeneralError {
         return new CardStateResult(card.cardEffect(game));
     }
 

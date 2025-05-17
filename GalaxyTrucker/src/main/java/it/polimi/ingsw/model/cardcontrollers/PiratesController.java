@@ -17,13 +17,13 @@ import java.util.ArrayList;
  */
 public class PiratesController implements CardController, Serializable {
     private static final long serialVersionUID = 1L;
-    public CardStateResult call(Pirates card, Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
+    public CardStateResult handle(Pirates card, Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
         return new CardStateResult(card.addDoubleCannonsCoord(trucker, doubleCannonsCoord, numPlayer));
     }
-    public CardStateResult call(Pirates card, boolean choice) throws GeneralError {
+    public CardStateResult handle(Pirates card, boolean choice) throws GeneralError {
         return new CardStateResult(card.setChooseToGain(choice));
     }
-    public CoordinatesResult call(Pirates card) throws GeneralError {
+    public CoordinatesResult handle(Pirates card) throws GeneralError {
         int[] result = card.getCurrentShoot();
         return new CoordinatesResult(card.getCardState(), result);
     }
@@ -37,7 +37,7 @@ public class PiratesController implements CardController, Serializable {
         return new CardStateResult(card.cardEffect(game));
     }
 
-    public CardStateResult call(Pirates card, boolean answers, Trucker turcker) throws GeneralError {
+    public CardStateResult handle(Pirates card, boolean answers, Trucker turcker) throws GeneralError {
         return new CardStateResult(card.setAnswers(answers, turcker));
     }
 
