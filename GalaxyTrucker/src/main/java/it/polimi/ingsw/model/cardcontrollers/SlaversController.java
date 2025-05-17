@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cardcontrollers;
 
+import it.polimi.ingsw.controller.CardController;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.CardState;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class SlaversController implements CardController, Serializable {
+public class SlaversController extends CardController implements Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult handle(Slavers card, Trucker trucker, ArrayList<int[]> coord, int numPlayer) throws InvalidCoordinates, GeneralError, InvalidComponentsException {
         if(card.getCardState() == CardState.HUMANSTOREMOVE){

@@ -2,18 +2,25 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.cardcontrollers.CardControllerInterface;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
-public class CardControllerNew {
+public class CardController implements CardControllerInterface {
     private Card currentCard;
     private Game game;
-    private int numPlayers;
     private Trucker currentTrucker;
 
-    public CardControllerNew(Card card, Game game) {
-        this.currentCard = card;
+    public CardController() {
+    }
+
+    public void setGame(Game game) {
         this.game = game;
-        this.numPlayers = game.getTruckerList().size();
+    }
+
+    public void setCurrentCard(Card card) {
+        this.currentCard = card;
     }
 
     public Card getCurrCard() {
@@ -24,19 +31,15 @@ public class CardControllerNew {
         return game;
     }
 
-    public int getNumPlayers() {
-        return numPlayers;
-    }
-
-    public void setNumPlayers(int numPlayers) {
-        this.numPlayers = numPlayers;
-    }
-
     public Trucker getCurrentTrucker() {
         return currentTrucker;
     }
 
     public void setCurrentTrucker(Trucker currentTrucker) {
         this.currentTrucker = currentTrucker;
+    }
+
+    public ServerEvent startCard(){
+        return currentCard.startCard(currentTrucker.getNickname());
     }
 }

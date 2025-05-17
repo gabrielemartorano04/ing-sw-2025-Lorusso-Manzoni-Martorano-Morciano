@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cardcontrollers;
 
+import it.polimi.ingsw.controller.CardController;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.OpenSpace;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class OpenSpaceController implements CardController, Serializable {
+public class OpenSpaceController extends CardController implements Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult handle(OpenSpace card, Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws GeneralError, InvalidCoordinates {
         return new CardStateResult(card.setCoordinates(trucker, truckerCoordinate, numTruckers));

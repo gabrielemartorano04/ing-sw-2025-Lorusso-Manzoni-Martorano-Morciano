@@ -9,7 +9,7 @@ import it.polimi.ingsw.utilities.results.*;
 
 import java.util.ArrayList;
 
-public interface CardController {
+public interface CardControllerInterface {
 
 
     // TODO: mettere lo startCard come metodo di CardController da fare in override
@@ -19,7 +19,6 @@ public interface CardController {
      * Card controller diventa direttamente il visitor generico che gestisce gli eventi che arrivano in ingresso e
      * ci rida l'evento da inviare ai client. Non si prende piu in ingresso i parametri ma prende direttamente degli eventi
      */
-
 
     default CardStateResult handle(Epidemic card, Game game) throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card " + card.getName());};
     default CardStateResult handle(AbandonedShip card, Trucker trucker, boolean landing, int numplayer)throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card " + card.getName());};

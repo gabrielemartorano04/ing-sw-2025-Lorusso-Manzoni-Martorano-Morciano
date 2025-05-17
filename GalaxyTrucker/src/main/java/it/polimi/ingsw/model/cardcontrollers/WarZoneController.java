@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cardcontrollers;
 
+import it.polimi.ingsw.controller.CardController;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class WarZoneController implements CardController, Serializable {
+public class WarZoneController extends CardController implements Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult handle(WarZone card, Game game) throws WrongCallerException, GeneralError {
         if(card.getCardState()== CardState.WARZONE){

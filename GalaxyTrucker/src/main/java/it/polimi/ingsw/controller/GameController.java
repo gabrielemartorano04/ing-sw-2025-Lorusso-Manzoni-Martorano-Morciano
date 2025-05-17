@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.util.*;
@@ -85,6 +86,10 @@ public class GameController {
             throw new GeneralError("Card is null");
         }
         return currentCard;
+    }
+
+    public void orderByPosition(ArrayList<ClientHandlerSocket> players){
+        game.reorderPlayersByPosition(players);
     }
 
     public EnumSet<PlayerColors> showAvailableColors() {

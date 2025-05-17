@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cardcontrollers;
 
+import it.polimi.ingsw.controller.CardController;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.Pirates;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class PiratesController implements CardController, Serializable {
+public class PiratesController extends CardController implements Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult handle(Pirates card, Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
         return new CardStateResult(card.addDoubleCannonsCoord(trucker, doubleCannonsCoord, numPlayer));
