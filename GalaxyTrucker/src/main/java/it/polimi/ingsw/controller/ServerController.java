@@ -1,7 +1,9 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.NotYourTurnError;
@@ -89,9 +91,14 @@ public class ServerController {
             client.sendEvent(new NotYourTurnError("Non è il tuo turno."));
             return;
         }
+        ServerEvent response;
 
-        visitor.setClientHandlerServer(client);
-        ServerEvent response = event.call(visitor);
+        if(gameController.getGame().getGameState()== GameState.FLIGHT){
+            response = gameController.getCurrCard().getController().handle(gameController.getCurrCard(), event);
+        }else{
+            visitor.setClientHandlerServer(client);
+            response = event.call(visitor);
+        }
         if (!gameCreated && visitor.getNumOfPlayers() > 0) {
             try {
                 this.gameController = new GameController(visitor.getNumOfPlayers(), visitor.getGameLevel());

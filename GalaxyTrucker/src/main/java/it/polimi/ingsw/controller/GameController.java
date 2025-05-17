@@ -73,6 +73,10 @@ public class GameController {
         return truckerController;
     }
 
+    public Card getCurrCard(){
+        return game.drawCard();
+    }
+
     public EnumSet<PlayerColors> showAvailableColors() {
         return game.showAvailableColors();
     }
