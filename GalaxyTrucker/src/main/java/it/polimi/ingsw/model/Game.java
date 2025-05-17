@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
+import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
 
 import java.util.*;
@@ -82,6 +83,10 @@ public class Game {
      */
     public void sortTruckers() {
         truckers.sort(Comparator.comparingInt(Trucker::getPosition).reversed());
+    }
+
+    public void reorderPlayersByPosition(ArrayList<ClientHandlerSocket> players) {
+        players.sort((a, b) -> Integer.compare(a.getTruckerController().getPosition(), b.getTruckerController().getPosition()));
     }
 
     /**

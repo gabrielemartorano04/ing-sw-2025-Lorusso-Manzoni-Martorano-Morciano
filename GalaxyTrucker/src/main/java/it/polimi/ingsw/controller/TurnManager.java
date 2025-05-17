@@ -53,7 +53,7 @@ public class TurnManager {
      * reorders the list based on the position of the players
      */
 
-    public void reorderPlayersByPosition() {
+    public void reorderPlayersByPosition(ArrayList<ClientHandlerSocket> players) {
         players.sort((a, b) -> Integer.compare(a.getTruckerController().getPosition(), b.getTruckerController().getPosition()));
         currentTurnIndex = 0; // reset del turno
     }
