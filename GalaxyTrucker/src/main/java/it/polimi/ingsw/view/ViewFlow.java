@@ -161,7 +161,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                                 ui.showComponentSelected(selectedComponent);
                                 event = null;
                             } else {
-                                event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex, keptComponent, isFromKept, end);
+                                event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex, keptComponent, isFromKept);
                             }
                         }else {
                             System.out.println("You can only wait for others to finish buildin");
