@@ -134,7 +134,9 @@ public class ServerController {
 
     public void startThreadHourglass(){
         BuildTimerManager.getInstance().start(this, 90);
-        broadcastEvent(new BuildCompleteEvent());
+        if(!BuildTimerManager.getInstance().isRunning()){
+            broadcastEvent(new BuildCompleteEvent());
+        }
     }
 }
 
