@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class CardController implements CardControllerInterface {
     private Card currentCard;
-    private GameController gameController;
     private ArrayList<TruckerController> players;
     private int currentTurnIndex = 0;
     private Trucker currentTrucker;
@@ -21,8 +20,7 @@ public class CardController implements CardControllerInterface {
     public CardController() {
     }
 
-    public void setGame(GameController game, ArrayList<ClientHandler> list) {
-        this.gameController = game;
+    public void set(ArrayList<ClientHandler> list) {
         this.players = new ArrayList<>();
         for(int i = 0; i < list.size(); i++) {
             players.add(list.get(i).getTruckerController());

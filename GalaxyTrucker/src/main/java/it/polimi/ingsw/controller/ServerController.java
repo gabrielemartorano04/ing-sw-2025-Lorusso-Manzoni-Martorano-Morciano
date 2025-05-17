@@ -110,6 +110,7 @@ public class ServerController {
                 this.gameController = new GameController(visitor.getNumOfPlayers(), visitor.getGameLevel());
                 visitor.setGameController(this.gameController);
                 this.gameCreated = true;
+                new CheckHourglassController();
             } catch (Exception e) {
                 e.printStackTrace();
                 client.sendEvent(response);
@@ -118,9 +119,7 @@ public class ServerController {
         }
 
 //        if(gameCreated){
-//            if(gameController.getGame().isHourglassExpired()) {
-//                response = new BuildCompleteEvent();
-//            }
+//
 //        }
 
         if(response.isForAll()){
