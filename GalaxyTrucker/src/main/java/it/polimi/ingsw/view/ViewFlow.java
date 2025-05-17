@@ -93,7 +93,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
             ui.showInsertNumPlayers();
         } else {
             if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS || event.getEventType()==ServerEventType.COMPONENT_LINKED
-            || event.getEventType()==ServerEventType.COMPONENT_SELECTED || event.getEventType()==ServerEventType.DISCART_SUCCESS) {
+            || event.getEventType()==ServerEventType.COMPONENT_SELECTED || event.getEventType()==ServerEventType.DISCART_SUCCESS ) {
                 event.call(serverEventVisitor);
                 done = true;
             }
@@ -161,7 +161,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                                 ui.showComponentSelected(selectedComponent);
                                 event = null;
                             } else {
-                                event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex, keptComponent, isFromKept, end);
+                                event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex, keptComponent, isFromKept);
                             }
                         }else {
                             System.out.println("You can only wait for others to finish buildin");

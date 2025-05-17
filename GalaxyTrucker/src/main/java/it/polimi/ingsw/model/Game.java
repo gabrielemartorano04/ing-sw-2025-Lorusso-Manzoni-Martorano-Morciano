@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
+import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.EndBuildingEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.WaitOthersBuildingEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
 
@@ -379,7 +382,7 @@ public class Game {
     }
 
     public boolean isHourglassExpired() {
-        return hourglass.timeIsUp() && hourglass.getTimeTurns() >= 2;
+        return hourglass.timeIsUp() && hourglass.getTimeTurns() == 2;
     }
 
     public boolean allPlayersReady() {
@@ -398,15 +401,17 @@ public class Game {
         }
     }
 
-    public void turnHourglass() throws CannotTurnHourglassException {
+    public ServerEvent turnHourglass() throws CannotTurnHourglassException {
+        ServerEvent event=null;
         if(hourglass.getTimeTurns()==0 && hourglass.timeIsUp()){
             hourglass.reset();
         } else if (hourglass.getTimeTurns()==1 && hourglass.timeIsUp()){
             hourglass.reset();
+            event= new WaitOthersBuildingEvent();
         } else {
             throw new CannotTurnHourglassException("You can't turn the hourglass now!");
         }
-
+        return event;
     }
 
     public ArrayList<Card>[] viewStacks() {

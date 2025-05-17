@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.BuildCompleteEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.NotYourTurnError;
@@ -100,12 +101,17 @@ public class ServerController {
                 this.gameController = new GameController(visitor.getNumOfPlayers(), visitor.getGameLevel());
                 visitor.setGameController(this.gameController);
                 this.gameCreated = true;
+                new CheckHourglassController();
             } catch (Exception e) {
                 e.printStackTrace();
                 client.sendEvent(response);
                 return;
             }
         }
+
+//        if(gameCreated){
+//
+//        }
 
         if(response.isForAll()){
             for(ClientHandler c: clients){

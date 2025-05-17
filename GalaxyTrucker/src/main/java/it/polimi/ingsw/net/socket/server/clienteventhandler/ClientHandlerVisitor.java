@@ -203,10 +203,14 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(TurnHourglassEvent event) {
+        ServerEvent serverEvent=null;
         try {
-            gameController.getGame().turnHourglass();
+            serverEvent =gameController.getGame().turnHourglass();
         } catch (CannotTurnHourglassException e) {
             return new TurnHourglassError();
+        }
+        if (serverEvent != null) {
+            return serverEvent;
         }
         return new HourglassTurnEvent(gameController.getGame().getHourglass().getSecondiRimanenti());
     }
@@ -261,6 +265,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 break;
             }
         }
+
         return new ShowOtherShipResponse(spaceship,nickname);
     }
 

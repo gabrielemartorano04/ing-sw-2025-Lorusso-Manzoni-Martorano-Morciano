@@ -54,6 +54,7 @@ public class ClientHandlerSocket implements ClientHandler {
     @Override
     public void sendEvent(ServerEvent event) {
         try {
+
             network.sendMessage(event);
         } catch (IOException e) {
             System.err.println("Error sending the event to the client: " + e.getMessage());

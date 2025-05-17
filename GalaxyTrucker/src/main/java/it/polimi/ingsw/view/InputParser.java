@@ -72,7 +72,7 @@ public ClientEvent parseFirstConnection(String input) {
         return null;
     }
 
-    public ClientEvent parseBuilding(String input, Component component, int index,ArrayList<Component> kept, boolean isFromKept, boolean end){
+    public ClientEvent parseBuilding(String input, Component component, int index,ArrayList<Component> kept, boolean isFromKept){
         if (input == null || input.isEmpty()) {
             return null;
         }
