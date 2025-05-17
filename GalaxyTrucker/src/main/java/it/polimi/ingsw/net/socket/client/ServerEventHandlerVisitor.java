@@ -352,6 +352,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(WaitOthersBuildingEvent event){
         viewFlow.setEnd();
+        System.out.println("Valore di end: "+viewFlow.getEnd());
         ui.showWaitForOthers();
     }
 

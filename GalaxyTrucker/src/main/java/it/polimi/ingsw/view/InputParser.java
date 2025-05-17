@@ -78,7 +78,6 @@ public ClientEvent parseFirstConnection(String input) {
         }
         String[] tokens = input.split("\\s+", 3);
         String command = tokens[0].toLowerCase();
-        if(!end){
             if(component!=null){
                 if(isFromKept){
                     switch (command){
@@ -141,8 +140,7 @@ public ClientEvent parseFirstConnection(String input) {
                         return null;
                 }
             }
-        }
-        else System.out.println("You can only wait for others to finish buildin");return null;
+
     }
     public ClientEvent parseFlight(String input) {
         if (input == null || input.isEmpty()) {
