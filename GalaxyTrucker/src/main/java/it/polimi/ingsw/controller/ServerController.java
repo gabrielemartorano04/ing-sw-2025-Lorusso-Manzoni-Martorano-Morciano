@@ -94,7 +94,8 @@ public class ServerController {
         ServerEvent response;
 
         if(gameController.getGame().getGameState()== GameState.FLIGHT){
-            response = gameController.getCurrCard().getController().handle(gameController.getCurrCard(), event);
+            // TODO: response = gameController.getCurrCard().getController().handle(gameController.getCurrCard(), event);
+            response = null;
         }else{
             visitor.setClientHandlerServer(client);
             response = event.call(visitor);
