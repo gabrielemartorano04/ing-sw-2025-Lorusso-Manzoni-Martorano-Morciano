@@ -108,8 +108,10 @@ public class ServerController {
             }
         }
 
-        if(gameController.getGame().isHourglassExpired()){
-            response=new BuildCompleteEvent();
+        if(gameCreated){
+            if(gameController.getGame().isHourglassExpired()) {
+                response = new BuildCompleteEvent();
+            }
         }
 
         if(response.isForAll()){
