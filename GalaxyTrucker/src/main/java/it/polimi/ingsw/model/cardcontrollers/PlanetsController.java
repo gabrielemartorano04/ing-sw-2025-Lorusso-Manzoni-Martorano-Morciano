@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cardcontrollers;
 
+import it.polimi.ingsw.controller.CardController;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
@@ -19,7 +20,7 @@ import java.io.Serializable;
 /**
  *
  */
-public class PlanetsController implements CardControllerInterface, Serializable {
+public class PlanetsController extends CardController implements Serializable {
     private static final long serialVersionUID = 1L;
     public CoordinatesResult callGetBank(Planets card, Bank bank) throws GeneralError {
         int[] result = card.getBank(bank);

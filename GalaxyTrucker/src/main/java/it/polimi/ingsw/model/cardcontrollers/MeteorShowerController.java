@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cardcontrollers;
 
+import it.polimi.ingsw.controller.CardController;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.cards.MeteorShower;
@@ -12,7 +13,7 @@ import java.io.Serializable;
 /**
  *
  */
-public class MeteorShowerController implements CardControllerInterface, Serializable {
+public class MeteorShowerController extends CardController implements Serializable {
     private static final long serialVersionUID = 1L;
     public CoordinatesResult handle(MeteorShower card) throws GeneralError {
         int[] result = card.getCurrentMeteor();

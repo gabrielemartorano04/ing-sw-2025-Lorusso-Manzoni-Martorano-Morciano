@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model.cardcontrollers;
 
+import it.polimi.ingsw.controller.CardController;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.AbandonedStation;
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
@@ -17,8 +19,13 @@ import java.io.Serializable;
 /**
  *
  */
-public class AbandonedStationController implements CardControllerInterface, Serializable {
+public class AbandonedStationController extends CardController implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    public AbandonedStationController() {
+        super();
+    }
+
     public CardStateResult handle(AbandonedStation card, Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError, WrongThreadException {
         return new CardStateResult(card.truckerLanding(trucker,landing,numPlayer,bank));
     }
