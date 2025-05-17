@@ -72,74 +72,77 @@ public ClientEvent parseFirstConnection(String input) {
         return null;
     }
 
-    public ClientEvent parseBuilding(String input, Component component, int index,ArrayList<Component> kept, boolean isFromKept){
+    public ClientEvent parseBuilding(String input, Component component, int index,ArrayList<Component> kept, boolean isFromKept, boolean end){
         if (input == null || input.isEmpty()) {
             return null;
         }
         String[] tokens = input.split("\\s+", 3);
         String command = tokens[0].toLowerCase();
-        if(component!=null){
-            if(isFromKept){
+        if(!end){
+            if(component!=null){
+                if(isFromKept){
+                    switch (command){
+                        case "link":
+                            return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
+                        case "keep":
+                            return new KeepTileEvent(component);
+                        case "ship":
+                            return new ShowOtherShipEvent(tokens[1].trim());
+                        default:
+                            System.out.println("Error: unknown command: " + command);
+                            return null;
+                    }
+                }
                 switch (command){
+                    case "ship":
+                        return new ShowOtherShipEvent(tokens[1].trim());
+
                     case "link":
                         return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
                     case "keep":
                         return new KeepTileEvent(component);
+                    case "discard":
+                        return new DiscardTileEvent(index);
+                    default: System.out.println("Error: unknown command: " + command);
+                        return null;
+                }
+            }else {
+                switch (command) {
                     case "ship":
                         return new ShowOtherShipEvent(tokens[1].trim());
-                    default:
-                        System.out.println("Error: unknown command: " + command);
+                    case "componentlist":
+                        return new ShowTilesListEvent();
+                    case "hourglass":
+                        return new TurnHourglassEvent();
+                    case "select":
+                        if(tokens.length==2){
+                            return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
+                        }else{
+                            System.out.println("Please select an index.");
+                        } return null;
+                    case "selectkept":
+                        int ind=Integer.parseInt(tokens[1].trim());
+
+                        if(ind<0 || ind>kept.size()-1){
+                            System.out.println("Please type a valid index.");
+                            return null;
+                        }
+                        return new SelectKeptTileEvent(ind);
+
+                    case "stack":
+                        if(Integer.parseInt(tokens[1].trim())>=1 && Integer.parseInt(tokens[1].trim())<=3) {
+                            return new ShowStackEvent(Integer.parseInt(tokens[1].trim()) - 1);
+                        }else{
+                            System.out.println("Error: illegal stack number. Please select a stack between 1 and 3 or choose another command");
+                        } return null;
+                    case "end":// il client finisce e aspetta o che tutti finiscono o che il timer
+                        return new EndBuildingEvent();
+                    default: System.out.println("Error: unknown command: " + command + ". Please select a valid command");
                         return null;
                 }
             }
-            switch (command){
-                case "ship":
-                    return new ShowOtherShipEvent(tokens[1].trim());
-
-                case "link":
-                    return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
-                case "keep":
-                    return new KeepTileEvent(component);
-                case "discard":
-                    return new DiscardTileEvent(index);
-                default: System.out.println("Error: unknown command: " + command);
-                    return null;
-            }
-        }else {
-            switch (command) {
-                case "ship":
-                    return new ShowOtherShipEvent(tokens[1].trim());
-                case "componentlist":
-                    return new ShowTilesListEvent();
-                case "hourglass":
-                    return new TurnHourglassEvent();
-                case "select":
-                    if(tokens.length==2){
-                        return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
-                    }else{
-                        System.out.println("Please select an index.");
-                    } return null;
-                case "selectkept":
-                    int ind=Integer.parseInt(tokens[1].trim());
-
-                    if(ind<0 || ind>kept.size()-1){
-                        System.out.println("Please type a valid index.");
-                        return null;
-                    }
-                    return new SelectKeptTileEvent(ind);
-
-                case "stack":
-                    if(Integer.parseInt(tokens[1].trim())>=1 && Integer.parseInt(tokens[1].trim())<=3) {
-                        return new ShowStackEvent(Integer.parseInt(tokens[1].trim()) - 1);
-                    }else{
-                        System.out.println("Error: illegal stack number. Please select a stack between 1 and 3 or choose another command");
-                    } return null;
-                case "end":// il client finisce e aspetta o che tutti finiscono o che il timer
-                    return new EndBuildingEvent();
-                default: System.out.println("Error: unknown command: " + command + ". Please select a valid command");
-                    return null;
-            }
         }
+        return null;
     }
     public ClientEvent parseFlight(String input) {
         if (input == null || input.isEmpty()) {

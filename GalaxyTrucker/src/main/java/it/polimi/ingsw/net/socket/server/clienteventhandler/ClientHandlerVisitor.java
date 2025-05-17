@@ -69,8 +69,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(EndBuildingEvent event) {
-        gameController.getGame().startFlightPhase();
-        return new CheckShipsEvent();
+        return new WaitOthersBuildingEvent();
     }
 
     @Override

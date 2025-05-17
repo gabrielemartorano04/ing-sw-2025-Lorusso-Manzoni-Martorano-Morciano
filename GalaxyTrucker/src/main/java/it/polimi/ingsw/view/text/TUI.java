@@ -160,7 +160,7 @@ public class TUI extends UI {
 
     @Override
     public void showWaitForOthers() {
-        System.out.println("Attendi che gli altri giocatori finiscano.");
+        System.out.println("Wait for other players to finish building.");
     }
 
     @Override

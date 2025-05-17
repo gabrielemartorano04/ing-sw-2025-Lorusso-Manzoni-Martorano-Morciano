@@ -353,5 +353,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showShipLayout(event.getNickname(), event.getSpaceship());
     }
 
+    @Override
+    public void visit(WaitOthersBuildingEvent event){
+        viewFlow.setEnd();
+        ui.showWaitForOthers();
+    }
+
 
 }

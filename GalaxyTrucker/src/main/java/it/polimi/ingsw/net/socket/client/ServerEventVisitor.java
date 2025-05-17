@@ -90,4 +90,6 @@ public interface ServerEventVisitor {
     void visit(SuccessSelectKept event);
 
     void visit(ShowOtherShipResponse showOtherShipResponse);
+
+    void visit(WaitOthersBuildingEvent event);
 }
