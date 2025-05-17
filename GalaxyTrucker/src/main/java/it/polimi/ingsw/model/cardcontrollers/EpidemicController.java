@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.callers;
+package it.polimi.ingsw.model.cardcontrollers;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.Epidemic;

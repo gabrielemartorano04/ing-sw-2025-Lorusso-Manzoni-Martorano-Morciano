@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.callers;
+package it.polimi.ingsw.model.cardcontrollers;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Bank;

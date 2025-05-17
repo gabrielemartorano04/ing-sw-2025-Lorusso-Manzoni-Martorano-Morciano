@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.model.callers.PiratesController;
+import it.polimi.ingsw.model.cardcontrollers.PiratesController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;

@@ -1,13 +1,13 @@
-package it.polimi.ingsw.model.callers;
+package it.polimi.ingsw.model.cardcontrollers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class MeteorShowerCallerTest {
+class OpenSpaceCallerTest {
 
     @BeforeEach
     void setUp() {
-        new MeteorShowerController();
+        new OpenSpaceController();
     }
 
     @Test
@@ -16,9 +16,5 @@ class MeteorShowerCallerTest {
 
     @Test
     void testCall() {
-    }
-
-    @Test
-    void testCall1() {
     }
 }
