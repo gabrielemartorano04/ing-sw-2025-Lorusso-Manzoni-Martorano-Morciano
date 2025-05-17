@@ -10,6 +10,63 @@ import java.util.ArrayList;
 
 public interface CardInterface {
 
+    default CardState setTruckerThatHasDecided(Trucker trucker, boolean landing, int numPlayer) throws GeneralError, WrongCallerException{
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default CardState setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, GeneralError, WrongCallerException {
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError, WrongCallerException {
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default Goods setChoiceToGain(boolean choice) throws GeneralError, WrongCallerException {
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates, WrongCallerException {
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException, WrongCallerException {
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default int[] getCurrentMeteor() throws GeneralError, WrongCallerException {
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default CardState rollDice(Game game) throws GeneralError, WrongCallerException {
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default CardState setAnswers(boolean answer) throws GeneralError,WrongCallerException {
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default CardState setCoordinates(Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, GeneralError, WrongCallerException {
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException, WrongCallerException {
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default int[] getCurrentShoot() throws GeneralError, WrongCallerException {
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default int rollDice(Game game) throws GeneralError, WrongCallerException{
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default CardState setAnswers(boolean answers, Trucker trucker) throws GeneralError, WrongCallerException {
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+
     //planets
     default int[] getBank(Bank bank) throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
 
