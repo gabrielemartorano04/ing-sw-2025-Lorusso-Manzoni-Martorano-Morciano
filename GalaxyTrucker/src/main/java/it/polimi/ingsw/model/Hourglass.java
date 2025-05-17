@@ -67,4 +67,6 @@ public class Hourglass {
     public int getSecondiRimanenti() {
         return secondiRimanenti;
     }
+
+
 }
