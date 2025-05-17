@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.controller.CardController;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cardcontrollers.CardControllerInterface;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.utilities.exceptions.*;
@@ -14,7 +15,7 @@ import java.io.Serializable;
 /**
  * Class that manages the single adventure card
  */
-public abstract class Card implements Serializable {
+public abstract class Card implements Serializable, CardInterface{
     private static final long serialVersionUID = 1L;
     private final String name;
     private final String description;
@@ -115,4 +116,6 @@ public abstract class Card implements Serializable {
      * method to be called after the card is picked from the deck, it returns the event to be sent to the clients
      */
     public abstract ServerEvent startCard(String currPlayerNickname);
+
+
 }
