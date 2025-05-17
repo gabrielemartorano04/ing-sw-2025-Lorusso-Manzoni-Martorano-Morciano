@@ -1,7 +1,9 @@
 package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 
+import it.polimi.ingsw.controller.BuildTimerManager;
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.SpaceShip;
@@ -79,6 +81,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             return new WaitOthersBuildingEvent();
         }
         else {
+            BuildTimerManager.getInstance().stop();
             for(Trucker t: gameController.getGame().getTruckers()){
                 t.getSpaceShip().wellDone();
             }
@@ -210,6 +213,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             return new TurnHourglassError();
         }
         if (serverEvent != null) {
+            ServerController.getIstance().startThreadHourglass();
             return serverEvent;
         }
         return new HourglassTurnEvent(gameController.getGame().getHourglass().getSecondiRimanenti());
