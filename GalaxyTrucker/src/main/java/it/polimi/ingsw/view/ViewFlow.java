@@ -93,7 +93,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
             ui.showInsertNumPlayers();
         } else {
             if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS || event.getEventType()==ServerEventType.COMPONENT_LINKED
-            || event.getEventType()==ServerEventType.COMPONENT_SELECTED || event.getEventType()==ServerEventType.DISCART_SUCCESS || event.getEventType()==ServerEventType.WAIT_OTHERS_BUILDING) {
+            || event.getEventType()==ServerEventType.COMPONENT_SELECTED || event.getEventType()==ServerEventType.DISCART_SUCCESS ) {
                 event.call(serverEventVisitor);
                 done = true;
             }
