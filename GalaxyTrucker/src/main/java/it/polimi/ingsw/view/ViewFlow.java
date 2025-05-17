@@ -106,9 +106,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     done = true;
                 }
                 case BULDING -> {
-//                    if (!(event.getEventType() == ServerEventType.COMPONENT_SELECTED)) {
-//                        ui.showAvailableComponent(avComponents);
-//                    }
                     ui.showShipLayout(nickname, ship);
                     if (keptComponent != null) {
                         ui.showKeptComponents(keptComponent);
@@ -146,8 +143,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-
-                //TODO: in che senso input == null implica running = false
                 if (input == null || input.equalsIgnoreCase("exit")) {
                     running = false;
                     break;
@@ -165,7 +160,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                             ui.showComponentSelected(selectedComponent);
                             event=null;
                         }else {
-                        event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex,keptComponent, isFromKept);
+                        event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex,keptComponent, isFromKept,end);
                         }
                     }
                     case FLIGTH-> { event = inputParser.parseFlight(input);}

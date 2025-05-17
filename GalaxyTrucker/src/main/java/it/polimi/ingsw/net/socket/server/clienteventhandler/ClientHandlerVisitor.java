@@ -4,6 +4,7 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
@@ -28,9 +29,11 @@ public class ClientHandlerVisitor implements ClientVisitor {
     private int numLog;
     private ClientHandlerSocket currentClient;
     private int gameLevel;
+    private int endBuilding;
 
     public ClientHandlerVisitor() {
         numLog = 0;
+        endBuilding = 0;
         currentClient = null;
         numOfPlayers = 0;
         gameLevel=0;
@@ -69,7 +72,15 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(EndBuildingEvent event) {
-        return new WaitOthersBuildingEvent();
+        endBuilding++;
+        //inserire condizione hourglass
+        if(endBuilding<numOfPlayers)  return new WaitOthersBuildingEvent();
+        else {
+            for(Trucker t: gameController.getGame().getTruckers()){
+                t.getSpaceShip().wellDone();
+            }
+            return new BuildCompleteEvent();
+        }
     }
 
     @Override

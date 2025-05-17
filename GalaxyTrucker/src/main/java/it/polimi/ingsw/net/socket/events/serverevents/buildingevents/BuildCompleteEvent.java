@@ -9,7 +9,7 @@ public class BuildCompleteEvent extends ServerEvent {
 
     public BuildCompleteEvent() {
         super(ServerEventType.END_BUILDING, true);
-        message = "Build completed";
+        message = "All the ships are checked and the building phase is complete";
     }
 
     @Override
