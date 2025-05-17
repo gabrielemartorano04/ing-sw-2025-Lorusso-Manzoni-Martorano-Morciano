@@ -10,7 +10,6 @@ public interface ServerEventVisitor {
 
     void visit(AvailableColorsEvent event);
     void visit(BooleanRequest event);
-    void visit(CheckShipsEvent event);
     void visit(ColorAlreadyInError event);
     void visit(ComponentLinkedEvent event);
     void visit(ComponentNotAvailableError event);
