@@ -155,7 +155,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     case BULDING-> {
                         String[] tokens = input.split("\\s+", 3);
                         String command = tokens[0].toLowerCase();
-                        if (!end) {
+                        if (!this.end) {
                             if (command.equalsIgnoreCase("turn") && selectedComponent != null) {
                                 selectedComponent.turn();
                                 ui.showComponentSelected(selectedComponent);
