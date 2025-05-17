@@ -214,9 +214,10 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(BuildCompleteEvent event){
+        ui.showMessage("Your updated ship\n");
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         ui.showBuildComplete();
-        ui.showWaitForOthers();
     }
 
 
@@ -289,11 +290,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(IntRequest event) {
         ui.askIndex();
-    }
-
-    @Override
-    public void visit(CheckShipsEvent event) {
-        ui.showMessage(event.getMessage());
     }
 
     // === PHASE 5: Fine Gioco ===
