@@ -93,7 +93,7 @@ public class ServerController {
         }
         ServerEvent response;
 
-        if(gameController.getGame().getGameState()== GameState.FLIGHT){
+        if(!(gameController == null) && gameController.getGame().getGameState() == GameState.FLIGHT){
             // TODO: response = gameController.getCurrCard().getController().handle(gameController.getCurrCard(), event);
             response = null;
         }else{
