@@ -24,6 +24,7 @@ public class ServerController {
     private boolean turnStarted;
     private boolean gameCreated;
     private GameController gameController;
+    private static ServerController istance;
 
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
 
@@ -33,6 +34,14 @@ public class ServerController {
         this.turnStarted = false;
         this.clients = new ArrayList<>();
         this.gameCreated = false;
+    }
+
+    public static ServerController getIstance() {
+        return istance;
+    }
+
+    public static void setIstance(ServerController istance) {
+        ServerController.istance = istance;
     }
 
     public void handleEvent(ClientEvent event, ClientHandlerSocket client) {
@@ -115,12 +124,21 @@ public class ServerController {
 //        }
 
         if(response.isForAll()){
-            for(ClientHandler c: clients){
-                c.sendEvent(response);
-            }
+            broadcastEvent(response);
         }else{
             client.sendEvent(response);
         }
+    }
+
+    public void broadcastEvent(ServerEvent event) {
+        for(ClientHandler c: clients){
+            c.sendEvent(event);
+        }
+    }
+
+    public void startThreadHourglass(){
+        BuildTimerManager.getInstance().start(this, 90);
+        broadcastEvent(new BuildCompleteEvent());
     }
 }
 
