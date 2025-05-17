@@ -34,6 +34,7 @@ public class ServerController {
         this.turnStarted = false;
         this.clients = new ArrayList<>();
         this.gameCreated = false;
+        setIstance(this);
     }
 
     public static ServerController getIstance() {
