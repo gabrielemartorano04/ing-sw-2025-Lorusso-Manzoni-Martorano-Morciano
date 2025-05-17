@@ -155,13 +155,19 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     case BULDING-> {
                         String[] tokens = input.split("\\s+", 3);
                         String command = tokens[0].toLowerCase();
-                        if(command.equalsIgnoreCase("turn") && selectedComponent!=null){
-                            selectedComponent.turn();
-                            ui.showComponentSelected(selectedComponent);
-                            event=null;
+                        if (!end) {
+                            if (command.equalsIgnoreCase("turn") && selectedComponent != null) {
+                                selectedComponent.turn();
+                                ui.showComponentSelected(selectedComponent);
+                                event = null;
+                            } else {
+                                event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex, keptComponent, isFromKept, end);
+                            }
                         }else {
-                        event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex,keptComponent, isFromKept,end);
+                            System.out.println("You can only wait for others to finish buildin");
+                            event = null;
                         }
+
                     }
                     case FLIGTH-> { event = inputParser.parseFlight(input);}
                 }
