@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.callers;
+package it.polimi.ingsw.model.cardcontrollers;
 
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
@@ -44,7 +44,7 @@ class AbandonedStationCallerTest {
     void call() {
         CardStateResult actual=null;
         try {
-            actual=caller.call(card, trucker, true, 1, bank);
+            actual=caller.handle(card, trucker, true, 1, bank);
         } catch (GeneralError e) {
 
         }
@@ -61,7 +61,7 @@ class AbandonedStationCallerTest {
     void testCall() {
         GoodsResult actual=null;
         try {
-            actual=caller.call(card,true);
+            actual=caller.handle(card,true);
         } catch (GeneralError e) {
 
         } catch (WrongCallerException e) {
@@ -76,7 +76,7 @@ class AbandonedStationCallerTest {
     void testCall1() {
         CardStateResult actual=null;
         try {
-            actual=caller.call(card, new int[]{1,2}, 1,trucker, bank);
+            actual=caller.handle(card, new int[]{1,2}, 1,trucker, bank);
         } catch (GeneralError e) {
 
         } catch (WrongCallerException e) {
@@ -99,7 +99,7 @@ class AbandonedStationCallerTest {
     void testCall2() {
         CardStateResult actual=null;
         try {
-            actual = caller.call(card, trucker, new int[]{1, 2}, new int[]{2, 3}, 1, 2, false);
+            actual = caller.handle(card, trucker, new int[]{1, 2}, new int[]{2, 3}, 1, 2, false);
         } catch (InvalidCoordinates e) {
 
         } catch (WrongCallerException e) {
@@ -126,7 +126,7 @@ class AbandonedStationCallerTest {
     void testCall3() {
         CardStateResult actual = null;
         try {
-            actual = caller.call(card, game);
+            actual = caller.handle(card, game);
         } catch (GeneralError e) {
 
         } catch (WrongCallerException e) {

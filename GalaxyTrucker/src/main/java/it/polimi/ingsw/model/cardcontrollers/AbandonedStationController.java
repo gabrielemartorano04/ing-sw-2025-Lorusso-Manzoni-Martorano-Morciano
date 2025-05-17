@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.callers;
+package it.polimi.ingsw.model.cardcontrollers;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Bank;
@@ -19,20 +19,20 @@ import java.io.Serializable;
  */
 public class AbandonedStationController implements CardController, Serializable {
     private static final long serialVersionUID = 1L;
-    public CardStateResult call(AbandonedStation card, Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError, WrongThreadException {
+    public CardStateResult handle(AbandonedStation card, Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError, WrongThreadException {
         return new CardStateResult(card.truckerLanding(trucker,landing,numPlayer,bank));
     }
-    public GoodsResult call(AbandonedStation card, boolean choice) throws GeneralError, WrongCallerException {
+    public GoodsResult handle(AbandonedStation card, boolean choice) throws GeneralError, WrongCallerException {
         Goods g = card.setChoiceToGain(choice);
         return new GoodsResult(card.getCardState(), g);
     }
-    public CardStateResult call(AbandonedStation card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates, WrongCallerException {
+    public CardStateResult handle(AbandonedStation card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates, WrongCallerException {
         return new CardStateResult(card.setWinnerCoordinatesToAddGoods(winnerCoordinatesToAddGood, value, trucker, bank));
     }
-    public CardStateResult call(AbandonedStation card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException, WrongCallerException {
+    public CardStateResult handle(AbandonedStation card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException, WrongCallerException {
         return new CardStateResult(card.rearrange(trucker,coord1,coord2,value1,value2,contiune));
     }
-    public CardStateResult call(AbandonedStation card, Game game)throws GeneralError, WrongCallerException {
+    public CardStateResult handle(AbandonedStation card, Game game)throws GeneralError, WrongCallerException {
         return new CardStateResult(card.cardEffect(game));
     }
 }

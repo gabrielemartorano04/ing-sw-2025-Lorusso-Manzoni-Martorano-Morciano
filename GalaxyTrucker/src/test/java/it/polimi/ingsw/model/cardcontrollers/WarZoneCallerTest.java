@@ -1,25 +1,17 @@
-package it.polimi.ingsw.model.callers;
+package it.polimi.ingsw.model.cardcontrollers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class SmugglersCallerTest {
+class WarZoneCallerTest {
 
     @BeforeEach
     void setUp() {
-        new SmugglersController();
+        new WarZoneController();
     }
 
     @Test
     void call() {
-    }
-
-    @Test
-    void callPlotGood() {
-    }
-
-    @Test
-    void callGetBatteries() {
     }
 
     @Test
@@ -40,6 +32,14 @@ class SmugglersCallerTest {
 
     @Test
     void testCall4() {
+    }
+
+    @Test
+    void callGetBatteries() {
+    }
+
+    @Test
+    void callGetMeteor() {
     }
 
     @Test

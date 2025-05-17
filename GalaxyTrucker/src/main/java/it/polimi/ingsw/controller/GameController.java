@@ -20,11 +20,13 @@ public class GameController {
     private boolean gameStarted = false;
     private int numOfPlayers;
     private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private Card currentCard;
 
 
     public GameController(int numberOfTruckers, int gameLevel) {
         this.game=new Game(numberOfTruckers, gameLevel);
         this.numOfPlayers=numberOfTruckers;
+        this.currentCard=null;
     }
 
     public Game getGame() {
@@ -71,6 +73,18 @@ public class GameController {
         }
 
         return truckerController;
+    }
+
+    public Card pickCardFromDeck(){
+        this.currentCard = game.drawCard();
+        return currentCard;
+    }
+
+    public Card getCurrentCard()throws GeneralError{
+        if(currentCard==null){
+            throw new GeneralError("Card is null");
+        }
+        return currentCard;
     }
 
     public EnumSet<PlayerColors> showAvailableColors() {

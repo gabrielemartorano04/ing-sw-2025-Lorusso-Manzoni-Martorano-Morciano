@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.callers;
+package it.polimi.ingsw.model.cardcontrollers;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Bank;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class WarZoneController implements CardController, Serializable {
     private static final long serialVersionUID = 1L;
-    public CardStateResult call(WarZone card, Game game) throws WrongCallerException, GeneralError {
+    public CardStateResult handle(WarZone card, Game game) throws WrongCallerException, GeneralError {
         if(card.getCardState()== CardState.WARZONE){
             return new CardStateResult(card.combatZone(game));
         }else if(card.getCardState() == CardState.ROLL_DICE){
@@ -28,7 +28,7 @@ public class WarZoneController implements CardController, Serializable {
         }
     }
 
-    public CardStateResult call(WarZone card, Game game, Trucker trucker, ArrayList<int[]> coord) throws InvalidComponentsException, WrongCallerException, GeneralError {
+    public CardStateResult handle(WarZone card, Game game, Trucker trucker, ArrayList<int[]> coord) throws InvalidComponentsException, WrongCallerException, GeneralError {
         if(card.getCardState()== CardState.WAIT_CANNONS){
             card.setCannonCoordinates(game, trucker, coord);
         }else {
@@ -37,21 +37,21 @@ public class WarZoneController implements CardController, Serializable {
         return new CardStateResult(card.getCardState());
     }
 
-    public CardStateResult call(WarZone card, Game game, ArrayList<ArrayList<int[]>> truckersCoordinates) throws WrongCallerException, GeneralError {
+    public CardStateResult handle(WarZone card, Game game, ArrayList<ArrayList<int[]>> truckersCoordinates) throws WrongCallerException, GeneralError {
         card.findWeakestTrucker(game, truckersCoordinates);
         return new CardStateResult(card.getCardState());
     }
 
-    public CardStateResult call(WarZone card, Trucker trucker, Bank bank) throws WrongCallerException, GeneralError {
+    public CardStateResult handle(WarZone card, Trucker trucker, Bank bank) throws WrongCallerException, GeneralError {
         return new CardStateResult(card.manageRemoveGoods(trucker, bank));
     }
 
-    public GoodsListResult call(WarZone card, Trucker trucker) throws WrongCallerException, GeneralError {
+    public GoodsListResult handle(WarZone card, Trucker trucker) throws WrongCallerException, GeneralError {
         ArrayList<Goods> goodsList = card.plotGoodsList(trucker);
         return new GoodsListResult(card.getCardState(), goodsList);
     }
 
-    public CardStateResult call(WarZone card, ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen, WrongCallerException, GeneralError {
+    public CardStateResult handle(WarZone card, ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen, WrongCallerException, GeneralError {
         card.removeAsking(indexes, trucker, bank);
         return new CardStateResult(card.getCardState());
     }
@@ -66,17 +66,17 @@ public class WarZoneController implements CardController, Serializable {
         return new CoordinatesResult(card.getCardState(), result);
     }
 
-    public CardStateResult call(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries, WrongCallerException, GeneralError {
+    public CardStateResult handle(WarZone card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries, WrongCallerException, GeneralError {
         card.removeBatteries(coordinatesToRemoveBatteries, trucker);
         return new CardStateResult(card.getCardState());
     }
 
-    public CardStateResult call(WarZone card, boolean choice) throws WrongCallerException, GeneralError {
+    public CardStateResult handle(WarZone card, boolean choice) throws WrongCallerException, GeneralError {
         card.setAnswers(choice);
         return new CardStateResult(card.getCardState());
     }
 
-    public CardStateResult call(WarZone card, ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, WrongCallerException, GeneralError {
+    public CardStateResult handle(WarZone card, ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, WrongCallerException, GeneralError {
         return new CardStateResult(card.removeCrew(coordinates));
     }
 

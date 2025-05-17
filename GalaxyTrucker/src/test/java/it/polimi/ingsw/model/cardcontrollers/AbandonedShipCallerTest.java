@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.callers;
+package it.polimi.ingsw.model.cardcontrollers;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.PlayerColors;
@@ -35,7 +35,7 @@ class AbandonedShipCallerTest {
     void call() {
         CardStateResult actual = null;
         try {
-            actual = caller.call(card, trucker, true, 1);
+            actual = caller.handle(card, trucker, true, 1);
         } catch (WrongCallerException e) {
 
         } catch (GeneralError e) {
@@ -58,7 +58,7 @@ class AbandonedShipCallerTest {
         coord.add(new int[]{2, 3});
 
         try {
-            actual = caller.call(card, coord);
+            actual = caller.handle(card, coord);
         } catch (WrongCallerException e) {
 
         } catch (GeneralError e) {
@@ -85,7 +85,7 @@ class AbandonedShipCallerTest {
     void testCall1() {
         CardStateResult actual = null;
         try {
-            actual = caller.call(card, game);
+            actual = caller.handle(card, game);
         } catch (GeneralError e) {
 
         } catch (WrongCallerException e) {

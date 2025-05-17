@@ -1,20 +1,16 @@
-package it.polimi.ingsw.model.callers;
+package it.polimi.ingsw.model.cardcontrollers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class OpenSpaceCallerTest {
+class StarDustCallerTest {
 
     @BeforeEach
     void setUp() {
-        new OpenSpaceController();
+        new StarDustController();
     }
 
     @Test
     void call() {
-    }
-
-    @Test
-    void testCall() {
     }
 }

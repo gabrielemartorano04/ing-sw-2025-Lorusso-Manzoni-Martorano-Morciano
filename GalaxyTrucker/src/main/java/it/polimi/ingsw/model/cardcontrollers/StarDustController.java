@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.callers;
+package it.polimi.ingsw.model.cardcontrollers;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.StarDust;
@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class StarDustController implements CardController, Serializable {
     private static final long serialVersionUID = 1L;
-    public CardStateResult call(StarDust card, Game game) throws GeneralError {
+    public CardStateResult handle(StarDust card, Game game) throws GeneralError {
         return new CardStateResult(card.cardEffect(game));
     }
 }

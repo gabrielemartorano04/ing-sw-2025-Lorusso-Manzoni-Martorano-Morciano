@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.callers;
+package it.polimi.ingsw.model.cardcontrollers;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Bank;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class SmugglersController implements CardController, Serializable {
     private static final long serialVersionUID = 1L;
-    public CardStateResult call(Smugglers card, Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Bank bank) throws GeneralError, InvalidComponentsException{
+    public CardStateResult handle(Smugglers card, Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Bank bank) throws GeneralError, InvalidComponentsException{
         return new CardStateResult(card.addDoubleCannonsCoord(trucker, doubleCannonsCoord, numPlayer, bank));
     }
 
@@ -30,36 +30,36 @@ public class SmugglersController implements CardController, Serializable {
         return new IntResult(card.getCardState(), result);
     }
 
-    public CardStateResult call(Smugglers card, boolean choice) throws GeneralError{
+    public CardStateResult handle(Smugglers card, boolean choice) throws GeneralError{
         return new CardStateResult(card.setChoiceToGain(choice));
     }
 
-    public CardStateResult call(Smugglers card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates {
+    public CardStateResult handle(Smugglers card, int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates {
         return new CardStateResult(card.setWinnerCoordinatesToAddGoods(winnerCoordinatesToAddGood, value, trucker, bank));
     }
 
-    public CardStateResult call(Smugglers card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException{
+    public CardStateResult handle(Smugglers card, Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException{
         return new CardStateResult(card.rearrange(trucker, coord1, coord2, value1, value2, contiune));
     }
 
-    public CardStateResult call(Smugglers card, Trucker trucker, Bank bank)throws GeneralError{
+    public CardStateResult handle(Smugglers card, Trucker trucker, Bank bank)throws GeneralError{
         return new CardStateResult(card.manageRemoveGoods(trucker, bank));
     }
 
-    public GoodsListResult call(Smugglers card, Trucker trucker)throws GeneralError{
+    public GoodsListResult handle(Smugglers card, Trucker trucker)throws GeneralError{
         ArrayList<Goods> result = card.plotGoodsList(trucker);
         return new GoodsListResult(card.getCardState(), result);
     }
 
-    public CardStateResult call(Smugglers card, ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws GeneralError, InvalidGoodChosen, NotEnoughGoodsChosen{
+    public CardStateResult handle(Smugglers card, ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws GeneralError, InvalidGoodChosen, NotEnoughGoodsChosen{
         return new CardStateResult(card.removeAsking(indexes, trucker, bank));
     }
 
-    public CardStateResult call(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws GeneralError, InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries{
+    public CardStateResult handle(Smugglers card, ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws GeneralError, InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries{
         return new CardStateResult(card.removeBatteries(coordinatesToRemoveBatteries, trucker));
     }
 
-    public CardStateResult call(Smugglers card, Game game) throws GeneralError{
+    public CardStateResult handle(Smugglers card, Game game) throws GeneralError{
         return new CardStateResult(card.cardEffect(game));
     }
 

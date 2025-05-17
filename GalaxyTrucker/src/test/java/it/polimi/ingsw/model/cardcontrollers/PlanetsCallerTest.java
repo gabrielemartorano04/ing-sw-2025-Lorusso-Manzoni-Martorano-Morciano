@@ -1,13 +1,21 @@
-package it.polimi.ingsw.model.callers;
+package it.polimi.ingsw.model.cardcontrollers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class PiratesCallerTest {
+class PlanetsCallerTest {
 
     @BeforeEach
     void setUp() {
-        new PiratesController();
+        new PlanetsController();
+    }
+
+    @Test
+    void callGetBank() {
+    }
+
+    @Test
+    void callInitialize() {
     }
 
     @Test
@@ -23,14 +31,14 @@ class PiratesCallerTest {
     }
 
     @Test
-    void callRollDice() {
-    }
-
-    @Test
-    void callCardEffect() {
-    }
-
-    @Test
     void testCall2() {
+    }
+
+    @Test
+    void testCall3() {
+    }
+
+    @Test
+    void testCall4() {
     }
 }

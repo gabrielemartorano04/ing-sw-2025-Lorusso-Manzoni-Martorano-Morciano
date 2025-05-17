@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.callers.SmugglersController;
+import it.polimi.ingsw.model.cardcontrollers.SmugglersController;
 import it.polimi.ingsw.model.components.*;
 import it. polimi.ingsw.model.Bank;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
