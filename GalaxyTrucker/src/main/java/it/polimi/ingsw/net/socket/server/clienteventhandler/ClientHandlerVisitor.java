@@ -261,6 +261,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 break;
             }
         }
+
         return new ShowOtherShipResponse(spaceship,nickname);
     }
 
