@@ -50,7 +50,7 @@ public class GUIApplication extends Application {
         mockTrack.put("YELLOW", 20);
         GUI gui = new GUI(primaryStage);
 
-        //gui.showTrack(mockTrack);
+        gui.showTrack(mockTrack);
         //gui.showShipLayout("Luca", spaceship.getComponents());
         //gui.showChooseColor(EnumSet.allOf(PlayerColors.class));
         //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
@@ -71,9 +71,9 @@ public class GUIApplication extends Application {
         //gui.showBuildOptions();
         //gui.showCardDrawn(card2);
         //gui.showTruckerLostAllCrew(trucker.getNickname());
-        gui.showConnectionLost();
+        //gui.showConnectionLost();
         //gui.showMessage("luca ha perso tutte le merci");
-        gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
+        //gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
     }
 
     public static void main(String[] args) {
