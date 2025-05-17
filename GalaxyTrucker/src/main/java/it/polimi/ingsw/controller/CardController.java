@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cardcontrollers.CardControllerInterface;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 public class CardController implements CardControllerInterface {
     private Card currentCard;
@@ -35,5 +37,9 @@ public class CardController implements CardControllerInterface {
 
     public void setCurrentTrucker(Trucker currentTrucker) {
         this.currentTrucker = currentTrucker;
+    }
+
+    public ServerEvent startCard(){
+        return currentCard.startCard(currentTrucker.getNickname());
     }
 }
