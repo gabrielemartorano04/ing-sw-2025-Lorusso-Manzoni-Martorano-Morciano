@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class WarZoneController implements CardController, Serializable {
+public class WarZoneController implements CardControllerInterface, Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult handle(WarZone card, Game game) throws WrongCallerException, GeneralError {
         if(card.getCardState()== CardState.WARZONE){

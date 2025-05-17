@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  *
  */
-public class StarDustController implements CardController, Serializable {
+public class StarDustController implements CardControllerInterface, Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult handle(StarDust card, Game game) throws GeneralError {
         return new CardStateResult(card.cardEffect(game));

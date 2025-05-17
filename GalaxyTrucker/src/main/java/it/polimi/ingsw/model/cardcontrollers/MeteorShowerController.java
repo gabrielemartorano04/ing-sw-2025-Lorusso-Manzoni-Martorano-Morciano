@@ -12,7 +12,7 @@ import java.io.Serializable;
 /**
  *
  */
-public class MeteorShowerController implements CardController, Serializable {
+public class MeteorShowerController implements CardControllerInterface, Serializable {
     private static final long serialVersionUID = 1L;
     public CoordinatesResult handle(MeteorShower card) throws GeneralError {
         int[] result = card.getCurrentMeteor();

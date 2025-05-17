@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.cardcontrollers.CardController;
+import it.polimi.ingsw.model.cardcontrollers.CardControllerInterface;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.utilities.exceptions.*;
 
@@ -21,7 +21,7 @@ public abstract class Card implements Serializable {
     private final boolean  trialFlight;
     private final String frontImagePath;
     private final String backImagePath;
-    private final CardController controller;
+    private final CardControllerInterface controller;
     private boolean isCardFinished;
 
     /**
@@ -33,7 +33,7 @@ public abstract class Card implements Serializable {
      * @param name_frontImage front image of the card
      * @param name_backImage back image of the card
      */
-    public Card(String name, String description, boolean trialFlight, Integer level, String name_frontImage, String name_backImage, CardController controller) {
+    public Card(String name, String description, boolean trialFlight, Integer level, String name_frontImage, String name_backImage, CardControllerInterface controller) {
         this.name = name;
         this.description = description;
         this.trialFlight = trialFlight;
@@ -44,7 +44,7 @@ public abstract class Card implements Serializable {
         this.isCardFinished = false;
     }
 
-    public CardController getController() {
+    public CardControllerInterface getController() {
         return controller;
     }
 

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class SmugglersController implements CardController, Serializable {
+public class SmugglersController implements CardControllerInterface, Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult handle(Smugglers card, Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer, Bank bank) throws GeneralError, InvalidComponentsException{
         return new CardStateResult(card.addDoubleCannonsCoord(trucker, doubleCannonsCoord, numPlayer, bank));

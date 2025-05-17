@@ -2,15 +2,16 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.cardcontrollers.CardControllerInterface;
 import it.polimi.ingsw.model.cards.Card;
 
-public class CardControllerNew {
+public class CardController implements CardControllerInterface {
     private Card currentCard;
     private Game game;
     private int numPlayers;
     private Trucker currentTrucker;
 
-    public CardControllerNew(Card card, Game game) {
+    public CardController(Card card, Game game) {
         this.currentCard = card;
         this.game = game;
         this.numPlayers = game.getTruckerList().size();

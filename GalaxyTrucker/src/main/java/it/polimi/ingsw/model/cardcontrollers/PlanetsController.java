@@ -19,7 +19,7 @@ import java.io.Serializable;
 /**
  *
  */
-public class PlanetsController implements CardController, Serializable {
+public class PlanetsController implements CardControllerInterface, Serializable {
     private static final long serialVersionUID = 1L;
     public CoordinatesResult callGetBank(Planets card, Bank bank) throws GeneralError {
         int[] result = card.getBank(bank);

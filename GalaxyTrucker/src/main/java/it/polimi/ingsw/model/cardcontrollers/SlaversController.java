@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class SlaversController implements CardController, Serializable {
+public class SlaversController implements CardControllerInterface, Serializable {
     private static final long serialVersionUID = 1L;
     public CardStateResult handle(Slavers card, Trucker trucker, ArrayList<int[]> coord, int numPlayer) throws InvalidCoordinates, GeneralError, InvalidComponentsException {
         if(card.getCardState() == CardState.HUMANSTOREMOVE){
