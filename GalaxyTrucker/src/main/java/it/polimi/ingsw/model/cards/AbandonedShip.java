@@ -121,7 +121,7 @@ public class AbandonedShip extends Card implements Serializable {
         }else{
             if (playerDecisions == trucker.size()){
                 state = CardState.ESECUZIONE;
-                return new ExecutionEvent(ServerEventType.EXECUTION, true, this.getCardState() );
+                return new ExecutionEvent(true, this.getCardState() );
 
             }else{
                 playerDecisions++;
@@ -145,7 +145,7 @@ public class AbandonedShip extends Card implements Serializable {
             truckerThatHasDecided.getSpaceShip().checkCabin(coordinates, numHuman);
             this.coordinates = coordinates;
             state = CardState.ESECUZIONE;
-            return new ExecutionEvent(ServerEventType.EXECUTION, false, this.getCardState());
+            return new ExecutionEvent(false, this.getCardState());
         }catch (InvalidCoordinates e){
             throw new InvalidCoordinates(e.getMessage());
         }
@@ -153,17 +153,16 @@ public class AbandonedShip extends Card implements Serializable {
 
     /**
      * Applies the changes provided by the card
-     * @param game game in which the card has been drawn
      */
 
     @Override
-    public ServerEvent cardEffect(Game game) throws GeneralError {
+    public ServerEvent cardEffect() throws GeneralError {
         if(state != CardState.ESECUZIONE) {
             throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }
         if (truckerThatHasDecided != null) {
             truckerThatHasDecided.getSpaceShip().removeNumHuman(coordinates);
-            game.moveBackward(truckerThatHasDecided,days);
+            Game.getIstance().moveBackward(truckerThatHasDecided,days);
             truckerThatHasDecided.addCosmicCredit(credits);
         }
         state = CardState.EXIT;
