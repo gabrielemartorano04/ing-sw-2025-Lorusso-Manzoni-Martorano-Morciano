@@ -25,7 +25,7 @@ public class BuildTimerManager {
                 Thread.sleep(seconds * 1000L);
                 if (running) {
                     System.out.println("[TIMER] Tempo scaduto. Invia BuildCompleteEvent");
-                    controller.broadcastEvent(new BuildCompleteEvent());
+                    controller.broadcastEvent(new BuildCompleteEvent(controller.getGameController().getGame().getTruckers()));
                 }
             } catch (InterruptedException e) {
                 System.out.println("[TIMER] Interrotto prima del termine");
