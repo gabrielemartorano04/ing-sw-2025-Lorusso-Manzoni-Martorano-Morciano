@@ -91,17 +91,17 @@ public class OpenSpace extends Card implements Serializable {
                 }
                 throw new InvalidCoordinates("Not all components are DoubleEngine");
             }
+
             this.truckersCoordinates.addLast(coord);
-            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
-                this.state = CardState.ESECUZIONE;
-                return cardEffect();
-            }
-            indexOfCurrentTrucker++;
-            return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, this.getCardState(), "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getNickname());
-        }else{
-            indexOfCurrentTrucker++;
-            return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, this.getCardState(), "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getNickname());
+
         }
+
+        if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
+            this.state = CardState.ESECUZIONE;
+            return cardEffect();
+        }
+        indexOfCurrentTrucker++;
+        return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, this.getCardState(), "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getNickname());
     }
 
     /**
