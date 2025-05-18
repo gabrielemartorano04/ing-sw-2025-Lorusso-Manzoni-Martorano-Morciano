@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
@@ -39,7 +41,7 @@ public class OpenSpace extends Card implements Serializable {
     public OpenSpace(boolean trialFlight, int level, String frontImage, String backImage) {
         super("Open Space", "Empty vastness of space", trialFlight, level, frontImage, backImage);
         this.indexOfCurrentTrucker = 0;
-        state = CardState.;
+        state = CardState.ACTIVATE_ENGINES;
     }
 
     public CardState getCardState() {
@@ -74,7 +76,7 @@ public class OpenSpace extends Card implements Serializable {
      * @param truckerCoordinate list of arrays of coordinates
      */
     public ServerEvent setEnginesCoordinates(ArrayList<int[]> truckerCoordinate) throws InvalidCoordinates, GeneralError {
-        if (this.state != CardState.ATTESA_RISPOSTE) {
+        if (this.state != CardState.ACTIVATE_ENGINES) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
         if(!Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getSpaceShip().checkDoubleEngine(truckerCoordinate)){
@@ -86,33 +88,32 @@ public class OpenSpace extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new BooleanDecision()
+        return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, this.getCardState(), "Choose the position of the double engines to activate", Game.getIstance().getTruckers().get(indexOfCurrentTrucker).getNickname());
     }
 
     /**
      * Applies the changes provided by the card
-     * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) throws GeneralError {
+    public ServerEvent cardEffect() throws GeneralError {
         if (this.state != CardState.ESECUZIONE) {
             throw new GeneralError("Non è possibile eseguire card effect nello stato " + this.state);
         }
-        List<Trucker> truckers = game.getTruckerList();
+        List<Trucker> truckers = Game.getIstance().getTruckerList();
         int[] enginePowerPerTrucker = new int[truckers.size()];
         int i = 0;
         for (Trucker trucker : truckers) {
             enginePowerPerTrucker[i] = trucker.getSpaceShip().getTotalEnginePower(truckersCoordinates.get(i));
             if(enginePowerPerTrucker[i] == 0){
-                game.withdraw(trucker);
+                Game.getIstance().withdraw(trucker);
             }
             i++;
         }
         for (i = 0; i < enginePowerPerTrucker.length; i++) {
-            game.moveForward(truckers.get(i), enginePowerPerTrucker[i]);
+            Game.getIstance().moveForward(truckers.get(i), enginePowerPerTrucker[i]);
         }
         state = CardState.EXIT;
-        return state;
+        return new CardFinished(true, this.getCardState(), Game.getIstance().getTruckerList());
     }
 
 }
