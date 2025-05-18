@@ -121,8 +121,7 @@ public class AbandonedShip extends Card implements Serializable {
         }else{
             if (playerDecisions == trucker.size()){
                 state = CardState.ESECUZIONE;
-                return new ExecutionEvent(true, this.getCardState() );
-
+                return cardEffect();
             }else{
                 playerDecisions++;
                 return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this Abandoned Ship?",  trucker.get(playerDecisions).getNickname());
@@ -145,7 +144,7 @@ public class AbandonedShip extends Card implements Serializable {
             truckerThatHasDecided.getSpaceShip().checkCabin(coordinates, numHuman);
             this.coordinates = coordinates;
             state = CardState.ESECUZIONE;
-            return new ExecutionEvent(false, this.getCardState());
+            return cardEffect();
         }catch (InvalidCoordinates e){
             throw new InvalidCoordinates(e.getMessage());
         }

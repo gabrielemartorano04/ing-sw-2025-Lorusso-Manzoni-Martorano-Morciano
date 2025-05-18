@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.cardcontrollers.AbandonedShipController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.ExecutionEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
@@ -121,7 +120,7 @@ public class AbandonedStation extends Card implements Serializable {
                     currGood++;
                     if(currGood>=goods.size()) {
                         cardState = CardState.ESECUZIONE;
-                        return new ExecutionEvent(true, this.getCardState());
+                        return cardEffect();
                     }
                 }
             }while(true);
@@ -129,7 +128,7 @@ public class AbandonedStation extends Card implements Serializable {
         }else{
             if (playerDecisions == truckers.size()){
                 cardState = CardState.ESECUZIONE;
-                return new ExecutionEvent(true, this.getCardState());
+                return cardEffect();
             }
             playerDecisions++;
             return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this AbandonedStation?", truckers.get(playerDecisions).getNickname());
