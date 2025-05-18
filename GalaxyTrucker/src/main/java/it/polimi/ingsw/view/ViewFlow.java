@@ -3,11 +3,13 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.components.Cabin;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.client.ServerEventVisitor;
+import it.polimi.ingsw.net.socket.events.clientevents.AlienCoordinatesRequest;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.GeneriErrorFromClient;
 import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorInsertedData;
@@ -48,6 +50,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private boolean isFromKept;
     private boolean nameAlreadySet;
     private boolean end;
+    private boolean sentCabinCoord;
 
     public void setStacks(ArrayList<Card>[] stacks) {
         this.stacks=stacks;
@@ -57,6 +60,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         FIRST,
         START,
         BULDING,
+        FILL,
         FLIGTH,
         END;
     }
@@ -77,6 +81,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.isFromKept = false;
         this.nameAlreadySet = false;
         this.end = false;
+        this.sentCabinCoord = false;
     }
 
     @Override
@@ -113,6 +118,10 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     if (getSelectedComponent() == null) {
                         ui.showBuildOptions();
                     }
+
+                }
+                case FILL->{
+                    ui.showShipLayout(nickname, ship);
 
                 }
                 case FLIGTH -> {
@@ -168,6 +177,14 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                             event = null;
                         }
 
+                    }
+                    case FILL->{
+                        if(!sentCabinCoord){
+                            event= new AlienCoordinatesRequest();
+                            sentCabinCoord=true;
+                        }
+
+                        else event= inputParser.parseFillTheShip(input);
                     }
                     case FLIGTH-> { event = inputParser.parseFlight(input);}
                 }
@@ -345,6 +362,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public void componentAsUncovered(int index){
         availableComponents.get(index).setCovered(false);
     }
+
 
 }
 

@@ -195,7 +195,7 @@ public class SpaceShip implements Serializable {
                                         case LifeSupport c1->{
                                             int link1=components[i][j].getLink()[2];
                                             int link2=components[i+1][j].getLink()[0];
-                                            if(link1==link2 || link1==3 || link2==3)  ls.add(c1);
+                                            if(compatibleLinks(link1,link2))  ls.add(c1);
                                         }
                                         default -> {
                                             break;
@@ -207,7 +207,7 @@ public class SpaceShip implements Serializable {
                                         case LifeSupport c2->{
                                             int link1=components[i][j].getLink()[0];
                                             int link2=components[i-1][j].getLink()[2];
-                                            if(link1==link2 || link1==3 || link2==3)  ls.add(c2);
+                                            if(compatibleLinks(link1,link2))  ls.add(c2);
                                         }
                                         default -> {
                                             break;
@@ -219,7 +219,7 @@ public class SpaceShip implements Serializable {
                                         case LifeSupport c3->{
                                             int link1=components[i][j].getLink()[1];
                                             int link2=components[i-1][j].getLink()[3];
-                                            if(link1==link2 || link1==3 || link2==3)  ls.add(c3);
+                                            if(compatibleLinks(link1,link2))  ls.add(c3);
                                         }
                                         default -> {
                                             break;
@@ -231,7 +231,7 @@ public class SpaceShip implements Serializable {
                                         case LifeSupport c4->{
                                             int link1=components[i][j].getLink()[3];
                                             int link2=components[i-1][j].getLink()[1];
-                                            if(link1==link2 || link1==3 || link2==3)  ls.add(c4);
+                                            if(compatibleLinks(link1,link2))  ls.add(c4);
                                         }
                                         default -> {
                                             break;
@@ -1643,5 +1643,72 @@ public class SpaceShip implements Serializable {
                 default -> {}
             }
         }
+    }
+
+    public ArrayList<int[]> getAlienCabin() {
+        ArrayList<int[]> alienCabin = new ArrayList<>();
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++){
+                if(components[i][j]!=null){
+                    switch(components[i][j]){
+                        case Cabin c -> {
+                            if(!c.getIsMain()){
+                                if(components[i+1][j]!=null){
+                                    switch(components[i+1][j]){
+                                        case LifeSupport c1->{
+                                            int link1=components[i][j].getLink()[2];
+                                            int link2=components[i+1][j].getLink()[0];
+                                            if(compatibleLinks(link1,link2)) alienCabin.add(new int[]{i,j});
+                                        }
+                                        default -> {
+                                            break;
+                                        }
+                                    }
+                                }
+                                if(components[i-1][j]!=null){
+                                    switch(components[i-1][j]){
+                                        case LifeSupport c2->{
+                                            int link1=components[i][j].getLink()[0];
+                                            int link2=components[i-1][j].getLink()[2];
+                                            if(compatibleLinks(link1,link2))  alienCabin.add(new int[]{i,j});
+                                        }
+                                        default -> {
+                                            break;
+                                        }
+                                    }
+                                }
+                                if(components[i][j+1]!=null){
+                                    switch(components[i][j+1]){
+                                        case LifeSupport c3->{
+                                            int link1=components[i][j].getLink()[1];
+                                            int link2=components[i-1][j].getLink()[3];
+                                            if(compatibleLinks(link1,link2))  alienCabin.add(new int[]{i,j});
+                                        }
+                                        default -> {
+                                            break;
+                                        }
+                                    }
+                                }
+                                if(components[i][j-1]!=null){
+                                    switch(components[i][j-1]){
+                                        case LifeSupport c4->{
+                                            int link1=components[i][j].getLink()[3];
+                                            int link2=components[i-1][j].getLink()[1];
+                                            if(compatibleLinks(link1,link2))  alienCabin.add(new int[]{i,j});
+                                        }
+                                        default -> {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        default -> {
+                        }
+                    }
+                }
+            }
+        }
+        return alienCabin;
     }
 }
