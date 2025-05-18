@@ -2,8 +2,10 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.EpidemicEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
@@ -30,26 +32,12 @@ public class Epidemic extends Card implements Serializable {
     }
 
     @Override
-    public ServerEvent startCard(String currPlayerNickname) {
-        return new StartCardEvent(
-                this.getName(),
-                this.getDescription(),
-                currPlayerNickname,
-                "Ready for the Epidemic effect?",
-                -1,
-                -1,
-                -1,
-                null,
-                null,
-                -1,
-                -1,
-                -1,
-                null,
-                null,
-                null,
-                null,
-                this.getCardState()
-        );
+    public ServerEvent startCard() {
+        try {
+            return cardEffect();
+        } catch (GeneralError e) {
+            return new GenericErrorEvent("errore", true);
+        }
     }
 
     /**
@@ -66,7 +54,7 @@ public class Epidemic extends Card implements Serializable {
         }
         state = CardState.EXIT;
         this.setIsCardFinished(true);
-        return new CardFinished(true, this.getCardState(), Game.getIstance().getTruckerList());
+        return new EpidemicEvent(true, this.getCardState(), Game.getIstance().getTruckerList());
     }
 
 

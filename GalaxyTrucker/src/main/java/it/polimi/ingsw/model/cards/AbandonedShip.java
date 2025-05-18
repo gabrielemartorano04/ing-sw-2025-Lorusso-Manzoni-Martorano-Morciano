@@ -81,11 +81,11 @@ public class AbandonedShip extends Card implements Serializable {
     }
 
     @Override
-    public ServerEvent startCard(String currPlayerNickName) {
+    public ServerEvent startCard() {
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
-                currPlayerNickName,
+                Game.getIstance().getTruckerList().getFirst().getNickname(),
                 "Do you want to land on this Abandoned Ship?",
                 days,
                 credits,

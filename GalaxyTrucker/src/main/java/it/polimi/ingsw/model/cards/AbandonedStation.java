@@ -79,11 +79,11 @@ public class AbandonedStation extends Card implements Serializable {
     }
 
     @Override
-    public ServerEvent startCard(String currPlayerNickname) {
+    public ServerEvent startCard() {
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
-                currPlayerNickname,
+                Game.getIstance().getTruckerList().getFirst().getNickname(),
                 "Do you want to land on this Abandoned Station?",
                 days,
                 -1,

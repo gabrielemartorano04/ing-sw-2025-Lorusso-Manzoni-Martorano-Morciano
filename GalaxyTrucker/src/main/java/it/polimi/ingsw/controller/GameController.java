@@ -102,7 +102,7 @@ public class GameController {
             @Override
             public void run() {
                 synchronized (GameController.this) {
-                    if (game.getTruckers().size() >= 2 && game.getTruckers().size() < 4) {
+                    if (game.getTruckerList().size() >= 2 && game.getTruckerList().size() < 4) {
                         startBuildingPhase();
                     }
                 }
@@ -126,7 +126,7 @@ public class GameController {
     }
 
     private synchronized void forcePlayersToWaitEnd() {
-        for (Trucker t : game.getTruckers()) {
+        for (Trucker t : game.getTruckerList()) {
             if (t.getBuildingState() != BuildingState.WAIT_END) {
                 t.setBuildingState(BuildingState.WAIT_END);
             }
