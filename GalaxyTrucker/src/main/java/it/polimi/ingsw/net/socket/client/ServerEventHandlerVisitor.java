@@ -250,7 +250,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(ShowCardEvent event) {
-        ui.showCardDrawn(event.getCard());
+
     }
 
     @Override
@@ -368,7 +368,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(WaitOthersBuildingEvent event){
         viewFlow.setEnd();
-        System.out.println("Valore di end: "+viewFlow.getEnd());
         ui.showWaitForOthers();
     }
 
@@ -380,6 +379,12 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
             message+="x: "+c[0]+" y: "+c[1]+"\n";
         }
         ui.showMessage(message);
+    }
+
+    @Override
+    public void visit(WaitOthersStartFlightEvent event) {
+        viewFlow.setStartFlight();
+        ui.showWaitForOthers();
     }
 
 

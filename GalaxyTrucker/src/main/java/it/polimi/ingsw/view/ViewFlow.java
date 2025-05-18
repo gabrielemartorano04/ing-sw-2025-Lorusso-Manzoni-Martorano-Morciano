@@ -52,7 +52,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private boolean nameAlreadySet;
     private boolean end;
     private boolean sentCabinCoord;
-    private boolean startFlight;
+    private boolean startFlight,startFlightForAll;
+
 
     public void setStacks(ArrayList<Card>[] stacks) {
         this.stacks=stacks;
@@ -93,6 +94,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
             }
         };
         this.startFlight=true;
+        this.startFlightForAll=false;
     }
 
     @Override
@@ -202,7 +204,14 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                             event=new OkStartFlight();
                             startFlight=false;
                         }
-                        else event = inputParser.parseFlight(input);}
+                        else if(startFlightForAll) {
+                            event = inputParser.parseFlight(input);
+                        }
+                        else {
+                        System.out.println("You can only wait for others to start flight");
+                        event = null;
+                        }
+                    }
                 }
                 if (event != null) {
                     clientHandler.handleEvent(event);
@@ -379,6 +388,13 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         availableComponents.get(index).setCovered(false);
     }
 
+
+    public void setStartFlight() {
+        this.startFlight = true;
+    }
+    public void setStartFlightForAll(){
+        this.startFlight = true;
+    }
 
 }
 

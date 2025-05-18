@@ -1,10 +1,7 @@
 package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 
-import it.polimi.ingsw.controller.BuildTimerManager;
-import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.controller.ServerController;
-import it.polimi.ingsw.controller.TruckerController;
+import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
@@ -20,7 +17,9 @@ import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEven
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.FlightStartEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.flightevents.ShowCardEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.utilities.exceptions.*;
@@ -36,7 +35,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     private int gameLevel;
     private int endBuilding;
     private int startFlight;
-
+    private CardController cardController;
     public ClientHandlerVisitor() {
         numLog = 0;
         endBuilding = 0;
@@ -44,6 +43,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         currentClient = null;
         numOfPlayers = 0;
         gameLevel=0;
+        cardController = new CardController();
 
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
@@ -317,10 +317,11 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(OkStartFlight event) {
         startFlight++;
         if(startFlight<gameController.getGame().getNumPlayers()){
-            //aspetta che gli altri dicano ok
+            return new WaitOthersStartFlightEvent();
         }
-       //altrimenti forall inizia!
-        return null;
+        cardController.setCurrCard(gameController.pickCardFromDeck());
+
+        return cardController.startCard();
     }
 
 }
