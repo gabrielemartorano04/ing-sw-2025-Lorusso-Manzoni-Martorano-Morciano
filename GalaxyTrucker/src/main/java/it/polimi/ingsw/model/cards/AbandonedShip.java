@@ -110,7 +110,8 @@ public class AbandonedShip extends Card implements Serializable {
      * @param trucker: trucker current
      * @param landing: the choice taken by the current client
      */
-    public ServerEvent tuckerLanding(ArrayList<Trucker> trucker, boolean landing, Bank bank) throws GeneralError {
+    @Override
+    public ServerEvent truckerLanding(ArrayList<Trucker> trucker, boolean landing, Bank bank) throws GeneralError {
         if(state != CardState.LAND) {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }

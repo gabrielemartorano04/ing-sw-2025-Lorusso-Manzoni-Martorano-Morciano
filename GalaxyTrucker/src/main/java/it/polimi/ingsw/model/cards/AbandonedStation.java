@@ -135,7 +135,7 @@ public class AbandonedStation extends Card implements Serializable {
         }
     }
 
-    public Goods setChoiceToGain(boolean choice) throws GeneralError {
+    public ServerEvent setChoiceToGain(boolean choice) throws GeneralError {
         if(cardState!=CardState.CHOOSE_TO_GAIN){
             throw new GeneralError("Card state is not CHOOSE_TO_GAIN");
         }
