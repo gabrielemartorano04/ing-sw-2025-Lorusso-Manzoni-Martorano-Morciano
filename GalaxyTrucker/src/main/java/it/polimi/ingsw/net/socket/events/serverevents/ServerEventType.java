@@ -47,5 +47,10 @@ public enum ServerEventType {
     SUCCESS_KEPT,
     SHOW_OTHER_SHIP,
     START_CARD,
-    WAIT_OTHERS_BUILDING
+    WAIT_OTHERS_BUILDING,
+    // CARDEVENTS
+    HUMAN_COORDINATES,
+    EXECUTION, //means that the server has to handle this event without sending it to the client
+    LAND
+
 }

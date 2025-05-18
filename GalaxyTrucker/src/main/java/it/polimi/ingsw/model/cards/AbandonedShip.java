@@ -3,7 +3,11 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cardcontrollers.AbandonedShipController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.flightevents.StartCardEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.ExecutionEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.HumanCoordinates;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.LandDecision;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
@@ -45,7 +49,7 @@ public class AbandonedShip extends Card implements Serializable {
         this.days = days;
         this.truckerThatHasDecided = null;
         this.playerDecisions = 0;
-        this.state = CardState.ATTESA_RISPOSTE;
+        this.state = CardState.LAND;
     }
 
     /**
@@ -97,7 +101,8 @@ public class AbandonedShip extends Card implements Serializable {
                 null,
                 null,
                 null,
-                null
+                null,
+                this.getCardState()
         );
     }
 
@@ -108,22 +113,25 @@ public class AbandonedShip extends Card implements Serializable {
      * @param landing: the choice taken by the current client
      * @param numPlayer: number of player in the current game
      */
-    public CardState setTruckerThatHasDecided(Trucker trucker, boolean landing, int numPlayer) throws GeneralError {
-        if(state != CardState.ATTESA_RISPOSTE) {
+    public ServerEvent setTruckerDecision(Trucker trucker, boolean landing, int numPlayer) throws GeneralError {
+        if(state != CardState.LAND) {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }
         if(landing) {
             truckerThatHasDecided = trucker;
             state = CardState.HUMANSTOREMOVE;
+            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, this.getCardState());
         }else{
             if (playerDecisions == numPlayer){
                 state = CardState.ESECUZIONE;
+                return new ExecutionEvent(ServerEventType.EXECUTION, false, this.getCardState());
+
             }else{
-                state = CardState.ATTESA_RISPOSTE;
+                state = CardState.LAND;
+                playerDecisions++;
+                return new LandDecision(ServerEventType.LAND, false, this.getCardState());
             }
         }
-        playerDecisions++;
-        return state;
     }
 
     /**
@@ -139,10 +147,10 @@ public class AbandonedShip extends Card implements Serializable {
         }
         try{
             truckerThatHasDecided.getSpaceShip().checkCabin(coordinates, numHuman);
+            this.coordinates = coordinates;
         }catch (InvalidCoordinates e){
             throw new InvalidCoordinates(e.getMessage());
         }
-        this.coordinates = coordinates;
 
         if(truckerThatHasDecided !=null){
             state = CardState.ESECUZIONE;
