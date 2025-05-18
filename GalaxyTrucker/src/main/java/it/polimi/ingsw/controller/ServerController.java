@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.GameState;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
@@ -135,7 +136,32 @@ public class ServerController {
     public void startThreadHourglass(){
         BuildTimerManager.getInstance().start(this, 90);
         if(!BuildTimerManager.getInstance().isRunning()){
-            broadcastEvent(new BuildCompleteEvent(gameController.getGame().getTruckers()));
+            boolean[] pos=new boolean[]{false, false, false, false};
+            for(Trucker t: gameController.getGame().getTruckers()){
+                if(t.getPosition()!=-1){
+                    switch (t.getPosition()){
+                        case 6: pos[0]=true;break;
+                        case 3: pos[1]=true;break;
+                        case 1: pos[2]=true;break;
+                        case 0: pos[3]=true;break;
+                    }
+                }
+            }
+            for(Trucker t: gameController.getGame().getTruckers()){
+                if(t.getPosition()==-1){
+                    for(int i=0;i<pos.length;i++){
+                        if(!pos[i]){
+                            switch (i){
+                                case 0: t.setPosition(6);pos[i]=true;break;
+                                case 1: t.setPosition(3);pos[i]=true;break;
+                                case 2: t.setPosition(1);pos[i]=true;break;
+                                case 3: t.setPosition(0);pos[i]=true;break;
+                            }
+                        }
+                    }
+                }
+            }
+            broadcastEvent(new BuildCompleteEvent());
         }
     }
 

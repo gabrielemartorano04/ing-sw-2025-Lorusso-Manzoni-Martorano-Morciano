@@ -9,15 +9,9 @@ import java.util.ArrayList;
 
 public class BuildCompleteEvent extends ServerEvent {
     private String message;
-    private ArrayList<Trucker> truckers;
-    public BuildCompleteEvent( ArrayList<Trucker> truckers) {
+    public BuildCompleteEvent() {
         super(ServerEventType.END_BUILDING, true);
-        this.truckers = truckers;
         message = "All the ships are checked and the building phase is complete";
-    }
-
-    public ArrayList<Trucker> getTruckers() {
-        return truckers;
     }
 
     @Override
