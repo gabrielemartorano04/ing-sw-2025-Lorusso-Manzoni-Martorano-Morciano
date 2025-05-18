@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
@@ -26,7 +25,7 @@ public class AbandonedShip extends Card implements Serializable {
     private Trucker truckerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
     private ArrayList<int[]> coordinates = null; //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
     private CardState state;
-    private int playerDecisions;
+    private int indexOfCurrTrucker;
 
 
     /**
@@ -45,7 +44,7 @@ public class AbandonedShip extends Card implements Serializable {
         this.credits = credits;
         this.days = days;
         this.truckerThatHasDecided = null;
-        this.playerDecisions = 0;
+        this.indexOfCurrTrucker = 0;
         this.state = CardState.LAND;
     }
 
@@ -76,8 +75,8 @@ public class AbandonedShip extends Card implements Serializable {
     /**
      * @return : index of the current trucker that is taken the decision whether to land or not
      */
-    public int getPlayerDecisions() {
-        return playerDecisions;
+    public int getIndexOfCurrTrucker() {
+        return indexOfCurrTrucker;
     }
 
     @Override
@@ -110,21 +109,21 @@ public class AbandonedShip extends Card implements Serializable {
      * @param landing: the choice taken by the current client
      */
     @Override
-    public ServerEvent truckerLanding(ArrayList<Trucker> trucker, boolean landing, Bank bank) throws GeneralError {
+    public ServerEvent truckerLanding(ArrayList<Trucker> trucker, boolean landing) throws GeneralError {
         if(state != CardState.LAND) {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }
         if(landing) {
-            truckerThatHasDecided = trucker.get(playerDecisions);
+            truckerThatHasDecided = trucker.get(indexOfCurrTrucker);
             state = CardState.HUMANSTOREMOVE;
-            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, this.getCardState(), trucker.get(playerDecisions).getNickname());
+            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, this.getCardState(), trucker.get(indexOfCurrTrucker).getNickname());
         }else{
-            if (playerDecisions == trucker.size()){
+            if (indexOfCurrTrucker == trucker.size()){
                 state = CardState.ESECUZIONE;
                 return cardEffect();
             }else{
-                playerDecisions++;
-                return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this Abandoned Ship?",  trucker.get(playerDecisions).getNickname());
+                indexOfCurrTrucker++;
+                return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this Abandoned Ship?",  trucker.get(indexOfCurrTrucker).getNickname());
             }
         }
     }

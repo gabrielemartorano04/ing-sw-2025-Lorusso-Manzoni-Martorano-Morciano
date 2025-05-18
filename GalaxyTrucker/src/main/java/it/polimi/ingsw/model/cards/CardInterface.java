@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public interface CardInterface {
 
-    default ServerEvent truckerLanding(ArrayList<Trucker> truckers, boolean landing, Bank bank) throws GeneralError, WrongCallerException{
+    default ServerEvent truckerLanding(ArrayList<Trucker> truckers, boolean landing) throws GeneralError, WrongCallerException{
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
