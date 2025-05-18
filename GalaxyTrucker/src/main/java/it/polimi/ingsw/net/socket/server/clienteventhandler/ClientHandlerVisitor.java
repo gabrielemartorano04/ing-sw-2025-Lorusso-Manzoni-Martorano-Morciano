@@ -20,6 +20,7 @@ import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEven
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
+import it.polimi.ingsw.net.socket.events.serverevents.flightevents.FlightStartEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.utilities.exceptions.*;
@@ -34,10 +35,12 @@ public class ClientHandlerVisitor implements ClientVisitor {
     private ClientHandlerSocket currentClient;
     private int gameLevel;
     private int endBuilding;
+    private int startFlight;
 
     public ClientHandlerVisitor() {
         numLog = 0;
         endBuilding = 0;
+        startFlight = 0;
         currentClient = null;
         numOfPlayers = 0;
         gameLevel=0;
@@ -263,13 +266,13 @@ public class ClientHandlerVisitor implements ClientVisitor {
     }
 
     @Override
-    public ServerEvent visit(ShowTilesListEvent showTilesListEvent) {
+    public ServerEvent visit(ShowTilesListEvent event) {
         return null;
     }
 
     @Override
-    public ServerEvent visit(ShowOtherShipEvent showOtherShipEvent) {
-        String nickname=showOtherShipEvent.getNickname();
+    public ServerEvent visit(ShowOtherShipEvent event) {
+        String nickname=event.getNickname();
         Component[][] spaceship=null;
         for(Trucker t:gameController.getGame().getTruckers()){
             if(t.getNickname().equals(nickname)){
@@ -298,12 +301,25 @@ public class ClientHandlerVisitor implements ClientVisitor {
         currentClient.getTruckerController().getSpaceShip().setNumHuman();
         currentClient.getTruckerController().getSpaceShip().setBattery();
         currentClient.getTruckerController().getSpaceShip().getGoodsCapacity();
-        currentClient.getTruckerController().getSpaceShip().getSingleCannonPower();
-        currentClient.getTruckerController().getSpaceShip().getSingleEnginePower();
+        int cannonPower=currentClient.getTruckerController().getSpaceShip().getSingleCannonPower();
+        int enginePower=currentClient.getTruckerController().getSpaceShip().getSingleEnginePower();
         currentClient.getTruckerController().getSpaceShip().increaseLost(currentClient.getTruckerController().getTrucker().getKeptComponents().size());
         currentClient.getTruckerController().getSpaceShip().countExposedConnectors();
         currentClient.getTruckerController().getSpaceShip().getProtection();
+        int position=currentClient.getTruckerController().getPosition();
+        int batteryCount=currentClient.getTruckerController().getSpaceShip().getNumBatteries();
+        int humanCount=currentClient.getTruckerController().getSpaceShip().getNumHuman();
 
+        return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower);
+    }
+
+    @Override
+    public ServerEvent visit(OkStartFlight event) {
+        startFlight++;
+        if(startFlight<gameController.getGame().getNumPlayers()){
+            //aspetta che gli altri dicano ok
+        }
+       //altrimenti forall inizia!
         return null;
     }
 

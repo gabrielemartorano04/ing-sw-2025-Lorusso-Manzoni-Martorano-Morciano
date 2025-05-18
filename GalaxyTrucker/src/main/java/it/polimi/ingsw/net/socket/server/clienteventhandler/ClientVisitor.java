@@ -35,15 +35,17 @@ public interface ClientVisitor {
     public ServerEvent visit(SendIndexesEvent event);
     public ServerEvent visit(SendIntEvent event);
 
-    void setGameController(GameController gameController);
+    void setGameController(GameController event);
 
-    ServerEvent visit(ShowTilesListEvent showTilesListEvent);
+    ServerEvent visit(ShowTilesListEvent event);
 
-    ServerEvent visit(ShowOtherShipEvent showOtherShipEvent);
+    ServerEvent visit(ShowOtherShipEvent event);
 
     ServerEvent visit(GeneriErrorFromClient event);
 
-    ServerEvent visit(AlienCoordinatesRequest alienCoordinatesRequest);
+    ServerEvent visit(AlienCoordinatesRequest event);
 
-    ServerEvent visit(SendAlienCoord sendAlienCoord);
+    ServerEvent visit(SendAlienCoord event);
+
+    ServerEvent visit(OkStartFlight event);
 }

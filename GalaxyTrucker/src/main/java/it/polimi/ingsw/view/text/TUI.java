@@ -226,29 +226,29 @@ public class TUI extends UI {
 
     @Override
     public void showError(String message) {
-        System.out.println("ERRORE: " + message);
+        System.out.println("ERROR: " + message);
     }
 
     @Override
     public void showConnectionLost() {
-        System.out.println("Connessione persa.");
+        System.out.println("Lost connection.");
     }
 
     @Override
     public void showInvalidCommand(String expectedFormat) {
-        System.out.println("Comando non valido. Atteso: " + expectedFormat);
+        System.out.println("Invalid command. Expected: " + expectedFormat);
     }
 
     @Override
     public void showPlayerShipStatus(int position, int batteryCount, int humanCount,
                                      int cannonPower, int enginePower, Map<String, Integer> goods) {
-        System.out.println("Posizione: " + position);
-        System.out.println("Batterie: " + batteryCount);
-        System.out.println("Umani: " + humanCount);
-        System.out.println("Potenza fuoco: " + cannonPower);
-        System.out.println("Motori: " + enginePower);
+        System.out.println("Position: " + position);
+        System.out.println("Batteries: " + batteryCount);
+        System.out.println("Crew: " + humanCount);
+        System.out.println("Cannon power (only single): " + cannonPower);
+        System.out.println("Engine power (only single): " + enginePower);
 
-        System.out.println("Merci a bordo:");
+        System.out.println("Goods on the ship:");
         if (goods != null) {
             for (Map.Entry<String, Integer> entry : goods.entrySet()) {
                 System.out.println("  - " + entry.getKey() + ": " + entry.getValue());
