@@ -117,7 +117,6 @@ public class Pirates extends Card implements Serializable {
 
     @Override
     public ServerEvent startCard() {
-
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
@@ -136,7 +135,6 @@ public class Pirates extends Card implements Serializable {
                 null,
                 null,
                 this.getCardState()
-
         );
     }
 
@@ -144,8 +142,11 @@ public class Pirates extends Card implements Serializable {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
+        if(doubleCannonsCoord == null) {
+            throw new GeneralError("Double cannons coord is null");
+        }
         if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getNumDoubleCannon()!=0) {
-            if (!doubleCannonsCoord.isEmpty() || Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
+            if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkDoubleCannon(doubleCannonsCoord)) {
                 this.doubleCannonsCoord.addLast(doubleCannonsCoord);
                 playersDecisions++;
             } else {
