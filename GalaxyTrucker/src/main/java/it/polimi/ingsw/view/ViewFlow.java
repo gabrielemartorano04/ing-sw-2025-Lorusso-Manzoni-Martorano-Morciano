@@ -82,6 +82,14 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.nameAlreadySet = false;
         this.end = false;
         this.sentCabinCoord = false;
+        this.goodsByColor = new HashMap<>(){
+            {
+                put("RED",0);
+                put("YELLOW",0);
+                put("GREEN",0);
+                put("BLUE",0);
+            }
+        };
     }
 
     @Override
