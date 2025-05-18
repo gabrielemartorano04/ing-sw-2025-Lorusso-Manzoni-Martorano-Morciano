@@ -93,4 +93,6 @@ public interface ServerEventVisitor {
     void visit(WaitOthersBuildingEvent event);
 
     void visit(AlienCabinCoord alienCabinCoord);
+
+    void visit(WaitOthersStartFlightEvent event);
 }

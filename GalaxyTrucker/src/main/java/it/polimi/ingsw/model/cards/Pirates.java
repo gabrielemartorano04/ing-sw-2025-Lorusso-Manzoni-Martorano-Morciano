@@ -138,7 +138,7 @@ public class Pirates extends Card implements Serializable {
         );
     }
 
-    public ServerEvent setCannonsCoordinates(ArrayList<int[]> doubleCannonsCoord) throws GeneralError, InvalidComponentsException {
+    public ServerEvent setCannonsCoordinates(Boolean activate, ArrayList<int[]> doubleCannonsCoord) throws GeneralError, InvalidComponentsException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
@@ -149,6 +149,7 @@ public class Pirates extends Card implements Serializable {
             if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkDoubleCannon(doubleCannonsCoord)) {
                 this.doubleCannonsCoord.addLast(doubleCannonsCoord);
                 playersDecisions++;
+                throw new GeneralError("You don't have double cannons");
             } else {
                 throw new InvalidComponentsException("not a double cannon");
             }
