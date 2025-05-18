@@ -54,6 +54,7 @@ public enum ServerEventType {
     LAND,
     CARD_FINISHED,
     ROLL_DICE, TAKE_GOODS,
-    PLOT_GOOD
+    ADD_GOODS,
+    REARRANGE
 
 }
