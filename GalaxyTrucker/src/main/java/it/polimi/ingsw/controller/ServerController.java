@@ -135,8 +135,12 @@ public class ServerController {
     public void startThreadHourglass(){
         BuildTimerManager.getInstance().start(this, 90);
         if(!BuildTimerManager.getInstance().isRunning()){
-            broadcastEvent(new BuildCompleteEvent());
+            broadcastEvent(new BuildCompleteEvent(gameController.getGame().getTruckers()));
         }
+    }
+
+    public GameController getGameController() {
+        return gameController;
     }
 }
 

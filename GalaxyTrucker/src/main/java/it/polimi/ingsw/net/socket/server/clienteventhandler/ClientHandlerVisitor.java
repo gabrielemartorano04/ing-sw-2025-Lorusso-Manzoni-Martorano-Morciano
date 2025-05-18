@@ -79,6 +79,12 @@ public class ClientHandlerVisitor implements ClientVisitor {
         endBuilding++;
         //inserire condizione hourglass
         if(endBuilding<gameController.getGame().getNumPlayers()) {
+            switch(endBuilding) {
+                case 1: currentClient.getTruckerController().setPosition(6);
+                case 2: currentClient.getTruckerController().setPosition(3);
+                case 3: currentClient.getTruckerController().setPosition(1);
+                case 4: currentClient.getTruckerController().setPosition(0);
+            }
             System.out.println("Non sei l'ultimo ad aver finito");
             return new WaitOthersBuildingEvent();
         }
@@ -87,7 +93,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             for(Trucker t: gameController.getGame().getTruckers()){
                 t.getSpaceShip().wellDone();
             }
-            return new BuildCompleteEvent();
+            return new BuildCompleteEvent(gameController.getGame().getTruckers());
         }
     }
 
