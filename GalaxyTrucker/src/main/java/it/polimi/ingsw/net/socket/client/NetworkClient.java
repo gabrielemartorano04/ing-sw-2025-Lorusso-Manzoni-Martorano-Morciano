@@ -31,7 +31,7 @@ public class NetworkClient {
 
     public void sendMessage(ClientEvent event) throws IOException {
         if (socket == null || socket.isClosed()) {
-            throw new IOException("Connessione non attiva");
+            throw new IOException("Inactive connection");
         }
         outputStream.writeObject(event);
         outputStream.flush();
@@ -46,7 +46,7 @@ public class NetworkClient {
             if (outputStream != null) outputStream.close();
             if (socket != null) socket.close();
         } catch (IOException e) {
-            System.err.println("Errore chiusura client: " + e.getMessage());
+            System.err.println("Error while closing client: " + e.getMessage());
         }
     }
 }

@@ -1,9 +1,11 @@
 package it.polimi.ingsw.view.text;
 
-import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.Condition;
+import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.*;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.UI;
 
@@ -20,7 +22,7 @@ public class TUI extends UI {
 
     @Override
     public void showWelcome() {
-        System.out.println("Benvenuto in Galaxy Trucker! (by Cranio creations)");
+        System.out.println("Welcome in Galaxy Trucker! (by Cranio creations)");
     }
 
     @Override
@@ -30,18 +32,18 @@ public class TUI extends UI {
 
     @Override
     public void showChooseColor(EnumSet<PlayerColors> availableColors) {
-        System.out.println("Colori disponibili: " + String.join(", ", availableColors.toString()));
-        System.out.print("Inserisci nickname e scegli un colore: ");
+        System.out.println("Colours available: " + String.join(", ", availableColors.toString()));
+        System.out.print("Insert nickname and choose a colour: ");
     }
 
     @Override
     public void showColorTaken() {
-        System.out.println("Colore già scelto, scegline un altro.");
+        System.out.println("Colour already chosen, choose another one.");
     }
 
     @Override
     public void showNicknameTaken() {
-        System.out.println("Nickname già in uso, scegline un altro.");
+        System.out.println("Nickname already taken, choose another one.");
     }
 
     @Override
@@ -51,17 +53,17 @@ public class TUI extends UI {
 
     @Override
     public void showWaitingForPlayers(int currentPlayers) {
-        System.out.println("In attesa di giocatori... (" + currentPlayers + ")");
+        System.out.println("Waiting for other truckers... (" + currentPlayers + ")");
     }
 
     @Override
     public void showStartCountdown(int secondsLeft) {
-        System.out.println("Il gioco inizierà tra " + secondsLeft + " secondi.");
+        System.out.println("the game will start in " + secondsLeft + " seconds.");
     }
 
     @Override
     public void showSetupComplete() {
-        System.out.println("Setup completato. Inizio costruzione nave.");
+        System.out.println("SETUP completed. Start building your spaceship.");
     }
 
     @Override
@@ -74,13 +76,13 @@ public class TUI extends UI {
 
     @Override
     public void showBuildPhaseStart(ArrayList<Component> availableComponents) {
-        System.out.println("\nInizio della fase di BUILDING. Costruisci la tua nave!");
+        System.out.println("\nStart BUILDING phase. Build your spaceship!");
         showAvailableComponent(availableComponents);
     }
 
     @Override
     public void showAvailableComponent(ArrayList<Component> components) {
-        System.out.println("=== Componenti disponibili ===");
+        System.out.println("=== Available components ===");
         int i = 0;
         int numCols = 3;
 
@@ -90,7 +92,7 @@ public class TUI extends UI {
             if (!c.getSelected()) {
                 String info;
                 if (c.getCovered()) {
-                    info = "coperto";
+                    info = "covered";
                 } else {
                     info = String.format("%s [N:%s E:%s S:%s W:%s]",
                             c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
@@ -109,7 +111,7 @@ public class TUI extends UI {
     @Override
     public void showKeptComponents(ArrayList<Component> kept) {
         if (!kept.isEmpty()) {
-            System.out.println("Componenti tenuti: ");
+            System.out.println("Components kept: ");
             for (int i=0; i<kept.size(); i++) {
                 System.out.println("- " + kept.get(i).getType());
             }
@@ -118,19 +120,19 @@ public class TUI extends UI {
 
     @Override
     public void showSelectComponent() {
-        System.out.print("Seleziona il numero del componente da prendere: ");
+        System.out.print("Select the index of the component you want to link: ");
     }
 
     @Override
     public void showComponentOptions() {
-        System.out.println("Opzioni disponibili: [Link x y (to link the component in the position x y of your spaceship)] [Keep] [Discard]");
-        System.out.print("Scegli azione: ");
+        System.out.println("Options: [Link x y (to link the component in the position x y of your spaceship)] [Keep] [Discard]");
+        System.out.print("Choose your action: ");
     }
 
     @Override
     public void showBuildOptions() {
-        System.out.println("Opzioni disponibili: [Hourglass] [select x] [Stack x] [End] [selectKept x]");
-        System.out.print("Scegli azione: ");
+        System.out.println("Options: [Hourglass] [select x] [Stack x] [End] [selectKept x]");
+        System.out.print("Choose your action: ");
     }
 
     @Override
@@ -140,22 +142,22 @@ public class TUI extends UI {
 
     @Override
     public void showComponentPlaced(Component component, int x, int y) {
-        System.out.println("Componente " + component.getType() + " piazzato in [" + x + "," + y + "]");
+        System.out.println("Component " + component.getType() + " linked in [" + x + "," + y + "]");
     }
 
     @Override
     public void showInvalidPlacement(String reason) {
-        System.out.println("Posizionamento non valido: " + reason);
+        System.out.println("Place not correct: " + reason);
     }
 
     @Override
     public void showHourglassTurned() {
-        System.out.println("Clessidra girata.");
+        System.out.println("Hourglass Turned.");
     }
 
     @Override
     public void showTimeExpired() {
-        System.out.println("Tempo scaduto!");
+        System.out.println("Time expired, end of turn.!");
     }
 
     @Override
@@ -170,58 +172,125 @@ public class TUI extends UI {
 
     @Override
     public void showBuildComplete() {
-        System.out.println("Costruzione completata!");
+        System.out.println("Building completed!");
     }
 
     @Override
     public void showFlightPhaseStart() {
-        System.out.println("Inizio fase di volo. Preparati agli eventi spaziali!");
+        System.out.println("Start FLIGHT phase. Get ready for space events!");
     }
 
     @Override
-    public void showCardDrawn(Card card) {
-        System.out.println("Carta pescata: " + card.getName());
+    public void showCardDrawn(StartCardEvent event) {
+        System.out.println("Card drawn: " + event.getCardName());
+        System.out.println(event.getCardDescription());
+        if(event.getPower() != -1) System.out.println(event.getPower() + " enemy cannon power");
+        if(event.getMeteorites() != null) {
+            String message = "Meteorites arriving:\n";
+            int j = 0;
+            for(int[] list: event.getMeteorites()){
+                for(int i: list){
+                    if(i == 0) message += "Meteorite " + j + " arriving from the top\n";
+                    else if(i == 1) message += "Meteorite " + j + " arriving from the right side\n";
+                    else if(i == 2) message += "Meteorite " + j + " arriving from the bottom\n";
+                    else if(i == 3) message += "Meteorite " + j + " arriving from the left side\n";
+                }
+                j++;
+            }
+        }
+        if(event.getShoots() != null) {
+            String message = "Shoots arriving:\n";
+            int j = 0;
+            for(int[] list: event.getMeteorites()){
+                for(int i: list){
+                    if(i == 0) message += "Shoots " + j + " arriving from the top\n";
+                    else if(i == 1) message += "Shoots " + j + " arriving from the right side\n";
+                    else if(i == 2) message += "Shoots " + j + " arriving from the bottom\n";
+                    else if(i == 3) message += "Shoots " + j + " arriving from the left side\n";
+                }
+                j++;
+            }
+        }
+        if(event.getPlanets() != null) {
+            String message = "Planets to visit:\n";
+            int i = 0;
+            for (List<Goods> list: event.getPlanets()){
+                int red = 0, yellow = 0, green = 0, blue = 0;
+                message += "Planets " + i + ": ";
+                i++;
+                for(Goods g: list){
+                    if(g.getValue() == 1) blue++;
+                    else if(g.getValue() == 2) green++;
+                    else if(g.getValue() == 3) yellow++;
+                    else if(g.getValue() == 4) red++;
+                }
+                message += red + " red goods, " + yellow + " yellow goods, " + green + " green goods, " + blue + " blue goods";
+            }
+        }
+        if(event.getPenalties() != null && event.getConditionsOrder() != null) {
+            String message = "Conditions and penalties to apply:\n";
+            for (Condition condition : event.getConditionsOrder()) {
+                Effect effect = event.getPenalties().get(condition);
+                message += condition.toString() + " → " + effect.toString() + "\n";
+            }
+        }
+        if(event.getDays() != -1) System.out.println(event.getDays() + " days to lose");
+        if(event.getAstronautsLost() != -1) System.out.println(event.getAstronautsLost() + " crew members to lose");
+        if(event.getGoodsLost() != -1) System.out.println(event.getGoodsLost() + " goods to lose");
+        if(event.getCredits() != -1) System.out.println(event.getCredits() + " credits to gain");
+        if(event.getNumHumans() != -1) System.out.println(event.getNumHumans() + " humans to gain");
+        if(event.getGoods() != null) {
+            int red = 0, yellow = 0, green = 0, blue = 0;
+            for (Goods g : event.getGoods()) {
+                if(g.getValue() == 1) blue++;
+                if(g.getValue() == 2) green++;
+                if(g.getValue() == 3) yellow++;
+                if(g.getValue() == 4) red++;
+            }
+            System.out.println("Goods to gain: " + red + " red goods, " + yellow + " yellow goods, " + green + " green goods, " + blue + " blue goods");
+        }
+        if(event.getBank() != null) System.out.println("Bank deposit: " + event.getBank().getGoodsInBank(1) + " red goods, " + event.getBank().getGoodsInBank(2) + " yellow goods, " + event.getBank().getGoodsInBank(3) + " green goods, " + event.getBank().getGoodsInBank(4) + " blue goods");
     }
 
     @Override
     public void showCardEffectStart(Card card) {
-        System.out.println("Effetto della carta: " + card.getDescription());
+        System.out.println("Card effect: " + card.getDescription());
     }
 
     @Override
     public void showCardEffectEnd(Card card) {
-        System.out.println("Carta " + card.getName() + " completata.");
+        System.out.println("Card " + card.getName() + " Completed.");
     }
 
     @Override
     public void showTruckerMoved(String nickname, int newPosition) {
-        System.out.println(nickname + " si è mosso alla posizione " + newPosition);
+        System.out.println(nickname + " moved to " + newPosition);
     }
 
     @Override
     public void showTruckerWithdrawn(String nickname) {
-        System.out.println(nickname + " si è ritirato dal volo.");
+        System.out.println(nickname + " withdraw.");
     }
 
     @Override
     public void showTruckerLostAllCrew(String nickname) {
-        System.out.println(nickname + " ha perso tutto l'equipaggio.");
+        System.out.println(nickname + " lost all crew members.");
     }
 
     @Override
     public void showGameEnded() {
-        System.out.println("Partita terminata!");
+        System.out.println("Game ended. Thanks for playing!");
     }
 
     @Override
     public void showScores(Map<String, Integer> finalScores) {
-        System.out.println("Punteggi finali:");
+        System.out.println("Final scores:");
         finalScores.forEach((name, score) -> System.out.println("- " + name + ": " + score));
     }
 
     @Override
     public void showWinner(String nickname) {
-        System.out.println("Vincitore: " + nickname + "!");
+        System.out.println("Winner: " + nickname + "!");
     }
 
     @Override
@@ -258,7 +327,7 @@ public class TUI extends UI {
 
     @Override
     public void showShipLayout(String nickname, Component[][] layout) {
-        System.out.println("\nLayout nave di " + nickname + ":");
+        System.out.println("\nShip layout of " + nickname + ":");
 
         for (int i = 5; i < 10; i++) {
             for (int j = 4; j < 11; j++) {
@@ -289,17 +358,17 @@ public class TUI extends UI {
 
     @Override
     public void askIndex() {
-        System.out.print("Scegli indice: ");
+        System.out.print("Choose an index: ");
     }
 
     @Override
     public void askCoordinates() {
-        System.out.print("Inserisci coordinate (x y): ");
+        System.out.print("Insert coordinates (x y): ");
     }
 
     @Override
     public void showGoodsToRemove(List<Goods> goods) {
-        System.out.println("\nMerci da rimuovere:");
+        System.out.println("\nGoods to remove:");
         for (int i = 0; i < goods.size(); i++) {
             System.out.println("[" + i + "] " + goods.get(i).getColor() + " (" + goods.get(i).getValue() + " crediti)");
         }
@@ -307,19 +376,19 @@ public class TUI extends UI {
 
     @Override
     public void askGoodsIndexesToRemove() {
-        System.out.println("Seleziona merci da rimuovere (es. 0 1):");
+        System.out.println("Select goods to remove (ex. 0 1):");
     }
 
     @Override
     public void showGoodsGained(Goods good) {
-        System.out.println("Merci ottenute:");
+        System.out.println("Goods gained:");
         System.out.println("- " + good.getColor() + " (" + good.getValue() + ")");
     }
 
     @Override
     public void askPlacedComponent() {
-        System.out.println("\nSeleziona un componente dalla tua nave (formato: x y):");
-        System.out.print("Inserisci coordinate (x y): ");
+        System.out.println("\nSelect a component from your spaceship (format: x y):");
+        System.out.print("Insert conrdinates (x y): ");
     }
 
     @Override
@@ -357,7 +426,7 @@ public class TUI extends UI {
 
     @Override
     public void showInsertNumPlayers() {
-        System.out.println("\nInserisci numero di player e il livello di gioco:");
+        System.out.println("\nInsert the number of players and the game level:");
     }
 
     @Override
@@ -367,16 +436,16 @@ public class TUI extends UI {
 
     @Override
     public void showStack(ArrayList<Card> stack) {
-        System.out.println("\nCarte nella pila:");
+        System.out.println("\nCards in the stack:");
 
         if (stack == null || stack.isEmpty()) {
-            System.out.println("[ Pila vuota ]");
+            System.out.println("[ Empty stack ]");
             return;
         }
 
         for (int i = 0; i < stack.size(); i++) {
             Card card = stack.get(i);
-            System.out.printf(" [%02d] %-15s (Livello %d)%n",
+            System.out.printf(" [%02d] %-15s (Level %d)%n",
                     i, card.getName(), card.getLevel());
         }
     }

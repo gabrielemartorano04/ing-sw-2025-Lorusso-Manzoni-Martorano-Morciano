@@ -3,7 +3,6 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
@@ -17,9 +16,8 @@ import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEven
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.FlightStartEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.flightevents.ShowCardEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.flightevents.WaitOthersStartFlightEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.utilities.exceptions.*;
@@ -88,7 +86,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 case 3: currentClient.getTruckerController().setPosition(1);
                 case 4: currentClient.getTruckerController().setPosition(0);
             }
-            System.out.println("Non sei l'ultimo ad aver finito");
+            System.out.println("You're not the last one to end");
             return new WaitOthersBuildingEvent();
         }
         else {
@@ -197,12 +195,12 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(SelectKeptTileEvent event){
         int index=event.getIndex();
         try {
-            System.out.println("\n" + "Entrato nel try di KeptTileEvent" + "\n");
+            System.out.println("\n" + "Entered inside try of KeptTileEvent" + "\n");
             Component component=currentClient.getTruckerController().getKeptComponent(index);
             currentClient.getTruckerController().getTrucker().removeKeptComponent(index);
             return new SuccessSelectKept(component);
         } catch (GeneralError e) {
-            System.out.println("\n" + "Entrato nel catch di KeptTileEvent" + "\n");
+            System.out.println("\n" + "Entered inside catch of KeptTileEvent" + "\n");
             return new GenericErrorEvent(e.getMessage(), false);
         }
     }

@@ -100,10 +100,10 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     @Override
     public void onEventReceived(ServerEvent event) {
         if(nickname == null) {
-            System.out.println("[SERVER] Messaggio ricevuto: " + event.getMessage() + ". || EventType ||: " + event.getEventType() + "per null");
+            System.out.println("[SERVER] Message received: " + event.getMessage() + ". || EventType ||: " + event.getEventType());
 
         }else {
-            System.out.println("[SERVER] Messaggio ricevuto: " + event.getMessage() + ". || EventType ||: " + event.getEventType() + "per " + nickname);
+            System.out.println("[SERVER] Message received: " + event.getMessage() + ". || EventType ||: " + event.getEventType() + " per " + nickname);
         }
         //!!questa deve gestire gli eventi dal server!!
         if(event.getEventType()==ServerEventType.FIRST_CONNECTION){
@@ -335,7 +335,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public void addKeptComponent(Component keptComponent) throws IllegalArgumentException{
         if(this.keptComponent.size()<2) {
             this.keptComponent.add(keptComponent);
-        }else throw new IllegalArgumentException("no more psace to keep components");
+        }else throw new IllegalArgumentException("no more space to keep components");
     }
 
     public void removeKeptComponent(int index) {

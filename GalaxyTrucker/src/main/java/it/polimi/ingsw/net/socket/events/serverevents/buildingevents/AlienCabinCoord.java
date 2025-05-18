@@ -1,6 +1,8 @@
-package it.polimi.ingsw.net.socket.events.serverevents;
+package it.polimi.ingsw.net.socket.events.serverevents.buildingevents;
 
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 
 import java.util.ArrayList;
 

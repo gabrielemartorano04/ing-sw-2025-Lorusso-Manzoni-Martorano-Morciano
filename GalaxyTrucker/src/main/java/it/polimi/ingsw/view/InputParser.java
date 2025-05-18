@@ -24,7 +24,7 @@ public ClientEvent parseFirstConnection(String input) {
     String[] tokens = input.split("\\s+");
 
     if (tokens.length != 2) {
-        System.out.println("Error: inserire numero giocatori (1-4) e livello (0 o 2) separati da spazio ");
+        System.out.println("Error: insert number of players (1-4) and level (0 o 2) divided by space");
         return null;
     }
 
@@ -33,17 +33,17 @@ public ClientEvent parseFirstConnection(String input) {
         int level = Integer.parseInt(tokens[1]);
         //TODO: CAMBIARE NUMERO GIOCATORI DA 2 A 4 DOPO DEBUG
         if (numOfPlayers < 1 || numOfPlayers > 4) {
-            System.out.println("Errore: numero di giocatori non valido (2-4)");
+            System.out.println("Error: invalid number of players (2-4)");
             return null;
         }
         if (level != 0 && level != 2) {
-            System.out.println("Errore: livello non valido (0 o 2)");
+            System.out.println("Error: invalid level (0 o 2)");
             return null;
         }
 
         return new CreateGameEvent(numOfPlayers, level);
     } catch (NumberFormatException e) {
-        System.out.println("Errore: entrambi i valori devono essere numeri interi");
+        System.out.println("Error: both value needs to be integer numbers");
         return null;
     }
 }

@@ -27,7 +27,7 @@ public class NetworkServer {
     public ClientEvent receiveMessage() throws IOException, ClassNotFoundException {
         ClientEvent event=(ClientEvent)inputStream.readObject();
         if (event!=null) {
-            System.out.println("messaggio ricevuto da client: "+ event.getMessage());
+            System.out.println("message received from client: "+ event.getMessage());
             return event;
         } else {
             throw new IOException("null event received");

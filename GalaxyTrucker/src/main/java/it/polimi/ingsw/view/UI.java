@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -53,7 +54,7 @@ public abstract class UI {
     //FLIGTH
     public abstract void showFlightPhaseStart();
 
-    public abstract void showCardDrawn(Card card);
+    public abstract void showCardDrawn(StartCardEvent event);
     public abstract void showCardEffectStart(Card card);
     public abstract void showCardEffectEnd(Card card);
 

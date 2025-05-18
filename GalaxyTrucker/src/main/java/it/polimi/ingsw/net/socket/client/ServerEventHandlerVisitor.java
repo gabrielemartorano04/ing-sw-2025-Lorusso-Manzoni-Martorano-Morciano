@@ -1,14 +1,13 @@
 package it.polimi.ingsw.net.socket.client;
 
-import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
 import it.polimi.ingsw.view.text.TUI;
 
-import javax.swing.text.View;
 import java.util.ArrayList;
 
 
@@ -45,7 +44,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(AvailableColorsEvent event) {
         ui.showWelcome();
-        System.out.println("Ho ricevuto: "+ event.getEventType());
+        System.out.println("I received: "+ event.getEventType());
         ui.showChooseColor(event.getColors());
     }
 
@@ -80,7 +79,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(StartBuildingEvent event) {
         //potrebbe non funzionare come player joined
         if(!viewFlow.getNameAlreadySet()){
-            System.out.println("Dentro");
+            System.out.println("Inside");
             viewFlow.setNickname(event.getNickname());
         }
         ui.showPlayers(event.getPlayers());
@@ -98,11 +97,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.deleteSelectedComponent();
         ui.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
         ui.showAvailableComponent(event.getAvComponents());
-//        int i=0;
-//        for(Component c: event.getAvComponents()){
-//            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-//            i++;
-//        }
     }
 
     @Override
@@ -167,22 +161,22 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
-    public void visit(NotYourTurnError notYourTurnError) {
+    public void visit(NotYourTurnError event) {
 
     }
 
     @Override
-    public void visit(NumberOfPlayersError numberOfPlayersError) {
+    public void visit(NumberOfPlayersError event) {
 
     }
 
     @Override
-    public void visit(PlacedComponentRequest placedComponentRequest) {
+    public void visit(PlacedComponentRequest event) {
 
     }
 
     @Override
-    public void visit(TruckerLostCrewEvent truckerLostCrewEvent) {
+    public void visit(TruckerLostCrewEvent event) {
 
     }
 
@@ -192,22 +186,22 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
-    public void visit(GameCreatedEvent gameCreatedEvent) {
+    public void visit(GameCreatedEvent event) {
 
     }
 
     @Override
-    public void visit(FirstConnectionEvent firstConnectionEvent) {
+    public void visit(FirstConnectionEvent event) {
 
     }
 
     @Override
-    public void visit(CoordListRequest coordListRequest) {
+    public void visit(CoordListRequest event) {
 
     }
 
     @Override
-    public void visit(AvailableComponentToSelectRequest availableComponentToSelectRequest) {
+    public void visit(AvailableComponentToSelectRequest event) {
 
     }
 
@@ -240,6 +234,34 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(BuildOptionsEvent event){
         ui.showBuildOptions();
+    }
+
+    @Override
+    public void visit(SuccessSelectKept event){
+        viewFlow.setSelectedComponent(event.getComponent(), true);
+        viewFlow.getSelectedKeptComponent().remove(event.getComponent());
+        ui.showComponentSelected(viewFlow.getSelectedComponent());
+    }
+
+    @Override
+    public void visit(ShowOtherShipResponse event) {
+        ui.showShipLayout(event.getNickname(), event.getSpaceship());
+    }
+
+    @Override
+    public void visit(WaitOthersBuildingEvent event){
+        viewFlow.setEnd();
+        ui.showWaitForOthers();
+    }
+
+    @Override
+    public void visit(AlienCabinCoord event) {
+        ArrayList<int[]> coord=event.getAlienCabinCoord();
+        String message="";
+        for(int[] c:coord){
+            message+="x: "+c[0]+" y: "+c[1]+"\n";
+        }
+        ui.showMessage(message);
     }
 
     // === PHASE 4: Fase di Volo ===
@@ -332,10 +354,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showError(event.getMessage());
     }
 
-    @Override
-    public void visit(BooleanRequest event) {
-        ui.showBooleanOption(event.getMessage());
-    }
 
     @Override
     public void visit(ReturnStackEvent event){
@@ -353,39 +371,66 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
 
-    @Override
-    public void visit(SuccessSelectKept event){
-        viewFlow.setSelectedComponent(event.getComponent(), true);
-        viewFlow.getSelectedKeptComponent().remove(event.getComponent());
-        ui.showComponentSelected(viewFlow.getSelectedComponent());
-    }
 
-    @Override
-    public void visit(ShowOtherShipResponse event) {
-        ui.showShipLayout(event.getNickname(), event.getSpaceship());
-    }
-
-    @Override
-    public void visit(WaitOthersBuildingEvent event){
-        viewFlow.setEnd();
-        ui.showWaitForOthers();
-    }
-
-    @Override
-    public void visit(AlienCabinCoord event) {
-        ArrayList<int[]> coord=event.getAlienCabinCoord();
-        String message="";
-        for(int[] c:coord){
-            message+="x: "+c[0]+" y: "+c[1]+"\n";
-        }
-        ui.showMessage(message);
-    }
 
     @Override
     public void visit(WaitOthersStartFlightEvent event) {
         viewFlow.setStartFlight();
         ui.showWaitForOthers();
     }
+
+    @Override
+    public void visit(BooleanDecision event) {
+
+    }
+
+    @Override
+    public void visit(CardFinished event) {
+
+    }
+
+    @Override
+    public void visit(EpidemicEvent event) {
+
+    }
+
+    @Override
+    public void visit(ExecutionEvent event) {
+
+    }
+
+    @Override
+    public void visit(HumanCoordinates event) {
+
+    }
+
+    @Override
+    public void visit(PlanetDecision event) {
+
+    }
+
+    @Override
+    public void visit(PlotGood event) {
+
+    }
+
+    @Override
+    public void visit(RollDice event) {
+
+    }
+
+    @Override
+    public void visit(StarDustEvent event) {
+
+    }
+
+    @Override
+    public void visit(StartCardEvent event) {
+
+    }
+
+    // === CARD EVENTS ===
+
 
 
 }
