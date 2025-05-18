@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cardcontrollers.AbandonedShipController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
@@ -110,7 +111,7 @@ public class AbandonedShip extends Card implements Serializable {
      * @param landing: the choice taken by the current client
      * @param numPlayer: number of player in the current game
      */
-    public ServerEvent tuckerLanding(Trucker trucker, boolean landing, int numPlayer) throws GeneralError {
+    public ServerEvent tuckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError {
         if(state != CardState.LAND) {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }
@@ -124,9 +125,8 @@ public class AbandonedShip extends Card implements Serializable {
                 return new ExecutionEvent(ServerEventType.EXECUTION, false, this.getCardState());
 
             }else{
-                state = CardState.LAND;
                 playerDecisions++;
-                return new LandDecision(ServerEventType.LAND, false, this.getCardState());
+                return new BooleanDecision(ServerEventType.LAND, false, this.getCardState(), "Do you want to land on this Abandoned Ship?");
             }
         }
     }
