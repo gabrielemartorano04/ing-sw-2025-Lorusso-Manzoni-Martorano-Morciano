@@ -132,7 +132,7 @@ public class AbandonedStation extends Card implements Serializable {
                 return new ExecutionEvent(ServerEventType.EXECUTION, true, this.getCardState());
             }
             playerDecisions++;
-            return new BooleanDecision()
+            return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this AbandonedStation?", truckers.get(playerDecisions).getNickname());
         }
     }
 
