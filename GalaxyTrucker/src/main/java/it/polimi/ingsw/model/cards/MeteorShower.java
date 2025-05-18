@@ -8,6 +8,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.ExecutionEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.RollDice;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
@@ -118,7 +119,7 @@ public class MeteorShower extends Card implements Serializable {
         i++;
         this.roll = Game.getIstance().rollDice();
         state = CardState.ATTESA_RISPOSTE;
-        return new RollDice();
+        return new RollDice(this.getCardState(), i, roll);
     }
 
     public ServerEvent setAnswers(boolean answer) throws GeneralError {
@@ -132,15 +133,14 @@ public class MeteorShower extends Card implements Serializable {
 
     /**
      * Applies the changes provided by the card
-     * @param game game in which the card has been drawn
      */
     @Override
-    public ServerEvent cardEffect(Game game) throws GeneralError {
+    public ServerEvent cardEffect() throws GeneralError {
         if (this.state != CardState.ESECUZIONE) {
             throw new GeneralError("Non è possibile eseguire card effect nello stato " + this.state);
         }
 
-        List<Trucker> truckers = game.getTruckerList();
+        List<Trucker> truckers = Game.getIstance().getTruckerList();
         if(answers.size() != truckers.size()){
             throw new GeneralError("Non ho una risposta per ogni trucker");
         }
@@ -153,12 +153,12 @@ public class MeteorShower extends Card implements Serializable {
                 if (isBig) {
                     // qui assumo che il meteorite grande possa essere distrutto da un cannone ma è da rivedere
                     if (!ship.shootMeteor(direction, roll)) {
-                        ship.destroyComponent(roll, direction, game.getBank());
+                        ship.destroyComponent(roll, direction, Game.getIstance().getBank());
                     }
                 } else {
                     // Un meteorite piccolo può rimbalzare o essere fermato dallo scudo
                     if (!ship.blockSmallMeteor(direction, roll, answers.get(j))){
-                        ship.destroyComponent(roll, direction, game.getBank());
+                        ship.destroyComponent(roll, direction, Game.getIstance().getBank());
                     }
                 }
             }
