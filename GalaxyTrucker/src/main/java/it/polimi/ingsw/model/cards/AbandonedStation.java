@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.PlotGood;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
@@ -153,60 +154,64 @@ public class AbandonedStation extends Card implements Serializable {
 
     /**
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
-     * @param winnerCoordinatesToAddGood list of coordinatest
+     * @param goodsCoordinates list of coordinatest
      */
-    public CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates  {
+    public ServerEvent setGoodsCoordinates(int[] goodsCoordinates, int value, Bank bank) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
-        if (winnerCoordinatesToAddGood==null || !trucker.getSpaceShip().checkLoad(winnerCoordinatesToAddGood)) { //check load deve controllare il singolo componente
+        if (goodsCoordinates==null || !truckerThatHasDecided.getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
             throw new InvalidCoordinates("Not goods deposit");
         }
         try{
-            trucker.getSpaceShip().addGood(goods.get(currGood), winnerCoordinatesToAddGood, value, bank);
+            truckerThatHasDecided.getSpaceShip().addGood(goods.get(currGood), goodsCoordinates, value, bank);
             bank.removeGoodsInBank(goods.get(currGood).getValue());
         }catch (InvalidPositionException e) {
             cardState = CardState.GOODSTOADD;
+            throw e;
         }
         if(currGood == goods.size()){
             cardState = CardState.REARRANGE;
+            return new BooleanDecision(ServerEventType.REARRANGE, false, this.getCardState(), "Vuoi riarrangiare le merci dentro la nave?", this.truckerThatHasDecided.getNickname());
         }
         else{
             currGood++;
+            //TODO: Check che non ci sia loop infinito
             do {
                 if (bank.getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
                     cardState = CardState.CHOOSE_TO_GAIN;
+                    return new BooleanDecision(ServerEventType.TAKE_GOODS, true, this.getCardState(), "Vuoi iniziare a prendere le merci disponibili?", truckerThatHasDecided.getNickname());
                 } else {
                     currGood++;
                     if(currGood>=goods.size()) {
                         cardState = CardState.REARRANGE;
+                        return new BooleanDecision(ServerEventType.REARRANGE, false, this.getCardState(), "Vuoi riarrangiare le merci dentro la nave?", this.truckerThatHasDecided.getNickname());
                     }
                 }
-            }while(currGood<goods.size() && cardState!=CardState.CHOOSE_TO_GAIN);
+            }while(true);
         }
-        return cardState;
-
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
-    public CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean rearrange) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
             throw new GeneralError("Card state is not REARRANGE");
         }
-        if (!contiune) {
-            if (coord1 == null && !trucker.getSpaceShip().checkLoad(coord1) && coord2 == null && !trucker.getSpaceShip().checkLoad(coord2)) { //check load deve controllare il singolo componente
+        if (!rearrange) {
+            if (coord1 == null && !truckerThatHasDecided.getSpaceShip().checkLoad(coord1) && coord2 == null && !truckerThatHasDecided.getSpaceShip().checkLoad(coord2)) { //check load deve controllare il singolo componente
                 throw new InvalidCoordinates("Not goods deposit");
             }
             try {
-                trucker.getSpaceShip().swapGoods(coord1, value1, coord2, value2);
+                truckerThatHasDecided.getSpaceShip().swapGoods(coord1, value1, coord2, value2);
+                return new BooleanDecision(ServerEventType.REARRANGE, false, this.getCardState(), "Vuoi riarrangiare le merci dentro la nave?", this.truckerThatHasDecided.getNickname());
             } catch (InvalidPositionException e) {
                 cardState = CardState.REARRANGE;
                 throw new InvalidPositionException("invalid positions");
             }
         } else{
             cardState = CardState.ESECUZIONE;
+            return cardEffect();
         }
-        return cardState;
     }
 
     /**
@@ -220,7 +225,7 @@ public class AbandonedStation extends Card implements Serializable {
         Game.getIstance().moveBackward(truckerThatHasDecided, days);
         cardState = CardState.EXIT;
         this.setIsCardFinished(true);
-        return cardState;
+        return new CardFinished(true, this.getCardState(), Game.getIstance().getTruckerList());
     }
 
 
