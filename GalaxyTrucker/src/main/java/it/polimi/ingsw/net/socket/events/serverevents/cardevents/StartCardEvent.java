@@ -54,7 +54,7 @@ public class StartCardEvent extends CardEvent {
             Map<Condition, Effect> penalties,
             CardState cardState
     ) {
-        super(ServerEventType.START_CARD, true, CardState cardState);
+        super(ServerEventType.START_CARD, true, cardState, null);
         this.cardName = cardName;
         this.cardDescription = cardDescription;
         this.firstPlayerNickname = firstPlayerNickname;

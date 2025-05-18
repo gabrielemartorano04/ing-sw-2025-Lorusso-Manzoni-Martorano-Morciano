@@ -7,8 +7,8 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 
 public class HumanCoordinates extends CardEvent {
 
-    public HumanCoordinates(ServerEventType eventType, boolean forAll, CardState cardState) {
-        super(eventType, forAll, cardState);
+    public HumanCoordinates(ServerEventType eventType, boolean forAll, CardState cardState, String nickname) {
+        super(eventType, forAll, cardState, nickname);
     }
 
     @Override
