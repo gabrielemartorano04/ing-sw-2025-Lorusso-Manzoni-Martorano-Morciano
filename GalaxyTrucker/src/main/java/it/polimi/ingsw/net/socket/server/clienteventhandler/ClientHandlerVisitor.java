@@ -3,7 +3,6 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
@@ -17,9 +16,8 @@ import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEven
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.FlightStartEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.flightevents.ShowCardEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.flightevents.WaitOthersStartFlightEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.utilities.exceptions.*;

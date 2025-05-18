@@ -1,6 +1,5 @@
 package it.polimi.ingsw.net.socket.client;
 
-import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.*;
@@ -8,7 +7,6 @@ import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
 import it.polimi.ingsw.view.text.TUI;
 
-import javax.swing.text.View;
 import java.util.ArrayList;
 
 
@@ -98,11 +96,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.deleteSelectedComponent();
         ui.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
         ui.showAvailableComponent(event.getAvComponents());
-//        int i=0;
-//        for(Component c: event.getAvComponents()){
-//            System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-//            i++;
-//        }
     }
 
     @Override
@@ -242,6 +235,34 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showBuildOptions();
     }
 
+    @Override
+    public void visit(SuccessSelectKept event){
+        viewFlow.setSelectedComponent(event.getComponent(), true);
+        viewFlow.getSelectedKeptComponent().remove(event.getComponent());
+        ui.showComponentSelected(viewFlow.getSelectedComponent());
+    }
+
+    @Override
+    public void visit(ShowOtherShipResponse event) {
+        ui.showShipLayout(event.getNickname(), event.getSpaceship());
+    }
+
+    @Override
+    public void visit(WaitOthersBuildingEvent event){
+        viewFlow.setEnd();
+        ui.showWaitForOthers();
+    }
+
+    @Override
+    public void visit(AlienCabinCoord event) {
+        ArrayList<int[]> coord=event.getAlienCabinCoord();
+        String message="";
+        for(int[] c:coord){
+            message+="x: "+c[0]+" y: "+c[1]+"\n";
+        }
+        ui.showMessage(message);
+    }
+
     // === PHASE 4: Fase di Volo ===
     @Override
     public void visit(SelectComponentEvent event){
@@ -332,10 +353,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showError(event.getMessage());
     }
 
-    @Override
-    public void visit(BooleanRequest event) {
-        ui.showBooleanOption(event.getMessage());
-    }
 
     @Override
     public void visit(ReturnStackEvent event){
@@ -353,39 +370,16 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
 
-    @Override
-    public void visit(SuccessSelectKept event){
-        viewFlow.setSelectedComponent(event.getComponent(), true);
-        viewFlow.getSelectedKeptComponent().remove(event.getComponent());
-        ui.showComponentSelected(viewFlow.getSelectedComponent());
-    }
 
-    @Override
-    public void visit(ShowOtherShipResponse event) {
-        ui.showShipLayout(event.getNickname(), event.getSpaceship());
-    }
-
-    @Override
-    public void visit(WaitOthersBuildingEvent event){
-        viewFlow.setEnd();
-        ui.showWaitForOthers();
-    }
-
-    @Override
-    public void visit(AlienCabinCoord event) {
-        ArrayList<int[]> coord=event.getAlienCabinCoord();
-        String message="";
-        for(int[] c:coord){
-            message+="x: "+c[0]+" y: "+c[1]+"\n";
-        }
-        ui.showMessage(message);
-    }
 
     @Override
     public void visit(WaitOthersStartFlightEvent event) {
         viewFlow.setStartFlight();
         ui.showWaitForOthers();
     }
+
+    // === CARD EVENTS ===
+
 
 
 }

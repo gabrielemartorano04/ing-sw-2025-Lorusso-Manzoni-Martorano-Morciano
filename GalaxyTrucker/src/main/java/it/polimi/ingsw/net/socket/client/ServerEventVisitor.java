@@ -1,6 +1,5 @@
 package it.polimi.ingsw.net.socket.client;
 
-import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.ShowStackEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.*;
@@ -9,23 +8,36 @@ import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 public interface ServerEventVisitor {
 
     void visit(AvailableColorsEvent event);
-    void visit(BooleanRequest event);
     void visit(ColorAlreadyInError event);
     void visit(ComponentLinkedEvent event);
     void visit(ComponentNotAvailableError event);
     void visit(ComponentSelectedEvent event);
     void visit(DisconnectedUserEvent event);
+
+    void visit(FlightStartEvent event);
+
+    void visit(IntRequest event);
+
     void visit(EndGameEvent event);
 
     void visit(TruckerWithdrawEvent event);
 
     void visit(GenericErrorInsertedData event);
+
+    void visit(CoordRequest event);
+
     void visit(InvalidCoordinatesError event);
-    void visit(InvalidPositionError event);
     void visit(NicknameAlreadyInError event);
     void visit(NoAvailableSpaceError event);
     void visit(PlayerJoinedEvent event);
     void visit(ReconnectedUserEvent event);
+
+    void visit(ShowCardEvent event);
+
+    void visit(UpdateCardStateEvent event);
+
+    void visit(UpdateTrackEvent event);
+
     void visit(ShipUpdateEvent event);
 
     void visit(BuildCompleteEvent event);
@@ -34,32 +46,28 @@ public interface ServerEventVisitor {
 
     void visit(BuildOptionsEvent event);
 
-    // === PHASE 4: Fase di Volo ===
     void visit(SelectComponentEvent event);
 
-    void visit(ShowCardEvent event);
     void visit(StartBuildingEvent event);
     void visit(TimeExpiredEvent event);
     void visit(TurnHourglassError event);
+
+    void visit(InvalidPositionError event);
+
     void visit(UpdateBuildingStateEvent event);
-    void visit(UpdateCardStateEvent event);
 
     void visit(DiscardSuccessEvent event);
 
-    void visit(CoordRequest event);
-
     void visit(LobbyEvent event);
+
     void visit(IndexesRequest event);
 
     void visit(GoodsGainedEvent event);
 
     void visit(OkEvent event);
 
-    void visit(FlightStartEvent event);
-
-    void visit(IntRequest event);
-    void visit(UpdateTrackEvent event);
     void visit(SetupCompleteEvent event);
+
     void visit(AvailableComponentsEvent event);
 
     void visit(NotYourTurnError notYourTurnError);
@@ -72,27 +80,31 @@ public interface ServerEventVisitor {
 
     void visit(TruckerLostCrewEvent truckerLostCrewEvent);
 
-    void visit(HourglassTurnEvent hourglassTurnEvent);
+    void visit(HourglassTurnEvent event);
 
-    void visit(GameCreatedEvent gameCreatedEvent);
+    void visit(GameCreatedEvent event);
 
-    void visit(FirstConnectionEvent firstConnectionEvent);
+    void visit(FirstConnectionEvent event);
+
 
     void visit(CoordListRequest coordListRequest);
 
-    void visit(AvailableComponentToSelectRequest availableComponentToSelectRequest);
+    void visit(AvailableComponentToSelectRequest event);
 
-    void visit(BuildingStateError buildingStateError);
+    void visit(BuildingStateError event);
 
     void visit(GenericErrorEvent event);
 
     void visit(SuccessSelectKept event);
 
-    void visit(ShowOtherShipResponse showOtherShipResponse);
+    void visit(ShowOtherShipResponse event);
 
     void visit(WaitOthersBuildingEvent event);
 
-    void visit(AlienCabinCoord alienCabinCoord);
+    void visit(AlienCabinCoord event);
 
     void visit(WaitOthersStartFlightEvent event);
+
+    void visit
+
 }
