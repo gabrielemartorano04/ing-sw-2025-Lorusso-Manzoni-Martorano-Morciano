@@ -3,11 +3,13 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.components.Cabin;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.client.ServerEventVisitor;
+import it.polimi.ingsw.net.socket.events.clientevents.AlienCoordinatesRequest;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.GeneriErrorFromClient;
 import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorInsertedData;
@@ -57,6 +59,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         FIRST,
         START,
         BULDING,
+        FILL,
         FLIGTH,
         END;
     }
@@ -115,6 +118,10 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     }
 
                 }
+                case FILL->{
+                    ui.showShipLayout(nickname, ship);
+                    ui.showAlienCabin();
+                }
                 case FLIGTH -> {
                     ui.showShipLayout(nickname, ship);
                     ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
@@ -168,6 +175,9 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                             event = null;
                         }
 
+                    }
+                    case FILL->{
+                        event= new AlienCoordinatesRequest();
                     }
                     case FLIGTH-> { event = inputParser.parseFlight(input);}
                 }
@@ -345,6 +355,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public void componentAsUncovered(int index){
         availableComponents.get(index).setCovered(false);
     }
+
 
 }
 

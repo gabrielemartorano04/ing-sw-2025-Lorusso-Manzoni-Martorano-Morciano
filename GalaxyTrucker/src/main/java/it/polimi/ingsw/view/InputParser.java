@@ -192,6 +192,31 @@ public ClientEvent parseFirstConnection(String input) {
             }
 
     }
+
+    public ClientEvent parseFillTheShip(String input){
+        if (input == null || input.isEmpty()) {
+            return null;
+        }
+        String[] tokens = input.split("\\s+", 3);
+        String command = tokens[0].toLowerCase();
+        switch (command){
+            case "coord":
+                if(tokens.length%2 !=0){
+                    ArrayList<int[]> coord=new ArrayList<>();
+                    for(int i=1;i<tokens.length-1;i+=2){
+                        if(tokens[i]!=null && tokens[i+1]!=null){
+                            coord.add(new int[]{Integer.parseInt(tokens[i]),Integer.parseInt(tokens[i+1])});
+                        }
+                    }
+                    return new SendAlienCoord(coord);
+                }else return null;
+            default:
+                System.out.println("Error: unknown command: " + command);
+                return null;
+        }
+
+        return null;
+    }
     public ClientEvent parseFlight(String input) {
         if (input == null || input.isEmpty()) {
             return null;

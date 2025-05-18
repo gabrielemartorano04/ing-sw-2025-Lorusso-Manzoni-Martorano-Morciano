@@ -10,7 +10,9 @@ import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.socket.events.clientevents.AlienCoordinatesRequest;
 import it.polimi.ingsw.net.socket.events.clientevents.GeneriErrorFromClient;
+import it.polimi.ingsw.net.socket.events.clientevents.SendAlienCoord;
 import it.polimi.ingsw.net.socket.events.clientevents.ShowOtherShipEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
@@ -276,6 +278,27 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(GeneriErrorFromClient event){
         return new GenericErrorEvent("error \n>",false);
+    }
+
+    @Override
+    public ServerEvent visit(AlienCoordinatesRequest event) {
+        ArrayList<int[]> alienCoord=currentClient.getTruckerController().getSpaceShip().getAlienCabin();
+        return new AlienCabinCoord(alienCoord);
+    }
+
+    @Override
+    public ServerEvent visit(SendAlienCoord event) {
+        currentClient.getTruckerController().getSpaceShip().setNumAlien(event.getCoord());
+        currentClient.getTruckerController().getSpaceShip().setNumHuman();
+        currentClient.getTruckerController().getSpaceShip().setBattery();
+        currentClient.getTruckerController().getSpaceShip().getGoodsCapacity();
+        currentClient.getTruckerController().getSpaceShip().getSingleCannonPower();
+        currentClient.getTruckerController().getSpaceShip().getSingleEnginePower();
+        currentClient.getTruckerController().getSpaceShip().increaseLost(currentClient.getTruckerController().getTrucker().getKeptComponents().size());
+        currentClient.getTruckerController().getSpaceShip().countExposedConnectors();
+        currentClient.getTruckerController().getSpaceShip().getProtection();
+
+
     }
 
 }

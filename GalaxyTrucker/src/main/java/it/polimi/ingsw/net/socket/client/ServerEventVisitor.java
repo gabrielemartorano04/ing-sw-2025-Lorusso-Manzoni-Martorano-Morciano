@@ -91,4 +91,6 @@ public interface ServerEventVisitor {
     void visit(ShowOtherShipResponse showOtherShipResponse);
 
     void visit(WaitOthersBuildingEvent event);
+
+    void visit(AlienCabinCoord alienCabinCoord);
 }

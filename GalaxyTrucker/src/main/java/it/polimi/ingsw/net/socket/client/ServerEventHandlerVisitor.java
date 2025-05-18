@@ -7,6 +7,9 @@ import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
 import it.polimi.ingsw.view.text.TUI;
 
+import javax.swing.text.View;
+import java.util.ArrayList;
+
 
 public class ServerEventHandlerVisitor implements ServerEventVisitor{
     private final UI ui;
@@ -216,8 +219,10 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(BuildCompleteEvent event){
         ui.showMessage("Your updated ship\n");
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
-        viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         ui.showBuildComplete();
+        viewFlow.setViewState(ViewFlow.ViewState.FILL);
+
+        //ui.showMessage("It's time to fill the spaceship\n");
     }
 
 
@@ -284,6 +289,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(FlightStartEvent event){
+        viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         ui.showFlightPhaseStart();
     }
 
@@ -354,6 +360,16 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.setEnd();
         System.out.println("Valore di end: "+viewFlow.getEnd());
         ui.showWaitForOthers();
+    }
+
+    @Override
+    public void visit(AlienCabinCoord event) {
+        ArrayList<int[]> coord=event.getAlienCabinCoord();
+        String message="";
+        for(int[] c:coord){
+            message+="x: "+c[0]+" y: "+c[1]+"\n";
+        }
+        ui.showMessage(message);
     }
 
 
