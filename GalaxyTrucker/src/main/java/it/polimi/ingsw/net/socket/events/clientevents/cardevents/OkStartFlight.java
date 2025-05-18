@@ -7,7 +7,6 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
 public class OkStartFlight extends ClientEvent {
     private String message;
-    private int id;
     public OkStartFlight() {
         super(ClientEventType.SEND_INFO_EVENT,false);
         message = "For me, flight can start";
