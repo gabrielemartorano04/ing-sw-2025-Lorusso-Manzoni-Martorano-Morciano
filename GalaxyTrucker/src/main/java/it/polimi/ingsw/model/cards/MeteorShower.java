@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class MeteorShower extends Card implements Serializable {
     private static final long serialVersionUID = 1L;
-    public CardState state = CardState.PLOT_METEOR;
+    public CardState state = CardState.ROLL_DICE;
     // variabile utilizzata per tenere conto delle decisioni prese dai giocatori a ogni aggiornamento dello stato del model
     // dopo la comunicazione del meteorite corrente alla view
     private ArrayList<Boolean> answers;
@@ -94,20 +94,6 @@ public class MeteorShower extends Card implements Serializable {
         );
     }
 
-    public int[] getCurrentMeteor() throws GeneralError {
-        if(state != CardState.PLOT_METEOR) {
-            throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
-        }
-        if(i<0 || i >= directions.size()){
-            throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste");
-        }
-        int[] meteor = directions.get(i);
-        this.meteor = meteor;
-        i++;
-        state = CardState.ROLL_DICE;
-        return meteor;
-    }
-
     public ServerEvent rollDice() throws GeneralError {
         if(state != CardState.ROLL_DICE) {
             throw new GeneralError("Non si può girare i dadi nello stato " + this.state);
@@ -171,7 +157,7 @@ public class MeteorShower extends Card implements Serializable {
             this.state = CardState.ROLL_DICE;
             return rollDice();
         }
-        return new CardFinished(true, this.getCardState());
+        return new CardFinished(true, this.getCardState(), Game.getIstance().getTruckerList());
     }
 
 

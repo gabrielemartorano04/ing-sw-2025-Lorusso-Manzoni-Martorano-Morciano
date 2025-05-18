@@ -40,7 +40,7 @@ public class AbandonedShip extends Card implements Serializable {
      * @param backImage back image of the card
      */
     public AbandonedShip(boolean trialFlight, int level, int numHuman, int credits, int days, String frontImage, String backImage) {
-        super("Abandoned Ship", "A drifting ghost ship",  trialFlight, level, frontImage, backImage, new AbandonedShipController());
+        super("Abandoned Ship", "A drifting ghost ship",  trialFlight, level, frontImage, backImage);
         this.numHuman = numHuman;
         this.credits = credits;
         this.days = days;
@@ -166,7 +166,7 @@ public class AbandonedShip extends Card implements Serializable {
         }
         state = CardState.EXIT;
         this.setIsCardFinished(true);
-        return new CardFinished(false, this.getCardState());
+        return new CardFinished(false, this.getCardState(), Game.getIstance().getTruckerList());
     }
 
 

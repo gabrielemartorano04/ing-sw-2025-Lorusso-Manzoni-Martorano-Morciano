@@ -26,7 +26,7 @@ public class Epidemic extends Card implements Serializable {
      * @param backImage back image of the card
      */
     public Epidemic(boolean trialFlight, int level, String frontImage, String backImage) {
-        super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage, new EpidemicController());
+        super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage);
         this.state = CardState.ESECUZIONE;
     }
 
@@ -67,7 +67,7 @@ public class Epidemic extends Card implements Serializable {
         }
         state = CardState.EXIT;
         this.setIsCardFinished(true);
-        return new CardFinished(true, this.getCardState());
+        return new CardFinished(true, this.getCardState(), Game.getIstance().getTruckerList());
     }
 
 

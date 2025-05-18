@@ -34,14 +34,13 @@ public abstract class Card implements Serializable, CardInterface{
      * @param name_frontImage front image of the card
      * @param name_backImage back image of the card
      */
-    public Card(String name, String description, boolean trialFlight, Integer level, String name_frontImage, String name_backImage, CardController controller) {
+    public Card(String name, String description, boolean trialFlight, Integer level, String name_frontImage, String name_backImage) {
         this.name = name;
         this.description = description;
         this.trialFlight = trialFlight;
         this.level = level;
         this.frontImagePath = name_frontImage;
         this.backImagePath = name_backImage;
-        this.controller = controller;
         this.isCardFinished = false;
     }
 
