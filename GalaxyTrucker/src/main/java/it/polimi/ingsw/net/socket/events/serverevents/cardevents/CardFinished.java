@@ -8,8 +8,8 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 
 public class CardFinished extends CardEvent {
 
-    public CardFinished(ServerEventType eventType, boolean forAll, CardState cardState) {
-        super(eventType, forAll, cardState, null);
+    public CardFinished(boolean forAll, CardState cardState) {
+        super(ServerEventType.CARD_FINISHED, forAll, cardState, null);
     }
 
     @Override

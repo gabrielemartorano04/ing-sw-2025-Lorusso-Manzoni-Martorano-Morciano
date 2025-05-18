@@ -7,8 +7,8 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 
 public class ExecutionEvent extends CardEvent {
 
-    public ExecutionEvent(ServerEventType eventType, boolean forAll, CardState cardState) {
-        super(eventType, forAll, cardState, null);
+    public ExecutionEvent(boolean forAll, CardState cardState) {
+        super(ServerEventType.EXECUTION, forAll, cardState, null);
     }
 
     @Override

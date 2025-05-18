@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.EndBuildingEvent;
@@ -29,6 +30,7 @@ public class Game {
     private int gameLevel;
     private Deck deck;
     private Bank bank;
+    private static Game istance;
 
     //private AskController askController;
     private GameState gameState;
@@ -59,6 +61,15 @@ public class Game {
         this.gameState = GameState.SETUP;
         this.availableColors = EnumSet.allOf(PlayerColors.class);
         this.gameLevel = gameLevel;
+        setIstance(this);
+    }
+
+    public static Game getIstance() {
+        return istance;
+    }
+
+    public static void setIstance(Game istance) {
+        Game.istance = istance;
     }
 
     public void startHourglass(){

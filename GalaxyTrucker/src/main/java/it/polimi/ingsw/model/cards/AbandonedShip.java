@@ -110,7 +110,8 @@ public class AbandonedShip extends Card implements Serializable {
      * @param trucker: trucker current
      * @param landing: the choice taken by the current client
      */
-    public ServerEvent tuckerLanding(ArrayList<Trucker> trucker, boolean landing, Bank bank) throws GeneralError {
+    @Override
+    public ServerEvent truckerLanding(ArrayList<Trucker> trucker, boolean landing, Bank bank) throws GeneralError {
         if(state != CardState.LAND) {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }
@@ -121,8 +122,7 @@ public class AbandonedShip extends Card implements Serializable {
         }else{
             if (playerDecisions == trucker.size()){
                 state = CardState.ESECUZIONE;
-                return new ExecutionEvent(ServerEventType.EXECUTION, true, this.getCardState(), trucker.get(playerDecisions).getNickname() );
-
+                return cardEffect();
             }else{
                 playerDecisions++;
                 return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this Abandoned Ship?",  trucker.get(playerDecisions).getNickname());
@@ -145,7 +145,7 @@ public class AbandonedShip extends Card implements Serializable {
             truckerThatHasDecided.getSpaceShip().checkCabin(coordinates, numHuman);
             this.coordinates = coordinates;
             state = CardState.ESECUZIONE;
-            return new ExecutionEvent(ServerEventType.EXECUTION, false, this.getCardState());
+            return cardEffect();
         }catch (InvalidCoordinates e){
             throw new InvalidCoordinates(e.getMessage());
         }
@@ -153,22 +153,21 @@ public class AbandonedShip extends Card implements Serializable {
 
     /**
      * Applies the changes provided by the card
-     * @param game game in which the card has been drawn
      */
 
     @Override
-    public ServerEvent cardEffect(Game game) throws GeneralError {
+    public ServerEvent cardEffect() throws GeneralError {
         if(state != CardState.ESECUZIONE) {
             throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }
         if (truckerThatHasDecided != null) {
             truckerThatHasDecided.getSpaceShip().removeNumHuman(coordinates);
-            game.moveBackward(truckerThatHasDecided,days);
+            Game.getIstance().moveBackward(truckerThatHasDecided,days);
             truckerThatHasDecided.addCosmicCredit(credits);
         }
         state = CardState.EXIT;
         this.setIsCardFinished(true);
-        return new CardFinished(ServerEventType.CARD_FINISHED, false, this.getCardState());
+        return new CardFinished(false, this.getCardState());
     }
 
 

@@ -108,9 +108,9 @@ public abstract class Card implements Serializable, CardInterface{
 
     /**
      * Applies the changes provided by the card
-     * @param game game in which the card has been drawn
      */
-    public abstract ServerEvent cardEffect(Game game) throws GeneralError;
+    //TODO: mettere gli eventi di aggiornamento dopo un effetto
+    public abstract ServerEvent cardEffect() throws GeneralError;
 
     /**
      * method to be called after the card is picked from the deck, it returns the event to be sent to the clients

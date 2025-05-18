@@ -19,11 +19,11 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError, WrongCallerException {
-        throw new WrongCallerException("This Card doesn't have this method");
-    }
+//    default CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError, WrongCallerException {
+//        throw new WrongCallerException("This Card doesn't have this method");
+//    }
 
-    default Goods setChoiceToGain(boolean choice) throws GeneralError, WrongCallerException {
+    default ServerEvent setChoiceToGain(boolean choice) throws GeneralError, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 

@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.cardcontrollers.AbandonedShipController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.ExecutionEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.PlotGood;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
@@ -103,9 +103,7 @@ public class AbandonedStation extends Card implements Serializable {
 
     /**
      * Sets the only trucker that has chosen to take the station
-     * @param trucker: current trucker that is deciding whether to land or not
      * @param landing: choice taken
-     * @param numPlayer: num of player in the game
      * @param bank: bank of the game
      */
     public ServerEvent truckerLanding(ArrayList<Trucker> truckers, boolean landing, Bank bank) throws GeneralError {
@@ -114,6 +112,7 @@ public class AbandonedStation extends Card implements Serializable {
         }
         if(landing) {
             this.truckerThatHasDecided = truckers.get(playerDecisions);
+            //TODO: TEST CHE NON CI SIA UN LOOP INFINITO
             do {
                 if (bank.getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
                     cardState = CardState.CHOOSE_TO_GAIN;
@@ -122,27 +121,28 @@ public class AbandonedStation extends Card implements Serializable {
                     currGood++;
                     if(currGood>=goods.size()) {
                         cardState = CardState.ESECUZIONE;
-                        return new ExecutionEvent(ServerEventType.EXECUTION, true, this.getCardState());
+                        return cardEffect();
                     }
                 }
-            }while(currGood<goods.size() && cardState!=CardState.CHOOSE_TO_GAIN);
+            }while(true);
+
         }else{
             if (playerDecisions == truckers.size()){
                 cardState = CardState.ESECUZIONE;
-                return new ExecutionEvent(ServerEventType.EXECUTION, true, this.getCardState());
+                return cardEffect();
             }
             playerDecisions++;
             return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this AbandonedStation?", truckers.get(playerDecisions).getNickname());
         }
     }
 
-    public Goods setChoiceToGain(boolean choice) throws GeneralError {
+    public ServerEvent setChoiceToGain(boolean choice) throws GeneralError {
         if(cardState!=CardState.CHOOSE_TO_GAIN){
             throw new GeneralError("Card state is not CHOOSE_TO_GAIN");
         }
         if (choice) {
             cardState = CardState.GOODSTOADD;
-            return goods.get(currGood);
+            return new PlotGood(ServerEventType.PLOT_GOOD, false, this.getCardState(), this.truckerThatHasDecided.getNickname(), this.goods.get(currGood));
         }else {
             if(currGood==goods.size()-1) {
                 cardState = CardState.REARRANGE;
@@ -211,14 +211,13 @@ public class AbandonedStation extends Card implements Serializable {
 
     /**
      * Applies the changes provided by the card
-     * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) throws GeneralError {
+    public ServerEvent cardEffect() throws GeneralError {
         if (cardState != CardState.ESECUZIONE) {
             throw new GeneralError("risposte mancanti");
         }
-        game.moveBackward(truckerThatHasDecided, days);
+        Game.getIstance().moveBackward(truckerThatHasDecided, days);
         cardState = CardState.EXIT;
         this.setIsCardFinished(true);
         return cardState;
