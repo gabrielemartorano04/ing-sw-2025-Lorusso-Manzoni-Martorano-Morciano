@@ -107,13 +107,13 @@ public class MeteorShower extends Card implements Serializable {
         return new RollDice(this.getCardState(), i, roll);
     }
 
-    public ServerEvent setAnswers(boolean answer) throws GeneralError {
+    public ServerEvent setShieldsAnswer(boolean answer) throws GeneralError {
         if(state != CardState.ATTESA_RISPOSTE){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
         this.answers.addLast(answer);
         state = CardState.ESECUZIONE;
-        return new ExecutionEvent(true, this.getCardState());
+        return new MeteorPlot(true, this.getCardState());
     }
 
     /**
