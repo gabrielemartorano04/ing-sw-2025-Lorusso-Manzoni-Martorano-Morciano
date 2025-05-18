@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public interface CardInterface {
 
-    default ServerEvent setTruckerDecision(Trucker trucker, boolean landing, int numPlayer) throws GeneralError, WrongCallerException{
+    default ServerEvent truckerLanding(Trucker trucker, boolean landing, int numPlayer) throws GeneralError, WrongCallerException{
         throw new WrongCallerException("This Card doesn't have this method");
     }
 

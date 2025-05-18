@@ -113,7 +113,7 @@ public class AbandonedShip extends Card implements Serializable {
      * @param landing: the choice taken by the current client
      * @param numPlayer: number of player in the current game
      */
-    public ServerEvent setTruckerDecision(Trucker trucker, boolean landing, int numPlayer) throws GeneralError {
+    public ServerEvent tuckerLanding(Trucker trucker, boolean landing, int numPlayer) throws GeneralError {
         if(state != CardState.LAND) {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }
