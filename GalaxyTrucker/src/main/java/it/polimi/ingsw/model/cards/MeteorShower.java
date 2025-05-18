@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.cardcontrollers.MeteorShowerController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.ExecutionEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
@@ -85,7 +88,8 @@ public class MeteorShower extends Card implements Serializable {
                 null,
                 null,
                 null,
-                null
+                null,
+                this.getCardState()
         );
     }
 
@@ -103,22 +107,27 @@ public class MeteorShower extends Card implements Serializable {
         return meteor;
     }
 
-    public CardState rollDice(Game game) throws GeneralError {
-        if(state != CardState.ROLL_DICE){
+    public ServerEvent rollDice() throws GeneralError {
+        if(state != CardState.ROLL_DICE) {
             throw new GeneralError("Non si può girare i dadi nello stato " + this.state);
         }
-        this.roll = game.rollDice();
+        if(i<0 || i >= directions.size()){
+            throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste");
+        }
+        meteor = directions.get(i);
+        i++;
+        this.roll = Game.getIstance().rollDice();
         state = CardState.ATTESA_RISPOSTE;
-        return state;
+        return new RollDice();
     }
 
-    public CardState setAnswers(boolean answer) throws GeneralError {
+    public ServerEvent setAnswers(boolean answer) throws GeneralError {
         if(state != CardState.ATTESA_RISPOSTE){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
         this.answers.addLast(answer);
         state = CardState.ESECUZIONE;
-        return state;
+        return new ExecutionEvent(true, this.getCardState());
     }
 
     /**
@@ -126,7 +135,7 @@ public class MeteorShower extends Card implements Serializable {
      * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) throws GeneralError {
+    public ServerEvent cardEffect(Game game) throws GeneralError {
         if (this.state != CardState.ESECUZIONE) {
             throw new GeneralError("Non è possibile eseguire card effect nello stato " + this.state);
         }
@@ -159,9 +168,10 @@ public class MeteorShower extends Card implements Serializable {
             this.state = CardState.EXIT;
             this.setIsCardFinished(true);
         }else {
-            this.state = CardState.PLOT_METEOR;
+            this.state = CardState.ROLL_DICE;
+            return rollDice();
         }
-        return state;
+        return new CardFinished(true, this.getCardState());
     }
 
 

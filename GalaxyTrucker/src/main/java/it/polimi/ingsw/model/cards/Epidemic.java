@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cardcontrollers.EpidemicController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
@@ -47,7 +48,8 @@ public class Epidemic extends Card implements Serializable {
                 null,
                 null,
                 null,
-                null
+                null,
+                this.getCardState()
         );
     }
 
@@ -56,7 +58,7 @@ public class Epidemic extends Card implements Serializable {
      * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) throws GeneralError {
+    public ServerEvent cardEffect() throws GeneralError {
         if(state != CardState.ESECUZIONE) {
             throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }
@@ -66,7 +68,7 @@ public class Epidemic extends Card implements Serializable {
         }
         state = CardState.EXIT;
         this.setIsCardFinished(true);
-        return state;
+        return new CardFinished(true, this.getCardState());
     }
 
 

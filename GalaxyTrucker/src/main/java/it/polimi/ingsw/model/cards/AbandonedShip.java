@@ -121,7 +121,7 @@ public class AbandonedShip extends Card implements Serializable {
         }else{
             if (playerDecisions == trucker.size()){
                 state = CardState.ESECUZIONE;
-                return new ExecutionEvent(ServerEventType.EXECUTION, true, this.getCardState(), trucker.get(playerDecisions).getNickname() );
+                return new ExecutionEvent(ServerEventType.EXECUTION, true, this.getCardState() );
 
             }else{
                 playerDecisions++;
@@ -168,7 +168,7 @@ public class AbandonedShip extends Card implements Serializable {
         }
         state = CardState.EXIT;
         this.setIsCardFinished(true);
-        return new CardFinished(ServerEventType.CARD_FINISHED, false, this.getCardState());
+        return new CardFinished(false, this.getCardState());
     }
 
 
