@@ -25,7 +25,7 @@ public class AbandonedShip extends Card implements Serializable {
     private final int numHuman;
     private Trucker truckerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
     private ArrayList<int[]> coordinates = null; //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
-    private CardState state = CardState.ATTESA_RISPOSTE;
+    private CardState state;
     private int playerDecisions;
 
 
