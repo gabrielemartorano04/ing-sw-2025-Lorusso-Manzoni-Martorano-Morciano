@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.cardcontrollers.OpenSpaceController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
@@ -18,11 +18,15 @@ import java.util.List;
  */
 public class OpenSpace extends Card implements Serializable {
     private static final long serialVersionUID = 1L;
-    private ArrayList<ArrayList<int[]>> truckersCoordinates = new ArrayList<>();
-    private CardState state;
+
     //lista che contiene per ogni trucker la lista di coordinates dei motori doppi che vuole attivare
     //la lista esterna associa ogni puntatore a un trucker, quindi la lunghezza della lista esterna è quella di truckers.
     //mantiene l'ordine dei truckers nel fare questa associazione
+    private ArrayList<ArrayList<int[]>> truckersCoordinates = new ArrayList<>();
+
+    private CardState state;
+    private int indexOfCurrentTrucker;
+
 
     /**
      * Open space constructor, initialise the attributes of this class
@@ -32,7 +36,31 @@ public class OpenSpace extends Card implements Serializable {
      * @param backImage back image of the card
      */
     public OpenSpace(boolean trialFlight, int level, String frontImage, String backImage) {
-        super("Open Space", "Empty vastness of space", trialFlight, level, frontImage, backImage, new OpenSpaceController());
+        super("Open Space", "Empty vastness of space", trialFlight, level, frontImage, backImage);
+        this.indexOfCurrentTrucker = 0;
+    }
+
+    @Override
+    public ServerEvent startCard() {
+        return new StartCardEvent(
+                this.getName(),
+                this.getDescription(),
+                Game.getIstance().getTruckerList().getFirst().getNickname(),
+                "Do you want to ",
+                -1,
+                -1,
+                -1,
+                null,
+                null,
+                -1,
+                -1,
+                -1,
+                null,
+                null,
+                null,
+                null,
+                this.getCardState()
+        );
     }
 
     /**
@@ -40,11 +68,11 @@ public class OpenSpace extends Card implements Serializable {
      * @param truckerCoordinate list of arrays of coordinates
      * @param numTruckers number of truckers
      */
-    public CardState setCoordinates(Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, GeneralError {
+    public ServerEvent setEnginesCoordinates(ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, GeneralError {
         if (this.state != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
-        if(!trucker.getSpaceShip().checkDoubleEngine(truckerCoordinate)){
+        if(!Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getSpaceShip().checkDoubleEngine(truckerCoordinate)){
             throw new InvalidCoordinates("Not all components are DoubleEngine");
         }
         this.truckersCoordinates.addLast(truckerCoordinate);
@@ -86,9 +114,5 @@ public class OpenSpace extends Card implements Serializable {
         return state;
     }
 
-    @Override
-    public ServerEvent startCard(String currPlayerNickname) {
-        return null;
-    }
 }
 

@@ -47,7 +47,7 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default CardState setCoordinates(Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, GeneralError, WrongCallerException {
+    default ServerEvent setEnginesCoordinates(Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, GeneralError, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
