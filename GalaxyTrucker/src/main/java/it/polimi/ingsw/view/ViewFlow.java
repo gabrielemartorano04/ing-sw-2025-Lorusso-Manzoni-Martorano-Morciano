@@ -12,6 +12,7 @@ import it.polimi.ingsw.net.socket.client.ServerEventVisitor;
 import it.polimi.ingsw.net.socket.events.clientevents.AlienCoordinatesRequest;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.GeneriErrorFromClient;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.OkStartFlight;
 import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorInsertedData;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
@@ -51,6 +52,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private boolean nameAlreadySet;
     private boolean end;
     private boolean sentCabinCoord;
+    private boolean startFlight;
 
     public void setStacks(ArrayList<Card>[] stacks) {
         this.stacks=stacks;
@@ -90,6 +92,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                 put("BLUE",0);
             }
         };
+        this.startFlight=true;
     }
 
     @Override
@@ -194,7 +197,12 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
                         else event= inputParser.parseFillTheShip(input);
                     }
-                    case FLIGTH-> { event = inputParser.parseFlight(input);}
+                    case FLIGTH-> {
+                        if(startFlight){
+                            event=new OkStartFlight();
+                            startFlight=false;
+                        }
+                        else event = inputParser.parseFlight(input);}
                 }
                 if (event != null) {
                     clientHandler.handleEvent(event);

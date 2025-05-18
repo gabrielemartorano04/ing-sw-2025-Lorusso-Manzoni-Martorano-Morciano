@@ -35,10 +35,12 @@ public class ClientHandlerVisitor implements ClientVisitor {
     private ClientHandlerSocket currentClient;
     private int gameLevel;
     private int endBuilding;
+    private int startFlight;
 
     public ClientHandlerVisitor() {
         numLog = 0;
         endBuilding = 0;
+        startFlight = 0;
         currentClient = null;
         numOfPlayers = 0;
         gameLevel=0;
@@ -264,13 +266,13 @@ public class ClientHandlerVisitor implements ClientVisitor {
     }
 
     @Override
-    public ServerEvent visit(ShowTilesListEvent showTilesListEvent) {
+    public ServerEvent visit(ShowTilesListEvent event) {
         return null;
     }
 
     @Override
-    public ServerEvent visit(ShowOtherShipEvent showOtherShipEvent) {
-        String nickname=showOtherShipEvent.getNickname();
+    public ServerEvent visit(ShowOtherShipEvent event) {
+        String nickname=event.getNickname();
         Component[][] spaceship=null;
         for(Trucker t:gameController.getGame().getTruckers()){
             if(t.getNickname().equals(nickname)){
@@ -309,6 +311,16 @@ public class ClientHandlerVisitor implements ClientVisitor {
         int humanCount=currentClient.getTruckerController().getSpaceShip().getNumHuman();
 
         return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower);
+    }
+
+    @Override
+    public ServerEvent visit(OkStartFlight event) {
+        startFlight++;
+        if(startFlight<gameController.getGame().getNumPlayers()){
+            //aspetta che gli altri dicano ok
+        }
+       //altrimenti forall inizia!
+        return null;
     }
 
 }
