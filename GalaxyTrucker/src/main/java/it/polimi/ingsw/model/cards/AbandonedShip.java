@@ -109,24 +109,23 @@ public class AbandonedShip extends Card implements Serializable {
      * Sets the only trucker that has chosen to take the ship
      * @param trucker: trucker current
      * @param landing: the choice taken by the current client
-     * @param numPlayer: number of player in the current game
      */
-    public ServerEvent tuckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError {
+    public ServerEvent tuckerLanding(ArrayList<Trucker> trucker, boolean landing, Bank bank) throws GeneralError {
         if(state != CardState.LAND) {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }
         if(landing) {
-            truckerThatHasDecided = trucker;
+            truckerThatHasDecided = trucker.get(playerDecisions);
             state = CardState.HUMANSTOREMOVE;
-            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, this.getCardState());
+            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, this.getCardState(), trucker.get(playerDecisions).getNickname());
         }else{
-            if (playerDecisions == numPlayer){
+            if (playerDecisions == trucker.size()){
                 state = CardState.ESECUZIONE;
-                return new ExecutionEvent(ServerEventType.EXECUTION, false, this.getCardState());
+                return new ExecutionEvent(ServerEventType.EXECUTION, true, this.getCardState(), trucker.get(playerDecisions).getNickname() );
 
             }else{
                 playerDecisions++;
-                return new BooleanDecision(ServerEventType.LAND, false, this.getCardState(), "Do you want to land on this Abandoned Ship?");
+                return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this Abandoned Ship?",  trucker.get(playerDecisions).getNickname());
             }
         }
     }
