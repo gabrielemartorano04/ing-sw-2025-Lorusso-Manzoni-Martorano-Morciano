@@ -22,7 +22,6 @@ public abstract class Card implements Serializable, CardInterface{
     private final boolean  trialFlight;
     private final String frontImagePath;
     private final String backImagePath;
-    private final CardController controller;
     private boolean isCardFinished;
 
     /**
@@ -44,9 +43,6 @@ public abstract class Card implements Serializable, CardInterface{
         this.isCardFinished = false;
     }
 
-    public CardController getController() {
-        return controller;
-    }
 
     public void setIsCardFinished(boolean isCardFinished) {
         this.isCardFinished = isCardFinished;
