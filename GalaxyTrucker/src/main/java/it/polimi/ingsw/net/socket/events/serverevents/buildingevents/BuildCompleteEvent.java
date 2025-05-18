@@ -1,15 +1,23 @@
 package it.polimi.ingsw.net.socket.events.serverevents.buildingevents;
 
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 
+import java.util.ArrayList;
+
 public class BuildCompleteEvent extends ServerEvent {
     private String message;
-
-    public BuildCompleteEvent() {
+    private ArrayList<Trucker> truckers;
+    public BuildCompleteEvent( ArrayList<Trucker> truckers) {
         super(ServerEventType.END_BUILDING, true);
+        this.truckers = truckers;
         message = "All the ships are checked and the building phase is complete";
+    }
+
+    public ArrayList<Trucker> getTruckers() {
+        return truckers;
     }
 
     @Override

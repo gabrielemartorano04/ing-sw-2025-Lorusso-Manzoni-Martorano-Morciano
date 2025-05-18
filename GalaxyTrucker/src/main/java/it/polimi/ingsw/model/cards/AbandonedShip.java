@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.cardcontrollers.AbandonedShipController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
@@ -110,7 +109,8 @@ public class AbandonedShip extends Card implements Serializable {
      * @param trucker: trucker current
      * @param landing: the choice taken by the current client
      */
-    public ServerEvent tuckerLanding(ArrayList<Trucker> trucker, boolean landing, Bank bank) throws GeneralError {
+    @Override
+    public ServerEvent truckerLanding(ArrayList<Trucker> trucker, boolean landing, Bank bank) throws GeneralError {
         if(state != CardState.LAND) {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }

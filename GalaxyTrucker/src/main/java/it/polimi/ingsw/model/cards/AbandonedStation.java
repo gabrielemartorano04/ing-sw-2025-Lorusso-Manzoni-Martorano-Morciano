@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.cardcontrollers.AbandonedShipController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.PlotGood;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
@@ -135,18 +135,19 @@ public class AbandonedStation extends Card implements Serializable {
         }
     }
 
-    public Goods setChoiceToGain(boolean choice) throws GeneralError {
+    public ServerEvent setChoiceToGain(boolean choice) throws GeneralError {
         if(cardState!=CardState.CHOOSE_TO_GAIN){
             throw new GeneralError("Card state is not CHOOSE_TO_GAIN");
         }
         if (choice) {
             cardState = CardState.GOODSTOADD;
-            return goods.get(currGood);
+            return new PlotGood(ServerEventType.ADD_GOODS, false, this.getCardState(), this.truckerThatHasDecided.getNickname(), this.goods.get(currGood));
         }else {
             if(currGood==goods.size()-1) {
                 cardState = CardState.REARRANGE;
+                return new BooleanDecision(ServerEventType.REARRANGE, false, this.getCardState(), "Vuoi riarrangiare le merci dentro la nave?", this.truckerThatHasDecided.getNickname());
             } else currGood++;
-            return null;
+            return new PlotGood(ServerEventType.ADD_GOODS, false, this.getCardState(), this.truckerThatHasDecided.getNickname(), this.goods.get(currGood));
         }
     }
 

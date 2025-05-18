@@ -28,6 +28,7 @@ public class Trucker {
         this.cosmicCredit = 0;
         buildingState=BuildingState.BUILDING;
         keptComponents = new ArrayList<>();
+        this.position=-1;
     }
 
     public ArrayList<Component> getKeptComponents() {
