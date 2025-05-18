@@ -603,29 +603,42 @@ public class SpaceShip implements Serializable {
     }
 //in ingresso coordinate dei cannoni doppi che vogliamo attivare (da controller)
 
-    /**
-     * This method calculate the sum of single cannon power, double activated cannon and power given by aliens in the cabins
-     * Before calling this method setting the aliens is needed
-     * @param coord coordinates of the components the player wants to activate
-     * @return power of cannons of the spaceship
-     */
-    public int getTotalCannonPower(ArrayList<int[]> coord) {
 
+    public void activeDoubleCannons(ArrayList<int[]> coord) throws NotEnoughBatteries {
+        if(coord.size()>numOfBattery)
+            throw new NotEnoughBatteries("You have not enough batteries to active all that cannons!");
         for(int[] c:coord){
             switch(components[c[0]][c[1]]){
                 case Cannon cannon->{
-                    cannon.setIsActive(true);
+
+                    if (numOfBattery>0){
+                        cannon.setIsActive(true);
+                        numOfBattery--;
+                    }
+
                 }default -> {}
             }
         }
+    }
+
+
+    /**
+     * This method calculate the sum of single cannon power, double activated cannon and power given by aliens in the cabins
+     * Before calling this method setting the aliens is needed
+     * @return power of cannons of the spaceship
+     */
+    public int getTotalCannonPower() {
+
         int power = 0;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null) {
                     switch(components[i][j]){
                         case Cabin cabin->{
-                            if (cabin.getAlien() != null && cabin.getAlien().getColor() == AlienColor.PURPLE) {
-                                power += 2;
+                            if (cabin.getAlien() != null) {
+                                if( cabin.getAlien().getColor() == AlienColor.PURPLE) {
+                                    power += 2;
+                                }
                             }
                         }
                         default -> {}
@@ -636,22 +649,49 @@ public class SpaceShip implements Serializable {
         return getSingleCannonPower() + getDoubleCannon() + power;
     }
 
-    /**
-     * This method calculate the sum of single engine power, double activated engine and power given by aliens in the cabins
-     * Before calling this method setting the aliens is needed
-     * @param coord coordinates of the components the player wants to activate
-     * @return power of engine of the spaceship
-     */
-    public int getTotalEnginePower(ArrayList<int[]> coord) {
+    public void deactivateDoubleCannons() {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if (components[i][j] != null ) {
+                    switch(components[i][j]){
+                        case Cannon c->{
+                            if (c.getIsDouble() && c.getIsActive()) {
+                                c.setIsActive(false);
+                            }
+                        }
+                        default -> {}
+                    }
+                }
+            }
+        }
+    }
 
+    public void activateDoubleEngines(ArrayList<int[]> coord) throws NotEnoughBatteries {
+        if(coord.size()>numOfBattery)
+            throw new NotEnoughBatteries("You don't have enough batteries to activate all that engines!");
         for(int[] c:coord){
             switch(components[c[0]][c[1]]){
                 case Engine engine->{
-                    engine.setIsActive(true);
+                    if(numOfBattery>0){
+                        engine.setIsActive(true);
+                        numOfBattery--;
+                    }
+
                 }default -> {}
             }
 
         }
+    }
+
+
+
+    /**
+     * This method calculate the sum of single engine power, double activated engine and power given by aliens in the cabins
+     * Before calling this method setting the aliens is needed
+     * @return power of engine of the spaceship
+     */
+    public int getTotalEnginePower() {
+
         int power = 0;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
@@ -669,6 +709,23 @@ public class SpaceShip implements Serializable {
             }
         }
         return power + getSingleEnginePower() + getDoubleEngine();
+    }
+
+    public void deactivateDoubleEngines() {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if (components[i][j] != null ) {
+                    switch(components[i][j]){
+                        case Engine e->{
+                            if (e.getIsDouble() && e.getIsActive()) {
+                                e.setIsActive(false);
+                            }
+                        }
+                        default -> {}
+                    }
+                }
+            }
+        }
     }
 
 
