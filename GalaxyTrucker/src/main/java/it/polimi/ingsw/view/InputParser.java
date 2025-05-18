@@ -215,7 +215,6 @@ public ClientEvent parseFirstConnection(String input) {
                 return null;
         }
 
-        return null;
     }
     public ClientEvent parseFlight(String input) {
         if (input == null || input.isEmpty()) {

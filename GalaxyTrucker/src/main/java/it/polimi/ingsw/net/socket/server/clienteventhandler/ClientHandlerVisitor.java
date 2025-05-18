@@ -298,7 +298,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         currentClient.getTruckerController().getSpaceShip().countExposedConnectors();
         currentClient.getTruckerController().getSpaceShip().getProtection();
 
-
+        return null;
     }
 
 }

@@ -50,6 +50,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private boolean isFromKept;
     private boolean nameAlreadySet;
     private boolean end;
+    private boolean sentCabinCoord;
 
     public void setStacks(ArrayList<Card>[] stacks) {
         this.stacks=stacks;
@@ -80,6 +81,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.isFromKept = false;
         this.nameAlreadySet = false;
         this.end = false;
+        this.sentCabinCoord = false;
     }
 
     @Override
@@ -120,7 +122,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                 }
                 case FILL->{
                     ui.showShipLayout(nickname, ship);
-                    ui.showAlienCabin();
+
                 }
                 case FLIGTH -> {
                     ui.showShipLayout(nickname, ship);
@@ -177,7 +179,12 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
                     }
                     case FILL->{
-                        event= new AlienCoordinatesRequest();
+                        if(!sentCabinCoord){
+                            event= new AlienCoordinatesRequest();
+                            sentCabinCoord=true;
+                        }
+
+                        else event= inputParser.parseFillTheShip(input);
                     }
                     case FLIGTH-> { event = inputParser.parseFlight(input);}
                 }
