@@ -20,6 +20,7 @@ import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEven
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
+import it.polimi.ingsw.net.socket.events.serverevents.flightevents.FlightStartEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.utilities.exceptions.*;
@@ -298,13 +299,16 @@ public class ClientHandlerVisitor implements ClientVisitor {
         currentClient.getTruckerController().getSpaceShip().setNumHuman();
         currentClient.getTruckerController().getSpaceShip().setBattery();
         currentClient.getTruckerController().getSpaceShip().getGoodsCapacity();
-        currentClient.getTruckerController().getSpaceShip().getSingleCannonPower();
-        currentClient.getTruckerController().getSpaceShip().getSingleEnginePower();
+        int cannonPower=currentClient.getTruckerController().getSpaceShip().getSingleCannonPower();
+        int enginePower=currentClient.getTruckerController().getSpaceShip().getSingleEnginePower();
         currentClient.getTruckerController().getSpaceShip().increaseLost(currentClient.getTruckerController().getTrucker().getKeptComponents().size());
         currentClient.getTruckerController().getSpaceShip().countExposedConnectors();
         currentClient.getTruckerController().getSpaceShip().getProtection();
+        int position=currentClient.getTruckerController().getPosition();
+        int batteryCount=currentClient.getTruckerController().getSpaceShip().getNumBatteries();
+        int humanCount=currentClient.getTruckerController().getSpaceShip().getNumHuman();
 
-        return null;
+        return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower);
     }
 
 }
