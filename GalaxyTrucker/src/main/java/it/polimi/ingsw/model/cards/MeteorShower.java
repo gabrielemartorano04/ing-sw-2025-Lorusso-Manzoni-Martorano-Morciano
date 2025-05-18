@@ -72,11 +72,11 @@ public class MeteorShower extends Card implements Serializable {
     }
 
     @Override
-    public ServerEvent startCard(String currPlayerNickname) {
+    public ServerEvent startCard() {
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
-                currPlayerNickname,
+                Game.getIstance().getTruckerList().getFirst().getNickname(),
                 "Roll the dice",
                 -1,
                 -1,

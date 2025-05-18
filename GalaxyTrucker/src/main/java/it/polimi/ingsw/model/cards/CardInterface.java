@@ -35,11 +35,7 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default int[] getCurrentMeteor() throws GeneralError, WrongCallerException {
-        throw new WrongCallerException("This Card doesn't have this method");
-    }
-
-    default CardState rollDice(Game game) throws GeneralError, WrongCallerException {
+    default ServerEvent rollDice() throws GeneralError, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
