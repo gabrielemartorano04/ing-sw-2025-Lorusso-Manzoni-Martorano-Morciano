@@ -109,7 +109,7 @@ public abstract class Card implements Serializable, CardInterface{
     /**
      * method to be called after the card is picked from the deck, it returns the event to be sent to the clients
      */
-    public abstract ServerEvent startCard(String currPlayerNickname);
+    public abstract ServerEvent startCard();
 
 
 }
