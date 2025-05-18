@@ -27,11 +27,11 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates, WrongCallerException {
+    default ServerEvent setGoodsCoordinates(int[] goodsCoordinates, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default CardState rearrange(Trucker trucker, int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws GeneralError, InvalidCoordinates, InvalidPositionException, WrongCallerException {
+    default ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean rearrange) throws GeneralError, InvalidCoordinates, InvalidPositionException, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
