@@ -8,8 +8,8 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 public class PlotGood extends CardEvent{
     private final Goods good;
 
-    public PlotGood(ServerEventType eventType, boolean forAll, CardState cardState, String nickname, Goods good) {
-        super(eventType, forAll, cardState, nickname);
+    public PlotGood(boolean forAll, CardState cardState, String nickname, Goods good) {
+        super(ServerEventType.PLOT_GOODS, forAll, cardState, nickname);
         this.good = good;
     }
 
