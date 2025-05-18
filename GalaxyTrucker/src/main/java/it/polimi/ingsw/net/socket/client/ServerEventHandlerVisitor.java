@@ -294,7 +294,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(FlightStartEvent event){
         viewFlow.setPosition(event.getPosition());
-        viewFlow.setBatteryCount(event.getBatteryCount);
+        viewFlow.setBatteryCount(event.getBatteryCount());
         viewFlow.setHumanCount(event.getHumanCount());
         viewFlow.setCannonPower(event.getCannonPower());
         viewFlow.setEnginePower(event.getEnginePower());
