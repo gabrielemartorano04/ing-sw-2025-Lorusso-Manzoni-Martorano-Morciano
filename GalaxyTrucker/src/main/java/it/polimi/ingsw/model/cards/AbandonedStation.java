@@ -3,7 +3,10 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cardcontrollers.AbandonedShipController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.flightevents.StartCardEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.ExecutionEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
 import it.polimi.ingsw.model.Game;
@@ -45,7 +48,7 @@ public class AbandonedStation extends Card implements Serializable {
         this.days = days;
         this.numHuman = numHuman;
         this.goods = goods;
-        this.cardState = CardState.ATTESA_RISPOSTE;
+        this.cardState = CardState.LAND;
         this.playerDecisions=0;
         this.currGood=0;
     }
@@ -93,7 +96,8 @@ public class AbandonedStation extends Card implements Serializable {
                 null,
                 null,
                 null,
-                null
+                null,
+                this.getCardState()
         );
     }
 
@@ -104,31 +108,32 @@ public class AbandonedStation extends Card implements Serializable {
      * @param numPlayer: num of player in the game
      * @param bank: bank of the game
      */
-    public CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError {
-        if (cardState != CardState.ATTESA_RISPOSTE) {
+    public ServerEvent truckerLanding(ArrayList<Trucker> truckers, boolean landing, Bank bank) throws GeneralError {
+        if (cardState != CardState.LAND) {
             throw new GeneralError("stato non valido");
         }
         if(landing) {
-            this.truckerThatHasDecided = trucker;
+            this.truckerThatHasDecided = truckers.get(playerDecisions);
             do {
                 if (bank.getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
                     cardState = CardState.CHOOSE_TO_GAIN;
+                    return new BooleanDecision(ServerEventType.TAKE_GOODS, true, this.getCardState(), "Vuoi iniziare a prendere le merci disponibili?", truckers.get(playerDecisions).getNickname());
                 } else {
                     currGood++;
                     if(currGood>=goods.size()) {
                         cardState = CardState.ESECUZIONE;
+                        return new ExecutionEvent(ServerEventType.EXECUTION, true, this.getCardState());
                     }
                 }
             }while(currGood<goods.size() && cardState!=CardState.CHOOSE_TO_GAIN);
         }else{
-            if (playerDecisions == numPlayer){
+            if (playerDecisions == truckers.size()){
                 cardState = CardState.ESECUZIONE;
-            }else{
-                cardState = CardState.ATTESA_RISPOSTE;
+                return new ExecutionEvent(ServerEventType.EXECUTION, true, this.getCardState());
             }
+            playerDecisions++;
+            return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this AbandonedStation?", truckers.get(playerDecisions).getNickname());
         }
-        playerDecisions++;
-        return cardState;
     }
 
     public Goods setChoiceToGain(boolean choice) throws GeneralError {

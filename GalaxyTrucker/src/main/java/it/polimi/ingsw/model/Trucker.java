@@ -30,6 +30,10 @@ public class Trucker {
         keptComponents = new ArrayList<>();
     }
 
+    public ArrayList<Component> getKeptComponents() {
+        return keptComponents;
+    }
+
     public BuildingState getBuildingState() {
         return buildingState;
     }

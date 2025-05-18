@@ -42,7 +42,7 @@ class AbandonedShipCallerTest {
 
         }
         try {
-            CardStateResult expected = new CardStateResult(card.setTruckerThatHasDecided(trucker, true, 1));
+            CardStateResult expected = new CardStateResult(card.setTruckerDecision(trucker, true, 1));
             assertNotNull(actual);
             assertEquals(expected,actual);
         } catch (GeneralError e) {

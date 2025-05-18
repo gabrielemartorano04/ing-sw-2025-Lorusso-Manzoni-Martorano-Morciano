@@ -4,17 +4,18 @@ import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Goods;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.util.ArrayList;
 
 public interface CardInterface {
 
-    default CardState setTruckerThatHasDecided(Trucker trucker, boolean landing, int numPlayer) throws GeneralError, WrongCallerException{
+    default ServerEvent truckerLanding(ArrayList<Trucker> truckers, boolean landing, Bank bank) throws GeneralError, WrongCallerException{
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default CardState setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, GeneralError, WrongCallerException {
+    default ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, GeneralError, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 

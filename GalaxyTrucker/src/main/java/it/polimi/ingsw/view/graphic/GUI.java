@@ -1565,7 +1565,7 @@ public class GUI extends UI {
         double width = 850;
         double height = 550;
 
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpg").toExternalForm());
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpeg").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(width);
         backgroundView.setFitHeight(height);

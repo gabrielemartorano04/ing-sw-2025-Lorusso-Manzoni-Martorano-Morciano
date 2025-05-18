@@ -1,5 +1,6 @@
-package it.polimi.ingsw.net.socket.events.serverevents.flightevents;
+package it.polimi.ingsw.net.socket.events.serverevents.cardevents;
 
+import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.Goods;
@@ -14,7 +15,7 @@ import java.util.Map;
  * Event sent when a new card is drawn and needs to be shown to all clients.
  * Only the client with matching nickname should answer, if applicable.
  */
-public class StartCardEvent extends ServerEvent {
+public class StartCardEvent extends CardEvent {
     private final String cardName;
     private final String cardDescription;
     private final String firstPlayerNickname;
@@ -50,9 +51,10 @@ public class StartCardEvent extends ServerEvent {
             List<int[]> shoots,
             List<List<Goods>> planets,
             List<Condition> conditionsOrder,
-            Map<Condition, Effect> penalties
+            Map<Condition, Effect> penalties,
+            CardState cardState
     ) {
-        super(ServerEventType.START_CARD, true);
+        super(ServerEventType.START_CARD, true, cardState, null);
         this.cardName = cardName;
         this.cardDescription = cardDescription;
         this.firstPlayerNickname = firstPlayerNickname;
