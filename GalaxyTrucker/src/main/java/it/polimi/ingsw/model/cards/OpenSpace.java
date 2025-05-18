@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
@@ -38,6 +39,11 @@ public class OpenSpace extends Card implements Serializable {
     public OpenSpace(boolean trialFlight, int level, String frontImage, String backImage) {
         super("Open Space", "Empty vastness of space", trialFlight, level, frontImage, backImage);
         this.indexOfCurrentTrucker = 0;
+        state = CardState.;
+    }
+
+    public CardState getCardState() {
+        return state;
     }
 
     @Override
@@ -46,7 +52,7 @@ public class OpenSpace extends Card implements Serializable {
                 this.getName(),
                 this.getDescription(),
                 Game.getIstance().getTruckerList().getFirst().getNickname(),
-                "Do you want to ",
+                "Choose the position of the double engines to activate",
                 -1,
                 -1,
                 -1,
@@ -66,9 +72,8 @@ public class OpenSpace extends Card implements Serializable {
     /**
      * Sets for each trucker the coordinates of the double engines that he/she wants to activate
      * @param truckerCoordinate list of arrays of coordinates
-     * @param numTruckers number of truckers
      */
-    public ServerEvent setEnginesCoordinates(ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, GeneralError {
+    public ServerEvent setEnginesCoordinates(ArrayList<int[]> truckerCoordinate) throws InvalidCoordinates, GeneralError {
         if (this.state != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
@@ -76,16 +81,12 @@ public class OpenSpace extends Card implements Serializable {
             throw new InvalidCoordinates("Not all components are DoubleEngine");
         }
         this.truckersCoordinates.addLast(truckerCoordinate);
-        if (truckersCoordinates != null && truckersCoordinates.size() == numTruckers) {
-            for (ArrayList<int[]> list : truckersCoordinates) {
-                // la lista deve essere o piena o vuota ma non può essere null
-                if (list == null) {
-                    throw new GeneralError("A trucker's list in openspace after all answers is null");
-                }
-            }
+        if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
             this.state = CardState.ESECUZIONE;
+            return cardEffect();
         }
-        return state;
+        indexOfCurrentTrucker++;
+        return new BooleanDecision()
     }
 
     /**

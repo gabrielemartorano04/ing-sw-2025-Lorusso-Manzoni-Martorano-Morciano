@@ -47,7 +47,7 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default ServerEvent setEnginesCoordinates(Trucker trucker, ArrayList<int[]> truckerCoordinate, int numTruckers) throws InvalidCoordinates, GeneralError, WrongCallerException {
+    default ServerEvent setEnginesCoordinates(ArrayList<int[]> truckerCoordinate) throws InvalidCoordinates, GeneralError, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
@@ -92,8 +92,6 @@ public interface CardInterface {
     default CardState rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws WrongCallerException, GeneralError, InvalidCoordinates, InvalidPositionException {throw new WrongCallerException("This method does not exist in the card ");}
 
     // Slavers
-
-    default CardState getCardState()throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
 
     default CardState addTruckersCoordinatesToRemoveHumans(Trucker trucker, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer) throws WrongCallerException, GeneralError, InvalidCoordinates {throw new WrongCallerException("This method does not exist in the card ");}
 

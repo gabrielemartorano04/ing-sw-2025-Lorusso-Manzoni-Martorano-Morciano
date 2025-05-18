@@ -33,5 +33,6 @@ public enum CardState {
     PLOT_GOOD_FROM_LIST,
     ADDFROMLIST,
     // NUOVI STATI PER UNIFICARE TUTTO
-    LAND
+    LAND,
+    ACTIVATE_ENGINES,
 }
