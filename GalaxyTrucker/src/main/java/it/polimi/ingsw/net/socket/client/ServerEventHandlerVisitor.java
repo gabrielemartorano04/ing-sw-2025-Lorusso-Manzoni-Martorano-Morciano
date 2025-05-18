@@ -218,40 +218,12 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(BuildCompleteEvent event){
-//        Trucker mine=null;
-//        boolean[] pos=new boolean[]{false, false, false, false};
-//        for(Trucker t: event.getTruckers()){
-//            if(viewFlow.getNickname().equals(t.getNickname())){
-//                if (t.getPosition()==-1){
-//                    mine=t;
-//                }
-//                else break;
-//            }else {
-//                switch(t.getPosition()){
-//                    case 6: pos[0]=true;break;
-//                    case 3: pos[1]=true;break;
-//                    case 1: pos[2]=true;break;
-//                    case 0: pos[3]=true;break;
-//
-//                }
-//            }
-//        }
-//        if(mine.getPosition()==-1){
-//            for(int i=0;i<pos.length;i++){
-//                if(!pos[i]){
-//                    switch(i){
-//                        case 0: mine.setPosition(6); break;
-//                        case 1: mine.setPosition(3); break;
-//                        case 2: mine.setPosition(1); break;
-//                        case 3: mine.setPosition(0); break;
-//                    }
-//                }
-//            }
-//        }
+
 
         ui.showMessage("Your updated ship\n");
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         ui.showBuildComplete();
+
         viewFlow.setViewState(ViewFlow.ViewState.FILL);
 
         //ui.showMessage("It's time to fill the spaceship\n");
