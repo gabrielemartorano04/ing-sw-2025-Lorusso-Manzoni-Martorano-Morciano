@@ -88,7 +88,7 @@ public class OpenSpace extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, this.getCardState(), "Choose the position of the double engines to activate", Game.getIstance().getTruckers().get(indexOfCurrentTrucker).getNickname());
+        return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, this.getCardState(), "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getNickname());
     }
 
     /**
