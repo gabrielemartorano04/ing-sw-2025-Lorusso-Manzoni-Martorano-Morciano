@@ -93,7 +93,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         }
         else {
             BuildTimerManager.getInstance().stop();
-            for(Trucker t: gameController.getGame().getTruckers()){
+            for(Trucker t: gameController.getGame().getTruckerList()){
                 t.getSpaceShip().wellDone();
             }
             return new BuildCompleteEvent();
@@ -163,7 +163,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 return new ColorAlreadyInError(color,gameController.getAvailablePlayerColors());
             }
             ArrayList<String> players=new ArrayList<>();
-            for(Trucker t:gameController.getGame().getTruckers()){
+            for(Trucker t:gameController.getGame().getTruckerList()){
                 players.add(t.getNickname());
             }
             gameController.getGame().startHourglass();
@@ -274,7 +274,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(ShowOtherShipEvent event) {
         String nickname=event.getNickname();
         Component[][] spaceship=null;
-        for(Trucker t:gameController.getGame().getTruckers()){
+        for(Trucker t:gameController.getGame().getTruckerList()){
             if(t.getNickname().equals(nickname)){
                 spaceship=t.getSpaceShip().getComponents();
                 break;
