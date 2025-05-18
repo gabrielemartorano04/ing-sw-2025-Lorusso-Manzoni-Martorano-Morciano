@@ -15,7 +15,7 @@ public class TestPrintComponent {
 
     public void showAvailableComponents() {
         ArrayList<Component> components = availableComponents.getComponents();
-        System.out.println("=== Componenti disponibili ===");
+        System.out.println("=== Available components ===");
         int i = 0;
         int numCols = 3;
         visualToActualIndex = new HashMap<>();
@@ -26,7 +26,7 @@ public class TestPrintComponent {
             if (!c.getSelected()) {
                 String info;
                 if (c.getCovered()) {
-                    info = "coperto";
+                    info = "covered";
                 } else {
                     info = String.format("%s [N:%s E:%s S:%s W:%s]",
                             c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
@@ -43,7 +43,7 @@ public class TestPrintComponent {
             }
         }
 
-        System.out.println("Mappatura indice visualizzato → indice reale: " + visualToActualIndex);
+        System.out.println("Displayed index mapping→ actual index mapping: " + visualToActualIndex);
     }
 
     public void runInteractiveSession() {
@@ -53,7 +53,7 @@ public class TestPrintComponent {
         while (running) {
             showAvailableComponents();
 
-            System.out.print("\nInserisci l'indice del componente da selezionare (oppure 'exit' per uscire): ");
+            System.out.print("\nInsert the index og the component to select (or 'exit' to quit): ");
             String input = scanner.nextLine();
 
             if (input.equalsIgnoreCase("exit")) {
@@ -64,12 +64,12 @@ public class TestPrintComponent {
                     if (visualToActualIndex.containsKey(selectedVisualIndex)) {
                         int actualIndex = visualToActualIndex.get(selectedVisualIndex);
                         availableComponents.setComponentAsSelected(actualIndex);
-                        System.out.println("✔ Componente selezionato correttamente!\n");
+                        System.out.println("✔ Component correctly selected!\n");
                     } else {
-                        System.out.println("❌ Indice non valido.\n");
+                        System.out.println("❌ invalid index.\n");
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("❌ Input non valido. Inserisci un numero o 'exit'.\n");
+                    System.out.println("❌ invalid input. Insert a number or 'exit'.\n");
                 }
             }
         }

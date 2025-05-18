@@ -45,7 +45,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(AvailableColorsEvent event) {
         ui.showWelcome();
-        System.out.println("Ho ricevuto: "+ event.getEventType());
+        System.out.println("I received: "+ event.getEventType());
         ui.showChooseColor(event.getColors());
     }
 
@@ -80,7 +80,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(StartBuildingEvent event) {
         //potrebbe non funzionare come player joined
         if(!viewFlow.getNameAlreadySet()){
-            System.out.println("Dentro");
+            System.out.println("Inside");
             viewFlow.setNickname(event.getNickname());
         }
         ui.showPlayers(event.getPlayers());

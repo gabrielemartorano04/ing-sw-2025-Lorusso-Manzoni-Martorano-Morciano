@@ -13,6 +13,7 @@ import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.SendBooleanEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.view.UI;
 
 import javafx.animation.*;
@@ -1155,7 +1156,7 @@ public class GUI extends UI {
     }
 
     @Override
-    public void showCardDrawn(Card card) {
+    public void showCardDrawn(StartCardEvent event) {
         double width = stage.getScene().getWidth();
         double height = stage.getScene().getHeight();
 
@@ -1171,7 +1172,7 @@ public class GUI extends UI {
         title.setEffect(new DropShadow(3, Color.BLACK));
 
         // Immagine della carta
-        ImageView cardView = new ImageView(card.getFrontImage());
+        ImageView cardView = new ImageView(event.getFrontImage());
         cardView.setFitWidth(250);
         cardView.setFitHeight(400);
         cardView.setPreserveRatio(true);

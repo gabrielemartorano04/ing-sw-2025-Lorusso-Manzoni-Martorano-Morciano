@@ -12,20 +12,20 @@ public class MainServer {
         final int PORT = 12346;
 
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-            System.out.println("Server in ascolto sulla porta " + PORT + "...");
+            System.out.println("Server listening on port " + PORT + "...");
 
             ServerController serverController = new ServerController();
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Nuovo client connesso: " + clientSocket.getInetAddress());
+                System.out.println("New client connected: " + clientSocket.getInetAddress());
 
                 NetworkServer networkServer = new NetworkServer(clientSocket);
                 ClientHandlerSocket clientHandlerSocket = new ClientHandlerSocket(networkServer, serverController);
 
             }
         } catch (IOException e) {
-            System.err.println("Errore nel server: " + e.getMessage());
+            System.err.println("Error in server: " + e.getMessage());
         }
     }
 }

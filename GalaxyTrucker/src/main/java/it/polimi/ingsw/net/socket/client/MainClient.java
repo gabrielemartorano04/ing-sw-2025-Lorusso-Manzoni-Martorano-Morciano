@@ -47,7 +47,7 @@ public class MainClient {
             view.start();
 
         } catch (IOException e) {
-            System.err.println("Errore nella connessione al server: " + e.getMessage());
+            System.err.println("Error in server connection: " + e.getMessage());
         }
     }
 }

@@ -57,7 +57,7 @@ public class ClientHandlerSocket implements ClientHandler {
 
             network.sendMessage(event);
         } catch (IOException e) {
-            System.err.println("Error sending the event to the client: " + e.getMessage());
+            System.err.println("Error while sending event to the client: " + e.getMessage());
         }
     }
 
@@ -65,7 +65,7 @@ public class ClientHandlerSocket implements ClientHandler {
         try {
             network.close();
         } catch (IOException e) {
-            System.err.println("Errore chiusura connessione: " + e.getMessage());
+            System.err.println("Error while closing connection: " + e.getMessage());
         }
     }
 }

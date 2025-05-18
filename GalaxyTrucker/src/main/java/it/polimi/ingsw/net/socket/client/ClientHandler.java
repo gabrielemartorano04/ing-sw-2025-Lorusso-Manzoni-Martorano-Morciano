@@ -19,7 +19,7 @@ public class ClientHandler {
         try {
             network.sendMessage(event);
         } catch (IOException e) {
-            System.err.println("Errore invio evento client: " + e.getMessage());
+            System.err.println("Error while sending client event: " + e.getMessage());
         }
     }
 }

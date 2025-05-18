@@ -27,12 +27,12 @@ public class NetworkListenerClient {
                         ServerEvent event = (ServerEvent) inputStream.readObject();
                         receiver.onEventReceived(event);
                     } catch (ClassCastException e) {
-                        System.err.println("Errore: oggetto ricevuto non è un ServerEvent. Tipo: " + e.getMessage());
+                        System.err.println("Error: object received not in ServerEvent. Type: " + e.getMessage());
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {
                 if (running) {
-                    System.err.println("Errore nel listener client: " + e.getMessage());
+                    System.err.println("Error in listener client: " + e.getMessage());
                 }
             }
         });
