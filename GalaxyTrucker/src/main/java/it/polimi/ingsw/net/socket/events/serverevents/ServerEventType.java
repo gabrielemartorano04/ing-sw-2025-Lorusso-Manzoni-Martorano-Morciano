@@ -55,6 +55,7 @@ public enum ServerEventType {
     CARD_FINISHED,
     ROLL_DICE, TAKE_GOODS,
     ADD_GOODS,
-    REARRANGE
+    REARRANGE,
+    ACTIVATE_ENGINES
 
 }
