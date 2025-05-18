@@ -160,22 +160,22 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
-    public void visit(NotYourTurnError notYourTurnError) {
+    public void visit(NotYourTurnError event) {
 
     }
 
     @Override
-    public void visit(NumberOfPlayersError numberOfPlayersError) {
+    public void visit(NumberOfPlayersError event) {
 
     }
 
     @Override
-    public void visit(PlacedComponentRequest placedComponentRequest) {
+    public void visit(PlacedComponentRequest event) {
 
     }
 
     @Override
-    public void visit(TruckerLostCrewEvent truckerLostCrewEvent) {
+    public void visit(TruckerLostCrewEvent event) {
 
     }
 
@@ -185,22 +185,22 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
-    public void visit(GameCreatedEvent gameCreatedEvent) {
+    public void visit(GameCreatedEvent event) {
 
     }
 
     @Override
-    public void visit(FirstConnectionEvent firstConnectionEvent) {
+    public void visit(FirstConnectionEvent event) {
 
     }
 
     @Override
-    public void visit(CoordListRequest coordListRequest) {
+    public void visit(CoordListRequest event) {
 
     }
 
     @Override
-    public void visit(AvailableComponentToSelectRequest availableComponentToSelectRequest) {
+    public void visit(AvailableComponentToSelectRequest event) {
 
     }
 
