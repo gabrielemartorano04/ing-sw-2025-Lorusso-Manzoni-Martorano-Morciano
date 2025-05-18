@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.cardcontrollers.AbandonedShipController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
