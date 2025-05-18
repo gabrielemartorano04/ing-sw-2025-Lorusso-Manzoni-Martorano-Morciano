@@ -4,10 +4,7 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cardcontrollers.AbandonedShipController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.ExecutionEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.HumanCoordinates;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.LandDecision;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
@@ -138,26 +135,21 @@ public class AbandonedShip extends Card implements Serializable {
      * Sets the coordinates of the cabins from which he wants to remove the crew members required
      * @param coordinates list of arrays of coordinates of the cabins
      */
-    public CardState setCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, GeneralError {
+    public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, GeneralError {
         if(state != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Can't call setCoordinates in the state: " + state);
         }
-        if(coordinates==null|| coordinates.isEmpty()){
-            throw new InvalidCoordinates("Coordinates is null or empty");
+        if(truckerThatHasDecided ==null){
+            throw new GeneralError("Tried to set coordinates when truckerThatHasDecided is null");
         }
         try{
             truckerThatHasDecided.getSpaceShip().checkCabin(coordinates, numHuman);
             this.coordinates = coordinates;
+            state = CardState.ESECUZIONE;
+            return new ExecutionEvent(ServerEventType.EXECUTION, false, this.getCardState());
         }catch (InvalidCoordinates e){
             throw new InvalidCoordinates(e.getMessage());
         }
-
-        if(truckerThatHasDecided !=null){
-            state = CardState.ESECUZIONE;
-        }else{
-            throw new GeneralError("Tried to set coordinates when truckerThatHasDecided is null");
-        }
-        return state;
     }
 
     /**
@@ -166,7 +158,7 @@ public class AbandonedShip extends Card implements Serializable {
      */
 
     @Override
-    public synchronized CardState cardEffect(Game game) throws GeneralError {
+    public ServerEvent cardEffect(Game game) throws GeneralError {
         if(state != CardState.ESECUZIONE) {
             throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }
@@ -177,7 +169,7 @@ public class AbandonedShip extends Card implements Serializable {
         }
         state = CardState.EXIT;
         this.setIsCardFinished(true);
-        return state;
+        return new CardFinished(ServerEventType.CARD_FINISHED, false, this.getCardState());
     }
 
 

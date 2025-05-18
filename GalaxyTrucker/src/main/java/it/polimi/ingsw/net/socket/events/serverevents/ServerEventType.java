@@ -51,6 +51,7 @@ public enum ServerEventType {
     // CARDEVENTS
     HUMAN_COORDINATES,
     EXECUTION, //means that the server has to handle this event without sending it to the client
-    LAND
+    LAND,
+    CARD_FINISHED,
 
 }
