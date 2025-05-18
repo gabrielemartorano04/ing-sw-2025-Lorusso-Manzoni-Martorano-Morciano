@@ -55,14 +55,13 @@ public class Epidemic extends Card implements Serializable {
 
     /**
      * Applies the changes provided by the card
-     * @param game game in which the card has been drawn
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {
         if(state != CardState.ESECUZIONE) {
             throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }
-        List <Trucker> truckers = game.getTruckerList();
+        List <Trucker> truckers = Game.getIstance().getTruckerList();
         for(Trucker trucker : truckers) {
             trucker.getSpaceShip().epidemic();
         }

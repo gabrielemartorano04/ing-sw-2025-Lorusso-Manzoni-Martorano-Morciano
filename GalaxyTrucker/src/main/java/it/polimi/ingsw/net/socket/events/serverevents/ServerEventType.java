@@ -53,6 +53,6 @@ public enum ServerEventType {
     EXECUTION, //means that the server has to handle this event without sending it to the client
     LAND,
     CARD_FINISHED,
-    TAKE_GOODS
+    ROLL_DICE, TAKE_GOODS
 
 }
