@@ -7,8 +7,8 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 public class BooleanDecision extends CardEvent{
     private final String message;
 
-    public BooleanDecision(ServerEventType eventType, boolean forAll, CardState cardState, String message) {
-        super(eventType, forAll, cardState);
+    public BooleanDecision(ServerEventType eventType, boolean forAll, CardState cardState, String message, String nickname) {
+        super(eventType, forAll, cardState, nickname);
         this.message = message;
     }
 
