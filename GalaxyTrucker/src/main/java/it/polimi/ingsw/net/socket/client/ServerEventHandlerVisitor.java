@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
@@ -376,6 +377,56 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(WaitOthersStartFlightEvent event) {
         viewFlow.setStartFlight();
         ui.showWaitForOthers();
+    }
+
+    @Override
+    public void visit(BooleanDecision event) {
+
+    }
+
+    @Override
+    public void visit(CardFinished event) {
+
+    }
+
+    @Override
+    public void visit(EpidemicEvent event) {
+
+    }
+
+    @Override
+    public void visit(ExecutionEvent event) {
+
+    }
+
+    @Override
+    public void visit(HumanCoordinates event) {
+
+    }
+
+    @Override
+    public void visit(PlanetDecision event) {
+
+    }
+
+    @Override
+    public void visit(PlotGood event) {
+
+    }
+
+    @Override
+    public void visit(RollDice event) {
+
+    }
+
+    @Override
+    public void visit(StarDustEvent event) {
+
+    }
+
+    @Override
+    public void visit(StartCardEvent event) {
+
     }
 
     // === CARD EVENTS ===
