@@ -4,9 +4,9 @@ import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 
-public class LandDecision extends CardEvent{
+public class BooleanDecision extends CardEvent{
 
-    public LandDecision(ServerEventType eventType, boolean forAll, CardState cardState) {
+    public BooleanDecision(ServerEventType eventType, boolean forAll, CardState cardState) {
         super(eventType, forAll, cardState);
     }
 
