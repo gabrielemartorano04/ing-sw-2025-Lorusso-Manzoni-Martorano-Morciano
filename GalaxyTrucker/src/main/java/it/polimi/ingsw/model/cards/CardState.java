@@ -35,4 +35,5 @@ public enum CardState {
     // NUOVI STATI PER UNIFICARE TUTTO
     LAND,
     ACTIVATE_ENGINES,
+    TAKE_WIN
 }

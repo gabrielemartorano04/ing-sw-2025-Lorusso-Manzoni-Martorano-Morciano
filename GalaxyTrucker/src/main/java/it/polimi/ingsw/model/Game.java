@@ -176,8 +176,6 @@ public class Game {
         return truckers.get(i);
     }
 
-    public ArrayList<Trucker> getTruckers() {return truckers;}
-
     /**
      * Returns the list of available components.
      * @return an array of available components

@@ -73,22 +73,35 @@ public class OpenSpace extends Card implements Serializable {
 
     /**
      * Sets for each trucker the coordinates of the double engines that he/she wants to activate
-     * @param truckerCoordinate list of arrays of coordinates
+     * @param coord list of arrays of coordinates
      */
-    public ServerEvent setEnginesCoordinates(ArrayList<int[]> truckerCoordinate) throws InvalidCoordinates, GeneralError {
+    public ServerEvent setEnginesCoordinates(Boolean activate, ArrayList<int[]> coord) throws InvalidCoordinates, GeneralError {
         if (this.state != CardState.ACTIVATE_ENGINES) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
-        if(!Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getSpaceShip().checkDoubleEngine(truckerCoordinate)){
-            throw new InvalidCoordinates("Not all components are DoubleEngine");
+        if(activate){
+            if(coord == null) {
+                throw new GeneralError("Coordinates are null");
+            }
+            if(!Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getSpaceShip().checkDoubleEngine(coord)){
+                if(Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getSpaceShip().getNumDoubleEngine() == 0 ){
+                    indexOfCurrentTrucker++;
+                    throw new InvalidCoordinates("You don't have any double-engine");
+
+                }
+                throw new InvalidCoordinates("Not all components are DoubleEngine");
+            }
+
+            this.truckersCoordinates.addLast(coord);
+
         }
-        this.truckersCoordinates.addLast(truckerCoordinate);
+
         if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
             this.state = CardState.ESECUZIONE;
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, this.getCardState(), "Choose the position of the double engines to activate", Game.getIstance().getTruckers().get(indexOfCurrentTrucker).getNickname());
+        return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, this.getCardState(), "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getNickname());
     }
 
     /**

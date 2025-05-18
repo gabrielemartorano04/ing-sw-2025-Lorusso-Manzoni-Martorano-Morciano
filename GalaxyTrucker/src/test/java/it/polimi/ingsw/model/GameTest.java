@@ -50,13 +50,13 @@ class GameTest {
 
     @Test
     void sortTruckers() {
-        assertEquals("frenk", game.getTruckers().get(0).getNickname());
-        assertEquals("manzo", game.getTruckers().get(1).getNickname());
+        assertEquals("frenk", game.getTruckerList().get(0).getNickname());
+        assertEquals("manzo", game.getTruckerList().get(1).getNickname());
         game.getTrucker(0).setPosition(3);
         game.getTrucker(1).setPosition(5);
         game.sortTruckers();
-        assertEquals("manzo", game.getTruckers().get(0).getNickname());
-        assertEquals("frenk", game.getTruckers().get(1).getNickname());
+        assertEquals("manzo", game.getTruckerList().get(0).getNickname());
+        assertEquals("frenk", game.getTruckerList().get(1).getNickname());
     }
 
     @Test
@@ -89,14 +89,14 @@ class GameTest {
         trucker1.setPosition(1);
         trucker2.setPosition(27);
         game.checkOvertaken(trucker1);
-        assertFalse(game.getTruckers().contains(t1));
+        assertFalse(game.getTruckerList().contains(t1));
     }
 
     @Test
     void withdraw() {
         Trucker t1 = trucker1;
         game.withdraw(trucker1);
-        assertFalse(game.getTruckers().contains(t1));
+        assertFalse(game.getTruckerList().contains(t1));
         assertNotNull(game.getTrucker(0).getNickname());
         //invertiti perche ho fatto sort sopra
     }
@@ -105,14 +105,7 @@ class GameTest {
     void getTrucker() {
         assertEquals("frenk", game.getTrucker(0).getNickname());
         assertEquals("manzo", game.getTrucker(1).getNickname());
-        assertEquals(2,game.getTruckers().size());
-    }
-
-    @Test
-    void getTruckers() {
-        assertEquals(2, game.getTruckers().size());
-        assertEquals("frenk", game.getTruckers().get(0).getNickname());
-        assertEquals("manzo", game.getTruckers().get(1).getNickname());
+        assertEquals(2,game.getTruckerList().size());
     }
 
     @Test
@@ -200,7 +193,7 @@ class GameTest {
     void addTrucker() {
         Trucker trucker = new Trucker("gabri", PlayerColors.YELLOW);
         game.addTrucker(trucker);
-        assertTrue(game.getTruckers().contains(trucker));
+        assertTrue(game.getTruckerList().contains(trucker));
     }
 
     @Test
@@ -238,7 +231,7 @@ class GameTest {
 
     @Test
     void allPlayersReady() {
-        for (Trucker trucker : game.getTruckers()) {
+        for (Trucker trucker : game.getTruckerList()) {
             trucker.setBuildingState(BuildingState.END);
         }
         assertTrue(game.allPlayersReady());

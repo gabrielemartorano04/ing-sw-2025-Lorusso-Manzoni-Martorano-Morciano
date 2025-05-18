@@ -137,7 +137,7 @@ public class ServerController {
         BuildTimerManager.getInstance().start(this, 90);
         if(!BuildTimerManager.getInstance().isRunning()){
             boolean[] pos=new boolean[]{false, false, false, false};
-            for(Trucker t: gameController.getGame().getTruckers()){
+            for(Trucker t: gameController.getGame().getTruckerList()){
                 if(t.getPosition()!=-1){
                     switch (t.getPosition()){
                         case 6: pos[0]=true;break;
@@ -147,7 +147,7 @@ public class ServerController {
                     }
                 }
             }
-            for(Trucker t: gameController.getGame().getTruckers()){
+            for(Trucker t: gameController.getGame().getTruckerList()){
                 if(t.getPosition()==-1){
                     for(int i=0;i<pos.length;i++){
                         if(!pos[i]){
@@ -163,7 +163,7 @@ public class ServerController {
             }
             //TODO:TOGLI DOPO DEBUG
             String message="";
-            for(Trucker t: gameController.getGame().getTruckers()){
+            for(Trucker t: gameController.getGame().getTruckerList()){
                 message+="Posizione di "+t.getNickname()+" : "+t.getPosition()+"\n";
             }
             System.out.println(message);

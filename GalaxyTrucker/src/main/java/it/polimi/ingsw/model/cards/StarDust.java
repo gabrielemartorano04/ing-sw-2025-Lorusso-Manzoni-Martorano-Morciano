@@ -2,7 +2,10 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StarDustEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.io.Serializable;
@@ -30,25 +33,32 @@ public class StarDust extends Card implements Serializable {
 
     /**
      * Applies the changes provided by the card
-     * @param game game in which the card has been drawn
      */
     @Override
-    public CardState cardEffect(Game game) throws GeneralError {
+    public ServerEvent cardEffect() throws GeneralError {
         if(cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Not callable in the state " + cardState);
         }
-        List<Trucker> truckers = game.getTruckerList();
+        List<Trucker> truckers = Game.getIstance().getTruckerList();
         Collections.reverse(truckers);
         for (Trucker trucker : truckers) {
             int exposedConnectors = trucker.getSpaceShip().countExposedConnectors();
-            game.moveBackward(trucker, exposedConnectors);
+            Game.getIstance().moveBackward(trucker, exposedConnectors);
         }
         Collections.reverse(truckers); //rigiro i Truckers così ritorno all'ordine originale della lista
-        return CardState.EXIT;
+        return new StarDustEvent(true, this.getCardState(), Game.getIstance().getTruckerList());
     }
 
     @Override
-    public ServerEvent startCard(String currPlayerNickname) {
-        return null;
+    public ServerEvent startCard() {
+        try {
+            return cardEffect();
+        } catch (GeneralError e) {
+            return new GenericErrorEvent("errore", true);
+        }
+    }
+
+    public CardState getCardState() {
+        return cardState;
     }
 }

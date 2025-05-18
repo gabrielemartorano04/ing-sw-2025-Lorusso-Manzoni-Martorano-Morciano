@@ -35,11 +35,7 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default int[] getCurrentMeteor() throws GeneralError, WrongCallerException {
-        throw new WrongCallerException("This Card doesn't have this method");
-    }
-
-    default CardState rollDice(Game game) throws GeneralError, WrongCallerException {
+    default ServerEvent rollDice() throws GeneralError, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
@@ -47,11 +43,11 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default ServerEvent setEnginesCoordinates(ArrayList<int[]> truckerCoordinate) throws InvalidCoordinates, GeneralError, WrongCallerException {
+    default ServerEvent setEnginesCoordinates(Boolean activate, ArrayList<int[]> truckerCoordinate) throws InvalidCoordinates, GeneralError, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException, WrongCallerException {
+    default CardState setCannonsCoordinates(Boolean activate, ArrayList<int[]> doubleCannonsCoord) throws GeneralError, InvalidComponentsException, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
