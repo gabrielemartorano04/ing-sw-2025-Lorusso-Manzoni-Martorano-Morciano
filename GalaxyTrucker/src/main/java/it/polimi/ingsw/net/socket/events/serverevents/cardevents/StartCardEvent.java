@@ -1,5 +1,6 @@
 package it.polimi.ingsw.net.socket.events.serverevents.cardevents;
 
+import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
@@ -8,6 +9,7 @@ import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,8 @@ public class StartCardEvent extends CardEvent {
     private final String firstPlayerNickname;
     private final String question;
 
+    private Bank bank;
+
     private final int days;
     private final int credits;
     private final int numHumans;
@@ -31,7 +35,7 @@ public class StartCardEvent extends CardEvent {
     private final List<Goods> goods;
     private final List<int[]> meteorites;
     private final List<int[]> shoots;
-    private final List<List<Goods>> planets;
+    private final ArrayList<ArrayList<Goods>> planets;
     private final List<Condition> conditionsOrder;
     private final Map<Condition, Effect> penalties;
 
@@ -49,7 +53,7 @@ public class StartCardEvent extends CardEvent {
             int astronautsLost,
             int goodsLost,
             List<int[]> shoots,
-            List<List<Goods>> planets,
+            ArrayList<ArrayList<Goods>> planets,
             List<Condition> conditionsOrder,
             Map<Condition, Effect> penalties,
             CardState cardState
@@ -122,7 +126,7 @@ public class StartCardEvent extends CardEvent {
         return shoots;
     }
 
-    public List<List<Goods>> getPlanets() {
+    public ArrayList<ArrayList<Goods>> getPlanets() {
         return planets;
     }
 
@@ -138,8 +142,17 @@ public class StartCardEvent extends CardEvent {
         return question;
     }
 
+    public Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
+    }
+
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
         // TODO: FARE QUESTO METODO
     }
+
 }

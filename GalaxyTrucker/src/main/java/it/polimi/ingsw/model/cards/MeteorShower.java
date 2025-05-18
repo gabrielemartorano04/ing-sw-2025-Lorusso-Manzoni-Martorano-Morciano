@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.model.cardcontrollers.MeteorShowerController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
@@ -53,7 +52,7 @@ public class MeteorShower extends Card implements Serializable {
      * @param backImage back image of the card
      */
     public MeteorShower(boolean trialFlight, ArrayList<int[]> direction, int level, String frontImage, String backImage) {
-        super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImage, backImage, new MeteorShowerController());
+        super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImage, backImage);
         this.directions = direction;
         this.answers = new ArrayList<>();
     }

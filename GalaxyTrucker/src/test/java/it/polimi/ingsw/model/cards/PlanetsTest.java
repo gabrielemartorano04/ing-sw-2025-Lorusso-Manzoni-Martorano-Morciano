@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.components.Goods;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,11 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlanetsTest {
 
-    private Planets card;
+    private PlanetsOld card;
 
     @BeforeEach
     void setUp() {
-        card=new Planets(false,1,1,new ArrayList<ArrayList<Goods>>(),"","");
+        card=new PlanetsOld(false,1,1,new ArrayList<ArrayList<Goods>>(),"","");
     }
 
     @Test
