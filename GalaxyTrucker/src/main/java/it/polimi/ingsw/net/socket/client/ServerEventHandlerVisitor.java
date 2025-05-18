@@ -300,6 +300,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.setEnginePower(event.getEnginePower());
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         ui.showFlightPhaseStart();
+
     }
 
     @Override
