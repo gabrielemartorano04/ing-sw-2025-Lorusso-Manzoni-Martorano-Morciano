@@ -142,13 +142,13 @@ public class AbandonedStation extends Card implements Serializable {
         }
         if (choice) {
             cardState = CardState.GOODSTOADD;
-            return new PlotGood(ServerEventType.ADD_GOODS, false, this.getCardState(), this.truckerThatHasDecided.getNickname(), this.goods.get(currGood));
+            return new PlotGood(true, this.getCardState(), this.truckerThatHasDecided.getNickname(), this.goods.get(currGood));
         }else {
             if(currGood==goods.size()-1) {
                 cardState = CardState.REARRANGE;
-                return new BooleanDecision(ServerEventType.REARRANGE, false, this.getCardState(), "Vuoi riarrangiare le merci dentro la nave?", this.truckerThatHasDecided.getNickname());
+                return new BooleanDecision(ServerEventType.REARRANGE, true, this.getCardState(), "Vuoi riarrangiare le merci dentro la nave?", this.truckerThatHasDecided.getNickname());
             } else currGood++;
-            return new PlotGood(ServerEventType.ADD_GOODS, false, this.getCardState(), this.truckerThatHasDecided.getNickname(), this.goods.get(currGood));
+            return new PlotGood(true, this.getCardState(), this.truckerThatHasDecided.getNickname(), this.goods.get(currGood));
         }
     }
 
