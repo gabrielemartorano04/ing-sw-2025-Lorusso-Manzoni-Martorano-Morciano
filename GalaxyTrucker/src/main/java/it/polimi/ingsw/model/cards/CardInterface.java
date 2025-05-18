@@ -47,7 +47,7 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException, WrongCallerException {
+    default CardState setCannonsCoordinates(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 

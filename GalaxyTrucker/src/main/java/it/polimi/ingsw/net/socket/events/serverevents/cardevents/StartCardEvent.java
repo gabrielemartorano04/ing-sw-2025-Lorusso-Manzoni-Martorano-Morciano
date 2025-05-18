@@ -138,6 +138,8 @@ public class StartCardEvent extends CardEvent {
         return question;
     }
 
+    public void setThisTruckerCanActivate() {}
+
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
         // TODO: FARE QUESTO METODO

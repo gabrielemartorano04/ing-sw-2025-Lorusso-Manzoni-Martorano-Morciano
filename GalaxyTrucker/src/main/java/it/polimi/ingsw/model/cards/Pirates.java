@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.cardcontrollers.PiratesController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
@@ -26,10 +27,17 @@ public class Pirates extends Card implements Serializable {
     private final int credits;
     private final int days;
     private final int piratesPower;
+    private final ArrayList<int[]> shoots;
+    // shoots è una lista dove shoots.get(i) rappresenta l'i-esimo colpo in questa specifica carta Pirates
+    // shoots.get(i)[0] vale 1 se il colpo è grande 0 se è piccolo
+    // shoots.get(i)[1] indice la direzione da cui arriva il colpo (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da sx)
+    // shoots è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
+    // cioè scegliendo il meteorite dall'alto verso il basso
+
+    private CardState cardState;
+    private int indexOfCurrentTrucker;
     private Trucker winnerTrucker = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
     private ArrayList<Trucker> defeatedTruckers;
-    private final ArrayList<int[]> shoots;
-    private CardState cardState;
     private ArrayList<ArrayList<int[]>> doubleCannonsCoord; // coordinates of the double cannons the trucker wants to activate
     private int playersDecisions; // number of players that gave a choice
     private boolean activateShield;
@@ -38,12 +46,6 @@ public class Pirates extends Card implements Serializable {
     private int[] shoot;
     private int roll;
     private ArrayList<Boolean> usesShield;
-
-    // shoots è una lista dove shoots.get(i) rappresenta l'i-esimo colpo in questa specifica carta Pirates
-    // shoots.get(i)[0] vale 1 se il colpo è grande 0 se è piccolo
-    // shoots.get(i)[1] indice la direzione da cui arriva il colpo (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da sx)
-    // shoots è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
-    // cioè scegliendo il meteorite dall'alto verso il basso
 
     /**
      * Pirates constructor, initialise the attributes of this class
@@ -69,6 +71,7 @@ public class Pirates extends Card implements Serializable {
         this.choiceToGain = false;
         this.i = 0;
         this.roll = 0;
+        this.indexOfCurrentTrucker = 0;
     }
 
     /**
@@ -112,28 +115,53 @@ public class Pirates extends Card implements Serializable {
         this.defeatedTruckers = defeatedTruckers;
     }
 
-    public CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
+    @Override
+    public ServerEvent startCard() {
+
+        return new StartCardEvent(
+                this.getName(),
+                this.getDescription(),
+                Game.getIstance().getTruckerList().getFirst().getNickname(),
+                "Do you want to activate your doubleCannons?",
+                days,
+                credits,
+                -1,
+                null,
+                null,
+                piratesPower,
+                -1,
+                -1,
+                shoots,
+                null,
+                null,
+                null,
+                this.getCardState()
+
+        );
+    }
+
+    public ServerEvent setCannonsCoordinates(ArrayList<int[]> doubleCannonsCoord) throws GeneralError, InvalidComponentsException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
-        if (trucker.getSpaceShip().getNumDoubleCannon()!=0) {
-            if (!doubleCannonsCoord.isEmpty() || trucker.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
+        if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getNumDoubleCannon()!=0) {
+            if (!doubleCannonsCoord.isEmpty() || Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
                 this.doubleCannonsCoord.addLast(doubleCannonsCoord);
                 playersDecisions++;
             } else {
                 throw new InvalidComponentsException("not a double cannon");
             }
         }
-        if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > piratesPower) {
-            winnerTrucker = trucker;
+        if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > piratesPower) {
+            winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
             cardState = CardState.GAIN;
-        }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == piratesPower){
-            if (playersDecisions == numPlayer) {
+        }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == piratesPower){
+            if (playersDecisions == Game.getIstance().getTruckerList().size()) {
                 cardState = CardState.GAIN;
             }else cardState = CardState.ATTESA_RISPOSTE;
         }else {
-            defeatedTruckers.add(trucker);
-            if (playersDecisions == numPlayer) {
+            defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
+            if (playersDecisions == Game.getIstance().getTruckerList().size()) {
                 cardState = CardState.GAIN;
             }else cardState = CardState.ATTESA_RISPOSTE;
         }
@@ -239,8 +267,4 @@ public class Pirates extends Card implements Serializable {
         return cardState;
     }
 
-    @Override
-    public ServerEvent startCard(String currPlayerNickname) {
-        return null;
-    }
 }
