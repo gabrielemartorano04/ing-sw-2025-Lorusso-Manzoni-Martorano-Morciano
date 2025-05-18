@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cardcontrollers.AbandonedShipController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.flightevents.StartCardEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
 import it.polimi.ingsw.model.Game;
@@ -45,7 +45,7 @@ public class AbandonedStation extends Card implements Serializable {
         this.days = days;
         this.numHuman = numHuman;
         this.goods = goods;
-        this.cardState = CardState.ATTESA_RISPOSTE;
+        this.cardState = CardState.LAND;
         this.playerDecisions=0;
         this.currGood=0;
     }
@@ -93,7 +93,8 @@ public class AbandonedStation extends Card implements Serializable {
                 null,
                 null,
                 null,
-                null
+                null,
+                this.getCardState()
         );
     }
 
@@ -104,8 +105,8 @@ public class AbandonedStation extends Card implements Serializable {
      * @param numPlayer: num of player in the game
      * @param bank: bank of the game
      */
-    public CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError {
-        if (cardState != CardState.ATTESA_RISPOSTE) {
+    public ServerEvent truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError {
+        if (cardState != CardState.LAND) {
             throw new GeneralError("stato non valido");
         }
         if(landing) {
@@ -113,6 +114,7 @@ public class AbandonedStation extends Card implements Serializable {
             do {
                 if (bank.getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
                     cardState = CardState.CHOOSE_TO_GAIN;
+
                 } else {
                     currGood++;
                     if(currGood>=goods.size()) {
@@ -123,8 +125,6 @@ public class AbandonedStation extends Card implements Serializable {
         }else{
             if (playerDecisions == numPlayer){
                 cardState = CardState.ESECUZIONE;
-            }else{
-                cardState = CardState.ATTESA_RISPOSTE;
             }
         }
         playerDecisions++;
