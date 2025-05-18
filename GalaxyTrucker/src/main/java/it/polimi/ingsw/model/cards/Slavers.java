@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cardcontrollers.SlaversController;
+import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
@@ -10,6 +12,7 @@ import it.polimi.ingsw.model.Game;
 
 
 import java.io.Serializable;
+import java.security.KeyManagementException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -26,6 +29,9 @@ public class Slavers extends Card implements Serializable {
     private final int credits;
     private final int days;
     private final int astronautsLost;
+    private int indexOfCurrPlayer;
+
+
     private Trucker winnerTrucker = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
     private ArrayList<Trucker> defeatedTruckers = new ArrayList<>();
     private ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveHumans;
@@ -58,6 +64,7 @@ public class Slavers extends Card implements Serializable {
         this.cardState = CardState.ATTESA_RISPOSTE;
         this.playersDecisions = 0;
         this.truckersCoordinatesToRemoveHumans = new ArrayList<>();
+        this.indexOfCurrPlayer = 0;
     }
 
     /**
@@ -112,11 +119,89 @@ public class Slavers extends Card implements Serializable {
         this.winnerTrucker = winnerTrucker;
     }
 
+    @Override
+    public ServerEvent startCard() {
+        return new StartCardEvent(
+                this.getName(),
+                this.getDescription(),
+                Game.getIstance().getTruckerList().getFirst().getNickname(),
+                "Do you want to activate your doubleCannons?",
+                days,
+                credits,
+                -1,
+                null,
+                null,
+                slaversPower,
+                astronautsLost,
+                -1,
+                null,
+                null,
+                null,
+                null,
+                this.getCardState()
+        );
+    }
+
+    public ServerEvent setCannonsCoordinates(Boolean activate, ArrayList<int[]> doubleCannonsCoord) throws GeneralError, InvalidComponentsException {
+        if (cardState != CardState.ATTESA_RISPOSTE) {
+            throw new GeneralError("Card state is not ATTESA_RISPOSTE");
+        }
+        if(activate) {
+            if(Game.getIstance().getTrucker(indexOfCurrPlayer).getSpaceShip().getNumDoubleCannon()==0){
+                if (Game.getIstance().getTrucker(indexOfCurrPlayer).getSpaceShip().getSingleCannonPower() > slaversPower) {
+                    winnerTrucker = Game.getIstance().getTrucker(indexOfCurrPlayer);
+                    cardState = CardState.HUMANSTOREMOVE;
+                    return ...; // hai vinto, decidi se vuoi prenderti la ricompensa
+                }else if(Game.getIstance().getTrucker(indexOfCurrPlayer).getSpaceShip().getSingleCannonPower() == slaversPower){
+                    if (indexOfCurrPlayer == Game.getIstance().getTruckerList().size()) {
+                        playersDecisions=0; ???
+                        cardState = CardState.HUMANSTOREMOVE;
+                        return ... , // al primo sconfitto fai tirare i dadi
+                    }else{
+                        cardState = CardState.ATTESA_RISPOSTE;
+                        indexOfCurrPlayer++;
+                    }
+
+                }else {
+                    defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrPlayer));
+                    if (playersDecisions == Game.getIstance().getTruckerList().size()) {
+                        playersDecisions=0;
+                        cardState = CardState.HUMANSTOREMOVE;
+                    }else cardState = CardState.ATTESA_RISPOSTE;
+                }
+                throw new GeneralError("Non hai cannoni doppi, tocca al prossimo giocatore");
+            }else {
+                if (Game.getIstance().getTrucker(indexOfCurrPlayer).getSpaceShip().checkDoubleCannon(doubleCannonsCoord)) {
+                    this.doubleCannonsCoord.addLast(doubleCannonsCoord);
+                    indexOfCurrPlayer++;
+                } else {
+                    throw new InvalidComponentsException("Not every coordinate corresponds to a double cannon");
+                }
+            }
+        }
+        if (Game.getIstance().getTrucker(indexOfCurrPlayer).getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > slaversPower) {
+            winnerTrucker = Game.getIstance().getTrucker(indexOfCurrPlayer);
+            cardState = CardState.HUMANSTOREMOVE;
+        }else if(Game.getIstance().getTrucker(indexOfCurrPlayer).getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == slaversPower){
+            if (playersDecisions == Game.getIstance().getTruckerList().size()) {
+                playersDecisions=0;
+                cardState = CardState.HUMANSTOREMOVE;
+            }else cardState = CardState.ATTESA_RISPOSTE;
+        }else {
+            defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrPlayer));
+            if (playersDecisions == Game.getIstance().getTruckerList().size()) {
+                playersDecisions=0;
+                cardState = CardState.HUMANSTOREMOVE;
+            }else cardState = CardState.ATTESA_RISPOSTE;
+        }
+        return cardState;
+    }
+
     /**
      * Sets, for each trucker, the coordinates of the cabin where he/she want to remove the crew members
-     * @param truckersCoordinatesToRemoveHumans list of lists of arrays of coordinates
+     * @param coordinates list of lists of arrays of coordinates
      */
-    public CardState addTruckersCoordinatesToRemoveHumans(Trucker trucker, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer) throws GeneralError, InvalidCoordinates {
+    public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws GeneralError, InvalidCoordinates {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Card state in not HUMANSTOREMOVE");
         }
@@ -137,36 +222,6 @@ public class Slavers extends Card implements Serializable {
             if(winnerTrucker !=null) {
                 cardState = CardState.CHOOSE_TO_GAIN;
             }else cardState = CardState.ESECUZIONE;
-        }
-        return cardState;
-    }
-
-    public CardState addDoubleCannonsCoord(Trucker trucker, ArrayList<int[]> doubleCannonsCoord, int numPlayer) throws GeneralError, InvalidComponentsException {
-        if (cardState != CardState.ATTESA_RISPOSTE) {
-            throw new GeneralError("Card state is not ATTESA_RISPOSTE");
-        }
-        if (trucker.getSpaceShip().getNumDoubleCannon()!=0) {
-            if (!doubleCannonsCoord.isEmpty() || trucker.getSpaceShip().checkDoubleCannon(Objects.requireNonNull(doubleCannonsCoord))) {
-                this.doubleCannonsCoord.addLast(doubleCannonsCoord);
-                playersDecisions++;
-            } else {
-                throw new InvalidComponentsException("not a double cannon");
-            }
-        }
-        if (trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > slaversPower) {
-            winnerTrucker = trucker;
-            cardState = CardState.HUMANSTOREMOVE;
-        }else if(trucker.getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == slaversPower){
-            if (playersDecisions == numPlayer) {
-                playersDecisions=0;
-                cardState = CardState.HUMANSTOREMOVE;
-            }else cardState = CardState.ATTESA_RISPOSTE;
-        }else {
-            defeatedTruckers.add(trucker);
-            if (playersDecisions == numPlayer) {
-                playersDecisions=0;
-                cardState = CardState.HUMANSTOREMOVE;
-            }else cardState = CardState.ATTESA_RISPOSTE;
         }
         return cardState;
     }
@@ -204,9 +259,6 @@ public class Slavers extends Card implements Serializable {
         return cardState;
     }
 
-    @Override
-    public ServerEvent startCard(String currPlayerNickname) {
-        return null;
-    }
+
 
 }

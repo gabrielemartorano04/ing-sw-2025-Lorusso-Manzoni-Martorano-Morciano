@@ -27,7 +27,7 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default ServerEvent setGoodsCoordinates(int[] goodsCoordinates, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates, WrongCallerException {
+    default ServerEvent setGoodsCoordinates(Boolean decision, int[] goodsCoordinates, int value, Trucker trucker, Bank bank) throws GeneralError, InvalidCoordinates, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 

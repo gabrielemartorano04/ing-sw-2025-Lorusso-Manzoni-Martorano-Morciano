@@ -115,6 +115,18 @@ public class Pirates extends Card implements Serializable {
         this.defeatedTruckers = defeatedTruckers;
     }
 
+    /**
+     * Sets the trucker that defeat the pirates
+     * @param winnerTrucker trucker ID
+     */
+    public void setWinnerTrucker(Trucker winnerTrucker) {
+        this.winnerTrucker = winnerTrucker;
+    }
+
+    public ArrayList<int[]> getDirections() {
+        return shoots;
+    }
+
     @Override
     public ServerEvent startCard() {
         return new StartCardEvent(
@@ -148,12 +160,14 @@ public class Pirates extends Card implements Serializable {
         if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getNumDoubleCannon()!=0) {
             if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkDoubleCannon(doubleCannonsCoord)) {
                 this.doubleCannonsCoord.addLast(doubleCannonsCoord);
-                playersDecisions++;
-                throw new GeneralError("You don't have double cannons");
             } else {
                 throw new InvalidComponentsException("not a double cannon");
             }
+        }else{
+            playersDecisions++;
+            throw new GeneralError("You don't have double cannons");
         }
+
         if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > piratesPower) {
             winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
             cardState = CardState.GAIN;
@@ -179,17 +193,6 @@ public class Pirates extends Card implements Serializable {
         return cardState;
     }
 
-    /**
-     * Sets the trucker that defeat the pirates
-     * @param winnerTrucker trucker ID
-     */
-    public void setWinnerTrucker(Trucker winnerTrucker) {
-        this.winnerTrucker = winnerTrucker;
-    }
-
-    public ArrayList<int[]> getDirections() {
-        return shoots;
-    }
 
     public int[] getCurrentShoot() throws GeneralError {
         if(cardState != CardState.PLOT_SHOOT) {

@@ -1,12 +1,18 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.PlanetDecision;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.PlotGood;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
 import it.polimi.ingsw.utilities.exceptions.PlanetNotFreeException;
 
 import java.io.Serializable;
@@ -16,15 +22,17 @@ public class Planets extends Card implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private ArrayList<ArrayList<Goods>> planets;
-    private ArrayList<Goods> goodsPassed;
     private ArrayList<Trucker> planetsOccupied;
     private int daysLoss;
     private ArrayList<Trucker> truckersLanded;
-    private int currGoodFromPassed;
-    private int currGoodFromPlanet;
     private int indexOfPlanet; // se -1 => non atterra
     private int indexOfTrucker;
     private CardState state;
+
+    private Goods currentGood;
+    private ArrayList<Goods> currentGoodsList;
+    private ArrayList<Goods> goodsPassed;
+    private int currGoodIndex;
 
 
 
@@ -53,11 +61,13 @@ public class Planets extends Card implements Serializable {
         truckersLanded = new ArrayList<>();
         this.daysLoss = daysLoss;
         this.planets = planets;
-        this.currGoodFromPassed = 0;
-        this.currGoodFromPlanet = 0;
+        this.currGoodIndex = 0;
         this.indexOfPlanet = 0;
         this.indexOfTrucker = 0;
         this.state=CardState.ATTESA_PIANETI;
+        this.currentGood = null;
+        this.currentGoodsList = new ArrayList<>();
+        this.goodsPassed = new ArrayList<>();
 
     }
 
@@ -106,13 +116,58 @@ public class Planets extends Card implements Serializable {
         }
         if(indexOfTrucker == Game.getIstance().getNumPlayers()){
             indexOfTrucker=0;
-            if(Game.getIstance().getBank().getGoodsInBank(planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker))).get(currGoodFromPlanet).getValue())){}
-
-            this.state = CardState.;
-            return ;
+            currentGoodsList.addAll(planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker))));
+            currentGoodsList.addAll(goodsPassed);
+            while(indexOfTrucker < truckersLanded.size()){
+                for(Goods currentGood : planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker)))){
+                    if(Game.getIstance().getBank().getGoodsInBank(currentGood.getValue())>0){
+                        // abbiamo la merce corrente
+                        this.state = CardState.GOODSTOADD;
+                        return new PlotGood(true, this.getState(), truckersLanded.get(indexOfTrucker).getNickname(), currentGood);
+                    }
+                }
+                indexOfTrucker++;
+            }
+            return cardEffect();
         }
         indexOfTrucker++;
         return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname());
+    }
+
+    public ServerEvent setGoodsCoordinates(Boolean decision, int[] goodsCoordinates, int value, Bank bank) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+        if (state != CardState.GOODSTOADD) {
+            throw new GeneralError("Card state is not GOODSTOADD");
+        }
+        if (goodsCoordinates==null || !truckersLanded.get(indexOfTrucker).getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
+            throw new InvalidCoordinates("Not goods deposit");
+        }
+        try{
+            truckersLanded.get(indexOfTrucker).getSpaceShip().addGood(currentGood, goodsCoordinates, value, bank);
+            bank.removeGoodsInBank(currentGood.getValue());
+        }catch (InvalidPositionException e) {
+            state = CardState.GOODSTOADD;
+            throw e;
+        }
+        if(currGoodIndex == currentGoodsList.size()){
+            state = CardState.REARRANGE;
+            return new BooleanDecision(ServerEventType.REARRANGE, false, this.getState(), "Vuoi riarrangiare le merci dentro la nave?", truckersLanded.get(indexOfTrucker).getNickname());
+        }
+        else{
+            currGoodIndex++;
+            //TODO: Check che non ci sia loop infinito
+            do {
+                if (bank.getGoodsInBank(currentGood.getValue()) >= 1) {
+                    state = CardState.CHOOSE_TO_GAIN;
+                    return new PlotGood(true, this.getState(), truckersLanded.get(indexOfTrucker).getNickname(), currentGood);
+                } else {
+                    currGoodIndex++;
+                    if(currGoodIndex>=currentGoodsList.size()) {
+                        state = CardState.REARRANGE;
+                        return new BooleanDecision(ServerEventType.REARRANGE, false, this.getState(), "Vuoi riarrangiare le merci dentro la nave?", truckersLanded.get(indexOfTrucker).getNickname());
+                    }
+                }
+            }while(true);
+        }
     }
 
     public CardState getState() {
