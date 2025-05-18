@@ -223,6 +223,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showMessage("Your updated ship\n");
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         ui.showBuildComplete();
+
         viewFlow.setViewState(ViewFlow.ViewState.FILL);
 
         //ui.showMessage("It's time to fill the spaceship\n");

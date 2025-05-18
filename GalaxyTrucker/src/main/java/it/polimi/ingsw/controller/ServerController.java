@@ -161,6 +161,12 @@ public class ServerController {
                     }
                 }
             }
+            //TODO:TOGLI DOPO DEBUG
+            String message="";
+            for(Trucker t: gameController.getGame().getTruckers()){
+                message+="Posizione di "+t.getNickname()+" : "+t.getPosition()+"\n";
+            }
+            System.out.println(message);
             broadcastEvent(new BuildCompleteEvent());
         }
     }
