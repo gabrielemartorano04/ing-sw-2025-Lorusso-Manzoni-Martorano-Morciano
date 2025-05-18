@@ -379,6 +379,8 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showWaitForOthers();
     }
 
+    // === CARD EVENTS ===
+
     @Override
     public void visit(BooleanDecision event) {
 
@@ -429,7 +431,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     }
 
-    // === CARD EVENTS ===
 
 
 
