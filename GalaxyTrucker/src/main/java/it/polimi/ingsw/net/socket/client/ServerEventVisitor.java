@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 
@@ -105,6 +106,24 @@ public interface ServerEventVisitor {
 
     void visit(WaitOthersStartFlightEvent event);
 
-    void visit
+    void visit(BooleanDecision event);
+
+    void visit(CardFinished event);
+
+    void visit(EpidemicEvent event);
+
+    void visit(ExecutionEvent event);
+
+    void visit(HumanCoordinates event);
+
+    void visit(PlanetDecision event);
+
+    void visit(PlotGood event);
+
+    void visit(RollDice event);
+
+    void visit(StarDustEvent event);
+
+    void visit(StartCardEvent event);
 
 }
