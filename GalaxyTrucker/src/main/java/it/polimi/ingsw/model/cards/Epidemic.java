@@ -55,7 +55,7 @@ public class Epidemic extends Card implements Serializable {
         }
         state = CardState.EXIT;
         this.setIsCardFinished(true);
-        return new EpidemicEvent(true, this.getCardState(), Game.getIstance().getTruckerList());
+        return new EpidemicEvent(this.getName(), this.getDescription(), true, this.getCardState(), Game.getIstance().getTruckerList());
     }
 
 
