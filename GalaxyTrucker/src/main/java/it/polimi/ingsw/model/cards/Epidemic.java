@@ -33,6 +33,7 @@ public class Epidemic extends Card implements Serializable {
 
     @Override
     public ServerEvent startCard() {
+        // TODO: mettere le informazioni per stampare la carta dentro l'epidemicEvent
         try {
             return cardEffect();
         } catch (GeneralError e) {
