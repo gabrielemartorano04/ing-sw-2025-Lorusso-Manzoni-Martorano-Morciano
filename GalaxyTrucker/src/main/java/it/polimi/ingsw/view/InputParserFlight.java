@@ -52,7 +52,11 @@ public class InputParserFlight {
                     int y=Integer.parseInt(plotGood[2].trim());
                     return new SendPlotGoodEvent(true,x,y);
                 }
-                return new SendPlotGoodEvent(false,-1,-1);
+                else if(plotGood[0].trim().equals("n")){
+                    return new SendPlotGoodEvent(false,-1,-1);
+                }
+                System.out.println("Error: invalid command");
+                return null;
 
             case ROLL_DICE:
                 String[] rollDice=input.split("\\s+");
@@ -62,9 +66,54 @@ public class InputParserFlight {
                 }
                 return new SendRollDiceEvent();
             case ACTIVATE_SHIELD:
-
+                String[] activateShield=input.split("\\s+");
+                if(activateShield[0].trim().equals("n")){
+                    return new SendActivateShieldEvent(false,-1,-1);
+                }else if(activateShield[0].trim().equals("y")){
+                    int x=Integer.parseInt(activateShield[1].trim());
+                    int y=Integer.parseInt(activateShield[2].trim());
+                    return new SendActivateShieldEvent(true,x,y);
+                }
+                System.out.println("Error: invalid command");
+                return null;
             case ACTIVATE_CANNONS:
+                String[] activateCannons=input.split("\\s*,\\s*");
+                ArrayList<int[]> coordinates=new ArrayList<>();
+                if(activateCannons[0].trim().equals("n")){
+                    return new SendActivateCannonsEvent(false,null);
+                }
+                else if(activateCannons[0].trim().equals("y")){
+                    for(int i=1;i<activateCannons.length;i++){
+                        String[] coord=activateCannons[i].trim().split("\\s+");
+                        if(coord.length!=2){
+                            System.out.println("Error: invalid command");
+                            return null;
+                        }
+                        int x=Integer.parseInt(coord[0].trim());
+                        int y=Integer.parseInt(coord[1].trim());
+                        coordinates.add(new int[]{x,y});
+                    }
+                }
+                return new SendActivateCannonsEvent(true,coordinates);
             case ACTIVATE_ENGINES:
+                String[] activateEngines=input.split("\\s*,\\s*");
+                ArrayList<int[]> coordEngines=new ArrayList<>();
+                if(activateEngines[0].trim().equals("n")){
+                    return new SendActivateEnginesEvent(false,null);
+                }
+                else if(activateEngines[0].trim().equals("y")){
+                    for(int i=1;i<activateEngines.length;i++){
+                        String[] coord=activateEngines[i].trim().split("\\s+");
+                        if(coord.length!=2){
+                            System.out.println("Error: invalid command");
+                            return null;
+                        }
+                        int x=Integer.parseInt(coord[0].trim());
+                        int y=Integer.parseInt(coord[1].trim());
+                        coordEngines.add(new int[]{x,y});
+                    }
+                }
+                return new SendActivateCannonsEvent(true,coordEngines);
             case STARDUST:
                 return null;
             case CARD_FINISH:
