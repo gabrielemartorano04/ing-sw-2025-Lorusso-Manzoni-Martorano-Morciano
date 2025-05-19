@@ -381,29 +381,29 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(BooleanDecision event) {
-
+        viewFlow.setParserFlightState(ParserState.BOOLEAN_DECISION);
     }
 
     @Override
     public void visit(CardFinished event) {
-
+        viewFlow.setParserFlightState(ParserState.CARD_FINISH);
     }
 
     @Override
     public void visit(EpidemicEvent event) {
-
+        viewFlow.setParserFlightState(ParserState.EPIDEMIC);
     }
 
     @Override
     public void visit(ExecutionEvent event) {
-
+        viewFlow.setParserFlightState(ParserState.EXECUTION);
     }
 
     @Override
     public void visit(HumanCoordinates event) {
         //stato del parseflight diventa human coord
         viewFlow.setParserFlightState(ParserState.HUMAN_COORD);
-        ui.showMessage("Insert the coordinates of human's cabin: ");
+        ui.showMessage("Insert the coordinates of the cabins to remove the number of human indicated in the card description: ");
     }
 
     @Override
@@ -414,17 +414,17 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(PlotGood event) {
-
+        viewFlow.setParserFlightState(ParserState.PLOT_GOOD);
     }
 
     @Override
     public void visit(RollDice event) {
-
+        viewFlow.setParserFlightState(ParserState.ROLL_DICE);
     }
 
     @Override
     public void visit(StarDustEvent event) {
-
+        viewFlow.setParserFlightState(ParserState.STARDUST);
     }
 
     @Override
