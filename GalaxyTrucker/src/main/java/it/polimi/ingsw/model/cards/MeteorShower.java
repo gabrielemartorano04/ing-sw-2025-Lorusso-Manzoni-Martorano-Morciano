@@ -170,6 +170,7 @@ public class MeteorShower extends Card implements Serializable {
                 }
             }
             trucker.getSpaceShip().deActivateShields();
+            trucker.getSpaceShip().deactivateDoubleCannons();
             j++;
         }
         if (meteors.size()==(currMeteorIndex)) {
