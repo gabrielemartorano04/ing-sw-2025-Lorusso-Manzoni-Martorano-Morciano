@@ -47,8 +47,7 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-
-        //planets
+    //planets
 
     default ServerEvent playerLandingPlanets(int indexOfPlanet) throws WrongCallerException, GeneralError, PlanetNotFreeException {throw new WrongCallerException("This method does not exist in the card ");}
 
