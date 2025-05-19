@@ -338,4 +338,24 @@ public class ClientHandlerVisitor implements ClientVisitor {
         return null;
     }
 
+    @Override
+    public ServerEvent visit(SendRollDiceEvent event) {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(SendActivateShieldEvent event) {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(SendActivateCannonsEvent event) {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(SendActivateEnginesEvent event) {
+        return null;
+    }
+
 }
