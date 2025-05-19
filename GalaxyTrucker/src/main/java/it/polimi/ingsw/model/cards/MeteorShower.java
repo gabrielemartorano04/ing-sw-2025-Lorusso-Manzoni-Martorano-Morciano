@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.ExecutionEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.RollDice;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
@@ -29,12 +29,14 @@ public class MeteorShower extends Card implements Serializable {
     private ArrayList<Boolean> answers;
     // usata per salvare il meteorite che sto considerando in questo momento senza chiamare getCurrentMeteor perché altrimenti
     // sposterei avanti di uno la i
+    private int indexOfCurrTrucker;
+
     private int[] meteor;
     private int roll;
 
     // contatore per tenere traccia del meteorite corrente
-    private int i = 0;
-    private final ArrayList<int[]> directions;
+    private int currMeteorIndex = 0;
+    private final ArrayList<int[]> meteors;
     // direction è una lista dove direction.get(i) rappresenta l'i-esimo meteorite in questa specifica MeteorShower
     // direction.get(i)[0] vale 1 se il meteorite è grande 0 se è piccolo
     // direction.get(i)[1] indice la direzione da cui arriva il meteorite (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da sx)
@@ -53,8 +55,9 @@ public class MeteorShower extends Card implements Serializable {
      */
     public MeteorShower(boolean trialFlight, ArrayList<int[]> direction, int level, String frontImage, String backImage) {
         super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImage, backImage);
-        this.directions = direction;
+        this.meteors = direction;
         this.answers = new ArrayList<>();
+        this.indexOfCurrTrucker = 0;
     }
 
     /**
@@ -66,8 +69,8 @@ public class MeteorShower extends Card implements Serializable {
      * position 3 = left side
      * @return list of direction
      */
-    public ArrayList<int[]> getDirections() {
-        return directions;
+    public ArrayList<int[]> getMeteors() {
+        return meteors;
     }
 
     @Override
@@ -81,7 +84,7 @@ public class MeteorShower extends Card implements Serializable {
                 -1,
                 -1,
                 null,
-                directions,
+                meteors,
                 -1,
                 -1,
                 -1,
@@ -97,23 +100,28 @@ public class MeteorShower extends Card implements Serializable {
         if(state != CardState.ROLL_DICE) {
             throw new GeneralError("Non si può girare i dadi nello stato " + this.state);
         }
-        if(i<0 || i >= directions.size()){
-            throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste");
+        if(currMeteorIndex <0 || currMeteorIndex >= meteors.size()){
+            throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste, la carta dovrebbe essere finita");
         }
-        meteor = directions.get(i);
-        i++;
+        meteor = meteors.get(currMeteorIndex);
+        currMeteorIndex++;
         this.roll = Game.getIstance().rollDice();
         state = CardState.ATTESA_RISPOSTE;
-        return new RollDice(this.getCardState(), i, roll);
+        return new RollDice(this.getCardState(), currMeteorIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
     }
 
-    public ServerEvent setShieldsAnswer(boolean answer) throws GeneralError {
+    public ServerEvent setShieldsAnswers(boolean answer) throws GeneralError {
         if(state != CardState.ATTESA_RISPOSTE){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
         this.answers.addLast(answer);
-        state = CardState.ESECUZIONE;
-        return new MeteorPlot(true, this.getCardState());
+        if(indexOfCurrTrucker == Game.getIstance().getTruckerList().size()){
+            state = CardState.ESECUZIONE;
+            indexOfCurrTrucker = 0;
+            return cardEffect();
+        }
+        indexOfCurrTrucker++;
+        return new RollDice(this.getCardState(), currMeteorIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), false);
     }
 
     /**
@@ -149,14 +157,14 @@ public class MeteorShower extends Card implements Serializable {
             }
             j++;
         }
-        if (directions.size()==(i+1)) {
+        if (meteors.size()==(currMeteorIndex)) {
             this.state = CardState.EXIT;
             this.setIsCardFinished(true);
+            return new CardFinished(true, this.getCardState(), Game.getIstance().getTruckerList());
         }else {
             this.state = CardState.ROLL_DICE;
-            return rollDice();
+            return new BooleanDecision(ServerEventType.SHIELDS, false, this.getCardState(), "Roll the dice", Game.getIstance().getTruckerList().getFirst().getNickname());
         }
-        return new CardFinished(true, this.getCardState(), Game.getIstance().getTruckerList());
     }
 
 

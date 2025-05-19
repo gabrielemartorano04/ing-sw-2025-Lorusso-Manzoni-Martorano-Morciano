@@ -9,8 +9,8 @@ public class RollDice extends CardEvent {
     private int currMeteorIndex;
     private int diceResult;
 
-    public RollDice(CardState cardState, int currMeteorIndex, int diceResult){
-        super(ServerEventType.ROLL_DICE, true, cardState, null);
+    public RollDice(CardState cardState, int currMeteorIndex, int diceResult, String nickname, boolean forAll){
+        super(ServerEventType.ROLL_DICE, forAll, cardState, nickname);
         this.currMeteorIndex = currMeteorIndex;
         this.diceResult = diceResult;
     }

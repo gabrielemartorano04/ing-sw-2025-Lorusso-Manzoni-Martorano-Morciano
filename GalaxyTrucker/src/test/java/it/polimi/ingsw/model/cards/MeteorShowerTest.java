@@ -30,7 +30,7 @@ class MeteorShowerTest {
 
     @Test
     void getDirections() {
-        assertEquals(direction,card.getDirections());
+        assertEquals(direction,card.getMeteors());
     }
 
     @Test
