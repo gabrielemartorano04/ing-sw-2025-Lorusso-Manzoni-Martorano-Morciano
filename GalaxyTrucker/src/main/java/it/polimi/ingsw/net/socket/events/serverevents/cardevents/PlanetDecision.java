@@ -27,7 +27,7 @@ public class PlanetDecision extends ServerEvent {
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
-
+        visitor.visit(this);
     }
     public String getInfoForOthers(){
         return nickname+" is deciding if landing on a planet or not";

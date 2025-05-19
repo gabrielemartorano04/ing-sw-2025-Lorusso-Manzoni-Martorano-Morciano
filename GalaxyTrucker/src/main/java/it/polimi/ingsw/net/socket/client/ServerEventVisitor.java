@@ -126,4 +126,6 @@ public interface ServerEventVisitor {
     void visit(StartCardEvent event);
 
     void visit(RearrangeEvent rearrangeEvent);
+
+    void visit(GainCosmicCredits gainCosmicCredits);
 }

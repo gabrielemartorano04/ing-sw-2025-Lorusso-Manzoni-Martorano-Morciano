@@ -398,7 +398,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
                     viewFlow.setParserFlightState(ParserState.ACTIVATE_ENGINES);
                 }
                 case ACTIVATE_SHIELD -> {
-                    ui.showMessage("Choose if you want to activate the shield. If yes type the coordinates of the shield. Type 'y <x> <y>' or 'n': ");
+                    ui.showMessage("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x> <y>' or 'n': ");
                     viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
                 }
             }
@@ -511,6 +511,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(RearrangeEvent rearrangeEvent) {
+
+    }
+
+    @Override
+    public void visit(GainCosmicCredits gainCosmicCredits) {
 
     }
 }

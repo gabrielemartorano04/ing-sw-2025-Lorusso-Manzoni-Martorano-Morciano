@@ -6,8 +6,7 @@ import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
 import java.util.ArrayList;
 
 public class InputParserFlight {
-    private ParserState parserState;
-    //lo stato cambia nel serverhandler
+    private ParserState parserState;//it changes in servereventhandler
 
     public void setParserState(ParserState parserState) {
         this.parserState = parserState;
