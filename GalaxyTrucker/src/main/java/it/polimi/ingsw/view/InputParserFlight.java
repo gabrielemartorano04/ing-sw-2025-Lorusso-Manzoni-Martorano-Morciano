@@ -23,26 +23,37 @@ public class InputParserFlight {
             return null;
         }
 
-        String[] tokens = input.split("\\s+", 70); // dividi in massimo 70 pezzi
-        String command = tokens[0].toLowerCase();
-
         switch (parserState) {
             case HUMAN_COORD:
-                if (tokens.length % 2 == 0) {
-                    ArrayList<int[]> humanCoord=new ArrayList<>();
-                    for(int i=1;i<tokens.length-1;i+=2){
-                        if(tokens[i]!=null && tokens[i+1]!=null){
-                            humanCoord.add(new int[]{Integer.parseInt(tokens[i]),Integer.parseInt(tokens[i+1])});
-                        }
+                String[] groups= input.split("\\s*,\\s*");
+                ArrayList<int[]> humanCoord=new ArrayList<>();
+                for(String group: groups){
+                    String[] parts = group.split("\\s*-\\s*");
+                    if(parts.length!=2){
+                        System.out.println("Error: invalid command");
+                        return null;
                     }
-                    return new SendHumanCoordEvent(humanCoord);
-                } else {
-                    System.out.println("Error: coordinates expected");
-                    return null;
+                    String[] coord=parts[0].trim().split("\\s+");
+                    if(coord.length!=2){
+                        System.out.println("Error: invalid command");
+                        return null;
+                    }
+                    int num=Integer.parseInt(parts[1].trim());
+                    int x=Integer.parseInt(coord[0].trim());
+                    int y=Integer.parseInt(coord[1].trim());
+                    humanCoord.add(new int[]{x,y,num});
                 }
+                return new SendHumanCoordEvent(humanCoord);
 
             case PLOT_GOOD:
-                return null;
+                String[] plotGood=input.split("\\s+");
+                if(plotGood[0].trim().equals("y")){
+                    int x=Integer.parseInt(plotGood[1].trim());
+                    int y=Integer.parseInt(plotGood[2].trim());
+                    return new SendPlotGoodEvent(true,x,y);
+                }
+                return new SendPlotGoodEvent(false,-1,-1);
+
             case ROLL_DICE:
                 return null;
             case STARDUST:
@@ -56,13 +67,16 @@ public class InputParserFlight {
             case EXECUTION:
                 return null;
             case PLANET_DECISION:
-                if (tokens.length == 1){
-                    //todo: cosa devo passare??
-                } else {
-                    System.out.println("Error: wrong number of planet");
+                String[] planetDecision=input.split("\\s+");
+                if(planetDecision.length!=1){
+                    System.out.println("Error: invalid command");
                     return null;
                 }
-            default: return null;
+                return new SendPlanetDecisionEvent(Integer.parseInt(planetDecision[0].trim()));
+            default: {
+                System.out.println("Error: invalid command. Stato non gestito");
+                return null;
+            }
         }
     }
 }

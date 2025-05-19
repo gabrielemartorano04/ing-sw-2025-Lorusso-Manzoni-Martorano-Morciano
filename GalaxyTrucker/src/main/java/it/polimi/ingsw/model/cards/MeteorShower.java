@@ -112,7 +112,7 @@ public class MeteorShower extends Card implements Serializable {
             return new RollDice("Meteorite grande, attivare Cannoni doppi?", this.getCardState(), currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
         }else{
             state=CardState.ACTIVATE_SHIELDS;
-            return new RollDice("Meteorite piccolo, attivare Cannoni doppi?", this.getCardState(), currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
+            return new RollDice("Meteorite piccolo, attivare Scudo?", this.getCardState(), currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
         }
     }
 

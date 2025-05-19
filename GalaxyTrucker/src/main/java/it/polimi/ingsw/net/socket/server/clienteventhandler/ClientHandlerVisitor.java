@@ -328,4 +328,14 @@ public class ClientHandlerVisitor implements ClientVisitor {
         return null;
     }
 
+    @Override
+    public ServerEvent visit(SendPlotGoodEvent event) {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(SendPlanetDecisionEvent event) {
+        return null;
+    }
+
 }

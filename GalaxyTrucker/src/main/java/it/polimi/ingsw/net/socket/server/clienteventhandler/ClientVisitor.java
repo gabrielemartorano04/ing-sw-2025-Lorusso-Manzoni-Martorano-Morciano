@@ -50,4 +50,8 @@ public interface ClientVisitor {
     ServerEvent visit(OkStartFlight event);
 
     ServerEvent visit(SendHumanCoordEvent event);
+
+    ServerEvent visit(SendPlotGoodEvent event);
+
+    ServerEvent visit(SendPlanetDecisionEvent event);
 }
