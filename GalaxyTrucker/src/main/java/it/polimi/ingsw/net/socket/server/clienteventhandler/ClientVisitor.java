@@ -48,4 +48,6 @@ public interface ClientVisitor {
     ServerEvent visit(SendAlienCoord event);
 
     ServerEvent visit(OkStartFlight event);
+
+    ServerEvent visit(SendHumanCoordEvent event);
 }
