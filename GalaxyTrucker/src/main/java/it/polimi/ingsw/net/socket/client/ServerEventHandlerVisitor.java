@@ -538,4 +538,9 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(InvalidPositionExceptionEvent event) {
 
     }
+
+    @Override
+    public void visit(PlanetNotFreeExceptionEvent event) {
+
+    }
 }

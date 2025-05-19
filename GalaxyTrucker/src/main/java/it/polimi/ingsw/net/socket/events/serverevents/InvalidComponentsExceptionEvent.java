@@ -7,9 +7,9 @@ public class InvalidComponentsExceptionEvent extends CardEvent {
 
     private String message;
 
-    public InvalidComponentsExceptionEvent(String message, boolean val) {
+    public InvalidComponentsExceptionEvent(String message, boolean forAll) {
         //TODO sistemare ingressi del super
-        super(ServerEventType.INVALID_COORDINATES_ERROR, false, null, null);
+        super(ServerEventType.INVALID_COMPONENTS_ERROR, forAll, null, null);
         this.message = message;
     }
 

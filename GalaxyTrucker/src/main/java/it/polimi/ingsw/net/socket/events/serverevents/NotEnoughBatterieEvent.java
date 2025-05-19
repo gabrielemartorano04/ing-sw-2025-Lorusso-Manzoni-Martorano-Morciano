@@ -7,9 +7,9 @@ public class NotEnoughBatterieEvent extends CardEvent {
 
     private String message;
 
-    public NotEnoughBatterieEvent(String message, boolean val) {
+    public NotEnoughBatterieEvent(String message, boolean forAll) {
         //TODO inserire le cose giuste nel super
-        super(ServerEventType.INVALID_COORDINATES_ERROR, false, null, null);
+        super(ServerEventType.NOT_ENOUGH_BATTERIES_ERROR, forAll, null, null);
         this.message = message;
     }
 

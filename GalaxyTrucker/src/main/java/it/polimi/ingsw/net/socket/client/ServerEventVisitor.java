@@ -74,22 +74,21 @@ public interface ServerEventVisitor {
 
     void visit(AvailableComponentsEvent event);
 
-    void visit(NotYourTurnError notYourTurnError);
+    void visit(NotYourTurnError event);
 
-    void visit(NumberOfPlayersError numberOfPlayersError);
+    void visit(NumberOfPlayersError event);
 
-    void visit(ReturnStackEvent returnStackEvent);
+    void visit(ReturnStackEvent event);
 
-    void visit(PlacedComponentRequest placedComponentRequest);
+    void visit(PlacedComponentRequest event);
 
-    void visit(TruckerLostCrewEvent truckerLostCrewEvent);
+    void visit(TruckerLostCrewEvent event);
 
     void visit(HourglassTurnEvent event);
 
     void visit(GameCreatedEvent event);
 
     void visit(FirstConnectionEvent event);
-
 
     void visit(CoordListRequest coordListRequest);
 
@@ -136,4 +135,6 @@ public interface ServerEventVisitor {
     void visit(InvalidComponentsExceptionEvent event);
 
     void visit(InvalidPositionExceptionEvent event);
+
+    void visit(PlanetNotFreeExceptionEvent event);
 }

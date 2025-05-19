@@ -138,4 +138,16 @@ public class CardController {
             return new GenericErrorEvent(e.getMessage(), true);
         }
     }
+
+    public ServerEvent playerLandingPlanets(PlanetDecisionEvent event) {
+        try {
+            return currCard.playerLandingPlanets(event.getIndex());
+        } catch (WrongCallerException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (PlanetNotFreeException e) {
+            return new PlanetNotFreeExceptionEvent(e.getMessage(), true);
+        }
+    }
 }
