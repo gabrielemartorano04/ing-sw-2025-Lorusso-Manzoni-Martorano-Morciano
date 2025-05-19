@@ -54,4 +54,12 @@ public interface ClientVisitor {
     ServerEvent visit(SendPlotGoodEvent event);
 
     ServerEvent visit(SendPlanetDecisionEvent event);
+
+    ServerEvent visit(SendRollDiceEvent event);
+
+    ServerEvent visit(SendActivateShieldEvent event);
+
+    ServerEvent visit(SendActivateCannonsEvent event);
+
+    ServerEvent visit(SendActivateEnginesEvent event);
 }
