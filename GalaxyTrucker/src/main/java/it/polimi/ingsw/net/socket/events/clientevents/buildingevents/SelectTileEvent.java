@@ -13,7 +13,7 @@ public class SelectTileEvent extends ClientEvent {
     private int index;
 
     public SelectTileEvent( int index) {
-        super(ClientEventType.SELECT_TILE, false);
+        super(ClientEventType.SELECT_TILE);
         this.index = index;
     }
     public int getIndex() {

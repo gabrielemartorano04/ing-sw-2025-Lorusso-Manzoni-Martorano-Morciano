@@ -6,7 +6,7 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 public class AlienCoordinatesRequest extends ClientEvent {
 
     public AlienCoordinatesRequest() {
-        super(ClientEventType.REQUEST,false);
+        super(ClientEventType.REQUEST);
 
     }
 
