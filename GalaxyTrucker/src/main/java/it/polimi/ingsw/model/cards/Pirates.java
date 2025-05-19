@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.model.cardcontrollers.PiratesController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
@@ -59,7 +58,7 @@ public class Pirates extends Card implements Serializable {
      * @param backImage back image of the card
      */
     public Pirates(boolean trialFlight, int level, int credits, int days, int piratesPower, ArrayList<int[]> shoots ,String frontImage, String backImage) {
-        super("Pirates", "Dangerous space raiders", trialFlight, level, frontImage, backImage, new PiratesController());
+        super("Pirates", "Dangerous space raiders", trialFlight, level, frontImage, backImage);
         this.credits = credits;
         this.days = days;
         this.piratesPower = piratesPower;
