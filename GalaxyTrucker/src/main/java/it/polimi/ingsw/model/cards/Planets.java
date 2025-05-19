@@ -94,6 +94,7 @@ public class Planets extends Card implements Serializable {
         return startCardEvent;
     }
 
+    @Override
     public ServerEvent playerLandingPlanets(int indexOfPlanet) throws GeneralError, PlanetNotFreeException {
         if(state != CardState.ATTESA_PIANETI){
             throw new GeneralError("Can't land in the state: " + this.state);
@@ -132,6 +133,7 @@ public class Planets extends Card implements Serializable {
         return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname());
     }
 
+    @Override
     public ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int value) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (state != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
@@ -175,6 +177,7 @@ public class Planets extends Card implements Serializable {
         }
     }
 
+    @Override
     public ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean stop) throws GeneralError, InvalidCoordinates, InvalidPositionException{
         if(state!= CardState.REARRANGE){
             throw new GeneralError("Card state is not REARRANGE");
