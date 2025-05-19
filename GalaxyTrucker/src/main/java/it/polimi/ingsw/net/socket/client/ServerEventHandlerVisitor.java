@@ -402,29 +402,48 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(HumanCoordinates event) {
         //stato del parseflight diventa human coord
-        viewFlow.setParserFlightState(ParserState.HUMAN_COORD);
-        ui.showMessage("Insert the coordinates of the cabins to remove the number of human indicated in the card description: ");
+        if (event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(ParserState.HUMAN_COORD);
+            ui.showMessage("Insert the coordinates of the cabins to remove the number of human indicated in the card description: ");
+        } else {
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
     public void visit(PlanetDecision event) {
-        viewFlow.setParserFlightState(ParserState.PLANET_DECISION);
-        ui.showMessage("Choose the planet you want to fly to: ");
+        if (event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(ParserState.PLANET_DECISION);
+            ui.showMessage("Choose the planet you want to fly to: ");
+        } else {
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
     public void visit(PlotGood event) {
-        viewFlow.setParserFlightState(ParserState.PLOT_GOOD);
+        if (event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(ParserState.PLOT_GOOD);
+            ui.showMessage("Choose if you want the good (y/n), if yes type the coordinates of the load (x y): ");
+        } else {
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
     public void visit(RollDice event) {
-        viewFlow.setParserFlightState(ParserState.ROLL_DICE);
+        if (event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(ParserState.ROLL_DICE);
+            ui.showMessage("The dices result is " + event.getDiceResult());
+        } else {
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
     public void visit(StarDustEvent event) {
         viewFlow.setParserFlightState(ParserState.STARDUST);
+
     }
 
     @Override
@@ -433,7 +452,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         if (event.getNickname().equals(viewFlow.getNickname())) {
             ui.showMessage(event.getQuestion());
         } else {
-            //TODO inserire messaggio per gli altri
+            ui.showMessage(event.getInfoForOthers());
         }
     }
 }
