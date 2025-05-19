@@ -338,4 +338,14 @@ public class ClientHandlerVisitor implements ClientVisitor {
         return null;
     }
 
+    @Override
+    public ServerEvent visit(RearrangeEvent event) {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(SetWinDecision event) {
+        return null;
+    }
+
 }

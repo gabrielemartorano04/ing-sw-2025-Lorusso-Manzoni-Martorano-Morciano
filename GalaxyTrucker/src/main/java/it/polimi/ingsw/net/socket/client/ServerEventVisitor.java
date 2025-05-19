@@ -125,7 +125,15 @@ public interface ServerEventVisitor {
 
     void visit(StartCardEvent event);
 
-    void visit(RearrangeEvent rearrangeEvent);
+    void visit(RearrangeEvent event);
 
-    void visit(GainCosmicCredits gainCosmicCredits);
+    void visit(GainCosmicCredits event);
+
+    void visit(InvalidCoordinatesEvent event);
+
+    void visit(NotEnoughBatterieEvent event);
+
+    void visit(InvalidComponentsExceptionEvent event);
+
+    void visit(InvalidPositionExceptionEvent event);
 }

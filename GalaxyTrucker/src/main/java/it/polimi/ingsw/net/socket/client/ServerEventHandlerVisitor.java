@@ -510,12 +510,32 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
-    public void visit(RearrangeEvent rearrangeEvent) {
+    public void visit(RearrangeEvent event) {
 
     }
 
     @Override
-    public void visit(GainCosmicCredits gainCosmicCredits) {
+    public void visit(GainCosmicCredits event) {
+
+    }
+
+    @Override
+    public void visit(InvalidCoordinatesEvent event) {
+
+    }
+
+    @Override
+    public void visit(NotEnoughBatterieEvent event) {
+
+    }
+
+    @Override
+    public void visit(InvalidComponentsExceptionEvent event) {
+
+    }
+
+    @Override
+    public void visit(InvalidPositionExceptionEvent event) {
 
     }
 }

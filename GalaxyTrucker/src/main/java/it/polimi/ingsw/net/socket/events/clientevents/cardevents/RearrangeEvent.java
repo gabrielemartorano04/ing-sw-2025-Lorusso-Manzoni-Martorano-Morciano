@@ -42,6 +42,6 @@ public class RearrangeEvent extends ClientEvent {
 
     @Override
     public ServerEvent call(ClientVisitor visitor) {
-        return null;
+        return visitor.visit(this);
     }
 }

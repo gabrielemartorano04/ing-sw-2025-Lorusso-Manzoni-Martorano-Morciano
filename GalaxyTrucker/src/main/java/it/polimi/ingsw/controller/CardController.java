@@ -2,8 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
-import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.utilities.exceptions.*;
 
 public class CardController {
@@ -41,7 +40,7 @@ public class CardController {
         } catch (InvalidComponentsException e) {
             return new GenericErrorEvent(e.getMessage(), true);
         } catch (InvalidCoordinates e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new InvalidCoordinatesEvent(e.getMessage(), true);
         } catch (GeneralError e) {
             return new GenericErrorEvent(e.getMessage(), true);
         } catch (WrongCallerException e) {
@@ -55,11 +54,11 @@ public class CardController {
         } catch (GeneralError e) {
             return new GenericErrorEvent(e.getMessage(), true);
         } catch (InvalidCoordinates e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new InvalidCoordinatesEvent(e.getMessage(), true);
         } catch (WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), true);
         } catch (InvalidPositionException e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new InvalidPositionExceptionEvent(e.getMessage(), true);
         }
     }
 
@@ -69,9 +68,9 @@ public class CardController {
         } catch (GeneralError e) {
             return new GenericErrorEvent(e.getMessage(), true);
         } catch (InvalidCoordinates e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new InvalidCoordinatesEvent(e.getMessage(), true);
         } catch (InvalidPositionException e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new InvalidPositionExceptionEvent(e.getMessage(), true);
         } catch (WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), true);
         }
@@ -95,7 +94,7 @@ public class CardController {
         } catch (WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), true);
         } catch (InvalidCoordinates e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new InvalidCoordinatesEvent(e.getMessage(), true);
         }
     }
 
@@ -103,13 +102,13 @@ public class CardController {
         try {
             return currCard.activateEngines(event.getDecision(), event.getCoordinates(), event.getBatteryCoordinates());
         } catch (InvalidCoordinates e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new InvalidCoordinatesEvent(e.getMessage(), true);
         } catch (GeneralError e) {
             return new GenericErrorEvent(e.getMessage(), true);
         } catch (WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), true);
         } catch (NotEnoughBatteries e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new NotEnoughBatterieEvent(e.getMessage(), true);
         }
     }
 
@@ -119,13 +118,13 @@ public class CardController {
         } catch (GeneralError e) {
             return new GenericErrorEvent(e.getMessage(), true);
         } catch (InvalidComponentsException e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new InvalidComponentsExceptionEvent(e.getMessage(), true);
         } catch (WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), true);
         } catch (InvalidCoordinates e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new InvalidCoordinatesEvent(e.getMessage(), true);
         } catch (NotEnoughBatteries e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new NotEnoughBatterieEvent(e.getMessage(), true);
         }
 
     }

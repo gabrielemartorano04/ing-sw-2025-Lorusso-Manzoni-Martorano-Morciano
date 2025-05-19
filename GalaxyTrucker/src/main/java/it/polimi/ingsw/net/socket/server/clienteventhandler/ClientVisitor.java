@@ -61,4 +61,8 @@ public interface ClientVisitor {
     ServerEvent visit(DrawCardEvent event);
 
     ServerEvent visit(TruckerLandingEvent event);
+
+    ServerEvent visit(RearrangeEvent event);
+
+    ServerEvent visit(SetWinDecision event);
 }
