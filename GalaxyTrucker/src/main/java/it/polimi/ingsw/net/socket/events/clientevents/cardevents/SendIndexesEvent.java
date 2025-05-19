@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class SendIndexesEvent extends ClientEvent {
     private ArrayList<Integer> indexes;
     public SendIndexesEvent(ArrayList<Integer> indexes) {
-        super(ClientEventType.SEND_INFO_EVENT, true);
+        super(ClientEventType.SEND_INFO_EVENT);
         this.indexes = indexes;
     }
     public ArrayList<Integer> getIndexes() {

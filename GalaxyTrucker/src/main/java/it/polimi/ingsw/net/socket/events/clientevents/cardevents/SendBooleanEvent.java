@@ -8,7 +8,7 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 public class SendBooleanEvent extends ClientEvent {
     private boolean answer;
     public SendBooleanEvent(final boolean answer) {
-        super(ClientEventType.SEND_INFO_EVENT, true);
+        super(ClientEventType.SEND_INFO_EVENT);
         this.answer = answer;
     }
     public boolean getAnswer() {

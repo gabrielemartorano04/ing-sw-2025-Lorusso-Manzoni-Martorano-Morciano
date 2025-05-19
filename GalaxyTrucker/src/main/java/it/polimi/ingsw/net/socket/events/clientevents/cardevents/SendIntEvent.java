@@ -8,7 +8,7 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 public class SendIntEvent extends ClientEvent {
     private int value;
     public SendIntEvent(final int value) {
-        super(ClientEventType.SEND_INFO_EVENT, true);
+        super(ClientEventType.SEND_INFO_EVENT);
         this.value = value;
     }
     public int getValue() {
