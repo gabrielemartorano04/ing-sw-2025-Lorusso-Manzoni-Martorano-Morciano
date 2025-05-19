@@ -55,10 +55,17 @@ public class InputParserFlight {
                 return new SendPlotGoodEvent(false,-1,-1);
 
             case ROLL_DICE:
-                return null;
+                String[] rollDice=input.split("\\s+");
+                if(rollDice.length!=1 || !rollDice[0].trim().equals("roll")){
+                    System.out.println("Error: invalid command");
+                    return null;
+                }
+                return new SendRollDiceEvent();
+            case ACTIVATE_SHIELD:
+
+            case ACTIVATE_CANNONS:
+            case ACTIVATE_ENGINES:
             case STARDUST:
-                return null;
-            case BOOLEAN_DECISION:
                 return null;
             case CARD_FINISH:
                 return null;
