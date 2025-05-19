@@ -404,7 +404,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         //stato del parseflight diventa human coord
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.HUMAN_COORD);
-            ui.showMessage("Insert the coordinates of the cabins to remove the number of human indicated in the card description. Type '<x1> <y1> - <number of humans>, <x2> <y2> - <number of humans>,...' : ");
+            ui.showMessage("Insert the coordinates of the cabins to remove the number of human indicated in the card description. Type '<x1> <y1> - <number of crew>, <x2> <y2> - <number of crew>,...' : ");
         } else {
             ui.showMessage(event.getInfoForOthers());
         }
@@ -414,7 +414,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(PlanetDecision event) {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLANET_DECISION);
-            ui.showMessage("Choose the planet you want to fly to. Type '<index of the planet>': ");
+            ui.showMessage("Choose the planet you want to fly to. Type '<index>': ");
         } else {
             ui.showMessage(event.getInfoForOthers());
         }
@@ -424,7 +424,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(PlotGood event) {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLOT_GOOD);
-            ui.showMessage("Choose if you want the good, if yes type the coordinates of the load. Type '<y or n> <x> <y>': ");
+            ui.showMessage("Choose if you want the good, if yes type the coordinates of the load. Type '<y/n> <x> <y>': ");
         } else {
             ui.showMessage(event.getInfoForOthers());
         }
