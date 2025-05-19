@@ -85,6 +85,10 @@ public class InputParserFlight {
                 else if(activateCannons[0].trim().equals("y")){
                     for(int i=1;i<activateCannons.length;i++){
                         String[] coord=activateCannons[i].trim().split("\\s+");
+                        if(coord.length!=2){
+                            System.out.println("Error: invalid command");
+                            return null;
+                        }
                         int x=Integer.parseInt(coord[0].trim());
                         int y=Integer.parseInt(coord[1].trim());
                         coordinates.add(new int[]{x,y});
@@ -100,6 +104,10 @@ public class InputParserFlight {
                 else if(activateEngines[0].trim().equals("y")){
                     for(int i=1;i<activateEngines.length;i++){
                         String[] coord=activateEngines[i].trim().split("\\s+");
+                        if(coord.length!=2){
+                            System.out.println("Error: invalid command");
+                            return null;
+                        }
                         int x=Integer.parseInt(coord[0].trim());
                         int y=Integer.parseInt(coord[1].trim());
                         coordEngines.add(new int[]{x,y});
