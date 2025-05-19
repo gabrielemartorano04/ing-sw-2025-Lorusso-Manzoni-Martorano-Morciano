@@ -41,7 +41,7 @@ public class AbandonedStation extends Card implements Serializable {
      * @param backIMage back image of the card
      */
     public AbandonedStation(boolean trialFlight, int level, ArrayList<Goods> goods, int days, int numHuman,String frontImage, String backIMage) {
-        super("Abandoned Station", "A derelict space station", trialFlight, level, frontImage, backIMage, new AbandonedShipController());
+        super("Abandoned Station", "A derelict space station", trialFlight, level, frontImage, backIMage);
         this.days = days;
         this.numHuman = numHuman;
         this.goods = goods;
@@ -102,6 +102,7 @@ public class AbandonedStation extends Card implements Serializable {
      * Sets the only trucker that has chosen to take the station
      * @param landing: choice taken
      */
+    @Override
     public ServerEvent truckerLanding(ArrayList<Trucker> truckers, boolean landing) throws GeneralError {
         if (cardState != CardState.LAND) {
             throw new GeneralError("stato non valido");
@@ -137,6 +138,7 @@ public class AbandonedStation extends Card implements Serializable {
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
      * @param goodsCoordinates list of coordinatest
      */
+    @Override
     public ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int value) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
@@ -178,6 +180,7 @@ public class AbandonedStation extends Card implements Serializable {
     }
 
     // si potrebbe non metter contiune e procedere se tutto e a null
+    @Override
     public ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean stop) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
             throw new GeneralError("Card state is not REARRANGE");

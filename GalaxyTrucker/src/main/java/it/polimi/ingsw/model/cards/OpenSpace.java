@@ -76,6 +76,7 @@ public class OpenSpace extends Card implements Serializable {
      * Sets for each trucker the coordinates of the double engines that he/she wants to activate
      * @param coord list of arrays of coordinates
      */
+    @Override
     public ServerEvent activateEngines(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws InvalidCoordinates, GeneralError, NotEnoughBatteries {
         if (this.state != CardState.ACTIVATE_ENGINES) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
