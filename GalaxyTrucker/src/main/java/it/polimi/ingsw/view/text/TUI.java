@@ -238,7 +238,7 @@ public class TUI extends UI {
         if(event.getAstronautsLost() != -1) System.out.println(event.getAstronautsLost() + " crew members to lose");
         if(event.getGoodsLost() != -1) System.out.println(event.getGoodsLost() + " goods to lose");
         if(event.getCredits() != -1) System.out.println(event.getCredits() + " credits to gain");
-        if(event.getNumHumans() != -1) System.out.println(event.getNumHumans() + " humans to gain");
+        if(event.getNumHumans() != -1) System.out.println(event.getNumHumans() + " humans required");
         if(event.getGoods() != null) {
             int red = 0, yellow = 0, green = 0, blue = 0;
             for (Goods g : event.getGoods()) {
@@ -250,6 +250,8 @@ public class TUI extends UI {
             System.out.println("Goods to gain: " + red + " red goods, " + yellow + " yellow goods, " + green + " green goods, " + blue + " blue goods");
         }
         if(event.getBank() != null) System.out.println("Bank deposit: " + event.getBank().getGoodsInBank(1) + " red goods, " + event.getBank().getGoodsInBank(2) + " yellow goods, " + event.getBank().getGoodsInBank(3) + " green goods, " + event.getBank().getGoodsInBank(4) + " blue goods");
+        //TODO AGGIUNGI QUESTION sse nickname uguale
+
     }
 
     @Override
