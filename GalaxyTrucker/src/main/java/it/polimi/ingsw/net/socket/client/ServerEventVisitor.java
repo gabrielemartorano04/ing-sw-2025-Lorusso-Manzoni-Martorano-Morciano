@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
+import it.polimi.ingsw.net.socket.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
@@ -46,6 +47,8 @@ public interface ServerEventVisitor {
     void visit(KeptComponentEvent event);
 
     void visit(BuildOptionsEvent event);
+
+    void visit(AlienCabinCoord event);
 
     void visit(SelectComponentEvent event);
 
@@ -101,8 +104,6 @@ public interface ServerEventVisitor {
     void visit(ShowOtherShipResponse event);
 
     void visit(WaitOthersBuildingEvent event);
-
-    void visit(AlienCabinCoord event);
 
     void visit(WaitOthersStartFlightEvent event);
 

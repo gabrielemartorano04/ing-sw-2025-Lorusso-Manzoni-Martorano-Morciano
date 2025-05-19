@@ -29,6 +29,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private boolean done = false;
     private final InputReader inputReader;
     private final InputParser inputParser;
+    private final InputParserFlight inputParserFlight;
     private final UI ui;
     private String nickname;
     private Component[][] ship;
@@ -72,6 +73,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.clientHandler = clientHandler;
         this.inputReader = new InputReader();
         this.inputParser = new InputParser();
+        this.inputParserFlight = new InputParserFlight();
         this.nickname = null;
         this.running = true;
         ui = new TUI();
@@ -205,7 +207,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                             startFlight=false;
                         }
                         else if(startFlightForAll) {
-                            event = inputParser.parseFlight(input);
+                            event = inputParserFlight.parseFlight(input);
                         }
                         else {
                         System.out.println("You can only wait for others to start flight");

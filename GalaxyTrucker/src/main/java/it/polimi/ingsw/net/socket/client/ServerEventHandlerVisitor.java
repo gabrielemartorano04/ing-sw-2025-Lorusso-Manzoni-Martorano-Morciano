@@ -2,7 +2,7 @@ package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
-import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.AlienCabinCoord;
+import it.polimi.ingsw.net.socket.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
@@ -163,12 +163,10 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(NotYourTurnError event) {
-
     }
 
     @Override
     public void visit(NumberOfPlayersError event) {
-
     }
 
     @Override
@@ -178,7 +176,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(TruckerLostCrewEvent event) {
-
     }
 
     @Override
