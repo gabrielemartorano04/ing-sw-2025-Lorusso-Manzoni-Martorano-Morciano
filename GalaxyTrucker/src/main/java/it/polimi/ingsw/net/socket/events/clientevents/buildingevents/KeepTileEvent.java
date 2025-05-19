@@ -10,7 +10,7 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 public class KeepTileEvent extends ClientEvent {
     private Component component;
     public KeepTileEvent(Component component) {
-        super(ClientEventType.KEEP_TILE, false);
+        super(ClientEventType.KEEP_TILE);
         this.component = component;
     }
     public Component getComponent() {

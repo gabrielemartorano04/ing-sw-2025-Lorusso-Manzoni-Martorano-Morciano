@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class SendAlienCoord extends ClientEvent {
     private ArrayList<int[]> coord;
     public SendAlienCoord(ArrayList<int[]> coord) {
-        super(ClientEventType.SEND_INFO_EVENT,false);
+        super(ClientEventType.SEND_INFO_EVENT);
         this.coord = coord;
     }
     public ArrayList<int[]> getCoord() {

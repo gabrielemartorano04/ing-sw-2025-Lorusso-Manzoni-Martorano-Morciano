@@ -8,7 +8,7 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 public class SendRollDiceEvent extends ClientEvent {
 
     public SendRollDiceEvent() {
-        super(ClientEventType.SEND_INFO_EVENT, false);
+        super(ClientEventType.SEND_INFO_EVENT);
     }
 
     @Override

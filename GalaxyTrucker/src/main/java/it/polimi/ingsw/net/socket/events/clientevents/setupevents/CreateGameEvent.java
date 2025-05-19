@@ -13,7 +13,7 @@ public class CreateGameEvent extends ClientEvent {
     private final int numberOfPlayers;
     private final int gameLevel;
     public CreateGameEvent(int numberOfPlayers, int gameLevel) {
-        super(ClientEventType.CREATE_GAME, false);
+        super(ClientEventType.CREATE_GAME);
         this.numberOfPlayers = numberOfPlayers;
         this.gameLevel = gameLevel;
     }

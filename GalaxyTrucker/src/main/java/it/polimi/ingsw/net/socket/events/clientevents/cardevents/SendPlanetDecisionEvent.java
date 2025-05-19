@@ -10,7 +10,7 @@ public class SendPlanetDecisionEvent extends ClientEvent {
     private int index;
 
     public SendPlanetDecisionEvent(int index) {
-        super(ClientEventType.SEND_INFO_EVENT, false);
+        super(ClientEventType.SEND_INFO_EVENT);
         this.index = index;
     }
 
