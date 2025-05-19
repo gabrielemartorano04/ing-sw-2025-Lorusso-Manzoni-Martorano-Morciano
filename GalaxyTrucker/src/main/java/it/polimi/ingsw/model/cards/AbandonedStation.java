@@ -8,7 +8,6 @@ import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.components.*;
-import it.polimi.ingsw.model.Bank;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 
 import java.io.Serializable;
@@ -28,7 +27,7 @@ public class AbandonedStation extends Card implements Serializable {
     private ArrayList<int[]> coordinates = null; //coordinates sono le coordinate dei Load dove inserire le merci. Viene settato dal Card controller, se è vuoto vuol dire che nessun giocatore ha voluto accettare la carta
     private CardState cardState;
     private int currGood;
-    private int playerDecisions;
+    private int indexOfCurrTrucker;
 
     /**
      * Abandoned station constructor, initialise the attributes of this class
@@ -46,7 +45,7 @@ public class AbandonedStation extends Card implements Serializable {
         this.numHuman = numHuman;
         this.goods = goods;
         this.cardState = CardState.LAND;
-        this.playerDecisions=0;
+        this.indexOfCurrTrucker =0;
         this.currGood=0;
     }
 
@@ -103,17 +102,17 @@ public class AbandonedStation extends Card implements Serializable {
      * @param landing: choice taken
      */
     @Override
-    public ServerEvent truckerLanding(ArrayList<Trucker> truckers, boolean landing) throws GeneralError {
+    public ServerEvent truckerLanding(boolean landing) throws GeneralError {
         if (cardState != CardState.LAND) {
             throw new GeneralError("stato non valido");
         }
         if(landing) {
-            this.truckerThatHasDecided = truckers.get(playerDecisions);
+            this.truckerThatHasDecided = Game.getIstance().getTrucker(indexOfCurrTrucker);
             //TODO: TEST CHE NON CI SIA UN LOOP INFINITO
             do {
                 if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
                     cardState = CardState.GOODSTOADD;
-                    return new PlotGood(true, cardState, truckers.get(playerDecisions).getNickname(), goods.get(currGood));
+                    return new PlotGood(true, cardState, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), goods.get(currGood));
                 } else {
                     currGood++;
                     if(currGood==goods.size()) {
@@ -124,12 +123,12 @@ public class AbandonedStation extends Card implements Serializable {
             }while(true);
 
         }else{
-            if (playerDecisions == truckers.size()){
+            if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()){
                 cardState = CardState.ESECUZIONE;
                 return cardEffect();
             }
-            playerDecisions++;
-            return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this AbandonedStation?", truckers.get(playerDecisions).getNickname());
+            indexOfCurrTrucker++;
+            return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this AbandonedStation?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
         }
     }
 

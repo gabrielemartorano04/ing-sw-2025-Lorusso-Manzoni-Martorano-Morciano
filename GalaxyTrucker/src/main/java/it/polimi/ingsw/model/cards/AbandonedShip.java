@@ -105,25 +105,24 @@ public class AbandonedShip extends Card implements Serializable {
 
     /**
      * Sets the only trucker that has chosen to take the ship
-     * @param trucker: trucker current
      * @param landing: the choice taken by the current client
      */
     @Override
-    public ServerEvent truckerLanding(ArrayList<Trucker> trucker, boolean landing) throws GeneralError {
+    public ServerEvent truckerLanding(boolean landing) throws GeneralError {
         if(state != CardState.LAND) {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }
         if(landing) {
-            truckerThatHasDecided = trucker.get(indexOfCurrTrucker);
+            truckerThatHasDecided = Game.getIstance().getTrucker(indexOfCurrTrucker);
             state = CardState.HUMANSTOREMOVE;
-            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, this.getCardState(), trucker.get(indexOfCurrTrucker).getNickname());
+            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, this.getCardState(), Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
         }else{
-            if (indexOfCurrTrucker == trucker.size()){
+            if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()){
                 state = CardState.ESECUZIONE;
                 return cardEffect();
             }else{
                 indexOfCurrTrucker++;
-                return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this Abandoned Ship?",  trucker.get(indexOfCurrTrucker).getNickname());
+                return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this Abandoned Ship?",  Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
             }
         }
     }
