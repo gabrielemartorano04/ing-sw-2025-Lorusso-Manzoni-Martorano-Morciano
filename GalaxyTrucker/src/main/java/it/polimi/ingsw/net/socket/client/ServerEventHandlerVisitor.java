@@ -414,12 +414,8 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(EpidemicEvent event) {
-        //viewFlow.setParserFlightState(ParserState.EPIDEMIC);
-    }
+        ui.showMessage("Card drawn: "+event.getCardName()+"\n Card description: "+event.getCardDescription()+"\n");
 
-    @Override
-    public void visit(ExecutionEvent event) {
-        //viewFlow.setParserFlightState(ParserState.EXECUTION);
     }
 
     @Override
@@ -465,11 +461,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(StarDustEvent event) {
-        //fare dopo
-        //viewFlow.setParserFlightState(ParserState.STARDUST);
+        ui.showMessage("Card drawn: "+event.getCardName()+"\n Card description: "+event.getCardDescription()+"\n");
 
     }
-
+//nel cardfinish devi 1)stampa con un metodo la situa della nave approfondinta con dati e la posizione di tutti
+    //il primon della lista è obbligato a dire draw
     @Override
     public void visit(StartCardEvent event) {
         ui.showCardDrawn(event);
