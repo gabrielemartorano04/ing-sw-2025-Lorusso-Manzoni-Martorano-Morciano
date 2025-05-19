@@ -9,7 +9,7 @@ public class ShowTilesListEvent extends ClientEvent {
     private String message;
 
     public ShowTilesListEvent() {
-        super(ClientEventType.SHOW_TILES, false);
+        super(ClientEventType.SHOW_TILES);
         message="my spaceship is done";
     }
 

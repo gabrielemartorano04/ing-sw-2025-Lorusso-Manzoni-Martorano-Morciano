@@ -11,7 +11,7 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 public class TurnHourglassEvent extends ClientEvent {
 
     public TurnHourglassEvent() {
-        super(ClientEventType.TURN_HOURGLASS, false);
+        super(ClientEventType.TURN_HOURGLASS);
     }
     @Override
     public String getMessage() {

@@ -18,7 +18,7 @@ public class LinkTileEvent extends ClientEvent {
     private int index;
     private int x,y;
     public LinkTileEvent(int index, int x, int y, Component component) {
-        super(ClientEventType.LINK_TILE, false);
+        super(ClientEventType.LINK_TILE);
         this.component = component;
         this.index = index;
         this.x = x;

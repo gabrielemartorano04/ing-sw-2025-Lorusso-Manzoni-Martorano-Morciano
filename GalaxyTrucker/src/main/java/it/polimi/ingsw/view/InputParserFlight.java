@@ -114,13 +114,7 @@ public class InputParserFlight {
                     }
                 }
                 return new SendActivateCannonsEvent(true,coordEngines);
-            case STARDUST:
-                return null;
             case CARD_FINISH:
-                return null;
-            case EPIDEMIC:
-                return null;
-            case EXECUTION:
                 return null;
             case PLANET_DECISION:
                 String[] planetDecision=input.split("\\s+");
