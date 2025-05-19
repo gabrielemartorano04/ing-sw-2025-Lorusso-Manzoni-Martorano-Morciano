@@ -19,14 +19,6 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-//    default CardState truckerLanding(Trucker trucker, boolean landing, int numPlayer, Bank bank) throws GeneralError, WrongCallerException {
-//        throw new WrongCallerException("This Card doesn't have this method");
-//    }
-
-    default ServerEvent setChoiceToGain(boolean choice) throws GeneralError, WrongCallerException {
-        throw new WrongCallerException("This Card doesn't have this method");
-    }
-
     default ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int value) throws GeneralError, InvalidCoordinates, WrongCallerException, InvalidPositionException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
@@ -55,13 +47,7 @@ public interface CardInterface {
 
     default ServerEvent playerLandingPlanets(int indexOfPlanet) throws WrongCallerException, GeneralError, PlanetNotFreeException {throw new WrongCallerException("This method does not exist in the card ");}
 
-    // Slavers
-
-    default CardState addTruckersCoordinatesToRemoveHumans(Trucker trucker, ArrayList<int[]> truckersCoordinatesToRemoveHumans, int numPlayer) throws WrongCallerException, GeneralError, InvalidCoordinates {throw new WrongCallerException("This method does not exist in the card ");}
-
     // Smugglers
-
-    default Goods plotCurrGood() throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
 
     default int getNumOfBatteriesToRemove() throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
 
