@@ -93,7 +93,7 @@ public class OpenSpace extends Card implements Serializable {
             }
 
             this.truckersCoordinates.addLast(coord);
-            Game.getIstance().getTrucker(indexOfCurrentTrucker).
+            Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().activateDoubleEngines();
 
         }
 

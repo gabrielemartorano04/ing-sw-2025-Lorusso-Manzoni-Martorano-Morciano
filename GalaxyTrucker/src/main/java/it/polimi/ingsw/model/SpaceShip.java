@@ -715,6 +715,16 @@ public class SpaceShip implements Serializable {
         }
     }
 
+    public void activateShield(int[] shieldCoord, int[] batteryCoord){
+        // TODO: attiva lo scuso in posizione shieldCoord togliendo la batteria nel load in posizione batteryCoord
+        // NB HO GIA FATTO IL CHECK PRIMA DI CHIAMARE QUESTO METODO SE LE DUE COORDINATE SONO RISPETTAVIMANTE DI UNO SHIELD E DI UN BATTERYSTORAGE
+    }
+
+    public void deActivateShields(){
+        //TODO: disattiva tutti gli scudi della nave
+    }
+
+
 
 
     /**
