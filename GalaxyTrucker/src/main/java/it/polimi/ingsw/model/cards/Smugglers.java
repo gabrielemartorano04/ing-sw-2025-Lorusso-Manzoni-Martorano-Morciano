@@ -240,61 +240,62 @@ public class Smugglers extends Card implements Serializable {
         return cardState;
     }
 
-    public CardState manageRemoveGoods(Trucker trucker, Bank bank) throws GeneralError{
+    //RIMOZIONE MERCI DEGLI SCONFITTI
+    @Override
+    public ServerEvent removeGoods() throws GeneralError{
         if(cardState != CardState.REMOVE_GOODS){
             throw new GeneralError("plotGoodsToRemove not callable in the state " + cardState);
         }
-        if(trucker == null){
-            throw new GeneralError("trucker is null");
-        }
-        ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
+        ArrayList<Goods> goodsList = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getGoodsList();
 
         if(!defeatedTruckers.isEmpty()) {
             // se il colore corrente è minore uguale a 3 allora devo togliere le merci
-            while (colorOfCurrGoodToRemove <= 3 && goodsLost > 0) {
+            while (colorOfCurrGoodToRemove <= 4 && goodsLost > 0) {
                 switch (colorOfCurrGoodToRemove) {
-                    case 0 -> {
-                        numOfCurrTypeOfGood = trucker.getSpaceShip().getRedGoods();
-                        colorOfCurrGoodToRemove++;
-                    }
-                    case 1 -> {
-                        numOfCurrTypeOfGood = trucker.getSpaceShip().getYellowGoods();
-                        colorOfCurrGoodToRemove++;
-                    }
-                    case 2 -> {
-                        numOfCurrTypeOfGood = trucker.getSpaceShip().getGreenGoods();
-                        colorOfCurrGoodToRemove++;
+                    case 4 -> {
+                        numOfCurrTypeOfGood = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getRedGoods();
+                        colorOfCurrGoodToRemove--;
                     }
                     case 3 -> {
-                        numOfCurrTypeOfGood = trucker.getSpaceShip().getBlueGoods();
-                        colorOfCurrGoodToRemove++;
+                        numOfCurrTypeOfGood = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getYellowGoods();
+                        colorOfCurrGoodToRemove--;
+                    }
+                    case 2 -> {
+                        numOfCurrTypeOfGood = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getGreenGoods();
+                        colorOfCurrGoodToRemove--;
+                    }
+                    case 1 -> {
+                        numOfCurrTypeOfGood = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getBlueGoods();
+                        colorOfCurrGoodToRemove--;
                     }
                 }
 
                 if (numOfCurrTypeOfGood <= goodsLost) {
-                    removeWithoutAsking(trucker, goodsList, bank);
+                    removeWithoutAsking(defeatedTruckers.get(indexOfCurrentTrucker), goodsList, Game.getIstance().getBank());
                 } else {
                     cardState = CardState.PLOT_GOODSLIST;
+                    return new //plottare beni da eliminare;
                     break;
                 }
             }
-            if (colorOfCurrGoodToRemove > 3 && goodsLost > 0) {
+            if (goodsLost > 0) {
                 // se il colore corrente è maggiore di 3 allora vuol dire che devo togliere batterie se ho ancora merci da rimuovere
                 cardState = CardState.PLOT_BATTERIES;
+                return new //plottare lista batterie;
             }
             if (goodsLost == 0) {
                 defeatedTruckers.removeFirst();
             }else {
-                if (winnerTrucker !=null) {
+                if (winnerTrucker != null ) {
                     cardState = CardState.PLOT_GOOD;
+                    return new //plottare lista beni da guadagnare per il vincitore;
                 }else cardState=CardState.ESECUZIONE;
             }
         }
-        return cardState;
-
     }
 
-    private void removeWithoutAsking(Trucker trucker, ArrayList<Goods> goodsList, Bank bank) throws GeneralError{
+    @Override
+    private ServerEvent removeWithoutAsking(ArrayList<Goods> goodsList) throws GeneralError{
         if(this.numOfCurrTypeOfGood == 0){
             throw new GeneralError("Remove without asking: NumOfGoods is 0 but you called removeWithoutAsking");
         }
@@ -305,14 +306,16 @@ public class Smugglers extends Card implements Serializable {
         for (int i = 0; i < numOfCurrTypeOfGood; i++) {
             Goods good = goodsList.getFirst();
             list.add(good);
-            bank.addGoodsInBank(good.getValue());
+            Game.getIstance().getBank().addGoodsInBank(good.getValue());
             goodsList.removeFirst();
             goodsLost--;
         }
-        trucker.getSpaceShip().removeGoods(list);
-
+        defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeGoods(list);
+        return new //confermare rimozione;
     }
 
+    //da togliere
+    @Override
     public ArrayList<Goods> plotGoodsList(Trucker trucker) throws GeneralError {
         if (cardState != CardState.PLOT_GOODSLIST){
             throw new GeneralError("plotGoodsList not callable in the state " + cardState);
@@ -328,16 +331,16 @@ public class Smugglers extends Card implements Serializable {
             goodsToRemove.add(goodsList.getFirst());
         }
         cardState = CardState.REMOVE_ASKING;
+
         return goodsToRemove;
     }
 
     /**
      *
      * @param indexes: contains the indexes of the Goods within the list displayed on the screen that the player wants to remove from his ship
-     * @param trucker
      */
-
-    public CardState removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
+    @Override
+    public ServerEvent removeAsking(ArrayList<Integer> indexes) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
         if (cardState != CardState.REMOVE_ASKING){
             throw new GeneralError("Can't call removeAsking in the state " + cardState);
         }
@@ -349,27 +352,18 @@ public class Smugglers extends Card implements Serializable {
                 throw new InvalidGoodChosen("A good with an index out of range has been chosen");
             }
         }
-        if(trucker == null){
-            throw new GeneralError("trucker is null");
-        }
         goodsLost = 0;
         ArrayList<Goods> list = new ArrayList<>();
         for(Integer index : indexes){
             list.add(goodsToRemove.get(index));
         }
-        removeWithoutAsking(trucker,list,bank);
+        removeWithoutAsking(defeatedTruckers.get(indexOfCurrentTrucker),list,Game.getIstance().getBank());
         cardState = CardState.REMOVE_GOODS;
-        return cardState;
+        return removeWithoutAsking(list);
     }
 
-    public int getNumOfBatteriesToRemove() throws GeneralError{
-        if(cardState != CardState.PLOT_BATTERIES){
-            throw new GeneralError("Can't call getNumOfBatteriesToRemove in the state " + cardState);
-        }
-        return goodsLost;
-    }
-
-    public CardState removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
+    @Override
+    public ServerEvent removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(cardState!= CardState.REMOVE_BATTERIES){
             throw new GeneralError("Can't call removeBatteries in the state " + cardState);
         }
@@ -392,7 +386,7 @@ public class Smugglers extends Card implements Serializable {
             throw new NotEnoughBatteries("Not enough batteries");
         }
         cardState = CardState.REMOVE_GOODS;
-        return cardState;
+        return new //conferma rimozione batterie;
     }
 
     /**
