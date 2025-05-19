@@ -8,6 +8,7 @@ import java.io.Serializable;
 public final class Shield extends Component implements Serializable {
     private Direction direction;
     private static final long serialVersionUID = 1L;
+    private boolean isActive;
 
     /**
      * Shield constructor, initialise the attributes of this class
@@ -21,6 +22,7 @@ public final class Shield extends Component implements Serializable {
     public Shield(int linkU, int linkR, int linkD, int linkL, String type, String imagePath) {
         super(linkU, linkR, linkD, linkL, type, imagePath);
         this.direction = Direction.NE;
+        this.isActive = false;
     }
 
     /**
@@ -37,6 +39,13 @@ public final class Shield extends Component implements Serializable {
      */
     public Direction getDirection() {
         return direction;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+    public boolean getIsActive() {
+        return isActive;
     }
 
     /**

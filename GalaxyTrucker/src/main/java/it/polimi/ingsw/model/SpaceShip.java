@@ -691,8 +691,16 @@ public class SpaceShip implements Serializable {
                 case Engine engine->{
                     engine.setIsActive(true);
                     numOfBattery--;
-                    // TODO: chiediamo all'utente da dove togliere le batterie, quindi il numOfBattery-- deve essere seguito dalla remove dal BatteryStorage
-                    // l'if sul numOfBattery>0 non serve perché hai già controllato prima se hai il numero di batterie sufficiente per tutti
+                    for(int[] bat:batteriesCoord){
+                        if(components[bat[0]][bat[1]]!=null){
+                            switch(components[bat[0]][bat[1]]){
+                                case BatteryStorage bs->{
+                                    if(bs.getQuantity()>0) bs.removeNumOfBatteries(1);
+                                }
+                                default -> {}
+                            }
+                        }
+                    }
                 }default -> {}
             }
 
@@ -707,8 +715,16 @@ public class SpaceShip implements Serializable {
                 case Cannon cannon->{
                     cannon.setIsActive(true);
                     numOfBattery--;
-                    // TODO: chiediamo all'utente da dove togliere le batterie, quindi il numOfBattery-- deve essere seguito dalla remove dal BatteryStorage
-
+                    for(int[] bat:batteriesCoord){
+                        if(components[bat[0]][bat[1]]!=null){
+                            switch(components[bat[0]][bat[1]]){
+                                case BatteryStorage bs->{
+                                    if(bs.getQuantity()>0) bs.removeNumOfBatteries(1);
+                                }
+                                default -> {}
+                            }
+                        }
+                    }
                 }default -> {}
             }
 
@@ -716,12 +732,35 @@ public class SpaceShip implements Serializable {
     }
 
     public void activateShield(int[] shieldCoord, int[] batteryCoord){
-        // TODO: attiva lo scuso in posizione shieldCoord togliendo la batteria nel load in posizione batteryCoord
-        // NB HO GIA FATTO IL CHECK PRIMA DI CHIAMARE QUESTO METODO SE LE DUE COORDINATE SONO RISPETTAVIMANTE DI UNO SHIELD E DI UN BATTERYSTORAGE
+        switch(components[shieldCoord[0]][shieldCoord[1]]){
+            case Shield shield->{
+                shield.setIsActive(true);
+            }
+            default -> {}
+        }
+        switch(components[batteryCoord[0]][batteryCoord[1]]){
+            case BatteryStorage bs->{
+                bs.removeNumOfBatteries(1);
+            }
+            default -> {}
+        }
     }
 
     public void deActivateShields(){
-        //TODO: disattiva tutti gli scudi della nave
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if (components[i][j] != null ) {
+                    switch(components[i][j]){
+                        case Shield shield->{
+                            if (shield.getIsActive()) {
+                                shield.setIsActive(false);
+                            }
+                        }
+                        default -> {}
+                    }
+                }
+            }
+        }
     }
 
 
