@@ -11,6 +11,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.cardevents.RollDice;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.NotEnoughBatteries;
 
 import java.io.Serializable;
 import java.util.ArrayList;
