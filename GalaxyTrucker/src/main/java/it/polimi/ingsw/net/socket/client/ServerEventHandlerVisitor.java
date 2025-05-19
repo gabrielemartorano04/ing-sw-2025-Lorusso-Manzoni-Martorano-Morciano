@@ -434,7 +434,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(RollDice event) {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.ROLL_DICE);
-            ui.showMessage("The dices result is " + event.getDiceResult());
+            ui.showMessage("The dices result is " + event.getDiceResult() + "\n" + event.getMessage());
             //chiedere che cosa deve mandate l'utente
         } else {
             ui.showMessage(event.getInfoForOthers());
