@@ -398,5 +398,12 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.startFlight = true;
     }
 
+    public void setParserFlightState(ParserState state) {
+        inputParserFlight.setParserState(state);
+    }
+    public ParserState getParserFlightState() {
+        return inputParserFlight.getParserState();
+    }
+
 }
 

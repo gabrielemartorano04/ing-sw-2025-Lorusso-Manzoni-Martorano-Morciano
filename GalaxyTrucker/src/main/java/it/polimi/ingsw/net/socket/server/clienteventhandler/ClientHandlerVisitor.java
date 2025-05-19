@@ -323,4 +323,9 @@ public class ClientHandlerVisitor implements ClientVisitor {
         return cardController.startCard();
     }
 
+    @Override
+    public ServerEvent visit(SendHumanCoordEvent event) {
+        return null;
+    }
+
 }

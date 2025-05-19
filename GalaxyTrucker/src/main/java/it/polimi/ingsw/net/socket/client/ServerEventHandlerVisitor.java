@@ -401,12 +401,15 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(HumanCoordinates event) {
-
+        //stato del parseflight diventa human coord
+        viewFlow.setParserFlightState(ParserState.HUMAN_COORD);
+        ui.showMessage("Insert the coordinates of human's cabin: ");
     }
 
     @Override
     public void visit(PlanetDecision event) {
-
+        viewFlow.setParserFlightState(ParserState.PLANET_DECISION);
+        ui.showMessage("Choose the planet you want to fly to: ");
     }
 
     @Override
@@ -426,6 +429,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(StartCardEvent event) {
-
+        ui.showCardDrawn(event);
+        if (event.getNickname().equals(viewFlow.getNickname())) {
+            ui.showMessage(event.getQuestion());
+        } else {
+            //TODO inserire messaggio per gli altri
+        }
     }
 }
