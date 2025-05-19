@@ -388,11 +388,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
                     viewFlow.setParserFlightState(ParserState.ROLL_DICE);
                 }
                 case ACTIVATE_CANNONS -> {
-                    ui.showMessage("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons. Type 'y <x1> <y1>, <x2> <y2>,...' or 'n': ");
+                    ui.showMessage("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons. Type 'y, <x1> <y1>, <x2> <y2>,...' or 'n': ");
                     viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
                 }
                 case ACTIVATE_ENGINES -> {
-                    ui.showMessage("Choose if you want to activate the double engines. If yes type the coordinates of the engines. Type 'y <x1> <y1>, <x2> <y2>,...' or 'n': ");
+                    ui.showMessage("Choose if you want to activate the double engines. If yes type the coordinates of the engines. Type 'y, <x1> <y1>, <x2> <y2>,...' or 'n': ");
                     viewFlow.setParserFlightState(ParserState.ACTIVATE_ENGINES);
                 }
                 case ACTIVATE_SHIELD -> {
