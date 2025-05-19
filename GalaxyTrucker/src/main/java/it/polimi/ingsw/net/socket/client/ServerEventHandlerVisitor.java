@@ -381,27 +381,37 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(BooleanDecision event) {
-        viewFlow.setParserFlightState(ParserState.BOOLEAN_DECISION);
+        if (event.getNickname().equals(viewFlow.getNickname())){
+            switch (event.getEventType()){
+                case ROLL_DICE -> viewFlow.setParserFlightState(ParserState.ROLL_DICE);
+                case ACTIVATE_CANNONS -> viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
+                case ACTIVATE_ENGINES -> viewFlow.setParserFlightState(ParserState.ACTIVATE_ENGINES);
+                case ACTIVATE_SHIELD -> viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
+            }
+        }
+        else {
+            ui.showMessage(event.getInfoForOthers());
+        }
+
     }
 
     @Override
     public void visit(CardFinished event) {
-        viewFlow.setParserFlightState(ParserState.CARD_FINISH);
+       // viewFlow.setParserFlightState(ParserState.CARD_FINISH);
     }
 
     @Override
     public void visit(EpidemicEvent event) {
-        viewFlow.setParserFlightState(ParserState.EPIDEMIC);
+        //viewFlow.setParserFlightState(ParserState.EPIDEMIC);
     }
 
     @Override
     public void visit(ExecutionEvent event) {
-        viewFlow.setParserFlightState(ParserState.EXECUTION);
+        //viewFlow.setParserFlightState(ParserState.EXECUTION);
     }
 
     @Override
     public void visit(HumanCoordinates event) {
-        //stato del parseflight diventa human coord
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.HUMAN_COORD);
             ui.showMessage("Insert the coordinates of the cabins to remove the number of human indicated in the card description. Type '<x1> <y1> - <number of crew>, <x2> <y2> - <number of crew>,...' : ");
@@ -444,7 +454,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(StarDustEvent event) {
         //fare dopo
-        viewFlow.setParserFlightState(ParserState.STARDUST);
+        //viewFlow.setParserFlightState(ParserState.STARDUST);
 
     }
 
