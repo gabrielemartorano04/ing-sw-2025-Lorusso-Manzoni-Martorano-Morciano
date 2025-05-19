@@ -184,7 +184,7 @@ public class Pirates extends Card implements Serializable {
     }
 
     public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord)throws GeneralError, InvalidComponentsException{
-        if(cardState!=CardState.WAIT_CANNONS){
+        if(cardState!=CardState.ACTIVATE_CANNONS){
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
         if(!activate || Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getNumDoubleCannon()==0){
@@ -194,8 +194,8 @@ public class Pirates extends Card implements Serializable {
                     cardState = CardState.ESECUZIONE;
                     return cardEffect();
                 }else{
-                    cardState = CardState.ROLL_DICE;
-                    return GainCosmicCredits();
+                    cardState = CardState.COSMIC_CREDITS;
+                    return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits);
                 }
             }else if(fightIsWin==2){
                 cardState = CardState.GOODSTOADD;
@@ -243,15 +243,32 @@ public class Pirates extends Card implements Serializable {
     }
 
 
-    public CardState setAnswers(boolean answers, Trucker trucker) throws GeneralError {
-        if(cardState != CardState.CHIEDI_SCUDI){
-            throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
+
+
+    public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates {
+        if(state != CardState.ACTIVATE_SHIELDS){
+            throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
-        if (!trucker.getSpaceShip().getProtection().isEmpty()){
-            this.usesShield.addLast(answers);
+        if(!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkShield(shieldCoord)){
+            throw new InvalidCoordinates("Not a shield");
         }
-        cardState = CardState.ESECUZIONE;
-        return cardState;
+        ArrayList<int[]> l = new ArrayList<>();
+        l.add(batteryCoord);
+        if(!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkBatteryStorage(l)){
+            throw new InvalidCoordinates("Not a battery");
+        }
+        this.answers.addLast(answer);
+        if(answer){
+            Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().activateShield(shieldCoord, batteryCoord);
+        }
+
+        if(indexOfCurrTrucker == Game.getIstance().getTruckerList().size()){
+            state = CardState.ESECUZIONE;
+            indexOfCurrTrucker = 0;
+            return cardEffect();
+        }
+        indexOfCurrTrucker++;
+        return new RollDice(this.getCardState(), currMeteorIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), false);
     }
 
     /**
