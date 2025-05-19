@@ -1475,7 +1475,7 @@ public class SpaceShip implements Serializable {
      * @param value position in the load
      * @throws InvalidPositionException if the good is special but not the choosen load
      */
-    public void addGood(Goods good,int[] coord,int value ,Bank bank) throws InvalidPositionException{
+    public Goods addGood(Goods good,int[] coord,int value ,Bank bank) throws InvalidPositionException{
         if(components[coord[0]][coord[1]]!=null){
             switch(components[coord[0]][coord[1]]){
                 case Load load->{
@@ -1495,11 +1495,13 @@ public class SpaceShip implements Serializable {
                         bank.removeGoodsInBank(good.getValue());
                         goodsList.remove(g);
                         addGoodsList(good);
+                        return g;
                     }
                 }
                 default -> {}
             }
         }
+        return null;
     }
 
     /**
