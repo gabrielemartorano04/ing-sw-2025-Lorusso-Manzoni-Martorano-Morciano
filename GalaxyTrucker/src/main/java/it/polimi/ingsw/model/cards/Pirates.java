@@ -105,25 +105,6 @@ public class Pirates extends Card implements Serializable {
         return shoots;
     }
 
-    /**
-     * Sets the list of defeated truckers
-     * @param defeatedTruckers list of truckers ID
-     */
-    public void setDefeatedTruckers(ArrayList<Trucker> defeatedTruckers) {
-        this.defeatedTruckers = defeatedTruckers;
-    }
-
-    /**
-     * Sets the trucker that defeat the pirates
-     * @param winnerTrucker trucker ID
-     */
-    public void setWinnerTrucker(Trucker winnerTrucker) {
-        this.winnerTrucker = winnerTrucker;
-    }
-
-    public ArrayList<int[]> getDirections() {
-        return shoots;
-    }
 
     @Override
     public ServerEvent startCard() {
