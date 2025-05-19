@@ -44,21 +44,21 @@ public interface ClientVisitor {
 
     ServerEvent visit(OkStartFlight event);
 
-    ServerEvent visit(SendHumanCoordEvent event);
+    ServerEvent visit(HumanCoordEvent event);
 
-    ServerEvent visit(SendPlotGoodEvent event);
+    ServerEvent visit(PlotGoodEvent event);
 
-    ServerEvent visit(SendPlanetDecisionEvent event);
+    ServerEvent visit(PlanetDecisionEvent event);
 
-    ServerEvent visit(SendRollDiceEvent event);
+    ServerEvent visit(RollDiceEvent event);
 
-    ServerEvent visit(SendActivateShieldEvent event);
+    ServerEvent visit(ActivateShieldEvent event);
 
-    ServerEvent visit(SendActivateCannonsEvent event);
+    ServerEvent visit(ActivateCannonsEvent event);
 
-    ServerEvent visit(SendActivateEnginesEvent event);
+    ServerEvent visit(ActivateEnginesEvent event);
 
-    ServerEvent visit(SendDrawCardEvent event);
+    ServerEvent visit(DrawCardEvent event);
 
     ServerEvent visit(TruckerLandingEvent event);
 }

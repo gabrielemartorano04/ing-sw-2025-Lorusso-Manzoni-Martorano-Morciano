@@ -7,12 +7,12 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
 import java.util.ArrayList;
 
-public class SendActivateCannonsEvent extends ClientEvent {
+public class ActivateCannonsEvent extends ClientEvent {
 
     private boolean decision;
     private ArrayList<int[]> coordinates, batteryCoordinates;
 
-    public SendActivateCannonsEvent(boolean decision, ArrayList<int[]> coordinates, ArrayList<int[]> batteryCoordinates) {
+    public ActivateCannonsEvent(boolean decision, ArrayList<int[]> coordinates, ArrayList<int[]> batteryCoordinates) {
         super(ClientEventType.SEND_INFO_EVENT);
         this.decision = decision;
         this.coordinates = coordinates;

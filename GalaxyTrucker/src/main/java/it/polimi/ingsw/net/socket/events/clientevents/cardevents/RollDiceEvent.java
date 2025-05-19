@@ -5,9 +5,9 @@ import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
-public class SendRollDiceEvent extends ClientEvent {
+public class RollDiceEvent extends ClientEvent {
 
-    public SendRollDiceEvent() {
+    public RollDiceEvent() {
         super(ClientEventType.SEND_INFO_EVENT);
     }
 

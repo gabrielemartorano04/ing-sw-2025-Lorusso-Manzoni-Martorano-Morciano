@@ -7,11 +7,11 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
 import java.util.ArrayList;
 
-public class SendHumanCoordEvent extends ClientEvent {
+public class HumanCoordEvent extends ClientEvent {
 
     private ArrayList<int[]> humanCoord;
 
-    public SendHumanCoordEvent(ArrayList<int[]> humanCoord) {
+    public HumanCoordEvent(ArrayList<int[]> humanCoord) {
         super(ClientEventType.SEND_INFO_EVENT);
         this.humanCoord = humanCoord;
     }

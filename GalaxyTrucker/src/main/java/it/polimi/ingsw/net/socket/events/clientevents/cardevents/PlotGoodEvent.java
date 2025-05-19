@@ -5,28 +5,29 @@ import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
-public class SendPlotGoodEvent extends ClientEvent {
+public class PlotGoodEvent extends ClientEvent {
 
     private boolean decision;
-    private int x, y;
+    private int[] coordinates;
+    private int positionInLoad;
 
-    public SendPlotGoodEvent(boolean decision, int x, int y) {
+    public PlotGoodEvent(boolean decision, int[] coordinates, int positionInLoad) {
         super(ClientEventType.SEND_INFO_EVENT);
         this.decision = decision;
-        this.x = x;
-        this.y = y;
+        this.coordinates = coordinates;
+        this.positionInLoad = positionInLoad;
     }
 
     public boolean getDecision() {
         return decision;
     }
 
-    public int getX() {
-        return x;
+    public int[] getCoordinates() {
+        return coordinates;
     }
 
-    public int getY() {
-        return y;
+    public int getPositionInLoad() {
+        return positionInLoad;
     }
 
     @Override

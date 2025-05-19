@@ -5,8 +5,8 @@ import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
-public class SendDrawCardEvent extends ClientEvent {
-    public SendDrawCardEvent() {
+public class DrawCardEvent extends ClientEvent {
+    public DrawCardEvent() {
         super(ClientEventType.SEND_INFO_EVENT);
     }
 

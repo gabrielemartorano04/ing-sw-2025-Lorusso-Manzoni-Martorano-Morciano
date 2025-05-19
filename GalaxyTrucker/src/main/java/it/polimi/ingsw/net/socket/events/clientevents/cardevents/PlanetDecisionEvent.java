@@ -5,11 +5,11 @@ import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
-public class SendPlanetDecisionEvent extends ClientEvent {
+public class PlanetDecisionEvent extends ClientEvent {
 
     private int index;
 
-    public SendPlanetDecisionEvent(int index) {
+    public PlanetDecisionEvent(int index) {
         super(ClientEventType.SEND_INFO_EVENT);
         this.index = index;
     }
