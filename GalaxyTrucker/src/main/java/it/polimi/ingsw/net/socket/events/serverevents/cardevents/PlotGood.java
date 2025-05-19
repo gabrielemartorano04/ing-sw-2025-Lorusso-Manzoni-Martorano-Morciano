@@ -21,4 +21,8 @@ public class PlotGood extends CardEvent{
     public void call(ServerEventHandlerVisitor visitor) {
         //TODO: fare il visitor lato client
     }
+
+    public String getInfoForOthers(){
+        return getNickname()+" is deciding which goods to gain\n";
+    }
 }

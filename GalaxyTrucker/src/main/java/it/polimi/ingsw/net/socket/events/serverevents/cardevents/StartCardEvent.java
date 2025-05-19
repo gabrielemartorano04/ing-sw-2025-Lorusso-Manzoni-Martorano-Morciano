@@ -155,4 +155,8 @@ public class StartCardEvent extends CardEvent {
         // TODO: FARE QUESTO METODO
     }
 
+    public String getInfoForOthers(){
+        return firstPlayerNickname+" is deciding the answer to the following question: "+question;
+    }
+
 }

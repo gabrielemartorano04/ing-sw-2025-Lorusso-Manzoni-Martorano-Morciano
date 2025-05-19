@@ -29,4 +29,7 @@ public class PlanetDecision extends ServerEvent {
     public void call(ServerEventHandlerVisitor visitor) {
 
     }
+    public String getInfoForOthers(){
+        return nickname+" is deciding if landing on a planet or not";
+    }
 }
