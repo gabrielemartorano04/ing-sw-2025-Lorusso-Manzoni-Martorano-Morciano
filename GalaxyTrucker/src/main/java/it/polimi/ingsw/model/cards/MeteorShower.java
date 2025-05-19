@@ -124,7 +124,9 @@ public class MeteorShower extends Card implements Serializable {
             throw new InvalidCoordinates("Not a battery");
         }
         this.answers.addLast(answer);
-        Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().activateShield(shieldCoord, batteryCoord);
+        if(answer){
+            Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().activateShield(shieldCoord, batteryCoord);
+        }
 
         if(indexOfCurrTrucker == Game.getIstance().getTruckerList().size()){
             state = CardState.ESECUZIONE;
