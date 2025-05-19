@@ -666,16 +666,48 @@ public class SpaceShip implements Serializable {
         }
     }
 
-    public void activateDoubleEngines(ArrayList<int[]> coord) throws NotEnoughBatteries {
+    public void deactivateDoubleEngines() {
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if (components[i][j] != null ) {
+                    switch(components[i][j]){
+                        case Engine e->{
+                            if (e.getIsDouble() && e.getIsActive()) {
+                                e.setIsActive(false);
+                            }
+                        }
+                        default -> {}
+                    }
+                }
+            }
+        }
+    }
+
+    public void activateDoubleEngines(ArrayList<int[]> coord, ArrayList<int[]> batteriesCoord) throws NotEnoughBatteries {
         if(coord.size()>numOfBattery)
             throw new NotEnoughBatteries("You don't have enough batteries to activate all that engines!");
         for(int[] c:coord){
             switch(components[c[0]][c[1]]){
                 case Engine engine->{
-                    if(numOfBattery>0){
-                        engine.setIsActive(true);
-                        numOfBattery--;
-                    }
+                    engine.setIsActive(true);
+                    numOfBattery--;
+                    // TODO: chiediamo all'utente da dove togliere le batterie, quindi il numOfBattery-- deve essere seguito dalla remove dal BatteryStorage
+                    // l'if sul numOfBattery>0 non serve perché hai già controllato prima se hai il numero di batterie sufficiente per tutti
+                }default -> {}
+            }
+
+        }
+    }
+
+    public void activateDoubleCannons(ArrayList<int[]> coord, ArrayList<int[]> batteriesCoord) throws NotEnoughBatteries {
+        if(coord.size()>numOfBattery)
+            throw new NotEnoughBatteries("You don't have enough batteries to activate all that engines!");
+        for(int[] c:coord){
+            switch(components[c[0]][c[1]]){
+                case Cannon cannon->{
+                    cannon.setIsActive(true);
+                    numOfBattery--;
+                    // TODO: chiediamo all'utente da dove togliere le batterie, quindi il numOfBattery-- deve essere seguito dalla remove dal BatteryStorage
 
                 }default -> {}
             }
@@ -711,22 +743,6 @@ public class SpaceShip implements Serializable {
         return power + getSingleEnginePower() + getDoubleEngine();
     }
 
-    public void deactivateDoubleEngines() {
-        for (int i = 5; i <= 9; i++) {
-            for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null ) {
-                    switch(components[i][j]){
-                        case Engine e->{
-                            if (e.getIsDouble() && e.getIsActive()) {
-                                e.setIsActive(false);
-                            }
-                        }
-                        default -> {}
-                    }
-                }
-            }
-        }
-    }
 
 
     /**
