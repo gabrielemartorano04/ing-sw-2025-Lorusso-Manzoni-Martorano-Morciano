@@ -113,8 +113,6 @@ public interface ServerEventVisitor {
 
     void visit(EpidemicEvent event);
 
-    void visit(ExecutionEvent event);
-
     void visit(HumanCoordinates event);
 
     void visit(PlanetDecision event);

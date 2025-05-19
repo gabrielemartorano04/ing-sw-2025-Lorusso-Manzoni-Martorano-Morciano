@@ -11,15 +11,27 @@ import java.util.ArrayList;
 public class StarDustEvent extends ServerEvent {
 
     private ArrayList<Trucker> truckers;
+    private String cardDescription;
+    private String cardName;
 
-    public StarDustEvent (boolean forAll, CardState state, ArrayList<Trucker> turckerList) {
+    public StarDustEvent (String cardName, String cardDescripition, boolean forAll, CardState state, ArrayList<Trucker> turckerList) {
         super(ServerEventType.CARD_FINISHED, forAll);
         this.truckers = turckerList;
+        this.cardName = cardName;
+        this.cardDescription = cardDescription;
     }
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
 
+    }
+
+    public String getCardDescription() {
+        return cardDescription;
+    }
+
+    public String getCardName() {
+        return cardName;
     }
 
     public ArrayList<Trucker> getTruckers() {
