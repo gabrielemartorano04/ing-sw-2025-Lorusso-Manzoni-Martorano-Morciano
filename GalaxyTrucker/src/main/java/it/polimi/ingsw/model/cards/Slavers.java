@@ -3,10 +3,7 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.GainCosmicCredits;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.HumanCoordinates;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
@@ -208,34 +205,17 @@ public class Slavers extends Card implements Serializable {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Card state in not HUMANSTOREMOVE");
         }
-        if(!defeatedTruckers.isEmpty() || indexOfCurrentTrucker<Game.getIstance().getTruckerList().size()) {
-            try {
-                defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().checkCabin(coordinates, astronautsLost);
-                this.truckersCoordinatesToRemoveHumans.add(coordinates);
-                playersDecisions++;
-            } catch (InvalidCoordinates e) {
-                throw new InvalidCoordinates(e.getMessage());
-            }
-            if (playersDecisions==numPlayer) {
-                if(winnerTrucker !=null) {
-                    cardState = CardState.CHOOSE_TO_GAIN;
-                }else cardState = CardState.ESECUZIONE;
-            }
-        }else{
-            if(winnerTrucker !=null) {
-                cardState = CardState.CHOOSE_TO_GAIN;
-            }else cardState = CardState.ESECUZIONE;
+        try {
+            defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().checkCabin(coordinates, astronautsLost);
+            this.truckersCoordinatesToRemoveHumans.add(coordinates);
+            indexOfCurrentTrucker++;
+        } catch (InvalidCoordinates e) {
+            throw new InvalidCoordinates(e.getMessage());
         }
-        return cardState;
-    }
-
-    public CardState setChooseToGain(Boolean choice) throws GeneralError {
-        if (cardState != CardState.GAIN) {
-            throw new GeneralError("Card state is not GAIN");
+        if (indexOfCurrentTrucker==Game.getIstance().getTruckerList().size()) {
+            return cardEffect();
         }
-        this.choiceToGain = choice;
-        cardState = CardState.ESECUZIONE;
-        return cardState;
+        return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, this.cardState, defeatedTruckers.getFirst().getNickname());
     }
 
     /**
@@ -258,7 +238,7 @@ public class Slavers extends Card implements Serializable {
             }
         }
         cardState=CardState.EXIT;
-        return cardState;
+        return new CardFinished(true, this.cardState, Game.getIstance().getTruckerList());
     }
 
 
