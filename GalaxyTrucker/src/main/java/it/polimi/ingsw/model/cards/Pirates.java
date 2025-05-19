@@ -5,9 +5,11 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.cardcontrollers.PiratesController;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
 import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.InvalidPositionException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,13 +40,15 @@ public class Pirates extends Card implements Serializable {
     private int indexOfCurrentTrucker;
     private Trucker winnerTrucker = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
     private ArrayList<Trucker> defeatedTruckers;
-    private ArrayList<ArrayList<int[]>> doubleCannonsCoord; // coordinates of the double cannons the trucker wants to activate
+
+    private int currShootIndex;
+    private int[] shoot;
+    private int roll;
+
     private int playersDecisions; // number of players that gave a choice
     private boolean activateShield;
     private boolean choiceToGain;
     private int i;
-    private int[] shoot;
-    private int roll;
     private ArrayList<Boolean> usesShield;
 
     /**
@@ -64,14 +68,15 @@ public class Pirates extends Card implements Serializable {
         this.days = days;
         this.piratesPower = piratesPower;
         this.shoots = shoots;
-        this.doubleCannonsCoord= new ArrayList<>();
-        this.cardState = CardState.ATTESA_RISPOSTE;
+        this.cardState = CardState.WAIT_CANNONS;
         this.playersDecisions = 0;
         this.activateShield = false;
         this.choiceToGain = false;
         this.i = 0;
         this.roll = 0;
         this.indexOfCurrentTrucker = 0;
+        this.defeatedTruckers = new ArrayList<>();
+        this.currShootIndex = 0;
     }
 
     /**
@@ -127,6 +132,34 @@ public class Pirates extends Card implements Serializable {
         return shoots;
     }
 
+    /**
+     *
+     * @return:
+     * 0 if the current trucker loses or has the same power and there is still at least a client that hasn't answered,
+     * 1 if all clients have answered,
+     * 2 if the trucker wins
+     */
+    private int fightIsWin(){
+        if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() > piratesPower) {
+            winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
+            cardState = CardState.???;
+            return 2;
+        }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() == piratesPower){
+            if (playersDecisions == Game.getIstance().getTruckerList().size()) {
+                cardState = CardState.???;
+                return 1;
+            }else cardState = CardState.???;
+            return 0;
+        }else {
+            defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
+            if (playersDecisions == Game.getIstance().getTruckerList().size()) {
+                cardState = CardState.???;
+                return 1;
+            }else cardState = CardState.???;
+            return 0;
+        }
+    }
+
     @Override
     public ServerEvent startCard() {
         return new StartCardEvent(
@@ -150,6 +183,31 @@ public class Pirates extends Card implements Serializable {
         );
     }
 
+    public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord)throws GeneralError, InvalidComponentsException{
+        if(cardState!=CardState.ACTIVATE_CANNONS){
+            throw new GeneralError("Card state is not ATTESA_RISPOSTE");
+        }
+        if(!activate || Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getNumDoubleCannon()==0){
+            int fightIsWin = fightIsWin();
+            if(fightIsWin==1){
+                if(defeatedTruckers.isEmpty()){
+                    cardState = CardState.ESECUZIONE;
+                    return cardEffect();
+                }else{
+                    cardState = CardState.COSMIC_CREDITS;
+                    return new RollDice
+                }
+            }else if(fightIsWin==2){
+                cardState = CardState.GOODSTOADD;
+                return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits)
+            }
+            indexOfCurrentTrucker++;
+            if(Game.getIstance().getTrucker(indexOfCurrentTrucker-1).getSpaceShip().getNumDoubleCannon()==0){
+                throw new GeneralError("You don't have double cannons");
+            }
+        }
+    }
+
     public ServerEvent setCannonsCoordinates(Boolean activate, ArrayList<int[]> doubleCannonsCoord) throws GeneralError, InvalidComponentsException {
         if (cardState != CardState.ATTESA_RISPOSTE) {
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
@@ -168,10 +226,10 @@ public class Pirates extends Card implements Serializable {
             throw new GeneralError("You don't have double cannons");
         }
 
-        if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower(doubleCannonsCoord) > piratesPower) {
+        if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() > piratesPower) {
             winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
             cardState = CardState.GAIN;
-        }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower(doubleCannonsCoord) == piratesPower){
+        }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() == piratesPower){
             if (playersDecisions == Game.getIstance().getTruckerList().size()) {
                 cardState = CardState.GAIN;
             }else cardState = CardState.ATTESA_RISPOSTE;
@@ -184,48 +242,47 @@ public class Pirates extends Card implements Serializable {
         return cardState;
     }
 
-    public CardState setChooseToGain(boolean choice) throws GeneralError {
-        if (cardState != CardState.GAIN) {
-            throw new GeneralError("Card state is not GAIN");
+
+    public ServerEvent rollDice() throws GeneralError {
+        if(cardState != CardState.ROLL_DICE) {
+            throw new GeneralError("Non si può girare i dadi nello stato " + this.state);
         }
-        this.choiceToGain = choice;
-        cardState = CardState.PLOT_SHOOT;
-        return cardState;
+        if(currShootIndex <0 || currShootIndex >= shoots.size()){
+            throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste, la carta dovrebbe essere finita");
+        }
+        shoot = shoots.get(currShootIndex);
+        currShootIndex++;
+        this.roll = Game.getIstance().rollDice();
+        cardState = CardState.ATTESA_RISPOSTE;
+        return new RollDice(this.getCardState(), currShootIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true);
     }
 
 
-    public int[] getCurrentShoot() throws GeneralError {
-        if(cardState != CardState.PLOT_SHOOT) {
-            throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
-        }
-        if(i<0 || i >= shoots.size()){
-            throw new GeneralError("Stai cercando di accedere a un colpo che non esiste");
-        }
-        int[] meteor = shoots.get(i);
-        this.shoot = meteor;
-        i++;
-        cardState = CardState.ROLL_DICE;
-        return meteor;
-    }
 
-    public int rollDice(Game game) throws GeneralError {
-        if(cardState != CardState.ROLL_DICE){
-            throw new GeneralError("Non si può girare i dadi nello stato " + this.cardState);
+    public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates {
+        if(state != CardState.ACTIVATE_SHIELDS){
+            throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
-        this.roll = game.rollDice();
-        cardState = CardState.CHIEDI_SCUDI;
-        return roll;
-    }
+        if(!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkShield(shieldCoord)){
+            throw new InvalidCoordinates("Not a shield");
+        }
+        ArrayList<int[]> l = new ArrayList<>();
+        l.add(batteryCoord);
+        if(!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkBatteryStorage(l)){
+            throw new InvalidCoordinates("Not a battery");
+        }
+        this.answers.addLast(answer);
+        if(answer){
+            Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().activateShield(shieldCoord, batteryCoord);
+        }
 
-    public CardState setAnswers(boolean answers, Trucker trucker) throws GeneralError {
-        if(cardState != CardState.CHIEDI_SCUDI){
-            throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
+        if(indexOfCurrTrucker == Game.getIstance().getTruckerList().size()){
+            state = CardState.ESECUZIONE;
+            indexOfCurrTrucker = 0;
+            return cardEffect();
         }
-        if (!trucker.getSpaceShip().getProtection().isEmpty()){
-            this.usesShield.addLast(answers);
-        }
-        cardState = CardState.ESECUZIONE;
-        return cardState;
+        indexOfCurrTrucker++;
+        return new RollDice(this.getCardState(), currMeteorIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), false);
     }
 
     /**
