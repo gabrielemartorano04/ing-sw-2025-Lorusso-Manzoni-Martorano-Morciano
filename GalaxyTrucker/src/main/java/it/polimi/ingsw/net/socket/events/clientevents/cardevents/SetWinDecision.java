@@ -5,22 +5,21 @@ import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
-public class SendBooleanEvent extends ClientEvent {
-    private boolean answer;
-    public SendBooleanEvent(final boolean answer) {
+public class SetWinDecision extends ClientEvent {
+
+    private boolean win;
+
+    public SetWinDecision(boolean win) {
         super(ClientEventType.SEND_INFO_EVENT);
-        this.answer = answer;
+        this.win = win;
     }
-    public boolean getAnswer() {
-        return answer;
-    }
-    @Override
-    public String getMessage() {
-        return "Sent answer " + answer;
+
+    public boolean getWin() {
+        return win;
     }
 
     @Override
     public ServerEvent call(ClientVisitor visitor) {
-        return visitor.visit(this);
+        return null;
     }
 }

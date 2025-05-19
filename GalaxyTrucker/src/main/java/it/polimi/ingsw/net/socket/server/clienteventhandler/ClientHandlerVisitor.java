@@ -230,30 +230,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
     }
 
     @Override
-    public ServerEvent visit(SendCoordEvent event) {
-
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(SendCoordListEvent event) {
-
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(SendIndexesEvent event) {
-
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(SendIntEvent event) {
-
-        return null;
-    }
-
-    @Override
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
     }

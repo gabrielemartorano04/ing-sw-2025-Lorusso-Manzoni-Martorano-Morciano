@@ -85,7 +85,7 @@ public class CardController {
 
     public ServerEvent activateShield(SendActivateShieldEvent event) {
         try {
-            return currCard.activateShield(event.getDecision(), event.getCoordinates(), event.getBatteryCoordinates());
+            return currCard.activateShield(event.getDecision(), event.getCoordShield(), event.getCoordBS());
         } catch (GeneralError e) {
             return new GenericErrorEvent(e.getMessage(), true);
         } catch (WrongCallerException e) {
@@ -126,5 +126,13 @@ public class CardController {
 
     }
 
-    //public ServerEvent setWinDecision()
+    public ServerEvent setWinDecision(SetWinDecision event) {
+        try {
+            return currCard.setWinDecision(event.getWin());
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (WrongCallerException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        }
+    }
 }
