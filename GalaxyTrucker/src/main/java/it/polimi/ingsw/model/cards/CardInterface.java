@@ -27,7 +27,7 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int value) throws GeneralError, InvalidCoordinates, WrongCallerException {
+    default ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int value) throws GeneralError, InvalidCoordinates, WrongCallerException, InvalidPositionException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
@@ -84,8 +84,6 @@ public interface CardInterface {
     default CardState setCoordinatesToAddGoods(int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws WrongCallerException, GeneralError, InvalidCoordinates {throw new WrongCallerException("This method does not exist in the card ");}
 
     default CardState coordinatesToAddFromList(int[] coordinatesToAddGood, int positionInLoad, Bank bank) throws WrongCallerException, GeneralError, InvalidCoordinates {throw new WrongCallerException("This method does not exist in the card ");}
-
-    default CardState rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean contiune) throws WrongCallerException, GeneralError, InvalidCoordinates, InvalidPositionException {throw new WrongCallerException("This method does not exist in the card ");}
 
     // Slavers
 

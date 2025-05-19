@@ -94,7 +94,7 @@ public class Planets extends Card implements Serializable {
         return startCardEvent;
     }
 
-    public ServerEvent playerLanding(int indexOfPlanet) throws GeneralError, PlanetNotFreeException {
+    public ServerEvent playerLandingPlanets(int indexOfPlanet) throws GeneralError, PlanetNotFreeException {
         if(state != CardState.ATTESA_PIANETI){
             throw new GeneralError("Can't land in the state: " + this.state);
         }
@@ -115,7 +115,7 @@ public class Planets extends Card implements Serializable {
             indexOfTrucker=0;
             currentGoodsList.addAll(planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker))));
             currentGoodsList.addAll(goodsPassed);
-            while(indexOfTrucker < truckersLanded.size()){
+            if(indexOfTrucker < truckersLanded.size()){
                 for(Goods currentGood : planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker)))){
                     if(Game.getIstance().getBank().getGoodsInBank(currentGood.getValue())>0){
                         // abbiamo la merce corrente
@@ -124,6 +124,7 @@ public class Planets extends Card implements Serializable {
                     }
                 }
                 indexOfTrucker++;
+                return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname());
             }
             return cardEffect();
         }
@@ -131,17 +132,17 @@ public class Planets extends Card implements Serializable {
         return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname());
     }
 
-    public ServerEvent setGoodsCoordinates(Boolean decision, int[] goodsCoordinates, int value, Bank bank) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int value) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (state != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
-        if(decision) {
+        if(!stop) {
             if (goodsCoordinates == null || !truckersLanded.get(indexOfTrucker).getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
                 throw new InvalidCoordinates("Not goods deposit");
             }
             try {
                 Goods g; // bene che mi viene passato dalla nave di trucker se nel load c'era già qualcosa
-                g=truckersLanded.get(indexOfTrucker).getSpaceShip().addGood(currentGood, goodsCoordinates, value, bank);
+                g=truckersLanded.get(indexOfTrucker).getSpaceShip().addGood(currentGood, goodsCoordinates, value, Game.getIstance().getBank());
                 if (g!=null){
                     goodsPassed.add(g);
                 }
@@ -161,7 +162,7 @@ public class Planets extends Card implements Serializable {
             //TODO: Check che non ci sia loop infinito
             do {
                 currentGood = currentGoodsList.get(currGoodIndex);
-                if (bank.getGoodsInBank(currentGood.getValue()) >= 1) {
+                if (Game.getIstance().getBank().getGoodsInBank(currentGood.getValue()) >= 1) {
                     return new PlotGood(true, this.getState(), truckersLanded.get(indexOfTrucker).getNickname(), currentGood);
                 } else {
                     currGoodIndex++;
@@ -200,7 +201,7 @@ public class Planets extends Card implements Serializable {
             currentGoodsList.addAll(planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker))));
             currentGoodsList.addAll(goodsPassed);
             state = CardState.GOODSTOADD;
-            return new PlotGood(true, this.getState(), truckersLanded.get(indexOfTrucker).getNickname(), currentGood);
+            return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname());
         }
     }
 
