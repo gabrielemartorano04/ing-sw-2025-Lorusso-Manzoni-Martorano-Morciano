@@ -39,7 +39,7 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default ServerEvent setShieldsAnswer(boolean answer) throws GeneralError,WrongCallerException {
+    default ServerEvent setShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, WrongCallerException, InvalidCoordinates {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 

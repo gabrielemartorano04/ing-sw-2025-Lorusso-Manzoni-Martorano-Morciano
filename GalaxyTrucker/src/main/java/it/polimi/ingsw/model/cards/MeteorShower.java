@@ -10,6 +10,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.RollDice;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
+import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -110,12 +111,23 @@ public class MeteorShower extends Card implements Serializable {
         return new RollDice(this.getCardState(), currMeteorIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
     }
 
-    public ServerEvent setShieldsAnswers(boolean answer, ArrayList<int[]> batteryCoord) throws GeneralError {
+    public ServerEvent setShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates {
         if(state != CardState.ATTESA_RISPOSTE){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
+        if(!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkShield(shieldCoord)){
+            throw new InvalidCoordinates("Not a shield");
+        }
+        ArrayList<int[]> l = new ArrayList<>();
+        l.add(batteryCoord);
+        if(!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkBatteryStorage(l)){
+            throw new InvalidCoordinates("Not a battery");
+        }
         this.answers.addLast(answer);
-        Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().activateShield(batteryCoord);
+        if(answer){
+            Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().activateShield(shieldCoord, batteryCoord);
+        }
+
         if(indexOfCurrTrucker == Game.getIstance().getTruckerList().size()){
             state = CardState.ESECUZIONE;
             indexOfCurrTrucker = 0;
@@ -164,7 +176,7 @@ public class MeteorShower extends Card implements Serializable {
             return new CardFinished(true, this.getCardState(), Game.getIstance().getTruckerList());
         }else {
             this.state = CardState.ROLL_DICE;
-            return new BooleanDecision(ServerEventType.SHIELDS, false, this.getCardState(), "Roll the dice", Game.getIstance().getTruckerList().getFirst().getNickname());
+            return new BooleanDecision(ServerEventType.ROLL_DICE, false, this.getCardState(), "Roll the dice", Game.getIstance().getTruckerList().getFirst().getNickname());
         }
     }
 
