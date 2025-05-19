@@ -39,11 +39,11 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default ServerEvent setShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, WrongCallerException, InvalidCoordinates {
+    default ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, WrongCallerException, InvalidCoordinates {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default ServerEvent setEnginesCoordinates(Boolean activate, ArrayList<int[]> truckerCoordinate) throws InvalidCoordinates, GeneralError, WrongCallerException {
+    default ServerEvent activateEngines(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord ) throws InvalidCoordinates, GeneralError, WrongCallerException, NotEnoughBatteries {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 

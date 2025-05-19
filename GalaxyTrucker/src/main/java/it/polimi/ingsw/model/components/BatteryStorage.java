@@ -34,6 +34,10 @@ final public class BatteryStorage extends Component implements Serializable  {
         this.quantity = quantity;
     }
 
+    public void removeNumOfBatteries(int num) {
+        this.quantity -= num;
+    }
+
     /**
      * Returns the maximum number of batteries that can be stored
      * @return number of batteries that can be stored

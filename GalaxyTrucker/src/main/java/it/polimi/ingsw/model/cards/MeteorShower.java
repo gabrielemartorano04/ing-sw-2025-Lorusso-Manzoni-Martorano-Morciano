@@ -11,6 +11,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.cardevents.RollDice;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.utilities.exceptions.NotEnoughBatteries;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -111,7 +112,7 @@ public class MeteorShower extends Card implements Serializable {
         return new RollDice(this.getCardState(), currMeteorIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
     }
 
-    public ServerEvent setShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates {
+    public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates {
         if(state != CardState.ATTESA_RISPOSTE){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
@@ -168,6 +169,7 @@ public class MeteorShower extends Card implements Serializable {
                     }
                 }
             }
+            trucker.getSpaceShip().deActivateShields();
             j++;
         }
         if (meteors.size()==(currMeteorIndex)) {

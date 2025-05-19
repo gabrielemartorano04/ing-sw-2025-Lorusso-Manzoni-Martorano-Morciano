@@ -9,6 +9,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.utilities.exceptions.GeneralError;
+import it.polimi.ingsw.utilities.exceptions.NotEnoughBatteries;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -75,13 +76,13 @@ public class OpenSpace extends Card implements Serializable {
      * Sets for each trucker the coordinates of the double engines that he/she wants to activate
      * @param coord list of arrays of coordinates
      */
-    public ServerEvent setEnginesCoordinates(Boolean activate, ArrayList<int[]> coord) throws InvalidCoordinates, GeneralError {
+    public ServerEvent activateEngines(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws InvalidCoordinates, GeneralError, NotEnoughBatteries {
         if (this.state != CardState.ACTIVATE_ENGINES) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
         if(activate){
-            if(coord == null) {
-                throw new GeneralError("Coordinates are null");
+            if(!Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkBatteryStorage(batteryCoord)){
+                throw new InvalidCoordinates("Not all coordinates are battery storage");
             }
             if(!Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getSpaceShip().checkDoubleEngine(coord)){
                 if(Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getSpaceShip().getNumDoubleEngine() == 0 ){
@@ -93,7 +94,7 @@ public class OpenSpace extends Card implements Serializable {
             }
 
             this.truckersCoordinates.addLast(coord);
-            Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().activateDoubleEngines();
+            Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().activateDoubleEngines(coord, batteryCoord);
 
         }
 
@@ -117,11 +118,12 @@ public class OpenSpace extends Card implements Serializable {
         int[] enginePowerPerTrucker = new int[truckers.size()];
         int i = 0;
         for (Trucker trucker : truckers) {
-            enginePowerPerTrucker[i] = trucker.getSpaceShip().getTotalEnginePower(truckersCoordinates.get(i));
+            enginePowerPerTrucker[i] = trucker.getSpaceShip().getTotalEnginePower();
             if(enginePowerPerTrucker[i] == 0){
                 Game.getIstance().withdraw(trucker);
             }
             i++;
+            trucker.getSpaceShip().deactivateDoubleEngines();
         }
         for (i = 0; i < enginePowerPerTrucker.length; i++) {
             Game.getIstance().moveForward(truckers.get(i), enginePowerPerTrucker[i]);
