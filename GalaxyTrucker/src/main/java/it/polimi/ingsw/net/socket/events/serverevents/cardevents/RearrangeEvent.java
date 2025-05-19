@@ -14,4 +14,7 @@ public class RearrangeEvent extends CardEvent{
     public void call(ServerEventHandlerVisitor visitor) {
 
     }
+    public String getInfoForOthers(){
+        return getNickname()+" is rearranging the goods ";
+    }
 }

@@ -15,4 +15,8 @@ public class HumanCoordinates extends CardEvent {
     public void call(ServerEventHandlerVisitor visitor) {
         //TODO:  visitor.visit(this);
     }
+
+    public String getInfoForOthers(){
+        return getNickname()+" is choosing human coordinates ";
+    }
 }

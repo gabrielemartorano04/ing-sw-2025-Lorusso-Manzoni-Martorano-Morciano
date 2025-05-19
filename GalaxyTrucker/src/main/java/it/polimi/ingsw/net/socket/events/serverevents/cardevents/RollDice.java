@@ -23,4 +23,8 @@ public class RollDice extends CardEvent {
     public void call(ServerEventHandlerVisitor visitor) {
 
     }
+
+    public String getInfoForOthers(){
+        return getNickname()+" got "+diceResult+ " from the dice\n";
+    }
 }
