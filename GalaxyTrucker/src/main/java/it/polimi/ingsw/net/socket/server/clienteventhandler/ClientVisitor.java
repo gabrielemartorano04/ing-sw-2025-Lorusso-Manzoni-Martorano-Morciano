@@ -63,5 +63,7 @@ public interface ClientVisitor {
 
     ServerEvent visit(SendActivateEnginesEvent event);
 
-    ServerEvent visit(SendDrawCardEvent sendDrawCardEvent);
+    ServerEvent visit(SendDrawCardEvent event);
+
+    ServerEvent visit(TruckerLandingEvent event);
 }

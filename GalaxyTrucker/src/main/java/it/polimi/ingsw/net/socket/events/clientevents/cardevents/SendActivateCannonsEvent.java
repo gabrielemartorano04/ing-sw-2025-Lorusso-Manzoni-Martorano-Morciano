@@ -10,12 +10,13 @@ import java.util.ArrayList;
 public class SendActivateCannonsEvent extends ClientEvent {
 
     private boolean decision;
-    private ArrayList<int[]> coordinates;
+    private ArrayList<int[]> coordinates, batteryCoordinates;
 
-    public SendActivateCannonsEvent(boolean decision, ArrayList<int[]> coordinates) {
+    public SendActivateCannonsEvent(boolean decision, ArrayList<int[]> coordinates, ArrayList<int[]> batteryCoordinates) {
         super(ClientEventType.SEND_INFO_EVENT);
         this.decision = decision;
         this.coordinates = coordinates;
+        this.batteryCoordinates = batteryCoordinates;
     }
 
     public boolean getDecision() {
@@ -24,6 +25,10 @@ public class SendActivateCannonsEvent extends ClientEvent {
 
     public ArrayList<int[]> getCoordinates() {
         return coordinates;
+    }
+
+    public ArrayList<int[]> getBatteryCoordinates() {
+        return batteryCoordinates;
     }
 
     @Override

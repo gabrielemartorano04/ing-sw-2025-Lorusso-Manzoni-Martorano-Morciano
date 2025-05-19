@@ -3,73 +3,128 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
+import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
+import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.util.ArrayList;
 
 public class CardController {
-    private Card currentCard;
-    private ArrayList<TruckerController> players;
-    private int currentTurnIndex = 0;
-    private Trucker currentTrucker;
+    private Card currCard;
+    private GameController gameController;
 
     public CardController() {
     }
 
-    public void set(ArrayList<ClientHandler> list) {
-        this.players = new ArrayList<>();
-        for(int i = 0; i < list.size(); i++) {
-            players.add(list.get(i).getTruckerController());
-        }
-        currentTrucker = this.players.getFirst().getTrucker();
-    }
-
-    public void setCurrentCard(Card card) {
-        this.currentCard = card;
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
     }
 
     public Card getCurrCard() {
-        return currentCard;
+        return currCard;
     }
 
-
-    public Trucker getCurrentTrucker() {
-        return currentTrucker;
+    public void setCurrCard(Card card){
+        this.currCard = card;
     }
 
-    public void setCurrentTrucker(Trucker currentTrucker) {
-        this.currentTrucker = currentTrucker;
+    public ServerEvent truckerLanding(TruckerLandingEvent event) {
+        try{
+            return currCard.truckerLanding(event.getLanding());
+        } catch(WrongCallerException e){
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        }
     }
 
-    public ServerEvent startCard(){
-        return currentCard.startCard(currentTrucker.getNickname());
+    public ServerEvent setHumansCoordinates(SendHumanCoordEvent event) {
+        try {
+            return currCard.setHumansCoordinates(event.getHumanCoord());
+        } catch (InvalidComponentsException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (InvalidCoordinates e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (WrongCallerException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        }
     }
 
-    /**
-     * @return if it is the turn of the client sending the event
-     */
+    //public ServerEvent setGoodsCoordinates()
 
-    public boolean isPlayerTurn(String nickname) {
-        return this.currentTrucker.getNickname().equals(nickname);
+    public ServerEvent rearrange(RearrangeEvent event) {
+        try {
+            return currCard.rearrange(event.getCoord1(), event.getCoord2(), event.getValue1(), event.getValue2(), event.getStop());
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (InvalidCoordinates e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (InvalidPositionException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (WrongCallerException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        }
     }
 
-    /**
-     * sets the new index corresponding to the turn of the current Player
-     */
-
-    public void nextTurn() {
-        currentTurnIndex = (currentTurnIndex + 1) % players.size();
+    public ServerEvent rollDice() {
+        try {
+            return currCard.rollDice();
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (WrongCallerException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        }
     }
 
-    /**
-     * resets the turn index
-     */
-
-    public void resetTurnIndex() {
-        currentTurnIndex = 0;
+    public ServerEvent activateShield(SendActivateShieldEvent event) {
+        try {
+            return currCard.activateShield(event.getDecision(), event.getCoordinates(), event.getBatteryCoordinates());
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (WrongCallerException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (InvalidCoordinates e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        }
     }
 
+    public ServerEvent activateEngines(SendActivateEnginesEvent event) {
+        try {
+            return currCard.activateEngines(event.getDecision(), event.getCoordinates(), event.getBatteryCoordinates());
+        } catch (InvalidCoordinates e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (WrongCallerException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (NotEnoughBatteries e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        }
+    }
+
+    public ServerEvent activateCannons(SendActivateCannonsEvent event) {
+        try {
+            return currCard.activateCannons(event.getDecision(), event.getCoordinates(), event.getBatteryCoordinates());
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (InvalidComponentsException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (WrongCallerException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (InvalidCoordinates e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (NotEnoughBatteries e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        }
+
+    }
+
+    //public ServerEvent setWinDecision()
 }
