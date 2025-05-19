@@ -141,6 +141,7 @@ public class Pirates extends Card implements Serializable {
                     return cardEffect();
                 }else{
                     cardState = CardState.ROLL_DICE;
+                    indexOfCurrentTrucker = 0;
                     return new BooleanDecision(ServerEventType.ROLL_DICE, false, this.cardState, "Roll the dice", defeatedTruckers.getFirst().getNickname());
                 }
             }else{
@@ -156,6 +157,7 @@ public class Pirates extends Card implements Serializable {
                     return cardEffect();
                 }else{
                     cardState = CardState.ROLL_DICE;
+                    indexOfCurrentTrucker = 0;
                     return new BooleanDecision(ServerEventType.ROLL_DICE, false, this.cardState, "Roll the dice", defeatedTruckers.getFirst().getNickname());
                 }
             }else{
