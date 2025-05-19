@@ -169,6 +169,7 @@ public class MeteorShower extends Card implements Serializable {
                     }
                 }
             }
+            trucker.getSpaceShip().deActivateShields();
             j++;
         }
         if (meteors.size()==(currMeteorIndex)) {
