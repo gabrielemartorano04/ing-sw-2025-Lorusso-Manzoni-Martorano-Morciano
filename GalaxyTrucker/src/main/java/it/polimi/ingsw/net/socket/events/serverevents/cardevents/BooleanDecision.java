@@ -16,8 +16,26 @@ public class BooleanDecision extends CardEvent{
         return message;
     }
 
+    public String getInfoForOthers(){
+        switch(getEventType()){
+            case ROLL_DICE -> {
+                return getNickname() + "got the dice result";
+            }
+            case ACTIVATE_CANNONS -> {
+                return getNickname() + "is deciding wich cannons to activate";
+            }
+            case ACTIVATE_ENGINES -> {
+                return getNickname() + "is deciding wich engines to activate";
+            }
+            case ACTIVATE_SHIELD -> {
+                return getNickname() + "is deciding wich shield to activate";
+            }
+        }
+        return "";
+    }
+
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
-        // TODO: implementare in ServerEventHandlerVisitor
+        visitor.visit(this);
     }
 }
