@@ -18,6 +18,6 @@ public class GainCosmicCredits extends CardEvent{
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
-        //TODO:
+        visitor.visit(this);
     }
 }

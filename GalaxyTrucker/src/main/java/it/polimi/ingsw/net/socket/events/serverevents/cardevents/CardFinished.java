@@ -23,6 +23,6 @@ public class CardFinished extends CardEvent {
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

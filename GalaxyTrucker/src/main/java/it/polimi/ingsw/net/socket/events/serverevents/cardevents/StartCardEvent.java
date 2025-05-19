@@ -152,7 +152,7 @@ public class StartCardEvent extends CardEvent {
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
-        // TODO: FARE QUESTO METODO
+        visitor.visit(this);
     }
 
     public String getInfoForOthers(){

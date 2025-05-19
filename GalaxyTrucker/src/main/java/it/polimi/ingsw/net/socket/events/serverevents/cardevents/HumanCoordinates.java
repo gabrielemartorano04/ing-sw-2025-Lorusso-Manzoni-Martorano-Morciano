@@ -13,7 +13,7 @@ public class HumanCoordinates extends CardEvent {
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
-        //TODO:  visitor.visit(this);
+        visitor.visit(this);
     }
 
     public String getInfoForOthers(){

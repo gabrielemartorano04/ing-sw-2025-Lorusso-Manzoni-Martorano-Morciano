@@ -19,7 +19,7 @@ public class PlotGood extends CardEvent{
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
-        //TODO: fare il visitor lato client
+        visitor.visit(this);
     }
 
     public String getInfoForOthers(){

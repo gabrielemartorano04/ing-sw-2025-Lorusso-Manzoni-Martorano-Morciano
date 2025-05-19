@@ -23,7 +23,7 @@ public class StarDustEvent extends ServerEvent {
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
-
+        visitor.visit(this);
     }
 
     public String getCardDescription() {
