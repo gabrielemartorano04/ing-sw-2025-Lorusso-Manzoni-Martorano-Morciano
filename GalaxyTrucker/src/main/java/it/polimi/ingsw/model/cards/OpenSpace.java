@@ -93,7 +93,6 @@ public class OpenSpace extends Card implements Serializable {
                 throw new InvalidCoordinates("Not all components are DoubleEngine");
             }
 
-            this.truckersCoordinates.addLast(coord);
             Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().activateDoubleEngines(coord, batteryCoord);
 
         }

@@ -9,9 +9,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.RollDice;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
-import it.polimi.ingsw.utilities.exceptions.GeneralError;
-import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.utilities.exceptions.NotEnoughBatteries;
+import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -109,33 +107,71 @@ public class MeteorShower extends Card implements Serializable {
         currMeteorIndex++;
         this.roll = Game.getIstance().rollDice();
         state = CardState.ATTESA_RISPOSTE;
-        return new RollDice(this.getCardState(), currMeteorIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
+        if (meteor[0]==1) {
+            state=CardState.ACTIVATE_CANNONS;
+            return new RollDice("Meteorite grande, attivare Cannoni doppi?", this.getCardState(), currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
+        }else{
+            state=CardState.ACTIVATE_SHIELDS;
+            return new RollDice("Meteorite piccolo, attivare Cannoni doppi?", this.getCardState(), currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
+        }
     }
 
+    @Override
     public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates {
-        if(state != CardState.ATTESA_RISPOSTE){
+        if (state != CardState.ACTIVATE_SHIELDS) {
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
-        if(!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkShield(shieldCoord)){
-            throw new InvalidCoordinates("Not a shield");
-        }
-        ArrayList<int[]> l = new ArrayList<>();
-        l.add(batteryCoord);
-        if(!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkBatteryStorage(l)){
-            throw new InvalidCoordinates("Not a battery");
-        }
         this.answers.addLast(answer);
-        if(answer){
+        if(answer) {
+            if (!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkShield(shieldCoord)) {
+                throw new InvalidCoordinates("Not a shield");
+            }
+            ArrayList<int[]> l = new ArrayList<>();
+            l.add(batteryCoord);
+            if (!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkBatteryStorage(l)) {
+                throw new InvalidCoordinates("Not a battery");
+            }
             Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().activateShield(shieldCoord, batteryCoord);
         }
 
-        if(indexOfCurrTrucker == Game.getIstance().getTruckerList().size()){
+        if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()) {
             state = CardState.ESECUZIONE;
             indexOfCurrTrucker = 0;
             return cardEffect();
         }
         indexOfCurrTrucker++;
-        return new RollDice(this.getCardState(), currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), false);
+        return new BooleanDecision(ServerEventType.ACTIVATE_SHIELD, true, this.getCardState(), "vuoi attivare uno scudo?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+    }
+
+    @Override
+    public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, WrongCallerException, InvalidCoordinates, NotEnoughBatteries {
+        if (this.state != CardState.ACTIVATE_ENGINES) {
+            throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
+        }
+        if(activate){
+            if(!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkBatteryStorage(batteryCoord)){
+                throw new InvalidCoordinates("Not all coordinates are battery storage");
+            }
+            if(!Game.getIstance().getTruckerList().get(indexOfCurrTrucker).getSpaceShip().checkDoubleCannon(coord)){
+                if(Game.getIstance().getTruckerList().get(indexOfCurrTrucker).getSpaceShip().getNumDoubleCannon() == 0 ){
+                    indexOfCurrTrucker++;
+                    throw new InvalidCoordinates("You don't have any double engines");
+
+                }
+                throw new InvalidCoordinates("Not all components are DoubleEngine");
+            }
+
+            Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().activateDoubleCannons(coord, batteryCoord);
+
+        }
+
+        if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()) {
+            this.state = CardState.ESECUZIONE;
+            indexOfCurrTrucker=0;
+            return cardEffect();
+        }
+        indexOfCurrTrucker++;
+        return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, this.getCardState(), "vuoi attivare un Cannone Doppio?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
     }
 
     /**
@@ -173,6 +209,7 @@ public class MeteorShower extends Card implements Serializable {
             trucker.getSpaceShip().deactivateDoubleCannons();
             j++;
         }
+        answers.clear();
         if (meteors.size()==(currMeteorIndex)) {
             this.state = CardState.EXIT;
             this.setIsCardFinished(true);
