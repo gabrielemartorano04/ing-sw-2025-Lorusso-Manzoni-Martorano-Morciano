@@ -383,7 +383,10 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(BooleanDecision event) {
         if (event.getNickname().equals(viewFlow.getNickname())){
             switch (event.getEventType()){
-                case ROLL_DICE -> viewFlow.setParserFlightState(ParserState.ROLL_DICE);
+                case ROLL_DICE -> {
+                    ui.showMessage("Type 'roll' to roll the dices when you're ready.");
+                    viewFlow.setParserFlightState(ParserState.ROLL_DICE);
+                }
                 case ACTIVATE_CANNONS -> viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
                 case ACTIVATE_ENGINES -> viewFlow.setParserFlightState(ParserState.ACTIVATE_ENGINES);
                 case ACTIVATE_SHIELD -> viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
