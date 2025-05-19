@@ -236,12 +236,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
     }
 
     @Override
-    public ServerEvent visit(SendBooleanEvent event) {
-
-        return null;
-    }
-
-    @Override
     public ServerEvent visit(SendCoordListEvent event) {
 
         return null;
@@ -360,6 +354,11 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(SendDrawCardEvent sendDrawCardEvent) {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(TruckerLandingEvent event) {
         return null;
     }
 

@@ -30,7 +30,6 @@ public interface ClientVisitor {
     public ServerEvent visit(ShowStackEvent event);
     public ServerEvent visit(TurnHourglassEvent event);
     public ServerEvent visit(SendCoordEvent event);
-    public ServerEvent visit(SendBooleanEvent event);
     public ServerEvent visit(SendCoordListEvent event);
     public ServerEvent visit(SendIndexesEvent event);
     public ServerEvent visit(SendIntEvent event);
