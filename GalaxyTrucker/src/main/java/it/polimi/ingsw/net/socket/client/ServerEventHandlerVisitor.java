@@ -430,5 +430,10 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(StartCardEvent event) {
         ui.showCardDrawn(event);
+        if (event.getNickname().equals(viewFlow.getNickname())) {
+            ui.showMessage(event.getQuestion());
+        } else {
+            //TODO inserire messaggio per gli altri
+        }
     }
 }
