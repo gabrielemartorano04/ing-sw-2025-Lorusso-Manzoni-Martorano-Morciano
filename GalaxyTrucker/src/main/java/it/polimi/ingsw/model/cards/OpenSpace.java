@@ -118,11 +118,12 @@ public class OpenSpace extends Card implements Serializable {
         int[] enginePowerPerTrucker = new int[truckers.size()];
         int i = 0;
         for (Trucker trucker : truckers) {
-            enginePowerPerTrucker[i] = trucker.getSpaceShip().getTotalEnginePower(truckersCoordinates.get(i));
+            enginePowerPerTrucker[i] = trucker.getSpaceShip().getTotalEnginePower();
             if(enginePowerPerTrucker[i] == 0){
                 Game.getIstance().withdraw(trucker);
             }
             i++;
+            trucker.getSpaceShip().deactivateDoubleEngines();
         }
         for (i = 0; i < enginePowerPerTrucker.length; i++) {
             Game.getIstance().moveForward(truckers.get(i), enginePowerPerTrucker[i]);
