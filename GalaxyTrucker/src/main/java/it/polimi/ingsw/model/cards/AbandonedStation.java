@@ -164,7 +164,7 @@ public class AbandonedStation extends Card implements Serializable {
                 do {
                     if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
                         cardState = CardState.CHOOSE_TO_GAIN;
-                        return new PlotGood(true, this.getCardState(), truckerThatHasDecided.getNickname(), goods.get(currGood));
+                        return new PlotGood(false, this.getCardState(), truckerThatHasDecided.getNickname(), goods.get(currGood));
                     } else {
                         currGood++;
                         if (currGood == goods.size()) {
