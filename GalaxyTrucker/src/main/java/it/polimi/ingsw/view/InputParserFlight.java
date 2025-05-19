@@ -40,6 +40,21 @@ public class InputParserFlight {
                     System.out.println("Error: coordinates expected");
                     return null;
                 }
+
+            case PLOT_GOOD:
+                return null;
+            case ROLL_DICE:
+                return null;
+            case STARDUST:
+                return null;
+            case BOOLEAN_DECISION:
+                return null;
+            case CARD_FINISH:
+                return null;
+            case EPIDEMIC:
+                return null;
+            case EXECUTION:
+                return null;
             case PLANET_DECISION:
                 if (tokens.length == 1){
                     //todo: cosa devo passare??
@@ -47,7 +62,7 @@ public class InputParserFlight {
                     System.out.println("Error: wrong number of planet");
                     return null;
                 }
-            case
+            default: return null;
         }
     }
 }
