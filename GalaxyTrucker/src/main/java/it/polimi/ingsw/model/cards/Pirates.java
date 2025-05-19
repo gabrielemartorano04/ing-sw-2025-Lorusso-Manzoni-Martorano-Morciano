@@ -195,11 +195,11 @@ public class Pirates extends Card implements Serializable {
                     return cardEffect();
                 }else{
                     cardState = CardState.COSMIC_CREDITS;
-                    return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits);
+                    return new RollDice
                 }
             }else if(fightIsWin==2){
                 cardState = CardState.GOODSTOADD;
-                return new PlotGood(true, this.cardState, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), )
+                return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits)
             }
             indexOfCurrentTrucker++;
             if(Game.getIstance().getTrucker(indexOfCurrentTrucker-1).getSpaceShip().getNumDoubleCannon()==0){
@@ -242,6 +242,20 @@ public class Pirates extends Card implements Serializable {
         return cardState;
     }
 
+
+    public ServerEvent rollDice() throws GeneralError {
+        if(cardState != CardState.ROLL_DICE) {
+            throw new GeneralError("Non si può girare i dadi nello stato " + this.state);
+        }
+        if(currShootIndex <0 || currShootIndex >= shoots.size()){
+            throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste, la carta dovrebbe essere finita");
+        }
+        shoot = shoots.get(currShootIndex);
+        currShootIndex++;
+        this.roll = Game.getIstance().rollDice();
+        cardState = CardState.ATTESA_RISPOSTE;
+        return new RollDice(this.getCardState(), currShootIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true);
+    }
 
 
 

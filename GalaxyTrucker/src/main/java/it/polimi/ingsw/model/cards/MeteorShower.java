@@ -135,7 +135,7 @@ public class MeteorShower extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrTrucker++;
-        return new RollDice(this.getCardState(), currMeteorIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), false);
+        return new RollDice(this.getCardState(), currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), false);
     }
 
     /**
