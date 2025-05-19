@@ -380,16 +380,25 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     // === CARD EVENTS ===
 
     @Override
-    public void visit(BooleanDecision event) {
+    public void visit(BooleanDecision event) { //in tutti si inizia con yes or no
         if (event.getNickname().equals(viewFlow.getNickname())){
             switch (event.getEventType()){
                 case ROLL_DICE -> {
                     ui.showMessage("Type 'roll' to roll the dices when you're ready.");
                     viewFlow.setParserFlightState(ParserState.ROLL_DICE);
                 }
-                case ACTIVATE_CANNONS -> viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
-                case ACTIVATE_ENGINES -> viewFlow.setParserFlightState(ParserState.ACTIVATE_ENGINES);
-                case ACTIVATE_SHIELD -> viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
+                case ACTIVATE_CANNONS -> {
+                    ui.showMessage("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons. Type 'y, <x1> <y1>, <x2> <y2>,...' or 'n': ");
+                    viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
+                }
+                case ACTIVATE_ENGINES -> {
+                    ui.showMessage("Choose if you want to activate the double engines. If yes type the coordinates of the engines. Type 'y, <x1> <y1>, <x2> <y2>,...' or 'n': ");
+                    viewFlow.setParserFlightState(ParserState.ACTIVATE_ENGINES);
+                }
+                case ACTIVATE_SHIELD -> {
+                    ui.showMessage("Choose if you want to activate the shield. If yes type the coordinates of the shield. Type 'y <x> <y>' or 'n': ");
+                    viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
+                }
             }
         }
         else {
@@ -437,7 +446,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(PlotGood event) {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLOT_GOOD);
-            ui.showMessage("Choose if you want the good, if yes type the coordinates of the load. Type '<y/n> <x> <y>': ");
+            ui.showMessage("Choose if you want the good, if yes type the coordinates of the load. Type 'y <x> <y>' or 'n': ");
         } else {
             ui.showMessage(event.getInfoForOthers());
         }

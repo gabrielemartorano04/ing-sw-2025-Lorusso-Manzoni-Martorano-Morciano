@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public interface CardInterface {
 
-    default ServerEvent truckerLanding(ArrayList<Trucker> truckers, boolean landing) throws GeneralError, WrongCallerException{
+    default ServerEvent truckerLanding(boolean landing) throws GeneralError, WrongCallerException{
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
@@ -40,6 +40,10 @@ public interface CardInterface {
     }
 
     default ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, WrongCallerException, InvalidCoordinates, NotEnoughBatteries {
+        throw new WrongCallerException("This Card doesn't have this method");
+    }
+
+    default ServerEvent setWinDecision(boolean answer)throws GeneralError, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
