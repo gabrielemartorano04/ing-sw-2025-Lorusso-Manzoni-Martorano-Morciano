@@ -8,25 +8,25 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 public class SendActivateShieldEvent extends ClientEvent {
 
     private boolean decision;
-    private int x, y;
+    private int[] coordShield;
+    private int[] coordBS;
 
-    public SendActivateShieldEvent(boolean decision, int x, int y) {
+    public SendActivateShieldEvent(boolean decision, int[] coordShield, int[] coordBS ) {
         super(ClientEventType.SEND_INFO_EVENT);
         this.decision = decision;
-        this.x = x;
-        this.y = y;
+        this.coordShield = coordShield;
+        this.coordBS = coordBS;
     }
 
     public boolean getDecision() {
         return decision;
     }
 
-    public int getX() {
-        return x;
+    public int[] getCoordShield() {
+        return coordShield;
     }
-
-    public int getY() {
-        return y;
+    public int[] getCoordBS() {
+        return coordBS;
     }
 
     @Override

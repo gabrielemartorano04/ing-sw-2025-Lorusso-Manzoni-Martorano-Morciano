@@ -64,14 +64,18 @@ public class InputParserFlight {
                     return null;
                 }
                 return new SendRollDiceEvent();
-            case ACTIVATE_SHIELD: //2 COORD PER BATTERIE
-                String[] activateShield=input.split("\\s+");
+            case ACTIVATE_SHIELD:
+                String[] activateShield=input.split("\\s*,\\s*");
                 if(activateShield[0].trim().equals("n")){
-                    return new SendActivateShieldEvent(false,-1,-1);
+                    return new SendActivateShieldEvent(false,null,null);
                 }else if(activateShield[0].trim().equals("y")){
-                    int x=Integer.parseInt(activateShield[1].trim());
-                    int y=Integer.parseInt(activateShield[2].trim());
-                    return new SendActivateShieldEvent(true,x,y);
+                    String[] coordShield=input.split("\\s+");
+                    String[] coordBS=input.split("\\s+");
+                    int xS=Integer.parseInt(coordShield[0].trim());
+                    int yS=Integer.parseInt(coordShield[1].trim());
+                    int xB=Integer.parseInt(coordBS[0].trim());
+                    int yB=Integer.parseInt(coordBS[1].trim());
+                    return new SendActivateShieldEvent(true,new int[]{xS,yS},new int[]{xB,yB});
                 }
                 System.out.println("Error: invalid command");
                 return null;
