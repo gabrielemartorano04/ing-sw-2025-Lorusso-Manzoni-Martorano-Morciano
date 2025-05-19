@@ -429,6 +429,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(StartCardEvent event) {
-
+        ui.showCardDrawn(event);
     }
 }

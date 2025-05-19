@@ -250,6 +250,7 @@ public class TUI extends UI {
             System.out.println("Goods to gain: " + red + " red goods, " + yellow + " yellow goods, " + green + " green goods, " + blue + " blue goods");
         }
         if(event.getBank() != null) System.out.println("Bank deposit: " + event.getBank().getGoodsInBank(1) + " red goods, " + event.getBank().getGoodsInBank(2) + " yellow goods, " + event.getBank().getGoodsInBank(3) + " green goods, " + event.getBank().getGoodsInBank(4) + " blue goods");
+        //TODO AGGIUNGI QUESTION
     }
 
     @Override
