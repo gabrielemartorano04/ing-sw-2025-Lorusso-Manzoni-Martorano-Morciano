@@ -6,22 +6,29 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 
 public class RollDice extends CardEvent {
 
-    private int currMeteorIndex;
+    private int currIndex;
     private int diceResult;
+    private String message;
 
-    public RollDice(CardState cardState, int currMeteorIndex, int diceResult, String nickname, boolean forAll){
+    public RollDice(String Message, CardState cardState, int currIndex, int diceResult, String nickname, boolean forAll){
         super(ServerEventType.ROLL_DICE, forAll, cardState, nickname);
-        this.currMeteorIndex = currMeteorIndex;
+        this.currIndex = currIndex;
         this.diceResult = diceResult;
+        this.message = message;
     }
 
-    public int getCurrMeteorIndex() {return currMeteorIndex;}
+    public int getCurrIndex() {return currIndex;}
 
     public int getDiceResult() {return diceResult;}
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
 
+    }
+
+    @Override
+    public String getMessage(){
+        return message;
     }
 
     public String getInfoForOthers(){
