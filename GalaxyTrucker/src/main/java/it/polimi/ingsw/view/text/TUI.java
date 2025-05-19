@@ -183,7 +183,7 @@ public class TUI extends UI {
     @Override
     public void showCardDrawn(StartCardEvent event) {
         System.out.println("Card drawn: " + event.getCardName());
-        System.out.println(event.getCardDescription());
+        System.out.println("Card description: " + event.getCardDescription());
         if(event.getPower() != -1) System.out.println(event.getPower() + " enemy cannon power");
         if(event.getMeteorites() != null) {
             String message = "Meteorites arriving:\n";

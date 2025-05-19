@@ -29,7 +29,7 @@ class SmugglersTest {
 
     @Test
     void getGoodsLost() {
-        assertEquals(2,card.getGoodsLost());
+        assertEquals(2,card.getGoodsLostCount());
     }
 
     @Test
