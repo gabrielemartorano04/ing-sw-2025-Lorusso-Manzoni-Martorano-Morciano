@@ -62,4 +62,6 @@ public interface ClientVisitor {
     ServerEvent visit(SendActivateCannonsEvent event);
 
     ServerEvent visit(SendActivateEnginesEvent event);
+
+    ServerEvent visit(SendDrawCardEvent sendDrawCardEvent);
 }

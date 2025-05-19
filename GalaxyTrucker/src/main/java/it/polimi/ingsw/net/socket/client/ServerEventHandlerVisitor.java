@@ -1,5 +1,7 @@
 package it.polimi.ingsw.net.socket.client;
 
+import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.AlienCabinCoord;
@@ -402,14 +404,41 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
             }
         }
         else {
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
         }
 
     }
 
+
     @Override
     public void visit(CardFinished event) {
-       // viewFlow.setParserFlightState(ParserState.CARD_FINISH);
+        Trucker trucker=null;
+        for(Trucker t:event.getTruckersList()){
+            if(t.getNickname().equals(viewFlow.getNickname())){
+                trucker=t;
+                break;
+            }
+        }
+        ui.showShipLayout(viewFlow.getNickname(), trucker.getSpaceShip().getComponents());
+        viewFlow.setPosition(trucker.getPosition());
+        viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
+        viewFlow.setHumanCount(trucker.getSpaceShip().getNumHuman());
+        viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
+        viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
+        ui.showFlightPhaseStart();
+        String message="Truckers' positions order:\n";
+        int i=1;
+        for(Trucker t:event.getTruckersList()){
+            message+=i+") "+t.getNickname()+"\n";
+        }
+        ui.showMessage(message);
+        if(viewFlow.getNickname().equals(event.getTruckersList().get(0).getNickname())){
+            viewFlow.setParserFlightState(ParserState.CARD_FINISH);
+            ui.showMessage("Type <draw> when you're ready to draw the next card.");
+        }
+        else viewFlow.setParserFlightState(ParserState.DO_NOTHING); //TODO METTI QUESTO IN TUTTI QUANDO NON è IL TUO TURNO E INSERIRE IN PARSEFLIGHT
+
     }
 
     @Override
@@ -424,6 +453,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
             viewFlow.setParserFlightState(ParserState.HUMAN_COORD);
             ui.showMessage("Insert the coordinates of the cabins to remove the number of human indicated in the card description. Type '<x1> <y1> - <number of crew>, <x2> <y2> - <number of crew>,...' : ");
         } else {
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
         }
     }
@@ -434,6 +464,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
             viewFlow.setParserFlightState(ParserState.PLANET_DECISION);
             ui.showMessage("Choose the planet you want to fly to. Type '<index>': ");
         } else {
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
         }
     }
@@ -444,6 +475,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
             viewFlow.setParserFlightState(ParserState.PLOT_GOOD);
             ui.showMessage("Choose if you want the good, if yes type the coordinates of the load. Type 'y <x> <y>' or 'n': ");
         } else {
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
         }
     }
@@ -455,6 +487,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
             ui.showMessage("The dices result is " + event.getDiceResult() + "\n" + event.getMessage());
             //chiedere che cosa deve mandate l'utente
         } else {
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
         }
     }
@@ -464,15 +497,20 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showMessage("Card drawn: "+event.getCardName()+"\n Card description: "+event.getCardDescription()+"\n");
 
     }
-//nel cardfinish devi 1)stampa con un metodo la situa della nave approfondinta con dati e la posizione di tutti
-    //il primon della lista è obbligato a dire draw
+
     @Override
     public void visit(StartCardEvent event) {
         ui.showCardDrawn(event);
         if (event.getNickname().equals(viewFlow.getNickname())) {
             ui.showMessage(event.getQuestion());
         } else {
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
         }
+    }
+
+    @Override
+    public void visit(RearrangeEvent rearrangeEvent) {
+
     }
 }

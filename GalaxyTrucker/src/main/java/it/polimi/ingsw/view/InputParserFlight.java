@@ -65,7 +65,7 @@ public class InputParserFlight {
                     return null;
                 }
                 return new SendRollDiceEvent();
-            case ACTIVATE_SHIELD:
+            case ACTIVATE_SHIELD: //2 COORD PER BATTERIE
                 String[] activateShield=input.split("\\s+");
                 if(activateShield[0].trim().equals("n")){
                     return new SendActivateShieldEvent(false,-1,-1);
@@ -76,7 +76,7 @@ public class InputParserFlight {
                 }
                 System.out.println("Error: invalid command");
                 return null;
-            case ACTIVATE_CANNONS:
+            case ACTIVATE_CANNONS: //ARRAY COORD PER BATTERIE
                 String[] activateCannons=input.split("\\s*,\\s*");
                 ArrayList<int[]> coordinates=new ArrayList<>();
                 if(activateCannons[0].trim().equals("n")){
@@ -95,7 +95,7 @@ public class InputParserFlight {
                     }
                 }
                 return new SendActivateCannonsEvent(true,coordinates);
-            case ACTIVATE_ENGINES:
+            case ACTIVATE_ENGINES: //ARRAY COORD PER BATTERIE
                 String[] activateEngines=input.split("\\s*,\\s*");
                 ArrayList<int[]> coordEngines=new ArrayList<>();
                 if(activateEngines[0].trim().equals("n")){
@@ -115,7 +115,12 @@ public class InputParserFlight {
                 }
                 return new SendActivateCannonsEvent(true,coordEngines);
             case CARD_FINISH:
-                return null;
+                String[] cardFinish=input.split("\\s+");
+                if(cardFinish.length!=1 || !cardFinish[0].trim().equals("draw")){
+                    System.out.println("Error: invalid command");
+                    return null;
+                }
+                return new SendDrawCardEvent();
             case PLANET_DECISION:
                 String[] planetDecision=input.split("\\s+");
                 if(planetDecision.length!=1){
@@ -123,6 +128,9 @@ public class InputParserFlight {
                     return null;
                 }
                 return new SendPlanetDecisionEvent(Integer.parseInt(planetDecision[0].trim()));
+            case DO_NOTHING:
+                System.out.println("It's not your turn");
+                return null;
             default: {
                 System.out.println("Error: invalid command. Stato non gestito");
                 return null;

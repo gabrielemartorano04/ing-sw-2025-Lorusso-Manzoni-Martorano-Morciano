@@ -358,4 +358,9 @@ public class ClientHandlerVisitor implements ClientVisitor {
         return null;
     }
 
+    @Override
+    public ServerEvent visit(SendDrawCardEvent sendDrawCardEvent) {
+        return null;
+    }
+
 }

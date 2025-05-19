@@ -12,7 +12,7 @@ public class RearrangeEvent extends CardEvent{
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
-
+        visitor.visit(this);
     }
     public String getInfoForOthers(){
         return getNickname()+" is rearranging the goods ";

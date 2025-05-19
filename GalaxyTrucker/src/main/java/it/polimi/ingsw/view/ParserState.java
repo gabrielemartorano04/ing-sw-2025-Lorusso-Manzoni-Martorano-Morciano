@@ -9,5 +9,6 @@ public enum ParserState {
     ACTIVATE_CANNONS,
     ACTIVATE_ENGINES,
     ACTIVATE_SHIELD,
-    DRAW_CARD
+    DRAW_CARD,
+    DO_NOTHING
 }
