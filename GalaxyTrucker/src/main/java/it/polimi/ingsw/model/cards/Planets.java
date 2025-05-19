@@ -134,7 +134,7 @@ public class Planets extends Card implements Serializable {
     }
 
     @Override
-    public ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int value) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (state != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
@@ -144,7 +144,7 @@ public class Planets extends Card implements Serializable {
             }
             try {
                 Goods g; // bene che mi viene passato dalla nave di trucker se nel load c'era già qualcosa
-                g=truckersLanded.get(indexOfTrucker).getSpaceShip().addGood(currentGood, goodsCoordinates, value, Game.getIstance().getBank());
+                g=truckersLanded.get(indexOfTrucker).getSpaceShip().addGood(currentGood, goodsCoordinates, positionInLoad, Game.getIstance().getBank());
                 if (g!=null){
                     goodsPassed.add(g);
                 }

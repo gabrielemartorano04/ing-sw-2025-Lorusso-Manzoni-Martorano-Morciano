@@ -138,7 +138,7 @@ public class AbandonedStation extends Card implements Serializable {
      * @param goodsCoordinates list of coordinatest
      */
     @Override
-    public ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int value) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
@@ -151,7 +151,7 @@ public class AbandonedStation extends Card implements Serializable {
         }else {
             try {
                 // addGood fa anche la remove dalla bank della merce corrente
-                truckerThatHasDecided.getSpaceShip().addGood(goods.get(currGood), goodsCoordinates, value, Game.getIstance().getBank());
+                truckerThatHasDecided.getSpaceShip().addGood(goods.get(currGood), goodsCoordinates, positionInLoad, Game.getIstance().getBank());
             } catch (InvalidPositionException e) {
                 cardState = CardState.GOODSTOADD;
                 throw e;
