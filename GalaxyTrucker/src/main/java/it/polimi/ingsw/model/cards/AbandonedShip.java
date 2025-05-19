@@ -105,7 +105,6 @@ public class AbandonedShip extends Card implements Serializable {
 
     /**
      * Sets the only trucker that has chosen to take the ship
-     * @param trucker: trucker current
      * @param landing: the choice taken by the current client
      */
     @Override
