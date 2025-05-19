@@ -1604,17 +1604,14 @@ public class SpaceShip implements Serializable {
 
     /**
      * This method checks that components with given coordinates are Shields
-     * @param coord coordinates to check
-     * @return true if every component with given coordinates is a Shields, false otherwise
+     * @param c coordinates to check
+     * @return true if the component with given coordinates is a Shields, false otherwise
      */
-    public boolean checkShield(ArrayList<int[]> coord){
-
-        for (int[] c : coord) {
-            if (components[c[0]][c[1]] != null) {
-                switch (components[c[0]][c[1]]){
-                    case Shield shield->{}
-                    default -> { return false; }
-                }
+    public boolean checkShield(int[] c){
+        if (components[c[0]][c[1]] != null) {
+            switch (components[c[0]][c[1]]){
+                case Shield shield->{}
+                default -> { return false; }
             }
         }
         return true;
