@@ -47,7 +47,7 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default CardState setCannonsCoordinates(Boolean activate, ArrayList<int[]> doubleCannonsCoord) throws GeneralError, InvalidComponentsException, WrongCallerException {
+    default ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
