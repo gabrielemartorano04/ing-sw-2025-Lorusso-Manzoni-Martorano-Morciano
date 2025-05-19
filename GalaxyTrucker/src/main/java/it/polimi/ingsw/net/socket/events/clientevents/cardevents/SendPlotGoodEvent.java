@@ -11,7 +11,7 @@ public class SendPlotGoodEvent extends ClientEvent {
     private int x, y;
 
     public SendPlotGoodEvent(boolean decision, int x, int y) {
-        super(ClientEventType.SEND_INFO_EVENT, false);
+        super(ClientEventType.SEND_INFO_EVENT);
         this.decision = decision;
         this.x = x;
         this.y = y;

@@ -13,7 +13,7 @@ public class SendActivateCannonsEvent extends ClientEvent {
     private ArrayList<int[]> coordinates;
 
     public SendActivateCannonsEvent(boolean decision, ArrayList<int[]> coordinates) {
-        super(ClientEventType.SEND_INFO_EVENT, false);
+        super(ClientEventType.SEND_INFO_EVENT);
         this.decision = decision;
         this.coordinates = coordinates;
     }

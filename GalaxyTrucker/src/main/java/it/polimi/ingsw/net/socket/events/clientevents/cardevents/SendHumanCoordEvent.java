@@ -12,7 +12,7 @@ public class SendHumanCoordEvent extends ClientEvent {
     private ArrayList<int[]> humanCoord;
 
     public SendHumanCoordEvent(ArrayList<int[]> humanCoord) {
-        super(ClientEventType.SEND_INFO_EVENT, true);
+        super(ClientEventType.SEND_INFO_EVENT);
         this.humanCoord = humanCoord;
     }
 
