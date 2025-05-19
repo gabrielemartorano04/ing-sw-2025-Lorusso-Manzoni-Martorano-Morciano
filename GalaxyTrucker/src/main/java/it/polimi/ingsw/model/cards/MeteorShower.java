@@ -111,7 +111,7 @@ public class MeteorShower extends Card implements Serializable {
         return new RollDice(this.getCardState(), currMeteorIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
     }
 
-    public ServerEvent setShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates {
+    public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates {
         if(state != CardState.ATTESA_RISPOSTE){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
