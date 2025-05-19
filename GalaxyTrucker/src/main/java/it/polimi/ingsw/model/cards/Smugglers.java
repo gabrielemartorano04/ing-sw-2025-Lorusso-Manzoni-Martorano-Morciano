@@ -33,12 +33,12 @@ public class Smugglers extends Card implements Serializable {
     private ArrayList<Trucker> defeatedTruckers;
     private boolean winDecision;
 
-    private int goodsLostCount;
+    private int goodsLostCurrTrucker;
     private int currGoodIndex;
 
     // variabili per la remove
     private int colorOfCurrGoodToRemove; // vale 0 se è rosso, 1 se è giallo, 2 se è verde e 3 se è blu
-    private int numOfCurrTypeOfGood;
+    private int numGoodCurrType;
     private ArrayList<Goods> goodsToRemove;// verrà creata al più una volta per istanza di questa classe
     // fine variabili per la remove
 
@@ -63,7 +63,10 @@ public class Smugglers extends Card implements Serializable {
         this.winnerTrucker =null;
         this.winDecision=false;
         this.currGoodIndex = 0;
-        this.goodsLostCount = goodsLostCount;
+        this.goodsLostCurrTrucker = goodsLostCurrTrucker;
+        this.colorOfCurrGoodToRemove = 4;
+        this.numGoodCurrType = 0;
+        this.goodsToRemove = new ArrayList<>();
     }
 
     /**
@@ -78,8 +81,8 @@ public class Smugglers extends Card implements Serializable {
      * Returns the number of goods to lose
      * @return goods to lose
      */
-    public int getGoodsLostCount() {
-        return goodsLostCount;
+    public int getGoodsLost() {
+        return goodsLost;
     }
 
     /**
@@ -252,135 +255,154 @@ public class Smugglers extends Card implements Serializable {
                 throw new InvalidPositionException("invalid positions");
             }
         } else{
-            cardState = CardState.ESECUZIONE;
-            return cardEffect();
+            if(defeatedTruckers.isEmpty()){
+                cardState = CardState.ESECUZIONE;
+                return cardEffect();
+            }else{
+                indexOfCurrentTrucker = 0;
+                cardState = CardState.REMOVE_GOODS;
+                return removeGoods();
+            }
         }
     }
 
-    //RIMOZIONE MERCI DEGLI SCONFITTI
     @Override
     public ServerEvent removeGoods() throws GeneralError{
         if(cardState != CardState.REMOVE_GOODS){
             throw new GeneralError("plotGoodsToRemove not callable in the state " + cardState);
         }
-        ArrayList<Goods> goodsList = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getGoodsList();
 
-        if(!defeatedTruckers.isEmpty()) {
-            // se il colore corrente è minore uguale a 3 allora devo togliere le merci
-            while (colorOfCurrGoodToRemove <= 4 && goodsLostCount > 0) {
-                switch (colorOfCurrGoodToRemove) {
-                    case 4 -> {
-                        numOfCurrTypeOfGood = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getRedGoods();
-                        colorOfCurrGoodToRemove--;
-                    }
-                    case 3 -> {
-                        numOfCurrTypeOfGood = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getYellowGoods();
-                        colorOfCurrGoodToRemove--;
-                    }
-                    case 2 -> {
-                        numOfCurrTypeOfGood = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getGreenGoods();
-                        colorOfCurrGoodToRemove--;
-                    }
-                    case 1 -> {
-                        numOfCurrTypeOfGood = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getBlueGoods();
-                        colorOfCurrGoodToRemove--;
-                    }
+        ArrayList<Goods> goodsList;
+        goodsList = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getGoodsList();
+
+        while (colorOfCurrGoodToRemove > 0 && goodsLostCurrTrucker > 0) {
+            switch (colorOfCurrGoodToRemove) {
+                case 4 -> {
+                    numGoodCurrType = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getRedGoods();
+                    colorOfCurrGoodToRemove--;
                 }
-
-                if (numOfCurrTypeOfGood <= goodsLostCount) {
-                    removeWithoutAsking(defeatedTruckers.get(indexOfCurrentTrucker), goodsList, Game.getIstance().getBank());
-                } else {
-                    cardState = CardState.PLOT_GOODSLIST;
-                    ArrayList<Goods> goodsList = trucker.getSpaceShip().getGoodsList();
-                    for (int i = 0; i < numOfCurrTypeOfGood; i++) {
-                        goodsToRemove.add(goodsList.getFirst());
-                    }
-                    return new
-                    //TODO: plotta la lista al corrente delle merci da cui può scegliere cosa eliminare
-                    // plottare beni da eliminare;
+                case 3 -> {
+                    numGoodCurrType = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getYellowGoods();
+                    colorOfCurrGoodToRemove--;
+                }
+                case 2 -> {
+                    numGoodCurrType = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getGreenGoods();
+                    colorOfCurrGoodToRemove--;
+                }
+                case 1 -> {
+                    numGoodCurrType = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getBlueGoods();
+                    colorOfCurrGoodToRemove--;
                 }
             }
-            if (goodsLostCount > 0) {
-                // se il colore corrente è maggiore di 3 allora vuol dire che devo togliere batterie se ho ancora merci da rimuovere
-                cardState = CardState.PLOT_BATTERIES;
-                return new //plottare lista batterie;
-            }
-            if (goodsLostCount == 0) {
-                defeatedTruckers.removeFirst();
+
+            if (numGoodCurrType > 0 && numGoodCurrType <= goodsLostCurrTrucker) {
+                return removeWithoutAsking(goodsList);
+            }else if (numGoodCurrType > 0 && numGoodCurrType > goodsLostCurrTrucker){
+                cardState = CardState.REMOVE_ASKING;
+                ArrayList<Goods> listOfGoods = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getGoodsList();
+                for (int i = 0; i < numGoodCurrType; i++) {
+                    goodsToRemove.add(listOfGoods.getFirst());
+                }
+                return new RemoveGoods(true, this.cardState, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsToRemove);
             }
         }
+        if (goodsLostCurrTrucker > 0) {
+            // se il colore corrente è maggiore di 3 allora vuol dire che devo togliere batterie se ho ancora merci da rimuovere
+            cardState = CardState.PLOT_BATTERIES;
+            return new //plottare lista batterie;
+        }
+        if (goodsLostCurrTrucker == 0) {
+            goodsLostCurrTrucker = goodsLost;
+            defeatedTruckers.removeFirst();
+        }
+
     }
 
     private ServerEvent removeWithoutAsking(ArrayList<Goods> goodsList) throws GeneralError{
-        if(this.numOfCurrTypeOfGood == 0){
-            throw new GeneralError("Remove without asking: NumOfGoods is 0 but you called removeWithoutAsking");
-        }
         if(goodsList == null){
             throw new GeneralError("Remove without asking: goodsList is null");
         }
         ArrayList<Goods> list = new ArrayList<>();
-        for (int i = 0; i < numOfCurrTypeOfGood; i++) {
+        for (int i = 0; i < numGoodCurrType; i++) {
             Goods good = goodsList.getFirst();
             list.add(good);
             Game.getIstance().getBank().addGoodsInBank(good.getValue());
+            //TODO: Check che sto rimuovendo effettivamente dalla lista della nave
             goodsList.removeFirst();
-            goodsLostCount--;
+            goodsLostCurrTrucker--;
         }
         defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeGoods(list);
 
-        //TODO: plot della remove list a quello dopo se questo non deve togliere batterie (se questo era l'ultimo chiama cardEffect)
-        //TODO: plot di quante batterie rimuovere a quello corrente se non aveva abbastanza merci
-
+        if(goodsLostCurrTrucker == 0){ // se questo trucker ha perso tutte le merci
+            if(indexOfCurrentTrucker == defeatedTruckers.size()-1){ // se questo era l'ultimo trucker
+                return cardEffect();
+            }else{
+                indexOfCurrentTrucker++;
+                return new GoodsRemovedEvent(this.cardState, defeatedTruckers.get(indexOfCurrentTrucker-1).getNickname());
+            }
+        }
+        else if (goodsLostCurrTrucker>0) { // il trucker corrente deve perdere batterie
+            if (defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getNumBatteries() == 0) { // se non ha batterie
+                if (indexOfCurrentTrucker == defeatedTruckers.size() - 1) { // se questo era l'ultimo trucker
+                    return cardEffect();
+                } else {
+                    indexOfCurrentTrucker++;
+                    return new GoodsRemovedEvent(this.cardState, defeatedTruckers.get(indexOfCurrentTrucker-1).getNickname());
+                }
+            } else {
+                return new RemoveBatteries(false, this.cardState, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsLostCurrTrucker);
+            }
+        }else{
+            throw new GeneralError("Something wrong in removeWithoutAsking, goodsLostCurrTrucker is " + goodsLostCurrTrucker);
+        }
     }
 
 
     /**
      *
-     * @param indexes: contains the indexes of the Goods within the list displayed on the screen that the player wants to remove from his ship
+     * @param indexesToRemove: contains the indexes of the Goods within the list displayed on the screen that the player wants to remove from his ship
      */
+
     @Override
-    public ServerEvent removeAsking(ArrayList<Integer> indexes) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
+    public ServerEvent removeAsking(ArrayList<Integer> indexesToRemove) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
         if (cardState != CardState.REMOVE_ASKING){
             throw new GeneralError("Can't call removeAsking in the state " + cardState);
         }
-        if(indexes.size() == goodsLostCount){
-            throw new NotEnoughGoodsChosen("The number of goods selected is not " + goodsLostCount);
+        if(indexesToRemove.size() != goodsLostCurrTrucker){
+            throw new NotEnoughGoodsChosen("The number of goods selected is not " + goodsLostCurrTrucker);
         }
-        for(Integer index : indexes){
+        for(Integer index : indexesToRemove){
             if(index < 0 || index >= goodsToRemove.size()){
                 throw new InvalidGoodChosen("A good with an index out of range has been chosen");
             }
         }
-        goodsLostCount = 0;
+        goodsLostCurrTrucker = 0;
         ArrayList<Goods> list = new ArrayList<>();
-        for(Integer index : indexes){
+        for(Integer index : indexesToRemove){
             list.add(goodsToRemove.get(index));
         }
-        removeWithoutAsking(defeatedTruckers.get(indexOfCurrentTrucker),list,Game.getIstance().getBank());
+        goodsToRemove.clear();
         cardState = CardState.REMOVE_GOODS;
         return removeWithoutAsking(list);
     }
 
     @Override
-    public ServerEvent removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
+    public ServerEvent removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(cardState!= CardState.REMOVE_BATTERIES){
             throw new GeneralError("Can't call removeBatteries in the state " + cardState);
         }
-        if(trucker == null){
-            throw new GeneralError("trucker is null");
-        }
-        if(!trucker.getSpaceShip().checkBatteryStorage(coordinatesToRemoveBatteries)){
+        if(!defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().checkBatteryStorage(coordinatesToRemoveBatteries)){
             throw new InvalidCoordinates("Not all components selected are Battery Storages");
         }
         int counterOfBatteriesSelectedByPlayer = 0;
         for(int i = 0; i < coordinatesToRemoveBatteries.size(); i++){
             counterOfBatteriesSelectedByPlayer += coordinatesToRemoveBatteries.get(i)[2];
         }
-        if(counterOfBatteriesSelectedByPlayer != goodsLostCount){
-            throw new WrongNumberOfBatteriesSelected("The total number of batteries you selected to remove is not " + goodsLostCount);
+        if(counterOfBatteriesSelectedByPlayer != goodsLostCurrTrucker){
+            throw new WrongNumberOfBatteriesSelected("The total number of batteries you selected to remove is not " + goodsLostCurrTrucker);
         }
         try{
-            trucker.getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);
+            defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);
         }catch(NotEnoughBatteries e){
             throw new NotEnoughBatteries("Not enough batteries");
         }
@@ -397,7 +419,8 @@ public class Smugglers extends Card implements Serializable {
         if(cardState != CardState.ESECUZIONE){
             throw new GeneralError("Can't call cardEffect in the state " + cardState);
         }
-        if(winDecision){
+        if(winDecision && winnerTrucker!=null){
+            winDecision = false;
             Game.getIstance().moveBackward(winnerTrucker, days);
         }
         cardState = CardState.EXIT;

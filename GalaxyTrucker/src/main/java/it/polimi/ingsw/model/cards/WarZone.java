@@ -97,7 +97,7 @@ public class WarZone extends Card implements Serializable {
         }
         this.currCondition = conditionsOrder.get(currConditionIndex);
         currConditionIndex++;
-        if(currConditionIndex == conditionsOrder.size()){
+        if(currConditionIndex-1 == conditionsOrder.size()){
             throw new GeneralError("All conditions have been verified");
         }
         switch(currCondition){

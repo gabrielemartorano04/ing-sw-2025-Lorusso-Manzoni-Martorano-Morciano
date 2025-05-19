@@ -47,33 +47,29 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    //planets
+    default ServerEvent playerLandingPlanets(int indexOfPlanet) throws WrongCallerException, GeneralError, PlanetNotFreeException {
+        throw new WrongCallerException("This method does not exist in the card ");
+    }
 
-    default ServerEvent playerLandingPlanets(int indexOfPlanet) throws WrongCallerException, GeneralError, PlanetNotFreeException {throw new WrongCallerException("This method does not exist in the card ");}
 
-    // Smugglers
+    default ServerEvent removeGoods() throws WrongCallerException, GeneralError {
+        throw new WrongCallerException("This method does not exist in the card ");
+    }
 
-    default int getNumOfBatteriesToRemove() throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
+    default ServerEvent removeAsking(ArrayList<Integer> indexes) throws WrongCallerException, GeneralError, InvalidGoodChosen, NotEnoughGoodsChosen {
+        throw new WrongCallerException("This method does not exist in the card ");
+    }
 
-    default CardState setWinnerCoordinatesToAddGoods(int[] winnerCoordinatesToAddGood, int value, Trucker trucker, Bank bank)throws WrongCallerException, GeneralError, InvalidCoordinates {throw new WrongCallerException("This method does not exist in the card ");}
-
-    default CardState manageRemoveGoods(Trucker trucker, Bank bank) throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
-
-    default ArrayList<Goods> plotGoodsList(Trucker trucker) throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
-
-    default CardState removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
-
-    default CardState removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries, Trucker trucker)throws WrongCallerException, GeneralError, InvalidGoodChosen, NotEnoughGoodsChosen {throw new WrongCallerException("This method does not exist in the card ");}
+    default ServerEvent removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries)throws WrongCallerException, GeneralError, InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries  {
+        throw new WrongCallerException("This method does not exist in the card ");
+    }
 
     default CardState combatZone(Game game) throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
 
-    default void findWeakestTrucker(Game game, ArrayList<ArrayList<int[]>> truckersCoordinates)throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
-
-    default void removeAsking(ArrayList<Integer> indexes, Trucker trucker, Bank bank) throws WrongCallerException, GeneralError, InvalidGoodChosen, NotEnoughGoodsChosen {throw new WrongCallerException("This method does not exist in the card ");}
-
-    default int[] getCurrentMeteor()throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
+    default void findWeakestTrucker(Game game, ArrayList<ArrayList<int[]>> truckersCoordinates)throws WrongCallerException, GeneralError {
+        throw new WrongCallerException("This method does not exist in the card ");
+    }
 
     default void setAnswers(boolean answers) throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
 
-    default CardState removeCrew(ArrayList<int[]> coordinates) throws WrongCallerException, GeneralError, InvalidComponentsException, InvalidCoordinates {throw new WrongCallerException("This method does not exist in the card ");}
 }
