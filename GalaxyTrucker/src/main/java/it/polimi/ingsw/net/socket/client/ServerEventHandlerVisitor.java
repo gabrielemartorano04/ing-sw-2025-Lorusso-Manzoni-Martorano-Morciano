@@ -560,4 +560,19 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(WrongNumberOfBatteriesSelectedEvent event) {
 
     }
+
+    @Override
+    public void visit(RemotionConfirmed remotionConfirmed) {
+
+    }
+
+    @Override
+    public void visit(RemoveBatteries removeBatteries) {
+
+    }
+
+    @Override
+    public void visit(RemoveGoods removeGoods) {
+
+    }
 }
