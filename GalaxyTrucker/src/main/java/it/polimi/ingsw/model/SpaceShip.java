@@ -1601,7 +1601,7 @@ public class SpaceShip implements Serializable {
                 case Load load->{}
                 default -> { return false; }
             }
-        }
+        }else return false;
         return true;
     }
 
@@ -1620,7 +1620,7 @@ public class SpaceShip implements Serializable {
                     }
                     default -> { return false; }
                 }
-            }
+            }else return false;
         }
         return true;
     }
@@ -1640,7 +1640,7 @@ public class SpaceShip implements Serializable {
                     }
                     default -> { return false; }
                 }
-            }
+            }else return false;
         }
         return true;
     }
@@ -1656,7 +1656,7 @@ public class SpaceShip implements Serializable {
                 case Shield shield->{}
                 default -> { return false; }
             }
-        }
+        }else return false;
         return true;
     }
 
@@ -1672,7 +1672,7 @@ public class SpaceShip implements Serializable {
                     case BatteryStorage bs->{}
                     default -> { return false; }
                 }
-            }
+            }else return false;
         }
         return true;
     }
@@ -1701,7 +1701,7 @@ public class SpaceShip implements Serializable {
                         throw new InvalidCoordinates("No cabin here");
                     }
                 }
-            }
+            }else return false;
         }
         return true;
     }
