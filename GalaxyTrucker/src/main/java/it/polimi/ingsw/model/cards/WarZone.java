@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class WarZone extends Card implements Serializable {
+public class WarZoneOld extends Card implements Serializable {
     private static final long serialVersionUID = 1L;
     private CardState state;
     private int currConditionIndex;
@@ -32,6 +32,8 @@ public class WarZone extends Card implements Serializable {
     private Condition currCondition;
     private Trucker weakestTrucker;
     private int roll;
+
+    private int indexOfCurrTrucker;
 
     private int[] shoot;
     private int numOfGoodsToRemove;
@@ -56,7 +58,7 @@ public class WarZone extends Card implements Serializable {
     private ArrayList<int[]> coordinatesToRemoveGoods;
 
 
-    public WarZone(boolean trialFlight, int level, ArrayList<Condition> conditionsOrder, Map<Condition, Effect> penalties, ArrayList<int[]> shoots ,String frontImage, String backImage) {
+    public WarZoneOld(boolean trialFlight, int level, ArrayList<Condition> conditionsOrder, Map<Condition, Effect> penalties, ArrayList<int[]> shoots ,String frontImage, String backImage) {
         super("War Zone", "A dangerous conflict zone", trialFlight, level, frontImage, backImage);
         this.conditionsOrder = conditionsOrder;
         this.penalties = penalties;
@@ -69,6 +71,7 @@ public class WarZone extends Card implements Serializable {
         this.numOfCurrTypeOfGood = 0;
         this.goodsToRemove = new ArrayList<>();
         this.numOfHumanToRemove = 0;
+        this.indexOfCurrTrucker = 0;
     }
 
     public ArrayList<Condition> getConditionsOrder() {
