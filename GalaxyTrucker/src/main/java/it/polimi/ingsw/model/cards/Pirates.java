@@ -152,14 +152,9 @@ public class Pirates extends Card implements Serializable {
         }else {
             defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
-                if(defeatedTruckers.isEmpty()){
-                    cardState = CardState.ESECUZIONE;
-                    return cardEffect();
-                }else{
-                    cardState = CardState.ROLL_DICE;
-                    indexOfCurrentTrucker = 0;
-                    return new BooleanDecision(ServerEventType.ROLL_DICE, false, this.cardState, "Roll the dice", defeatedTruckers.getFirst().getNickname());
-                }
+                cardState = CardState.ROLL_DICE;
+                indexOfCurrentTrucker = 0;
+                return new BooleanDecision(ServerEventType.ROLL_DICE, false, this.cardState, "Roll the dice", defeatedTruckers.getFirst().getNickname());
             }else{
                 indexOfCurrentTrucker++;
                 return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, this.cardState, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
