@@ -304,10 +304,10 @@ public class ClientHandlerVisitor implements ClientVisitor {
             return cardController.startCard();
         }else{
             int[] scores;
-            Map<String, Integer> ;
+            Map<String, Integer> playersScores;
             scores = gameController.getGame().computeScores(numOfPlayers);
 
-            return new EndGameEvent()
+            return new EndGameEvent(playersScores);
         }
 
     }
