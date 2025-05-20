@@ -281,8 +281,14 @@ public class ClientHandlerVisitor implements ClientVisitor {
         int position=currentClient.getTruckerController().getPosition();
         int batteryCount=currentClient.getTruckerController().getSpaceShip().getNumBatteries();
         int humanCount=currentClient.getTruckerController().getSpaceShip().getNumHuman();
-
-        return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower);
+        Map<String, Integer> track=new HashMap<>(){
+            {
+                for(Trucker t:gameController.getGame().getTruckerList()){
+                    put(t.getNickname(),t.getPosition());
+                }
+            }
+        };
+        return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,track);
     }
 
     @Override

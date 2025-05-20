@@ -217,7 +217,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showMessage("Your updated ship\n");
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         ui.showBuildComplete();
-
+        ui.showMessage("Type 'alien' to see where you can place aliens");
         viewFlow.setViewState(ViewFlow.ViewState.FILL);
 
         //ui.showMessage("It's time to fill the spaceship\n");
@@ -326,7 +326,8 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.setEnginePower(event.getEnginePower());
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         ui.showFlightPhaseStart();
-
+        ui.showMessage("Please type 'state' to see your spaceship state\n");
+        viewFlow.setTrack(event.getTrack());
     }
 
     @Override
@@ -543,6 +544,21 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(PlanetNotFreeExceptionEvent event) {
+
+    }
+
+    @Override
+    public void visit(InvalidGoodChosenEvent event) {
+
+    }
+
+    @Override
+    public void visit(NotEnoughGoodsChosenEvent event) {
+
+    }
+
+    @Override
+    public void visit(WrongNumberOfBatteriesSelectedEvent event) {
 
     }
 }
