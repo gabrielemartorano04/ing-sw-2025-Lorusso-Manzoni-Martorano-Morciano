@@ -416,21 +416,21 @@ public class TUI extends UI {
                         case Engine engine -> {
                             if (engine.getIsDouble()) {
                                 details.append(" Double engine");
-                            }
-                            if (engine.getIsActive()) {
-                                details.append(" (active)");
-                            } else {
-                                details.append(" (inactive)");
+                                if (engine.getIsActive()) {
+                                    details.append(" (active)");
+                                } else {
+                                    details.append(" (inactive)");
+                                }
                             }
                         }
                         case Cannon cannon -> {
                             if (cannon.getIsDouble()) {
                                 details.append(" Double cannon");
-                            }
-                            if (cannon.getIsActive()) {
-                                details.append(" (active)");
-                            } else {
-                                details.append(" (inactive)");
+                                if (cannon.getIsActive()) {
+                                    details.append(" (active)");
+                                } else {
+                                    details.append(" (inactive)");
+                                }
                             }
                         }
                         case Load load -> {
