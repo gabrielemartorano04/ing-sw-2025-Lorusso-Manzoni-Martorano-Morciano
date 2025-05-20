@@ -10,7 +10,6 @@ import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Class that manages the single card pirates
@@ -219,7 +218,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }else{
             cardState = CardState.ACTIVATE_SHIELDS;
-            return new RollDice("Choose if you want to activate a shield", this.getCardState(), currShootIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true);
+            return new RollDiceResult("Choose if you want to activate a shield", this.getCardState(), currShootIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true);
         }
     }
 
@@ -246,7 +245,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new RollDice("Do you want to activate a shield?", this.getCardState(), currShootIndex, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), false);
+        return new RollDiceResult("Do you want to activate a shield?", this.getCardState(), currShootIndex, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), false);
     }
 
     /**

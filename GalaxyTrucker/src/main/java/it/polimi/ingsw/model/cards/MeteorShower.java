@@ -7,7 +7,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.RollDice;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.RollDiceResult;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.utilities.exceptions.*;
 
@@ -109,10 +109,10 @@ public class MeteorShower extends Card implements Serializable {
         state = CardState.ATTESA_RISPOSTE;
         if (meteor[0]==1) {
             state=CardState.ACTIVATE_CANNONS;
-            return new RollDice("Meteorite grande, attivare Cannoni doppi?", this.getCardState(), currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
+            return new RollDiceResult("Meteorite grande, attivare Cannoni doppi?", this.getCardState(), currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
         }else{
             state=CardState.ACTIVATE_SHIELDS;
-            return new RollDice("Meteorite piccolo, attivare Scudo?", this.getCardState(), currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
+            return new RollDiceResult("Meteorite piccolo, attivare Scudo?", this.getCardState(), currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
         }
     }
 

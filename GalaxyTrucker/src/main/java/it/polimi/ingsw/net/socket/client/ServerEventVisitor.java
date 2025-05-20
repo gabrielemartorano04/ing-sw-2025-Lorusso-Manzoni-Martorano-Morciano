@@ -118,7 +118,7 @@ public interface ServerEventVisitor {
 
     void visit(PlotGood event);
 
-    void visit(RollDice event);
+    void visit(RollDiceResult event);
 
     void visit(StarDustEvent event);
 

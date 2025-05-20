@@ -4,13 +4,13 @@ import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 
-public class RollDice extends CardEvent {
+public class RollDiceResult extends CardEvent {
 
     private int currIndex;
     private int diceResult;
     private String message;
 
-    public RollDice(String Message, CardState cardState, int currIndex, int diceResult, String nickname, boolean forAll){
+    public RollDiceResult(String Message, CardState cardState, int currIndex, int diceResult, String nickname, boolean forAll){
         super(ServerEventType.ROLL_DICE, forAll, cardState, nickname);
         this.currIndex = currIndex;
         this.diceResult = diceResult;

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.AlienCabinCoord;
@@ -481,7 +480,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
-    public void visit(RollDice event) {
+    public void visit(RollDiceResult event) {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.ROLL_DICE);
             ui.showMessage("The dices result is " + event.getDiceResult() + "\n" + event.getMessage());
