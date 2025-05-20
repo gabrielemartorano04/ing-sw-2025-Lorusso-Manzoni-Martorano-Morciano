@@ -1,10 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.controller.CardController;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.utilities.exceptions.*;
 
 import javafx.scene.image.Image;
 

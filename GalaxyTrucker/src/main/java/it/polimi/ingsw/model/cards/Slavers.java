@@ -4,17 +4,15 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
-import it.polimi.ingsw.utilities.exceptions.GeneralError;
-import it.polimi.ingsw.utilities.exceptions.InvalidComponentsException;
-import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.GeneralError;
+import it.polimi.ingsw.exceptions.InvalidComponentsException;
+import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.utilities.exceptions.NotEnoughBatteries;
+import it.polimi.ingsw.exceptions.NotEnoughBatteries;
 
 
 import java.io.Serializable;
-import java.security.KeyManagementException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Class that manages the single card slavers

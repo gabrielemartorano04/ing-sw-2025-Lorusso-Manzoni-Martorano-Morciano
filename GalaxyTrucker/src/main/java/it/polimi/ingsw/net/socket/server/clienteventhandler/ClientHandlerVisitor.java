@@ -2,7 +2,7 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 
 import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
@@ -22,7 +22,6 @@ import it.polimi.ingsw.net.socket.events.serverevents.flightevents.FlightStartEv
 import it.polimi.ingsw.net.socket.events.serverevents.WaitOthersStartFlightEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
-import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

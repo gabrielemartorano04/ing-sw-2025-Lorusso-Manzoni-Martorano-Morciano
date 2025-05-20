@@ -1,8 +1,8 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.utilities.exceptions.ColorNotAvailable;
-import it.polimi.ingsw.utilities.exceptions.NicknameUsedException;
+import it.polimi.ingsw.exceptions.ColorNotAvailable;
+import it.polimi.ingsw.exceptions.NicknameUsedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

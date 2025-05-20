@@ -4,9 +4,8 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StarDustEvent;
-import it.polimi.ingsw.utilities.exceptions.GeneralError;
+import it.polimi.ingsw.exceptions.GeneralError;
 
 import java.io.Serializable;
 import java.util.*;

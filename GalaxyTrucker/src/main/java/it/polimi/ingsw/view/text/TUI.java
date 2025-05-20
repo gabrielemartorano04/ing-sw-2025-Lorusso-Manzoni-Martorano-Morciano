@@ -325,25 +325,67 @@ public class TUI extends UI {
 
     @Override
     public void showShipLayout(String nickname, Component[][] layout) {
-        System.out.println("\nShip layout of " + nickname + ":");
+        System.out.println("\nShip layout of " + nickname + ":\n");
+
+        boolean[][] validCells = {
+                {false, false, false, false, false, false, false, false, false, false, false},
+                {false, false, false, false, false, false, false, false, false, false, false},
+                {false, false, false, false, false, false, false, false, false, false, false},
+                {false, false, false, false, false, false, false, false, false, false, false},
+                {false, false, false, false, false, false, false, false, false, false, false},
+                {false, false, false, false, false, false, true,  false, true,  false, false},
+                {false, false, false, false, false, true,  true,  true,  true,  true,  false},
+                {false, false, false, false, true,  true,  true,  true,  true,  true,  true },
+                {false, false, false, false, true,  true,  true,  true,  true,  true,  true },
+                {false, false, false, false, true,  true,  true,  false, true,  true,  true }
+        };
 
         for (int i = 5; i < 10; i++) {
+
+            // Riga superiore
             for (int j = 4; j < 11; j++) {
-                Component c = layout[i][j];
+                if (!validCells[i][j]) System.out.print("       ");
+                else System.out.print(" _____ ");
+            }
+            System.out.println();
 
-                if (c == null) {
-                    System.out.print("[   ]");
-                } else {
-                    switch(c){
-                        case EmptySpace e->{
-                            System.out.print("[ . ]");
-                        }
-
-                        default -> {
-                            System.out.printf("[ %c ]", c.getType().charAt(0));
-                        }
-                    }
+            // Riga link sopra
+            for (int j = 4; j < 11; j++) {
+                if (!validCells[i][j]) System.out.print("       ");
+                else {
+                    Component c = layout[i][j];
+                    if (c == null) System.out.print("|     |");
+                    else System.out.printf("|  %d  |", c.getLink()[0]);
                 }
+            }
+            System.out.println();
+
+            // Riga centrale con tipo e link laterali
+            for (int j = 4; j < 11; j++) {
+                if (!validCells[i][j]) System.out.print("       ");
+                else {
+                    Component c = layout[i][j];
+                    if (c == null) System.out.print("|     |");
+                    else System.out.printf("|%d %c %d|", c.getLink()[3], c.getType().charAt(0), c.getLink()[1]);
+                }
+            }
+            System.out.println();
+
+            // Riga link sotto
+            for (int j = 4; j < 11; j++) {
+                if (!validCells[i][j]) System.out.print("       ");
+                else {
+                    Component c = layout[i][j];
+                    if (c == null) System.out.print("|     |");
+                    else System.out.printf("|  %d  |", c.getLink()[2]);
+                }
+            }
+            System.out.println();
+
+            // Riga inferiore
+            for (int j = 4; j < 11; j++) {
+                if (!validCells[i][j]) System.out.print("       ");
+                else System.out.print("|_____|");
             }
             System.out.println();
         }

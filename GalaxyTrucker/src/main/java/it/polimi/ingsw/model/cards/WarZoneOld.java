@@ -94,7 +94,7 @@
 //                this.getName(),
 //                this.getDescription(),
 //                Game.getIstance().getTruckerList().getFirst().getNickname(),
-//                "Do you want to activate your doubleCannons?",
+//                "Press -warzone- to start WarZone card", //TODO: Check piu dire a frenk
 //                -1,
 //                -1,
 //                -1,
@@ -112,23 +112,23 @@
 //    }
 //
 //
-//    public CardState combatZone() throws GeneralError{
+//    public ServerEvent combatZone() throws GeneralError{
 //        if(state != CardState.WARZONE){
 //            throw new GeneralError("CombatZone not callable in the state " + state);
 //        }
-//        if(game.getTruckerList().size() == 1){
+//        if(Game.getIstance().getTruckerList().size() == 1){
 //            state = CardState.EXIT;
-//            return this.state;
+//            return cardEffect();
 //        }
 //        this.currCondition = conditionsOrder.get(currConditionIndex);
 //        currConditionIndex++;
-//        if(currConditionIndex-1 == conditionsOrder.size()){
+//        if(currConditionIndex == conditionsOrder.size()){
 //            throw new GeneralError("All conditions have been verified");
 //        }
 //        switch(currCondition){
 //            case HUMANS -> {
 //                state = CardState.FIND_WEAKEST;
-//                findWeakestTrucker(game, new ArrayList<>());
+//                findWeakestTrucker(new ArrayList<>());
 //            }
 //            case CANNONS -> {
 //                state = CardState.WAIT_CANNONS;
