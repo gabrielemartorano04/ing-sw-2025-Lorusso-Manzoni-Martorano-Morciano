@@ -99,11 +99,6 @@ public class ServerController {
         ClientEvent event = eventWithSource.getEvent();
         ClientHandlerSocket client = eventWithSource.getClient();
 
-        if (turnStarted && event.requiresTurn() && !turnManager.isPlayerTurn(client)) {
-            client.sendEvent(new NotYourTurnError("Non è il tuo turno."));
-            return;
-        }
-
         visitor.setClientHandlerServer(client);
         ServerEvent response = event.call(visitor);
 
