@@ -97,6 +97,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         };
         this.startFlight=true;
         this.startFlightForAll=false;
+        this.selectedComponent=null;
     }
 
     @Override
@@ -181,11 +182,11 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                         String command = tokens[0].toLowerCase();
                         if (!this.end) {
                             if (command.equalsIgnoreCase("turn") && selectedComponent != null) {
-                                selectedComponent.turn();
-                                ui.showComponentSelected(selectedComponent);
+                                this.selectedComponent.turn();
+                                ui.showComponentSelected(this.selectedComponent);
                                 event = null;
                             } else {
-                                event = inputParser.parseBuilding(input, selectedComponent, selectedComponentIndex, keptComponent, isFromKept);
+                                event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept);
                             }
                         }else {
                             System.out.println("You can only wait for others to finish buildin");

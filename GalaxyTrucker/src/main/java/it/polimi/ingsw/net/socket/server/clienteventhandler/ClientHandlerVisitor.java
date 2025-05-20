@@ -123,8 +123,9 @@ public class ClientHandlerVisitor implements ClientVisitor {
         int index = event.getIndex();
         int x=event.getX();
         int y=event.getY();
+        Component component=event.getComponent();
         try {
-            currentClient.getTruckerController().link(event.getComponent(),x,y);
+            currentClient.getTruckerController().link(component,x,y);
             return new ComponentLinkedEvent(event.getComponent(), x, y, gameController.getGame().getComponents().getComponents());
         }  catch (InvalidCoordinates e) {
             return new InvalidCoordinatesError(currentClient.getTruckerController().getNickname());
