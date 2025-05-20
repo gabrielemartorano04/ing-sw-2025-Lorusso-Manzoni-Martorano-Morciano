@@ -332,7 +332,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     // === PHASE 5: Fine Gioco ===
     @Override
     public void visit(EndGameEvent event) {
-        ui.showWinner(event.getWinner());
         ui.showScores(event.getScores());
         ui.showGameEnded();
     }

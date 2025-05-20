@@ -26,6 +26,7 @@ import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ClientHandlerVisitor implements ClientVisitor {
@@ -304,9 +305,11 @@ public class ClientHandlerVisitor implements ClientVisitor {
             return cardController.startCard();
         }else{
             int[] scores;
-            Map<String, Integer> playersScores;
+            Map<String, Integer> playersScores = new HashMap<>();
             scores = gameController.getGame().computeScores(numOfPlayers);
-
+            for(int i=0; i<numOfPlayers; i++){
+                playersScores.put(gameController.getGame().getTrucker(i).getNickname(), scores[i]);
+            }
             return new EndGameEvent(playersScores);
         }
 
@@ -344,11 +347,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(ActivateEnginesEvent event) {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(DrawCardEvent drawCardEvent) {
         return null;
     }
 
