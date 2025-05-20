@@ -66,12 +66,14 @@ public class WarZoneOld extends Card implements Serializable {
         this.state = CardState.WARZONE;
         this.currConditionIndex = 0;
         this.weakestTrucker = null;
+        this.indexOfCurrTrucker = 0;
+
+
         this.i = 0;
         this.colorOfCurrGoodToRemove = 0;
         this.numOfCurrTypeOfGood = 0;
         this.goodsToRemove = new ArrayList<>();
         this.numOfHumanToRemove = 0;
-        this.indexOfCurrTrucker = 0;
     }
 
     public ArrayList<Condition> getConditionsOrder() {
@@ -110,7 +112,7 @@ public class WarZoneOld extends Card implements Serializable {
     }
 
 
-    public CardState combatZone(Game game) throws GeneralError{
+    public CardState combatZone() throws GeneralError{
         if(state != CardState.WARZONE){
             throw new GeneralError("CombatZone not callable in the state " + state);
         }
