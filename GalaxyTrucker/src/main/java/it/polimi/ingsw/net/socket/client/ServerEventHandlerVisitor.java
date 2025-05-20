@@ -1,7 +1,6 @@
 package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.net.socket.events.clientevents.SendAlienCoord;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.AlienCabinCoord;
