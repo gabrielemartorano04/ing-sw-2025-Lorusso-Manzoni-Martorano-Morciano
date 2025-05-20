@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
+
 /**
  *
  */
 
-public class Bank {
+public class Bank implements Serializable {
     protected int[] goods; //red, yellow, green, blue
 
     public Bank() {

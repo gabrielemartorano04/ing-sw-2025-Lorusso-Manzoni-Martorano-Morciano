@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -7,7 +8,7 @@ import java.util.TimerTask;
  *
  */
 
-public class Hourglass {
+public class Hourglass implements Serializable {
 
     private Timer timer;
     private boolean timeUp;

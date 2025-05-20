@@ -4,12 +4,13 @@ import it.polimi.ingsw.utilities.exceptions.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  */
-public class Trucker {
+public class Trucker implements Serializable {
 
 
     private final PlayerColors color;

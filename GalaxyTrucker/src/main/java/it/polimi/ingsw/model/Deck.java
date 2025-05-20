@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.Map;
  * Class that manages the cards as a deck
  */
 
-class Deck {
+class Deck implements Serializable {
     private final ArrayList<Card> cards;
 
     /**
