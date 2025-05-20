@@ -58,7 +58,7 @@ public class Smugglers extends Card implements Serializable {
         this.goodsLost = goodsLost;
         this.days = days;
         this.goodsGained = goodsGained;
-        this.cardState = CardState.ATTESA_RISPOSTE;
+        this.cardState = CardState.ACTIVATE_CANNONS;
         this.indexOfCurrentTrucker = 0;
         this.winnerTrucker =null;
         this.winDecision=false;
@@ -163,6 +163,7 @@ public class Smugglers extends Card implements Serializable {
         }
     }
 
+    @Override
     public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
         if(cardState!=CardState.ACTIVATE_CANNONS){
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");

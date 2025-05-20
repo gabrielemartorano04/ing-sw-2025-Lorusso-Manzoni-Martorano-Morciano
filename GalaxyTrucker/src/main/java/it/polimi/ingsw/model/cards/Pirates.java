@@ -63,7 +63,7 @@ public class Pirates extends Card implements Serializable {
         this.days = days;
         this.piratesPower = piratesPower;
         this.shoots = shoots;
-        this.cardState = CardState.WAIT_CANNONS;
+        this.cardState = CardState.ACTIVATE_CANNONS;
         this.roll = 0;
         this.indexOfCurrentTrucker = 0;
         this.defeatedTruckers = new ArrayList<>();
@@ -167,6 +167,7 @@ public class Pirates extends Card implements Serializable {
         }
     }
 
+    @Override
     public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
         if(cardState!=CardState.ACTIVATE_CANNONS){
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
@@ -190,6 +191,7 @@ public class Pirates extends Card implements Serializable {
         }
     }
 
+    @Override
     public ServerEvent setWinDecision(boolean answer)throws GeneralError{
         if(cardState!=CardState.COSMIC_CREDITS){
             throw new GeneralError("Card state is not COSMIC_CREDITS");
@@ -206,6 +208,7 @@ public class Pirates extends Card implements Serializable {
         }
     }
 
+    @Override
     public ServerEvent rollDice() throws GeneralError {
         if(cardState != CardState.ROLL_DICE) {
             throw new GeneralError("Non si può girare i dadi nello stato " + cardState);
@@ -225,8 +228,7 @@ public class Pirates extends Card implements Serializable {
         }
     }
 
-
-
+    @Override
     public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates {
         if(cardState != CardState.ACTIVATE_SHIELDS){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
