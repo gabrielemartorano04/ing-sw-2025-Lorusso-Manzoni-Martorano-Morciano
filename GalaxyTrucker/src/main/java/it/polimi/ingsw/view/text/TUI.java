@@ -340,55 +340,65 @@ public class TUI extends UI {
                 {false, false, false, false, true,  true,  true,  false, true,  true,  true }
         };
 
+        // Intestazione colonne (sopra)
+        System.out.print("      ");
+        for (int col = 4; col < 11; col++) {
+            System.out.printf("   %d   ", col);
+        }
+        System.out.println();
+
         for (int i = 5; i < 10; i++) {
+            String rowStr = String.format("%2d", i); // 5 → " 5", 10 → "10"
 
             // Riga superiore
+            System.out.print("      ");
             for (int j = 4; j < 11; j++) {
-                if (!validCells[i][j]) System.out.print("       ");
-                else System.out.print(" _____ ");
+                System.out.print(validCells[i][j] ? " _____ " : "       ");
             }
             System.out.println();
 
             // Riga link sopra
+            System.out.print("      ");
             for (int j = 4; j < 11; j++) {
+                Component c = layout[i][j];
                 if (!validCells[i][j]) System.out.print("       ");
-                else {
-                    Component c = layout[i][j];
-                    if (c == null) System.out.print("|     |");
-                    else System.out.printf("|  %d  |", c.getLink()[0]);
-                }
+                else System.out.printf("|  %s  |", c == null ? " " : c.getLink()[0]);
             }
             System.out.println();
 
-            // Riga centrale con tipo e link laterali
+            // Riga centrale con numero riga sinistra
+            System.out.print("  " + rowStr + "  ");
             for (int j = 4; j < 11; j++) {
+                Component c = layout[i][j];
                 if (!validCells[i][j]) System.out.print("       ");
-                else {
-                    Component c = layout[i][j];
-                    if (c == null) System.out.print("|     |");
-                    else System.out.printf("|%d %c %d|", c.getLink()[3], c.getType().charAt(0), c.getLink()[1]);
-                }
+                else if (c == null) System.out.print("|     |");
+                else System.out.printf("|%d %c %d|", c.getLink()[3], c.getType().charAt(0), c.getLink()[1]);
             }
-            System.out.println();
+            System.out.println("  " + rowStr); // Numero riga destra
 
             // Riga link sotto
+            System.out.print("      ");
             for (int j = 4; j < 11; j++) {
+                Component c = layout[i][j];
                 if (!validCells[i][j]) System.out.print("       ");
-                else {
-                    Component c = layout[i][j];
-                    if (c == null) System.out.print("|     |");
-                    else System.out.printf("|  %d  |", c.getLink()[2]);
-                }
+                else System.out.printf("|  %s  |", c == null ? " " : c.getLink()[2]);
             }
             System.out.println();
 
             // Riga inferiore
+            System.out.print("      ");
             for (int j = 4; j < 11; j++) {
-                if (!validCells[i][j]) System.out.print("       ");
-                else System.out.print("|_____|");
+                System.out.print(validCells[i][j] ? "|_____|" : "       ");
             }
             System.out.println();
         }
+
+        // Intestazione colonne (sotto)
+        System.out.print("      ");
+        for (int col = 4; col < 11; col++) {
+            System.out.printf("   %d   ", col);
+        }
+        System.out.println();
     }
 
     private String abbreviate(String name) {
