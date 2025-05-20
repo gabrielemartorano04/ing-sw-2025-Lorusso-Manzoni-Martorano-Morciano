@@ -365,4 +365,19 @@ public class ClientHandlerVisitor implements ClientVisitor {
         return null;
     }
 
+    @Override
+    public ServerEvent visit(RemoveGoodsEvent event) {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(RemoveAskingEvent event) {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(RemoveBatteriesEvent event) {
+        return null;
+    }
+
 }

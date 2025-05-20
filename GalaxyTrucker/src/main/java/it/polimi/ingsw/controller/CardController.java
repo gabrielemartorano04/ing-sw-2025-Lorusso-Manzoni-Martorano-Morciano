@@ -151,6 +151,45 @@ public class CardController {
         }
     }
 
+    public ServerEvent removeGoods(RemoveGoodsEvent event) {
+        try {
+            return currCard.removeGoods();
+        } catch (WrongCallerException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        }
+    }
+
+    public ServerEvent removeAsking(RemoveAskingEvent event) {
+        try {
+            return currCard.removeAsking(event.getIndexes());
+        } catch (WrongCallerException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (InvalidGoodChosen e) {
+            return new InvalidGoodChosenEvent(e.getMessage(), true);
+        } catch (NotEnoughGoodsChosen e) {
+            return new NotEnoughGoodsChosenEvent(e.getMessage(), true);
+        }
+    }
+
+    public ServerEvent removeBatteries(RemoveBatteriesEvent event) {
+        try {
+            return currCard.removeBatteries(event.getCoordinatesToRemoveBatteries());
+        } catch (WrongCallerException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (InvalidCoordinates e) {
+            return new InvalidCoordinatesEvent(e.getMessage(), true);
+        } catch (WrongNumberOfBatteriesSelected e) {
+            return new WrongNumberOfBatteriesSelectedEvent(e.getMessage(), true);
+        } catch (NotEnoughBatteries e) {
+            return new NotEnoughBatterieEvent(e.getMessage(), true);
+        }
+    }
 
     public ServerEvent startCard(){
         return currCard.startCard();

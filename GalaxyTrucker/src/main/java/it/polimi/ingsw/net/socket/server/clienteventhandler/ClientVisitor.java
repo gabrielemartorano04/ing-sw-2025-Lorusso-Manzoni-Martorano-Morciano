@@ -65,4 +65,10 @@ public interface ClientVisitor {
     ServerEvent visit(RearrangeEvent event);
 
     ServerEvent visit(SetWinDecision event);
+
+    ServerEvent visit(RemoveGoodsEvent event);
+
+    ServerEvent visit(RemoveAskingEvent event);
+
+    ServerEvent visit(RemoveBatteriesEvent event);
 }

@@ -137,4 +137,10 @@ public interface ServerEventVisitor {
     void visit(InvalidPositionExceptionEvent event);
 
     void visit(PlanetNotFreeExceptionEvent event);
+
+    void visit(InvalidGoodChosenEvent event);
+
+    void visit(NotEnoughGoodsChosenEvent event);
+
+    void visit(WrongNumberOfBatteriesSelectedEvent event);
 }
