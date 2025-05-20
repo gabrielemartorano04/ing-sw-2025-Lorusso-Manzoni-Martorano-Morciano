@@ -5,17 +5,17 @@ import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
-public class SendPlanetDecisionEvent extends ClientEvent {
+public class SetWinDecision extends ClientEvent {
 
-    private int index;
+    private boolean win;
 
-    public SendPlanetDecisionEvent(int index) {
+    public SetWinDecision(boolean win) {
         super(ClientEventType.SEND_INFO_EVENT);
-        this.index = index;
+        this.win = win;
     }
 
-    public int getIndex() {
-        return index;
+    public boolean getWin() {
+        return win;
     }
 
     @Override

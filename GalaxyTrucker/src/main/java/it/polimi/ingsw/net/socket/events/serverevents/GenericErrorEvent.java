@@ -5,8 +5,8 @@ import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 public class GenericErrorEvent extends ServerEvent{
     private String message;
 
-    public GenericErrorEvent(String message, boolean val) {
-        super(ServerEventType.GENERIC_ERROR, val);
+    public GenericErrorEvent(String message, boolean forAll) {
+        super(ServerEventType.GENERIC_ERROR, forAll);
         this.message = message;
     }
 

@@ -230,30 +230,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
     }
 
     @Override
-    public ServerEvent visit(SendCoordEvent event) {
-
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(SendCoordListEvent event) {
-
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(SendIndexesEvent event) {
-
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(SendIntEvent event) {
-
-        return null;
-    }
-
-    @Override
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
     }
@@ -318,47 +294,57 @@ public class ClientHandlerVisitor implements ClientVisitor {
     }
 
     @Override
-    public ServerEvent visit(SendHumanCoordEvent event) {
+    public ServerEvent visit(HumanCoordEvent event) {
         return null;
     }
 
     @Override
-    public ServerEvent visit(SendPlotGoodEvent event) {
+    public ServerEvent visit(PlotGoodEvent event) {
         return null;
     }
 
     @Override
-    public ServerEvent visit(SendPlanetDecisionEvent event) {
+    public ServerEvent visit(PlanetDecisionEvent event) {
         return null;
     }
 
     @Override
-    public ServerEvent visit(SendRollDiceEvent event) {
+    public ServerEvent visit(RollDiceEvent event) {
         return null;
     }
 
     @Override
-    public ServerEvent visit(SendActivateShieldEvent event) {
+    public ServerEvent visit(ActivateShieldEvent event) {
         return null;
     }
 
     @Override
-    public ServerEvent visit(SendActivateCannonsEvent event) {
+    public ServerEvent visit(ActivateCannonsEvent event) {
         return null;
     }
 
     @Override
-    public ServerEvent visit(SendActivateEnginesEvent event) {
+    public ServerEvent visit(ActivateEnginesEvent event) {
         return null;
     }
 
     @Override
-    public ServerEvent visit(SendDrawCardEvent sendDrawCardEvent) {
+    public ServerEvent visit(DrawCardEvent drawCardEvent) {
         return null;
     }
 
     @Override
     public ServerEvent visit(TruckerLandingEvent event) {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(RearrangeEvent event) {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(SetWinDecision event) {
         return null;
     }
 

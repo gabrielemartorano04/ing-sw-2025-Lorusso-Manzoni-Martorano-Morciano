@@ -5,30 +5,29 @@ import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
-import java.util.ArrayList;
-
-public class SendActivateCannonsEvent extends ClientEvent {
+public class PlotGoodEvent extends ClientEvent {
 
     private boolean decision;
-    private ArrayList<int[]> coordinates, batteryCoordinates;
+    private int[] coordinates;
+    private int positionInLoad;
 
-    public SendActivateCannonsEvent(boolean decision, ArrayList<int[]> coordinates, ArrayList<int[]> batteryCoordinates) {
+    public PlotGoodEvent(boolean decision, int[] coordinates, int positionInLoad) {
         super(ClientEventType.SEND_INFO_EVENT);
         this.decision = decision;
         this.coordinates = coordinates;
-        this.batteryCoordinates = batteryCoordinates;
+        this.positionInLoad = positionInLoad;
     }
 
     public boolean getDecision() {
         return decision;
     }
 
-    public ArrayList<int[]> getCoordinates() {
+    public int[] getCoordinates() {
         return coordinates;
     }
 
-    public ArrayList<int[]> getBatteryCoordinates() {
-        return batteryCoordinates;
+    public int getPositionInLoad() {
+        return positionInLoad;
     }
 
     @Override

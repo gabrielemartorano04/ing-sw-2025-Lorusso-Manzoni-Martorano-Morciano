@@ -5,23 +5,9 @@ import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
-import java.util.ArrayList;
-
-/**
- * event from client to server
- */
-public class SendIndexesEvent extends ClientEvent {
-    private ArrayList<Integer> indexes;
-    public SendIndexesEvent(ArrayList<Integer> indexes) {
+public class DrawCardEvent extends ClientEvent {
+    public DrawCardEvent() {
         super(ClientEventType.SEND_INFO_EVENT);
-        this.indexes = indexes;
-    }
-    public ArrayList<Integer> getIndexes() {
-        return indexes;
-    }
-    @Override
-    public String getMessage() {
-        return "Sent indexes: " + indexes.toString();
     }
 
     @Override

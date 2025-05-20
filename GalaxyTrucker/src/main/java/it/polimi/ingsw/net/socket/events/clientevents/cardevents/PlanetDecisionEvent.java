@@ -5,18 +5,17 @@ import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
-public class SendBooleanEvent extends ClientEvent {
-    private boolean answer;
-    public SendBooleanEvent(final boolean answer) {
+public class PlanetDecisionEvent extends ClientEvent {
+
+    private int index;
+
+    public PlanetDecisionEvent(int index) {
         super(ClientEventType.SEND_INFO_EVENT);
-        this.answer = answer;
+        this.index = index;
     }
-    public boolean getAnswer() {
-        return answer;
-    }
-    @Override
-    public String getMessage() {
-        return "Sent answer " + answer;
+
+    public int getIndex() {
+        return index;
     }
 
     @Override

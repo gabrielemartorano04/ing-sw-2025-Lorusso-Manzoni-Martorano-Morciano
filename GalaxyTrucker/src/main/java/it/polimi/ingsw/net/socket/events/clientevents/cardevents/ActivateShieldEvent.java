@@ -5,28 +5,27 @@ import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
-public class SendActivateShieldEvent extends ClientEvent {
+public class ActivateShieldEvent extends ClientEvent {
 
     private boolean decision;
-    private int[] coordShield;
-    private int[] coordBS;
+    private int[] coordinates, batteryCoordinates;
 
-    public SendActivateShieldEvent(boolean decision, int[] coordShield, int[] coordBS ) {
+    public ActivateShieldEvent(boolean decision, int[] coordinates, int[] batteryCoordinates) {
         super(ClientEventType.SEND_INFO_EVENT);
         this.decision = decision;
-        this.coordShield = coordShield;
-        this.coordBS = coordBS;
+        this.coordinates = coordinates;
+        this.batteryCoordinates = batteryCoordinates;
     }
 
     public boolean getDecision() {
         return decision;
     }
 
-    public int[] getCoordShield() {
-        return coordShield;
+    public int[] getCoordinates() {
+        return coordinates;
     }
-    public int[] getCoordBS() {
-        return coordBS;
+    public int[] getBatteryCoordinates() {
+        return batteryCoordinates;
     }
 
     @Override
