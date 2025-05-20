@@ -381,7 +381,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     // === CARD EVENTS ===
 
     @Override
-    public void visit(BooleanDecision event) { //in tutti si inizia con yes or no
+    public void visit(BooleanDecision event) {
         if (event.getNickname().equals(viewFlow.getNickname())){
             switch (event.getEventType()){
                 case ROLL_DICE -> {
@@ -472,7 +472,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(PlotGood event) {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLOT_GOOD);
-            ui.showMessage("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <x> <y>,' or 'n': ");
+            ui.showMessage("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <x> <y>, <position>' or 'n': ");
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
@@ -482,9 +482,8 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(RollDiceResult event) {
         if (event.getNickname().equals(viewFlow.getNickname())) {
-            viewFlow.setParserFlightState(ParserState.ROLL_DICE);
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage("The dices result is " + event.getDiceResult() + "\n" + event.getMessage());
-            //chiedere che cosa deve mandate l'utente
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
