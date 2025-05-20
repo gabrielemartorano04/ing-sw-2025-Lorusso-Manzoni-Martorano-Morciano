@@ -144,7 +144,7 @@ public class AvailableComponents implements Serializable {
         Component engine7 = new Engine(2, 1, 1, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web81.jpg", false);
         Component engine8 = new Engine(2, 0, 2, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web86.jpg", false);
         Component engine9 = new Engine(0, 0, 3, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web88.jpg", false);
-                Component engine10 = new Engine(1, 2, 2, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web85.jpg", false);
+        Component engine10 = new Engine(1, 2, 2, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web85.jpg", false);
         Component engine11 = new Engine(3, 2, 1, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web83.jpg", false);
         Component engine12 = new Engine(0, 3, 0, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web72.jpg", false);
         Component engine13 = new Engine(1, 0, 0, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web73.jpg", false);
