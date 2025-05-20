@@ -35,3 +35,6 @@ public class RollDiceResult extends CardEvent {
         return getNickname()+" got "+diceResult+ " from the dice\n";
     }
 }
+
+
+
