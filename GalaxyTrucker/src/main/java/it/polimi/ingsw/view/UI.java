@@ -67,7 +67,6 @@ public abstract class UI {
     //END OF GAME
     public abstract void showGameEnded();
     public abstract void showScores(Map<String, Integer> finalScores);
-    public abstract void showWinner(String nickname);
 
     //ERRORS/SYSTEM
     public abstract void showError(String message);

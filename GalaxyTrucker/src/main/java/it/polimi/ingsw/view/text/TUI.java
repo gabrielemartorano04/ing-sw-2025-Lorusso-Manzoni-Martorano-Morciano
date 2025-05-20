@@ -288,11 +288,7 @@ public class TUI extends UI {
     public void showScores(Map<String, Integer> finalScores) {
         System.out.println("Final scores:");
         finalScores.forEach((name, score) -> System.out.println("- " + name + ": " + score));
-    }
-
-    @Override
-    public void showWinner(String nickname) {
-        System.out.println("Winner: " + nickname + "!");
+        System.out.println("Winner: " + finalScores.keySet().iterator().next() + "!");
     }
 
     @Override
