@@ -67,7 +67,7 @@ public class InputParserFlight {
                     return null;
                 }
                 return new RollDiceEvent();
-            case ACTIVATE_SHIELD: //2 COORD PER BATTERIE
+            case ACTIVATE_SHIELD:
                 String[] activateShield=input.split("\\s*,\\s*");
                 if(activateShield[0].trim().equals("n")){
                     return new ActivateShieldEvent(false,null,null);
