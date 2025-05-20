@@ -81,13 +81,6 @@ public class GameController {
         return currentCard;
     }
 
-    public Card getCurrentCard()throws GeneralError{
-        if(currentCard==null){
-            throw new GeneralError("Card is null");
-        }
-        return currentCard;
-    }
-
     public void orderByPosition(ArrayList<ClientHandlerSocket> players){
         game.reorderPlayersByPosition(players);
     }

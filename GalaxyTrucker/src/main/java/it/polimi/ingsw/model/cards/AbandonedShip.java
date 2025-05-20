@@ -165,6 +165,7 @@ public class AbandonedShip extends Card implements Serializable {
         }
         state = CardState.EXIT;
         this.setIsCardFinished(true);
+        Game.getIstance().endTurn();
         return new CardFinished(false, this.getCardState(), Game.getIstance().getTruckerList());
     }
 

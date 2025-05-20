@@ -222,6 +222,7 @@ public class Planets extends Card implements Serializable {
             Game.getIstance().moveBackward(truckersLanded.get(i), daysLoss);
         }
         state = CardState.EXIT;
+        Game.getIstance().endTurn();
         return new CardFinished(true, this.getState(), Game.getIstance().getTruckerList());
     }
 

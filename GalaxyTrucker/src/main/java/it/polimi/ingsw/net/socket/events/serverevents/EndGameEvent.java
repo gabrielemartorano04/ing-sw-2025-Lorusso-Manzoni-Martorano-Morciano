@@ -9,23 +9,17 @@ import java.util.Map;
  */
 public class EndGameEvent extends ServerEvent {
     private String message;
-    private String winner;
     private Map<String, Integer> scores;
 
-    public EndGameEvent(String winner, Map<String, Integer> scores) {
+    public EndGameEvent(Map<String, Integer> scores) {
         super(ServerEventType.END_GAME, true);
         message = "The game ended";
-        this.winner = winner;
         this.scores = scores;
     }
 
     @Override
     public String getMessage() {
         return message;
-    }
-
-    public String getWinner() {
-        return winner;
     }
 
     public Map<String, Integer> getScores() {

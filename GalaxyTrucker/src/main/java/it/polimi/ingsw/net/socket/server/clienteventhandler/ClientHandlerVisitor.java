@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 
 
 import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
@@ -25,6 +26,7 @@ import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Map;
 
 public class ClientHandlerVisitor implements ClientVisitor {
     private int numOfPlayers;
@@ -291,6 +293,23 @@ public class ClientHandlerVisitor implements ClientVisitor {
         cardController.setCurrCard(gameController.pickCardFromDeck());
 
         return cardController.startCard();
+    }
+
+    @Override
+    public ServerEvent visit(DrawCardEvent event){
+        Card card;
+        cardController.setCurrCard(gameController.pickCardFromDeck());
+        card = cardController.getCurrCard();
+        if(card!=null){
+            return cardController.startCard();
+        }else{
+            int[] scores;
+            Map<String, Integer> ;
+            scores = gameController.getGame().computeScores(numOfPlayers);
+
+            return new EndGameEvent()
+        }
+
     }
 
     @Override

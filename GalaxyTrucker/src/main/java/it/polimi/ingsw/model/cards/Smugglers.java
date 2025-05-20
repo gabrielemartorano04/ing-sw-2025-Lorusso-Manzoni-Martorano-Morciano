@@ -431,6 +431,7 @@ public class Smugglers extends Card implements Serializable {
             Game.getIstance().moveBackward(winnerTrucker, days);
         }
         cardState = CardState.EXIT;
+        Game.getIstance().endTurn();
         return new CardFinished(true, this.cardState, Game.getIstance().getTruckerList());
     }
 }
