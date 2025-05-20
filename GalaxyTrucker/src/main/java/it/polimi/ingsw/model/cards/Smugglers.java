@@ -153,14 +153,9 @@ public class Smugglers extends Card implements Serializable {
         }else {
             defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
-                if(defeatedTruckers.isEmpty()){
-                    cardState = CardState.ESECUZIONE;
-                    return cardEffect();
-                }else{
-                    cardState = CardState.REMOVE_GOODS;
-                    indexOfCurrentTrucker = 0;
-                    return removeGoods();
-                }
+                cardState = CardState.REMOVE_GOODS;
+                indexOfCurrentTrucker = 0;
+                return removeGoods();
             }else{
                 indexOfCurrentTrucker++;
                 return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, this.cardState, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
@@ -311,6 +306,7 @@ public class Smugglers extends Card implements Serializable {
                 return new RemoveGoods(true, this.cardState, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsToRemove);
             }
         }
+
         // se sei uscito perche non avevi merci devo controllare se puoi perdere batterie
         if(colorOfCurrGoodToRemove == 0 && goodsLostCurrTrucker > 0){
             if(defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getNumBatteries() == 0){
@@ -325,7 +321,7 @@ public class Smugglers extends Card implements Serializable {
                 return new RemoveBatteries(true, this.cardState, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsLostCurrTrucker);
             }
         }else{
-
+            throw new GeneralError("RemoveGoods not working correctly");
         }
     }
 
