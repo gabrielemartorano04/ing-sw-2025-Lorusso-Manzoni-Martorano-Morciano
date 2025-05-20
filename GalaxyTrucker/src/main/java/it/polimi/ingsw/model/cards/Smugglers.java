@@ -58,7 +58,7 @@ public class Smugglers extends Card implements Serializable {
         this.goodsLost = goodsLost;
         this.days = days;
         this.goodsGained = goodsGained;
-        this.cardState = CardState.ATTESA_RISPOSTE;
+        this.cardState = CardState.ACTIVATE_CANNONS;
         this.indexOfCurrentTrucker = 0;
         this.winnerTrucker =null;
         this.winDecision=false;
@@ -153,14 +153,9 @@ public class Smugglers extends Card implements Serializable {
         }else {
             defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
-                if(defeatedTruckers.isEmpty()){
-                    cardState = CardState.ESECUZIONE;
-                    return cardEffect();
-                }else{
-                    cardState = CardState.REMOVE_GOODS;
-                    indexOfCurrentTrucker = 0;
-                    return removeGoods();
-                }
+                cardState = CardState.REMOVE_GOODS;
+                indexOfCurrentTrucker = 0;
+                return removeGoods();
             }else{
                 indexOfCurrentTrucker++;
                 return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, this.cardState, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
@@ -168,6 +163,7 @@ public class Smugglers extends Card implements Serializable {
         }
     }
 
+    @Override
     public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
         if(cardState!=CardState.ACTIVATE_CANNONS){
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
@@ -206,7 +202,7 @@ public class Smugglers extends Card implements Serializable {
         }
         if(stop){
             cardState = CardState.REARRANGE;
-            return new RearrangeEvent(false, this.getCardState(), this.winnerTrucker.getNickname());
+            return new RearrangeEvent(true, this.getCardState(), this.winnerTrucker.getNickname());
         }else {
             try {
                 // addGood fa anche la remove dalla bank della merce corrente
@@ -217,19 +213,19 @@ public class Smugglers extends Card implements Serializable {
             }
             if (currGoodIndex == goodsGained.length - 1) { // ci va il -1 qui!!!
                 cardState = CardState.REARRANGE;
-                return new RearrangeEvent(false, this.getCardState(), this.winnerTrucker.getNickname());
+                return new RearrangeEvent(true, this.getCardState(), this.winnerTrucker.getNickname());
             } else {
                 currGoodIndex++;
                 //TODO: Check che non ci sia loop infinito
                 do {
                     if (Game.getIstance().getBank().getGoodsInBank(goodsGained[currGoodIndex].getValue()) >= 1) {
                         cardState = CardState.CHOOSE_TO_GAIN;
-                        return new PlotGood(false, this.getCardState(), winnerTrucker.getNickname(), goodsGained[currGoodIndex]);
+                        return new PlotGood(true, this.getCardState(), winnerTrucker.getNickname(), goodsGained[currGoodIndex]);
                     } else {
                         currGoodIndex++;
                         if (currGoodIndex == goodsGained.length) {
                             cardState = CardState.REARRANGE;
-                            return new RearrangeEvent(false, this.getCardState(), this.winnerTrucker.getNickname());
+                            return new RearrangeEvent(true, this.getCardState(), this.winnerTrucker.getNickname());
                         }
                     }
                 } while (true);
@@ -249,7 +245,7 @@ public class Smugglers extends Card implements Serializable {
             }
             try {
                 winnerTrucker.getSpaceShip().swapGoods(coord1, value1, coord2, value2);
-                return new RearrangeEvent(false, this.getCardState(), this.winnerTrucker.getNickname());
+                return new RearrangeEvent(true, this.getCardState(), this.winnerTrucker.getNickname());
             } catch (InvalidPositionException e) {
                 cardState = CardState.REARRANGE;
                 throw new InvalidPositionException("invalid positions");
@@ -311,6 +307,7 @@ public class Smugglers extends Card implements Serializable {
                 return new RemoveGoods(true, this.cardState, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsToRemove);
             }
         }
+
         // se sei uscito perche non avevi merci devo controllare se puoi perdere batterie
         if(colorOfCurrGoodToRemove == 0 && goodsLostCurrTrucker > 0){
             if(defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getNumBatteries() == 0){
@@ -325,7 +322,7 @@ public class Smugglers extends Card implements Serializable {
                 return new RemoveBatteries(true, this.cardState, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsLostCurrTrucker);
             }
         }else{
-
+            throw new GeneralError("RemoveGoods not working correctly");
         }
     }
 
@@ -352,7 +349,7 @@ public class Smugglers extends Card implements Serializable {
             return new RemotionConfirmed(this.cardState, defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(), "Goods removed, press continue!");
         } else { // il trucker corrente deve perdere batterie
             cardState = CardState.REMOVE_BATTERIES;
-            return new RemoveBatteries(false, this.cardState, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsLostCurrTrucker);
+            return new RemoveBatteries(true, this.cardState, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsLostCurrTrucker);
         }
     }
 
