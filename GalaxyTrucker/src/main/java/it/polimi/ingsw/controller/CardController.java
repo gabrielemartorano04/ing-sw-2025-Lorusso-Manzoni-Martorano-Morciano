@@ -150,4 +150,9 @@ public class CardController {
             return new PlanetNotFreeExceptionEvent(e.getMessage(), true);
         }
     }
+
+
+    public ServerEvent startCard(){
+        return currCard.startCard();
+    }
 }
