@@ -1368,11 +1368,6 @@ public class GUI extends UI {
     }
 
     @Override
-    public void showWinner(String nickname) {
-
-    }
-
-    @Override
     public void showError(String message) {
 
     }
