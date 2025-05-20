@@ -21,6 +21,5 @@ public class AlienCabinCoord extends ServerEvent {
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
-
     }
 }
