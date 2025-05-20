@@ -152,7 +152,6 @@ public class Game {
         for(Trucker t: truckers) {
             if(t.getPosition() - trucker.getPosition() >= 24){
                 withdraw(trucker);
-                break;
             }
         }
     }
@@ -306,7 +305,7 @@ public class Game {
     public int[] computeScores(int numPlayer){
         int i=0;
         int[] scores = new int[numPlayer];
-        ArrayList<Goods> goodsList = new ArrayList<>();
+        ArrayList<Goods> goodsList;
         for(Trucker t: truckers) {
             if(t.getCosmicCredit()<t.getSpaceShip().getLost()) {
                 scores[i] -= (t.getSpaceShip().getLost()-t.getCosmicCredit());
@@ -407,6 +406,7 @@ public class Game {
         for(Trucker t: truckers) {
             noHumans(t);
             checkOvertaken(t);
+            sortTruckers();
         }
     }
 

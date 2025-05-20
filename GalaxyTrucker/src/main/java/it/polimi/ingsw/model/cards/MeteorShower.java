@@ -213,6 +213,7 @@ public class MeteorShower extends Card implements Serializable {
         if (meteors.size()==(currMeteorIndex)) {
             this.state = CardState.EXIT;
             this.setIsCardFinished(true);
+            Game.getIstance().endTurn();
             return new CardFinished(true, this.getCardState(), Game.getIstance().getTruckerList());
         }else {
             this.state = CardState.ROLL_DICE;

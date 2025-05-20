@@ -69,7 +69,4 @@ public interface CardInterface {
     default void findWeakestTrucker(Game game, ArrayList<ArrayList<int[]>> truckersCoordinates)throws WrongCallerException, GeneralError {
         throw new WrongCallerException("This method does not exist in the card ");
     }
-
-    default void setAnswers(boolean answers) throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
-
 }

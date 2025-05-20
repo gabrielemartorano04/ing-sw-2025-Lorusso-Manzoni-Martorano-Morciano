@@ -285,6 +285,7 @@ public class Pirates extends Card implements Serializable {
         }
         if (shoots.size()==(currShootIndex)) {
             this.cardState = CardState.EXIT;
+            Game.getIstance().endTurn();
             return new CardFinished(true, this.cardState, Game.getIstance().getTruckerList());
         }else {
             this.cardState = CardState.ROLL_DICE;
