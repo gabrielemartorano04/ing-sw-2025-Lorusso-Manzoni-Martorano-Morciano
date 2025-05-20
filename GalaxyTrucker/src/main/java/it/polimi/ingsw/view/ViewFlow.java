@@ -186,6 +186,10 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                                 ui.showComponentSelected(this.selectedComponent);
                                 event = null;
                             } else {
+                                if(selectedComponent != null) {
+                                    System.out.println("Component selected: "+selectedComponent.toString());
+                                }
+
                                 event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept);
                             }
                         }else {
