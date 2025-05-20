@@ -1579,6 +1579,7 @@ public class SpaceShip implements Serializable {
      * @param coord coordinates to check
      * @return true if every component with given coordinates is a Loads, false otherwise
      */
+    //TODO CAMBIA OGNI CHECK
     public boolean checkLoad(ArrayList<int[]> coord){
 
         for (int[] c : coord) {
@@ -1588,6 +1589,7 @@ public class SpaceShip implements Serializable {
                     default -> { return false; }
                 }
             }
+            else return false;
         }
         return true;
     }
