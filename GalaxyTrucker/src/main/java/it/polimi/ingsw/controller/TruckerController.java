@@ -1,10 +1,12 @@
 package it.polimi.ingsw.controller;
 
-import com.sun.javafx.stage.WindowEventDispatcher;
+import it.polimi.ingsw.exceptions.GeneralError;
+import it.polimi.ingsw.exceptions.InvalidComponentsException;
+import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.InvalidStateException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.util.ArrayList;
 

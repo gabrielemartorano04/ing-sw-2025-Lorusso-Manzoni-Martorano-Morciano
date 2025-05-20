@@ -1,4 +1,4 @@
-package it.polimi.ingsw.utilities.exceptions;
+package it.polimi.ingsw.exceptions;
 
 public class GameAlreadyStartedException extends RuntimeException {
     public GameAlreadyStartedException(String message) {

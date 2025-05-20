@@ -1,13 +1,11 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
-import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.EndBuildingEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.WaitOthersBuildingEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
-import it.polimi.ingsw.utilities.exceptions.CannotTurnHourglassException;
+import it.polimi.ingsw.exceptions.CannotTurnHourglassException;
 
 import java.util.*;
 

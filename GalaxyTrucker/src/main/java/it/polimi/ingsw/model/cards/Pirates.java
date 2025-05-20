@@ -1,12 +1,15 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.exceptions.GeneralError;
+import it.polimi.ingsw.exceptions.InvalidComponentsException;
+import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.NotEnoughBatteries;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
-import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;

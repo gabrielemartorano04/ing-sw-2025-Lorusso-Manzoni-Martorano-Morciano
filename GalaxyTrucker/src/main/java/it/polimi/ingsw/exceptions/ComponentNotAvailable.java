@@ -1,4 +1,4 @@
-package it.polimi.ingsw.utilities.exceptions;
+package it.polimi.ingsw.exceptions;
 
 public class ComponentNotAvailable extends Exception {
     public ComponentNotAvailable(String message) {

@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
-import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;

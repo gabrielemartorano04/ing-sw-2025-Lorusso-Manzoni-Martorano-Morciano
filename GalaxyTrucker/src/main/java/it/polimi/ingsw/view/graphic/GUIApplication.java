@@ -6,12 +6,11 @@ import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.utilities.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,9 +1,11 @@
 package it.polimi.ingsw.controller;
+import it.polimi.ingsw.exceptions.ColorNotAvailable;
+import it.polimi.ingsw.exceptions.GameAlreadyStartedException;
+import it.polimi.ingsw.exceptions.InvalidStateException;
+import it.polimi.ingsw.exceptions.NicknameUsedException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
-import it.polimi.ingsw.utilities.exceptions.*;
 
 import java.util.*;
 import java.util.concurrent.Executors;

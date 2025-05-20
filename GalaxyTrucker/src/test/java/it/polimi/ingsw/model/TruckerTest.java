@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.TurnManager;
-import it.polimi.ingsw.utilities.exceptions.*;
+import it.polimi.ingsw.exceptions.GeneralError;
+import it.polimi.ingsw.exceptions.InvalidComponentsException;
+import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.components.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
