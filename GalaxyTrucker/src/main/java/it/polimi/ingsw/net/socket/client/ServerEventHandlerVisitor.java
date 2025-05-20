@@ -1,7 +1,6 @@
 package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.AlienCabinCoord;
@@ -382,7 +381,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     // === CARD EVENTS ===
 
     @Override
-    public void visit(BooleanDecision event) { //in tutti si inizia con yes or no
+    public void visit(BooleanDecision event) {
         if (event.getNickname().equals(viewFlow.getNickname())){
             switch (event.getEventType()){
                 case ROLL_DICE -> {
@@ -390,11 +389,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
                     viewFlow.setParserFlightState(ParserState.ROLL_DICE);
                 }
                 case ACTIVATE_CANNONS -> {
-                    ui.showMessage("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons. Type 'y, <x1> <y1>, <x2> <y2>,...' or 'n': ");
+                    ui.showMessage("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
                     viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
                 }
                 case ACTIVATE_ENGINES -> {
-                    ui.showMessage("Choose if you want to activate the double engines. If yes type the coordinates of the engines. Type 'y, <x1> <y1>, <x2> <y2>,...' or 'n': ");
+                    ui.showMessage("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
                     viewFlow.setParserFlightState(ParserState.ACTIVATE_ENGINES);
                 }
                 case ACTIVATE_SHIELD -> {
@@ -473,7 +472,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(PlotGood event) {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLOT_GOOD);
-            ui.showMessage("Choose if you want the good, if yes type the coordinates of the load. Type 'y <x> <y>' or 'n': ");
+            ui.showMessage("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <x> <y>, <position>' or 'n': ");
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
@@ -481,11 +480,10 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
-    public void visit(RollDice event) {
+    public void visit(RollDiceResult event) {
         if (event.getNickname().equals(viewFlow.getNickname())) {
-            viewFlow.setParserFlightState(ParserState.ROLL_DICE);
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage("The dices result is " + event.getDiceResult() + "\n" + event.getMessage());
-            //chiedere che cosa deve mandate l'utente
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
