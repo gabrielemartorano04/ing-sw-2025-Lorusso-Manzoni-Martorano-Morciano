@@ -149,4 +149,6 @@ public interface ServerEventVisitor {
     void visit(RemoveBatteries removeBatteries);
 
     void visit(RemoveGoods removeGoods);
+
+    void visit(TurnedComponentSuccessEvent turnedComponentSuccessEvent);
 }

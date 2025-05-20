@@ -85,6 +85,12 @@ public ClientEvent parseFirstConnection(String input) {
             if(component!=null){
                 if(isFromKept){
                     switch (command){
+                        case "turn":
+                            if(tokens.length!=1){
+                                System.out.println("Error: illegal command.");
+                                return null;
+                            }
+                            return new TurnComponentEvent(component);
                         case "link":
                             if(tokens.length!=3){
                                 System.out.println("Error: illegal command. Type 'link <x> <y>'.");
@@ -109,6 +115,12 @@ public ClientEvent parseFirstConnection(String input) {
                     }
                 }
                 switch (command){
+                    case "turn":
+                        if(tokens.length!=1){
+                            System.out.println("Error: illegal command.");
+                            return null;
+                        }
+                        return new TurnComponentEvent(component);
                     case "ship":
                         if(tokens.length!=2){
                             System.out.println("Error: illegal command. Type 'ship <nickname>'.");

@@ -178,21 +178,20 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     }
                     case START-> { event = inputParser.parseLogin(input);}
                     case BULDING-> {
-                        String[] tokens = input.split("\\s+", 3);
-                        String command = tokens[0].toLowerCase();
+//                        String[] tokens = input.split("\\s+", 3);
+//                        String command = tokens[0].toLowerCase();
                         if (!this.end) {
-                            if (command.equalsIgnoreCase("turn") && selectedComponent != null) {
-                                this.selectedComponent.turn();
-                                ui.showComponentSelected(this.selectedComponent);
-                                event = null;
-                            } else {
-                                if(selectedComponent != null) {
-                                    System.out.println("Component selected: "+selectedComponent.toString());
-                                }
+//                            if (command.equalsIgnoreCase("turn") && selectedComponent != null) {
+//                                this.selectedComponent.turn();
+//                                ui.showComponentSelected(this.selectedComponent);
+//                                event = null;
+//                            } else {
+
 
                                 event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept);
-                            }
-                        }else {
+
+                        }
+                        else {
                             System.out.println("You can only wait for others to finish buildin");
                             event = null;
                         }
@@ -327,6 +326,9 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     public void setSelectedComponent(Component component, boolean isFromKept) {
         this.selectedComponent = component;
         this.isFromKept = isFromKept;
+    }
+    public void setSelectedComponent(Component component) {
+        this.selectedComponent = component;
     }
 
     public void deleteSelectedComponent() {

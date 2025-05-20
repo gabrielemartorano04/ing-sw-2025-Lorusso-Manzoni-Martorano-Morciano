@@ -18,5 +18,5 @@ public enum ClientEventType {
     DISCARD_TILE,
     SHOW_TILES,
     SHOW_OTHER_SHIP,
-    REQUEST
+    TURN_COMPONENT, REQUEST
 }

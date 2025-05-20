@@ -383,4 +383,11 @@ public class ClientHandlerVisitor implements ClientVisitor {
         return null;
     }
 
+    @Override
+    public ServerEvent visit(TurnComponentEvent turnComponentEvent) {
+        Component component = turnComponentEvent.getComponent();
+        component.turn();
+        return new TurnedComponentSuccessEvent(component);
+    }
+
 }

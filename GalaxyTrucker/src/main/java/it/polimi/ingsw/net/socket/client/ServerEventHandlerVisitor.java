@@ -572,7 +572,12 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
-    public void visit(RemoveGoods removeGoods) {
+    public void visit(RemoveGoods event) {
 
+    }
+
+    @Override
+    public void visit(TurnedComponentSuccessEvent event) {
+        viewFlow.setSelectedComponent(event.getComponent());
     }
 }
