@@ -1171,7 +1171,7 @@ public class GUI extends UI {
         title.setEffect(new DropShadow(3, Color.BLACK));
 
         // Immagine della carta
-        ImageView cardView = new ImageView(event.getFrontImage());
+        ImageView cardView = new ImageView("");//TODO: PRIMA C'ERA event.getFrontImage()
         cardView.setFitWidth(250);
         cardView.setFitHeight(400);
         cardView.setPreserveRatio(true);
@@ -1193,7 +1193,7 @@ public class GUI extends UI {
                 PauseTransition delay = new PauseTransition(Duration.seconds(5));
                 delay.setOnFinished(e -> {
                     root.getChildren().remove(container);
-                    showCardEffectStart(card);
+                    showCardEffectStart(null);//TODO: VUOLE LA CARTA IN TEORIA
                 });
                 delay.play();
             }
@@ -1800,12 +1800,12 @@ public class GUI extends UI {
         // Callback alla tua logica (da definire tu)
         acceptButton.setOnAction(e -> {
             root.getChildren().remove(overlay);
-            setCurrentEvent(new SendBooleanEvent(true));
+            setCurrentEvent(null);//TODO: SISTEMA IL NULL è PER ESEGUIRE
         });
 
         declineButton.setOnAction(e -> {
             root.getChildren().remove(overlay);
-            setCurrentEvent(new SendBooleanEvent(false));
+            setCurrentEvent(null);//TODO: SISTEMA IL NULL è PER ESEGUIRE
         });
     }
 
