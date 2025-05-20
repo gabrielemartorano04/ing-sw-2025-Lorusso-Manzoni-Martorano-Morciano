@@ -272,6 +272,11 @@ public class Smugglers extends Card implements Serializable {
             throw new GeneralError("plotGoodsToRemove not callable in the state " + cardState);
         }
 
+        if(indexOfCurrentTrucker == defeatedTruckers.size()){
+            cardState = CardState.ESECUZIONE;
+            return cardEffect();
+        }
+
         ArrayList<Goods> goodsList;
         goodsList = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getGoodsList();
 
@@ -297,7 +302,7 @@ public class Smugglers extends Card implements Serializable {
 
             if (numGoodCurrType > 0 && numGoodCurrType <= goodsLostCurrTrucker) {
                 return removeWithoutAsking(goodsList);
-            }else if (numGoodCurrType > 0 && numGoodCurrType > goodsLostCurrTrucker){
+            }else if (numGoodCurrType > 0){
                 cardState = CardState.REMOVE_ASKING;
                 ArrayList<Goods> listOfGoods = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getGoodsList();
                 for (int i = 0; i < numGoodCurrType; i++) {
@@ -306,20 +311,26 @@ public class Smugglers extends Card implements Serializable {
                 return new RemoveGoods(true, this.cardState, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsToRemove);
             }
         }
-        if (goodsLostCurrTrucker > 0) {
-            // se il colore corrente è maggiore di 3 allora vuol dire che devo togliere batterie se ho ancora merci da rimuovere
-            cardState = CardState.PLOT_BATTERIES;
-            return new //plottare lista batterie;
-        }
-        if (goodsLostCurrTrucker == 0) {
-            goodsLostCurrTrucker = goodsLost;
-            defeatedTruckers.removeFirst();
-        }
+        // se sei uscito perche non avevi merci devo controllare se puoi perdere batterie
+        if(colorOfCurrGoodToRemove == 0 && goodsLostCurrTrucker > 0){
+            if(defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getNumBatteries() == 0){
+                indexOfCurrentTrucker++;
+                if(indexOfCurrentTrucker == defeatedTruckers.size()){
+                    cardState = CardState.ESECUZIONE;
+                    return cardEffect();
+                }else{
+                    return new RemotionConfirmed(this.cardState, defeatedTruckers.get(indexOfCurrentTrucker-1).getNickname(), "You didn't have batteries or goods to be removed. Press continue!");
+                }
+            }else{
+                return new RemoveBatteries(true, this.cardState, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsLostCurrTrucker);
+            }
+        }else{
 
+        }
     }
 
-    private ServerEvent removeWithoutAsking(ArrayList<Goods> goodsList) throws GeneralError{
-        if(goodsList == null){
+    private ServerEvent removeWithoutAsking(ArrayList<Goods> goodsList) throws GeneralError {
+        if (goodsList == null) {
             throw new GeneralError("Remove without asking: goodsList is null");
         }
         ArrayList<Goods> list = new ArrayList<>();
@@ -333,27 +344,15 @@ public class Smugglers extends Card implements Serializable {
         }
         defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeGoods(list);
 
-        if(goodsLostCurrTrucker == 0){ // se questo trucker ha perso tutte le merci
-            if(indexOfCurrentTrucker == defeatedTruckers.size()-1){ // se questo era l'ultimo trucker
-                return cardEffect();
-            }else{
-                indexOfCurrentTrucker++;
-                return new GoodsRemovedEvent(this.cardState, defeatedTruckers.get(indexOfCurrentTrucker-1).getNickname());
-            }
-        }
-        else if (goodsLostCurrTrucker>0) { // il trucker corrente deve perdere batterie
-            if (defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getNumBatteries() == 0) { // se non ha batterie
-                if (indexOfCurrentTrucker == defeatedTruckers.size() - 1) { // se questo era l'ultimo trucker
-                    return cardEffect();
-                } else {
-                    indexOfCurrentTrucker++;
-                    return new GoodsRemovedEvent(this.cardState, defeatedTruckers.get(indexOfCurrentTrucker-1).getNickname());
-                }
-            } else {
-                return new RemoveBatteries(false, this.cardState, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsLostCurrTrucker);
-            }
-        }else{
-            throw new GeneralError("Something wrong in removeWithoutAsking, goodsLostCurrTrucker is " + goodsLostCurrTrucker);
+        if (goodsLostCurrTrucker == 0 || (goodsLostCurrTrucker > 0 && defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getNumBatteries() == 0)) {
+            // se questo trucker ha perso tutte le merci notifico che la rimozione è stata fatta e passo al prossimo
+            // per passare al prossimo obbligo il corrente a mandarmi un ok/continue
+            indexOfCurrentTrucker++;
+            cardState = CardState.REMOVE_GOODS;
+            return new RemotionConfirmed(this.cardState, defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(), "Goods removed, press continue!");
+        } else { // il trucker corrente deve perdere batterie
+            cardState = CardState.REMOVE_BATTERIES;
+            return new RemoveBatteries(false, this.cardState, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsLostCurrTrucker);
         }
     }
 
@@ -386,6 +385,15 @@ public class Smugglers extends Card implements Serializable {
         return removeWithoutAsking(list);
     }
 
+    /**
+     *
+     * @param coordinatesToRemoveBatteries: mi aspetto che ogni elemento dell'arraylist sia [x,y,z] dove x,y sono le coordinate del batteryStorage e z è il numero di batterie da rimuovere da quel battery storage
+     * @return
+     * @throws GeneralError
+     * @throws InvalidCoordinates
+     * @throws WrongNumberOfBatteriesSelected
+     * @throws NotEnoughBatteries
+     */
     @Override
     public ServerEvent removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(cardState!= CardState.REMOVE_BATTERIES){
@@ -404,10 +412,12 @@ public class Smugglers extends Card implements Serializable {
         try{
             defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);
         }catch(NotEnoughBatteries e){
-            throw new NotEnoughBatteries("Not enough batteries");
+            throw new NotEnoughBatteries("There is a battery storage that has less batteries then the number of batteries you wanted to remove in that one");
         }
+
+        indexOfCurrentTrucker++;
         cardState = CardState.REMOVE_GOODS;
-        return new //conferma rimozione batterie;
+        return new RemotionConfirmed(this.cardState, defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(), "Batteries removed, press continue!");
     }
 
 
