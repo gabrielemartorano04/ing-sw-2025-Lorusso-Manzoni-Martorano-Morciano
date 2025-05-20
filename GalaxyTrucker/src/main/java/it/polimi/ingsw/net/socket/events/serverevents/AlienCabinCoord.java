@@ -15,7 +15,7 @@ public class AlienCabinCoord extends ServerEvent {
     }
     @Override
     public String getMessage() {
-        return "I send you the coordinates where you can place aliens";
+        return "I send you the coordinates where you can place aliens: ";
     }
 
     @Override

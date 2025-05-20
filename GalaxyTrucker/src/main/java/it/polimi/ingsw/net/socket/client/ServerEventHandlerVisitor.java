@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.net.socket.events.clientevents.SendAlienCoord;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.AlienCabinCoord;
@@ -261,6 +262,10 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
             message+="x: "+c[0]+" y: "+c[1]+"\n";
         }
         ui.showMessage(message);
+        if(event.getAlienCabinCoord().isEmpty()){
+            ui.showMessage("you can't place any alien. Please type coord to go on\n");
+        }
+        else ui.showMessage("Insert coordinates (<x1> <y1> <x2> <y2>...):");
     }
 
     // === PHASE 4: Fase di Volo ===
