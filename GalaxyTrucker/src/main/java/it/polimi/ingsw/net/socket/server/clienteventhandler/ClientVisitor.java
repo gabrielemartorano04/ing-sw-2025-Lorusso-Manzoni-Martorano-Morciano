@@ -71,4 +71,6 @@ public interface ClientVisitor {
     ServerEvent visit(RemoveAskingEvent event);
 
     ServerEvent visit(RemoveBatteriesEvent event);
+
+    ServerEvent visit(TurnComponentEvent turnComponentEvent);
 }
