@@ -150,14 +150,9 @@ public class Slavers extends Card implements Serializable {
         }else {
             defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
-                if(defeatedTruckers.isEmpty()){
-                    cardState = CardState.ESECUZIONE;
-                    return cardEffect();
-                }else{
-                    cardState = CardState.HUMANSTOREMOVE;
-                    indexOfCurrentTrucker = 0;
-                    return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, this.cardState, defeatedTruckers.getFirst().getNickname());
-                }
+                cardState = CardState.HUMANSTOREMOVE;
+                indexOfCurrentTrucker = 0;
+                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, this.cardState, defeatedTruckers.getFirst().getNickname());
             }else{
                 indexOfCurrentTrucker++;
                 return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, this.cardState, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
