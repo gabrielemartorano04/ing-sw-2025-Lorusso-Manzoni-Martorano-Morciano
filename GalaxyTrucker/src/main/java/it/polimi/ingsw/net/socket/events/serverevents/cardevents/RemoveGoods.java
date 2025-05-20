@@ -21,6 +21,6 @@ public class RemoveGoods extends CardEvent{
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
-        //TODO: implementa
+        visitor.visit(this);
     }
 }

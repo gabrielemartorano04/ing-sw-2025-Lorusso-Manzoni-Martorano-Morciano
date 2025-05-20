@@ -143,4 +143,10 @@ public interface ServerEventVisitor {
     void visit(NotEnoughGoodsChosenEvent event);
 
     void visit(WrongNumberOfBatteriesSelectedEvent event);
+
+    void visit(RemotionConfirmed remotionConfirmed);
+
+    void visit(RemoveBatteries removeBatteries);
+
+    void visit(RemoveGoods removeGoods);
 }
