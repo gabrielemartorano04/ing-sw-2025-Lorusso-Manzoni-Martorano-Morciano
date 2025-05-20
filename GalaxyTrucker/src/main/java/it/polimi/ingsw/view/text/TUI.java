@@ -400,7 +400,7 @@ public class TUI extends UI {
         }
         System.out.println();
 
-        System.out.println("Components detail:\n");
+        System.out.println("Components details:");
         for (int i = 5; i < 10; i++) {
             for (int j = 4; j < 11; j++) {
                 if (!validCells[i][j]) continue;
@@ -416,21 +416,11 @@ public class TUI extends UI {
                         case Engine engine -> {
                             if (engine.getIsDouble()) {
                                 details.append(" Double engine");
-                                if (engine.getIsActive()) {
-                                    details.append(" (active)");
-                                } else {
-                                    details.append(" (inactive)");
-                                }
                             }
                         }
                         case Cannon cannon -> {
                             if (cannon.getIsDouble()) {
                                 details.append(" Double cannon");
-                                if (cannon.getIsActive()) {
-                                    details.append(" (active)");
-                                } else {
-                                    details.append(" (inactive)");
-                                }
                             }
                         }
                         case Load load -> {
@@ -474,6 +464,7 @@ public class TUI extends UI {
                         default -> {
                         }
                     }
+                    System.out.println(details);
                 }
             }
         }
