@@ -88,7 +88,6 @@ class GameTest {
         Trucker t1 = trucker1;
         trucker1.setPosition(1);
         trucker2.setPosition(27);
-        game.checkOvertaken(trucker1);
         assertFalse(game.getTruckerList().contains(t1));
     }
 

@@ -18,6 +18,6 @@ public class RemotionConfirmed extends CardEvent{
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
-        //TODO: FARE
+        visitor.visit(this);
     }
 }

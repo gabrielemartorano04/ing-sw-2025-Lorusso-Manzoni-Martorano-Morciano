@@ -124,11 +124,8 @@ public class Game {
      * Removes truckers with no astronauts left on their spaceship.
      * @param trucker the trucker to check
      */
-    public void noHumans(Trucker trucker) {
-        for(Trucker t: truckers){
-            if (t.getSpaceShip().getNumHuman() == 0)
-                withdraw(t);
-        }
+    private boolean noHumans(Trucker trucker) {
+        return trucker.getSpaceShip().getNumHuman() == 0;
     }
 
     /**
@@ -146,12 +143,9 @@ public class Game {
      * Checks if a trucker has been overtaken by 24+ positions and removes them.
      * @param trucker the trucker to check
      */
-    public void checkOvertaken(Trucker trucker) {
-        for(Trucker t: truckers) {
-            if(t.getPosition() - trucker.getPosition() >= 24){
-                withdraw(trucker);
-            }
-        }
+    private boolean checkOvertaken(Trucker trucker) {
+        return truckers.stream()
+                .anyMatch(t -> t != trucker && t.getPosition() - trucker.getPosition() >= 24);
     }
 
     /**
@@ -400,12 +394,17 @@ public class Game {
         return hourglass;
     }
 
-    public void endTurn(){
-        for(Trucker t: truckers) {
-            noHumans(t);
-            checkOvertaken(t);
-            sortTruckers();
+    public void endTurn() {
+        List<Trucker> toRemove = new ArrayList<>();
+
+        for (Trucker t : truckers) {
+            if (noHumans(t) || checkOvertaken(t)) {
+                toRemove.add(t);
+            }
         }
+
+        toRemove.forEach(this::withdraw);
+        sortTruckers();
     }
 
     public ServerEvent turnHourglass() throws CannotTurnHourglassException {
