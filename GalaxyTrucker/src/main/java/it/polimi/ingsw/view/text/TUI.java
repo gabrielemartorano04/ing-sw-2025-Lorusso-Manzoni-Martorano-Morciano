@@ -201,7 +201,7 @@ public class TUI extends UI {
         if(event.getShoots() != null) {
             String message = "Shoots arriving:\n";
             int j = 0;
-            for(int[] list: event.getMeteorites()){
+            for(int[] list: event.getShoots()){
                 for(int i: list){
                     if(i == 0) message += "Shoots " + j + " arriving from the top\n";
                     else if(i == 1) message += "Shoots " + j + " arriving from the right side\n";
@@ -399,6 +399,84 @@ public class TUI extends UI {
             System.out.printf("   %d   ", col);
         }
         System.out.println();
+
+        System.out.println("Components detail:\n");
+        for (int i = 5; i < 10; i++) {
+            for (int j = 4; j < 11; j++) {
+                if (!validCells[i][j]) continue;
+                Component c = layout[i][j];
+                if (c == null) continue;
+
+                if(c.getType().equals("Engine") || c.getType().equals("Cannon") || c.getType().equals("Load") || c.getType().equals("Shield") || c.getType().equals("Battery Storage") || c.getType().equals("Cabin") || c.getType().equals("Life Support")){
+                    String type = c.getType();
+                    StringBuilder details = new StringBuilder();
+
+                    details.append("[" + i + "," + j + "] ");
+                    switch (c) {
+                        case Engine engine -> {
+                            if (engine.getIsDouble()) {
+                                details.append(" Double engine");
+                            }
+                            if (engine.getIsActive()) {
+                                details.append(" (active)");
+                            } else {
+                                details.append(" (inactive)");
+                            }
+                        }
+                        case Cannon cannon -> {
+                            if (cannon.getIsDouble()) {
+                                details.append(" Double cannon");
+                            }
+                            if (cannon.getIsActive()) {
+                                details.append(" (active)");
+                            } else {
+                                details.append(" (inactive)");
+                            }
+                        }
+                        case Load load -> {
+                            if (load.getIsSpecial()) {
+                                details.append(" Special load");
+                                if (!load.getGoods().isEmpty()) {
+                                    details.append(" contains: ");
+                                    for (Goods g : load.getGoods()) {
+                                        details.append(g.getColor());
+                                    }
+                                }
+                            } else if (!load.getGoods().isEmpty() && !load.getIsSpecial()) {
+                                details.append(" Load contains:");
+                                for (Goods g : load.getGoods()) {
+                                    details.append(g.getColor());
+                                }
+                            }
+                        }
+                        case Shield shield -> {
+                            details.append(" Shield direction: " + shield.getDirection());
+                        }
+                        case BatteryStorage batteryStorage -> {
+                            if(batteryStorage.getQuantity() == 1) {
+                                details.append(" Battery contains " + batteryStorage.getQuantity() + " battery");
+                            } else if(batteryStorage.getQuantity() > 1) {
+                                details.append(" Battery contains " + batteryStorage.getQuantity() + " batteries");
+                            }
+                        }
+                        case Cabin cabin -> {
+                            if(cabin.getQuantity() == 1 && cabin.getAlien() != null) {
+                                details.append(" Cabin contains " + cabin.getQuantity() + "alien");
+                            } else if(cabin.getQuantity() == 1 && cabin.getAlien() == null) {
+                                details.append(" Cabin contains " + cabin.getQuantity() + "human");
+                            } else if(cabin.getQuantity() > 1 && cabin.getAlien() == null) {
+                                details.append(" Cabin contains " + cabin.getQuantity() + "humans");
+                            }
+                        }
+                        case LifeSupport lifeSupport -> {
+                            details.append(lifeSupport.getColor() + " life support");
+                        }
+                        default -> {
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private String abbreviate(String name) {
