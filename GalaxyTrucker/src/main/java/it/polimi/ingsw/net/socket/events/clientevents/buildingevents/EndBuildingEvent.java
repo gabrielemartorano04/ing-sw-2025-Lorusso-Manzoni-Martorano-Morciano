@@ -11,7 +11,6 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 public class EndBuildingEvent extends ClientEvent {
     String message;
     public EndBuildingEvent(){
-        super(ClientEventType.END_BUILDING);
         message="my spaceship is done";
     }
     @Override

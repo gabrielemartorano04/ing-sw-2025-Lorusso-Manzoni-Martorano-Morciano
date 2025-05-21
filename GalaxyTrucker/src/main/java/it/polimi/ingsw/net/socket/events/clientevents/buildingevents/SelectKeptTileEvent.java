@@ -10,7 +10,6 @@ import java.net.Socket;
 public class SelectKeptTileEvent extends ClientEvent {
     private int index;
     public SelectKeptTileEvent(int index) {
-        super(ClientEventType.SELECT_KEPT_TILE);
         this.index = index;
     }
     public int getIndex() {

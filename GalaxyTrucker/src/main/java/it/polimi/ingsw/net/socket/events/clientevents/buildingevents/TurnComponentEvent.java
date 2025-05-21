@@ -9,7 +9,6 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 public class TurnComponentEvent extends ClientEvent {
     private Component component;
     public TurnComponentEvent(Component component) {
-        super(ClientEventType.TURN_COMPONENT);
         this.component = component;
     }
 

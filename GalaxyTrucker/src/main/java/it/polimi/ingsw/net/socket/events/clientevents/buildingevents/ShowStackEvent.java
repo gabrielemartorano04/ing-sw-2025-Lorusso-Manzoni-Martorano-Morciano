@@ -8,7 +8,6 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 public class ShowStackEvent extends ClientEvent {
     private int index;
     public ShowStackEvent(final int index) {
-        super(ClientEventType.SHOW_STACK);
         this.index = index;
     }
     public int getIndex() {

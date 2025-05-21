@@ -11,7 +11,6 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 public class DiscardTileEvent extends ClientEvent {
     private int index;
     public DiscardTileEvent(int index) {
-        super(ClientEventType.DISCARD_TILE);
             this.index = index;
     }
 
