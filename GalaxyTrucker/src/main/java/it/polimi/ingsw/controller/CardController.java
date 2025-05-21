@@ -157,6 +157,16 @@ public class CardController {
         }
     }
 
+    public ServerEvent combatZone(CombactZoneEvent event) {
+        try {
+            return currCard.combatZone();
+        } catch (WrongCallerException e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        }
+    }
+
     public ServerEvent startCard(){
         return currCard.startCard();
     }
