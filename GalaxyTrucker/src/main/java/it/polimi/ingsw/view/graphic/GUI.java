@@ -1577,16 +1577,16 @@ public class GUI extends UI {
         };
 
         GridPane grid = new GridPane();
-        grid.setHgap(2.5);
-        grid.setVgap(2.5);
+        grid.setHgap(2);
+        grid.setVgap(2);
         grid.setAlignment(Pos.TOP_LEFT);
-        grid.setTranslateX(33);
-        grid.setTranslateY(26);
+        grid.setTranslateX(145);
+        grid.setTranslateY(30);
 
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {
                 StackPane cell = new StackPane();
-                cell.setPrefSize(105, 97);
+                cell.setPrefSize(90, 90);
 
                 if (validCells[row][col]) {
                     cell.setStyle("-fx-border-color: white; -fx-border-radius: 3px; -fx-background-radius: 3px;");
@@ -1594,9 +1594,9 @@ public class GUI extends UI {
                     Component c = layout[row][col];
                     if (c != null ) {
                         ImageView imageView = new ImageView(c.getFrontImage());
-                        imageView.setFitWidth(105);
-                        imageView.setFitHeight(97);
-                        Rectangle clip = new Rectangle(105, 97);
+                        imageView.setFitWidth(90);
+                        imageView.setFitHeight(89);
+                        Rectangle clip = new Rectangle(89, 89);
                         clip.setArcWidth(6);
                         clip.setArcHeight(6);
                         imageView.setClip(clip);

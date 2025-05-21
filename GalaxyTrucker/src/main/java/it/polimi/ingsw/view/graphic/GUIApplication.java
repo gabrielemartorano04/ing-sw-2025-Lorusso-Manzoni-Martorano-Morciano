@@ -21,14 +21,14 @@ public class GUIApplication extends Application {
     private SpaceShip spaceship;
     private ArrayList<Card> stack;
     private Map<String, Integer> mockTrack;
-    private Component[] kept;
+    private ArrayList<Component> kept;
 
 
     @Override
     public void start(Stage primaryStage) throws InvalidCoordinates {
         availableComponents = new AvailableComponents();
         Trucker trucker = new Trucker("luca", PlayerColors.BLUE);
-        kept = new Component[2];
+        kept = new ArrayList<>();
         stack = new ArrayList<>();
         Card card1 = new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "");
         Card card2 = new Epidemic(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_015.jpg", "");
@@ -39,8 +39,8 @@ public class GUIApplication extends Application {
         spaceship = new SpaceShip(PlayerColors.RED);
 //        Cabin cabin = new Cabin(3, 3, 3, 3, "Main Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
 //        trucker.getSpaceShip().addComponent(cabin, 7,7);
-        kept[0] = availableComponents.getComponents().get(15);
-        kept[1] = availableComponents.getComponents().get(130);
+        kept.add(availableComponents.getComponents().get(15));
+        kept.add(availableComponents.getComponents().get(130));
 
         mockTrack = new HashMap<>();
         mockTrack.put("RED", 0);
