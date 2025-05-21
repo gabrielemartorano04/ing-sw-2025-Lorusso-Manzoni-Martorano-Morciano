@@ -29,6 +29,11 @@ public class Epidemic extends Card implements Serializable {
         this.state = CardState.ESECUZIONE;
     }
 
+    public CardState getCardState() {
+        return state;
+    }
+
+
     @Override
     public ServerEvent startCard() {
         // TODO: mettere le informazioni per stampare la carta dentro l'epidemicEvent
@@ -51,18 +56,8 @@ public class Epidemic extends Card implements Serializable {
         for(Trucker trucker : truckers) {
             trucker.getSpaceShip().epidemic();
         }
-        state = CardState.EXIT;
-        this.setIsCardFinished(true);
         Game.getIstance().endTurn();
         return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList());
     }
 
-
-    public CardState getCardState() {
-        return state;
-    }
-
-    public void setCardState(CardState cardState) {
-        this.state = cardState;
-    }
 }

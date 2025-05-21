@@ -73,12 +73,11 @@ public class AbandonedShip extends Card implements Serializable {
         return numHuman;
     }
 
-    /**
-     * @return : index of the current trucker that is taken the decision whether to land or not
-     */
-    public int getIndexOfCurrTrucker() {
-        return indexOfCurrTrucker;
+
+    public CardState getCardState() {
+        return state;
     }
+
 
     @Override
     public ServerEvent startCard() {
@@ -164,18 +163,8 @@ public class AbandonedShip extends Card implements Serializable {
             Game.getIstance().moveBackward(truckerThatHasDecided,days);
             truckerThatHasDecided.addCosmicCredit(credits);
         }
-        state = CardState.EXIT;
-        this.setIsCardFinished(true);
         Game.getIstance().endTurn();
         return new CardFinished(false, Game.getIstance().getTruckerList());
     }
 
-
-    public CardState getCardState() {
-        return state;
-    }
-
-    public void setCardState(CardState cardState) {
-        this.state = cardState;
-    }
 }
