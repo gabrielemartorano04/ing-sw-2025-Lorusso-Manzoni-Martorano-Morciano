@@ -2,14 +2,15 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardEvent;
+import it.polimi.ingsw.view.ParserState;
 
 public class InvalidComponentsExceptionEvent extends CardEvent {
 
     private String message;
 
-    public InvalidComponentsExceptionEvent(String message, boolean forAll) {
+    public InvalidComponentsExceptionEvent(String message, boolean forAll, ParserState parserState, String nickname) {
         //TODO sistemare ingressi del super
-        super(ServerEventType.INVALID_COMPONENTS_ERROR, forAll, null, null);
+        super(ServerEventType.INVALID_COMPONENTS_ERROR, forAll, parserState, nickname);
         this.message = message;
     }
 
@@ -20,5 +21,9 @@ public class InvalidComponentsExceptionEvent extends CardEvent {
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
+    }
+
+    public String getInfoForOthers(){
+        return getNickname()+" chose an invalid component.\n";
     }
 }

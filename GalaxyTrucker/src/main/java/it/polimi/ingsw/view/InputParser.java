@@ -213,11 +213,7 @@ public ClientEvent parseFirstConnection(String input) {
                 }
             }
         }else{
-            if(command.equals("dropstack")) {
-                if (tokens.length != 1) {
-                    System.out.println("Error: illegal command. Type 'dropstack' if you want to drop your stack and proceed");
-                    return null;
-                }
+            if(command.equals("dropstack") && tokens.length == 1) {
                 return new StackDroppedEvent(stackSelected);
             }else {
                 System.out.println("Error: illegal command. Type 'dropstack' if you want to drop your stack and proceed");

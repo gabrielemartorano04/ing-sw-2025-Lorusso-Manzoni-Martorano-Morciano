@@ -21,4 +21,8 @@ public class RemoveBatteries extends CardEvent{
     public void call(ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
     }
+
+    public String getInfoForOthers(){
+        return getNickname()+" is deciding where to remove batteries";
+    }
 }

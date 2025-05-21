@@ -211,7 +211,7 @@ public class InputParserFlight {
                     return null;
                 }
                 return new WarzoneStartEvent();
-            case COSMIC_CREDITS://dimmi si o no ai cosmic credit in base al nemico (perdi tot giorni)
+            case COSMIC_CREDITS:
                 String[] cosmicCredits=input.split("\\s+");
                 if(cosmicCredits.length!=1){
                     System.out.println("Error: invalid command");
@@ -223,7 +223,7 @@ public class InputParserFlight {
                 else if(cosmicCredits[0].trim().equals("y")) {
                     return new GainCosmicCreditsResponseEvent(true);
                 }
-            case REARRANGE: // <y/n> , x y - v , x y - v
+            case REARRANGE:
                 String[] rearrange=input.split("\\s*,\\s*");
                 if(rearrange[0].trim().equals("n")){
                     return new RearrangeEvent(null,null,-1,-1,true);
@@ -252,14 +252,14 @@ public class InputParserFlight {
 
                 }
 
-            case REMOTION_CONFIRMED://SCRIVI CONTINUA
+            case REMOTION_CONFIRMED:
                 String[] remotion=input.split("\\s+");
                 if(remotion.length!=1 || !remotion[0].trim().equals("continue")){
                     System.out.println("Error: invalid command");
                     return null;
                 }
                 return new RemotionSeenEvent();
-            case REMOVE_BATTERIES://COORD-VAL,COORD- VAL
+            case REMOVE_BATTERIES:
                 String[] removeBatteries=input.split("\\s*,\\s*");
                 ArrayList<int[]> coordinates=new ArrayList<>();
                 for(int i=0;i<removeBatteries.length;i++){
@@ -279,7 +279,7 @@ public class InputParserFlight {
                     coordinates.add(new int[]{x,y,cont});
                 }
                 return new RemoveBatteriesEvent(coordinates);
-            case REMOVE_GOODS:// index1, index2...
+            case REMOVE_GOODS:
                 String[] removeGoods=input.split("\\s*,\\s*");
                 ArrayList<Integer> indexes=new ArrayList<>();
                 for(int i=0;i<removeGoods.length;i++){

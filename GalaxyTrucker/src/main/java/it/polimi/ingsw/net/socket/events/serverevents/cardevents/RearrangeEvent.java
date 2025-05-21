@@ -16,6 +16,6 @@ public class RearrangeEvent extends CardEvent{
         visitor.visit(this);
     }
     public String getInfoForOthers(){
-        return getNickname()+" is rearranging the goods ";
+        return getNickname()+" is deciding goods rearrangement.\n";
     }
 }
