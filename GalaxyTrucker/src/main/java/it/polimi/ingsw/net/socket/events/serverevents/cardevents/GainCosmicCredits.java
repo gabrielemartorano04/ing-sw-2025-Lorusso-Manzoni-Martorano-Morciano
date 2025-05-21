@@ -19,6 +19,10 @@ public class GainCosmicCredits extends CardEvent{
         return cosmicCredits;
     }
 
+    public int getDaysLost() {
+        return daysLost;
+    }
+
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
