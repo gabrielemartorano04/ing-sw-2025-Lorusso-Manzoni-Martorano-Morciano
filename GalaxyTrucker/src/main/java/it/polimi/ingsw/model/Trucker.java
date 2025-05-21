@@ -79,7 +79,7 @@ public class Trucker implements Serializable {
     }
 
 
-    public ArrayList<Card> showStack(int index, Game game){
+    public Stack showStack(int index, Game game){
         return game.viewStack(index);
     }
 

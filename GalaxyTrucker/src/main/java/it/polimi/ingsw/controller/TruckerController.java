@@ -55,7 +55,7 @@ public class TruckerController  {
         return trucker.getSpaceShip();
     }
 
-    public ArrayList<Card> showStack(int index, Game game) {
+    public Stack showStack(int index, Game game) {
         return trucker.showStack(index, game);
     }
 

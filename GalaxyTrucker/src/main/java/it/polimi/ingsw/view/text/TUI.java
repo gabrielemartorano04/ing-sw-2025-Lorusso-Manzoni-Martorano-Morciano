@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.text;
 
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
@@ -573,16 +574,16 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showStack(ArrayList<Card> stack) {
+    public void showStack(Stack stack) {
         System.out.println("\nCards in the stack:");
 
-        if (stack == null || stack.isEmpty()) {
+        if (stack == null || stack.getStack().isEmpty()) {
             System.out.println("[ Empty stack ]");
             return;
         }
 
-        for (int i = 0; i < stack.size(); i++) {
-            Card card = stack.get(i);
+        for (int i = 0; i < stack.getStack().size(); i++) {
+            Card card = stack.getStack().get(i);
             System.out.printf(" [%02d] %-15s (Level %d)%n",
                     i, card.getName(), card.getLevel());
         }

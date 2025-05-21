@@ -55,6 +55,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private boolean sentCabinCoord;
     private boolean startFlight;
     private boolean startFlightForAll;
+    private boolean[] stackSelected;
 
 
     public void setStacks(ArrayList<Card>[] stacks) {
@@ -92,6 +93,10 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.nameAlreadySet = false;
         this.end = false;
         this.sentCabinCoord = false;
+        this.stackSelected = new boolean[3];
+        for (int i = 0; i < 3; i++) {
+            stackSelected[i] = false;
+        }
         this.goodsByColor = new HashMap<>(){
             {
                 put("RED",0);
@@ -417,5 +422,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         return inputParserFlight.getParserState();
     }
 
+    public void setStackSelected(int i, boolean selected) {
+        this.stackSelected[i] = selected;
+    }
 }
 
