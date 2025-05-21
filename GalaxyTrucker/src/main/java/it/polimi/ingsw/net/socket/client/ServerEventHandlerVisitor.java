@@ -234,6 +234,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.setSelectedComponent(event.getComponent());
     }
 
+    @Override
+    public void visit(CurrentCondition currentCondition) {
+
+    }
+
 
     @Override
     public void visit(BuildOptionsEvent event){
