@@ -230,6 +230,12 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
+    public void visit(TurnedComponentSuccessEvent event) {
+        viewFlow.setSelectedComponent(event.getComponent());
+    }
+
+
+    @Override
     public void visit(BuildOptionsEvent event){
         ui.showBuildOptions();
     }
@@ -582,8 +588,4 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     }
 
-    @Override
-    public void visit(TurnedComponentSuccessEvent event) {
-        viewFlow.setSelectedComponent(event.getComponent());
-    }
 }
