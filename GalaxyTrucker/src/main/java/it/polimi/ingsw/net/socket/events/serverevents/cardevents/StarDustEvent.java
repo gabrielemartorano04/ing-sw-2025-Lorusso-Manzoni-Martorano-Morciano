@@ -14,7 +14,7 @@ public class StarDustEvent extends ServerEvent {
     private String cardDescription;
     private String cardName;
 
-    public StarDustEvent (String cardName, String cardDescripition, boolean forAll, CardState state, ArrayList<Trucker> turckerList) {
+    public StarDustEvent (String cardName, String cardDescripition, boolean forAll, ArrayList<Trucker> turckerList) {
         super(ServerEventType.CARD_FINISHED, forAll);
         this.truckers = turckerList;
         this.cardName = cardName;

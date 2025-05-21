@@ -3,11 +3,12 @@ package it.polimi.ingsw.net.socket.events.serverevents.cardevents;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+import it.polimi.ingsw.view.ParserState;
 
 public class RearrangeEvent extends CardEvent{
 
-    public RearrangeEvent(boolean forAll, CardState cardState, String nickname) {
-        super(ServerEventType.REARRANGE, forAll, cardState, nickname);
+    public RearrangeEvent(boolean forAll, String nickname) {
+        super(ServerEventType.REARRANGE, forAll, ParserState.REARRANGE, nickname);
     }
 
     @Override
