@@ -24,14 +24,14 @@ import java.util.Arrays;
 public class Smugglers extends Card implements Serializable {
     private static final long serialVersionUID = 1L;
     private final int smugglersPower;
-    private int goodsLost;
+    private final int goodsLost;
     private final int days;
     private Goods[] goodsGained = new Goods[3];
 
     private CardState cardState;
     private int indexOfCurrentTrucker;
     private Trucker winnerTrucker; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
-    private ArrayList<Trucker> defeatedTruckers;
+    private final ArrayList<Trucker> defeatedTruckers;
     private boolean winDecision;
 
     private int goodsLostCurrTrucker;
@@ -68,6 +68,7 @@ public class Smugglers extends Card implements Serializable {
         this.colorOfCurrGoodToRemove = 4;
         this.numGoodCurrType = 0;
         this.goodsToRemove = new ArrayList<>();
+        this.defeatedTruckers = new ArrayList<>();
     }
 
     /**
@@ -387,11 +388,6 @@ public class Smugglers extends Card implements Serializable {
     /**
      *
      * @param coordinatesToRemoveBatteries: mi aspetto che ogni elemento dell'arraylist sia [x,y,z] dove x,y sono le coordinate del batteryStorage e z è il numero di batterie da rimuovere da quel battery storage
-     * @return
-     * @throws GeneralError
-     * @throws InvalidCoordinates
-     * @throws WrongNumberOfBatteriesSelected
-     * @throws NotEnoughBatteries
      */
     @Override
     public ServerEvent removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
@@ -432,7 +428,6 @@ public class Smugglers extends Card implements Serializable {
             winDecision = false;
             Game.getIstance().moveBackward(winnerTrucker, days);
         }
-        cardState = CardState.EXIT;
         Game.getIstance().endTurn();
         return new CardFinished(true, Game.getIstance().getTruckerList());
     }

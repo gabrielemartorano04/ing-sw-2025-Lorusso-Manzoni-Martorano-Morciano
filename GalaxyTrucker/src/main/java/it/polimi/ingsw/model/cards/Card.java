@@ -19,7 +19,6 @@ public abstract class Card implements Serializable, CardInterface{
     private final boolean  trialFlight;
     private final String frontImagePath;
     private final String backImagePath;
-    private boolean isCardFinished;
 
     /**
      * Card constructor, initialise the attributes of this class
@@ -37,16 +36,6 @@ public abstract class Card implements Serializable, CardInterface{
         this.level = level;
         this.frontImagePath = name_frontImage;
         this.backImagePath = name_backImage;
-        this.isCardFinished = false;
-    }
-
-
-    public void setIsCardFinished(boolean isCardFinished) {
-        this.isCardFinished = isCardFinished;
-    }
-
-    public boolean getIsCardFinished() {
-        return isCardFinished;
     }
 
     /**
@@ -100,7 +89,6 @@ public abstract class Card implements Serializable, CardInterface{
     /**
      * Applies the changes provided by the card
      */
-    //TODO: mettere gli eventi di aggiornamento dopo un effetto
     public abstract ServerEvent cardEffect() throws GeneralError;
 
     /**

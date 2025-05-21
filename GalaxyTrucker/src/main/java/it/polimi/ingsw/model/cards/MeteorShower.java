@@ -24,26 +24,21 @@ import java.util.List;
  */
 public class MeteorShower extends Card implements Serializable {
     private static final long serialVersionUID = 1L;
-    public CardState state = CardState.ROLL_DICE;
-    // variabile utilizzata per tenere conto delle decisioni prese dai giocatori a ogni aggiornamento dello stato del model
-    // dopo la comunicazione del meteorite corrente alla view
+    public CardState state;
     private ArrayList<Boolean> answers;
-    // usata per salvare il meteorite che sto considerando in questo momento senza chiamare getCurrentMeteor perché altrimenti
-    // sposterei avanti di uno la i
     private int indexOfCurrTrucker;
 
     private int[] meteor;
     private int roll;
 
-    // contatore per tenere traccia del meteorite corrente
     private int currMeteorIndex = 0;
-    private final ArrayList<int[]> meteors;
+
     // direction è una lista dove direction.get(i) rappresenta l'i-esimo meteorite in questa specifica MeteorShower
     // direction.get(i)[0] vale 1 se il meteorite è grande 0 se è piccolo
     // direction.get(i)[1] indice la direzione da cui arriva il meteorite (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da sx)
     // direction è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
     // cioè scegliendo il meteorite dall'alto verso il basso
-
+    private final ArrayList<int[]> meteors;
 
 
     /**
@@ -62,18 +57,15 @@ public class MeteorShower extends Card implements Serializable {
         this.state = CardState.ROLL_DICE;
     }
 
-    /**
-     * Returns the list of arrays indicating the direction of each meteor.
-     * Each position of the array represents a direction:
-     * position 0 = top
-     * position 1 = right side
-     * position 2 = bottom
-     * position 3 = left side
-     * @return list of direction
-     */
+
     public ArrayList<int[]> getMeteors() {
         return meteors;
     }
+
+    public CardState getCardState() {
+        return state;
+    }
+
 
     @Override
     public ServerEvent startCard() {
@@ -212,8 +204,6 @@ public class MeteorShower extends Card implements Serializable {
         }
         answers.clear();
         if (meteors.size()==(currMeteorIndex)) {
-            this.state = CardState.EXIT;
-            this.setIsCardFinished(true);
             Game.getIstance().endTurn();
             return new CardFinished(true, Game.getIstance().getTruckerList());
         }else {
@@ -222,13 +212,5 @@ public class MeteorShower extends Card implements Serializable {
         }
     }
 
-
-    public CardState getCardState() {
-        return state;
-    }
-
-    public void setCardState(CardState cardState) {
-        this.state = cardState;
-    }
 }
 

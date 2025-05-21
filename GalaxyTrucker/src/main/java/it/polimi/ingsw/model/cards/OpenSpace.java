@@ -23,15 +23,8 @@ import java.util.List;
  */
 public class OpenSpace extends Card implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    //lista che contiene per ogni trucker la lista di coordinates dei motori doppi che vuole attivare
-    //la lista esterna associa ogni puntatore a un trucker, quindi la lunghezza della lista esterna è quella di truckers.
-    //mantiene l'ordine dei truckers nel fare questa associazione
-    private ArrayList<ArrayList<int[]>> truckersCoordinates = new ArrayList<>();
-
     private CardState state;
     private int indexOfCurrentTrucker;
-
 
     /**
      * Open space constructor, initialise the attributes of this class
@@ -129,7 +122,6 @@ public class OpenSpace extends Card implements Serializable {
         for (i = 0; i < enginePowerPerTrucker.length; i++) {
             Game.getIstance().moveForward(truckers.get(i), enginePowerPerTrucker[i]);
         }
-        state = CardState.EXIT;
         Game.getIstance().endTurn();
         return new CardFinished(true, Game.getIstance().getTruckerList());
     }

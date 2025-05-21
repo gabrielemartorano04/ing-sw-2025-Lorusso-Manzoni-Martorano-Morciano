@@ -120,7 +120,6 @@ public class WarZone extends Card implements Serializable {
             throw new GeneralError("CombatZone not callable in the state " + state);
         }
         if(Game.getIstance().getTruckerList().size() == 1){
-            state = CardState.EXIT;
             return new CardFinished(true, Game.getIstance().getTruckerList());
         }
         if(currConditionIndex == conditionsOrder.size()){
