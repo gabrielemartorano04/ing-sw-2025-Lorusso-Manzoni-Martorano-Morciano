@@ -27,16 +27,27 @@ public class GUIApplication extends Application {
 //    private ArrayList<Card> stack;
 //    private Map<String, Integer> mockTrack;
 //    private Component[] kept;
+    private GUI gui;
+
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/polimi/ingsw/GUI.fxml"));
         Parent root = loader.load();
+
+        // Ottieni il controller dal FXML e assegnagli l'istanza GUI
+        GUIController controller = loader.getController();
+        gui = new GUI(primaryStage, controller);
+        controller.setGUI(gui);
+
+        // Imposta la scena
         Scene scene = new Scene(root, 850, 550);
-        stage.setTitle("Galaxy Trucker");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+        primaryStage.setTitle("Galaxy Trucker");
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.centerOnScreen();
+        primaryStage.show();
+
 //        availableComponents = new AvailableComponents();
 //        Trucker trucker = new Trucker("luca", PlayerColors.BLUE);
 //        kept = new Component[2];
