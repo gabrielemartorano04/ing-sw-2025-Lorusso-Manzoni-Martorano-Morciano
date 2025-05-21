@@ -230,6 +230,12 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
+    public void visit(TurnedComponentSuccessEvent event) {
+        viewFlow.setSelectedComponent(event.getComponent());
+    }
+
+
+    @Override
     public void visit(BuildOptionsEvent event){
         ui.showBuildOptions();
     }
@@ -386,32 +392,18 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(BooleanDecision event) {
         if (event.getNickname().equals(viewFlow.getNickname())){
-            switch (event.getEventType()){
-                case ROLL_DICE -> {
-                    ui.showMessage("Type 'roll' to roll the dices when you're ready.");
-                    viewFlow.setParserFlightState(ParserState.ROLL_DICE);
-                }
-                case ACTIVATE_CANNONS -> {
-                    ui.showMessage("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
-                    viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
-                }
-                case ACTIVATE_ENGINES -> {
-                    ui.showMessage("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
-                    viewFlow.setParserFlightState(ParserState.ACTIVATE_ENGINES);
-                }
-                case ACTIVATE_SHIELD -> {
-                    ui.showMessage("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x> <y>, <x> <y>' or 'n': ");
-                    viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
-                }
-            }
+            System.out.println("Sono entrato, nickname view " + viewFlow.getNickname());
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(viewFlow.getParserFlightState());
+
         }
         else {
+            System.out.println("Sono entrato, nickname view " + viewFlow.getNickname());
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
         }
 
     }
-
 
     @Override
     public void visit(CardFinished event) {
@@ -433,6 +425,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         int i=1;
         for(Trucker t:event.getTruckersList()){
             message+=i+") "+t.getNickname()+"\n";
+            i++;
         }
         ui.showMessage(message);
         if(viewFlow.getNickname().equals(event.getTruckersList().get(0).getNickname())){
@@ -502,9 +495,13 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(StartCardEvent event) {
         ui.showCardDrawn(event);
-        if (event.getNickname() == viewFlow.getNickname()) {
+        if (event.getFirstPlayerNickname().equals(viewFlow.getNickname())) {
+            System.out.println("Sono entrato, nickname view " + viewFlow.getNickname());
             ui.showMessage(event.getQuestion());
+            viewFlow.setParserFlightState(event.getParserState());
         } else {
+            System.out.println("Sono entrato, nickname view " + viewFlow.getNickname());
+
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
         }
@@ -575,8 +572,4 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     }
 
-    @Override
-    public void visit(TurnedComponentSuccessEvent event) {
-        viewFlow.setSelectedComponent(event.getComponent());
-    }
 }

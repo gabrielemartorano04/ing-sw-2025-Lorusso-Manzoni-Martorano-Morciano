@@ -95,7 +95,8 @@ public abstract class UI {
 
     public abstract void showStack(ArrayList<Card> stack);
 
-    public void showComponentSelected(Component component) {
+    public abstract void showComponentSelected(Component component);
 
-    }
+    public abstract void showInputFormat(ParserState parserState);
+
 }

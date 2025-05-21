@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+import it.polimi.ingsw.view.ParserState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +57,9 @@ public class StartCardEvent extends CardEvent {
             ArrayList<ArrayList<Goods>> planets,
             List<Condition> conditionsOrder,
             Map<Condition, Effect> penalties,
-            CardState cardState
+            ParserState parserState
     ) {
-        super(ServerEventType.START_CARD, true, cardState, null);
+        super(ServerEventType.START_CARD, true, parserState, null);
         this.cardName = cardName;
         this.cardDescription = cardDescription;
         this.firstPlayerNickname = firstPlayerNickname;

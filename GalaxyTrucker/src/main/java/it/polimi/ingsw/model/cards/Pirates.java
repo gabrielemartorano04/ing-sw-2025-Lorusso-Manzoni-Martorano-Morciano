@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
+import it.polimi.ingsw.view.ParserState;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -114,7 +115,7 @@ public class Pirates extends Card implements Serializable {
                 this.getName(),
                 this.getDescription(),
                 Game.getIstance().getTruckerList().getFirst().getNickname(),
-                "Do you want to activate your doubleCannons?",
+                "Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ",
                 days,
                 credits,
                 -1,
@@ -127,7 +128,8 @@ public class Pirates extends Card implements Serializable {
                 null,
                 null,
                 null,
-                this.getCardState()
+                ParserState.ACTIVATE_CANNONS
+
         );
     }
 
@@ -144,11 +146,11 @@ public class Pirates extends Card implements Serializable {
                 }else{
                     cardState = CardState.ROLL_DICE;
                     indexOfCurrentTrucker = 0;
-                    return new BooleanDecision(ServerEventType.ROLL_DICE, false, this.cardState, "Roll the dice", defeatedTruckers.getFirst().getNickname());
+                    return new BooleanDecision(ServerEventType.ROLL_DICE, false, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
                 }
             }else{
                 indexOfCurrentTrucker++;
-                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, this.cardState, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
             }
 
         }else {
@@ -156,10 +158,10 @@ public class Pirates extends Card implements Serializable {
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
                 cardState = CardState.ROLL_DICE;
                 indexOfCurrentTrucker = 0;
-                return new BooleanDecision(ServerEventType.ROLL_DICE, false, this.cardState, "Roll the dice", defeatedTruckers.getFirst().getNickname());
+                return new BooleanDecision(ServerEventType.ROLL_DICE, false, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
             }else{
                 indexOfCurrentTrucker++;
-                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, this.cardState, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
             }
         }
     }
@@ -201,7 +203,7 @@ public class Pirates extends Card implements Serializable {
         }
         else{
             cardState = CardState.ROLL_DICE;
-            return new BooleanDecision(ServerEventType.ROLL_DICE, true, this.cardState, "Roll the dice", defeatedTruckers.getFirst().getNickname());
+            return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
         }
     }
 
@@ -292,7 +294,7 @@ public class Pirates extends Card implements Serializable {
             return new CardFinished(true, this.cardState, Game.getIstance().getTruckerList());
         }else {
             this.cardState = CardState.ROLL_DICE;
-            return new BooleanDecision(ServerEventType.ROLL_DICE, true, this.cardState, "Roll the dice", defeatedTruckers.getFirst().getNickname());
+            return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
         }
     }
 

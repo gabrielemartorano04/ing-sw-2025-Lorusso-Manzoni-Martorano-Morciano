@@ -10,6 +10,7 @@ import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.exceptions.NotEnoughBatteries;
+import it.polimi.ingsw.view.ParserState;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class OpenSpace extends Card implements Serializable {
                 this.getName(),
                 this.getDescription(),
                 Game.getIstance().getTruckerList().getFirst().getNickname(),
-                "Choose the position of the double engines to activate",
+                "Choose if you want to activate the double engines. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ",
                 -1,
                 -1,
                 -1,
@@ -68,7 +69,7 @@ public class OpenSpace extends Card implements Serializable {
                 null,
                 null,
                 null,
-                this.getCardState()
+                ParserState.ACTIVATE_ENGINES
         );
     }
 
@@ -103,7 +104,7 @@ public class OpenSpace extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, this.getCardState(), "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getNickname());
+        return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, ParserState.ACTIVATE_ENGINES, "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getNickname());
     }
 
     /**
