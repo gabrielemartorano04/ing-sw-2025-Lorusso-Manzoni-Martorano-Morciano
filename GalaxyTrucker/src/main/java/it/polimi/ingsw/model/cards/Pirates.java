@@ -137,7 +137,7 @@ public class Pirates extends Card implements Serializable {
         if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() > piratesPower) {
             winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
             cardState = CardState.COSMIC_CREDITS;
-            return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits);
+            return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits, days);
         }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() == piratesPower){
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
                 if(defeatedTruckers.isEmpty()){
