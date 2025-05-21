@@ -8,6 +8,7 @@ import it.polimi.ingsw.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.exceptions.GeneralError;
+import it.polimi.ingsw.view.ParserState;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -98,7 +99,7 @@ public class AbandonedShip extends Card implements Serializable {
                 null,
                 null,
                 null,
-                this.getCardState()
+                ParserState.LAND
         );
     }
 
@@ -122,7 +123,7 @@ public class AbandonedShip extends Card implements Serializable {
                 return cardEffect();
             }else{
                 indexOfCurrTrucker++;
-                return new BooleanDecision(ServerEventType.LAND, true, this.getCardState(), "Do you want to land on this Abandoned Ship?",  Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+                return new BooleanDecision(ServerEventType.LAND, true, ParserState.LAND, "Do you want to land on this Abandoned Ship?",  Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
             }
         }
     }
