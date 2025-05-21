@@ -79,8 +79,12 @@ public class Trucker implements Serializable {
     }
 
 
-    public Stack showStack(int index, Game game){
-        return game.viewStack(index);
+    public Stack showStack(int index, Game game) throws GeneralError{
+        try {
+            return game.viewStack(index);
+        } catch (GeneralError e) {
+            throw new GeneralError(e.getMessage());
+        }
     }
 
     public void keep(Component component) throws InvalidComponentsException {
