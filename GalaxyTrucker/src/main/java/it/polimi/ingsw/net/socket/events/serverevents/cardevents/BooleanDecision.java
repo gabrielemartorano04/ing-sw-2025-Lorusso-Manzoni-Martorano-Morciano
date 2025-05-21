@@ -3,12 +3,13 @@ package it.polimi.ingsw.net.socket.events.serverevents.cardevents;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+import it.polimi.ingsw.view.ParserState;
 
 public class BooleanDecision extends CardEvent{
     private final String message;
 
-    public BooleanDecision(ServerEventType eventType, boolean forAll, CardState cardState, String message, String nickname) {
-        super(eventType, forAll, cardState, nickname);
+    public BooleanDecision(ServerEventType eventType, boolean forAll, ParserState parserState, String message, String nickname) {
+        super(eventType, forAll, parserState, nickname);
         this.message = message;
     }
 
