@@ -218,6 +218,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         Stack stack= null;
         try {
             stack = trucker.showStack(index,gameController.getGame());
+            gameController.getGame().viewStacks()[event.getIndex()].setSelected();
         } catch (GeneralError e) {
             return new GenericErrorEvent(e.getMessage(), false);
         }
@@ -399,6 +400,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(StackDroppedEvent event){
+        System.out.println("sto per mandare StackDroppedOK");
         gameController.getGame().viewStacks()[event.getCurr()].dropStack();
         return new StackDropOk("Stack numero " + event.getCurr() + "disponibile", false);
     }
