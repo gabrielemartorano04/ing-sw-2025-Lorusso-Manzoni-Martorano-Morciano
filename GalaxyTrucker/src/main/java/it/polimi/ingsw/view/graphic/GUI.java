@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -307,5 +308,15 @@ public class GUI extends UI {
     @Override
     public void showStack(ArrayList<Card> stack) {
         Platform.runLater(() -> controller.showStack(stack));
+    }
+
+    @Override
+    public void showComponentSelected(Component component) {
+        Platform.runLater(() -> controller.showComponentSelected(component));
+    }
+
+    @Override
+    public void showInputFormat(ParserState parserState) {
+        Platform.runLater(() -> controller.showInputFormat(parserState));
     }
 }

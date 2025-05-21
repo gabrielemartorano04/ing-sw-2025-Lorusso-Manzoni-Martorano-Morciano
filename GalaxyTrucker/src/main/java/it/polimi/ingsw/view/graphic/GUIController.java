@@ -13,6 +13,7 @@ import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -1591,5 +1592,13 @@ public class GUIController {
                 rootPane.getChildren().add(overlay);
             }
         });
+    }
+
+    public void showComponentSelected(Component component) {
+
+    }
+
+    public void showInputFormat(ParserState parserState) {
+
     }
 }
