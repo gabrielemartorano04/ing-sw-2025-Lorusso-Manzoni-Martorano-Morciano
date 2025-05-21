@@ -12,6 +12,10 @@ public class RemotionConfirmed extends CardEvent{
         this.confirm = confirm;
     }
 
+    public String getInfoForOthers(){
+        return getNickname()+" received a remotion confirm";
+    }
+
     public String getConfirm() {
         return confirm;
     }

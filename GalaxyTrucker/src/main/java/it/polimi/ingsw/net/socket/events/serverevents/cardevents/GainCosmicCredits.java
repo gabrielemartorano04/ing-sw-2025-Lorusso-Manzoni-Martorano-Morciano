@@ -27,4 +27,8 @@ public class GainCosmicCredits extends CardEvent{
     public void call(ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
     }
+
+    public String getInfoForOthers() {
+        return getNickname()+" is deciding to gain cosmic credits or not.\n";
+    }
 }
