@@ -157,12 +157,18 @@ public class CardController {
         }
     }
 
-    public ServerEvent combatZone(CombactZoneEvent event) {
+    public ServerEvent handleCurrentCondition() {
         try {
-            return currCard.combatZone();
-        } catch (WrongCallerException e) {
+            return currCard.handleCurrentCondition();
+        } catch (WrongCallerException | GeneralError e) {
             return new GenericErrorEvent(e.getMessage(), true);
-        } catch (GeneralError e) {
+        }
+    }
+
+    public ServerEvent findWeakestTrucker() {
+        try {
+            return currCard.findWeakestTrucker();
+        } catch (WrongCallerException | GeneralError e) {
             return new GenericErrorEvent(e.getMessage(), true);
         }
     }
