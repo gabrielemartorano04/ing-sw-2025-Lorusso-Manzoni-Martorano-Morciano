@@ -97,7 +97,13 @@ public ClientEvent parseFirstConnection(String input) {
                                 System.out.println("Error: illegal command. Type 'link <x> <y>'.");
                                 return null;
                             }
-                            return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
+                            int x=Integer.parseInt(tokens[1].trim());
+                            int y=Integer.parseInt(tokens[2].trim());
+                            if(x<5 || x>9 || y<4 || y>10){
+                                System.out.println("Error: illegal coordinates. Type 'link <x> <y>'.");
+                                return null;
+                            }
+                            return new LinkTileEvent(index, x, y, component);
                         case "keep":
                             if (tokens.length != 1) {
                                 System.out.println("Error: illegal command. Type 'keep <index>'.");
