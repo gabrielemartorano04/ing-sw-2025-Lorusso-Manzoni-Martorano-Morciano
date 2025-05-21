@@ -191,6 +191,18 @@ public class InputParserFlight {
             case DO_NOTHING:
                 System.out.println("It's not your turn");
                 return null;
+            case LAND:
+                String[] land=input.split("\\s+");
+                if(land.length!=1){
+                    System.out.println("Error: invalid command");
+                    return null;
+                }
+                if(land[0].trim().equals("n")){
+                    return new TruckerLandingEvent(false);
+                }
+                else if(land[0].trim().equals("y")){
+                    return new TruckerLandingEvent(true);
+                }
             default: {
                 System.out.println("Error: invalid command. Stato non gestito");
                 return null;

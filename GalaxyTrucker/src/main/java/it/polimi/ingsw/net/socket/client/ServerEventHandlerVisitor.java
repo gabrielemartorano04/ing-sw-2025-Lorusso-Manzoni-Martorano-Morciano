@@ -513,8 +513,9 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         ui.showCardDrawn(event);
         if (event.getFirstPlayerNickname().equals(viewFlow.getNickname())) {
             System.out.println("Sono entrato, nickname view " + viewFlow.getNickname());
-
             ui.showMessage(event.getQuestion());
+            viewFlow.setParserFlightState(event.getParserState());
+            //state del parser
         } else {
             System.out.println("Sono entrato, nickname view " + viewFlow.getNickname());
 
