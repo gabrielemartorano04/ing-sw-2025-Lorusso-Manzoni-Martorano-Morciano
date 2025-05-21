@@ -7,14 +7,19 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 public class PlanetDecisionEvent extends ClientEvent {
 
     private int index;
+    private String nickname;
 
-    public PlanetDecisionEvent(int index) {
-
+    public PlanetDecisionEvent(int index, String nickname) {
         this.index = index;
+        this.nickname = nickname;
     }
 
     public int getIndex() {
         return index;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     @Override

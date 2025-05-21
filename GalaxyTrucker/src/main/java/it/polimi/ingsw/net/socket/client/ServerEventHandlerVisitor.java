@@ -571,27 +571,57 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(InvalidPositionExceptionEvent event) {
-
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
     public void visit(PlanetNotFreeExceptionEvent event) {
-
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
     public void visit(InvalidGoodChosenEvent event) {
-
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
     public void visit(NotEnoughGoodsChosenEvent event) {
-
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
     public void visit(WrongNumberOfBatteriesSelectedEvent event) {
-
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override

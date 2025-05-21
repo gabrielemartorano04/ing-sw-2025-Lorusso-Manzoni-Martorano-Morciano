@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import com.sun.javafx.iio.jpeg.JPEGImageLoader;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
@@ -45,7 +46,7 @@ public class CardController {
         } catch (InvalidCoordinates e) {
             return new InvalidCoordinatesEvent(e.getMessage(), false, ParserState.PLOT_GOOD, event.getNickname());
         } catch (InvalidPositionException e) {
-            return new InvalidPositionExceptionEvent(e.getMessage(), false);
+            return new InvalidPositionExceptionEvent(e.getMessage(), false, ParserState.PLOT_GOOD, event.getNickname());
         }
     }
 
@@ -57,7 +58,7 @@ public class CardController {
         } catch (InvalidCoordinates e) {
             return new InvalidCoordinatesEvent(e.getMessage(), false, ParserState.REARRANGE, event.getNickname());
         } catch (InvalidPositionException e) {
-            return new InvalidPositionExceptionEvent(e.getMessage(), false);
+            return new InvalidPositionExceptionEvent(e.getMessage(), false,ParserState.REARRANGE, event.getNickname());
         }
     }
 
@@ -120,7 +121,7 @@ public class CardController {
         } catch (WrongCallerException | GeneralError e) {
             return new GenericErrorEvent(e.getMessage(), false);
         } catch (PlanetNotFreeException e) {
-            return new PlanetNotFreeExceptionEvent(e.getMessage(), false);
+            return new PlanetNotFreeExceptionEvent(e.getMessage(), false, ParserState.PLANET_DECISION, event.getNickname());
         }
     }
 
@@ -138,9 +139,9 @@ public class CardController {
         } catch (WrongCallerException | GeneralError e) {
             return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidGoodChosen e) {
-            return new InvalidGoodChosenEvent(e.getMessage(), false);
+            return new InvalidGoodChosenEvent(e.getMessage(), false, ParserState.REMOVE_GOODS, event.getNickname() );
         } catch (NotEnoughGoodsChosen e) {
-            return new NotEnoughGoodsChosenEvent(e.getMessage(), false);
+            return new NotEnoughGoodsChosenEvent(e.getMessage(), false, ParserState.REMOVE_GOODS, event.getNickname());
         }
     }
 
@@ -152,7 +153,7 @@ public class CardController {
         } catch (InvalidCoordinates e) {
             return new InvalidCoordinatesEvent(e.getMessage(), false,ParserState.REMOVE_BATTERIES,event.getNickname());
         } catch (WrongNumberOfBatteriesSelected e) {
-            return new WrongNumberOfBatteriesSelectedEvent(e.getMessage(), false);
+            return new WrongNumberOfBatteriesSelectedEvent(e.getMessage(), false, ParserState.REMOVE_BATTERIES, event.getNickname());
         } catch (NotEnoughBatteries e) {
             return new NotEnoughBatterieEvent(e.getMessage(), false,ParserState.REMOVE_BATTERIES,event.getNickname());
         }

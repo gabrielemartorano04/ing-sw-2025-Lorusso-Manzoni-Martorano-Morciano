@@ -187,7 +187,7 @@ public class InputParserFlight {
                     System.out.println("Error: invalid command");
                     return null;
                 }
-                return new PlanetDecisionEvent(Integer.parseInt(planetDecision[0].trim()));
+                return new PlanetDecisionEvent(Integer.parseInt(planetDecision[0].trim()), nickname);
             case DO_NOTHING:
                 System.out.println("It's not your turn");
                 return null;
@@ -285,7 +285,7 @@ public class InputParserFlight {
                 for(int i=0;i<removeGoods.length;i++){
                     indexes.add(Integer.parseInt(removeGoods[i].trim()));
                 }
-                return new RemoveAskingEvent(indexes);
+                return new RemoveAskingEvent(indexes, nickname);
             default: {
                 System.out.println("Error: invalid command. Stato non gestito");
                 return null;

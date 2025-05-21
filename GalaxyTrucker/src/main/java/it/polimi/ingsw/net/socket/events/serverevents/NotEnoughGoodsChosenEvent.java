@@ -2,18 +2,23 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardEvent;
+import it.polimi.ingsw.view.ParserState;
 
 public class NotEnoughGoodsChosenEvent extends CardEvent {
 
     private String message;
 
-    public NotEnoughGoodsChosenEvent(String message, boolean forAll) {
-        super(ServerEventType.NOT_ENOUGH_GOODS_CHOSEN_ERROR, forAll, null, null);
+    public NotEnoughGoodsChosenEvent(String message, boolean forAll, ParserState parserState, String nickname) {
+        super(ServerEventType.NOT_ENOUGH_GOODS_CHOSEN_ERROR, forAll, parserState, nickname);
         this.message = message;
     }
 
     public String getMessage() {
         return message;
+    }
+
+    public String getInfoForOthers() {
+        return getNickname()+" doesn't have enough goods.\n";
     }
 
     @Override

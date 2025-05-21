@@ -2,18 +2,23 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardEvent;
+import it.polimi.ingsw.view.ParserState;
 
 public class WrongNumberOfBatteriesSelectedEvent extends CardEvent {
 
     private String message;
 
-    public WrongNumberOfBatteriesSelectedEvent(String message, boolean forAll) {
-        super(ServerEventType.WRONG_NUMBER_OF_BATTERIES_SELECTED_ERROR, forAll, null, null);
+    public WrongNumberOfBatteriesSelectedEvent(String message, boolean forAll, ParserState parserState, String nickname) {
+        super(ServerEventType.WRONG_NUMBER_OF_BATTERIES_SELECTED_ERROR, forAll, parserState, nickname);
         this.message = message;
     }
 
     public String getMessage() {
         return message;
+    }
+
+    public String getInfoForOthers() {
+        return getNickname()+" chose an invalid number of batteries.\n";
     }
 
     @Override

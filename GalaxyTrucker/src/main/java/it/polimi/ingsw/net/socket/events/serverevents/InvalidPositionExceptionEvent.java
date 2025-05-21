@@ -2,14 +2,15 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardEvent;
+import it.polimi.ingsw.view.ParserState;
 
 public class InvalidPositionExceptionEvent extends CardEvent {
 
     private String message;
 
-    public InvalidPositionExceptionEvent(String message, boolean forAll) {
+    public InvalidPositionExceptionEvent(String message, boolean forAll, ParserState parserState, String nickname) {
         //TODO correggi ingressi super
-        super(ServerEventType.INVALID_POSITION_ERROR, forAll, null, null);
+        super(ServerEventType.INVALID_POSITION_ERROR, forAll, parserState, nickname);
         this.message = message;
     }
 
@@ -20,5 +21,9 @@ public class InvalidPositionExceptionEvent extends CardEvent {
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
+    }
+
+    public String getInfoForOthers() {
+        return getNickname()+" chose an invalid position.\n";
     }
 }

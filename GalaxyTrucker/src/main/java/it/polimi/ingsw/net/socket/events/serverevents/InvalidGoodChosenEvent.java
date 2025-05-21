@@ -2,18 +2,23 @@ package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardEvent;
+import it.polimi.ingsw.view.ParserState;
 
 public class InvalidGoodChosenEvent extends CardEvent {
 
     private String message;
 
-    public InvalidGoodChosenEvent(String message, boolean forAll) {
-        super(ServerEventType.INVALID_GOODS_CHOSEN_ERROR, forAll, null, null);
+    public InvalidGoodChosenEvent(String message, boolean forAll, ParserState parserState, String nickname) {
+        super(ServerEventType.INVALID_GOODS_CHOSEN_ERROR, forAll, parserState, nickname);
         this.message = message;
     }
 
     public String getMessage() {
         return message;
+    }
+
+    public String getInfoForOthers() {
+        return getNickname()+" chose an invalid good.\n";
     }
 
     @Override
