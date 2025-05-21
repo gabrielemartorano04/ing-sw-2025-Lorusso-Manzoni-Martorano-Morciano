@@ -131,7 +131,7 @@ public class OpenSpace extends Card implements Serializable {
         }
         state = CardState.EXIT;
         Game.getIstance().endTurn();
-        return new CardFinished(true, this.getCardState(), Game.getIstance().getTruckerList());
+        return new CardFinished(true, Game.getIstance().getTruckerList());
     }
 
 }

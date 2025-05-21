@@ -139,7 +139,7 @@ public class Slavers extends Card implements Serializable {
                 }else{
                     cardState = CardState.HUMANSTOREMOVE;
                     indexOfCurrentTrucker = 0;
-                    return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, this.cardState, defeatedTruckers.getFirst().getNickname());
+                    return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, defeatedTruckers.getFirst().getNickname());
                 }
             }else{
                 indexOfCurrentTrucker++;
@@ -151,7 +151,7 @@ public class Slavers extends Card implements Serializable {
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
                 cardState = CardState.HUMANSTOREMOVE;
                 indexOfCurrentTrucker = 0;
-                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, this.cardState, defeatedTruckers.getFirst().getNickname());
+                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, defeatedTruckers.getFirst().getNickname());
             }else{
                 indexOfCurrentTrucker++;
                 return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
@@ -212,7 +212,7 @@ public class Slavers extends Card implements Serializable {
         if (indexOfCurrentTrucker==Game.getIstance().getTruckerList().size()) {
             return cardEffect();
         }
-        return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, this.cardState, defeatedTruckers.getFirst().getNickname());
+        return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, defeatedTruckers.getFirst().getNickname());
     }
 
     /**
@@ -236,7 +236,7 @@ public class Slavers extends Card implements Serializable {
         }
         cardState=CardState.EXIT;
         Game.getIstance().endTurn();
-        return new CardFinished(true, this.cardState, Game.getIstance().getTruckerList());
+        return new CardFinished(true, Game.getIstance().getTruckerList());
     }
 
 

@@ -4,12 +4,13 @@ import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+import it.polimi.ingsw.view.ParserState;
 
 public class CurrentCondition extends CardEvent{
     private final Condition condition;
 
-    public CurrentCondition(boolean forAll, CardState cardState, String nickname, Condition condition) {
-        super(ServerEventType.CONDITION, forAll, cardState, nickname);
+    public CurrentCondition(boolean forAll, ParserState parserState, String nickname, Condition condition) {
+        super(ServerEventType.CONDITION, forAll, parserState, nickname);
         this.condition = condition;
     }
 

@@ -110,10 +110,10 @@ public class MeteorShower extends Card implements Serializable {
         state = CardState.ATTESA_RISPOSTE;
         if (meteor[0]==1) {
             state=CardState.ACTIVATE_CANNONS;
-            return new RollDiceResult("Meteorite grande, attivare Cannoni doppi?", this.getCardState(), currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
+            return new RollDiceResult("Meteorite grande, attivare Cannoni doppi?", currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
         }else{
             state=CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult("Meteorite piccolo, attivare Scudo?", this.getCardState(), currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
+            return new RollDiceResult("Meteorite piccolo, attivare Scudo?", currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
         }
     }
 
@@ -215,7 +215,7 @@ public class MeteorShower extends Card implements Serializable {
             this.state = CardState.EXIT;
             this.setIsCardFinished(true);
             Game.getIstance().endTurn();
-            return new CardFinished(true, this.getCardState(), Game.getIstance().getTruckerList());
+            return new CardFinished(true, Game.getIstance().getTruckerList());
         }else {
             this.state = CardState.ROLL_DICE;
             return new BooleanDecision(ServerEventType.ROLL_DICE, false, ParserState.ROLL_DICE, "Roll the dice", Game.getIstance().getTruckerList().getFirst().getNickname());

@@ -120,7 +120,7 @@ public class Planets extends Card implements Serializable {
                     if(Game.getIstance().getBank().getGoodsInBank(currentGood.getValue())>0){
                         // abbiamo la merce corrente
                         this.state = CardState.GOODSTOADD;
-                        return new PlotGood(true, this.getState(), truckersLanded.get(indexOfTrucker).getNickname(), currentGood);
+                        return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(), currentGood);
                     }
                 }
                 indexOfTrucker++;
@@ -156,7 +156,7 @@ public class Planets extends Card implements Serializable {
         }
         if(currGoodIndex >= currentGoodsList.size()){
             state = CardState.REARRANGE;
-            return new RearrangeEvent(true, this.getState(), this.truckersLanded.get(indexOfTrucker).getNickname());
+            return new RearrangeEvent(true, this.truckersLanded.get(indexOfTrucker).getNickname());
         }
         else{
             currGoodIndex++;
@@ -164,12 +164,12 @@ public class Planets extends Card implements Serializable {
             do {
                 currentGood = currentGoodsList.get(currGoodIndex);
                 if (Game.getIstance().getBank().getGoodsInBank(currentGood.getValue()) >= 1) {
-                    return new PlotGood(true, this.getState(), truckersLanded.get(indexOfTrucker).getNickname(), currentGood);
+                    return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(), currentGood);
                 } else {
                     currGoodIndex++;
                     if(currGoodIndex>=currentGoodsList.size()) {
                         state = CardState.REARRANGE;
-                        return new RearrangeEvent(true, this.getState(), this.truckersLanded.get(indexOfTrucker).getNickname());
+                        return new RearrangeEvent(true, this.truckersLanded.get(indexOfTrucker).getNickname());
                     }
                 }
             }while(true);
@@ -222,7 +222,7 @@ public class Planets extends Card implements Serializable {
         }
         state = CardState.EXIT;
         Game.getIstance().endTurn();
-        return new CardFinished(true, this.getState(), Game.getIstance().getTruckerList());
+        return new CardFinished(true, Game.getIstance().getTruckerList());
     }
 
 }

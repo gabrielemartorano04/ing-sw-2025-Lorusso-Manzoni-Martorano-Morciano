@@ -113,7 +113,7 @@ public class AbandonedStation extends Card implements Serializable {
             do {
                 if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
                     cardState = CardState.GOODSTOADD;
-                    return new PlotGood(true, cardState, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), goods.get(currGood));
+                    return new PlotGood(true, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), goods.get(currGood));
                 } else {
                     currGood++;
                     if(currGood==goods.size()) {
@@ -148,7 +148,7 @@ public class AbandonedStation extends Card implements Serializable {
         }
         if(stop){
             cardState = CardState.REARRANGE;
-            return new RearrangeEvent(false, this.getCardState(), this.truckerThatHasDecided.getNickname());
+            return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
         }else {
             try {
                 // addGood fa anche la remove dalla bank della merce corrente
@@ -159,7 +159,7 @@ public class AbandonedStation extends Card implements Serializable {
             }
             if (currGood == goods.size() - 1) { // ci va il -1 qui!!!
                 cardState = CardState.REARRANGE;
-                return new RearrangeEvent(false, this.getCardState(), this.truckerThatHasDecided.getNickname());
+                return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
             } else {
                 currGood++;
                 //TODO: Check che non ci sia loop infinito
