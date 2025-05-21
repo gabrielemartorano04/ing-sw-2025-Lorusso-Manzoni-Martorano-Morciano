@@ -112,7 +112,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(ComponentSelectedEvent event) {
         viewFlow.componentAsUncovered(event.getIndex());
         viewFlow.componentAsSelected(event.getIndex());
-        if(viewFlow.getNickname()==event.getNickname()) {
+        if(viewFlow.getNickname().equals(event.getNickname())) {
             viewFlow.setSelectedComponent(event.getIndex(), false);
             ui.showComponentSelected(viewFlow.getSelectedComponent());
             ui.showComponentOptions();
@@ -444,7 +444,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
             i++;
         }
         ui.showMessage(message);
-        if(viewFlow.getNickname()==event.getTruckersList().get(0).getNickname()){
+        if(viewFlow.getNickname().equals(event.getTruckersList().get(0).getNickname())){
             viewFlow.setParserFlightState(ParserState.CARD_FINISH);
             ui.showMessage("Type <draw> when you're ready to draw the next card.");
         }
@@ -460,7 +460,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(HumanCoordinates event) {
-        if (event.getNickname()==viewFlow.getNickname()) {
+        if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.HUMAN_COORD);
             ui.showMessage("Insert the coordinates of the cabins to remove the number of human indicated in the card description. Type '<x1> <y1> - <number of crew>, <x2> <y2> - <number of crew>,...' : ");
         } else {
@@ -471,7 +471,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(PlanetDecision event) {
-        if (event.getNickname()==viewFlow.getNickname()) {
+        if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLANET_DECISION);
             ui.showMessage("Choose the planet you want to fly to. Type '<index>': ");
         } else {
@@ -482,7 +482,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(PlotGood event) {
-        if (event.getNickname()==viewFlow.getNickname()) {
+        if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLOT_GOOD);
             ui.showMessage("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <x> <y>, <position>' or 'n': ");
         } else {
@@ -493,7 +493,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(RollDiceResult event) {
-        if (event.getNickname()==viewFlow.getNickname()) {
+        if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage("The dices result is " + event.getDiceResult() + "\n" + event.getMessage());
         } else {
