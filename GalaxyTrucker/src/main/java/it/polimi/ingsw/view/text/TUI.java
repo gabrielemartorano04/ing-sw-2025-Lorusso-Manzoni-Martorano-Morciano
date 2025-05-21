@@ -617,13 +617,12 @@ public class TUI extends UI {
             case ACTIVATE_ENGINES -> System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
             case ACTIVATE_CANNONS -> System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
             case ACTIVATE_SHIELD -> System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x> <y>, <x> <y>' or 'n': ");
-            case LAND -> System.out.println("Type 'y' if you want to land, else 'n'");
-            case HUMAN_COORD -> System.out.println();
-            case PLOT_GOOD -> System.out.println();
+            case LAND -> System.out.println("Type 'y' if you want to land, else 'n'.");
+            case HUMAN_COORD -> System.out.println("Insert the coordinates of the cabins to remove the number of human indicated in the card description. Type '<x1> <y1> - <number of crew>, <x2> <y2> - <number of crew>,...' : ");
+            case PLOT_GOOD -> System.out.println("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <x> <y>, <position>' or 'n': ");
             case ROLL_DICE -> System.out.println("Type 'roll' to roll the dices when you're ready.");
-            case CARD_FINISH->System.out.println();
-            case PLANET_DECISION->System.out.println();
-            case DRAW_CARD ->System.out.println();
+            case PLANET_DECISION->System.out.println("Choose the planet you want to fly to. Type '<index>': ");
+            case DRAW_CARD ->System.out.println("Type <draw> when you're ready to draw the next card.");
         }
     }
 }

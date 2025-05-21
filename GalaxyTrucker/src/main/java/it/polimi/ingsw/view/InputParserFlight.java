@@ -174,7 +174,7 @@ public class InputParserFlight {
                     }
                 }
                 return new ActivateEnginesEvent(true,coordEngines,coordBattery);
-            case CARD_FINISH:
+            case DRAW_CARD:
                 String[] cardFinish=input.split("\\s+");
                 if(cardFinish.length!=1 || !cardFinish[0].trim().equals("draw")){
                     System.out.println("Error: invalid command");
