@@ -12,6 +12,6 @@ public class StackDropOk extends ServerEvent {
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
-
+        visitor.visit(this);
     }
 }
