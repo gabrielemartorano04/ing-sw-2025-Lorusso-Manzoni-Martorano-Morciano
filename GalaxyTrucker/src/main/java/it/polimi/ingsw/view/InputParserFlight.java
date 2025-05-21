@@ -2,7 +2,6 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.GainCosmicCredits;
 
 import java.util.ArrayList;
 
@@ -253,10 +252,10 @@ public class InputParserFlight {
 
                 }
 
-            case REMOTION:
+            case REMOTION_CONFIRMED://SCRIVI CONTINUA
 
-            case REMOVE_BATTERIES:
-            case REMOVE_GOODS:
+            case REMOVE_BATTERIES://COORD-VAL,COORD- VAL
+            case REMOVE_GOODS:// INDICI DA RIMUOVERE ARRAYLIST INTEGER
             default: {
                 System.out.println("Error: invalid command. Stato non gestito");
                 return null;
