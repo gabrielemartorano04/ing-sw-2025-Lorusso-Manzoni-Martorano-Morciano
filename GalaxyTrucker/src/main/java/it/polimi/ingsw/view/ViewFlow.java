@@ -219,7 +219,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                             startFlight=false;
                         }
                         else if(startFlightForAll) {
-                            event = inputParserFlight.parseFlight(input);
+                            event = inputParserFlight.parseFlight(input,nickname);
                         }
                         else {
                         System.out.println("You can only wait for others to start flight");

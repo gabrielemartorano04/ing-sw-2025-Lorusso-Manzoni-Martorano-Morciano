@@ -9,14 +9,16 @@ public class RearrangeEvent extends ClientEvent {
     private int[] coord1, coord2;
     private int value1, value2;
     private boolean stop;
+    private String nickname;
 
-    public RearrangeEvent(int[] coord1, int[] coord2, int value1, int value2, boolean stop) {
+    public RearrangeEvent(int[] coord1, int[] coord2, int value1, int value2, boolean stop,String nickname) {
 
         this.coord1 = coord1;
         this.coord2 = coord2;
         this.value1 = value1;
         this.value2 = value2;
         this.stop = stop;
+        this.nickname = nickname;
     }
 
     public int[] getCoord1() {
@@ -42,5 +44,9 @@ public class RearrangeEvent extends ClientEvent {
     @Override
     public ServerEvent call(ClientVisitor visitor) {
         return visitor.visit(this);
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 }

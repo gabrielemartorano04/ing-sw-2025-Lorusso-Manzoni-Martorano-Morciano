@@ -18,7 +18,7 @@ public class InputParserFlight {
     }
 
 
-    public ClientEvent parseFlight(String input) {
+    public ClientEvent parseFlight(String input, String nickname) {
         if (input == null || input.isEmpty()) {
             return null;
         }
@@ -43,7 +43,7 @@ public class InputParserFlight {
                     int y=Integer.parseInt(coord[1].trim());
                     humanCoord.add(new int[]{x,y,num});
                 }
-                return new HumanCoordEvent(humanCoord);
+                return new HumanCoordEvent(humanCoord,nickname);
 
             case PLOT_GOOD:
                 String[] plotGood=input.split("\\s*,\\s*");
@@ -52,10 +52,10 @@ public class InputParserFlight {
                     int x=Integer.parseInt(coord[0].trim());
                     int y=Integer.parseInt(coord[1].trim());
                     int cont=Integer.parseInt(plotGood[2].trim());
-                    return new PlotGoodEvent(true,new int[]{x,y}, cont);
+                    return new PlotGoodEvent(true,new int[]{x,y}, cont,nickname);
                 }
                 else if(plotGood[0].trim().equals("n")){
-                    return new PlotGoodEvent(false,null,-1);
+                    return new PlotGoodEvent(false,null,-1,nickname);
                 }
                 System.out.println("Error: invalid command");
                 return null;
@@ -70,7 +70,7 @@ public class InputParserFlight {
             case ACTIVATE_SHIELD:
                 String[] activateShield=input.split("\\s*,\\s*");
                 if(activateShield[0].trim().equals("n")){
-                    return new ActivateShieldEvent(false,null,null);
+                    return new ActivateShieldEvent(false,null,null,nickname);
                 }else if(activateShield[0].trim().equals("y")){
                     String[] coordShield=activateShield[1].trim().split("\\s+");
                     if(coordShield.length!=2){
@@ -86,7 +86,7 @@ public class InputParserFlight {
                     }
                     int xB=Integer.parseInt(coordBS[0].trim());
                     int yB=Integer.parseInt(coordBS[1].trim());
-                    return new ActivateShieldEvent(true,new int[]{x,y},new int[]{xB,yB});
+                    return new ActivateShieldEvent(true,new int[]{x,y},new int[]{xB,yB},nickname);
                 }
                 System.out.println("Error: invalid command");
                 return null;
@@ -96,7 +96,7 @@ public class InputParserFlight {
                 ArrayList<int[]> coordBS=new ArrayList<>();
                 int index=-1;
                 if(activateCannons[0].trim().equals("n")){
-                    return new ActivateCannonsEvent(false,null,null);
+                    return new ActivateCannonsEvent(false,null,null,nickname);
                 }
                 else if(activateCannons[0].trim().equals("y")){
                     for(int i=1;i<activateCannons.length;i++){
@@ -131,14 +131,14 @@ public class InputParserFlight {
                         coordBS.add(new int[]{x,y,cont});
                     }
                 }
-                return new ActivateCannonsEvent(true,coordCannons,coordBS);
+                return new ActivateCannonsEvent(true,coordCannons,coordBS,nickname);
             case ACTIVATE_ENGINES:
                 String[] activateEngines=input.split("\\s*,\\s*");
                 ArrayList<int[]> coordEngines=new ArrayList<>();
                 ArrayList<int[]> coordBattery=new ArrayList<>();
                 int indexE=-1;
                 if(activateEngines[0].trim().equals("n")){
-                    return new ActivateEnginesEvent(false,null,null);
+                    return new ActivateEnginesEvent(false,null,null,nickname);
                 }
                 else if(activateEngines[0].trim().equals("y")){
                     for(int i=1;i<activateEngines.length;i++){
@@ -173,7 +173,7 @@ public class InputParserFlight {
                         coordBattery.add(new int[]{x,y,cont});
                     }
                 }
-                return new ActivateEnginesEvent(true,coordEngines,coordBattery);
+                return new ActivateEnginesEvent(true,coordEngines,coordBattery,nickname);
             case DRAW_CARD:
                 String[] cardFinish=input.split("\\s+");
                 if(cardFinish.length!=1 || !cardFinish[0].trim().equals("draw")){
@@ -226,7 +226,7 @@ public class InputParserFlight {
             case REARRANGE:
                 String[] rearrange=input.split("\\s*,\\s*");
                 if(rearrange[0].trim().equals("n")){
-                    return new RearrangeEvent(null,null,-1,-1,true);
+                    return new RearrangeEvent(null,null,-1,-1,true,nickname);
                 }
                 if(rearrange[0].trim().equals("y")){
                     String[] part1=rearrange[1].trim().split("\\s*-\\s*");
@@ -248,7 +248,7 @@ public class InputParserFlight {
                     int y2=Integer.parseInt(coord2[1].trim());
                     int value2=Integer.parseInt(part2[1].trim());
 
-                    return new RearrangeEvent(new int[]{x1,y1},new int[]{x2,y2},value1,value2,false);
+                    return new RearrangeEvent(new int[]{x1,y1},new int[]{x2,y2},value1,value2,false,nickname);
 
                 }
 
@@ -278,7 +278,7 @@ public class InputParserFlight {
                     int cont=Integer.parseInt(parts[1].trim());
                     coordinates.add(new int[]{x,y,cont});
                 }
-                return new RemoveBatteriesEvent(coordinates);
+                return new RemoveBatteriesEvent(coordinates,nickname);
             case REMOVE_GOODS:
                 String[] removeGoods=input.split("\\s*,\\s*");
                 ArrayList<Integer> indexes=new ArrayList<>();

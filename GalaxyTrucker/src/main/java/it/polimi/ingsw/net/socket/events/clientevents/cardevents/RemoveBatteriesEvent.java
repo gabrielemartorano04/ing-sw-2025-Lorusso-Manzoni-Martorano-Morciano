@@ -8,11 +8,12 @@ import java.util.ArrayList;
 
 public class RemoveBatteriesEvent extends ClientEvent {
 
-    ArrayList<int[]> coordinatesToRemoveBatteries;
-
-    public RemoveBatteriesEvent(ArrayList<int[]> coordinatesToRemoveBatteries) {
+    private ArrayList<int[]> coordinatesToRemoveBatteries;
+    private String nickname;
+    public RemoveBatteriesEvent(ArrayList<int[]> coordinatesToRemoveBatteries,String nickname) {
 
         this.coordinatesToRemoveBatteries = coordinatesToRemoveBatteries;
+        this.nickname = nickname;
     }
 
     public ArrayList<int[]> getCoordinatesToRemoveBatteries() {
@@ -22,5 +23,9 @@ public class RemoveBatteriesEvent extends ClientEvent {
     @Override
     public ServerEvent call(ClientVisitor visitor) {
         return visitor.visit(this);
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 }

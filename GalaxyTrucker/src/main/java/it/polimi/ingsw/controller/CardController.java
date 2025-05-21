@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
+import it.polimi.ingsw.view.ParserState;
 
 public class CardController {
     private Card currCard;
@@ -28,9 +29,9 @@ public class CardController {
         try {
             return currCard.setHumansCoordinates(event.getHumanCoord());
         } catch (InvalidComponentsException e) {
-            return new InvalidComponentsExceptionEvent(e.getMessage(), false);
+            return new InvalidComponentsExceptionEvent(e.getMessage(), false, ParserState.HUMAN_COORD,event.getNickname() );
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), false);
+            return new InvalidCoordinatesEvent(e.getMessage(), false,ParserState.HUMAN_COORD,event.getNickname());
         } catch (GeneralError | WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), false);
         }
@@ -42,7 +43,7 @@ public class CardController {
         } catch (GeneralError | WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), false);
+            return new InvalidCoordinatesEvent(e.getMessage(), false, ParserState.PLOT_GOOD, event.getNickname());
         } catch (InvalidPositionException e) {
             return new InvalidPositionExceptionEvent(e.getMessage(), false);
         }
@@ -54,7 +55,7 @@ public class CardController {
         } catch (GeneralError | WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), false);
+            return new InvalidCoordinatesEvent(e.getMessage(), false, ParserState.REARRANGE, event.getNickname());
         } catch (InvalidPositionException e) {
             return new InvalidPositionExceptionEvent(e.getMessage(), false);
         }
@@ -74,7 +75,7 @@ public class CardController {
         } catch (GeneralError | WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), false);
+            return new InvalidCoordinatesEvent(e.getMessage(), false,ParserState.ACTIVATE_ENGINES,event.getNickname());
         }
     }
 
@@ -82,11 +83,11 @@ public class CardController {
         try {
             return currCard.activateEngines(event.getDecision(), event.getCoordinates(), event.getBatteryCoordinates());
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), false);
+            return new InvalidCoordinatesEvent(e.getMessage(), false,ParserState.ACTIVATE_ENGINES,event.getNickname());
         } catch (GeneralError | WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), false);
         } catch (NotEnoughBatteries e) {
-            return new NotEnoughBatterieEvent(e.getMessage(), false);
+            return new NotEnoughBatterieEvent(e.getMessage(), false,ParserState.ACTIVATE_ENGINES,event.getNickname());
         }
     }
 
@@ -96,11 +97,11 @@ public class CardController {
         } catch (GeneralError | WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidComponentsException e) {
-            return new InvalidComponentsExceptionEvent(e.getMessage(), false);
+            return new InvalidComponentsExceptionEvent(e.getMessage(), false,ParserState.ACTIVATE_CANNONS,event.getNickname());
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), false);
+            return new InvalidCoordinatesEvent(e.getMessage(), false,ParserState.ACTIVATE_CANNONS,event.getNickname());
         } catch (NotEnoughBatteries e) {
-            return new NotEnoughBatterieEvent(e.getMessage(), false);
+            return new NotEnoughBatterieEvent(e.getMessage(), false,ParserState.ACTIVATE_CANNONS,event.getNickname());
         }
 
     }
@@ -149,11 +150,11 @@ public class CardController {
         } catch (WrongCallerException | GeneralError e) {
             return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), false);
+            return new InvalidCoordinatesEvent(e.getMessage(), false,ParserState.REMOVE_BATTERIES,event.getNickname());
         } catch (WrongNumberOfBatteriesSelected e) {
             return new WrongNumberOfBatteriesSelectedEvent(e.getMessage(), false);
         } catch (NotEnoughBatteries e) {
-            return new NotEnoughBatterieEvent(e.getMessage(), false);
+            return new NotEnoughBatterieEvent(e.getMessage(), false,ParserState.REMOVE_BATTERIES,event.getNickname());
         }
     }
 

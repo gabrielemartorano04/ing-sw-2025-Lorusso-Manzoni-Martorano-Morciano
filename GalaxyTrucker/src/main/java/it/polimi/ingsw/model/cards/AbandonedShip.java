@@ -132,7 +132,7 @@ public class AbandonedShip extends Card implements Serializable {
      * @param coordinates list of arrays of coordinates of the cabins
      */
     @Override
-    public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, GeneralError {
+    public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
         if(state != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Can't call setCoordinates in the state: " + state);
         }

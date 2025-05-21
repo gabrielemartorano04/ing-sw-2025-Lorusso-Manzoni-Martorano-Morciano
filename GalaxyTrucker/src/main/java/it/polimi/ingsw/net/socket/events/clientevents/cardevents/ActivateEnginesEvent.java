@@ -10,11 +10,13 @@ public class ActivateEnginesEvent extends ClientEvent {
 
     private boolean decision;
     private ArrayList<int[]> coordinates, batteryCoordinates;
+    private String nickname;
 
-    public ActivateEnginesEvent(boolean decision, ArrayList<int[]> coordinates, ArrayList<int[]> batteryCoordinates) {
+    public ActivateEnginesEvent(boolean decision, ArrayList<int[]> coordinates, ArrayList<int[]> batteryCoordinates,String nickname) {
         this.decision = decision;
         this.coordinates = coordinates;
         this.batteryCoordinates = batteryCoordinates;
+        this.nickname = nickname;
     }
 
     public boolean getDecision() {
@@ -32,5 +34,9 @@ public class ActivateEnginesEvent extends ClientEvent {
     @Override
     public ServerEvent call(ClientVisitor visitor) {
         return visitor.visit(this);
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 }

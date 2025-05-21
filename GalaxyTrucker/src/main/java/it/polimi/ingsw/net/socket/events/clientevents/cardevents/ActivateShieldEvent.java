@@ -8,11 +8,13 @@ public class ActivateShieldEvent extends ClientEvent {
 
     private boolean decision;
     private int[] coordinates, batteryCoordinates;
+    private String nickname;
 
-    public ActivateShieldEvent(boolean decision, int[] coordinates, int[] batteryCoordinates) {
+    public ActivateShieldEvent(boolean decision, int[] coordinates, int[] batteryCoordinates,String nickname) {
         this.decision = decision;
         this.coordinates = coordinates;
         this.batteryCoordinates = batteryCoordinates;
+        this.nickname = nickname;
     }
 
     public boolean getDecision() {
@@ -29,5 +31,9 @@ public class ActivateShieldEvent extends ClientEvent {
     @Override
     public ServerEvent call(ClientVisitor visitor) {
         return visitor.visit(this);
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 }

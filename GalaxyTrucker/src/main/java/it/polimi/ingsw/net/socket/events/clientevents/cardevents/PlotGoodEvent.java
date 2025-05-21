@@ -9,12 +9,13 @@ public class PlotGoodEvent extends ClientEvent {
     private boolean decision;
     private int[] coordinates;
     private int positionInLoad;
-
-    public PlotGoodEvent(boolean decision, int[] coordinates, int positionInLoad) {
+    private String nickname;
+    public PlotGoodEvent(boolean decision, int[] coordinates, int positionInLoad, String nickname) {
 
         this.decision = decision;
         this.coordinates = coordinates;
         this.positionInLoad = positionInLoad;
+        this.nickname = nickname;
     }
 
     public boolean getDecision() {
@@ -32,5 +33,9 @@ public class PlotGoodEvent extends ClientEvent {
     @Override
     public ServerEvent call(ClientVisitor visitor) {
         return visitor.visit(this);
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 }

@@ -9,10 +9,10 @@ import java.util.ArrayList;
 public class HumanCoordEvent extends ClientEvent {
 
     private ArrayList<int[]> humanCoord;
-
-    public HumanCoordEvent(ArrayList<int[]> humanCoord) {
-
+    private String nickname;
+    public HumanCoordEvent(ArrayList<int[]> humanCoord, String nickname) {
         this.humanCoord = humanCoord;
+        this.nickname = nickname;
     }
 
     public ArrayList<int[]> getHumanCoord() {
@@ -22,5 +22,9 @@ public class HumanCoordEvent extends ClientEvent {
     @Override
     public ServerEvent call(ClientVisitor visitor) {
         return visitor.visit(this);
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 }
