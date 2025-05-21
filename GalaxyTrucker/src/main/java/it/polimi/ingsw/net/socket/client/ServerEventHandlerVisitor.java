@@ -230,6 +230,12 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
+    public void visit(TurnedComponentSuccessEvent event) {
+        viewFlow.setSelectedComponent(event.getComponent());
+    }
+
+
+    @Override
     public void visit(BuildOptionsEvent event){
         ui.showBuildOptions();
     }
@@ -386,6 +392,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(BooleanDecision event) {
         if (event.getNickname().equals(viewFlow.getNickname())){
+            System.out.println("Sono entrato, nickname view " + viewFlow.getNickname());
             switch (event.getEventType()){
                 case ROLL_DICE -> {
                     ui.showMessage("Type 'roll' to roll the dices when you're ready.");
@@ -406,6 +413,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
             }
         }
         else {
+            System.out.println("Sono entrato, nickname view " + viewFlow.getNickname());
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
         }
@@ -433,6 +441,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         int i=1;
         for(Trucker t:event.getTruckersList()){
             message+=i+") "+t.getNickname()+"\n";
+            i++;
         }
         ui.showMessage(message);
         if(viewFlow.getNickname().equals(event.getTruckersList().get(0).getNickname())){
@@ -502,9 +511,13 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(StartCardEvent event) {
         ui.showCardDrawn(event);
-        if (event.getNickname() == viewFlow.getNickname()) {
+        if (event.getFirstPlayerNickname().equals(viewFlow.getNickname())) {
+            System.out.println("Sono entrato, nickname view " + viewFlow.getNickname());
+
             ui.showMessage(event.getQuestion());
         } else {
+            System.out.println("Sono entrato, nickname view " + viewFlow.getNickname());
+
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
         }
@@ -575,8 +588,4 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     }
 
-    @Override
-    public void visit(TurnedComponentSuccessEvent event) {
-        viewFlow.setSelectedComponent(event.getComponent());
-    }
 }
