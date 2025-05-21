@@ -10,6 +10,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.view.ParserState;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.ArrayList;
@@ -18,12 +19,13 @@ import java.util.ArrayList;
  *
  */
 public class WarZoneOld extends Card implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     private CardState state;
     private int currConditionIndex;
-    private ArrayList<Condition> conditionsOrder;
-    private Map<Condition, Effect> penalties;
-    private ArrayList<int[]> shoots;
+    private final ArrayList<Condition> conditionsOrder;
+    private final Map<Condition, Effect> penalties;
+    private final ArrayList<int[]> shoots;
     // shoots è una lista dove shoots.get(i) rappresenta l'i-esimo colpo in questa specifica carta Warzone
     // shoots.get(i)[0] vale 1 se il colpo è grande 0 se è piccolo
     // shoots.get(i)[1] indice la direzione da cui arriva il colpo (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da dx)
@@ -38,13 +40,12 @@ public class WarZoneOld extends Card implements Serializable {
 
     private int currShootIndex;
     private int[] shoot;
-    private int numOfGoodsToRemove;
     private boolean useShield;
 
     // variabili per la remove Goods
     private int colorOfCurrGoodToRemove;
     private int numGoodCurrType;
-    private ArrayList<Goods> goodsToRemove; // verrà creata al più una volta per istanza di questa classe
+    private final ArrayList<Goods> goodsToRemove; // verrà creata al più una volta per istanza di questa classe
     private int goodsLostCurrTrucker;
 
     // variabile per remove Human
@@ -52,12 +53,6 @@ public class WarZoneOld extends Card implements Serializable {
     private ArrayList<int[]> humanCoordinates;
     //fine variabile per remove Human
 
-
-    // memorizza le coordinate da cui rimuovere l'equipaggio in caso la penitenza sia togli num di equipaggio
-    private ArrayList<int[]> coordinatesToRemoveCrew;
-
-    // memorizza le coordinate da cui rimuovere le merci in caso la penitenza sia togli num di merci
-    private ArrayList<int[]> coordinatesToRemoveGoods;
 
 
     public WarZoneOld(boolean trialFlight, int level, ArrayList<Condition> conditionsOrder, Map<Condition, Effect> penalties, ArrayList<int[]> shoots ,String frontImage, String backImage) {
@@ -146,9 +141,9 @@ public class WarZoneOld extends Card implements Serializable {
                 state = CardState.WAIT_ENGINES;
                 return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, ParserState.ACTIVATE_ENGINES, "Activate double engines?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
             }
-            default ->{
+            default ->
                 throw new GeneralError("Unknown condition " + currCondition);
-            }
+
         }
     }
 
@@ -160,15 +155,15 @@ public class WarZoneOld extends Card implements Serializable {
         }
         if(activate){
             if(!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkBatteryStorage(batteryCoord)){
-                throw new InvalidCoordinates("Not all coordinates are battery storage");
+                throw new InvalidComponentsException("Not all coordinates are battery storage");
             }
             if(!Game.getIstance().getTruckerList().get(indexOfCurrTrucker).getSpaceShip().checkDoubleCannon(coord)){
                 if(Game.getIstance().getTruckerList().get(indexOfCurrTrucker).getSpaceShip().getNumDoubleCannon() == 0 ){
                     indexOfCurrTrucker++;
-                    throw new InvalidCoordinates("You don't have any double engines");
+                    throw new InvalidComponentsException("You don't have any double engines");
 
                 }
-                throw new InvalidCoordinates("Not all components are DoubleEngine");
+                throw new InvalidComponentsException("Not all components are DoubleEngine");
             }
 
             Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().activateDoubleCannons(coord, batteryCoord);
@@ -300,9 +295,8 @@ public class WarZoneOld extends Card implements Serializable {
         if (goodsLostCurrTrucker == 0 || (goodsLostCurrTrucker > 0 && weakestTrucker.getSpaceShip().getNumBatteries() == 0)) {
             // se questo trucker ha perso tutte le merci notifico che la rimozione è stata fatta e passo al prossimo
             // per passare al prossimo obbligo il corrente a mandarmi un ok/continue
-            currConditionIndex++;
-            state = CardState.WARZONE;
-            return new RemotionConfirmed(weakestTrucker.getNickname(), "Goods removed, press continue!");
+            state = CardState.ESECUZIONE;
+            return cardEffect();
         } else { // il trucker corrente deve perdere batterie
             state = CardState.REMOVE_BATTERIES;
             return new RemoveBatteries(true, weakestTrucker.getNickname(), goodsLostCurrTrucker);
@@ -340,11 +334,6 @@ public class WarZoneOld extends Card implements Serializable {
     /**
      *
      * @param coordinatesToRemoveBatteries: mi aspetto che ogni elemento dell'arraylist sia [x,y,z] dove x,y sono le coordinate del batteryStorage e z è il numero di batterie da rimuovere da quel battery storage
-     * @return
-     * @throws GeneralError
-     * @throws InvalidCoordinates
-     * @throws WrongNumberOfBatteriesSelected
-     * @throws NotEnoughBatteries
      */
 
 
@@ -368,9 +357,8 @@ public class WarZoneOld extends Card implements Serializable {
         }catch(NotEnoughBatteries e){
             throw new NotEnoughBatteries("There is a battery storage that has less batteries then the number of batteries you wanted to remove in that one");
         }
-        currConditionIndex++;
-        this.state = CardState.WARZONE;
-        return new RemotionConfirmed(weakestTrucker.getNickname(), "Batteries removed, press continue!");
+        this.state = CardState.ESECUZIONE;
+        return cardEffect();
     }
 
     /**
@@ -420,6 +408,7 @@ public class WarZoneOld extends Card implements Serializable {
         if (state != CardState.ACTIVATE_SHIELDS) {
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
+        useShield = answer;
         if(answer) {
             if (!weakestTrucker.getSpaceShip().checkShield(shieldCoord)) {
                 throw new InvalidCoordinates("Not a shield");
@@ -439,28 +428,11 @@ public class WarZoneOld extends Card implements Serializable {
     // truckersCoordinates serve perché quando devo calcolare il weakest in base a potenza di fuoco o motrice
     // devo dare in ingresso a findWeakestTrucker la lista delle coordinate delle componenti che ogni giocatore
     // ha deciso di attivare
-    public ServerEvent findWeakestTrucker()throws GeneralError {
+    private ServerEvent findWeakestTrucker()throws GeneralError {
         if(state != CardState.FIND_WEAKEST){
             throw new GeneralError("FindWeakestTrucker not callable in the state " + state);
         }
-        Trucker currWeakestTrucker = null;
-        int minValueCurrCondition = Integer.MAX_VALUE;
-        for (Trucker trucker : Game.getIstance().getTruckerList()) {
-            int currValue = switch (currCondition) {
-                case HUMANS -> trucker.getSpaceShip().getNumHuman();
-                case CANNONS -> trucker.getSpaceShip().getTotalCannonPower();
-                case ENGINES -> trucker.getSpaceShip().getTotalEnginePower();
-            };
-
-            // in caso di parità di criteri subisce la penitenza quello più avanti nel percorso quindi quando cerco
-            // il weakestTrucker nei confronti uso il minore stretto in modo che a parità di potenza di fuoco/motrice o
-            // numero di umani scelgo sempre il trucker più a sinistra nella lista cioè quello più avanti sulla plancia
-            if (currValue < minValueCurrCondition) {
-                minValueCurrCondition = currValue;
-                currWeakestTrucker = trucker;
-            }
-        }
-        this.weakestTrucker = currWeakestTrucker;
+        this.weakestTrucker = getWeakestTrucker(currCondition);
         if(weakestTrucker == null){
             throw new GeneralError("FindWeakestTrucker error cause weakest trucker is null");
         }
@@ -483,6 +455,36 @@ public class WarZoneOld extends Card implements Serializable {
         }
     }
 
+    private Trucker getWeakestTrucker(Condition currCondition) {
+        Trucker currWeakestTrucker = null;
+        int minValueCurrCondition = Integer.MAX_VALUE;
+        for (Trucker trucker : Game.getIstance().getTruckerList()) {
+            int currValue = switch (currCondition) {
+                case HUMANS -> trucker.getSpaceShip().getNumHuman();
+                case CANNONS -> trucker.getSpaceShip().getTotalCannonPower();
+                case ENGINES -> trucker.getSpaceShip().getTotalEnginePower();
+            };
+
+            // in caso di parità di criteri subisce la penitenza quello più avanti nel percorso quindi quando cerco
+            // il weakestTrucker nei confronti uso il minore stretto in modo che a parità di potenza di fuoco/motrice o
+            // numero di umani scelgo sempre il trucker più a sinistra nella lista cioè quello più avanti sulla plancia
+            if (currValue < minValueCurrCondition) {
+                minValueCurrCondition = currValue;
+                currWeakestTrucker = trucker;
+            }
+        }
+        return currWeakestTrucker;
+    }
+
+    private void deactivateTruckersSpaceShip(){
+        for(Trucker trucker: Game.getIstance().getTruckerList()){
+            trucker.getSpaceShip().deactivateDoubleCannons();
+            trucker.getSpaceShip().deactivateDoubleEngines();
+            trucker.getSpaceShip().deActivateShields();
+        }
+    }
+
+
     @Override
     public ServerEvent cardEffect() throws GeneralError {
         if(state != CardState.ESECUZIONE){
@@ -499,6 +501,7 @@ public class WarZoneOld extends Card implements Serializable {
                 case LOSE_DAYS ->{
                     Game.getIstance().moveBackward(weakestTrucker, effect.getValue());
                     currConditionIndex++;
+                    deactivateTruckersSpaceShip();
                     if(currConditionIndex == conditionsOrder.size()){
                         return new CardFinished(true, Game.getIstance().getTruckerList());
                     }else{
@@ -510,6 +513,7 @@ public class WarZoneOld extends Card implements Serializable {
                 case LOSE_HUMANS -> {
                     weakestTrucker.getSpaceShip().removeNumHuman(humanCoordinates);
                     currConditionIndex++;
+                    deactivateTruckersSpaceShip();
                     if(currConditionIndex == conditionsOrder.size()){
                         return new CardFinished(true, Game.getIstance().getTruckerList());
                     }else{
@@ -521,6 +525,7 @@ public class WarZoneOld extends Card implements Serializable {
                 case LOSE_GOODS -> {
                     // dovrebbe essere già gestito fuori
                     currConditionIndex++;
+                    deactivateTruckersSpaceShip();
                     if(currConditionIndex == conditionsOrder.size()){
                         return new CardFinished(true, Game.getIstance().getTruckerList());
                     }else{
@@ -543,6 +548,7 @@ public class WarZoneOld extends Card implements Serializable {
                         }
                     }
                     currShootIndex++;
+                    deactivateTruckersSpaceShip();
                     if(currShootIndex == shoots.size()){
                         currConditionIndex++;
                         if(currConditionIndex == conditionsOrder.size()){
