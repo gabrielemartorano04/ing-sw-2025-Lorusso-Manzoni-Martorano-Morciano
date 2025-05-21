@@ -403,4 +403,14 @@ public class ClientHandlerVisitor implements ClientVisitor {
         return new StackDropOk("Stack numero " + event.getCurr() + "disponibile", false);
     }
 
+    @Override
+    public ServerEvent visit(GainCosmicCreditsResponseEvent event) {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(WarzoneStartEvent event) {
+        return null;
+    }
+
 }
