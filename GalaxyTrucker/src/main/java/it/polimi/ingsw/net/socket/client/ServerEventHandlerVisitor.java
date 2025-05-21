@@ -580,8 +580,9 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
-    public void visit(StackDropOk event){
+    public void visit(StackDropOk event) {
         viewFlow.setHasStack(-1);
+        ui.showMessage(event.getMessage());
     }
 
 }

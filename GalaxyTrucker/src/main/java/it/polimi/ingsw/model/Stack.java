@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Stack implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private boolean selected;
     private ArrayList<Card> stack;
     private int size;
@@ -19,7 +21,6 @@ public class Stack implements Serializable {
     }
 
     public ArrayList<Card> getStack() {
-        this.selected=true;
         return stack;
     }
 
@@ -37,5 +38,9 @@ public class Stack implements Serializable {
 
     public boolean isSelected() {
         return selected;
+    }
+
+    public void setSelected() {
+        this.selected = true;
     }
 }

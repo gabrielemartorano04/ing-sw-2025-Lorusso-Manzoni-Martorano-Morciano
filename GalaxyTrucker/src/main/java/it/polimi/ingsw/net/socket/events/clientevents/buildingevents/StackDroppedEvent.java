@@ -15,7 +15,7 @@ public class StackDroppedEvent extends ClientEvent {
 
     @Override
     public ServerEvent call(ClientVisitor visitor) {
-        return null;
+        return visitor.visit(this);
     }
 
     public int getCurr() {
