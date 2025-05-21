@@ -21,7 +21,7 @@ public class Game {
     //attributi
     private ArrayList<Trucker> truckers;
     private ArrayList<Trucker> truckersOut;
-    private ArrayList<Card>[] cardStacks;
+    private Stack[] cardStacks;
     private ArrayList<Card> gameDeck;
     private AvailableComponents components;
     private Hourglass hourglass;
@@ -51,10 +51,7 @@ public class Game {
             j++;
         }
         this.deck = new Deck();
-        this.cardStacks = new ArrayList[4];
-        for (int i = 0; i < 4; i++) {
-            cardStacks[i] = new ArrayList<>();
-        }
+        this.cardStacks = new Stack[4];
         this.bank = new Bank();
         this.gameState = GameState.SETUP;
         this.availableColors = EnumSet.allOf(PlayerColors.class);
@@ -133,7 +130,7 @@ public class Game {
      * @param i index of the stack
      * @return the requested card stack or null if index is invalid
      */
-    public ArrayList<Card> viewStack(int i) {
+    public Stack viewStack(int i) {
         if (i < 3)
             return cardStacks[i];
         else return null;
@@ -190,7 +187,7 @@ public class Game {
         for (int i = 0; i < 4; i++) {
             int cardsInThisStack = perStack + (i < remaining ? 1 : 0);
             for (int j = 0; j < cardsInThisStack; j++) {
-                cardStacks[i].add(mainDeck.get(index));
+                cardStacks[i].addCardInStack(mainDeck.get(index));
                 index++;
             }
         }
@@ -233,8 +230,8 @@ public class Game {
      * Creates the game deck by shuffling the card stacks.
      */
     public void makeGameDeck() {
-        for (ArrayList<Card> cardStack: cardStacks ) {
-            gameDeck.addAll(cardStack);
+        for (Stack cardStack: cardStacks ) {
+            gameDeck.addAll(cardStack.getStack());
         }
         //TODO: non mischio per debug, poi bisgona mischiare
 //        do{
@@ -437,7 +434,7 @@ public class Game {
         return event;
     }
 
-    public ArrayList<Card>[] viewStacks() {
+    public Stack[] viewStacks() {
         return cardStacks;
     }
 }

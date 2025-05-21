@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
@@ -93,7 +94,7 @@ public abstract class UI {
 
     public abstract void updateHourglass(int secondsLeft);
 
-    public abstract void showStack(ArrayList<Card> stack);
+    public abstract void showStack(Stack stack);
 
     public abstract void showComponentSelected(Component component);
 
