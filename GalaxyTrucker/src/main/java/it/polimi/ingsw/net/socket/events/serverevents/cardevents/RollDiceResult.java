@@ -3,6 +3,7 @@ package it.polimi.ingsw.net.socket.events.serverevents.cardevents;
 import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+import it.polimi.ingsw.view.ParserState;
 
 public class RollDiceResult extends CardEvent {
 
@@ -10,8 +11,8 @@ public class RollDiceResult extends CardEvent {
     private int diceResult;
     private String message;
 
-    public RollDiceResult(String Message, CardState cardState, int currIndex, int diceResult, String nickname, boolean forAll){
-        super(ServerEventType.ROLL_DICE, forAll, cardState, nickname);
+    public RollDiceResult(String Message, int currIndex, int diceResult, String nickname, boolean forAll){
+        super(ServerEventType.ROLL_DICE, forAll, ParserState.ROLL_DICE, nickname);
         this.currIndex = currIndex;
         this.diceResult = diceResult;
         this.message = message;
