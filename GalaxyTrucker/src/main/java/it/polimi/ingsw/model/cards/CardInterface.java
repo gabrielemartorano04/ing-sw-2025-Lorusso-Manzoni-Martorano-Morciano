@@ -61,9 +61,9 @@ public interface CardInterface {
         throw new WrongCallerException("This method does not exist in the card ");
     }
 
-    default CardState combatZone(Game game) throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
+    default ServerEvent combatZone() throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
 
-    default void findWeakestTrucker(Game game, ArrayList<ArrayList<int[]>> truckersCoordinates)throws WrongCallerException, GeneralError {
+    default ServerEvent findWeakestTrucker() throws WrongCallerException, GeneralError {
         throw new WrongCallerException("This method does not exist in the card ");
     }
 }
