@@ -234,6 +234,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.setSelectedComponent(event.getComponent());
     }
 
+    @Override
+    public void visit(CurrentCondition currentCondition) {
+
+    }
+
 
     @Override
     public void visit(BuildOptionsEvent event){
@@ -365,7 +370,8 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(ReturnStackEvent event){
-        ui.showStack(event.getStack());
+            ui.showStack(event.getStack());
+            viewFlow.setHasStack(event.getStack().getIndexOfThis());
     }
 
     @Override
@@ -571,6 +577,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(RemoveGoods event) {
 
+    }
+
+    @Override
+    public void visit(StackDropOk event){
+        viewFlow.setHasStack(-1);
     }
 
 }

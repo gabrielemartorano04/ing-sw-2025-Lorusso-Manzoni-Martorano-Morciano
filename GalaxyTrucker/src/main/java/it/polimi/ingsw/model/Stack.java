@@ -8,11 +8,13 @@ public class Stack {
     private boolean selected;
     private ArrayList<Card> stack;
     private int size;
+    private int indexOfThis;
 
-    public Stack() {
+    public Stack(int indexOfThis) {
         this.size = 10;
         this.stack = new ArrayList<>();
         this.selected = false;
+        this.indexOfThis = indexOfThis;
     }
 
     public ArrayList<Card> getStack() {
@@ -26,5 +28,9 @@ public class Stack {
 
     public void addCardInStack(Card card) {
         this.stack.add(card);
+    }
+
+    public int getIndexOfThis(){
+        return indexOfThis;
     }
 }

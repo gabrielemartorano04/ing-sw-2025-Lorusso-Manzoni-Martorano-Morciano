@@ -392,4 +392,10 @@ public class ClientHandlerVisitor implements ClientVisitor {
         return new TurnedComponentSuccessEvent(component);
     }
 
+    @Override
+    public ServerEvent visit(StackDroppedEvent event){
+        gameController.getGame().viewStacks()[event.getCurr()].dropStack();
+        return new StackDropOk("Stack numero " + event.getCurr() + "disponibile", false);
+    }
+
 }

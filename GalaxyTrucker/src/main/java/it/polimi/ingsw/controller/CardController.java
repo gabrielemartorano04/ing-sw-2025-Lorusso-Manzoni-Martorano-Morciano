@@ -28,11 +28,11 @@ public class CardController {
         try {
             return currCard.setHumansCoordinates(event.getHumanCoord());
         } catch (InvalidComponentsException e) {
-            return new InvalidComponentsExceptionEvent(e.getMessage(), true);
+            return new InvalidComponentsExceptionEvent(e.getMessage(), false);
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), true);
+            return new InvalidCoordinatesEvent(e.getMessage(), false);
         } catch (GeneralError | WrongCallerException e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         }
     }
 
@@ -40,11 +40,11 @@ public class CardController {
         try {
             return currCard.setGoodsCoordinates(event.getDecision(), event.getCoordinates(), event.getPositionInLoad());
         } catch (GeneralError | WrongCallerException e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), true);
+            return new InvalidCoordinatesEvent(e.getMessage(), false);
         } catch (InvalidPositionException e) {
-            return new InvalidPositionExceptionEvent(e.getMessage(), true);
+            return new InvalidPositionExceptionEvent(e.getMessage(), false);
         }
     }
 
@@ -52,11 +52,11 @@ public class CardController {
         try {
             return currCard.rearrange(event.getCoord1(), event.getCoord2(), event.getValue1(), event.getValue2(), event.getStop());
         } catch (GeneralError | WrongCallerException e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), true);
+            return new InvalidCoordinatesEvent(e.getMessage(), false);
         } catch (InvalidPositionException e) {
-            return new InvalidPositionExceptionEvent(e.getMessage(), true);
+            return new InvalidPositionExceptionEvent(e.getMessage(), false);
         }
     }
 
@@ -64,7 +64,7 @@ public class CardController {
         try {
             return currCard.rollDice();
         } catch (GeneralError | WrongCallerException e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         }
     }
 
@@ -72,9 +72,9 @@ public class CardController {
         try {
             return currCard.activateShield(event.getDecision(), event.getCoordinates(), event.getBatteryCoordinates());
         } catch (GeneralError | WrongCallerException e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), true);
+            return new InvalidCoordinatesEvent(e.getMessage(), false);
         }
     }
 
@@ -82,11 +82,11 @@ public class CardController {
         try {
             return currCard.activateEngines(event.getDecision(), event.getCoordinates(), event.getBatteryCoordinates());
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), true);
+            return new InvalidCoordinatesEvent(e.getMessage(), false);
         } catch (GeneralError | WrongCallerException e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         } catch (NotEnoughBatteries e) {
-            return new NotEnoughBatterieEvent(e.getMessage(), true);
+            return new NotEnoughBatterieEvent(e.getMessage(), false);
         }
     }
 
@@ -94,13 +94,13 @@ public class CardController {
         try {
             return currCard.activateCannons(event.getDecision(), event.getCoordinates(), event.getBatteryCoordinates());
         } catch (GeneralError | WrongCallerException e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidComponentsException e) {
-            return new InvalidComponentsExceptionEvent(e.getMessage(), true);
+            return new InvalidComponentsExceptionEvent(e.getMessage(), false);
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), true);
+            return new InvalidCoordinatesEvent(e.getMessage(), false);
         } catch (NotEnoughBatteries e) {
-            return new NotEnoughBatterieEvent(e.getMessage(), true);
+            return new NotEnoughBatterieEvent(e.getMessage(), false);
         }
 
     }
@@ -109,7 +109,7 @@ public class CardController {
         try {
             return currCard.setWinDecision(event.getWin());
         } catch (GeneralError | WrongCallerException e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         }
     }
 
@@ -117,9 +117,9 @@ public class CardController {
         try {
             return currCard.playerLandingPlanets(event.getIndex());
         } catch (WrongCallerException | GeneralError e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         } catch (PlanetNotFreeException e) {
-            return new PlanetNotFreeExceptionEvent(e.getMessage(), true);
+            return new PlanetNotFreeExceptionEvent(e.getMessage(), false);
         }
     }
 
@@ -127,7 +127,7 @@ public class CardController {
         try {
             return currCard.removeGoods();
         } catch (WrongCallerException | GeneralError e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         }
     }
 
@@ -135,11 +135,11 @@ public class CardController {
         try {
             return currCard.removeAsking(event.getIndexes());
         } catch (WrongCallerException | GeneralError e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidGoodChosen e) {
-            return new InvalidGoodChosenEvent(e.getMessage(), true);
+            return new InvalidGoodChosenEvent(e.getMessage(), false);
         } catch (NotEnoughGoodsChosen e) {
-            return new NotEnoughGoodsChosenEvent(e.getMessage(), true);
+            return new NotEnoughGoodsChosenEvent(e.getMessage(), false);
         }
     }
 
@@ -147,13 +147,13 @@ public class CardController {
         try {
             return currCard.removeBatteries(event.getCoordinatesToRemoveBatteries());
         } catch (WrongCallerException | GeneralError e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), true);
+            return new InvalidCoordinatesEvent(e.getMessage(), false);
         } catch (WrongNumberOfBatteriesSelected e) {
-            return new WrongNumberOfBatteriesSelectedEvent(e.getMessage(), true);
+            return new WrongNumberOfBatteriesSelectedEvent(e.getMessage(), false);
         } catch (NotEnoughBatteries e) {
-            return new NotEnoughBatterieEvent(e.getMessage(), true);
+            return new NotEnoughBatterieEvent(e.getMessage(), false);
         }
     }
 
@@ -161,7 +161,7 @@ public class CardController {
         try {
             return currCard.handleCurrentCondition();
         } catch (WrongCallerException | GeneralError e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         }
     }
 
@@ -169,7 +169,7 @@ public class CardController {
         try {
             return currCard.findWeakestTrucker();
         } catch (WrongCallerException | GeneralError e) {
-            return new GenericErrorEvent(e.getMessage(), true);
+            return new GenericErrorEvent(e.getMessage(), false);
         }
     }
 
