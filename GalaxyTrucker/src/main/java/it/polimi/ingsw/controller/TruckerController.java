@@ -55,8 +55,12 @@ public class TruckerController  {
         return trucker.getSpaceShip();
     }
 
-    public Stack showStack(int index, Game game) {
-        return trucker.showStack(index, game);
+    public Stack showStack(int index, Game game) throws GeneralError {
+        try {
+            return trucker.showStack(index, game);
+        } catch (GeneralError e) {
+            throw new GeneralError(e.getMessage());
+        }
     }
 
     public void keep(Component component) throws InvalidComponentsException {

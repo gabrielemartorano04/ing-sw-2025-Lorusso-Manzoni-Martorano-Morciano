@@ -215,7 +215,12 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(ShowStackEvent event) {
         int index=event.getIndex();
         TruckerController trucker=currentClient.getTruckerController();
-        Stack stack=trucker.showStack(index,gameController.getGame());
+        Stack stack= null;
+        try {
+            stack = trucker.showStack(index,gameController.getGame());
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), false);
+        }
         return new ReturnStackEvent(stack);
     }
 
