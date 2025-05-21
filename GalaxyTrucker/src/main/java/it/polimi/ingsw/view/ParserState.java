@@ -10,5 +10,5 @@ public enum ParserState {
     ACTIVATE_ENGINES,
     ACTIVATE_SHIELD,
     DRAW_CARD,
-    DO_NOTHING
+    LAND, DO_NOTHING
 }
