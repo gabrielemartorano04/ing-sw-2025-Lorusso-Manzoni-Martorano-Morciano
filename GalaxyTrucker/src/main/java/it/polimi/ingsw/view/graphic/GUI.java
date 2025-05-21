@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.graphic;
 
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
@@ -306,9 +307,14 @@ public class GUI extends UI {
     }
 
     @Override
-    public void showStack(ArrayList<Card> stack) {
-        Platform.runLater(() -> controller.showStack(stack));
+    public void showStack(Stack stack) {
+
     }
+
+//    @Override
+//    public void showStack(ArrayList<Card> stack) {
+//        Platform.runLater(() -> controller.showStack(stack));
+//    }
 
     @Override
     public void showComponentSelected(Component component) {

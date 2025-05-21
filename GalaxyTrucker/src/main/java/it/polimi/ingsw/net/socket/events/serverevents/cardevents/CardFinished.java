@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class CardFinished extends CardEvent {
     ArrayList<Trucker> truckersList = new ArrayList<>();
     public CardFinished(boolean forAll, ArrayList<Trucker> truckerList) {
-        super(ServerEventType.CARD_FINISHED, forAll, ParserState.CARD_FINISH, null);
+        super(ServerEventType.CARD_FINISHED, forAll, ParserState.DRAW_CARD, null);
         this.truckersList = truckerList;
     }
 
