@@ -9,6 +9,7 @@ import it.polimi.ingsw.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.exceptions.NotEnoughBatteries;
+import it.polimi.ingsw.view.ParserState;
 
 
 import java.io.Serializable;
@@ -108,7 +109,7 @@ public class Slavers extends Card implements Serializable {
                 this.getName(),
                 this.getDescription(),
                 Game.getIstance().getTruckerList().getFirst().getNickname(),
-                "Do you want to activate your doubleCannons?",
+                "Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ",
                 days,
                 credits,
                 -1,
@@ -121,7 +122,7 @@ public class Slavers extends Card implements Serializable {
                 null,
                 null,
                 null,
-                this.getCardState()
+                ParserState.ACTIVATE_CANNONS
         );
     }
 
@@ -142,7 +143,7 @@ public class Slavers extends Card implements Serializable {
                 }
             }else{
                 indexOfCurrentTrucker++;
-                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, this.cardState, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
             }
 
         }else {
@@ -153,7 +154,7 @@ public class Slavers extends Card implements Serializable {
                 return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, this.cardState, defeatedTruckers.getFirst().getNickname());
             }else{
                 indexOfCurrentTrucker++;
-                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, this.cardState, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
             }
         }
     }

@@ -9,6 +9,7 @@ import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.exceptions.PlanetNotFreeException;
+import it.polimi.ingsw.view.ParserState;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class Planets extends Card implements Serializable {
                         planets,
                         null,
                         null,
-                        this.getState()
+                        ParserState.PLANET_DECISION
                 );
         startCardEvent.setBank(Game.getIstance().getBank());
         return startCardEvent;
