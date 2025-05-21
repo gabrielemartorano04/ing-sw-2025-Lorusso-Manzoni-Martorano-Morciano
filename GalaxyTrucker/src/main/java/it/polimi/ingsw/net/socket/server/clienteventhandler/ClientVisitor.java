@@ -79,4 +79,6 @@ public interface ClientVisitor {
     ServerEvent visit(GainCosmicCreditsResponseEvent event);
 
     ServerEvent visit(WarzoneStartEvent event);
+
+    ServerEvent visit(RemotionSeenEvent event);
 }
