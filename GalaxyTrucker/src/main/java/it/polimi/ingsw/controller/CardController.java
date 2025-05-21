@@ -157,6 +157,22 @@ public class CardController {
         }
     }
 
+    public ServerEvent handleCurrentCondition() {
+        try {
+            return currCard.handleCurrentCondition();
+        } catch (WrongCallerException | GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        }
+    }
+
+    public ServerEvent findWeakestTrucker() {
+        try {
+            return currCard.findWeakestTrucker();
+        } catch (WrongCallerException | GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
+        }
+    }
+
     public ServerEvent startCard(){
         return currCard.startCard();
     }
