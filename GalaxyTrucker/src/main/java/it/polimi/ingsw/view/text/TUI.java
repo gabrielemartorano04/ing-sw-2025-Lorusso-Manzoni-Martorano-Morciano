@@ -86,28 +86,86 @@ public class TUI extends UI {
     @Override
     public void showAvailableComponent(ArrayList<Component> components) {
         System.out.println("=== Available components ===");
+
+        int numCols = 6;
+        int colCount = 0;
+
+        List<StringBuilder> lines = new ArrayList<>();
+        for (int i = 0; i < 7; i++) lines.add(new StringBuilder()); // ogni componente ha 7 righe di output
+
         int i = 0;
-        int numCols = 3;
 
         for (int originalIndex = 0; originalIndex < components.size(); originalIndex++) {
             Component c = components.get(originalIndex);
 
             if (!c.getSelected()) {
-                String info;
+                String id = String.format("%3d", i);
+
                 if (c.getCovered()) {
-                    info = "covered";
+                    lines.get(0).append(id).append(") _______            ");
+                    lines.get(1).append("    |       |           ");
+                    lines.get(2).append("    |       |           ");
+                    lines.get(3).append("    |       |           ");
+                    lines.get(4).append("    |_______|           ");
+
                 } else {
-                    info = String.format("%s [N:%s E:%s S:%s W:%s]",
-                            c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+                    lines.get(0).append(id).append(") _______            ");
+                    String mid1, mid2, mid3 = "";
+
+                    switch (c) {
+                        case Cannon cannon -> {
+                            mid1 = String.format("    |   %s   | %-10s", c.getLink()[0], cannon.getIsDouble() ? "DOUBLE" : "CANNON");
+                            mid2 = String.format("    | %d %c %d | %-10s", c.getLink()[3], c.getType().charAt(0), c.getLink()[1], cannon.getIsDouble() ? "CANNON" : " ");
+                            mid3 = String.format("    |   %s   | %-10s", c.getLink()[2], " ");
+                        }
+                        case Engine engine -> {
+                            mid1 = String.format("    |   %s   | %-10s", c.getLink()[0], engine.getIsDouble() ? "DOUBLE" : "ENGINE");
+                            mid2 = String.format("    | %d %c %d | %-10s", c.getLink()[3], c.getType().charAt(0), c.getLink()[1], engine.getIsDouble() ? "ENGINE" : " ");
+                            mid3 = String.format("    |   %s   | %-10s", c.getLink()[2], " ");
+                        }
+                        case Load load -> {
+                            mid1 = String.format("    |   %s   | %-10s", c.getLink()[0], load.getIsSpecial() ? "SPECIAL" : "LOAD");
+                            mid2 = String.format("    | %d %c %d | %-10s", c.getLink()[3], c.getType().charAt(0), c.getLink()[1], load.getIsSpecial() ? "LOAD" : " ");
+                            mid3 = String.format("    |   %s   | %-10s", c.getLink()[2], load.getIsSpecial() ? String.format("(Cap: %d)", load.getCapacity()) : " ");
+                        }
+                        case BatteryStorage battery -> {
+                            mid1 = String.format("    |   %s   | %-10s", c.getLink()[0], "BATTERY");
+                            mid2 = String.format("    | %d %c %d | %-10s", c.getLink()[3], c.getType().charAt(0), c.getLink()[1], "STORAGE");
+                            mid3 = String.format("    |   %s   | %-10s", c.getLink()[2], String.format("(Cap: %d)", battery.getCapacity()));
+                        }
+                        case LifeSupport ls -> {
+                            mid1 = String.format("    |   %s   | %-10s", c.getLink()[0], "LIFE");
+                            mid2 = String.format("    | %d %c %d | %-10s", c.getLink()[3], c.getType().charAt(0), c.getLink()[1], "SUPPORT");
+                            mid3 = String.format("    |   %s   | %-10s", c.getLink()[2], String.format("(Col: %s)", ls.getColor()));
+                        }
+                        case Shield sh -> {
+                            mid1 = String.format("    |   %s   | %-10s", c.getLink()[0], "SHIELD");
+                            mid2 = String.format("    | %d %c %d | %-10s", c.getLink()[3], c.getType().charAt(0), c.getLink()[1], String.format("(Dir: %s)", sh.getDirection()));
+                            mid3 = String.format("    |   %s   | %-10s", c.getLink()[2], " ");
+                        }
+                        default -> {
+                            mid1 = String.format("    |   %s   | %-10s", c.getLink()[0], c.getType().toUpperCase());
+                            mid2 = String.format("    | %d %c %d | %-10s", c.getLink()[3], c.getType().charAt(0), c.getLink()[1], " ");
+                            mid3 = String.format("    |   %s   | %-10s", c.getLink()[2], " ");
+                        }
+                    }
+
+                    lines.get(1).append(mid1);
+                    lines.get(2).append(mid2);
+                    lines.get(3).append(mid3);
+                    lines.get(4).append("    |_______|           ");
                 }
 
-                System.out.printf("%2d) %-30s", i, info);
-
-                if ((i + 1) % numCols == 0 || originalIndex == components.size() - 1) {
-                    System.out.println();
+                colCount++;
+                if (colCount == numCols || originalIndex == components.size() - 1) {
+                    for (StringBuilder line : lines) {
+                        System.out.println(line);
+                        line.setLength(0); // reset per la prossima riga
+                    }
+                    colCount = 0;
                 }
+                i++;
             }
-            i++;
         }
     }
 
@@ -128,13 +186,13 @@ public class TUI extends UI {
 
     @Override
     public void showComponentOptions() {
-        System.out.println("Options: [Link x y (to link the component in the position x y of your spaceship)] [Keep] [Discard]");
+        System.out.println("Options: [Link <row> <column> (to link the component in the position x,y of your spaceship)] [Keep] [Discard]");
         System.out.print("Choose your action: ");
     }
 
     @Override
     public void showBuildOptions() {
-        System.out.println("Options: [Hourglass] [select x] [Stack x] [End] [selectKept x]");
+        System.out.println("Options: [Select <x>] [SelectKept <x>] [Stack <x>] [Hourglass] [End]");
         System.out.print("Choose your action: ");
     }
 
@@ -344,141 +402,142 @@ public class TUI extends UI {
         };
 
         // Intestazione colonne (sopra)
-        System.out.print("      ");
+        System.out.print("       ");
         for (int col = 4; col < 11; col++) {
-            System.out.printf("   %d   ", col);
+            System.out.printf("   %2d    ", col);
         }
         System.out.println();
 
         for (int i = 5; i < 10; i++) {
-            String rowStr = String.format("%2d", i); // 5 → " 5", 10 → "10"
+            String rowStr = String.format("%2d", i);
 
             // Riga superiore
-            System.out.print("      ");
+            System.out.print("       ");
             for (int j = 4; j < 11; j++) {
-                System.out.print(validCells[i][j] ? " _____ " : "       ");
+                System.out.print(validCells[i][j] ? " _______ " : "         ");
             }
             System.out.println();
 
             // Riga link sopra
-            System.out.print("      ");
+            System.out.print("       ");
             for (int j = 4; j < 11; j++) {
                 Component c = layout[i][j];
-                if (!validCells[i][j]) System.out.print("       ");
-                else System.out.printf("|  %s  |", c == null ? " " : c.getLink()[0]);
+                if (!validCells[i][j]) System.out.print("         ");
+                else System.out.printf("|   %s   |", c == null ? " " : c.getLink()[0]);
             }
             System.out.println();
 
             // Riga centrale con numero riga sinistra
-            System.out.print("  " + rowStr + "  ");
+            System.out.print("  " + rowStr + "   ");
             for (int j = 4; j < 11; j++) {
                 Component c = layout[i][j];
-                if (!validCells[i][j]) System.out.print("       ");
-                else if (c == null) System.out.print("|     |");
-                else System.out.printf("|%d %c %d|", c.getLink()[3], c.getType().charAt(0), c.getLink()[1]);
+                if (!validCells[i][j]) System.out.print("         ");
+                else if (c == null) System.out.print("|       |");
+                else System.out.printf("| %d %c %d |", c.getLink()[3], c.getType().toUpperCase().charAt(0), c.getLink()[1]);
             }
-            System.out.println("  " + rowStr); // Numero riga destra
+            System.out.println("   " + rowStr);
 
             // Riga link sotto
-            System.out.print("      ");
+            System.out.print("       ");
             for (int j = 4; j < 11; j++) {
                 Component c = layout[i][j];
-                if (!validCells[i][j]) System.out.print("       ");
-                else System.out.printf("|  %s  |", c == null ? " " : c.getLink()[2]);
+                if (!validCells[i][j]) System.out.print("         ");
+                else System.out.printf("|   %s   |", c == null ? " " : c.getLink()[2]);
             }
             System.out.println();
 
             // Riga inferiore
-            System.out.print("      ");
+            System.out.print("       ");
             for (int j = 4; j < 11; j++) {
-                System.out.print(validCells[i][j] ? "|_____|" : "       ");
+                System.out.print(validCells[i][j] ? "|_______|" : "         ");
             }
             System.out.println();
         }
 
         // Intestazione colonne (sotto)
-        System.out.print("      ");
+        System.out.print("       ");
         for (int col = 4; col < 11; col++) {
-            System.out.printf("   %d   ", col);
+            System.out.printf("   %2d    ", col);
         }
         System.out.println();
 
+        // Dettagli componenti
+        System.out.println("\nComponents details:");
         for (int i = 5; i < 10; i++) {
             for (int j = 4; j < 11; j++) {
                 if (!validCells[i][j]) continue;
                 Component c = layout[i][j];
                 if (c == null) continue;
 
-                if(c.getType().equals("Engine") || c.getType().equals("Cannon") || c.getType().equals("Load") || c.getType().equals("Shield") || c.getType().equals("Battery Storage") || c.getType().equals("Cabin") || c.getType().equals("Life Support")){
-                    System.out.println("Components details:");
-                    String type = c.getType();
-                    StringBuilder details = new StringBuilder();
-
-                    switch (c) {
-                        case Engine engine -> {
-                            if (engine.getIsDouble()) {
-                                details.append("[" + i + "," + j + "] ");
-                                details.append(" Double engine");
-                            }
-                        }
-                        case Cannon cannon -> {
-                            if (cannon.getIsDouble()) {
-                                details.append("[" + i + "," + j + "] ");
-                                details.append(" Double cannon");
-                            }
-                        }
-                        case Load load -> {
-                            if (load.getIsSpecial()) {
-                                details.append("[" + i + "," + j + "] ");
-                                details.append(" Special load");
-                                if (!load.getGoods().isEmpty()) {
-                                    details.append(" contains: ");
-                                    for (Goods g : load.getGoods()) {
-                                        details.append(g.getColor());
-                                    }
-                                }
-                            } else if (!load.getGoods().isEmpty() && !load.getIsSpecial()) {
-                                details.append("[" + i + "," + j + "] ");
-                                details.append(" Load contains:");
+                StringBuilder details = new StringBuilder();
+                switch (c) {
+                    case Engine engine -> {
+                        if (engine.getIsDouble())
+                            details.append("[").append(i).append(",").append(j).append("] DOUBLE ENGINE");
+                        else
+                            details.append("[").append(i).append(",").append(j).append("] ENGINE");
+                    }
+                    case Cannon cannon -> {
+                        if (cannon.getIsDouble())
+                            details.append("[").append(i).append(",").append(j).append("] DOUBLE CANNON (Direction: ").append(cannon.getOrientation()).append(")");
+                        else
+                            details.append("[").append(i).append(",").append(j).append("] CANNON (Direction: ").append(cannon.getOrientation()).append(")");
+                    }
+                    case Load load -> {
+                        if (load.getIsSpecial()) {
+                            details.append("[").append(i).append(",").append(j).append("] SPECIAL LOAD (Capacity: ").append(load.getCapacity()).append(")");
+                            if (!load.getGoods().isEmpty()) {
+                                details.append(" contains: ");
                                 for (Goods g : load.getGoods()) {
-                                    details.append(g.getColor());
+                                    details.append(g.getColor()).append(" ");
                                 }
+                            } else {
+                                details.append(" is empty");
                             }
-                        }
-                        case Shield shield -> {
-                            details.append("[" + i + "," + j + "] ");
-                            details.append(" Shield direction: " + shield.getDirection());
-                        }
-                        case BatteryStorage batteryStorage -> {
-                            if(batteryStorage.getQuantity() == 1) {
-                                details.append("[" + i + "," + j + "] ");
-                                details.append(" Battery contains " + batteryStorage.getQuantity() + " battery");
-                            } else if(batteryStorage.getQuantity() > 1) {
-                                details.append("[" + i + "," + j + "] ");
-                                details.append(" Battery contains " + batteryStorage.getQuantity() + " batteries");
+                        } else {
+                            details.append("[").append(i).append(",").append(j).append("] LOAD (Capacity: ").append(load.getCapacity()).append(")");
+                            if (!load.getGoods().isEmpty()) {
+                                details.append(" contains: ");
+                                for (Goods g : load.getGoods()) {
+                                    details.append(g.getColor()).append(" ");
+                                }
+                            } else {
+                                details.append(" is empty");
                             }
-                        }
-                        case Cabin cabin -> {
-                            if(cabin.getQuantity() == 1 && cabin.getAlien() != null) {
-                                details.append("[" + i + "," + j + "] ");
-                                details.append(" Cabin contains " + cabin.getQuantity() + "alien");
-                            } else if(cabin.getQuantity() == 1 && cabin.getAlien() == null) {
-                                details.append("[" + i + "," + j + "] ");
-                                details.append(" Cabin contains " + cabin.getQuantity() + "human");
-                            } else if(cabin.getQuantity() > 1 && cabin.getAlien() == null) {
-                                details.append("[" + i + "," + j + "] ");
-                                details.append(" Cabin contains " + cabin.getQuantity() + "humans");
-                            }
-                        }
-                        case LifeSupport lifeSupport -> {
-                            details.append("[" + i + "," + j + "] ");
-                            details.append(lifeSupport.getColor() + " life support");
-                        }
-                        default -> {
                         }
                     }
-                    System.out.println(details);
+                    case Shield shield -> {
+                        details.append("[").append(i).append(",").append(j).append("] SHIELD (direction: ").append(shield.getDirection()).append(")");
+                    }
+                    case BatteryStorage battery -> {
+                        details.append("[").append(i).append(",").append(j).append("] BATTERY STORAGE (Capacity: ").append(battery.getCapacity()).append(") ");
+                        if(battery.getQuantity() != 0) {
+                            details.append(" contains ").append(battery.getQuantity()).append(battery.getQuantity() == 1 ? " battery" : " batteries");
+                        } else {
+                            details.append(" is empty");
+                        }
+                    }
+                    case Cabin cabin -> {
+                        details.append("[").append(i).append(",").append(j).append("] CABIN");
+                        if(cabin.getQuantity() != 0){
+                            if (cabin.getAlien() != null) {
+                                details.append(cabin.getQuantity()).append(" contains 1 alien");
+                            } else {
+                                details.append(" contains ").append(cabin.getQuantity()).append(cabin.getQuantity() == 1 ? " human" : " humans");
+                            }
+                        } else {
+                            details.append(" is empty");
+                        }
+
+                    }
+                    case LifeSupport lifeSupport -> {
+                        details.append("[").append(i).append(",").append(j).append("] ").append("LIFE SUPPORT is ").append(lifeSupport.getColor());
+                    }
+                    default -> {
+                        details.append("[").append(i).append(",").append(j).append("] ").append(c.getType().toUpperCase());
+                    }
                 }
+                System.out.println(details);
             }
         }
     }
@@ -601,25 +660,52 @@ public class TUI extends UI {
 
     @Override
     public void showComponentSelected(Component c) {
-        String info;
+        StringBuilder info = new StringBuilder();
 
-        if ("engine".equalsIgnoreCase(c.getType())) {
-            Engine engine = (Engine) c;
-            info = String.format("ENGINE [N:%s E:%s S:%s W:%s] (Double: %s)\n",
-                    engine.getLink()[0], engine.getLink()[1], engine.getLink()[2], engine.getLink()[3],
-                    engine.getIsDouble());
-        } else if ("cannon".equalsIgnoreCase(c.getType())) {
-            Cannon cannon = (Cannon) c;
-            info = String.format("CANNON [N:%s E:%s S:%s W:%s] (Double: %s)\n",
-                    cannon.getLink()[0], cannon.getLink()[1], cannon.getLink()[2], cannon.getLink()[3],
-                    cannon.getIsDouble());
-        } else {
-            info = String.format("%s [N:%s E:%s S:%s W:%s]\n",
-                    c.getType(), c.getLink()[0], c.getLink()[1], c.getLink()[2], c.getLink()[3]);
+        switch(c) {
+            case Engine engine -> {
+                if(engine.getIsDouble()) {
+                    info.append("DOUBLE ");
+                }
+                info.append("ENGINE");
+            }
+            case Cannon cannon -> {
+                if(cannon.getIsDouble()) {
+                    info.append("DOUBLE ");
+                }
+                info.append("CANNON");
+            }
+            case Load load -> {
+                if(load.getIsSpecial()) {
+                    info.append("SPECIAL ");
+                }
+                info.append("LOAD (Capacity: " + load.getCapacity() + ")");
+            }
+            case Shield shield -> {
+                info.append("SHIELD (Direction: " + shield.getDirection() + ")");
+            }
+            case BatteryStorage batteryStorage -> {
+                info.append("BATTERY STORAGE (Capacity: " + batteryStorage.getCapacity() + ")");
+            }
+            case Cabin cabin -> {
+                info.append("CABIN (Capacity: " + cabin.getQuantity() + ")");
+            }
+            case LifeSupport lifeSupport -> {
+                info.append("LIFE SUPPORT (Colour: " + lifeSupport.getColor() + ")");
+            }
+            default -> {
+                info.append(c.getType().toUpperCase());
+            }
         }
+        System.out.println(info);
+        System.out.print(" _______ \n");
+        System.out.printf("|   %s   |\n", c.getLink()[0]);
+        System.out.printf("| %d %c %d |\n", c.getLink()[3], c.getType().charAt(0), c.getLink()[1]);
+        System.out.printf("|   %s   |\n", c.getLink()[2]);
+        System.out.print("|_______|\n");
 
-        System.out.print(info);
     }
+
     //todo finisci
     @Override
     public void showInputFormat(ParserState parserState) {
