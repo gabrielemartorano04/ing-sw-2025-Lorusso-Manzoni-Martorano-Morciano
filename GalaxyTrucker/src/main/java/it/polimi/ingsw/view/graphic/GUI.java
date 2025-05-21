@@ -26,7 +26,7 @@ public class GUI extends UI {
     private ClientEvent currentEvent;
     private Component selectedComponent;
 
-    public GUI(Stage stage) {
+    public GUI(Stage stage, GUIController controller) {
         this.stage = stage;
         initFXML();
     }
