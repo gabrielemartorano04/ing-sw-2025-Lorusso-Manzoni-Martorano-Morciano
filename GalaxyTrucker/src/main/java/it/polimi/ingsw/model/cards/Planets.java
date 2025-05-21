@@ -60,7 +60,7 @@ public class Planets extends Card implements Serializable {
         this.currGoodIndex = 0;
         this.indexOfPlanet = 0;
         this.indexOfTrucker = 0;
-        this.state=CardState.ATTESA_PIANETI;
+        this.state=CardState.PIANETI;
         this.currentGood = null;
         this.currentGoodsList = new ArrayList<>();
         this.goodsPassed = new ArrayList<>();
@@ -95,7 +95,7 @@ public class Planets extends Card implements Serializable {
 
     @Override
     public ServerEvent playerLandingPlanets(int indexOfPlanet) throws GeneralError, PlanetNotFreeException {
-        if(state != CardState.ATTESA_PIANETI){
+        if(state != CardState.PIANETI){
             throw new GeneralError("Can't land in the state: " + this.state);
         }
         if(indexOfPlanet < -1 || indexOfPlanet >= this.planets.size()){
