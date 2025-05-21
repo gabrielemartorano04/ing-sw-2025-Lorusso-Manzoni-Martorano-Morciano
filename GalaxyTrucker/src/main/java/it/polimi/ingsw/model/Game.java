@@ -52,6 +52,9 @@ public class Game {
         }
         this.deck = new Deck();
         this.cardStacks = new Stack[4];
+        for(int i=0; i<4; i++){
+            cardStacks[i] = new Stack(i);
+        }
         this.bank = new Bank();
         this.gameState = GameState.SETUP;
         this.availableColors = EnumSet.allOf(PlayerColors.class);

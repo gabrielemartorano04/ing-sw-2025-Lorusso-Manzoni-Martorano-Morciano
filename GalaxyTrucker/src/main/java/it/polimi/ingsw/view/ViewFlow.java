@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Cabin;
 import it.polimi.ingsw.model.components.Component;
@@ -48,17 +49,17 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private ArrayList<Component> keptComponent= new ArrayList<>();
     private ViewState viewState;
     private TimerDisplay timerDisplay;
-    private ArrayList<Card>[] stacks;
+    private Stack[] stacks;
     private boolean isFromKept;
     private boolean nameAlreadySet;
     private boolean end;
     private boolean sentCabinCoord;
     private boolean startFlight;
     private boolean startFlightForAll;
-    private boolean[] stackSelected;
+    private int stackSelected;
 
 
-    public void setStacks(ArrayList<Card>[] stacks) {
+    public void setStacks(Stack[] stacks) {
         this.stacks=stacks;
     }
 
@@ -93,10 +94,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.nameAlreadySet = false;
         this.end = false;
         this.sentCabinCoord = false;
-        this.stackSelected = new boolean[3];
-        for (int i = 0; i < 3; i++) {
-            stackSelected[i] = false;
-        }
+        this.stackSelected=-1;
         this.goodsByColor = new HashMap<>(){
             {
                 put("RED",0);
@@ -198,7 +196,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 //                            } else {
 
 
-                                event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept);
+                                event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected);
 
                         }
                         else {
@@ -422,8 +420,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         return inputParserFlight.getParserState();
     }
 
-    public void setStackSelected(int i, boolean selected) {
-        this.stackSelected[i] = selected;
+    public void setHasStack(int i) {
+        this.stackSelected = i;
     }
 }
 

@@ -76,35 +76,36 @@ public ClientEvent parseFirstConnection(String input) {
         return null;
     }
 
-    public ClientEvent parseBuilding(String input, Component component, int index,ArrayList<Component> kept, boolean isFromKept){
+    public ClientEvent parseBuilding(String input, Component component, int index,ArrayList<Component> kept, boolean isFromKept, int stackSelected){
         if (input == null || input.isEmpty()) {
             return null;
         }
         String[] tokens = input.split("\\s+", 3);
         String command = tokens[0].toLowerCase();
-            if(component!=null){
-                if(isFromKept){
-                    switch (command){
+        if(stackSelected==-1) {
+            if (component != null) {
+                if (isFromKept) {
+                    switch (command) {
                         case "turn":
-                            if(tokens.length!=1){
+                            if (tokens.length != 1) {
                                 System.out.println("Error: illegal command.");
                                 return null;
                             }
                             return new TurnComponentEvent(component);
                         case "link":
-                            if(tokens.length!=3){
+                            if (tokens.length != 3) {
                                 System.out.println("Error: illegal command. Type 'link <x> <y>'.");
                                 return null;
                             }
                             return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
                         case "keep":
-                            if(tokens.length!=1){
+                            if (tokens.length != 1) {
                                 System.out.println("Error: illegal command. Type 'keep <index>'.");
                                 return null;
                             }
                             return new KeepTileEvent(component);
                         case "ship":
-                            if(tokens.length!=2){
+                            if (tokens.length != 2) {
                                 System.out.println("Error: illegal command. Type 'ship <nickname>'.");
                                 return null;
                             }
@@ -114,95 +115,109 @@ public ClientEvent parseFirstConnection(String input) {
                             return null;
                     }
                 }
-                switch (command){
+                switch (command) {
                     case "turn":
-                        if(tokens.length!=1){
+                        if (tokens.length != 1) {
                             System.out.println("Error: illegal command.");
                             return null;
                         }
                         return new TurnComponentEvent(component);
                     case "ship":
-                        if(tokens.length!=2){
+                        if (tokens.length != 2) {
                             System.out.println("Error: illegal command. Type 'ship <nickname>'.");
                             return null;
                         }
                         return new ShowOtherShipEvent(tokens[1].trim());
 
                     case "link":
-                        if(tokens.length!=3){
+                        if (tokens.length != 3) {
                             System.out.println("Error: illegal command. Type 'link <x> <y>'.");
                             return null;
                         }
                         return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
                     case "keep":
-                        if(tokens.length!=1){
+                        if (tokens.length != 1) {
                             System.out.println("Error: illegal command. Type 'keep' if you want to keep the selected component.");
                             return null;
                         }
                         return new KeepTileEvent(component);
                     case "discard":
-                        if(tokens.length!=1){
+                        if (tokens.length != 1) {
                             System.out.println("Error: illegal command. Type 'discard' if you want to discard the selected component.");
                             return null;
                         }
                         return new DiscardTileEvent(index);
-                    default: System.out.println("Error: unknown command: " + command);
+                    default:
+                        System.out.println("Error: unknown command: " + command);
                         return null;
                 }
-            }else {
+            } else {
                 switch (command) {
                     case "ship":
-                        if(tokens.length!=2){
+                        if (tokens.length != 2) {
                             System.out.println("Error: illegal command. Type 'ship <nickname>'.");
                             return null;
                         }
                         return new ShowOtherShipEvent(tokens[1].trim());
                     case "hourglass":
-                        if(tokens.length!=1){
+                        if (tokens.length != 1) {
                             System.out.println("Error: illegal command. Type 'hourglass' if you want to turn the hourglass");
                             return null;
                         }
                         return new TurnHourglassEvent();
                     case "select":
-                        if(tokens.length!=2){
+                        if (tokens.length != 2) {
                             System.out.println("Error: illegal command. Type 'select <index>'.");
                             return null;
                         }
                         return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
 
                     case "selectkept":
-                        int ind=Integer.parseInt(tokens[1].trim());
-                        if(tokens.length!=2){
+                        int ind = Integer.parseInt(tokens[1].trim());
+                        if (tokens.length != 2) {
                             System.out.println("Error: illegal command. Type 'selectkept <index>'.");
                             return null;
                         }
-                        if(ind<0 || ind>kept.size()-1){
+                        if (ind < 0 || ind > kept.size() - 1) {
                             System.out.println("Please type a valid index. Type 'selectkept <index>'.");
                             return null;
                         }
                         return new SelectKeptTileEvent(ind);
 
                     case "stack":
-                        if(tokens.length!=2){
+                        if (tokens.length != 2) {
                             System.out.println("Error: illegal command. Type 'stack <index>'.");
                             return null;
                         }
-                        if(Integer.parseInt(tokens[1].trim())>=1 && Integer.parseInt(tokens[1].trim())<=3) {
+                        if (Integer.parseInt(tokens[1].trim()) >= 1 && Integer.parseInt(tokens[1].trim()) <= 3) {
                             return new ShowStackEvent(Integer.parseInt(tokens[1].trim()) - 1);
-                        }else{
+                        } else {
                             System.out.println("Error: illegal stack number. Please select a stack between 1 and 3 or choose another command");
-                        } return null;
+                        }
+                        return null;
                     case "end":
-                        if(tokens.length!=1){
+                        if (tokens.length != 1) {
                             System.out.println("Error: illegal command. Type 'end' if you want to end building phase.");
                             return null;
                         }// il client finisce e aspetta o che tutti finiscono o che il timer
                         return new EndBuildingEvent();
-                    default: System.out.println("Error: unknown command: " + command + ". Please select a valid command");
+                    default:
+                        System.out.println("Error: unknown command: " + command + ". Please select a valid command");
                         return null;
                 }
             }
-
+        }else{
+            if(command.equals("dropstack")) {
+                if (tokens.length != 1) {
+                    System.out.println("Error: illegal command. Type 'dropstack' if you want to drop your stack and proceed");
+                    return null;
+                }
+                return new StackDroppedEvent(stackSelected);
+            }else {
+                System.out.println("Error: illegal command. Type 'dropstack' if you want to drop your stack and proceed");
+                return null;
+            }
+        }
     }
 
     public ClientEvent parseFillTheShip(String input){

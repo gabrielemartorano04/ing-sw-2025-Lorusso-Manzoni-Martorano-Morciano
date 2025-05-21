@@ -1,10 +1,7 @@
 package it.polimi.ingsw.net.socket.events.serverevents.buildingevents;
 
 
-import it.polimi.ingsw.model.AvailableComponents;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
@@ -22,15 +19,14 @@ import java.util.ArrayList;
 
 public class StartBuildingEvent extends ServerEvent {
     private String message;
-    private
-    ArrayList<Card>[] stacks;
+    private Stack[] stacks;
     private final SpaceShip spaceShip;
     private int seconds;
     private ArrayList<Component> components;
     private final String nickname;
     private ArrayList<String> players;
 
-    public StartBuildingEvent(String username, SpaceShip spaceShip, ArrayList<Card>[] stacks, ArrayList<Component> availableComponents, int seconds, ArrayList<String> players) {
+    public StartBuildingEvent(String username, SpaceShip spaceShip, Stack[] stacks, ArrayList<Component> availableComponents, int seconds, ArrayList<String> players) {
         super(ServerEventType.START_BUILDING, true);
         message = username + " logged\nIt's time to start building";
         this.nickname = username;
@@ -58,7 +54,7 @@ public class StartBuildingEvent extends ServerEvent {
         return spaceShip;
     }
 
-    public ArrayList<Card>[] getStacks() {return stacks;}
+    public Stack[] getStacks() {return stacks;}
 
     public ArrayList<Component> getComponents() {return components;}
 
