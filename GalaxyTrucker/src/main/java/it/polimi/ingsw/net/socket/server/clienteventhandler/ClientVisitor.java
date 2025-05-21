@@ -72,7 +72,11 @@ public interface ClientVisitor {
 
     ServerEvent visit(RemoveBatteriesEvent event);
 
-    ServerEvent visit(TurnComponentEvent turnComponentEvent);
+    ServerEvent visit(TurnComponentEvent event);
 
     ServerEvent visit(StackDroppedEvent event);
+
+    ServerEvent visit(GainCosmicCreditsResponseEvent event);
+
+    ServerEvent visit(WarzoneStartEvent event);
 }
