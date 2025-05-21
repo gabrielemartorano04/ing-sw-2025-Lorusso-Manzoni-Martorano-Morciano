@@ -14,7 +14,7 @@ public class EpidemicEvent extends ServerEvent {
     private String cardDescription;
     private String cardName;
 
-    public EpidemicEvent(String cardName, String cardDescripition ,boolean forAll, CardState state, ArrayList<Trucker> turckerList) {
+    public EpidemicEvent(String cardName, String cardDescripition ,boolean forAll, ArrayList<Trucker> turckerList) {
         super(ServerEventType.CARD_FINISHED, forAll);
         this.truckers = turckerList;
         this.cardDescription = cardDescripition;

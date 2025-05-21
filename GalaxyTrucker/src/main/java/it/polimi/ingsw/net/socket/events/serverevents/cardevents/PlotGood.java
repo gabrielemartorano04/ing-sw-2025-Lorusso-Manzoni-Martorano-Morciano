@@ -4,12 +4,13 @@ import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+import it.polimi.ingsw.view.ParserState;
 
 public class PlotGood extends CardEvent{
     private final Goods good;
 
-    public PlotGood(boolean forAll, CardState cardState, String nickname, Goods good) {
-        super(ServerEventType.PLOT_GOODS, forAll, cardState, nickname);
+    public PlotGood(boolean forAll, String nickname, Goods good) {
+        super(ServerEventType.PLOT_GOODS, forAll, ParserState.PLOT_GOOD, nickname);
         this.good = good;
     }
 

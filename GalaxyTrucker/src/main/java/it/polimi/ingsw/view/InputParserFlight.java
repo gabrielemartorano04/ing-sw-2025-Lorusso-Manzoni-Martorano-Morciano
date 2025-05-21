@@ -200,9 +200,14 @@ public class InputParserFlight {
                 if(land[0].trim().equals("n")){
                     return new TruckerLandingEvent(false);
                 }
-                else if(land[0].trim().equals("y")){
+                else if(land[0].trim().equals("y")) {
                     return new TruckerLandingEvent(true);
                 }
+            case COSMIC_CREDITS:
+            case REARRANGE:
+            case REMOTION:
+            case REMOVE_BATTERIES:
+            case REMOVE_GOODS:
             default: {
                 System.out.println("Error: invalid command. Stato non gestito");
                 return null;

@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.GameAlreadyStartedException;
 import it.polimi.ingsw.exceptions.InvalidStateException;
 import it.polimi.ingsw.exceptions.NicknameUsedException;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
@@ -129,7 +130,7 @@ public class GameController {
         scheduler.shutdown(); // ferma il controllo
     }
 
-    public ArrayList<Card> showStack(int stackIndex) {
+    public Stack showStack(int stackIndex) {
         return game.viewStack(stackIndex);
     }
 

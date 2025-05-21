@@ -4,6 +4,7 @@ package it.polimi.ingsw.net.socket.server.clienteventhandler;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
@@ -214,7 +215,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(ShowStackEvent event) {
         int index=event.getIndex();
         TruckerController trucker=currentClient.getTruckerController();
-        ArrayList<Card> stack=trucker.showStack(index,gameController.getGame());
+        Stack stack=trucker.showStack(index,gameController.getGame());
         return new ReturnStackEvent(stack);
     }
 

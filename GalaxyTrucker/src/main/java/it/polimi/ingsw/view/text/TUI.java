@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.text;
 
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
@@ -8,6 +9,7 @@ import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.view.InputReader;
+import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 
 import java.util.*;
@@ -572,16 +574,16 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showStack(ArrayList<Card> stack) {
+    public void showStack(Stack stack) {
         System.out.println("\nCards in the stack:");
 
-        if (stack == null || stack.isEmpty()) {
+        if (stack == null || stack.getStack().isEmpty()) {
             System.out.println("[ Empty stack ]");
             return;
         }
 
-        for (int i = 0; i < stack.size(); i++) {
-            Card card = stack.get(i);
+        for (int i = 0; i < stack.getStack().size(); i++) {
+            Card card = stack.getStack().get(i);
             System.out.printf(" [%02d] %-15s (Level %d)%n",
                     i, card.getName(), card.getLevel());
         }
@@ -607,5 +609,21 @@ public class TUI extends UI {
         }
 
         System.out.print(info);
+    }
+    //todo finisci
+    @Override
+    public void showInputFormat(ParserState parserState) {
+        switch (parserState){
+            case ACTIVATE_ENGINES -> System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
+            case ACTIVATE_CANNONS -> System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
+            case ACTIVATE_SHIELD -> System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x> <y>, <x> <y>' or 'n': ");
+            case LAND -> System.out.println("Type 'y' if you want to land, else 'n'");
+            case HUMAN_COORD -> System.out.println();
+            case PLOT_GOOD -> System.out.println();
+            case ROLL_DICE -> System.out.println("Type 'roll' to roll the dices when you're ready.");
+            case CARD_FINISH->System.out.println();
+            case PLANET_DECISION->System.out.println();
+            case DRAW_CARD ->System.out.println();
+        }
     }
 }
