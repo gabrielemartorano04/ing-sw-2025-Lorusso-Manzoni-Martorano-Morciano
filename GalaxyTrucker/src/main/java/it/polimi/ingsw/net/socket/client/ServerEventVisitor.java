@@ -153,4 +153,6 @@ public interface ServerEventVisitor {
     void visit(TurnedComponentSuccessEvent turnedComponentSuccessEvent);
 
     void visit(CurrentCondition currentCondition);
+
+    void visit(StackDropOk event);
 }

@@ -224,8 +224,37 @@ public class InputParserFlight {
                 else if(cosmicCredits[0].trim().equals("y")) {
                     return new GainCosmicCreditsResponseEvent(true);
                 }
-            case REARRANGE:
+            case REARRANGE: // <y/n> , x y - v , x y - v
+                String[] rearrange=input.split("\\s*,\\s*");
+                if(rearrange[0].trim().equals("n")){
+                    return new RearrangeEvent(null,null,-1,-1,true);
+                }
+                if(rearrange[0].trim().equals("y")){
+                    String[] part1=rearrange[1].trim().split("\\s*-\\s*");
+                    String[] coord=part1[0].trim().split("\\s+");
+                    if(coord.length!=2){
+                        System.out.println("Error: invalid command");
+                        return null;
+                    }
+                    int x1=Integer.parseInt(coord[0].trim());
+                    int y1=Integer.parseInt(coord[1].trim());
+                    int value1=Integer.parseInt(part1[1].trim());
+                    String[] part2=rearrange[2].trim().split("\\s*-\\s*");
+                    String[] coord2=part2[0].trim().split("\\s+");
+                    if(coord2.length!=2){
+                        System.out.println("Error: invalid command");
+                        return null;
+                    }
+                    int x2=Integer.parseInt(coord2[0].trim());
+                    int y2=Integer.parseInt(coord2[1].trim());
+                    int value2=Integer.parseInt(part2[1].trim());
+
+                    return new RearrangeEvent(new int[]{x1,y1},new int[]{x2,y2},value1,value2,false);
+
+                }
+
             case REMOTION:
+
             case REMOVE_BATTERIES:
             case REMOVE_GOODS:
             default: {

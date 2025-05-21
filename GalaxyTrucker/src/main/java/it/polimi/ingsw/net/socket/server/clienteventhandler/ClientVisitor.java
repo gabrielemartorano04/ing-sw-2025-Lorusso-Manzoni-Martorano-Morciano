@@ -73,4 +73,6 @@ public interface ClientVisitor {
     ServerEvent visit(RemoveBatteriesEvent event);
 
     ServerEvent visit(TurnComponentEvent turnComponentEvent);
+
+    ServerEvent visit(StackDroppedEvent event);
 }
