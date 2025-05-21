@@ -328,67 +328,67 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(HumanCoordEvent event) {
-        return null;
+        return cardController.setHumansCoordinates(event);
     }
 
     @Override
     public ServerEvent visit(PlotGoodEvent event) {
-        return null;
+        return cardController.setGoodsCoordinates(event);
     }
 
     @Override
     public ServerEvent visit(PlanetDecisionEvent event) {
-        return null;
+        return cardController.playerLandingPlanets(event);
     }
 
     @Override
     public ServerEvent visit(RollDiceEvent event) {
-        return null;
+        return cardController.rollDice();
     }
 
     @Override
     public ServerEvent visit(ActivateShieldEvent event) {
-        return null;
+        return cardController.activateShield(event);
     }
 
     @Override
     public ServerEvent visit(ActivateCannonsEvent event) {
-        return null;
+        return cardController.activateCannons(event);
     }
 
     @Override
     public ServerEvent visit(ActivateEnginesEvent event) {
-        return null;
+        return cardController.activateEngines(event);
     }
 
     @Override
     public ServerEvent visit(TruckerLandingEvent event) {
-        return null;
+        return cardController.truckerLanding(event);
     }
 
     @Override
     public ServerEvent visit(RearrangeEvent event) {
-        return null;
+        return cardController.rearrange(event);
     }
 
     @Override
     public ServerEvent visit(SetWinDecision event) {
-        return null;
+        return cardController.setWinDecision(event);
     }
 
     @Override
     public ServerEvent visit(RemoveGoodsEvent event) {
-        return null;
+        return cardController.removeGoods(event);
     }
 
     @Override
     public ServerEvent visit(RemoveAskingEvent event) {
-        return null;
+        return cardController.removeAsking(event);
     }
 
     @Override
     public ServerEvent visit(RemoveBatteriesEvent event) {
-        return null;
+        return cardController.removeBatteries(event);
     }
 
     @Override
@@ -405,18 +405,22 @@ public class ClientHandlerVisitor implements ClientVisitor {
         return new StackDropOk("Stack numero " + event.getCurr() + "disponibile", false);
     }
 
+    //TODO GESTIRE QUESTI EVENTI
     @Override
     public ServerEvent visit(GainCosmicCreditsResponseEvent event) {
+        System.out.println("Evento non ancora gestito ");
         return null;
     }
 
     @Override
     public ServerEvent visit(WarzoneStartEvent event) {
+        System.out.println("Evento non ancora gestito ");
         return null;
     }
 
     @Override
     public ServerEvent visit(RemotionSeenEvent event) {
+        System.out.println("Evento non ancora gestito ");
         return null;
     }
 
