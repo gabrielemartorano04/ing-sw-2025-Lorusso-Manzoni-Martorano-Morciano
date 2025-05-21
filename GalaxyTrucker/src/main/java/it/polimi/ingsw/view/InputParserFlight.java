@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.GainCosmicCredits;
 
 import java.util.ArrayList;
 
@@ -203,7 +204,26 @@ public class InputParserFlight {
                 else if(land[0].trim().equals("y")) {
                     return new TruckerLandingEvent(true);
                 }
-            case COSMIC_CREDITS:
+            case WARZONE:
+                //todo inserire input format
+                String[] warzone=input.split("\\s+");
+                if(warzone.length!=1 || !warzone[0].trim().equals("warzone")){
+                    System.out.println("Error: invalid command");
+                    return null;
+                }
+                return new WarzoneStartEvent();
+            case COSMIC_CREDITS://dimmi si o no ai cosmic credit in base al nemico (perdi tot giorni)
+                String[] cosmicCredits=input.split("\\s+");
+                if(cosmicCredits.length!=1){
+                    System.out.println("Error: invalid command");
+                    return null;
+                }
+                if(cosmicCredits[0].trim().equals("n")){
+                    return new GainCosmicCreditsResponseEvent(false);
+                }
+                else if(cosmicCredits[0].trim().equals("y")) {
+                    return new GainCosmicCreditsResponseEvent(true);
+                }
             case REARRANGE:
             case REMOTION:
             case REMOVE_BATTERIES:

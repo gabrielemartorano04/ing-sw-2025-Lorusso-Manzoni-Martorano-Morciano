@@ -2,7 +2,6 @@ package it.polimi.ingsw.net.socket.events.serverevents.buildingevents;
 
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
-import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 
