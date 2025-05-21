@@ -222,8 +222,9 @@ public class Game {
             gameDeck.addAll(cardStack);
         }
         do{
-            Collections.shuffle(gameDeck);
-            System.out.println("sto mescolando");
+            //TODO: non mischio per debg, poi bisgona mischiare
+            //Collections.shuffle(gameDeck);
+            //System.out.println("sto mescolando");
         }while(gameDeck.getFirst().getLevel() != gameLevel);
     }
 

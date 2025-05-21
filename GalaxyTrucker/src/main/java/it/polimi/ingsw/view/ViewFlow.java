@@ -53,11 +53,16 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private boolean nameAlreadySet;
     private boolean end;
     private boolean sentCabinCoord;
-    private boolean startFlight,startFlightForAll;
+    private boolean startFlight;
+    private boolean startFlightForAll;
 
 
     public void setStacks(ArrayList<Card>[] stacks) {
         this.stacks=stacks;
+    }
+
+    public boolean getStartFlightForAll() {
+        return startFlightForAll;
     }
 
     public enum ViewState {

@@ -116,7 +116,7 @@ public class Smugglers extends Card implements Serializable {
                 days,
                 -1,
                 -1,
-                new ArrayList<>(Arrays.asList(goodsGained)),
+                Arrays.asList(goodsGained),
                 null,
                 smugglersPower,
                 -1,
@@ -319,6 +319,7 @@ public class Smugglers extends Card implements Serializable {
                     return new RemotionConfirmed(this.cardState, defeatedTruckers.get(indexOfCurrentTrucker-1).getNickname(), "You didn't have batteries or goods to be removed. Press continue!");
                 }
             }else{
+                this.cardState = CardState.REMOVE_BATTERIES;
                 return new RemoveBatteries(true, this.cardState, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsLostCurrTrucker);
             }
         }else{
