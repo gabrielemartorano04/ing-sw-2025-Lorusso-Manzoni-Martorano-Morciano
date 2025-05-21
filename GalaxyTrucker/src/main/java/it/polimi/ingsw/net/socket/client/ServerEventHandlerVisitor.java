@@ -393,23 +393,21 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     public void visit(BooleanDecision event) {
         if (event.getNickname().equals(viewFlow.getNickname())){
             System.out.println("Sono entrato, nickname view " + viewFlow.getNickname());
+            viewFlow.setParserFlightState(event.getParserState());
+
             switch (event.getEventType()){
                 case ROLL_DICE -> {
                     ui.showMessage("Type 'roll' to roll the dices when you're ready.");
-                    viewFlow.setParserFlightState(ParserState.ROLL_DICE);
                 }
                 case ACTIVATE_CANNONS -> {
                     ui.showMessage("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
-                    viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
                 }
                 case ACTIVATE_ENGINES -> {
                     ui.showMessage("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
-                    viewFlow.setParserFlightState(ParserState.ACTIVATE_ENGINES);
                 }
                 case ACTIVATE_SHIELD -> {
                     ui.showMessage("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x> <y>, <x> <y>' or 'n': ");
-                    viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
-                }
+                } //TODO FARE UN METODO A PARTE CHE IN BASE AL PARSER STATE PRINTA IL FORMATO DEL MESSAGGIO
             }
         }
         else {
@@ -419,7 +417,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         }
 
     }
-
 
     @Override
     public void visit(CardFinished event) {
@@ -515,7 +512,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
             System.out.println("Sono entrato, nickname view " + viewFlow.getNickname());
             ui.showMessage(event.getQuestion());
             viewFlow.setParserFlightState(event.getParserState());
-            //state del parser
         } else {
             System.out.println("Sono entrato, nickname view " + viewFlow.getNickname());
 
