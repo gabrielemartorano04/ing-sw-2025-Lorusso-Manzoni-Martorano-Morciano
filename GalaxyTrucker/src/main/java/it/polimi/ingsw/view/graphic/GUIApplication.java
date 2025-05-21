@@ -8,13 +8,8 @@ import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,79 +17,62 @@ import java.util.Map;
 public class GUIApplication extends Application {
 
 
-//    private AvailableComponents availableComponents;
-//    private SpaceShip spaceship;
-//    private ArrayList<Card> stack;
-//    private Map<String, Integer> mockTrack;
-//    private Component[] kept;
-    private GUI gui;
+    private AvailableComponents availableComponents;
+    private SpaceShip spaceship;
+    private ArrayList<Card> stack;
+    private Map<String, Integer> mockTrack;
+    private Component[] kept;
 
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/polimi/ingsw/GUI.fxml"));
-        Parent root = loader.load();
-
-        // Ottieni il controller dal FXML e assegnagli l'istanza GUI
-        GUIController controller = loader.getController();
-        gui = new GUI(primaryStage, controller);
-        controller.setGUI(gui);
-
-        // Imposta la scena
-        Scene scene = new Scene(root, 850, 550);
-        primaryStage.setTitle("Galaxy Trucker");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.centerOnScreen();
-        primaryStage.show();
-
-//        availableComponents = new AvailableComponents();
-//        Trucker trucker = new Trucker("luca", PlayerColors.BLUE);
-//        kept = new Component[2];
-//        stack = new ArrayList<>();
-//        Card card1 = new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "");
-//        Card card2 = new Epidemic(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_015.jpg", "");
-//        Card card3 = new AbandonedShip(false, 2, 4, 6, 1, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0117.jpg", "");
-//        stack.add(card1);
-//        stack.add(card2);
-//        stack.add(card3);
-//        spaceship = new SpaceShip(PlayerColors.RED);
+    public void start(Stage primaryStage) throws InvalidCoordinates {
+        availableComponents = new AvailableComponents();
+        Trucker trucker = new Trucker("luca", PlayerColors.BLUE);
+        kept = new Component[2];
+        stack = new ArrayList<>();
+        Card card1 = new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "");
+        Card card2 = new Epidemic(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_015.jpg", "");
+        Card card3 = new AbandonedShip(false, 2, 4, 6, 1, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0117.jpg", "");
+        stack.add(card1);
+        stack.add(card2);
+        stack.add(card3);
+        spaceship = new SpaceShip(PlayerColors.RED);
 //        Cabin cabin = new Cabin(3, 3, 3, 3, "Main Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
 //        trucker.getSpaceShip().addComponent(cabin, 7,7);
-//        kept[0] = availableComponents.getComponents().get(15);
-//        kept[1] = availableComponents.getComponents().get(130);
-//
-//        mockTrack = new HashMap<>();
-//        mockTrack.put("RED", 0);
-//        mockTrack.put("GREEN", 5);
-//        mockTrack.put("BLUE", 12);
-//        mockTrack.put("YELLOW", 20);
-//        GUI gui = new GUI(primaryStage);
-//
-//        gui.showTrack(mockTrack);
-//        //gui.showShipLayout("Luca", spaceship.getComponents());
-//        //gui.showChooseColor(EnumSet.allOf(PlayerColors.class));
-//        //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
-//        //gui.showInsertNumPlayers();
-//        //gui.showNicknameTaken();
-//        //gui.showStartCountdown(3);
-//        //gui.showBuildPhaseStart(components);
-//        //gui.showKeptComponents(kept);
-//
-//        //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
-//        //gui.showKeptComponents(kept);
-//        //gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
+        kept[0] = availableComponents.getComponents().get(15);
+        kept[1] = availableComponents.getComponents().get(130);
+
+        mockTrack = new HashMap<>();
+        mockTrack.put("RED", 0);
+        mockTrack.put("GREEN", 5);
+        mockTrack.put("BLUE", 12);
+        mockTrack.put("YELLOW", 20);
+        GUI gui = new GUI(primaryStage);
+
+        //gui.showTrack(mockTrack);
+        //gui.showShipLayout("Luca", spaceship.getComponents());
+        //gui.showChooseColor(EnumSet.allOf(PlayerColors.class));
+        //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
+        //gui.showInsertNumPlayers();
+        //gui.showNicknameTaken();
+        //gui.showStartCountdown(3);
+        //gui.showBuildPhaseStart(components);
+        //gui.showKeptComponents(kept);
+
+        //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
+        //gui.showKeptComponents(kept);
+        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
 //        gui.showWaitForOthers();
 //        gui.showBuildComplete();
-//        //gui.showSelectComponent();
-//        //gui.showAvailableComponent(availableComponents.getComponents());
-//        //gui.showStack(stack);
-//        //gui.showBuildOptions();
-//        //gui.showCardDrawn(card2);
-//        //gui.showTruckerLostAllCrew(trucker.getNickname());
-//        //gui.showConnectionLost();
-//        //gui.showMessage("luca ha perso tutte le merci");
-//        //gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
+        //gui.showSelectComponent();
+        //gui.showAvailableComponent(availableComponents.getComponents());
+        //gui.showStack(stack);
+        //gui.showBuildOptions();
+        //gui.showCardDrawn(card2);
+        //gui.showTruckerLostAllCrew(trucker.getNickname());
+        //gui.showConnectionLost();
+        //gui.showMessage("luca ha perso tutte le merci");
+        //gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
     }
 
     public static void main(String[] args) {
