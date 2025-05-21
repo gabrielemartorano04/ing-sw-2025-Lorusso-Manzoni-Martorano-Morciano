@@ -165,13 +165,6 @@ public class CardController {
         }
     }
 
-    public ServerEvent findWeakestTrucker() {
-        try {
-            return currCard.findWeakestTrucker();
-        } catch (WrongCallerException | GeneralError e) {
-            return new GenericErrorEvent(e.getMessage(), false);
-        }
-    }
 
     public ServerEvent startCard(){
         return currCard.startCard();
