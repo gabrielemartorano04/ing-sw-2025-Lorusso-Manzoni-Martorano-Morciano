@@ -134,11 +134,11 @@ public class WarZone extends Card implements Serializable {
                 return findWeakestTrucker();
             }
             case CANNONS -> {
-                state = CardState.WAIT_CANNONS;
+                state = CardState.ACTIVATE_CANNONS;
                 return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Activate double cannons?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
             }
             case ENGINES -> {
-                state = CardState.WAIT_ENGINES;
+                state = CardState.ACTIVATE_ENGINES;
                 return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, ParserState.ACTIVATE_ENGINES, "Activate double engines?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
             }
             default ->

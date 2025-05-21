@@ -59,6 +59,7 @@ public class MeteorShower extends Card implements Serializable {
         this.meteors = direction;
         this.answers = new ArrayList<>();
         this.indexOfCurrTrucker = 0;
+        this.state = CardState.ROLL_DICE;
     }
 
     /**
@@ -107,7 +108,6 @@ public class MeteorShower extends Card implements Serializable {
         meteor = meteors.get(currMeteorIndex);
         currMeteorIndex++;
         this.roll = Game.getIstance().rollDice();
-        state = CardState.ATTESA_RISPOSTE;
         if (meteor[0]==1) {
             state=CardState.ACTIVATE_CANNONS;
             return new RollDiceResult("Meteorite grande, attivare Cannoni doppi?", currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true);
