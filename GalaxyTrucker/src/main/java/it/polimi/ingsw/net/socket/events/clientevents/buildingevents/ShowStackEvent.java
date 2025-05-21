@@ -1,14 +1,12 @@
 package it.polimi.ingsw.net.socket.events.clientevents.buildingevents;
 
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
 public class ShowStackEvent extends ClientEvent {
     private int index;
     public ShowStackEvent(final int index) {
-        super(ClientEventType.SHOW_STACK);
         this.index = index;
     }
     public int getIndex() {

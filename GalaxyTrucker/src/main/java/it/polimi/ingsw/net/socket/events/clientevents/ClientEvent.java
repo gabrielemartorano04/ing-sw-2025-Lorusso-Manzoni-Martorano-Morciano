@@ -11,17 +11,13 @@ import java.io.Serializable;
  */
 
 public abstract class ClientEvent implements Serializable {
-    private final ClientEventType eventType;
+
     private String message;
 
-    public ClientEvent(ClientEventType eventType) {
-        this.eventType = eventType;
-        message="Event: " + eventType.name();
+    public ClientEvent() {
+        message="";
     }
 
-    public ClientEventType getEventType() {
-        return eventType;
-    }
 
     public String getMessage() {
         return message;

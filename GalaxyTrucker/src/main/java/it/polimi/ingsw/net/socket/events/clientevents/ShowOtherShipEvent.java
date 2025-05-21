@@ -8,7 +8,6 @@ import java.net.Socket;
 public class ShowOtherShipEvent extends ClientEvent{
     private String nickname;
     public ShowOtherShipEvent(String nickname) {
-        super(ClientEventType.SHOW_OTHER_SHIP);
         this.nickname = nickname;
     }
     public String getNickname() {

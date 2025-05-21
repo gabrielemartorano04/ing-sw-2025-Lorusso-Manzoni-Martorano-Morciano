@@ -2,7 +2,6 @@ package it.polimi.ingsw.net.socket.events.clientevents.buildingevents;
 
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
@@ -18,7 +17,6 @@ public class LinkTileEvent extends ClientEvent {
     private int index;
     private int x,y;
     public LinkTileEvent(int index, int x, int y, Component component) {
-        super(ClientEventType.LINK_TILE);
         this.component = component;
         this.index = index;
         this.x = x;

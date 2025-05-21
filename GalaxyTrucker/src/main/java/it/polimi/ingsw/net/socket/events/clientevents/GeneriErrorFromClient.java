@@ -6,7 +6,6 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 public class GeneriErrorFromClient extends ClientEvent{
     private String message;
     public GeneriErrorFromClient(String msg){
-        super(ClientEventType.SEND_INFO_EVENT);
         this.message=msg;
     }
     @Override

@@ -7,14 +7,20 @@ import it.polimi.ingsw.view.ParserState;
 
 public class GainCosmicCredits extends CardEvent{
     private final int cosmicCredits;
+    private final int daysLost;
 
-    public GainCosmicCredits(boolean forAll, String nickname, int cosmicCredits) {
+    public GainCosmicCredits(boolean forAll, String nickname, int cosmicCredits, int daysLost) {
         super(ServerEventType.COSMIC_CREDITS, forAll, ParserState.COSMIC_CREDITS, nickname);
         this.cosmicCredits = cosmicCredits;
+        this.daysLost = daysLost;
     }
 
     public int getCosmicCredits() {
         return cosmicCredits;
+    }
+
+    public int getDaysLost() {
+        return daysLost;
     }
 
     @Override

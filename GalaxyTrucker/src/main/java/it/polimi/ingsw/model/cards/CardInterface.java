@@ -61,7 +61,7 @@ public interface CardInterface {
         throw new WrongCallerException("This method does not exist in the card ");
     }
 
-    default ServerEvent combatZone() throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
+    default ServerEvent handleCurrentCondition() throws WrongCallerException, GeneralError {throw new WrongCallerException("This method does not exist in the card ");}
 
     default ServerEvent findWeakestTrucker() throws WrongCallerException, GeneralError {
         throw new WrongCallerException("This method does not exist in the card ");

@@ -2,7 +2,6 @@ package it.polimi.ingsw.net.socket.events.clientevents.setupevents;
 
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.ClientEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
 
@@ -15,7 +14,6 @@ public class LoginEvent extends ClientEvent {
     private String message;
 
     public LoginEvent(String username,PlayerColors color) {
-        super(ClientEventType.LOGIN);
         this.username = username;
         this.color = color;
         message = "Username: " + username+ "\nColor: " + color.toString();

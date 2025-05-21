@@ -152,5 +152,5 @@ public interface ServerEventVisitor {
 
     void visit(TurnedComponentSuccessEvent turnedComponentSuccessEvent);
 
-    void visit(StackDropOk event);
+    void visit(CurrentCondition currentCondition);
 }
