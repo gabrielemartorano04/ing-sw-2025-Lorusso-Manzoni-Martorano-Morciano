@@ -151,4 +151,6 @@ public interface ServerEventVisitor {
     void visit(RemoveGoods removeGoods);
 
     void visit(TurnedComponentSuccessEvent turnedComponentSuccessEvent);
+
+    void visit(CurrentCondition currentCondition);
 }
