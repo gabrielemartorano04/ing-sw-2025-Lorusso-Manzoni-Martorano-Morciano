@@ -413,4 +413,9 @@ public class ClientHandlerVisitor implements ClientVisitor {
         return null;
     }
 
+    @Override
+    public ServerEvent visit(RemotionSeenEvent event) {
+        return null;
+    }
+
 }

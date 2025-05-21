@@ -191,7 +191,7 @@ public class InputParserFlight {
             case DO_NOTHING:
                 System.out.println("It's not your turn");
                 return null;
-            case LAND:
+            case LAND: //type yes or no if you want to land
                 String[] land=input.split("\\s+");
                 if(land.length!=1){
                     System.out.println("Error: invalid command");
@@ -203,7 +203,7 @@ public class InputParserFlight {
                 else if(land[0].trim().equals("y")) {
                     return new TruckerLandingEvent(true);
                 }
-            case WARZONE:
+            case WARZONE://type warzone when you are ready
                 //todo inserire input format
                 String[] warzone=input.split("\\s+");
                 if(warzone.length!=1 || !warzone[0].trim().equals("warzone")){
@@ -253,9 +253,39 @@ public class InputParserFlight {
                 }
 
             case REMOTION_CONFIRMED://SCRIVI CONTINUA
-
+                String[] remotion=input.split("\\s+");
+                if(remotion.length!=1 || !remotion[0].trim().equals("continue")){
+                    System.out.println("Error: invalid command");
+                    return null;
+                }
+                return new RemotionSeenEvent();
             case REMOVE_BATTERIES://COORD-VAL,COORD- VAL
-            case REMOVE_GOODS:// INDICI DA RIMUOVERE ARRAYLIST INTEGER
+                String[] removeBatteries=input.split("\\s*,\\s*");
+                ArrayList<int[]> coordinates=new ArrayList<>();
+                for(int i=0;i<removeBatteries.length;i++){
+                    String[] parts=removeBatteries[i].trim().split("\\s*-\\s*");
+                    if(parts.length!=2){
+                        System.out.println("Error: invalid command");
+                        return null;
+                    }
+                    String[] coord=parts[0].trim().split("\\s+");
+                    if(coord.length!=2){
+                        System.out.println("Error: invalid command");
+                        return null;
+                    }
+                    int x=Integer.parseInt(coord[0].trim());
+                    int y=Integer.parseInt(coord[1].trim());
+                    int cont=Integer.parseInt(parts[1].trim());
+                    coordinates.add(new int[]{x,y,cont});
+                }
+                return new RemoveBatteriesEvent(coordinates);
+            case REMOVE_GOODS:// index1, index2...
+                String[] removeGoods=input.split("\\s*,\\s*");
+                ArrayList<Integer> indexes=new ArrayList<>();
+                for(int i=0;i<removeGoods.length;i++){
+                    indexes.add(Integer.parseInt(removeGoods[i].trim()));
+                }
+                return new RemoveAskingEvent(indexes);
             default: {
                 System.out.println("Error: invalid command. Stato non gestito");
                 return null;

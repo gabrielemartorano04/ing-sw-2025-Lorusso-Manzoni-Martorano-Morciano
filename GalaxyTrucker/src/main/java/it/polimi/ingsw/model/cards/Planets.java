@@ -18,23 +18,17 @@ public class Planets extends Card implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private ArrayList<ArrayList<Goods>> planets;
-    private ArrayList<Trucker> planetsOccupied;
     private int daysLoss;
+    private CardState cardState;
+
+    private ArrayList<Trucker> planetsOccupied;
     private ArrayList<Trucker> truckersLanded;
-    private int indexOfPlanet; // se -1 => non atterra
     private int indexOfTrucker;
-    private CardState state;
 
     private Goods currentGood;
     private ArrayList<Goods> currentGoodsList;
     private ArrayList<Goods> goodsPassed;
     private int currGoodIndex;
-
-
-
-
-
-
 
 
     /**
@@ -58,14 +52,18 @@ public class Planets extends Card implements Serializable {
         this.daysLoss = daysLoss;
         this.planets = planets;
         this.currGoodIndex = 0;
-        this.indexOfPlanet = 0;
         this.indexOfTrucker = 0;
-        this.state=CardState.ATTESA_PIANETI;
+        this.cardState =CardState.PIANETI;
         this.currentGood = null;
         this.currentGoodsList = new ArrayList<>();
         this.goodsPassed = new ArrayList<>();
 
     }
+
+    public CardState getCardState() {
+        return cardState;
+    }
+
 
     @Override
     public ServerEvent startCard() {
@@ -95,8 +93,8 @@ public class Planets extends Card implements Serializable {
 
     @Override
     public ServerEvent playerLandingPlanets(int indexOfPlanet) throws GeneralError, PlanetNotFreeException {
-        if(state != CardState.ATTESA_PIANETI){
-            throw new GeneralError("Can't land in the state: " + this.state);
+        if(cardState != CardState.PIANETI){
+            throw new GeneralError("Can't land in the state: " + this.cardState);
         }
         if(indexOfPlanet < -1 || indexOfPlanet >= this.planets.size()){
             throw new GeneralError("No planets at the index: " + indexOfPlanet);
@@ -119,7 +117,7 @@ public class Planets extends Card implements Serializable {
                 for(Goods currentGood : planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker)))){
                     if(Game.getIstance().getBank().getGoodsInBank(currentGood.getValue())>0){
                         // abbiamo la merce corrente
-                        this.state = CardState.GOODSTOADD;
+                        this.cardState = CardState.GOODSTOADD;
                         return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(), currentGood);
                     }
                 }
@@ -134,7 +132,7 @@ public class Planets extends Card implements Serializable {
 
     @Override
     public ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
-        if (state != CardState.GOODSTOADD) {
+        if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
         if(!stop) {
@@ -148,14 +146,14 @@ public class Planets extends Card implements Serializable {
                     goodsPassed.add(g);
                 }
             } catch (InvalidPositionException e) {
-                state = CardState.GOODSTOADD;
+                cardState = CardState.GOODSTOADD;
                 throw e;
             }
         }else{
             goodsPassed.add(currentGood);
         }
         if(currGoodIndex >= currentGoodsList.size()){
-            state = CardState.REARRANGE;
+            cardState = CardState.REARRANGE;
             return new RearrangeEvent(true, this.truckersLanded.get(indexOfTrucker).getNickname());
         }
         else{
@@ -168,7 +166,7 @@ public class Planets extends Card implements Serializable {
                 } else {
                     currGoodIndex++;
                     if(currGoodIndex>=currentGoodsList.size()) {
-                        state = CardState.REARRANGE;
+                        cardState = CardState.REARRANGE;
                         return new RearrangeEvent(true, this.truckersLanded.get(indexOfTrucker).getNickname());
                     }
                 }
@@ -178,7 +176,7 @@ public class Planets extends Card implements Serializable {
 
     @Override
     public ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean stop) throws GeneralError, InvalidCoordinates, InvalidPositionException{
-        if(state!= CardState.REARRANGE){
+        if(cardState != CardState.REARRANGE){
             throw new GeneralError("Card state is not REARRANGE");
         }
         if (!stop) {
@@ -188,13 +186,13 @@ public class Planets extends Card implements Serializable {
             try {
                 truckersLanded.get(indexOfTrucker).getSpaceShip().swapGoods(coord1, value1, coord2, value2);
             } catch (InvalidPositionException e) {
-                state = CardState.REARRANGE;
+                cardState = CardState.REARRANGE;
                 throw new InvalidPositionException("invalid positions");
             }
         }
         if (indexOfTrucker + 1 >= truckersLanded.size()) {
             // Tutti hanno finito
-            state = CardState.ESECUZIONE;
+            cardState = CardState.ESECUZIONE;
             return cardEffect();
         } else {
             // Passa al prossimo giocatore
@@ -202,25 +200,21 @@ public class Planets extends Card implements Serializable {
             //creao nuova lista
             currentGoodsList.addAll(planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker))));
             currentGoodsList.addAll(goodsPassed);
-            state = CardState.GOODSTOADD;
+            cardState = CardState.GOODSTOADD;
             return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname());
         }
     }
 
-    public CardState getState() {
-        return state;
-    }
-
     @Override
     public ServerEvent cardEffect() throws GeneralError {
-        if (this.state != CardState.ESECUZIONE) {
-            throw new GeneralError("CardEffect not callable in the state: " + this.state);
+        if (this.cardState != CardState.ESECUZIONE) {
+            throw new GeneralError("CardEffect not callable in the state: " + this.cardState);
         }
         // muovo in dietro i giocatori ma partendo dal più indietro nella plancia non dal Leader
         for(int i = truckersLanded.size() - 1; i>=0; i--){
             Game.getIstance().moveBackward(truckersLanded.get(i), daysLoss);
         }
-        state = CardState.EXIT;
+        cardState = CardState.EXIT;
         Game.getIstance().endTurn();
         return new CardFinished(true, Game.getIstance().getTruckerList());
     }

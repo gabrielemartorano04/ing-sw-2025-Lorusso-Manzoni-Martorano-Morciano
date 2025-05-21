@@ -75,6 +75,10 @@ public class AbandonedStation extends Card implements Serializable {
         return goods;
     }
 
+    public CardState getCardState() {
+        return cardState;
+    }
+
     @Override
     public ServerEvent startCard() {
         return new StartCardEvent(
@@ -211,18 +215,8 @@ public class AbandonedStation extends Card implements Serializable {
             throw new GeneralError("risposte mancanti");
         }
         Game.getIstance().moveBackward(truckerThatHasDecided, days);
-        cardState = CardState.EXIT;
-        this.setIsCardFinished(true);
         Game.getIstance().endTurn();
         return new CardFinished(true, Game.getIstance().getTruckerList());
     }
 
-
-    public CardState getCardState() {
-        return cardState;
-    }
-
-    public void setCardState(CardState cardState) {
-        this.cardState = cardState;
-    }
 }
