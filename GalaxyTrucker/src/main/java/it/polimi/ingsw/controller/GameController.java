@@ -1,11 +1,9 @@
 package it.polimi.ingsw.controller;
-import it.polimi.ingsw.exceptions.ColorNotAvailable;
-import it.polimi.ingsw.exceptions.GameAlreadyStartedException;
-import it.polimi.ingsw.exceptions.InvalidStateException;
-import it.polimi.ingsw.exceptions.NicknameUsedException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 import java.util.*;
@@ -130,8 +128,13 @@ public class GameController {
         scheduler.shutdown(); // ferma il controllo
     }
 
-    public Stack showStack(int stackIndex) {
-        return game.viewStack(stackIndex);
+    public Stack showStack(int stackIndex) throws GeneralError {
+        try {
+            return game.viewStack(stackIndex);
+        }catch (GeneralError e) {
+            throw new GeneralError(e.getMessage());
+        }
+
     }
 
     public synchronized void endBuildingFor(Trucker trucker) throws InvalidStateException {

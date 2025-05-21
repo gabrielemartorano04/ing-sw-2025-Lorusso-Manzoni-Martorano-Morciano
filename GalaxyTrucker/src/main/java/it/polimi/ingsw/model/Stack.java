@@ -2,9 +2,10 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.Card;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Stack {
+public class Stack implements Serializable {
     private boolean selected;
     private ArrayList<Card> stack;
     private int size;
@@ -32,5 +33,9 @@ public class Stack {
 
     public int getIndexOfThis(){
         return indexOfThis;
+    }
+
+    public boolean isSelected() {
+        return selected;
     }
 }

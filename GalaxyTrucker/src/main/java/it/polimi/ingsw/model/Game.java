@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
@@ -133,9 +134,13 @@ public class Game {
      * @param i index of the stack
      * @return the requested card stack or null if index is invalid
      */
-    public Stack viewStack(int i) {
+    public Stack viewStack(int i) throws GeneralError{
         if (i < 3)
-            return cardStacks[i];
+            if (!cardStacks[i].isSelected()) {
+                return cardStacks[i];
+            }else{
+                throw new GeneralError("un altro giocatore ha questo stack");
+            }
         else return null;
     }
 
