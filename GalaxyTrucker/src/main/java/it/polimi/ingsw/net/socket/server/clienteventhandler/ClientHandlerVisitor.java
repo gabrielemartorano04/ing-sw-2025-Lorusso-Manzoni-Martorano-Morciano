@@ -94,6 +94,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         }
         else {
             BuildTimerManager.getInstance().stop();
+
             for(Trucker t: gameController.getGame().getTruckerList()){
                 t.getSpaceShip().wellDone();
             }

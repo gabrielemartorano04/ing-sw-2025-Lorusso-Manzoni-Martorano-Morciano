@@ -52,4 +52,10 @@ public class TimerDisplay {
             default -> number + "th";
         };
     }
+
+    public void stop() {
+        if (timerThread != null && timerThread.isAlive()) {
+            timerThread.interrupt();
+        }
+    }
 }
