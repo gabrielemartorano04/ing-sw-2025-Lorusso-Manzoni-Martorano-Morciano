@@ -516,27 +516,57 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(RearrangeEvent event) {
-
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
     public void visit(GainCosmicCredits event) {
-
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
     public void visit(InvalidCoordinatesEvent event) {
-
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
     public void visit(NotEnoughBatterieEvent event) {
-
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
     public void visit(InvalidComponentsExceptionEvent event) {
-
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
@@ -565,18 +595,36 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     }
 
     @Override
-    public void visit(RemotionConfirmed remotionConfirmed) {
-
+    public void visit(RemotionConfirmed event) {
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
-    public void visit(RemoveBatteries removeBatteries) {
-
+    public void visit(RemoveBatteries event) {
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override
     public void visit(RemoveGoods event) {
-
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
     }
 
     @Override

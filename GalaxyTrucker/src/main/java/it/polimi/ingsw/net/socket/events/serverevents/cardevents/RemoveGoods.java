@@ -24,4 +24,8 @@ public class RemoveGoods extends CardEvent{
     public void call(ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
     }
+
+    public String getInfoForOthers() {
+        return getNickname()+" is deciding goods to remove.\n";
+    }
 }
