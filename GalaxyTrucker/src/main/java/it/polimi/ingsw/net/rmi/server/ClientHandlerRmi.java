@@ -6,7 +6,14 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.rmi.RmiClientInterface;
 import it.polimi.ingsw.net.rmi.RmiServerInterface;
+import it.polimi.ingsw.net.socket.events.clientevents.AlienCoordinatesRequest;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.SendAlienCoord;
+import it.polimi.ingsw.net.socket.events.clientevents.ShowOtherShipEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
+import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 import java.rmi.RemoteException;
@@ -57,6 +64,171 @@ public class ClientHandlerRmi extends UnicastRemoteObject implements RmiServerIn
     @Override
     public void receiveMessage(ClientEvent event, RmiClientInterface client) throws RemoteException {
 
+    }
+
+    @Override
+    public ServerEvent visit(CreateGameEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(DiscardTileEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(EndBuildingEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(KeepTileEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(LinkTileEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(LoginEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(SelectTileEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(SelectKeptTileEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(ShowStackEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(TurnHourglassEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(ShowOtherShipEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(AlienCoordinatesRequest event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(SendAlienCoord event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(OkStartFlight event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(DrawCardEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(HumanCoordEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(PlotGoodEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(PlanetDecisionEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(RollDiceEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(ActivateShieldEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(ActivateCannonsEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(ActivateEnginesEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(TruckerLandingEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(RearrangeEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(SetWinDecision event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(RemoveGoodsEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(RemoveAskingEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(RemoveBatteriesEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(TurnComponentEvent turnComponentEvent) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(StackDroppedEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(GainCosmicCreditsResponseEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(WarzoneStartEvent event) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ServerEvent visit(RemotionSeenEvent event) throws RemoteException {
+        return null;
     }
 }
 
