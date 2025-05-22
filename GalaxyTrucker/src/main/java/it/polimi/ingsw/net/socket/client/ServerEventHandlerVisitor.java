@@ -335,6 +335,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.setCannonPower(event.getCannonPower());
         viewFlow.setEnginePower(event.getEnginePower());
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
+        viewFlow.setStartFlightForAll();
         ui.showFlightPhaseStart();
         ui.showMessage("Please type 'state' to see your spaceship state\n");
         viewFlow.setTrack(event.getTrack());
