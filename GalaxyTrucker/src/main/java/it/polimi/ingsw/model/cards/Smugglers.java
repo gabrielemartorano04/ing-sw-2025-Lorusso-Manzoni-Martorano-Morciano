@@ -138,7 +138,7 @@ public class Smugglers extends Card implements Serializable {
             cardState = CardState.GOODSTOADD;
             return new PlotGood(true, winnerTrucker.getNickname(), goodsGained[currGoodIndex]);
         }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() == smugglersPower){
-            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
+            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
                 if(defeatedTruckers.isEmpty()){
                     cardState = CardState.ESECUZIONE;
                     return cardEffect();
@@ -154,7 +154,7 @@ public class Smugglers extends Card implements Serializable {
 
         }else {
             defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
-            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
+            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
                 cardState = CardState.REMOVE_GOODS;
                 indexOfCurrentTrucker = 0;
                 return removeGoods();
