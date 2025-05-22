@@ -165,6 +165,8 @@ public class TUI extends UI {
                     colCount = 0;
                 }
                 i++;
+            }else{
+                i++;
             }
         }
     }

@@ -36,11 +36,21 @@ public class SpaceShip implements Serializable {
     //chiedi per parametro color per inizializzare il colore della main cabin
 
     public SpaceShip(PlayerColors color) {
-        components = new Component[10][11];
+        components = new Component[11][12];
         for(int i=0;i<5;i++){
             for(int j=0;j<11;j++){
                 components[i][j]=new EmptySpace();
             }
+        }
+        int y=0;
+        while (y<12){
+            components[10][y]=new EmptySpace();
+            y++;
+        }
+        y=0;
+        while (y<11){
+            components[y][11]=new EmptySpace();
+            y++;
         }
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
