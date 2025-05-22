@@ -125,7 +125,7 @@ public class TUI extends UI {
                         }
                         case Load load -> {
                             mid1 = String.format("    |   %s   | %-10s", c.getLink()[0], load.getIsSpecial() ? "SPECIAL" : "LOAD");
-                            mid2 = String.format("    | %d %c %d | %-10s", c.getLink()[3], c.getType().charAt(0), c.getLink()[1], load.getIsSpecial() ? "LOAD" : " ");
+                            mid2 = String.format("    | %d %c %d | %-10s", c.getLink()[3], c.getType().charAt(0), c.getLink()[1], load.getIsSpecial() ? "LOAD" : String.format("(Cap: %d)", load.getCapacity()));
                             mid3 = String.format("    |   %s   | %-10s", c.getLink()[2], load.getIsSpecial() ? String.format("(Cap: %d)", load.getCapacity()) : " ");
                         }
                         case BatteryStorage battery -> {
@@ -136,7 +136,7 @@ public class TUI extends UI {
                         case LifeSupport ls -> {
                             mid1 = String.format("    |   %s   | %-10s", c.getLink()[0], "LIFE");
                             mid2 = String.format("    | %d %c %d | %-10s", c.getLink()[3], c.getType().charAt(0), c.getLink()[1], "SUPPORT");
-                            mid3 = String.format("    |   %s   | %-10s", c.getLink()[2], String.format("(Col: %s)", ls.getColor()));
+                            mid3 = String.format("    |   %s   | %-10s", c.getLink()[2], String.format("(Col: %s)", ls.getColor() == AlienColor.PURPLE ? "🟣" : "🟤"));
                         }
                         case Shield sh -> {
                             mid1 = String.format("    |   %s   | %-10s", c.getLink()[0], "SHIELD");
