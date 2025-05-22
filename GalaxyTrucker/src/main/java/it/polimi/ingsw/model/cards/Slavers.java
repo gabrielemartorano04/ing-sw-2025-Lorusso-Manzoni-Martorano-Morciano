@@ -132,7 +132,7 @@ public class Slavers extends Card implements Serializable {
             cardState = CardState.COSMIC_CREDITS;
             return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits, days);
         }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() == slaversPower){
-            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
+            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
                 if(defeatedTruckers.isEmpty()){
                     cardState = CardState.ESECUZIONE;
                     return cardEffect();
@@ -148,7 +148,7 @@ public class Slavers extends Card implements Serializable {
 
         }else {
             defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
-            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
+            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
                 cardState = CardState.HUMANSTOREMOVE;
                 indexOfCurrentTrucker = 0;
                 return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, defeatedTruckers.getFirst().getNickname());
