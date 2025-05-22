@@ -232,6 +232,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(TurnedComponentSuccessEvent event) {
         viewFlow.setSelectedComponent(event.getComponent());
+        ui.showComponentSelected(event.getComponent());
     }
 
     @Override

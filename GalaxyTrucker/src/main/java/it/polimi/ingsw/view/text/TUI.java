@@ -85,7 +85,7 @@ public class TUI extends UI {
 
     @Override
     public void showAvailableComponent(ArrayList<Component> components) {
-        System.out.println("=== Available components ===");
+        System.out.println("========================================================= AVAILABLE COMPONENTS =========================================================");
 
         int numCols = 6;
         int colCount = 0;
