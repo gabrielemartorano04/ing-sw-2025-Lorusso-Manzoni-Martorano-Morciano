@@ -273,7 +273,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         }
         ui.showMessage(message);
         if(event.getAlienCabinCoord().isEmpty()){
-            ui.showMessage("you can't place any alien. Please type coord to go on\n");
+            ui.showMessage("you can't place any alien. Please type 'coord' to go on\n");
         }
         else ui.showMessage("Insert coordinates (<x1> <y1> <x2> <y2>...):");
     }

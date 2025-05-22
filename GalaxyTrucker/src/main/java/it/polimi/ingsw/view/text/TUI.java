@@ -689,9 +689,6 @@ public class TUI extends UI {
             case BatteryStorage batteryStorage -> {
                 info.append("BATTERY STORAGE (Capacity: " + batteryStorage.getCapacity() + ")");
             }
-            case Cabin cabin -> {
-                info.append("CABIN (Capacity: " + cabin.getQuantity() + ")");
-            }
             case LifeSupport lifeSupport -> {
                 info.append("LIFE SUPPORT (Colour: " + lifeSupport.getColor() + ")");
             }
