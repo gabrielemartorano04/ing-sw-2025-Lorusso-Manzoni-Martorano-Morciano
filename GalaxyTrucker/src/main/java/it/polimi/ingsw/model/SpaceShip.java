@@ -249,12 +249,15 @@ public class SpaceShip implements Serializable {
                                     }
                                 }
                             }
-                            int[] co={i,j};
                             for(LifeSupport l:ls){
-                                if(l!=null && coord.contains(c)){
-                                    alien=new Alien(l.getColor());
-                                    c.setAlien(alien);
-                                    numAlien++;
+                                int[] currentCoord = {i, j};
+                                for (int[] selectedCoord : coord) {
+                                    if (selectedCoord[0] == currentCoord[0] && selectedCoord[1] == currentCoord[1]) {
+                                        // è una delle cabine selezionate
+                                        alien = new Alien(l.getColor());
+                                        c.setAlien(alien);
+                                        numAlien++;
+                                    }
                                 }
                             }
                         }
