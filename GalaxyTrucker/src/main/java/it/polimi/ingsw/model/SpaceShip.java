@@ -1860,7 +1860,6 @@ public class SpaceShip implements Serializable {
                 }
             }
         }
-        alienCabin.add(new int[]{7,7});
         System.out.println("alienCabins: ");
         for(int[] i: alienCabin){
             System.out.println(Arrays.toString(i)+"\n");
