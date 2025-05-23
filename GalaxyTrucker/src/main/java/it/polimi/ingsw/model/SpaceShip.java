@@ -54,22 +54,6 @@ public class SpaceShip implements Serializable {
         }
 
         lost = 0;
-        Cabin cabin=null;
-        switch(color){
-            case BLUE -> {
-                cabin = new Cabin(3, 3, 3, 3, "cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web33.jpg", PlayerColors.BLUE, true);
-            }
-            case YELLOW -> {
-                cabin = new Cabin(3, 3, 3, 3, "cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web61.jpg", PlayerColors.YELLOW, true);
-            }
-            case RED -> {
-                cabin = new Cabin(3, 3, 3, 3, "cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
-            }
-            case GREEN -> {
-                cabin = new Cabin(3, 3, 3, 3, "cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web34.jpg", PlayerColors.GREEN, true);
-            }
-        }
-        components[7][7] = cabin;
         redGoods = 0;
         greenGoods = 0;
         blueGoods = 0;
@@ -84,7 +68,7 @@ public class SpaceShip implements Serializable {
         numDoubleEngine=0;
     }
 
-    public void setSpaceship(int level){
+    public void setSpaceship(int level, PlayerColors color){
         if(level==0){
             for(int i=5;i<=9;i++){
                 for(int j=4;j<=10;j++){
@@ -126,6 +110,22 @@ public class SpaceShip implements Serializable {
                 }
             }
         }
+        Cabin cabin=null;
+        switch(color){
+            case BLUE -> {
+                cabin = new Cabin(3, 3, 3, 3, "cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web33.jpg", PlayerColors.BLUE, true);
+            }
+            case YELLOW -> {
+                cabin = new Cabin(3, 3, 3, 3, "cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web61.jpg", PlayerColors.YELLOW, true);
+            }
+            case RED -> {
+                cabin = new Cabin(3, 3, 3, 3, "cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
+            }
+            case GREEN -> {
+                cabin = new Cabin(3, 3, 3, 3, "cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web34.jpg", PlayerColors.GREEN, true);
+            }
+        }
+        components[7][7] = cabin;
     }
 
     public void increaseLost(int lost) {

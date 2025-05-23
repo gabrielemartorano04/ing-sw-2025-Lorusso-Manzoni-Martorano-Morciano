@@ -61,7 +61,7 @@ public class GameController {
         }
 
         TruckerController truckerController = new TruckerController(nickname, color);
-        truckerController.getSpaceShip().setSpaceship(game.getGameLevel());
+        truckerController.getSpaceShip().setSpaceship(game.getGameLevel(), color);
         game.addTrucker(truckerController.getTrucker());
 
         count++;

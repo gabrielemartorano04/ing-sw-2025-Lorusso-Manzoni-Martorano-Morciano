@@ -321,7 +321,7 @@ public class TUI extends UI {
                 message += condition.toString() + " → " + effect.toString() + "\n";
             }
         }
-        if(event.getDays() != -1) System.out.println(event.getDays() + " days to lose");
+        if(event.getDays() != -1) System.out.println(event.getDays() + event.getDays() == 1 ? " day to lose" : " days to lose");
         if(event.getAstronautsLost() != -1) System.out.println(event.getAstronautsLost() + " crew members to lose");
         if(event.getGoodsLost() != -1) System.out.println(event.getGoodsLost() + " goods to lose");
         if(event.getCredits() != -1) System.out.println(event.getCredits() + " credits to gain");
@@ -414,18 +414,18 @@ public class TUI extends UI {
     public void showShipLayout(String nickname, Component[][] layout) {
         System.out.println("\nShip layout of " + nickname + ":\n");
 
-        boolean[][] validCells = {
-                {false, false, false, false, false, false, false, false, false, false, false},
-                {false, false, false, false, false, false, false, false, false, false, false},
-                {false, false, false, false, false, false, false, false, false, false, false},
-                {false, false, false, false, false, false, false, false, false, false, false},
-                {false, false, false, false, false, false, false, false, false, false, false},
-                {false, false, false, false, false, false, true,  false, true,  false, false},
-                {false, false, false, false, false, true,  true,  true,  true,  true,  false},
-                {false, false, false, false, true,  true,  true,  true,  true,  true,  true },
-                {false, false, false, false, true,  true,  true,  true,  true,  true,  true },
-                {false, false, false, false, true,  true,  true,  false, true,  true,  true }
-        };
+        // Calcolo dinamico celle valide
+        boolean[][] validCells = new boolean[11][12];
+        for (int i = 0; i < layout.length; i++) {
+            for (int j = 0; j < layout[0].length; j++) {
+                Component c = layout[i][j];
+                if(c == null || !c.getType().equals("Empty Space")) {
+                    validCells[i][j] = true;
+                } else {
+                    validCells[i][j] = false;
+                }
+            }
+        }
 
         // Intestazione colonne (sopra)
         System.out.print("       ");
@@ -536,7 +536,7 @@ public class TUI extends UI {
                         details.append("[").append(i).append(",").append(j).append("] SHIELD (direction: ").append(shield.getDirection()).append(")");
                     }
                     case BatteryStorage battery -> {
-                        details.append("[").append(i).append(",").append(j).append("] BATTERY STORAGE (Capacity: ").append(battery.getCapacity()).append(") ");
+                        details.append("[").append(i).append(",").append(j).append("] BATTERY STORAGE (Capacity: ").append(battery.getCapacity()).append(")");
                         if(battery.getQuantity() != 0) {
                             details.append(" contains ").append(battery.getQuantity()).append(battery.getQuantity() == 1 ? " battery" : " batteries");
                         } else {
