@@ -63,6 +63,10 @@ public class Game {
         setIstance(this);
     }
 
+    public int getGameLevel(){
+        return gameLevel;
+    }
+
     public static Game getIstance() {
         return istance;
     }
