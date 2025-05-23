@@ -142,8 +142,8 @@ public class SpaceShip implements Serializable {
                 if(components[i][j] != null){
                     switch(components[i][j]){
                         case BatteryStorage c -> {
-                            numOfBattery= c.getCapacity();
-                            c.setQuantity(numOfBattery);
+                            numOfBattery += c.getCapacity();
+                            c.setQuantity(c.getCapacity());
                         }
                         default -> {
                             break;
@@ -283,6 +283,7 @@ public class SpaceShip implements Serializable {
                                         // è una delle cabine selezionate
                                         alien = new Alien(l.getColor());
                                         c.setAlien(alien);
+                                        c.setQuantity(1);
                                         numAlien++;
                                     }
                                 }
