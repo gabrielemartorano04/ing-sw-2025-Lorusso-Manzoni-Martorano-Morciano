@@ -1809,69 +1809,61 @@ public class SpaceShip implements Serializable {
         }
     }
 
+    //TODO sta cosa non va, mannaggia (per il politically correct)
+
     public ArrayList<int[]> getAlienCabin() {
         ArrayList<int[]> alienCabin = new ArrayList<>();
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++){
                 if(components[i][j]!=null){
-                    switch(components[i][j]){
-                        case Cabin c -> {
-                            if(!c.getIsMain()){
-                                if(components[i+1][j]!=null){
-                                    switch(components[i+1][j]){
-                                        case LifeSupport c1->{
-                                            int link1=components[i][j].getLink()[2];
-                                            int link2=components[i+1][j].getLink()[0];
-                                            if(compatibleLinks(link1,link2)) alienCabin.add(new int[]{i,j});
-                                        }
-                                        default -> {
-                                            break;
-                                        }
-                                    }
+                    System.out.println("1");
+                    if (components[i][j].getType().equalsIgnoreCase("cabin")) {
+                        System.out.println("2");
+                        if (i!=7 && j!=7) {
+                            System.out.println("3");
+                            if (components[i + 1][j] != null || !components[i + 1][j].getType().equalsIgnoreCase("Empty Space")) {
+                                if (components[i + 1][j].getType().equalsIgnoreCase("Life Support")) {
+                                    System.out.println("controllo sotto");
+                                    int link1 = components[i][j].getLink()[2];
+                                    int link2 = components[i + 1][j].getLink()[0];
+                                    if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
                                 }
-                                if(components[i-1][j]!=null){
-                                    switch(components[i-1][j]){
-                                        case LifeSupport c2->{
-                                            int link1=components[i][j].getLink()[0];
-                                            int link2=components[i-1][j].getLink()[2];
-                                            if(compatibleLinks(link1,link2))  alienCabin.add(new int[]{i,j});
-                                        }
-                                        default -> {
-                                            break;
-                                        }
-                                    }
+                            }
+                            if (components[i - 1][j] != null || !components[i - 1][j].getType().equalsIgnoreCase("Empty Space")) {
+                                if (components[i - 1][j].getType().equalsIgnoreCase("Life Support")) {
+                                    System.out.println("controllo sopra");
+                                    int link1 = components[i][j].getLink()[0];
+                                    int link2 = components[i - 1][j].getLink()[2];
+                                    if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
                                 }
-                                if(components[i][j+1]!=null){
-                                    switch(components[i][j+1]){
-                                        case LifeSupport c3->{
-                                            int link1=components[i][j].getLink()[1];
-                                            int link2=components[i-1][j].getLink()[3];
-                                            if(compatibleLinks(link1,link2))  alienCabin.add(new int[]{i,j});
-                                        }
-                                        default -> {
-                                            break;
-                                        }
-                                    }
+                            }
+                            if (components[i][j + 1] != null || !components[i][j + 1].getType().equalsIgnoreCase("Empty Space")) {
+                                if (components[i][j + 1].getType().equalsIgnoreCase("Life Support")) {
+                                    System.out.println("controllo destra");
+                                    int link1 = components[i][j].getLink()[1];
+                                    int link2 = components[i][j + 1].getLink()[3];
+                                    if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
                                 }
-                                if(components[i][j-1]!=null){
-                                    switch(components[i][j-1]){
-                                        case LifeSupport c4->{
-                                            int link1=components[i][j].getLink()[3];
-                                            int link2=components[i-1][j].getLink()[1];
-                                            if(compatibleLinks(link1,link2))  alienCabin.add(new int[]{i,j});
-                                        }
-                                        default -> {
-                                            break;
-                                        }
-                                    }
+                            }
+                            if (components[i][j - 1] != null || !components[i][j - 1].getType().equalsIgnoreCase("Empty Space")) {
+                                if (components[i][j - 1].getType().equalsIgnoreCase("Life Support")) {
+                                    System.out.println("controllo sinistra");
+                                    int link1 = components[i][j].getLink()[3];
+                                    int link2 = components[i][j - 1].getLink()[1];
+                                    if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
                                 }
                             }
                         }
-                        default -> {
-                        }
+                    } else {
+                        System.out.println("4");
                     }
                 }
             }
+        }
+        alienCabin.add(new int[]{7,7});
+        System.out.println("alienCabins: ");
+        for(int[] i: alienCabin){
+            System.out.println(Arrays.toString(i)+"\n");
         }
         return alienCabin;
     }
