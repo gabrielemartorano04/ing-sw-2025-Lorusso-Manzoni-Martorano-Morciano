@@ -7,8 +7,8 @@ import it.polimi.ingsw.view.ParserState;
 public class RemotionConfirmed extends CardEvent{
     private final String confirm;
 
-    public RemotionConfirmed( String nickname, String confirm) {
-        super(ServerEventType.GOODS_REMOVED, false, ParserState.REMOTION_CONFIRMED, nickname);
+    public RemotionConfirmed(ServerEventType type, String nickname, String confirm) {
+        super(type, false, ParserState.REMOTION_CONFIRMED, nickname);
         this.confirm = confirm;
     }
 

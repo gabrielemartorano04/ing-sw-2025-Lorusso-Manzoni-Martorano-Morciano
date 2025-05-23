@@ -1847,4 +1847,23 @@ public class SpaceShip implements Serializable {
         }
         return alienCabin;
     }
+
+    public void removeAllHumans() {
+        for(int i=0; i<components.length; i++){
+            for(int j=0; j<components[i].length; j++){
+                if(components[i][j]!=null){
+                    switch (components[i][j]){
+                        case Cabin cabin->{
+                            if(cabin.getAlien()!=null){
+                                cabin.setAlien(null);
+                            }else {
+                                cabin.removeHumans(cabin.getQuantity());
+                            }
+                        }
+                        default -> {}
+                    }
+                }
+            }
+        }
+    }
 }

@@ -22,4 +22,5 @@ public abstract class CardEvent extends ServerEvent {
     public String getNickname() {
         return nickname;
     }
+
 }

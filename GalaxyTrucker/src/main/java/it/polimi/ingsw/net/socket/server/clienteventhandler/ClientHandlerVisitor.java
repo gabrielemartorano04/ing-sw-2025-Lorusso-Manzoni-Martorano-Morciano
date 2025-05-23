@@ -19,6 +19,7 @@ import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.HumanCoordinates;
 import it.polimi.ingsw.net.socket.events.serverevents.flightevents.FlightStartEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.WaitOthersStartFlightEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
@@ -421,8 +422,17 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(RemotionSeenEvent event) {
-        System.out.println("Evento non ancora gestito ");
-        return null;
+        if (cardController.getCurrCard().getName().equalsIgnoreCase("Slavers")) {
+            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, currentClient.getTruckerController().getNickname());
+        }else{
+            try {
+                return cardController.getCurrCard().removeGoods();
+            } catch (WrongCallerException e) {
+                return new GenericErrorEvent(e.getMessage(), true);
+            } catch (GeneralError e) {
+                return new GenericErrorEvent(e.getMessage(), true);
+            }
+        }
     }
 
 }

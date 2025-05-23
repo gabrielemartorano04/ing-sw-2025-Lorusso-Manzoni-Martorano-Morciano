@@ -139,7 +139,7 @@ public class Slavers extends Card implements Serializable {
                 }else{
                     cardState = CardState.HUMANSTOREMOVE;
                     indexOfCurrentTrucker = 0;
-                    return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, defeatedTruckers.getFirst().getNickname());
+                    return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname());
                 }
             }else{
                 indexOfCurrentTrucker++;
@@ -151,7 +151,7 @@ public class Slavers extends Card implements Serializable {
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
                 cardState = CardState.HUMANSTOREMOVE;
                 indexOfCurrentTrucker = 0;
-                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, defeatedTruckers.getFirst().getNickname());
+                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname());
             }else{
                 indexOfCurrentTrucker++;
                 return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
@@ -202,6 +202,11 @@ public class Slavers extends Card implements Serializable {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Card state in not HUMANSTOREMOVE");
         }
+        if(defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getNumHuman()<=astronautsLost){
+            defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeAllHumans();
+            indexOfCurrentTrucker++;
+            return new RemotionConfirmed(ServerEventType.HUMAN_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(), "Batteries removed, press continue!");
+        }
         try {
             defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().checkCabin(coordinates, astronautsLost);
             this.truckersCoordinatesToRemoveHumans.add(coordinates);
@@ -212,7 +217,7 @@ public class Slavers extends Card implements Serializable {
         if (indexOfCurrentTrucker==Game.getIstance().getTruckerList().size()) {
             return cardEffect();
         }
-        return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, defeatedTruckers.getFirst().getNickname());
+        return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname());
     }
 
     /**
