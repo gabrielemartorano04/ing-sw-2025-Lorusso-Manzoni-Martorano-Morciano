@@ -1132,7 +1132,7 @@ public class SpaceShip implements Serializable {
         // a visited allora non riesco a esplorare tutto perchè appena ritorno alla main cabin è visited e quindi finisco
         // per settare la cabina principale a visited uso il terzo if
 
-        if (x < 0 || x > components.length || y < 0 || y > components[0].length) {
+        if (x < 0 || x > components.length-1 || y < 0 || y > components[0].length-1) {
             return;
         }
         if(components[x][y] == null  || (components[x][y].isVisited() && (x!=7 && y!=7))) {
@@ -1151,8 +1151,8 @@ public class SpaceShip implements Serializable {
         components[x][y].setVisited(true);
         if(x+1<10) componentsVisited(x+1, y);
         if(y+1<11)componentsVisited(x, y+1);
-        if(y-1>0)componentsVisited(x, y-1);
-        if(x-1>0)componentsVisited(x-1, y);
+        if(y-1>=0)componentsVisited(x, y-1);
+        if(x-1>=0)componentsVisited(x-1, y);
     }
 
     /**
