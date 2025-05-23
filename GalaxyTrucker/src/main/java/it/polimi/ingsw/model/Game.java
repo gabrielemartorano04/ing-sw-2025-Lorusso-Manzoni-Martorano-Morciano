@@ -51,6 +51,8 @@ public class Game {
             System.out.println(j+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
             j++;
         }
+        this.gameLevel = gameLevel;
+        //TODO CONDIZIONE PER QUALE DECK TO FILL
         this.deck = new Deck();
         this.cardStacks = new Stack[4];
         for(int i=0; i<4; i++){
@@ -59,7 +61,7 @@ public class Game {
         this.bank = new Bank();
         this.gameState = GameState.SETUP;
         this.availableColors = EnumSet.allOf(PlayerColors.class);
-        this.gameLevel = gameLevel;
+
         setIstance(this);
     }
 
