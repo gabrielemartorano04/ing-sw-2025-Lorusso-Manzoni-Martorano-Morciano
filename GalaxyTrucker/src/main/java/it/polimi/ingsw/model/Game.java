@@ -52,8 +52,7 @@ public class Game {
             j++;
         }
         this.gameLevel = gameLevel;
-        //TODO CONDIZIONE PER QUALE DECK TO FILL there are no stacks to see!!!
-        this.deck = new Deck();
+        this.deck = new Deck(gameLevel);
         this.cardStacks = new Stack[4];
         for(int i=0; i<4; i++){
             cardStacks[i] = new Stack(i);
