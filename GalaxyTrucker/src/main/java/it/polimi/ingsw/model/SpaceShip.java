@@ -1149,10 +1149,10 @@ public class SpaceShip implements Serializable {
         }
 
         components[x][y].setVisited(true);
-        componentsVisited(x+1, y);
-        componentsVisited(x, y+1);
-        componentsVisited(x, y-1);
-        componentsVisited(x-1, y);
+        if(x+1<10) componentsVisited(x+1, y);
+        if(y+1<11)componentsVisited(x, y+1);
+        if(y-1>0)componentsVisited(x, y-1);
+        if(x-1>0)componentsVisited(x-1, y);
     }
 
     /**
