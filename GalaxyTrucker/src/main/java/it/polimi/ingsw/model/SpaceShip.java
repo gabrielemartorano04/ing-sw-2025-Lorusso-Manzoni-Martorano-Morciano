@@ -52,25 +52,64 @@ public class SpaceShip implements Serializable {
             components[y][11]=new EmptySpace();
             y++;
         }
-        for (int i = 5; i <= 9; i++) {
-            for (int j = 4; j <= 10; j++) {
-                if(i==5){
-                    if(j==6 || j==8) components[i][j]=null;
-                    else components[i][j]=new EmptySpace();
-                }
-                else if(i==6){
-                    if(j==4 || j==10)components[i][j]=new EmptySpace();
-                    else components[i][j]=null;
-                }
-                else if(i==7 || i==8) components[i][j]=null;
-                else if(i==9){
-                    if(j==7) components[i][j]=new EmptySpace();
-                    else components[i][j]=null;
+
+        lost = 0;
+        redGoods = 0;
+        greenGoods = 0;
+        blueGoods = 0;
+        yellowGoods = 0;
+        goodsList = new ArrayList<>();
+        //ogni cabin se non ha un alieno ha due umani
+        numHuman = 0;
+        numAlien=0;
+        //ogni battery storage è pieno di batterie
+        numOfBattery = 0;
+        numDoubleCannon=0;
+        numDoubleEngine=0;
+    }
+
+    public void setSpaceship(int level, PlayerColors color){
+        if(level==0){
+            for(int i=5;i<=9;i++){
+                for(int j=4;j<=10;j++){
+                    if(j==4 || j==10) components[i][j]=new EmptySpace();
+                    else if(j==5 || j==9){
+                        if(i==5 || i==6)
+                            components[i][j]=new EmptySpace();
+                        else components[i][j]=null;
+                    }
+                    else if(j==6 || j==8){
+                        if(i==5){
+                            components[i][j]=new EmptySpace();
+                        }
+                        else components[i][j]=null;
+                    }
+                    else if(j==7){
+                        if(i==9) components[i][j]=new EmptySpace();
+                        else components[i][j]=null;
+                    }
                 }
             }
         }
-
-        lost = 0;
+        else{
+            for (int i = 5; i <= 9; i++) {
+                for (int j = 4; j <= 10; j++) {
+                    if(i==5){
+                        if(j==6 || j==8) components[i][j]=null;
+                        else components[i][j]=new EmptySpace();
+                    }
+                    else if(i==6){
+                        if(j==4 || j==10)components[i][j]=new EmptySpace();
+                        else components[i][j]=null;
+                    }
+                    else if(i==7 || i==8) components[i][j]=null;
+                    else if(i==9){
+                        if(j==7) components[i][j]=new EmptySpace();
+                        else components[i][j]=null;
+                    }
+                }
+            }
+        }
         Cabin cabin=null;
         switch(color){
             case BLUE -> {
@@ -87,18 +126,6 @@ public class SpaceShip implements Serializable {
             }
         }
         components[7][7] = cabin;
-        redGoods = 0;
-        greenGoods = 0;
-        blueGoods = 0;
-        yellowGoods = 0;
-        goodsList = new ArrayList<>();
-        //ogni cabin se non ha un alieno ha due umani
-        numHuman = 0;
-        numAlien=0;
-        //ogni battery storage è pieno di batterie
-        numOfBattery = 0;
-        numDoubleCannon=0;
-        numDoubleEngine=0;
     }
 
     public void increaseLost(int lost) {
@@ -115,8 +142,8 @@ public class SpaceShip implements Serializable {
                 if(components[i][j] != null){
                     switch(components[i][j]){
                         case BatteryStorage c -> {
-                            numOfBattery= c.getCapacity();
-                            c.setQuantity(numOfBattery);
+                            numOfBattery += c.getCapacity();
+                            c.setQuantity(c.getCapacity());
                         }
                         default -> {
                             break;
@@ -256,6 +283,7 @@ public class SpaceShip implements Serializable {
                                         // è una delle cabine selezionate
                                         alien = new Alien(l.getColor());
                                         c.setAlien(alien);
+                                        c.setQuantity(1);
                                         numAlien++;
                                     }
                                 }

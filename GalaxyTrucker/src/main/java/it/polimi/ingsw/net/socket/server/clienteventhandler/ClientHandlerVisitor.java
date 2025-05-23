@@ -295,6 +295,14 @@ public class ClientHandlerVisitor implements ClientVisitor {
         for (Trucker t : gameController.getGame().getTruckerList()) {
             track.put(t.getNickname(), t.getPosition());
         }
+        //STAMPA PER DEBUG
+            System.out.println("Position: " + position);
+            System.out.println("Batteries: " + batteryCount);
+            System.out.println("Crew: " + humanCount);
+            System.out.println("Cannon power (only single): " + cannonPower);
+            System.out.println("Engine power (only single): " + enginePower);
+        //STAMPA PER DEBUG
+
         return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,track);
     }
 

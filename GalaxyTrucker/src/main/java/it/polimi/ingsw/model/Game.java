@@ -51,7 +51,8 @@ public class Game {
             System.out.println(j+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
             j++;
         }
-        this.deck = new Deck();
+        this.gameLevel = gameLevel;
+        this.deck = new Deck(gameLevel);
         this.cardStacks = new Stack[4];
         for(int i=0; i<4; i++){
             cardStacks[i] = new Stack(i);
@@ -59,8 +60,12 @@ public class Game {
         this.bank = new Bank();
         this.gameState = GameState.SETUP;
         this.availableColors = EnumSet.allOf(PlayerColors.class);
-        this.gameLevel = gameLevel;
+
         setIstance(this);
+    }
+
+    public int getGameLevel(){
+        return gameLevel;
     }
 
     public static Game getIstance() {
