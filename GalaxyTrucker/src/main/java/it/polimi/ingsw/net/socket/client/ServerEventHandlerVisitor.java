@@ -211,7 +211,6 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(BuildCompleteEvent event){
-
         viewFlow.getTimerDisplay().stop();
         ui.showMessage("Your updated ship\n");
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
