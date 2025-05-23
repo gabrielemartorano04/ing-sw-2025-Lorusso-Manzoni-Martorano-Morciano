@@ -575,19 +575,39 @@ public class SpaceShip implements Serializable {
         if(x+1<10) comD = components[x + 1][y];
         comL = components[x][y - 1];
 
-        int linkU=0,linkR=0,linkD=0,linkL=0;
+        int linkU=-1,linkR=-1,linkD=-1,linkL=-1;
         Integer[] link = com.getLink();
         if(comU!=null){
-             linkU= comU.getLink()[2];
+            switch(comU){
+                case EmptySpace e->{}
+                default -> {
+                    linkU= comU.getLink()[2];
+                }
+            }
         }
         if(comR!=null){
-            linkR = comR.getLink()[3];
+            switch(comR){
+                case EmptySpace e->{}
+                default -> {
+                    linkR = comR.getLink()[3];
+                }
+            }
         }
         if(comD!=null){
-            linkD = comD.getLink()[0];
+            switch (comD){
+                case EmptySpace e->{}
+                default -> {
+                    linkD = comD.getLink()[0];
+                }
+            }
         }
         if(comL!=null){
-            linkL = comL.getLink()[1];
+            switch (comL){
+                case EmptySpace e->{}
+                default -> {
+                    linkL = comL.getLink()[1];
+                }
+            }
         }
         //CONTROLLO CHE U,R,D,L SIA COLLEGATO BENE
         switch (components[x][y]) {
@@ -628,10 +648,10 @@ public class SpaceShip implements Serializable {
 
         }
 
-        if (!compatibleLinks(link[0], linkU)) return false;
-        if (!compatibleLinks(link[1], linkR)) return false;
-        if (!compatibleLinks(link[2], linkD)) return false;
-        if (!compatibleLinks(link[3], linkL)) return false;
+        if (linkU!=-1 && !compatibleLinks(link[0], linkU)) return false;
+        if (linkR!=-1 && !compatibleLinks(link[1], linkR)) return false;
+        if (linkD!=-1 && !compatibleLinks(link[2], linkD)) return false;
+        if (linkL!=-1 && !compatibleLinks(link[3], linkL)) return false;
         return true;
     }
 
@@ -871,13 +891,15 @@ public class SpaceShip implements Serializable {
         boolean wellDone=true;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j]!=null && !isValid(i, j))
+                if (components[i][j]!=null && !isValid(i, j)){
                     try{
                         removeComponent(i,j);
                     } catch (InvalidCoordinates e) {
                         throw new RuntimeException(e);
                     }
                     wellDone=false;
+                }
+
             }
         }
         if(!wellDone){
