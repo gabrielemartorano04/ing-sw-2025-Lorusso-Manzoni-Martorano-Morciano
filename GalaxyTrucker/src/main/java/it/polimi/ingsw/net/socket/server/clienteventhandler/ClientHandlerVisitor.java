@@ -63,6 +63,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(CreateGameEvent event) {
         int numPlayers= event.getNumberOfPlayers();
         gameLevel=event.getGameLevel();
+        //todo ripetuto nel parser togliere?
         if (numPlayers<0 || numPlayers>4) {
             return new NumberOfPlayersError();
         }
