@@ -1817,11 +1817,11 @@ public class SpaceShip implements Serializable {
             for (int j = 4; j <= 10; j++){
                 if(components[i][j]!=null){
                     System.out.println("1");
-                    if (components[i][j].getType().equalsIgnoreCase("cabin")) {
+                    if (components[i][j].getType().equalsIgnoreCase("Cabin")) {
                         System.out.println("2");
-                        if (i!=7 && j!=7) {
+                        if (!(i==7 && j==7)) {
                             System.out.println("3");
-                            if (components[i + 1][j] != null || !components[i + 1][j].getType().equalsIgnoreCase("Empty Space")) {
+                            if (components[i + 1][j] != null) {
                                 if (components[i + 1][j].getType().equalsIgnoreCase("Life Support")) {
                                     System.out.println("controllo sotto");
                                     int link1 = components[i][j].getLink()[2];
@@ -1829,7 +1829,7 @@ public class SpaceShip implements Serializable {
                                     if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
                                 }
                             }
-                            if (components[i - 1][j] != null || !components[i - 1][j].getType().equalsIgnoreCase("Empty Space")) {
+                            if (components[i - 1][j] != null) {
                                 if (components[i - 1][j].getType().equalsIgnoreCase("Life Support")) {
                                     System.out.println("controllo sopra");
                                     int link1 = components[i][j].getLink()[0];
@@ -1837,7 +1837,7 @@ public class SpaceShip implements Serializable {
                                     if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
                                 }
                             }
-                            if (components[i][j + 1] != null || !components[i][j + 1].getType().equalsIgnoreCase("Empty Space")) {
+                            if (components[i][j + 1] != null) {
                                 if (components[i][j + 1].getType().equalsIgnoreCase("Life Support")) {
                                     System.out.println("controllo destra");
                                     int link1 = components[i][j].getLink()[1];
@@ -1845,7 +1845,7 @@ public class SpaceShip implements Serializable {
                                     if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
                                 }
                             }
-                            if (components[i][j - 1] != null || !components[i][j - 1].getType().equalsIgnoreCase("Empty Space")) {
+                            if (components[i][j - 1] != null) {
                                 if (components[i][j - 1].getType().equalsIgnoreCase("Life Support")) {
                                     System.out.println("controllo sinistra");
                                     int link1 = components[i][j].getLink()[3];
