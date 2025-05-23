@@ -130,6 +130,14 @@ public class ClientHandlerVisitor implements ClientVisitor {
         Component component=event.getComponent();
         try {
             currentClient.getTruckerController().link(component,x,y);
+            for(int i = 5; i<=9; i++){
+                for(int j = 4; j<=10; j++){
+                    if(currentClient.getTruckerController().getSpaceShip().getComponents()[i][j] != null){
+                        System.out.println(currentClient.getTruckerController().getSpaceShip().getComponents()[i][j].getType());
+                    }else
+                        System.out.println("null");
+                }
+            }
             return new ComponentLinkedEvent(event.getComponent(), x, y, gameController.getGame().getComponents().getComponents());
         }  catch (InvalidCoordinates e) {
             return new InvalidCoordinatesError(currentClient.getTruckerController().getNickname());

@@ -15,7 +15,7 @@ import java.util.*;
 
 public class SpaceShip implements Serializable {
 
-    private Component[][] components; //components in the matrix
+    private final Component[][] components; //components in the matrix
     private int lost; //number of lost components
     private int redGoods, greenGoods, blueGoods, yellowGoods; // number of goods for each type color
     private int numHuman; //number of astronauts on the spaceship
@@ -36,7 +36,7 @@ public class SpaceShip implements Serializable {
     //chiedi per parametro color per inizializzare il colore della main cabin
 
     public SpaceShip(PlayerColors color) {
-        components = new Component[11][12];
+        this.components = new Component[11][12];
         for(int i=0;i<5;i++){
             for(int j=0;j<11;j++){
                 components[i][j]=new EmptySpace();
@@ -366,14 +366,15 @@ public class SpaceShip implements Serializable {
                     || (components[x][y+1]!=null && !components[x][y+1].getType().equals("Empty Space") && compatibleLinks(component.getLink()[1],components[x][y+1].getLink()[3]))
                     || (components[x][y-1]!=null && !components[x][y-1].getType().equals("Empty Space") && compatibleLinks(component.getLink()[3],components[x][y-1].getLink()[1]))
             ){
+                //TODO: check indentazione
                 if(components[x+1][y]!=null)
-                System.out.println("link compatibili: "+component.getLink()[2] +" e "+ components[x+1][y].getLink()[0]);
-                if(components[x-1][y]!=null)
-                System.out.println("link compatibili: "+component.getLink()[0] +" e "+ components[x-1][y].getLink()[2]);
-                if(components[x][y+1]!=null)
-                System.out.println("link compatibili: "+component.getLink()[1]+" e "+ components[x][y+1].getLink()[3]);
-                if(components[x][y-1]!=null)
-                System.out.println("link compatibili: "+component.getLink()[3] +" e "+ components[x][y-1].getLink()[1]);
+//                System.out.println("link compatibili: "+component.getLink()[2] +" e "+ components[x+1][y].getLink()[0]);
+//                if(components[x-1][y]!=null)
+//                System.out.println("link compatibili: "+component.getLink()[0] +" e "+ components[x-1][y].getLink()[2]);
+//                if(components[x][y+1]!=null)
+//                System.out.println("link compatibili: "+component.getLink()[1]+" e "+ components[x][y+1].getLink()[3]);
+//                if(components[x][y-1]!=null)
+//                System.out.println("link compatibili: "+component.getLink()[3] +" e "+ components[x][y-1].getLink()[1]);
 
                 System.out.println("Ho controllato e sto linkando");
                 components[x][y] = component;
@@ -1813,14 +1814,23 @@ public class SpaceShip implements Serializable {
 
     public ArrayList<int[]> getAlienCabin() {
         ArrayList<int[]> alienCabin = new ArrayList<>();
+
+        for(int i = 0; i<11; i++){
+            for(int j = 0; j<12; j++){
+                if(components[i][j] != null){
+                    System.out.println(components[i][j].getType());
+                }else
+                    System.out.println("null");
+            }
+        }
+
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++){
                 if(components[i][j]!=null){
                     System.out.println("1");
+                    System.out.println(components[i][j].getType());
                     if (components[i][j].getType().equalsIgnoreCase("cabin")) {
-                        System.out.println("2");
                         if (i!=7 && j!=7) {
-                            System.out.println("3");
                             if (components[i + 1][j] != null || !components[i + 1][j].getType().equalsIgnoreCase("Empty Space")) {
                                 if (components[i + 1][j].getType().equalsIgnoreCase("Life Support")) {
                                     System.out.println("controllo sotto");
@@ -1855,7 +1865,7 @@ public class SpaceShip implements Serializable {
                             }
                         }
                     } else {
-                        System.out.println("4");
+                        System.out.println("i = " + i + ", j = " + j);
                     }
                 }
             }
