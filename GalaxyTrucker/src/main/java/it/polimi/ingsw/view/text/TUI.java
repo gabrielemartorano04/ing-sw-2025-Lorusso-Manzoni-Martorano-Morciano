@@ -397,10 +397,10 @@ public class TUI extends UI {
     public void showPlayerShipStatus(int position, int batteryCount, int humanCount,
                                      int cannonPower, int enginePower, Map<String, Integer> goods) {
         System.out.println("Position: " + position);
-        System.out.println("Batteries: " + batteryCount);
-        System.out.println("Crew: " + humanCount);
-        System.out.println("Cannon power (only single): " + cannonPower);
-        System.out.println("Engine power (only single): " + enginePower);
+        System.out.println("Total batteries: " + batteryCount);
+        System.out.println("Total crew members: " + humanCount);
+        System.out.println("Total cannon power (only single): " + cannonPower);
+        System.out.println("Total engine power (only single): " + enginePower);
 
         System.out.println("Goods on the ship:");
         if (goods != null) {
