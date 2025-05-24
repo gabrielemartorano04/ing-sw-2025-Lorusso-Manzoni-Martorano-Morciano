@@ -892,7 +892,7 @@ public class SpaceShip implements Serializable {
         boolean wellDone=true;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j]!=null && !isValid(i, j)){
+                if ((components[i][j]!=null || components[i][j].getType().equalsIgnoreCase("Empty Space")) && !isValid(i, j)){
                     try{
                         removeComponent(i,j);
                     } catch (InvalidCoordinates e) {
