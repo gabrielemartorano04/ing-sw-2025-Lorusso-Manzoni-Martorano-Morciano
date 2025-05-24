@@ -255,7 +255,7 @@ public class SpaceShip implements Serializable {
                                     switch(components[i][j+1]){
                                         case LifeSupport c3->{
                                             int link1=components[i][j].getLink()[1];
-                                            int link2=components[i-1][j].getLink()[3];
+                                            int link2=components[i][j+1].getLink()[3];
                                             if(compatibleLinks(link1,link2))  ls.add(c3);
                                         }
                                         default -> {
@@ -267,7 +267,7 @@ public class SpaceShip implements Serializable {
                                     switch(components[i][j-1]){
                                         case LifeSupport c4->{
                                             int link1=components[i][j].getLink()[3];
-                                            int link2=components[i-1][j].getLink()[1];
+                                            int link2=components[i][j-1].getLink()[1];
                                             if(compatibleLinks(link1,link2))  ls.add(c4);
                                         }
                                         default -> {
@@ -1838,14 +1838,10 @@ public class SpaceShip implements Serializable {
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++){
                 if(components[i][j]!=null){
-                    System.out.println("1");
                     if (components[i][j].getType().equalsIgnoreCase("Cabin")) {
-                        System.out.println("2");
                         if (!(i==7 && j==7)) {
-                            System.out.println("3");
                             if (components[i + 1][j] != null) {
                                 if (components[i + 1][j].getType().equalsIgnoreCase("Life Support")) {
-                                    System.out.println("controllo sotto");
                                     int link1 = components[i][j].getLink()[2];
                                     int link2 = components[i + 1][j].getLink()[0];
                                     if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
@@ -1853,7 +1849,6 @@ public class SpaceShip implements Serializable {
                             }
                             if (components[i - 1][j] != null) {
                                 if (components[i - 1][j].getType().equalsIgnoreCase("Life Support")) {
-                                    System.out.println("controllo sopra");
                                     int link1 = components[i][j].getLink()[0];
                                     int link2 = components[i - 1][j].getLink()[2];
                                     if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
@@ -1861,7 +1856,6 @@ public class SpaceShip implements Serializable {
                             }
                             if (components[i][j + 1] != null) {
                                 if (components[i][j + 1].getType().equalsIgnoreCase("Life Support")) {
-                                    System.out.println("controllo destra");
                                     int link1 = components[i][j].getLink()[1];
                                     int link2 = components[i][j + 1].getLink()[3];
                                     if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
@@ -1869,7 +1863,6 @@ public class SpaceShip implements Serializable {
                             }
                             if (components[i][j - 1] != null) {
                                 if (components[i][j - 1].getType().equalsIgnoreCase("Life Support")) {
-                                    System.out.println("controllo sinistra");
                                     int link1 = components[i][j].getLink()[3];
                                     int link2 = components[i][j - 1].getLink()[1];
                                     if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
@@ -1877,14 +1870,9 @@ public class SpaceShip implements Serializable {
                             }
                         }
                     } else {
-                        System.out.println("4");
                     }
                 }
             }
-        }
-        System.out.println("alienCabins: ");
-        for(int[] i: alienCabin){
-            System.out.println(Arrays.toString(i)+"\n");
         }
         return alienCabin;
     }

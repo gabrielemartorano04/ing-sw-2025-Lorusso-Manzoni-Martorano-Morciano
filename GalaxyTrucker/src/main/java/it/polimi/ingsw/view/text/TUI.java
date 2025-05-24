@@ -334,7 +334,7 @@ public class TUI extends UI {
                 if(g.getValue() == 3) yellow++;
                 if(g.getValue() == 4) red++;
             }
-            System.out.println("Goods to gain: " + red + " red goods, " + yellow + " yellow goods, " + green + " green goods, " + blue + " blue goods");
+            System.out.println("Goods to gain: " + red + " 🟥, " + yellow + " 🟨, " + green + " 🟩, " + blue + " 🟦");
         }
         if(event.getBank() != null) System.out.println("Bank deposit: " + event.getBank().getGoodsInBank(1) + " red goods, " + event.getBank().getGoodsInBank(2) + " yellow goods, " + event.getBank().getGoodsInBank(3) + " green goods, " + event.getBank().getGoodsInBank(4) + " blue goods");
         //TODO AGGIUNGI QUESTION sse nickname uguale
