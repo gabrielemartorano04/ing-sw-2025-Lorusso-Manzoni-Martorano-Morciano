@@ -547,7 +547,7 @@ public class TUI extends UI {
                         details.append("[").append(i).append(",").append(j).append("] CABIN");
                         if(cabin.getQuantity() != 0){
                             if (cabin.getAlien() != null) {
-                                details.append(cabin.getQuantity()).append(" contains 1 alien");
+                                details.append(cabin.getQuantity()).append(" contains 1 " + cabin.getAlien().getColor() + " alien");
                             } else {
                                 details.append(" contains ").append(cabin.getQuantity()).append(cabin.getQuantity() == 1 ? " human" : " humans");
                             }
