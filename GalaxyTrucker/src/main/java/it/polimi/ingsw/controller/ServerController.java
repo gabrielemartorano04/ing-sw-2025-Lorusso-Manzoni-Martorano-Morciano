@@ -160,9 +160,10 @@ public class ServerController {
             String message="";
             for(Trucker t: gameController.getGame().getTruckerList()){
                 message+="Posizione di "+t.getNickname()+" : "+t.getPosition()+"\n";
+                t.getSpaceShip().wellDone();
             }
             System.out.println(message);
-            broadcastEvent(new BuildCompleteEvent());
+            broadcastEvent(new BuildCompleteEvent(gameController.getGame().getTruckerList()));
         }
     }
 

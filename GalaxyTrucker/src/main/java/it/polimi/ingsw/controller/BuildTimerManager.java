@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.BuildCompleteEvent;
 
 public class BuildTimerManager {
@@ -25,7 +26,7 @@ public class BuildTimerManager {
                 Thread.sleep(seconds * 1000L);
                 if (running) {
                     System.out.println("[TIMER] Tempo scaduto. Invia BuildCompleteEvent");
-                    controller.broadcastEvent(new BuildCompleteEvent());
+                    controller.broadcastEvent(new BuildCompleteEvent(Game.getIstance().getTruckerList()));
                 }
             } catch (InterruptedException e) {
                 System.out.println("[TIMER] Interrotto prima del termine");

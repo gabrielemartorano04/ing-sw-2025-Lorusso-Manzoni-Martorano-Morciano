@@ -212,7 +212,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(BuildCompleteEvent event){
         viewFlow.getTimerDisplay().stop();
-        viewFlow.setShip(event.getShip().getComponents());
+        for(Trucker t: event.getTruckers()){
+            if(t.getNickname().equalsIgnoreCase(viewFlow.getNickname())){
+                viewFlow.setShip(t.getSpaceShip().getComponents());
+            }
+        }
         ui.showMessage("Your updated ship\n");
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         ui.showBuildComplete();

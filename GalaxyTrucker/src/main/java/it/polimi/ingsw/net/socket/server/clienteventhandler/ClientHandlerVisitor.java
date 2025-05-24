@@ -99,7 +99,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             for(Trucker t: gameController.getGame().getTruckerList()){
                 t.getSpaceShip().wellDone();
             }
-            return new BuildCompleteEvent(currentClient.getTruckerController().getSpaceShip());
+            return new BuildCompleteEvent(gameController.getGame().getTruckerList());
         }
     }
 

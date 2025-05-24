@@ -10,15 +10,15 @@ import java.util.ArrayList;
 
 public class BuildCompleteEvent extends ServerEvent {
     private String message;
-    private SpaceShip ship;
-    public BuildCompleteEvent(SpaceShip ship) {
+    private ArrayList<Trucker> truckers = new ArrayList<>();
+    public BuildCompleteEvent(ArrayList<Trucker> truckers) {
         super(ServerEventType.END_BUILDING, true);
         message = "All the ships are checked and the building phase is complete";
-        this.ship = ship;
+        this.truckers = truckers;
     }
 
-    public SpaceShip getShip() {
-        return ship;
+    public ArrayList<Trucker> getTruckers() {
+        return truckers;
     }
 
     @Override
