@@ -269,7 +269,7 @@ public class TUI extends UI {
 
     @Override
     public void showCardDrawn(StartCardEvent event) {
-        System.out.println("Card drawn: " + event.getCardName());
+        System.out.println("Card drawn: " + event.getCardName().toUpperCase());
         System.out.println("Card description: " + event.getCardDescription());
         if(event.getPower() != -1) System.out.println(event.getPower() + " enemy cannon power");
         if(event.getMeteorites() != null) {
@@ -405,7 +405,13 @@ public class TUI extends UI {
         System.out.println("Goods on the ship:");
         if (goods != null) {
             for (Map.Entry<String, Integer> entry : goods.entrySet()) {
-                System.out.println("  - " + entry.getKey() + ": " + entry.getValue());
+                switch (entry.getKey()) {
+                    case "RED" -> System.out.println("  - " + entry.getValue() + " 🟥");
+                    case "YELLOW" -> System.out.println("  - " + entry.getValue() + " 🟨");
+                    case "GREEN" -> System.out.println("  - " + entry.getValue() + " 🟩");
+                    case "BLUE" -> System.out.println("  - " + entry.getValue() + " 🟦");
+                    default -> System.out.println("  - " + entry.getValue() + " " + entry.getKey());
+                }
             }
         }
     }
