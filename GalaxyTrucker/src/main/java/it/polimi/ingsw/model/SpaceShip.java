@@ -1135,20 +1135,16 @@ public class SpaceShip implements Serializable {
         if (x < 0 || x > components.length-1 || y < 0 || y > components[0].length-1) {
             return;
         }
-        if(components[x][y] == null  || (components[x][y].isVisited() && (x!=7 && y!=7))) {
+        if(components[x][y] == null  || (components[x][y].isVisited())) {
             return;
         }
         switch(components[x][y]){
-            case EmptySpace emptySpace->{
+            case EmptySpace ignored ->{
                 return;
             }default -> {}
         }
-        if (components[6][7] != null && components[7][6] != null && components[8][7] != null && components[7][8] != null){
-            if(components[6][7].isVisited() && components[7][6].isVisited() && components[8][7].isVisited() && components[7][8].isVisited())
-                components[7][7].setVisited(true);
-        }
-
         components[x][y].setVisited(true);
+
         if(x+1<10) componentsVisited(x+1, y);
         if(y+1<11)componentsVisited(x, y+1);
         if(y-1>=0)componentsVisited(x, y-1);

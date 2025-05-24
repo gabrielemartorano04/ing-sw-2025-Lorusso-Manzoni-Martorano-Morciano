@@ -96,7 +96,13 @@ public class ClientHandlerVisitor implements ClientVisitor {
             return new WaitOthersBuildingEvent();
         }
         else {
-            BuildTimerManager.getInstance().stop();
+            switch(endBuilding) {
+                case 1: currentClient.getTruckerController().setPosition(6);
+                case 2: currentClient.getTruckerController().setPosition(3);
+                case 3: currentClient.getTruckerController().setPosition(1);
+                case 4: currentClient.getTruckerController().setPosition(0);
+            }
+                BuildTimerManager.getInstance().stop();
 
             for(Trucker t: gameController.getGame().getTruckerList()){
                 boolean welldone=t.getSpaceShip().wellDone();
