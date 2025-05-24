@@ -304,12 +304,11 @@ public class ClientHandlerVisitor implements ClientVisitor {
         currentClient.getTruckerController().getSpaceShip().setNumAlien(event.getCoord());
         currentClient.getTruckerController().getSpaceShip().setNumHuman();
         currentClient.getTruckerController().getSpaceShip().setBattery();
-        currentClient.getTruckerController().getSpaceShip().getGoodsCapacity();
+        Component[][] spaceship=currentClient.getTruckerController().getSpaceShip().getComponents();
         int cannonPower=currentClient.getTruckerController().getSpaceShip().getSingleCannonPower();
         int enginePower=currentClient.getTruckerController().getSpaceShip().getSingleEnginePower();
         currentClient.getTruckerController().getSpaceShip().increaseLost(currentClient.getTruckerController().getTrucker().getKeptComponents().size());
         currentClient.getTruckerController().getSpaceShip().countExposedConnectors();
-        currentClient.getTruckerController().getSpaceShip().getProtection();
         int position=currentClient.getTruckerController().getPosition();
         int batteryCount=currentClient.getTruckerController().getSpaceShip().getNumBatteries();
         int humanCount=currentClient.getTruckerController().getSpaceShip().getNumHuman();
@@ -326,7 +325,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
             System.out.println("Engine power (only single): " + enginePower);
         //STAMPA PER DEBUG
 
-        return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,track);
+        return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,track, spaceship);
     }
 
     @Override
