@@ -85,29 +85,21 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(EndBuildingEvent event) {
         endBuilding++;
         //inserire condizione hourglass
-        if(endBuilding<gameController.getGame().getNumPlayers()) {
             switch(endBuilding) {
                 case 1: currentClient.getTruckerController().setPosition(6);
                 case 2: currentClient.getTruckerController().setPosition(3);
                 case 3: currentClient.getTruckerController().setPosition(1);
                 case 4: currentClient.getTruckerController().setPosition(0);
             }
+        if(endBuilding< gameController.getGame().getNumPlayers()) {
             System.out.println("You're not the last one to end");
             return new WaitOthersBuildingEvent();
-        }
-        else {
-            switch(endBuilding) {
-                case 1: currentClient.getTruckerController().setPosition(6);
-                case 2: currentClient.getTruckerController().setPosition(3);
-                case 3: currentClient.getTruckerController().setPosition(1);
-                case 4: currentClient.getTruckerController().setPosition(0);
-            }
-                BuildTimerManager.getInstance().stop();
-
+        }else{
+            BuildTimerManager.getInstance().stop();
             for(Trucker t: gameController.getGame().getTruckerList()){
-                boolean welldone=t.getSpaceShip().wellDone();
+                t.getSpaceShip().wellDone();
             }
-            return new BuildCompleteEvent();
+            return new BuildCompleteEvent(currentClient.getTruckerController().getSpaceShip());
         }
     }
 
@@ -306,6 +298,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         int batteryCount=currentClient.getTruckerController().getSpaceShip().getNumBatteries();
         int humanCount=currentClient.getTruckerController().getSpaceShip().getNumHuman();
         Map<String, Integer> track = new HashMap<>();
+        gameController.getGame().sortTruckers();
         for (Trucker t : gameController.getGame().getTruckerList()) {
             track.put(t.getNickname(), t.getPosition());
         }
