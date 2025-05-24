@@ -87,20 +87,20 @@ public class ClientHandlerVisitor implements ClientVisitor {
         System.out.println(currentClient.getTruckerController().getNickname() + " è in posizione: " + currentClient.getTruckerController().getPosition());
         //inserire condizione hourglass
             switch(endBuilding) {
-                case 1: {
+                case 1-> {
                     currentClient.getTruckerController().setPosition(6);
                     System.out.println("sono in caso 1 e sto gestendo " + currentClient.getTruckerController().getNickname());
                 }
-                case 2: {
+                case 2-> {
                     currentClient.getTruckerController().setPosition(3);
                     System.out.println("sono in caso 2 e sto gestendo " + currentClient.getTruckerController().getNickname());
 
                 }
-                case 3: {
+                case 3-> {
                     currentClient.getTruckerController().setPosition(1);
                     System.out.println("sono in caso 3 e sto gestendo " + currentClient.getTruckerController().getNickname());
                 }
-                case 4: {
+                case 4-> {
                     currentClient.getTruckerController().setPosition(0);
                     System.out.println("sono in caso 4 e sto gestendo " + currentClient.getTruckerController().getNickname());
 
