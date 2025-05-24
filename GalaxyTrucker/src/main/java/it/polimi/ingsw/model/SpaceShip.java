@@ -615,32 +615,32 @@ public class SpaceShip implements Serializable {
             case Cannon c->{
                 switch (c.getOrientation()) {
                     case N:
-                        if (components[x - 1][y] != null || components[x - 1][y].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x - 1][y] != null && !components[x - 1][y].getType().equalsIgnoreCase("Empty Space")) return false;
                         break;
                     case E:
-                        if (components[x][y + 1] != null || components[x][y + 1].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x][y + 1] != null && !components[x][y + 1].getType().equalsIgnoreCase("Empty Space")) return false;
                         break;
                     case S:
-                        if (components[x + 1][y] != null || components[x + 1][y].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x + 1][y] != null && !components[x + 1][y].getType().equalsIgnoreCase("Empty Space")) return false;
                         break;
                     case W:
-                        if (components[x][y - 1] != null || components[x][y - 1].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x][y - 1] != null && !components[x][y - 1].getType().equalsIgnoreCase("Empty Space")) return false;
                         break;
                 }
             }
             case Engine e->{
                 switch (e.getOrientation()) {
                     case N:
-                        if (components[x - 1][y] != null || components[x - 1][y].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x - 1][y] != null && !components[x - 1][y].getType().equalsIgnoreCase("Empty Space")) return false;
                         break;
                     case E:
-                        if (components[x][y + 1] != null || components[x][y + 1].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x][y + 1] != null && !components[x][y + 1].getType().equalsIgnoreCase("Empty Space")) return false;
                         break;
                     case S:
-                        if (components[x + 1][y] != null || components[x + 1][y].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x + 1][y] != null && !components[x + 1][y].getType().equalsIgnoreCase("Empty Space")) return false;
                         break;
                     case W:
-                        if (components[x][y - 1] != null || components[x][y - 1].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x][y - 1] != null && !components[x][y - 1].getType().equalsIgnoreCase("Empty Space")) return false;
                         break;
                 }
             }
