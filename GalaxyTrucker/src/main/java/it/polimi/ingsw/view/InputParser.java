@@ -140,6 +140,10 @@ public ClientEvent parseFirstConnection(String input) {
                             System.out.println("Error: illegal command. Type 'link <x> <y>'.");
                             return null;
                         }
+                        if((Integer.parseInt(tokens[1])<5 || Integer.parseInt(tokens[1])>9) && (Integer.parseInt(tokens[2])<4 || Integer.parseInt(tokens[2])>10)){
+                            System.out.println("Error: illegal command. Please set a valiid index\n");
+                            return null;
+                        }
                         return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
                     case "keep":
                         if (tokens.length != 1) {

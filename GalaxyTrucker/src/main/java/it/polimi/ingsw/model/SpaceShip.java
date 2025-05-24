@@ -152,6 +152,7 @@ public class SpaceShip implements Serializable {
                 }
             }
         }
+        System.out.println(numOfBattery);
     }
 
     /**
