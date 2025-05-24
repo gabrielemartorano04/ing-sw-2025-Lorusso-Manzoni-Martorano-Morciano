@@ -91,6 +91,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 case 3: currentClient.getTruckerController().setPosition(1);
                 case 4: currentClient.getTruckerController().setPosition(0);
             }
+            System.out.println(currentClient.getTruckerController().getNickname() + " è in posizione: " + currentClient.getTruckerController().getPosition());
         if(endBuilding< gameController.getGame().getNumPlayers()) {
             System.out.println("You're not the last one to end");
             return new WaitOthersBuildingEvent();
