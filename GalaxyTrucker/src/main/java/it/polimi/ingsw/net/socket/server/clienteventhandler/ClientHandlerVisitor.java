@@ -84,6 +84,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(EndBuildingEvent event) {
         endBuilding++;
+        System.out.println(currentClient.getTruckerController().getNickname() + " è in posizione: " + currentClient.getTruckerController().getPosition());
         //inserire condizione hourglass
             switch(endBuilding) {
                 case 1: currentClient.getTruckerController().setPosition(6);
