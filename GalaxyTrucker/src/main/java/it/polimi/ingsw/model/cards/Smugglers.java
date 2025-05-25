@@ -136,19 +136,23 @@ public class Smugglers extends Card implements Serializable {
         if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() > smugglersPower) {
             winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
             cardState = CardState.GOODSTOADD;
+            System.out.println("11");
             return new PlotGood(true, winnerTrucker.getNickname(), goodsGained[currGoodIndex]);
         }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() == smugglersPower){
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
                 if(defeatedTruckers.isEmpty()){
                     cardState = CardState.ESECUZIONE;
+                    System.out.println("12");
                     return cardEffect();
                 }else{
                     cardState = CardState.REMOVE_GOODS;
                     indexOfCurrentTrucker = 0;
+                    System.out.println("13");
                     return removeGoods();
                 }
             }else{
                 indexOfCurrentTrucker++;
+                System.out.println("14");
                 return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
             }
 
@@ -157,9 +161,11 @@ public class Smugglers extends Card implements Serializable {
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
                 cardState = CardState.REMOVE_GOODS;
                 indexOfCurrentTrucker = 0;
+                System.out.println("15");
                 return removeGoods();
             }else{
                 indexOfCurrentTrucker++;
+                System.out.println("16");
                 return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
             }
         }

@@ -46,7 +46,7 @@ public class StarDust extends Card implements Serializable {
         }
         Collections.reverse(truckers); //rigiro i Truckers così ritorno all'ordine originale della lista
         Game.getIstance().endTurn();
-        return new StarDustEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList());
+        return new StarDustEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null);
     }
 
     @Override

@@ -57,7 +57,7 @@ public class Epidemic extends Card implements Serializable {
             trucker.getSpaceShip().epidemic();
         }
         Game.getIstance().endTurn();
-        return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList());
+        return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null);
     }
 
 }
