@@ -185,6 +185,8 @@ public class Game {
         return components;
     }
 
+
+    //TODO CREARE DECK IN BASE A LIVELLO
     /**
      * Creates stacks of cards from the deck.
      */
