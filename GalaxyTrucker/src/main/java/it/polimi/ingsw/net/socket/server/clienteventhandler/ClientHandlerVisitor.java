@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.socket.events.clientevents.AlienCoordinatesRequest;
 import it.polimi.ingsw.net.socket.events.clientevents.GeneriErrorFromClient;
 import it.polimi.ingsw.net.socket.events.clientevents.SendAlienCoord;
@@ -323,6 +323,97 @@ public class ClientHandlerVisitor implements ClientVisitor {
             System.out.println("Crew: " + humanCount);
             System.out.println("Cannon power (only single): " + cannonPower);
             System.out.println("Engine power (only single): " + enginePower);
+
+        boolean[][] validCells = new boolean[11][12];
+        for (int i = 0; i < spaceship.length; i++) {
+            for (int j = 0; j < spaceship[0].length; j++) {
+                Component c = spaceship[i][j];
+                if(c == null || !c.getType().equals("Empty Space")) {
+                    validCells[i][j] = true;
+                } else {
+                    validCells[i][j] = false;
+                }
+            }
+        }
+        System.out.println("\nComponents details:");
+        for (int i = 5; i < 10; i++) {
+            for (int j = 4; j < 11; j++) {
+                if (!validCells[i][j]) continue;
+                Component c = spaceship[i][j];
+                if (c == null) continue;
+
+                StringBuilder details = new StringBuilder();
+                switch (c) {
+                    case Engine engine -> {
+                        if (engine.getIsDouble())
+                            details.append("[").append(i).append(",").append(j).append("] DOUBLE ENGINE");
+                        else
+                            details.append("[").append(i).append(",").append(j).append("] ENGINE");
+                    }
+                    case Cannon cannon -> {
+                        if (cannon.getIsDouble())
+                            details.append("[").append(i).append(",").append(j).append("] DOUBLE CANNON (Direction: ").append(cannon.getOrientation()).append(")");
+                        else
+                            details.append("[").append(i).append(",").append(j).append("] CANNON (Direction: ").append(cannon.getOrientation()).append(")");
+                    }
+                    case Load load -> {
+                        if (load.getIsSpecial()) {
+                            details.append("[").append(i).append(",").append(j).append("] SPECIAL LOAD (Capacity: ").append(load.getCapacity()).append(")");
+                            if (!load.getGoods().isEmpty()) {
+                                details.append(" contains: ");
+                                for (Goods g : load.getGoods()) {
+                                    details.append(g.getColor()).append(" ");
+                                }
+                            } else {
+                                details.append(" is empty");
+                            }
+                        } else {
+                            details.append("[").append(i).append(",").append(j).append("] LOAD (Capacity: ").append(load.getCapacity()).append(")");
+                            if (!load.getGoods().isEmpty()) {
+                                details.append(" contains: ");
+                                for (Goods g : load.getGoods()) {
+                                    details.append(g.getColor()).append(" ");
+                                }
+                            } else {
+                                details.append(" is empty");
+                            }
+                        }
+                    }
+                    case Shield shield -> {
+                        details.append("[").append(i).append(",").append(j).append("] SHIELD (direction: ").append(shield.getDirection()).append(")");
+                    }
+                    case BatteryStorage battery -> {
+                        details.append("[").append(i).append(",").append(j).append("] BATTERY STORAGE (Capacity: ").append(battery.getCapacity()).append(")");
+                        if (battery.getQuantity() != 0) {
+                            details.append(" contains ").append(battery.getQuantity()).append(battery.getQuantity() == 1 ? " battery" : " batteries");
+                        } else {
+                            details.append(" is empty");
+                        }
+                    }
+                    case Cabin cabin -> {
+                        details.append("[").append(i).append(",").append(j).append("] CABIN");
+                        if (cabin.getQuantity() != 0) {
+                            if (cabin.getAlien() != null) {
+                                details.append(cabin.getQuantity()).append(" contains 1 " + cabin.getAlien().getColor() + " alien");
+                            } else {
+                                details.append(" contains ").append(cabin.getQuantity()).append(cabin.getQuantity() == 1 ? " human" : " humans");
+                            }
+                        } else {
+                            details.append(" is empty");
+                        }
+
+                    }
+                    case LifeSupport lifeSupport -> {
+                        details.append("[").append(i).append(",").append(j).append("] ").append("LIFE SUPPORT is ").append(lifeSupport.getColor());
+                    }
+                    default -> {
+                        details.append("[").append(i).append(",").append(j).append("] ").append(c.getType().toUpperCase());
+                    }
+                }
+                System.out.println(details);
+            }
+        }
+
         //STAMPA PER DEBUG
 
         return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,track, spaceship);
