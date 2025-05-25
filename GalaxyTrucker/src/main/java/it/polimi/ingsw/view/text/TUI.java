@@ -705,7 +705,7 @@ public class TUI extends UI {
                 if(cannon.getIsDouble()) {
                     info.append("DOUBLE ");
                 }
-                info.append("CANNON");
+                info.append("CANNON (Dir: " + cannon.getOrientation() + ")");
             }
             case Load load -> {
                 if(load.getIsSpecial()) {
