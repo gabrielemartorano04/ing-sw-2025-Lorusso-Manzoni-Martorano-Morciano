@@ -14,7 +14,5 @@ public enum ParserState {
     REARRANGE, REMOVE_BATTERIES,
     REMOVE_GOODS,
     WARZONE,
-    STARDUST,
-    EPIDEMIC,
     DO_NOTHING
 }
