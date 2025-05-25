@@ -454,7 +454,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
     @Override
     public void visit(EpidemicEvent event) {
         ui.showMessage("Card drawn: "+event.getCardName()+"\n Card description: "+event.getCardDescription()+"\n");
-
+        viewFlow.setParserFlightState(ParserState.EPIDEMIC);
     }
 
     @Override
@@ -504,8 +504,11 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
 
     @Override
     public void visit(StarDustEvent event) {
-        ui.showMessage("Card drawn: "+event.getCardName()+"\n Card description: "+event.getCardDescription()+"\n");
-
+        ui.showMessage("Card drawn: "+event.getCardName().toUpperCase()+"\n Card description: "+event.getCardDescription()+"\n");
+        for (Trucker t: event.getTruckers()) {
+            ui.showMessage(t.getNickname() + " has lost " + t.getSpaceShip().countExposedConnectors() + String.format(t.getSpaceShip().countExposedConnectors() == 1 ? " day\n" : " days\n"));
+        }
+        viewFlow.setParserFlightState(ParserState.STARDUST);
     }
 
     @Override

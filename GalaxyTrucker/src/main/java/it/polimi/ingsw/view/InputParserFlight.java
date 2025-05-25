@@ -286,6 +286,10 @@ public class InputParserFlight {
                     indexes.add(Integer.parseInt(removeGoods[i].trim()));
                 }
                 return new RemoveAskingEvent(indexes, nickname);
+            case STARDUST:
+                return new DrawCardEvent();
+            case EPIDEMIC:
+                return new DrawCardEvent();
             default: {
                 System.out.println("Error: invalid command. Stato non gestito");
                 return null;
