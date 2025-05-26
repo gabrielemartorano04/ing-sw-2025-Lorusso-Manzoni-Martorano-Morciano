@@ -1,23 +1,39 @@
 package it.polimi.ingsw.controller;
 
-import com.sun.javafx.iio.jpeg.JPEGImageLoader;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.view.ParserState;
 
+/**
+ * This class call the right card method, based on current card and client events.
+ * Attributes:
+ * - currCard: Card, current card drawn in the game.
+ */
 public class CardController {
     private Card currCard;
 
+    /**
+     * @return current card in the game
+     */
     public Card getCurrCard() {
         return currCard;
     }
 
+    /**
+     * This method sets the current card
+     * @param card the card that becomes the currCard
+     */
     public void setCurrCard(Card card){
         this.currCard = card;
     }
 
+    /**
+     * This method calls truckerLanding method of the current card.
+     * @param event received Client Event
+     * @return Server Event to send to client
+     */
     public ServerEvent truckerLanding(TruckerLandingEvent event) {
         try{
             return currCard.truckerLanding(event.getLanding());
@@ -26,6 +42,11 @@ public class CardController {
         }
     }
 
+    /**
+     * This method calls setHumansCoordinate method of the current card.
+     * @param event received Client Event
+     * @return Server Event to send to client
+     */
     public ServerEvent setHumansCoordinates(HumanCoordEvent event) {
         try {
             return currCard.setHumansCoordinates(event.getHumanCoord());
@@ -38,6 +59,11 @@ public class CardController {
         }
     }
 
+    /**
+     * This method calls setGoodsCoordinates method of the current card.
+     * @param event received Client Event
+     * @return Server Event to send to client
+     */
     public ServerEvent setGoodsCoordinates(PlotGoodEvent event) {
         try {
             return currCard.setGoodsCoordinates(event.getDecision(), event.getCoordinates(), event.getPositionInLoad());
@@ -50,6 +76,11 @@ public class CardController {
         }
     }
 
+    /**
+     * This method calls rearrange method of the current card.
+     * @param event received Client Event
+     * @return Server Event to send to client
+     */
     public ServerEvent rearrange(RearrangeEvent event) {
         try {
             return currCard.rearrange(event.getCoord1(), event.getCoord2(), event.getValue1(), event.getValue2(), event.getStop());
@@ -62,6 +93,10 @@ public class CardController {
         }
     }
 
+    /**
+     * This method calls rollDice method of the current card.
+     * @return Server Event to send to client
+     */
     public ServerEvent rollDice() {
         try {
             return currCard.rollDice();
@@ -70,6 +105,11 @@ public class CardController {
         }
     }
 
+    /**
+     * This method calls activateShield method of the current card.
+     * @param event received Client Event
+     * @return Server Event to send to client
+     */
     public ServerEvent activateShield(ActivateShieldEvent event) {
         try {
             return currCard.activateShield(event.getDecision(), event.getCoordinates(), event.getBatteryCoordinates());
@@ -80,6 +120,11 @@ public class CardController {
         }
     }
 
+    /**
+     * This method calls activateEngines method of the current card.
+     * @param event received Client Event
+     * @return Server Event to send to client
+     */
     public ServerEvent activateEngines(ActivateEnginesEvent event) {
         try {
             return currCard.activateEngines(event.getDecision(), event.getCoordinates(), event.getBatteryCoordinates());
@@ -92,6 +137,11 @@ public class CardController {
         }
     }
 
+    /**
+     * This method calls activateCannons method of the current card.
+     * @param event received Client Event
+     * @return Server Event to send to client
+     */
     public ServerEvent activateCannons(ActivateCannonsEvent event) {
         try {
             return currCard.activateCannons(event.getDecision(), event.getCoordinates(), event.getBatteryCoordinates());
@@ -107,6 +157,11 @@ public class CardController {
 
     }
 
+    /**
+     * This method calls setWinDecision method of the current card.
+     * @param event received Client Event
+     * @return Server Event to send to client
+     */
     public ServerEvent setWinDecision(SetWinDecision event) {
         try {
             return currCard.setWinDecision(event.getWin());
@@ -115,6 +170,11 @@ public class CardController {
         }
     }
 
+    /**
+     * This method calls playerLandingPlanets method of the current card.
+     * @param event received Client Event
+     * @return Server Event to send to client
+     */
     public ServerEvent playerLandingPlanets(PlanetDecisionEvent event) {
         try {
             return currCard.playerLandingPlanets(event.getIndex());
@@ -125,6 +185,11 @@ public class CardController {
         }
     }
 
+    /**
+     * This method calls removeGoods method of the current card.
+     * @param event received Client Event
+     * @return Server Event to send to client
+     */
     public ServerEvent removeGoods(RemoveGoodsEvent event) {
         try {
             return currCard.removeGoods();
@@ -133,6 +198,11 @@ public class CardController {
         }
     }
 
+    /**
+     * This method calls removeAsking method of the current card.
+     * @param event received Client Event
+     * @return Server Event to send to client
+     */
     public ServerEvent removeAsking(RemoveAskingEvent event) {
         try {
             return currCard.removeAsking(event.getIndexes());
@@ -145,6 +215,11 @@ public class CardController {
         }
     }
 
+    /**
+     * This method calls removeBatteries method of the current card.
+     * @param event received Client Event
+     * @return Server Event to send to client
+     */
     public ServerEvent removeBatteries(RemoveBatteriesEvent event) {
         try {
             return currCard.removeBatteries(event.getCoordinatesToRemoveBatteries());
@@ -159,6 +234,10 @@ public class CardController {
         }
     }
 
+    /**
+     * This method calls handleCurrentCondition method of the current card.
+     * @return Server Event to send to client
+     */
     public ServerEvent handleCurrentCondition() {
         try {
             return currCard.handleCurrentCondition();
@@ -167,7 +246,10 @@ public class CardController {
         }
     }
 
-
+    /**
+     * This method calls startCard method of the current card.
+     * @return Server Event to send to client
+     */
     public ServerEvent startCard(){
         return currCard.startCard();
     }
