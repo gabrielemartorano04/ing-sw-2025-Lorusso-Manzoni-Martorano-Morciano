@@ -12,29 +12,48 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- *
+ * This class manages the game controller. It's used by the server.
+ * Attributes:
+ * - game: Game instance
+ * - count: int counter of logged players
+ * - startTimer: Timer
+ * - timerStarted: boolean, true if the timer started, false otherwise
+ * - gameStarted: boolean, true if the game started, false otherwise
+ * - numOfPlayers: int, number of player decided by the first one
+ * - scheduler: ScheduledExecutorService, threads scheduler
+ * - currentCard: card, current card during flight phase
  */
 public class GameController {
     private final Game game;
     private int count=0;
-    private final Timer startTimer = new Timer();
+    private final Timer startTimer = new Timer();//serve??
     private boolean timerStarted = false;
     private boolean gameStarted = false;
     private int numOfPlayers;
     private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private Card currentCard;
 
-
+    /**
+     * Class constructor
+     * @param numberOfTruckers number of players
+     * @param gameLevel game level (0 for trial flight,2 for level 2)
+     */
     public GameController(int numberOfTruckers, int gameLevel) {
         this.game=new Game(numberOfTruckers, gameLevel);
         this.numOfPlayers=numberOfTruckers;
         this.currentCard=null;
     }
 
+    /**
+     * @return game instance
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * @return available Player colors
+     */
     public EnumSet<PlayerColors> getAvailablePlayerColors() {
         EnumSet<PlayerColors> availablePlayerColors = EnumSet.noneOf(PlayerColors.class);
         if(!game.isColorTaken(PlayerColors.BLUE))
@@ -48,7 +67,16 @@ public class GameController {
         return availablePlayerColors;
     }
 
-    public synchronized TruckerController tryAddPlayer(String nickname, PlayerColors color) throws GameAlreadyStartedException, IllegalArgumentException, NicknameUsedException, ColorNotAvailable {
+    /**
+     * This method adds a new player in the game
+     * @param nickname player's nickname
+     * @param color player's color
+     * @return the created instance of trucker controller
+     * @throws GameAlreadyStartedException if the game already started
+     * @throws NicknameUsedException if the choosen nickname is already in use
+     * @throws ColorNotAvailable if the choosen color is already in use
+     */
+    public synchronized TruckerController tryAddPlayer(String nickname, PlayerColors color) throws GameAlreadyStartedException, NicknameUsedException, ColorNotAvailable {
         if (gameStarted) {
             throw new GameAlreadyStartedException("game already started");
         }
@@ -66,10 +94,6 @@ public class GameController {
 
         count++;
 
-        if (count == 2 && !timerStarted) {
-            startCountdown();
-        }
-
         if (count == 4 || count==numOfPlayers) {
             startTimer.cancel();
             startBuildingPhase();
@@ -78,33 +102,33 @@ public class GameController {
         return truckerController;
     }
 
+    /**
+     * This method sets the current card just drawn from the deck
+     * @return the current card
+     */
     public Card pickCardFromDeck(){
         this.currentCard = game.drawCard();
         return currentCard;
     }
 
+    /**
+     * This method sorts players by their position
+     * @param players arraylist of players' Client handler sockets
+     */
     public void orderByPosition(ArrayList<ClientHandlerSocket> players){
         game.reorderPlayersByPosition(players);
     }
 
+    /**
+     * @return enum set of available player colors
+     */
     public EnumSet<PlayerColors> showAvailableColors() {
         return game.showAvailableColors();
     }
 
-    private void startCountdown() {
-        timerStarted = true;
-        startTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                synchronized (GameController.this) {
-                    if (game.getTruckerList().size() >= 2 && game.getTruckerList().size() < 4) {
-                        startBuildingPhase();
-                    }
-                }
-            }
-        }, 2 * 60 * 1000); // 2 minuti
-    }
-
+    /**
+     * This method set the game for building phase
+     */
     public void startBuildingPhase() {
         if (gameStarted) return;
         gameStarted = true;
@@ -112,6 +136,9 @@ public class GameController {
         startHourglassChecker();
     }
 
+    /**
+     * SERVE?????????????
+     */
     private void startHourglassChecker() {
         scheduler.scheduleAtFixedRate(() -> {
             if (game.isHourglassExpired()) {
@@ -129,6 +156,12 @@ public class GameController {
         scheduler.shutdown(); // ferma il controllo
     }
 
+    /**
+     * This method show the cards stack requested by the player
+     * @param stackIndex index of the stack to show
+     * @return the requested stack
+     * @throws GeneralError if another player is holding the stack
+     */
     public Stack showStack(int stackIndex) throws GeneralError {
         try {
             return game.viewStack(stackIndex);
@@ -136,14 +169,6 @@ public class GameController {
             throw new GeneralError(e.getMessage());
         }
 
-    }
-
-    public synchronized void endBuildingFor(Trucker trucker) throws InvalidStateException {
-        trucker.finish(); // FSM: controlla che sia valido e marca END
-
-        if (game.allPlayersReady()) {
-            game.startFlightPhase();
-        }
     }
 
 }

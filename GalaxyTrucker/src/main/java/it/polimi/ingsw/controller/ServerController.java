@@ -1,22 +1,19 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.GameState;
+
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.BuildCompleteEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.FirstConnectionEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.flightevents.NotYourTurnError;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientHandlerVisitor;
-
-import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
 
 public class ServerController {
     private final ArrayList<ClientHandler> clients;
