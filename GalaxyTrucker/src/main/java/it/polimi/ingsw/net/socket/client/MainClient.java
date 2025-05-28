@@ -1,5 +1,6 @@
 package it.polimi.ingsw.net.socket.client;
 
+import it.polimi.ingsw.net.ConnectionType;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.view.ViewFlow;
 
@@ -26,11 +27,18 @@ public class MainClient {
             serverAddress = scanner.nextLine().trim();
         }
 
+        //chiedere se rmi o socket
+        System.out.print("Do you want to connect by RMI or SOCKET?: ");
+        answer = scanner.nextLine().trim().toLowerCase();
+        ConnectionType connectionType = ConnectionType.valueOf(answer.toUpperCase());
+
+
         final int SERVER_PORT = 12346;
 
         // Crea il NetworkClient e si connette al server
         NetworkClient networkClient = new NetworkClient(serverAddress, SERVER_PORT);
         try {
+            //Inserire tipo di connessione?
             networkClient.connect(); // Connetti al server
 
             ClientHandler clientHandler = new ClientHandler(networkClient);
