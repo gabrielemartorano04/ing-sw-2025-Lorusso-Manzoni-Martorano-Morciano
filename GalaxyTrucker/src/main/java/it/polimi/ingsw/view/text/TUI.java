@@ -428,6 +428,7 @@ public class TUI extends UI {
                 if(c == null || !c.getType().equals("Empty Space")) {
                     validCells[i][j] = true;
                 } else {
+                    System.out.println("Componente presente: "+c);
                     validCells[i][j] = false;
                 }
             }
