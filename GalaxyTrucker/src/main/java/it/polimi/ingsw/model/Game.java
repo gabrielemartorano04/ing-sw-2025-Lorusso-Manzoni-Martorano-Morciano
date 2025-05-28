@@ -142,7 +142,10 @@ public class Game {
     public Stack viewStack(int i) throws GeneralError{
         if (i < 3)
             if (!cardStacks[i].isSelected()) {
-                return cardStacks[i];
+                Stack selectedStack=cardStacks[i];
+                synchronized (selectedStack) {
+                    return selectedStack;
+                }
             }else{
                 throw new GeneralError("un altro giocatore ha questo stack");
             }

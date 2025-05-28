@@ -105,7 +105,11 @@ public class Trucker implements Serializable {
         if(availableComponents.getComponents().get(index).getSelected()){
             throw new GeneralError("Component already selected");
         }
-        this.selectedComponent =  availableComponents.getComponents().get(index);
+        Component component = availableComponents.getComponents().get(index);
+        synchronized (component) {
+            this.selectedComponent = component;
+        }
+
     }
 
 
