@@ -10,7 +10,7 @@ public class ShowOtherShipEvent extends ClientEvent{
     public ShowOtherShipEvent(String nickname) {
         this.nickname = nickname;
     }
-    public String getNickname() {
+    public String getNicknameRequested() {
         return nickname;
     }
     @Override
