@@ -278,6 +278,15 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(ShowOtherShipEvent event) {
         for(Trucker t:gameController.getGame().getTruckerList()){
             if(t.getNickname().equals(event.getNicknameRequested())){
+                //todo togli dopo debug
+                for(Component[] list: t.getSpaceShip().getComponents()){
+                    for(Component component: list){
+                        if(component!=null && !component.getType().equals("Empty Space")){
+                            System.out.println(component);
+                        }
+                    }
+                }
+                //
                 return new ShowOtherShipResponse(t.getSpaceShip().getComponents(),event.getNicknameRequested());
             }
         }
