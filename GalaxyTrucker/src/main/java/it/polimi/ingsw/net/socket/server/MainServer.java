@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.socket.server;
 
 
 import it.polimi.ingsw.controller.ServerController;
+import it.polimi.ingsw.net.rmi.server.RmiServer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -10,11 +11,10 @@ import java.net.Socket;
 public class MainServer {
     public static void main(String[] args) {
         final int PORT = 12346;
+        ServerController serverController = new ServerController();
 
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server listening on port " + PORT + "...");
-
-            ServerController serverController = new ServerController();
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
@@ -28,5 +28,6 @@ public class MainServer {
             System.err.println("Error in server: " + e.getMessage());
         }
     }
+
 }
 

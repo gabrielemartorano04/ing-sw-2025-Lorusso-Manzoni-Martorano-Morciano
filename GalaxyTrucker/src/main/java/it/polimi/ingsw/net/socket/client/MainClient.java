@@ -1,10 +1,13 @@
 package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.net.ConnectionType;
+import it.polimi.ingsw.net.rmi.RmiServerInterface;
+import it.polimi.ingsw.net.rmi.server.RmiServer;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.view.ViewFlow;
 
 import java.io.IOException;
+import java.rmi.Naming;
 import java.util.Scanner;
 
 /**
@@ -14,49 +17,81 @@ public class MainClient {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        String choice;
+        System.out.print("Do you want to connect via (1) Socket or (2) RMI? ");
+        do{
+            System.out.println("Type 1 or 2, everything else is not accepted:");
+            choice = scanner.nextLine().trim();
+        }while(!(choice.equals("1") || choice.equals("2")));
 
-        // Chiedi all'utente dove connettersi
+
+        String answer;
         System.out.print("Do you want to connect to the localhost? (y/n): ");
-        String answer = scanner.nextLine().trim().toLowerCase();
+        do{
+            System.out.println("Type y or n, everything else is not accepted: ");
+            answer = scanner.nextLine().trim().toLowerCase();
+        }while(!(answer.equals("y") || answer.equals("n")));
 
         String serverAddress;
-        if (answer.equals("y") || answer.equals("yes")) {
+        if (answer.equals("y")) {
             serverAddress = "127.0.0.1"; // Localhost
         } else {
             System.out.print("Insert the server address: ");
             serverAddress = scanner.nextLine().trim();
         }
 
-        //chiedere se rmi o socket
-        System.out.print("Do you want to connect by RMI or SOCKET?: ");
-        answer = scanner.nextLine().trim().toLowerCase();
-        ConnectionType connectionType = ConnectionType.valueOf(answer.toUpperCase());
+        ConnectionType connectionType;
+        if(choice.equals("1")) {
+            connectionType = ConnectionType.SOCKET;
+            final int SERVER_PORT = 12346;
 
+            // Crea il NetworkClient e si connette al server
+            NetworkClient networkClient = new NetworkClient(serverAddress, SERVER_PORT);
+            try {
+                //Inserire tipo di connessione?
+                networkClient.connect(); // Connetti al server
 
-        final int SERVER_PORT = 12346;
+                ClientHandler clientHandler = new ClientHandler(networkClient);
+                ViewFlow view = new ViewFlow(clientHandler);
 
-        // Crea il NetworkClient e si connette al server
-        NetworkClient networkClient = new NetworkClient(serverAddress, SERVER_PORT);
-        try {
-            //Inserire tipo di connessione?
-            networkClient.connect(); // Connetti al server
+                NetworkListenerClient listenerClient = new NetworkListenerClient(networkClient.getSocket(), new NetworkListenerClient.EventReceiver() {
+                    @Override
+                    public void onEventReceived(ServerEvent event) {
+                        view.onEventReceived(event);
+                    }
+                });
 
-            ClientHandler clientHandler = new ClientHandler(networkClient);
-            ViewFlow view = new ViewFlow(clientHandler);
+                listenerClient.start();
+                view.start();
 
-            NetworkListenerClient listenerClient = new NetworkListenerClient(networkClient.getSocket(), new NetworkListenerClient.EventReceiver() {
-                @Override
-                public void onEventReceived(ServerEvent event) {
-                    view.onEventReceived(event);
-                }
-            });
-
-            listenerClient.start();
-            view.start();
-
-        } catch (IOException e) {
-            System.err.println("Error in server connection: " + e.getMessage());
+            } catch (IOException e) {
+                System.err.println("Error in server connection: " + e.getMessage());
+            }
         }
+        else if(choice.equals("2")) {
+            connectionType = ConnectionType.RMI;
+            // === RMI client ===
+            try {
+                String url = "rmi://" + serverAddress + ":1099/MyService";
+                RmiServer rmiServer = (RmiServer) Naming.lookup(url);
+
+                System.out.println("Connected to RMI server!");
+                // Esempio chiamata remota
+                String response = rmiServer.sayHello("ClientUser");
+                System.out.println("Server says: " + response);
+
+                // Qui puoi avviare la tua logica legata a ViewFlow, se hai un clientHandler RMI
+                // (serve creare un clientHandler dedicato per RMI se necessario)
+
+            } catch (Exception e) {
+                System.err.println("Error connecting to RMI server: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+        } else {
+            System.out.println("Invalid choice. Exiting.");
+        }
+
     }
 }
 

@@ -83,5 +83,4 @@ public interface RmiServerInterface extends Remote {
 
     ServerEvent visit(RemotionSeenEvent event) throws RemoteException;
 
-
 }

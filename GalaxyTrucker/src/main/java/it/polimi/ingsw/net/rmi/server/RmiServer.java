@@ -2,7 +2,6 @@ package it.polimi.ingsw.net.rmi.server;
 
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.rmi.RmiClientInterface;
 import it.polimi.ingsw.net.rmi.RmiServerInterface;
@@ -17,21 +16,20 @@ import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ClientHandlerRmi extends UnicastRemoteObject implements RmiServerInterface, ClientHandler {
+public class RmiServer extends UnicastRemoteObject implements RmiServerInterface, ClientHandler {
     private final ServerController controller;
-    private final RmiClientInterface client;
     private TruckerController truckerController;
 
-    public ClientHandlerRmi(ServerController controller, RmiClientInterface client) throws RemoteException {
+    public RmiServer(ServerController controller) throws RemoteException {
         this.controller = controller;
-        this.client = client;
-        controller.addClient(this);  // come fai con Socket
     }
 
-    public void receiveMessage(ClientEvent event) {
-        // controller.handleEvent(event, this);
+    public void addClient(ClientHandler client){
+        this.controller.addClient(client);
     }
 
     @Override
@@ -44,16 +42,26 @@ public class ClientHandlerRmi extends UnicastRemoteObject implements RmiServerIn
         return truckerController;
     }
 
-    @Override
-    public void sendEvent(ServerEvent event) {
+    public String sayHello(String name) throws RemoteException {
+        return "Hello, " + name + "!";
+    }
+
+    public static void bind(ServerController serverController) {
         try {
-            client.receiveMessage(event);  // chiamata remota
+            RmiServer server = new RmiServer(serverController);
+            Registry registry = LocateRegistry.createRegistry(1099); // Porta default RMI
+            registry.rebind("GalaxyTruckerRmiServer", server);
+            System.out.println("RMI Server bound under name 'GalaxyTruckerRmiServer'");
         } catch (RemoteException e) {
-            System.err.println("Errore invio evento via RMI: " + e.getMessage());
-            controller.removeClient(this);
+            System.err.println("Error starting RMI server: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
+
+    @Override
+    public void sendEvent(ServerEvent event) {
+    }
 
 
     @Override
