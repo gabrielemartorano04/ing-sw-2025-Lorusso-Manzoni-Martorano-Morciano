@@ -276,15 +276,12 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(ShowOtherShipEvent event) {
-        Component[][] spaceship=null;
         for(Trucker t:gameController.getGame().getTruckerList()){
             if(t.getNickname().equals(event.getNicknameRequested())){
-                spaceship=t.getSpaceShip().getComponents();
-                break;
+                return new ShowOtherShipResponse(t.getSpaceShip().getComponents(),event.getNicknameRequested());
             }
         }
-
-        return new ShowOtherShipResponse(spaceship,event.getNicknameRequested());
+        return new GenericErrorEvent("No such trucker with that nickname",false);
     }
 
     @Override
