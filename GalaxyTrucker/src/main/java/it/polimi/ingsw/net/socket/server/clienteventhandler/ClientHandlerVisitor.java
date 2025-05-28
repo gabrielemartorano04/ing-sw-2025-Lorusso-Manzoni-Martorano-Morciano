@@ -276,8 +276,10 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(ShowOtherShipEvent event) {
+        System.out.println(event.getNicknameRequested());
         for(Trucker t:gameController.getGame().getTruckerList()){
             if(t.getNickname().equals(event.getNicknameRequested())){
+                System.out.println(t.getNickname());
                 //todo togli dopo debug
                 for(Component[] list: t.getSpaceShip().getComponents()){
                     for(Component component: list){

@@ -426,6 +426,7 @@ public class TUI extends UI {
             for (int j = 0; j < layout[0].length; j++) {
                 Component c = layout[i][j];
                 if(c == null || !c.getType().equals("Empty Space")) {
+                    //todo togli dopo debug comando ship
                     System.out.println("Componente presente: "+c);
                     validCells[i][j] = true;
                 } else {
