@@ -276,11 +276,11 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(ShowOtherShipEvent event) {
-        System.out.println(event.getNicknameRequested());
         for(Trucker t:gameController.getGame().getTruckerList()){
             if(t.getNickname().equals(event.getNicknameRequested())){
-                System.out.println(t.getNickname());
                 //todo togli dopo debug
+                Component[][] original = t.getSpaceShip().getComponents();
+
                 for(Component[] list: t.getSpaceShip().getComponents()){
                     for(Component component: list){
                         if(component!=null && !component.getType().equals("Empty Space")){
@@ -288,8 +288,21 @@ public class ClientHandlerVisitor implements ClientVisitor {
                         }
                     }
                 }
+
+                Component[][] copy = new Component[original.length][];
+                for (int i = 0; i < original.length; i++) {
+                    copy[i] = new Component[original[i].length];
+                    for (int j = 0; j < original[i].length; j++) {
+                        Component c = original[i][j];
+                        if (c != null) {
+                            // Here we create a shallow copy (same object reference)
+                            copy[i][j] = c;
+                            // If you want a deep copy, you'd need a clone() or copy constructor in Component
+                        }
+                    }
+                }
                 //
-                return new ShowOtherShipResponse(t.getSpaceShip().getComponents(),event.getNicknameRequested());
+                return new ShowOtherShipResponse(copy,event.getNicknameRequested());
             }
         }
         return new GenericErrorEvent("No such trucker with that nickname",false);
