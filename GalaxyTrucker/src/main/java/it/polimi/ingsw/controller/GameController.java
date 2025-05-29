@@ -27,7 +27,7 @@ public class GameController {
     private final Timer startTimer = new Timer();//serve??
     private boolean timerStarted = false;
     private boolean gameStarted = false;
-    private int numOfPlayers;
+    private final int numOfPlayers;
     private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private Card currentCard;
 

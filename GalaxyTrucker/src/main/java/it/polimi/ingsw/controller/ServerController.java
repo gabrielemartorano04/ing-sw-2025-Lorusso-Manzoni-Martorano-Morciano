@@ -85,7 +85,7 @@ public class ServerController {
 
     /**
      * method used to create the turnManager once all the players have joined the game
-     * @param players
+     * @param players players' client handlers
      */
     private void CreateTurnManager(ArrayList<ClientHandlerSocket> players) {
         this.turnManager = new TurnManager(players);
@@ -154,9 +154,9 @@ public class ServerController {
                 }
             }
             //TODO:TOGLI DOPO DEBUG
-            String message="";
+            StringBuilder message= new StringBuilder();
             for(Trucker t: gameController.getGame().getTruckerList()){
-                message+="Posizione di "+t.getNickname()+" : "+t.getPosition()+"\n";
+                message.append("Posizione di ").append(t.getNickname()).append(" : ").append(t.getPosition()).append("\n");
                 t.getSpaceShip().wellDone();
             }
             System.out.println(message);
