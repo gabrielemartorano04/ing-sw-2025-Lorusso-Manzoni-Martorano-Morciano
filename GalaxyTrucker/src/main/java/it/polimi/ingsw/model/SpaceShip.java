@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.exceptions.NotEnoughBatteries;
 import it.polimi.ingsw.model.components.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -20,10 +21,11 @@ public class SpaceShip implements Serializable {
     private int redGoods, greenGoods, blueGoods, yellowGoods; // number of goods for each type color
     private int numHuman; //number of astronauts on the spaceship
     private int goodsCapacity; //number of goods capacity
-    private ArrayList<Goods> goodsList; //list of goods in the spaceship, sort by their value (desc)
+    private final ArrayList<Goods> goodsList; //list of goods in the spaceship, sort by their value (desc)
     private int numOfBattery; //number of batteries in the spaceship
     private int numAlien;
     private int numDoubleCannon, numDoubleEngine;
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
