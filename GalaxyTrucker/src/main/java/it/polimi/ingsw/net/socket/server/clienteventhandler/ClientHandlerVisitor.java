@@ -38,7 +38,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     private int gameLevel;
     private int endBuilding;
     private int startFlight;
-    private CardController cardController;
+    private final CardController cardController;
     public ClientHandlerVisitor() {
         numLog = 0;
         endBuilding = 0;
@@ -63,13 +63,12 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(CreateGameEvent event) {
         int numPlayers= event.getNumberOfPlayers();
-        gameLevel=event.getGameLevel();
+        this.gameLevel=event.getGameLevel();
         //todo ripetuto nel parser togliere?
         if (numPlayers<0 || numPlayers>4) {
             return new NumberOfPlayersError();
         }
         this.numOfPlayers = numPlayers;
-        this.gameLevel = gameLevel;
         return new AvailableColorsEvent(EnumSet.allOf(PlayerColors.class), "First Player in the game, start login");
     }
 
