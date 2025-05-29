@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.VirtualView;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.AlienCabinCoord;
@@ -14,7 +15,7 @@ import it.polimi.ingsw.view.text.TUI;
 import java.util.ArrayList;
 
 
-public class ServerEventHandlerVisitor implements ServerEventVisitor{
+public class ServerEventHandlerVisitor implements VirtualView {
     private final UI ui;
     private final ViewFlow viewFlow;
     public ServerEventHandlerVisitor(ViewFlow viewFlow){
