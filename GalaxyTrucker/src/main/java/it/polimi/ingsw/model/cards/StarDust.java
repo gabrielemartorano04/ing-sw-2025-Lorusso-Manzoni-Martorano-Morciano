@@ -4,10 +4,10 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.EpidemicEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StarDustEvent;
 import it.polimi.ingsw.exceptions.GeneralError;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -16,9 +16,10 @@ import java.util.*;
  * In reverse order of position, the truckers lose as many days of flight as the number of connectors exposed
  */
 public class StarDust extends Card implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    private CardState cardState;
+    private final CardState cardState;
     /**
      * Star dust constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -46,9 +47,9 @@ public class StarDust extends Card implements Serializable {
             Game.getIstance().moveBackward(trucker, exposedConnectors);
         }
         Collections.reverse(truckers); //rigiro i Truckers così ritorno all'ordine originale della lista
-        ArrayList<String> turckerRemoved;
-        turckerRemoved = Game.getIstance().endTurn();
-        return new StarDustEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, turckerRemoved);
+        ArrayList<String> truckerRemoved;
+        truckerRemoved = Game.getIstance().endTurn();
+        return new StarDustEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved);
     }
 
     @Override

@@ -405,8 +405,8 @@ public class Smugglers extends Card implements Serializable {
             throw new InvalidCoordinates("Not all components selected are Battery Storages");
         }
         int counterOfBatteriesSelectedByPlayer = 0;
-        for(int i = 0; i < coordinatesToRemoveBatteries.size(); i++){
-            counterOfBatteriesSelectedByPlayer += coordinatesToRemoveBatteries.get(i)[2];
+        for (int[] coordinatesToRemoveBattery : coordinatesToRemoveBatteries) {
+            counterOfBatteriesSelectedByPlayer += coordinatesToRemoveBattery[2];
         }
         if(counterOfBatteriesSelectedByPlayer != goodsLostCurrTrucker){
             throw new WrongNumberOfBatteriesSelected("The total number of batteries you selected to remove is not " + goodsLostCurrTrucker);

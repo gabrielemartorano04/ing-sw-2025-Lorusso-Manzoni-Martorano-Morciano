@@ -5,13 +5,16 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 import javafx.scene.image.Image;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 
 /**
  * Class that manages the single adventure card
  */
 public abstract class Card implements Serializable, CardInterface{
+    @Serial
     private static final long serialVersionUID = 1L;
     private final String name;
     private final String description;
@@ -75,7 +78,7 @@ public abstract class Card implements Serializable, CardInterface{
      * @return rear image
      */
     public Image getBackImage() {
-        return new Image(getClass().getResourceAsStream(backImagePath));
+        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(backImagePath)));
     }
 
     /**
@@ -83,7 +86,7 @@ public abstract class Card implements Serializable, CardInterface{
      * @return front image
      */
     public Image getFrontImage() {
-        return new Image(getClass().getResourceAsStream(frontImagePath));
+        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(frontImagePath)));
     }
 
     /**

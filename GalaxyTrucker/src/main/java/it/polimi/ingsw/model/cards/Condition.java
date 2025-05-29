@@ -6,5 +6,5 @@ package it.polimi.ingsw.model.cards;
 public enum Condition {
     HUMANS,
     ENGINES,
-    CANNONS;
+    CANNONS
 }

@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.EpidemicEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
@@ -13,6 +12,7 @@ import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.exceptions.NotEnoughBatteries;
 import it.polimi.ingsw.view.ParserState;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ import java.util.List;
  * The total engine power of the trucker is the number of days of flight that his/her spaceship will gain on the dashboard
  */
 public class OpenSpace extends Card implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     private CardState state;
     private int indexOfCurrentTrucker;
@@ -129,9 +130,9 @@ public class OpenSpace extends Card implements Serializable {
             trucker.getSpaceShip().deactivateDoubleEngines();
         }
 
-        ArrayList<String> turckerRemoved;
-        turckerRemoved = Game.getIstance().endTurn();
-        return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, turckerRemoved);
+        ArrayList<String> truckerRemoved;
+        truckerRemoved = Game.getIstance().endTurn();
+        return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved);
     }
 
 }

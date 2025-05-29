@@ -4,12 +4,12 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
-import it.polimi.ingsw.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.view.ParserState;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -19,11 +19,12 @@ import java.util.ArrayList;
  * Only one trucker car take the station and is possible that nobody wants to take it
  */
 public class AbandonedShip extends Card implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final int days;
     private final int credits;
     private final int numHuman;
-    private Trucker truckerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
+    private Trucker truckerThatHasDecided; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
     private ArrayList<int[]> coordinates = null; //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
     private CardState state;
     private int indexOfCurrTrucker;
@@ -163,9 +164,9 @@ public class AbandonedShip extends Card implements Serializable {
             Game.getIstance().moveBackward(truckerThatHasDecided,days);
             truckerThatHasDecided.addCosmicCredit(credits);
         }
-        ArrayList<String> turckerRemoved = new ArrayList<>();
-        turckerRemoved = Game.getIstance().endTurn();
-        return new CardFinished(false, Game.getIstance().getTruckerList(), turckerRemoved);
+        ArrayList<String> truckerRemoved;
+        truckerRemoved = Game.getIstance().endTurn();
+        return new CardFinished(false, Game.getIstance().getTruckerList(), truckerRemoved);
     }
 
 }

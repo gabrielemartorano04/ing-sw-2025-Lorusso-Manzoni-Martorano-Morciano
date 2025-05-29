@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.view.ParserState;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -20,12 +21,13 @@ import java.util.ArrayList;
  * Only one trucker car take the station and is possible that nobody wants to take it
  */
 public class AbandonedStation extends Card implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final int days;
     private final int numHuman;
     private final ArrayList<Goods> goods;
     private Trucker truckerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
-    private ArrayList<int[]> coordinates = null; //coordinates sono le coordinate dei Load dove inserire le merci. Viene settato dal Card controller, se è vuoto vuol dire che nessun giocatore ha voluto accettare la carta
+//    private final ArrayList<int[]> coordinates = null; //coordinates sono le coordinate dei Load dove inserire le merci. Viene settato dal Card controller, se è vuoto vuol dire che nessun giocatore ha voluto accettare la carta
     private CardState cardState;
     private int currGood;
     private int indexOfCurrTrucker;
@@ -215,9 +217,9 @@ public class AbandonedStation extends Card implements Serializable {
             throw new GeneralError("risposte mancanti");
         }
         Game.getIstance().moveBackward(truckerThatHasDecided, days);
-        ArrayList<String> turckerRemoved = new ArrayList<>();
-        turckerRemoved = Game.getIstance().endTurn();
-        return new CardFinished(false, Game.getIstance().getTruckerList(), turckerRemoved);
+        ArrayList<String> truckerRemoved;
+        truckerRemoved = Game.getIstance().endTurn();
+        return new CardFinished(false, Game.getIstance().getTruckerList(), truckerRemoved);
     }
 
 }

@@ -9,6 +9,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
 import it.polimi.ingsw.view.ParserState;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +21,10 @@ import java.util.List;
  * If it's a big meteor, the trucker can use, or activate if is double, a cannon to destroy the meteor; a cannon protects only one column or 3 row (his own and the 2 adjacent ones) if rotated;
  */
 public class MeteorShower extends Card implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     public CardState state;
-    private ArrayList<Boolean> answers;
+    private final ArrayList<Boolean> answers;
     private int indexOfCurrTrucker;
 
     private int[] meteor;
@@ -55,9 +57,9 @@ public class MeteorShower extends Card implements Serializable {
     }
 
 
-    public ArrayList<int[]> getMeteors() {
-        return meteors;
-    }
+//    public ArrayList<int[]> getMeteors() {
+//        return meteors;
+//    }
 
     public CardState getCardState() {
         return state;
@@ -134,7 +136,7 @@ public class MeteorShower extends Card implements Serializable {
     }
 
     @Override
-    public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, WrongCallerException, InvalidCoordinates, NotEnoughBatteries {
+    public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
         if (this.state != CardState.ACTIVATE_ENGINES) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
@@ -201,9 +203,9 @@ public class MeteorShower extends Card implements Serializable {
         }
         answers.clear();
         if (meteors.size()==(currMeteorIndex)) {
-            ArrayList<String> turckerRemoved;
-            turckerRemoved = Game.getIstance().endTurn();
-            return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, turckerRemoved);
+            ArrayList<String> truckerRemoved;
+            truckerRemoved = Game.getIstance().endTurn();
+            return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved);
         }else {
             this.state = CardState.ROLL_DICE;
             return new BooleanDecision(ServerEventType.ROLL_DICE, false, ParserState.ROLL_DICE, "Roll the dice", Game.getIstance().getTruckerList().getFirst().getNickname());

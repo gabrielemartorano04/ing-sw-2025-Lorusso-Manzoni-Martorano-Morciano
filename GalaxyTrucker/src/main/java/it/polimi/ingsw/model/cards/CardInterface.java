@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 import java.util.ArrayList;

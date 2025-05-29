@@ -79,17 +79,17 @@ public class WarZone extends Card implements Serializable {
         return state;
     }
 
-    public ArrayList<Condition> getConditionsOrder() {
-        return conditionsOrder;
-    }
+//    public ArrayList<Condition> getConditionsOrder() {
+//        return conditionsOrder;
+//    }
 
-    public Map<Condition, Effect> getPenalties() {
-        return penalties;
-    }
+//    public Map<Condition, Effect> getPenalties() {
+//        return penalties;
+//    }
 
-    public ArrayList<int[]> getShoots(){
-        return shoots;
-    }
+//    public ArrayList<int[]> getShoots(){
+//        return shoots;
+//    }
 
     @Override
     public ServerEvent startCard() {
@@ -120,7 +120,9 @@ public class WarZone extends Card implements Serializable {
             throw new GeneralError("CombatZone not callable in the state " + state);
         }
         if(Game.getIstance().getTruckerList().size() == 1){
-            return new CardFinished(true, Game.getIstance().getTruckerList());
+            ArrayList<String> truckerRemoved;
+            truckerRemoved = Game.getIstance().endTurn();
+            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
         }
         if(currConditionIndex == conditionsOrder.size()){
             throw new GeneralError("All conditions have been verified");
@@ -148,7 +150,7 @@ public class WarZone extends Card implements Serializable {
 
 
     @Override
-    public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, WrongCallerException, InvalidCoordinates, NotEnoughBatteries {
+    public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
         if (this.state != CardState.ACTIVATE_CANNONS) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
@@ -345,8 +347,8 @@ public class WarZone extends Card implements Serializable {
             throw new InvalidCoordinates("Not all components selected are Battery Storages");
         }
         int counterOfBatteriesSelectedByPlayer = 0;
-        for(int i = 0; i < coordinatesToRemoveBatteries.size(); i++){
-            counterOfBatteriesSelectedByPlayer += coordinatesToRemoveBatteries.get(i)[2];
+        for (int[] coordinatesToRemoveBattery : coordinatesToRemoveBatteries) {
+            counterOfBatteriesSelectedByPlayer += coordinatesToRemoveBattery[2];
         }
         if(counterOfBatteriesSelectedByPlayer != goodsLostCurrTrucker){
             throw new WrongNumberOfBatteriesSelected("The total number of batteries you selected to remove is not " + goodsLostCurrTrucker);
@@ -365,7 +367,7 @@ public class WarZone extends Card implements Serializable {
      * @param coordinates list of arrays of coordinates of the cabins
      */
     @Override
-    public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, GeneralError {
+    public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
         if(state != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Can't call setCoordinates in the state: " + state);
         }
@@ -503,7 +505,9 @@ public class WarZone extends Card implements Serializable {
                     currConditionIndex++;
                     deactivateTruckersSpaceShip();
                     if(currConditionIndex == conditionsOrder.size()){
-                        return new CardFinished(true, Game.getIstance().getTruckerList());
+                        ArrayList<String> truckerRemoved;
+                        truckerRemoved = Game.getIstance().endTurn();
+                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
                     }else{
                         state = CardState.WARZONE;
                         return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition);
@@ -515,7 +519,9 @@ public class WarZone extends Card implements Serializable {
                     currConditionIndex++;
                     deactivateTruckersSpaceShip();
                     if(currConditionIndex == conditionsOrder.size()){
-                        return new CardFinished(true, Game.getIstance().getTruckerList());
+                        ArrayList<String> truckerRemoved;
+                        truckerRemoved = Game.getIstance().endTurn();
+                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
                     }else{
                         state = CardState.WARZONE;
                         return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition);
@@ -527,7 +533,9 @@ public class WarZone extends Card implements Serializable {
                     currConditionIndex++;
                     deactivateTruckersSpaceShip();
                     if(currConditionIndex == conditionsOrder.size()){
-                        return new CardFinished(true, Game.getIstance().getTruckerList());
+                        ArrayList<String> truckerRemoved;
+                        truckerRemoved = Game.getIstance().endTurn();
+                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
                     }else{
                         state = CardState.WARZONE;
                         return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition);
@@ -552,7 +560,9 @@ public class WarZone extends Card implements Serializable {
                     if(currShootIndex == shoots.size()){
                         currConditionIndex++;
                         if(currConditionIndex == conditionsOrder.size()){
-                            return new CardFinished(true, Game.getIstance().getTruckerList());
+                            ArrayList<String> truckerRemoved;
+                            truckerRemoved = Game.getIstance().endTurn();
+                            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
                         }else{
                             state = CardState.WARZONE;
                             return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition);
