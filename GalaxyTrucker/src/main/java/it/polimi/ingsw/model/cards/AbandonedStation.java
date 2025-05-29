@@ -215,7 +215,7 @@ public class AbandonedStation extends Card implements Serializable {
             throw new GeneralError("risposte mancanti");
         }
         Game.getIstance().moveBackward(truckerThatHasDecided, days);
-        ArrayList<Trucker> turckerRemoved = new ArrayList<>();
+        ArrayList<String> turckerRemoved = new ArrayList<>();
         turckerRemoved = Game.getIstance().endTurn();
         return new CardFinished(false, Game.getIstance().getTruckerList(), turckerRemoved);
     }

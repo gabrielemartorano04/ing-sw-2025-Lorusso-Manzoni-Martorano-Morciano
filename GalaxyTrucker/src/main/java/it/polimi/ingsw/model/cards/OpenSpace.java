@@ -5,6 +5,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.EpidemicEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
@@ -127,9 +128,10 @@ public class OpenSpace extends Card implements Serializable {
             }
             trucker.getSpaceShip().deactivateDoubleEngines();
         }
-        
-        Game.getIstance().endTurn();
-        return new CardFinished(true, Game.getIstance().getTruckerList());
+
+        ArrayList<String> turckerRemoved;
+        turckerRemoved = Game.getIstance().endTurn();
+        return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, turckerRemoved);
     }
 
 }

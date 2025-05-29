@@ -57,6 +57,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private boolean startFlight;
     private boolean startFlightForAll;
     private int stackSelected;
+    private boolean out;
 
 
     public void setStacks(Stack[] stacks) {
@@ -107,6 +108,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         this.startFlight=true;
         this.startFlightForAll=false;
         this.selectedComponent=null;
+        this.out=false;
     }
 
     @Override
@@ -200,14 +202,19 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                          event= inputParser.parseFillTheShip(input);
                     }
                     case FLIGTH-> {
-                        if(startFlight){
-                            event=new OkStartFlight();
-                            startFlight=false;
-                        } else if(startFlightForAll) {
-                            event = inputParserFlight.parseFlight(input,nickname);
-                        } else {
-                        System.out.println("You can only wait for others to start flight");
-                        event = null;
+                        //TODO: aggiungere che se arriva la visione dei risultati anche gli eliminati la vedono
+                        if(!out) {
+                            if (startFlight) {
+                                event = new OkStartFlight();
+                                startFlight = false;
+                            } else if (startFlightForAll) {
+                                event = inputParserFlight.parseFlight(input, nickname);
+                            } else {
+                                System.out.println("You can only wait for others to start flight");
+                                event = null;
+                            }
+                        }else{
+                            System.out.println("You are out of the flight, please wait for others to finish it and see the results");
                         }
                     }
                 }
@@ -406,6 +413,13 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     public void setHasStack(int i) {
         this.stackSelected = i;
+    }
+
+    public void setOut() {
+        this.out = true;
+    }
+    public boolean getOut() {
+        return out;
     }
 }
 

@@ -163,7 +163,7 @@ public class AbandonedShip extends Card implements Serializable {
             Game.getIstance().moveBackward(truckerThatHasDecided,days);
             truckerThatHasDecided.addCosmicCredit(credits);
         }
-        ArrayList<Trucker> turckerRemoved = new ArrayList<>();
+        ArrayList<String> turckerRemoved = new ArrayList<>();
         turckerRemoved = Game.getIstance().endTurn();
         return new CardFinished(false, Game.getIstance().getTruckerList(), turckerRemoved);
     }

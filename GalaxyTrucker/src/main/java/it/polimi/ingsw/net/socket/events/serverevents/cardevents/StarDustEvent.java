@@ -14,12 +14,14 @@ public class StarDustEvent extends CardEvent {
     private ArrayList<Trucker> truckers;
     private String cardDescription;
     private String cardName;
+    private ArrayList<String> truckersRemoved;
 
-    public StarDustEvent (String cardName, String cardDescripition, boolean forAll, ArrayList<Trucker> turckerList, String nickname) {
+    public StarDustEvent (String cardName, String cardDescripition, boolean forAll, ArrayList<Trucker> turckerList, String nickname, ArrayList<String> truckersRemoved) {
         super(ServerEventType.CARD_FINISHED, forAll, ParserState.DRAW_CARD, nickname);
         this.truckers = turckerList;
         this.cardName = cardName;
         this.cardDescription = cardDescription;
+        this.truckersRemoved = truckersRemoved;
     }
 
     @Override
@@ -37,5 +39,9 @@ public class StarDustEvent extends CardEvent {
 
     public ArrayList<Trucker> getTruckers() {
         return truckers;
+    }
+
+    public ArrayList<String> getTruckersRemoved(){
+        return truckersRemoved;
     }
 }

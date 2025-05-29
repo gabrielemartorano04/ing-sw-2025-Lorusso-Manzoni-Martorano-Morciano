@@ -428,26 +428,28 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
                 break;
             }
         }
-        ui.showShipLayout(viewFlow.getNickname(), trucker.getSpaceShip().getComponents());
-        viewFlow.setPosition(trucker.getPosition());
-        viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
-        viewFlow.setHumanCount(trucker.getSpaceShip().getNumHuman());
-        viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
-        viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
-        ui.showFlightPhaseStart();
-        String message="Truckers' positions order:\n";
-        int i=1;
-        for(Trucker t:event.getTruckersList()){
-            message+=i+") "+t.getNickname()+"\n";
-            i++;
+        if(event.getTruckersRemoved().contains(viewFlow.getNickname())){
+            viewFlow.setOut();
+        }else {
+            ui.showShipLayout(viewFlow.getNickname(), trucker.getSpaceShip().getComponents());
+            viewFlow.setPosition(trucker.getPosition());
+            viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
+            viewFlow.setHumanCount(trucker.getSpaceShip().getNumHuman());
+            viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
+            viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
+            ui.showFlightPhaseStart();
+            String message = "Truckers' positions order:\n";
+            int i = 1;
+            for (Trucker t : event.getTruckersList()) {
+                message += i + ") " + t.getNickname() + "\n";
+                i++;
+            }
+            ui.showMessage(message);
+            if (viewFlow.getNickname().equals(event.getTruckersList().get(0).getNickname())) {
+                viewFlow.setParserFlightState(ParserState.DRAW_CARD);
+                ui.showInputFormat(ParserState.DRAW_CARD);
+            } else viewFlow.setParserFlightState(ParserState.DO_NOTHING);
         }
-        ui.showMessage(message);
-        if(viewFlow.getNickname().equals(event.getTruckersList().get(0).getNickname())){
-            viewFlow.setParserFlightState(ParserState.DRAW_CARD);
-            ui.showInputFormat(ParserState.DRAW_CARD);
-        }
-        else viewFlow.setParserFlightState(ParserState.DO_NOTHING);
-
     }
 
     @Override

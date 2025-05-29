@@ -6,10 +6,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.RollDiceResult;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
 import it.polimi.ingsw.view.ParserState;
 
 import java.io.Serializable;
@@ -204,8 +201,9 @@ public class MeteorShower extends Card implements Serializable {
         }
         answers.clear();
         if (meteors.size()==(currMeteorIndex)) {
-            Game.getIstance().endTurn();
-            return new CardFinished(true, Game.getIstance().getTruckerList());
+            ArrayList<String> turckerRemoved;
+            turckerRemoved = Game.getIstance().endTurn();
+            return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, turckerRemoved);
         }else {
             this.state = CardState.ROLL_DICE;
             return new BooleanDecision(ServerEventType.ROLL_DICE, false, ParserState.ROLL_DICE, "Roll the dice", Game.getIstance().getTruckerList().getFirst().getNickname());

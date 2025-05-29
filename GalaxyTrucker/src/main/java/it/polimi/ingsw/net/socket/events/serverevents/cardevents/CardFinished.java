@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class CardFinished extends CardEvent {
     private ArrayList<Trucker> truckersList = new ArrayList<>();
-    private ArrayList<Trucker> truckersRemoved = new ArrayList<>();
-    public CardFinished(boolean forAll, ArrayList<Trucker> truckerList, ArrayList<Trucker> truckerRemoved) {
+    private ArrayList<String> truckersRemoved = new ArrayList<>();
+    public CardFinished(boolean forAll, ArrayList<Trucker> truckerList, ArrayList<String> truckerRemoved) {
         super(ServerEventType.CARD_FINISHED, forAll, ParserState.DRAW_CARD, null);
         this.truckersList = truckerList;
         this.truckersRemoved = truckerRemoved;
@@ -24,7 +24,7 @@ public class CardFinished extends CardEvent {
         return truckersList;
     }
 
-    public ArrayList<Trucker> getTruckersRemoved(){
+    public ArrayList<String> getTruckersRemoved(){
         return truckersRemoved;
     }
 
