@@ -2,7 +2,7 @@ package it.polimi.ingsw.net.socket.events.clientevents.buildingevents;
 
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
+import it.polimi.ingsw.net.VirtualServer;
 
 public class SelectKeptTileEvent extends ClientEvent {
     private int index;
@@ -18,7 +18,7 @@ public class SelectKeptTileEvent extends ClientEvent {
     }
 
     @Override
-    public ServerEvent call(ClientVisitor visitor) {
+    public ServerEvent call(VirtualServer visitor) {
         return visitor.visit(this);
     }
 }

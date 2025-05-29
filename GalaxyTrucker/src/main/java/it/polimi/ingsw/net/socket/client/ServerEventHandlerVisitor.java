@@ -1,7 +1,7 @@
 package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.VirtualView;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.AlienCabinCoord;
@@ -12,9 +12,10 @@ import it.polimi.ingsw.view.*;
 import it.polimi.ingsw.view.text.TUI;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
-public class ServerEventHandlerVisitor implements ServerEventVisitor{
+public class ServerEventHandlerVisitor implements VirtualView {
     private final UI ui;
     private final ViewFlow viewFlow;
     public ServerEventHandlerVisitor(ViewFlow viewFlow){
@@ -272,9 +273,9 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
             ui.showMessage("you can't place any alien. Please type 'coord' to go on\n");
         }
         else {
-            String message="";
+            StringBuilder message= new StringBuilder();
             for(int[] c:coord){
-                message+="x: "+c[0]+" y: "+c[1]+"\n";
+                message.append("x: ").append(c[0]).append(" y: ").append(c[1]).append("\n");
             }
             ui.showMessage("\nList of cabin available for aliens:\n" + message);
             ui.showMessage("Insert coordinates (coord <x1> <y1> <x2> <y2>...):");
@@ -428,21 +429,21 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
                 break;
             }
         }
-        ui.showShipLayout(viewFlow.getNickname(), trucker.getSpaceShip().getComponents());
+        ui.showShipLayout(viewFlow.getNickname(), Objects.requireNonNull(trucker).getSpaceShip().getComponents());
         viewFlow.setPosition(trucker.getPosition());
         viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
         viewFlow.setHumanCount(trucker.getSpaceShip().getNumHuman());
         viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
         viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
         ui.showFlightPhaseStart();
-        String message="Truckers' positions order:\n";
+        StringBuilder message= new StringBuilder("Truckers' positions order:\n");
         int i=1;
         for(Trucker t:event.getTruckersList()){
-            message+=i+") "+t.getNickname()+"\n";
+            message.append(i).append(") ").append(t.getNickname()).append("\n");
             i++;
         }
-        ui.showMessage(message);
-        if(viewFlow.getNickname().equals(event.getTruckersList().get(0).getNickname())){
+        ui.showMessage(message.toString());
+        if(viewFlow.getNickname().equals(event.getTruckersList().getFirst().getNickname())){
             viewFlow.setParserFlightState(ParserState.DRAW_CARD);
             ui.showInputFormat(ParserState.DRAW_CARD);
         }
