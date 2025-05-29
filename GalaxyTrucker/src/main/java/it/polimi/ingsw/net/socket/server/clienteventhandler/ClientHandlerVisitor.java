@@ -264,8 +264,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
         for(Trucker t:gameController.getGame().getTruckerList()){
             if(t.getNickname().equals(event.getNicknameRequested())){
                 return new ShowOtherShipResponse(t.getSpaceShip().getComponents(),event.getNicknameRequested());
-
-               // return new ShowOtherShipResponse(copyShip(t.getSpaceShip().getComponents()),event.getNicknameRequested());
             }
         }
         return new GenericErrorEvent("No such trucker with that nickname",false);
@@ -288,7 +286,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
         currentClient.getTruckerController().getSpaceShip().setNumHuman();
         currentClient.getTruckerController().getSpaceShip().setBattery();
         showShipLayout(currentClient.getTruckerController().getNickname(), currentClient.getTruckerController().getSpaceShip().getComponents());
-        Component[][] spaceship= copyShip(currentClient.getTruckerController().getSpaceShip().getComponents());
+        Component[][] spaceship= currentClient.getTruckerController().getSpaceShip().getComponents();
         showShipLayout(currentClient.getTruckerController().getNickname(), spaceship);
         currentClient.getTruckerController().getSpaceShip().increaseLost(currentClient.getTruckerController().getTrucker().getKeptComponents().size());
         currentClient.getTruckerController().getSpaceShip().countExposedConnectors();
@@ -449,24 +447,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 return new GenericErrorEvent(e.getMessage(), true);
             }
         }
-    }
-
-
-
-    // private
-
-    private Component[][] copyShip(Component[][] original) {
-        Component[][] copy = new Component[original.length][];
-        for (int i = 0; i < original.length; i++) {
-            copy[i] = new Component[original[i].length];
-            for (int j = 0; j < original[i].length; j++) {
-                Component c = original[i][j];
-                if (c != null) {
-                    copy[i][j] = c;
-                }
-            }
-        }
-        return copy;
     }
 
     private void showShipLayout(String nickname, Component[][] layout) {

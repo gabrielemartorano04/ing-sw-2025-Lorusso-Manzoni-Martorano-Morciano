@@ -234,8 +234,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         return ship;
     }
 
-    public void setShip(Component[][] shipToCopy) {
-        this.ship=shipToCopy;
+    public void setShip(Component[][] ship) {
+        this.ship=ship;
     }
 
     public int getPosition() {
