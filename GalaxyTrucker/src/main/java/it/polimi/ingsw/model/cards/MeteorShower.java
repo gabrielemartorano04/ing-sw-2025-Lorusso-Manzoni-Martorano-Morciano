@@ -158,7 +158,7 @@ public class MeteorShower extends Card implements Serializable {
 
         }
 
-        if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()) {
+        if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()-1) {
             this.state = CardState.ESECUZIONE;
             indexOfCurrTrucker=0;
             return cardEffect();
