@@ -215,19 +215,7 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.getTimerDisplay().stop();
         for(Trucker t: event.getTruckers()){
             if(t.getNickname().equalsIgnoreCase(viewFlow.getNickname())){
-                Component[][] original = t.getSpaceShip().getComponents();
-                Component[][] copy = new Component[original.length][];
-                for (int i = 0; i < original.length; i++) {
-                    copy[i] = new Component[original[i].length];
-                    for (int j = 0; j < original[i].length; j++) {
-                        Component c = original[i][j];
-                        if (c != null) {
-                            copy[i][j] = c;
-                        }
-                    }
-                }
-                viewFlow.setShip(copy);
-
+                viewFlow.setShip(t.getSpaceShip().getComponents());
             }
         }
         ui.showMessage("Your updated ship\n");
