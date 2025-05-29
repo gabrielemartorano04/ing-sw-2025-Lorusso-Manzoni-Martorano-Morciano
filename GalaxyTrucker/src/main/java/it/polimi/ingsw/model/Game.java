@@ -46,7 +46,6 @@ public class Game {
         this.truckersOut = new ArrayList<>();
         this.gameDeck = new ArrayList<>();
         this.components = new AvailableComponents();
-        int j=0;
         this.gameLevel = gameLevel;
         this.deck = new Deck(gameLevel);
         this.cardStacks = new Stack[4];
@@ -73,7 +72,7 @@ public class Game {
     }
 
     public void startHourglass(){
-        hourglass=new Hourglass(this);
+        hourglass=new Hourglass();
     }
 
     public int getNumPlayers(){
@@ -296,14 +295,14 @@ public class Game {
         trucker.setPosition(finalPos);
     }
 
-    /**
-     * Checks if a trucker's spaceship is ready.
-     * @param trucker the trucker to check
-     * @return false (to be implemented)
-     */
-    public boolean ready(Trucker trucker){
-        return false;
-    } //trucker's ship is ready
+//    /**
+//     * Checks if a trucker's spaceship is ready.
+//     * @param trucker the trucker to check
+//     * @return false (to be implemented)
+//     */
+//    public boolean ready(Trucker trucker){
+//        return false;
+//    } //trucker's ship is ready
 
 
 
@@ -313,7 +312,7 @@ public class Game {
      */
     public void setLevel(int level) {
         this.gameLevel = level;
-    };
+    }
 
 
 
@@ -350,7 +349,7 @@ public class Game {
             i++;
         }
         return scores;
-    };
+    }
 
     /**
      * Determines if a trucker has the best spaceship.
@@ -402,12 +401,12 @@ public class Game {
         gameState = GameState.BUILDING;
     }
 
-    public void startFlightPhase() {
-        if (gameState != GameState.BUILDING) {
-            throw new IllegalStateException("Cannot start flight phase from state: " + gameState);
-        }
-        gameState = GameState.FLIGHT;
-    }
+//    public void startFlightPhase() {
+//        if (gameState != GameState.BUILDING) {
+//            throw new IllegalStateException("Cannot start flight phase from state: " + gameState);
+//        }
+//        gameState = GameState.FLIGHT;
+//    }
 
     public boolean isHourglassExpired() {
         return hourglass.timeIsUp() && hourglass.getTimeTurns() == 2;

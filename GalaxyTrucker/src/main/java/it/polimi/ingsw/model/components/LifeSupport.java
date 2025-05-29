@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.components;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -7,6 +8,7 @@ import java.io.Serializable;
  */
 final public class LifeSupport extends Component implements Serializable{
     private final AlienColor color;
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

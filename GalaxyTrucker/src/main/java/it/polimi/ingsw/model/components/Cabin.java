@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.components;
 
 import it.polimi.ingsw.model.PlayerColors;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -12,8 +13,8 @@ final public class Cabin extends Component implements Serializable {
     private int quantity;
     private final int capacity;
     private Alien alien;
-    private LifeSupport lifeSupport;
     private final PlayerColors color;
+    @Serial
     private static final long serialVersionUID = 1L;
 
 
@@ -34,7 +35,6 @@ final public class Cabin extends Component implements Serializable {
         this.quantity = 0;
         this.capacity = 2;
         this.alien = null;
-        this.lifeSupport = null;
         this.color = color;
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.components;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -8,6 +9,7 @@ import java.io.Serializable;
 final public class BatteryStorage extends Component implements Serializable  {
     private final int capacity;
     private int quantity;
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

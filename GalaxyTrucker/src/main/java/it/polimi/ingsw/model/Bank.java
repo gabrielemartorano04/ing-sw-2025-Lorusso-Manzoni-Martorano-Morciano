@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -8,6 +9,8 @@ import java.io.Serializable;
 
 public class Bank implements Serializable {
     protected int[] goods; //red, yellow, green, blue
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     public Bank() {
         this.goods = new int[4];

@@ -1,20 +1,24 @@
 package it.polimi.ingsw.model.components;
 
 import javafx.scene.image.Image;
+
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Class that manages the single component
  */
 public abstract sealed class Component implements Serializable  permits BatteryStorage, Cabin, Cannon, EmptySpace, Engine, LifeSupport,Load,Pipes,Shield {
-    private Integer[] link;
+    private final Integer[] link;
     private boolean selected;
     private boolean covered;
     private boolean visited;
-    private String type;
+    private final String type;
     private final String frontImagePath;
     private final String backImagePath;
     private int rotationAngle;
+    @Serial
     private static final long serialVersionUID = 1L;
 
 
@@ -44,7 +48,7 @@ public abstract sealed class Component implements Serializable  permits BatteryS
      * @return rear image
      */
     public Image getBackImage() {
-        return new Image(getClass().getResourceAsStream(backImagePath));
+        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(backImagePath)));
     }
 
 
@@ -53,7 +57,7 @@ public abstract sealed class Component implements Serializable  permits BatteryS
      * @return front image
      */
     public Image getFrontImage() {
-        return new Image(getClass().getResourceAsStream(frontImagePath));
+        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(frontImagePath)));
     }
 
     /**
@@ -127,14 +131,14 @@ public abstract sealed class Component implements Serializable  permits BatteryS
         link[0]=tmp;
         rotationAngle = (rotationAngle + 90) % 360;
     }
-    //serve per resettare immagine view ma bisogna resettare anche i link
-    public void setRotationAngle(int rotationAngle) {
-        this.rotationAngle = rotationAngle;
-    }
+//    serve per resettare immagine view ma bisogna resettare anche i link
+//    public void setRotationAngle(int rotationAngle) {
+//        this.rotationAngle = rotationAngle;
+//    }
 
-    public int getRotationAngle() {
-        return rotationAngle;
-    }
+//    public int getRotationAngle() {
+//        return rotationAngle;
+//    }
 
     /**
      * Returns the type of component
@@ -152,7 +156,7 @@ public abstract sealed class Component implements Serializable  permits BatteryS
     @Override
     public String toString(){
         String s;
-        s="tipo: "+type.toString()+" link alto: "+link[0].toString()+" link dx: "+ link[1].toString()+" link lx: "+ link[2].toString()+" link basso: "+ link[3].toString();
+        s="tipo: "+ type +" link alto: "+link[0].toString()+" link dx: "+ link[1].toString()+" link lx: "+ link[2].toString()+" link basso: "+ link[3].toString();
         return s;
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.components;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -7,6 +8,7 @@ import java.io.Serializable;
  */
 public final class Shield extends Component implements Serializable {
     private Direction direction;
+    @Serial
     private static final long serialVersionUID = 1L;
     private boolean isActive;
 

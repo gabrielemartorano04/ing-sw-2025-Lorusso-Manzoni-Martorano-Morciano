@@ -13,16 +13,14 @@ public class Hourglass implements Serializable {
     private Timer timer;
     private boolean timeUp;
     private int secondiRimanenti;
-    private Game game;
     private int timeTurns;
 
-    public Hourglass(Game game) {
+    public Hourglass() {
         timer = new Timer();
         timeUp = false;
         timeTurns = 0;
         secondiRimanenti = 90;
         startTimer();
-        this.game = game;
     }
 
     private void startTimer() {
