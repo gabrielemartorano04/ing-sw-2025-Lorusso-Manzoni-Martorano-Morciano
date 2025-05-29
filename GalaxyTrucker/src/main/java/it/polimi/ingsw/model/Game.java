@@ -422,9 +422,9 @@ public class Game {
         return hourglass;
     }
 
-    public ArrayList<Trucker> endTurn() {
+    public ArrayList<String> endTurn() {
         ArrayList<Trucker> toRemove = new ArrayList<>();
-
+        ArrayList<String> toReturn = new ArrayList<>();
         for (Trucker t : truckers) {
             if (noHumans(t) || checkOvertaken(t)) {
                 toRemove.add(t);
@@ -433,7 +433,11 @@ public class Game {
 
         toRemove.forEach(this::withdraw);
         sortTruckers();
-        return toRemove;
+        for(Trucker t: toRemove){
+            toReturn.add(t.getNickname());
+        }
+
+        return toReturn;
     }
 
     public ServerEvent turnHourglass() throws CannotTurnHourglassException {

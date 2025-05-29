@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.EpidemicEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StarDustEvent;
 import it.polimi.ingsw.exceptions.GeneralError;
 
@@ -45,8 +46,9 @@ public class StarDust extends Card implements Serializable {
             Game.getIstance().moveBackward(trucker, exposedConnectors);
         }
         Collections.reverse(truckers); //rigiro i Truckers così ritorno all'ordine originale della lista
-        Game.getIstance().endTurn();
-        return new StarDustEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null);
+        ArrayList<String> turckerRemoved;
+        turckerRemoved = Game.getIstance().endTurn();
+        return new StarDustEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, turckerRemoved);
     }
 
     @Override
