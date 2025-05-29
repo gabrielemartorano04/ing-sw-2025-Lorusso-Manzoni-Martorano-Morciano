@@ -1,9 +1,7 @@
 package it.polimi.ingsw.net.socket.events.clientevents;
 
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientVisitor;
-
-import java.net.Socket;
+import it.polimi.ingsw.net.VirtualServer;
 
 public class ShowOtherShipEvent extends ClientEvent{
     private String nickname;
@@ -19,7 +17,7 @@ public class ShowOtherShipEvent extends ClientEvent{
     }
 
     @Override
-    public ServerEvent call(ClientVisitor visitor) {
+    public ServerEvent call(VirtualServer visitor) {
         return visitor.visit(this);
     }
 }

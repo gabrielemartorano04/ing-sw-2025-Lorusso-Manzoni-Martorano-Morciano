@@ -1,20 +1,12 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.AvailableComponents;
-import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.components.Cabin;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
-import it.polimi.ingsw.net.socket.client.ServerEventVisitor;
-import it.polimi.ingsw.net.socket.events.clientevents.AlienCoordinatesRequest;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.GeneriErrorFromClient;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.OkStartFlight;
-import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorInsertedData;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.text.TUI;

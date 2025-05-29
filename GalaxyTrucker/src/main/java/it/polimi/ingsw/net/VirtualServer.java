@@ -1,4 +1,4 @@
-package it.polimi.ingsw.net.socket.server.clienteventhandler;
+package it.polimi.ingsw.net;
 
 
 import it.polimi.ingsw.controller.GameController;
@@ -16,7 +16,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
  * Interface of the visitor used to handle the events coming from the Client with the data used in the cards
  */
 
-public interface ClientVisitor {
+public interface VirtualServer {
     public ServerEvent visit(CreateGameEvent event);
     public ServerEvent visit(DiscardTileEvent event);
     public ServerEvent visit(EndBuildingEvent event);

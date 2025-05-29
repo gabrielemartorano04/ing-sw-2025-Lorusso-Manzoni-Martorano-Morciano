@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.*;
+import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.socket.events.clientevents.AlienCoordinatesRequest;
 import it.polimi.ingsw.net.socket.events.clientevents.GeneriErrorFromClient;
 import it.polimi.ingsw.net.socket.events.clientevents.SendAlienCoord;
@@ -30,7 +31,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ClientHandlerVisitor implements ClientVisitor {
+public class ClientHandlerVisitor implements VirtualServer {
     private int numOfPlayers;
     private GameController gameController;
     private int numLog;
