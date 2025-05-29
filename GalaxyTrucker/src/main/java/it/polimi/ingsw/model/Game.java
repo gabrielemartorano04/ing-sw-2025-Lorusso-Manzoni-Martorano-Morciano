@@ -8,6 +8,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.WaitOthersB
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.exceptions.CannotTurnHourglassException;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 //gestisce la partita
@@ -421,8 +422,8 @@ public class Game {
         return hourglass;
     }
 
-    public void endTurn() {
-        List<Trucker> toRemove = new ArrayList<>();
+    public ArrayList<Trucker> endTurn() {
+        ArrayList<Trucker> toRemove = new ArrayList<>();
 
         for (Trucker t : truckers) {
             if (noHumans(t) || checkOvertaken(t)) {
@@ -432,6 +433,7 @@ public class Game {
 
         toRemove.forEach(this::withdraw);
         sortTruckers();
+        return toRemove;
     }
 
     public ServerEvent turnHourglass() throws CannotTurnHourglassException {

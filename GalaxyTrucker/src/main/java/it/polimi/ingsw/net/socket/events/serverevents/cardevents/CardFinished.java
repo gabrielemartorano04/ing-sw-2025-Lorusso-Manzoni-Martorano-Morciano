@@ -12,14 +12,20 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CardFinished extends CardEvent {
-    ArrayList<Trucker> truckersList = new ArrayList<>();
-    public CardFinished(boolean forAll, ArrayList<Trucker> truckerList) {
+    private ArrayList<Trucker> truckersList = new ArrayList<>();
+    private ArrayList<Trucker> truckersRemoved = new ArrayList<>();
+    public CardFinished(boolean forAll, ArrayList<Trucker> truckerList, ArrayList<Trucker> truckerRemoved) {
         super(ServerEventType.CARD_FINISHED, forAll, ParserState.DRAW_CARD, null);
         this.truckersList = truckerList;
+        this.truckersRemoved = truckerRemoved;
     }
 
     public ArrayList<Trucker> getTruckersList() {
         return truckersList;
+    }
+
+    public ArrayList<Trucker> getTruckersRemoved(){
+        return truckersRemoved;
     }
 
     @Override
