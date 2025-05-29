@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 
 import java.io.Serializable;
@@ -113,19 +112,19 @@ public class Trucker implements Serializable {
     }
 
 
-    public void finish() {
-        if(!spaceShip.wellDone()){
-            spaceShip.increaseLost(keptComponents.size());
-            keptComponents.clear();
-        }
-    }
+//    public void finish() {
+//        if(!spaceShip.wellDone()){
+//            spaceShip.increaseLost(keptComponents.size());
+//            keptComponents.clear();
+//        }
+//    }
 
-    public void fillSpaceship(ArrayList<int[]> coordAliens){
-        spaceShip.setBattery();
-        int goodsCapacity = spaceShip.getGoodsCapacity();
-        spaceShip.setNumAlien(coordAliens);
-        spaceShip.setNumHuman();
-    }
+//    public void fillSpaceship(ArrayList<int[]> coordAliens){
+//        spaceShip.setBattery();
+//        int goodsCapacity = spaceShip.getGoodsCapacity();
+//        spaceShip.setNumAlien(coordAliens);
+//        spaceShip.setNumHuman();
+//    }
 
     public Component getKeptComponent(int index) throws GeneralError{
         if(!(0 <= index && index < keptComponents.size())){

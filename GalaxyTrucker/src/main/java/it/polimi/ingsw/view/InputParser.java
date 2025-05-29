@@ -233,6 +233,12 @@ public ClientEvent parseFirstConnection(String input) {
         String[] tokens = input.split("\\s+", 3);
         String command = tokens[0].toLowerCase();
         switch (command){
+            case "alien":
+                if(tokens.length != 1){
+                    System.out.println("Error: illegal command. Type 'alien' if you want to see where you can place aliens.");
+                    return null;
+                }
+                return new AlienCoordinatesRequest();
             case "coord":
                 if(tokens.length%2 !=0){
                     ArrayList<int[]> coord=new ArrayList<>();

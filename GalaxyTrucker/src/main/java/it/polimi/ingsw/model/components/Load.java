@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.components;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -8,10 +9,11 @@ import java.util.ArrayList;
  */
 final public class Load extends Component implements Serializable {
     private final boolean isSpecial;
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final int capacity;
-    private ArrayList<Goods> goods; //lista delle merci contenute in quel Load ordinate dalla rarità maggiore a quella minore
+    private final ArrayList<Goods> goods; //lista delle merci contenute in quel Load ordinate dalla rarità maggiore a quella minore
 
     /**
      * Load constructor, initialise the attributes of this class
@@ -28,10 +30,7 @@ final public class Load extends Component implements Serializable {
         super(linkU, linkR, linkD, linkL, type, imagePath);
         this.isSpecial = isSpecial;
         this.capacity = capacity;
-        goods = new ArrayList<Goods>();
-        for(Goods g : goods){
-            g=null;
-        }
+        goods = new ArrayList<>();
     }
 
     /**

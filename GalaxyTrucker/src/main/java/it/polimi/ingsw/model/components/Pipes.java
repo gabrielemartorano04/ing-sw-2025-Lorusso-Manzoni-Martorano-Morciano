@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.components;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * Class that manages the single pipes
  */
 final public class Pipes extends Component implements Serializable{
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

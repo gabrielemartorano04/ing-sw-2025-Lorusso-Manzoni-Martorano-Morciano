@@ -2,16 +2,18 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.Card;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Stack implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     private boolean selected;
-    private ArrayList<Card> stack;
-    private int size;
-    private int indexOfThis;
+    private final ArrayList<Card> stack;
+    private final int size;
+    private final int indexOfThis;
 
     public Stack(int indexOfThis) {
         this.size = 10;
@@ -42,5 +44,9 @@ public class Stack implements Serializable {
 
     public void setSelected() {
         this.selected = true;
+    }
+
+    public int getSize() {
+        return size;
     }
 }

@@ -2,16 +2,17 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.components.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 /**
  * Class that manages the components as a whole
  */
 
 public class AvailableComponents implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private ArrayList<Component> components;
@@ -346,7 +347,7 @@ public class AvailableComponents implements Serializable {
 
     /**
      * Returns the array of components available
-     * @return array of components
+     * @return list of components
      */
     public ArrayList<Component> getComponents() {
         return components;
@@ -362,14 +363,14 @@ public class AvailableComponents implements Serializable {
 
     /**
      * probably useless considering the new idea of not removing but just changing the selcted attribute of the component
-     * @param index
      */
     public void removeComponent(int index) {
         components.remove(index);
     }
-    public void addComponent(Component component) {
-        components.addFirst(component);
-    }
+
+//    public void addComponent(Component component) {
+//        components.addFirst(component);
+//    }
 
     /**
      * sets that component as selected by a client

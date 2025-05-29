@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.components;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -16,6 +17,7 @@ public class Goods implements Serializable {
     // dentro la SpaceShip quindi non vengono messo nel costruttore.
     private int x, y;
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

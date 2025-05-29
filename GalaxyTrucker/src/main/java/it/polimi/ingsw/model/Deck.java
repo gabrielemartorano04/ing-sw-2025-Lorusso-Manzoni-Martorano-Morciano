@@ -19,7 +19,7 @@ class Deck implements Serializable {
      * Deck constructor, initialise the list of cards that will compose the deck
      */
     public Deck(int gameLevel) {
-        cards = new ArrayList<Card>();
+        cards = new ArrayList<>();
         fillDeck(gameLevel);
     }
 
@@ -91,11 +91,11 @@ class Deck implements Serializable {
         planets1.addLast(new ArrayList<>());
         planets1.addLast(new ArrayList<>());
         planets1.addLast(new ArrayList<>());
-        planets1.get(0).addLast(new Goods(4));
-        planets1.get(0).addLast(new Goods(2));
-        planets1.get(0).addLast(new Goods(1));
-        planets1.get(0).addLast(new Goods(1));
-        planets1.get(0).addLast(new Goods(1));
+        planets1.getFirst().addLast(new Goods(4));
+        planets1.getFirst().addLast(new Goods(2));
+        planets1.getFirst().addLast(new Goods(1));
+        planets1.getFirst().addLast(new Goods(1));
+        planets1.getFirst().addLast(new Goods(1));
         planets1.get(1).addLast(new Goods(4));
         planets1.get(1).addLast(new Goods(3));
         planets1.get(1).addLast(new Goods(1));
@@ -110,8 +110,8 @@ class Deck implements Serializable {
         planets2.addLast(new ArrayList<>());
         planets2.addLast(new ArrayList<>());
         planets2.addLast(new ArrayList<>());
-        planets2.get(0).addLast(new Goods(4));
-        planets2.get(0).addLast(new Goods(4));
+        planets2.getFirst().addLast(new Goods(4));
+        planets2.getFirst().addLast(new Goods(4));
         planets2.get(1).addLast(new Goods(4));
         planets2.get(1).addLast(new Goods(1));
         planets2.get(1).addLast(new Goods(1));
@@ -120,10 +120,10 @@ class Deck implements Serializable {
         ArrayList<ArrayList<Goods>> planets3 = new ArrayList<>();
         planets3.addLast(new ArrayList<>());
         planets3.addLast(new ArrayList<>());
-        planets3.get(0).addLast(new Goods(3));
-        planets3.get(0).addLast(new Goods(2));
-        planets3.get(0).addLast(new Goods(1));
-        planets3.get(0).addLast(new Goods(1));
+        planets3.getFirst().addLast(new Goods(3));
+        planets3.getFirst().addLast(new Goods(2));
+        planets3.getFirst().addLast(new Goods(1));
+        planets3.getFirst().addLast(new Goods(1));
         planets3.get(1).addLast(new Goods(3));
         planets3.get(1).addLast(new Goods(3));
 
@@ -131,8 +131,8 @@ class Deck implements Serializable {
         planets4.addLast(new ArrayList<>());
         planets4.addLast(new ArrayList<>());
         planets4.addLast(new ArrayList<>());
-        planets4.get(0).addLast(new Goods(2));
-        planets4.get(0).addLast(new Goods(2));
+        planets4.getFirst().addLast(new Goods(2));
+        planets4.getFirst().addLast(new Goods(2));
         planets4.get(1).addLast(new Goods(3));
         planets4.get(2).addLast(new Goods(1));
         planets4.get(2).addLast(new Goods(1));
@@ -142,10 +142,10 @@ class Deck implements Serializable {
         planets5.addLast(new ArrayList<>());
         planets5.addLast(new ArrayList<>());
         planets5.addLast(new ArrayList<>());
-        planets5.get(0).addLast(new Goods(4));
-        planets5.get(0).addLast(new Goods(4));
-        planets5.get(0).addLast(new Goods(4));
-        planets5.get(0).addLast(new Goods(3));
+        planets5.getFirst().addLast(new Goods(4));
+        planets5.getFirst().addLast(new Goods(4));
+        planets5.getFirst().addLast(new Goods(4));
+        planets5.getFirst().addLast(new Goods(3));
         planets5.get(1).addLast(new Goods(4));
         planets5.get(1).addLast(new Goods(4));
         planets5.get(1).addLast(new Goods(2));
@@ -159,8 +159,8 @@ class Deck implements Serializable {
         ArrayList<ArrayList<Goods>> planets6 = new ArrayList<>();
         planets6.addLast(new ArrayList<>());
         planets6.addLast(new ArrayList<>());
-        planets5.get(0).addLast(new Goods(4));
-        planets5.get(0).addLast(new Goods(4));
+        planets5.getFirst().addLast(new Goods(4));
+        planets5.getFirst().addLast(new Goods(4));
         planets5.get(1).addLast(new Goods(2));
         planets5.get(1).addLast(new Goods(2));
         planets5.get(1).addLast(new Goods(2));
@@ -171,8 +171,8 @@ class Deck implements Serializable {
         planets7.addLast(new ArrayList<>());
         planets7.addLast(new ArrayList<>());
         planets7.addLast(new ArrayList<>());
-        planets7.get(0).addLast(new Goods(4));
-        planets7.get(0).addLast(new Goods(3));
+        planets7.getFirst().addLast(new Goods(4));
+        planets7.getFirst().addLast(new Goods(3));
         planets7.get(1).addLast(new Goods(3));
         planets7.get(1).addLast(new Goods(2));
         planets7.get(1).addLast(new Goods(1));
@@ -184,10 +184,10 @@ class Deck implements Serializable {
         planets8.addLast(new ArrayList<>());
         planets8.addLast(new ArrayList<>());
         planets8.addLast(new ArrayList<>());
-        planets8.get(0).addLast(new Goods(2));
-        planets8.get(0).addLast(new Goods(2));
-        planets8.get(0).addLast(new Goods(2));
-        planets8.get(0).addLast(new Goods(2));
+        planets8.getFirst().addLast(new Goods(2));
+        planets8.getFirst().addLast(new Goods(2));
+        planets8.getFirst().addLast(new Goods(2));
+        planets8.getFirst().addLast(new Goods(2));
         planets8.get(1).addLast(new Goods(3));
         planets8.get(1).addLast(new Goods(3));
         planets8.get(2).addLast(new Goods(1));

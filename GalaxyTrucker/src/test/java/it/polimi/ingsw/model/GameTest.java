@@ -25,7 +25,7 @@ class GameTest {
         game = new Game(2,2);
         deck = new ArrayList<Card>();
         ship = new SpaceShip(PlayerColors.BLUE);
-        hourglass = new Hourglass(game);
+        hourglass = new Hourglass();
         trucker1 = new Trucker("frenk", PlayerColors.BLUE);
         game.addTrucker(trucker1);
         trucker2 = new Trucker("manzo", PlayerColors.RED);
