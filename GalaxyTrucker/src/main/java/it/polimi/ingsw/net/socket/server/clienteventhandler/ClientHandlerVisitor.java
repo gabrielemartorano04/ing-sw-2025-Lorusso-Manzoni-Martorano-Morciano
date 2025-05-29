@@ -284,7 +284,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
                         }
                     }
                 }
-                return new ShowOtherShipResponse(copy,event.getNicknameRequested());
+                return new ShowOtherShipResponse(t.getSpaceShip().getComponents(),event.getNicknameRequested());
             }
         }
         return new GenericErrorEvent("No such trucker with that nickname",false);
