@@ -315,6 +315,7 @@ public class TUI extends UI {
             }
         }
         if(event.getPenalties() != null && event.getConditionsOrder() != null) {
+            System.out.println("writing penalties to the client");
             String message = "Conditions and penalties to apply:\n";
             for (Condition condition : event.getConditionsOrder()) {
                 Effect effect = event.getPenalties().get(condition);

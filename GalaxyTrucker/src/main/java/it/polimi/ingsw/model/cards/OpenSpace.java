@@ -100,31 +100,36 @@ public class OpenSpace extends Card implements Serializable {
         return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, ParserState.ACTIVATE_ENGINES, "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getNickname());
     }
 
-    /**
-     * Applies the changes provided by the card
-     */
     @Override
     public ServerEvent cardEffect() throws GeneralError {
         if (this.state != CardState.ESECUZIONE) {
             throw new GeneralError("Non è possibile eseguire card effect nello stato " + this.state);
         }
-        List<Trucker> truckers = Game.getIstance().getTruckerList();
+        
+        List<Trucker> truckers = new ArrayList<>(Game.getIstance().getTruckerList());
         int[] enginePowerPerTrucker = new int[truckers.size()];
-        int i = 0;
-        for (Trucker trucker : truckers) {
+        
+        for (int i = 0; i < truckers.size(); i++) {
+            Trucker trucker = truckers.get(i);
             enginePowerPerTrucker[i] = trucker.getSpaceShip().getTotalEnginePower();
-            if(enginePowerPerTrucker[i] == 0){
-                Game.getIstance().withdraw(trucker);
+        }
+        
+        for (int i = 0; i < truckers.size(); i++) {
+            if (enginePowerPerTrucker[i] == 0) {
+                Game.getIstance().withdraw(truckers.get(i));
             }
-            i++;
+        }
+        
+        for (int i = 0; i < truckers.size(); i++) {
+            Trucker trucker = truckers.get(i);
+            if (enginePowerPerTrucker[i] > 0) {
+                Game.getIstance().moveForward(trucker, enginePowerPerTrucker[i]);
+            }
             trucker.getSpaceShip().deactivateDoubleEngines();
         }
-        for (i = 0; i < enginePowerPerTrucker.length; i++) {
-            Game.getIstance().moveForward(truckers.get(i), enginePowerPerTrucker[i]);
-        }
+        
         Game.getIstance().endTurn();
         return new CardFinished(true, Game.getIstance().getTruckerList());
     }
 
 }
-
