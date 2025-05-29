@@ -3,7 +3,6 @@ import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.CardState;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 import java.util.*;
@@ -16,7 +15,6 @@ import java.util.concurrent.TimeUnit;
  * Attributes:
  * - game: Game instance
  * - count: int counter of logged players
- * - startTimer: Timer
  * - timerStarted: boolean, true if the timer started, false otherwise
  * - gameStarted: boolean, true if the game started, false otherwise
  * - numOfPlayers: int, number of player decided by the first one

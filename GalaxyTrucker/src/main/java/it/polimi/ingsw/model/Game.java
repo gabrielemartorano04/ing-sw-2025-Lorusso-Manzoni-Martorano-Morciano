@@ -20,23 +20,23 @@ import java.util.*;
 
 public class Game {
     //attributi
-    private ArrayList<Trucker> truckers;
-    private ArrayList<Trucker> truckersOut;
-    private Stack[] cardStacks;
-    private ArrayList<Card> gameDeck;
-    private AvailableComponents components;
+    private final ArrayList<Trucker> truckers;
+    private final ArrayList<Trucker> truckersOut;
+    private final Stack[] cardStacks;
+    private final ArrayList<Card> gameDeck;
+    private final AvailableComponents components;
     private Hourglass hourglass;
     private int gameLevel;
-    private Deck deck;
-    private Bank bank;
+    private final Deck deck;
+    private final Bank bank;
     private static Game istance;
 
     //private AskController askController;
     private GameState gameState;
     private final Set<String> nicknames = new HashSet<>();
     private final Set<PlayerColors> usedColors = new HashSet<>();
-    private EnumSet<PlayerColors> availableColors;
-    private int numPlayers;
+    private final EnumSet<PlayerColors> availableColors;
+    private final int numPlayers;
     /**
      * Constructor that initializes the game attributes.
      */

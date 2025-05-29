@@ -38,7 +38,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     private int gameLevel;
     private int endBuilding;
     private int startFlight;
-    private CardController cardController;
+    private final CardController cardController;
     public ClientHandlerVisitor() {
         numLog = 0;
         endBuilding = 0;
@@ -63,13 +63,12 @@ public class ClientHandlerVisitor implements ClientVisitor {
     @Override
     public ServerEvent visit(CreateGameEvent event) {
         int numPlayers= event.getNumberOfPlayers();
-        gameLevel=event.getGameLevel();
+        this.gameLevel=event.getGameLevel();
         //todo ripetuto nel parser togliere?
         if (numPlayers<0 || numPlayers>4) {
             return new NumberOfPlayersError();
         }
         this.numOfPlayers = numPlayers;
-        this.gameLevel = gameLevel;
         return new AvailableColorsEvent(EnumSet.allOf(PlayerColors.class), "First Player in the game, start login");
     }
 
@@ -273,19 +272,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(ShowOtherShipEvent event) {
         for(Trucker t:gameController.getGame().getTruckerList()){
             if(t.getNickname().equals(event.getNicknameRequested())){
-                Component[][] original = t.getSpaceShip().getComponents();
-                Component[][] copy = new Component[original.length][];
-                for (int i = 0; i < original.length; i++) {
-                    copy[i] = new Component[original[i].length];
-                    for (int j = 0; j < original[i].length; j++) {
-                        Component c = original[i][j];
-                        if (c != null) {
-                            copy[i][j] = c;
-                        }
-                    }
-                }
-                //
-                return new ShowOtherShipResponse(t.getSpaceShip().getComponents().clone(),event.getNicknameRequested());
+                return new ShowOtherShipResponse(copyShip(t.getSpaceShip().getComponents()),event.getNicknameRequested());
             }
         }
         return new GenericErrorEvent("No such trucker with that nickname",false);
@@ -566,6 +553,24 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 return new GenericErrorEvent(e.getMessage(), true);
             }
         }
+    }
+
+
+
+    // private
+
+    private Component[][] copyShip(Component[][] original) {
+        Component[][] copy = new Component[original.length][];
+        for (int i = 0; i < original.length; i++) {
+            copy[i] = new Component[original[i].length];
+            for (int j = 0; j < original[i].length; j++) {
+                Component c = original[i][j];
+                if (c != null) {
+                    copy[i][j] = c;
+                }
+            }
+        }
+        return copy;
     }
 
 }

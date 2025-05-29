@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.exceptions.NotEnoughBatteries;
 import it.polimi.ingsw.model.components.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -15,15 +16,16 @@ import java.util.*;
 
 public class SpaceShip implements Serializable {
 
-    private Component[][] components; //components in the matrix
+    private final Component[][] components; //components in the matrix
     private int lost; //number of lost components
     private int redGoods, greenGoods, blueGoods, yellowGoods; // number of goods for each type color
     private int numHuman; //number of astronauts on the spaceship
     private int goodsCapacity; //number of goods capacity
-    private ArrayList<Goods> goodsList; //list of goods in the spaceship, sort by their value (desc)
+    private final ArrayList<Goods> goodsList; //list of goods in the spaceship, sort by their value (desc)
     private int numOfBattery; //number of batteries in the spaceship
     private int numAlien;
     private int numDoubleCannon, numDoubleEngine;
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -367,16 +369,6 @@ public class SpaceShip implements Serializable {
                     || (components[x][y+1]!=null && !components[x][y+1].getType().equals("Empty Space") && compatibleLinks(component.getLink()[1],components[x][y+1].getLink()[3]))
                     || (components[x][y-1]!=null && !components[x][y-1].getType().equals("Empty Space") && compatibleLinks(component.getLink()[3],components[x][y-1].getLink()[1]))
             ){
-                if(components[x+1][y]!=null)
-                System.out.println("link compatibili: "+component.getLink()[2] +" e "+ components[x+1][y].getLink()[0]);
-                if(components[x-1][y]!=null)
-                System.out.println("link compatibili: "+component.getLink()[0] +" e "+ components[x-1][y].getLink()[2]);
-                if(components[x][y+1]!=null)
-                System.out.println("link compatibili: "+component.getLink()[1]+" e "+ components[x][y+1].getLink()[3]);
-                if(components[x][y-1]!=null)
-                System.out.println("link compatibili: "+component.getLink()[3] +" e "+ components[x][y-1].getLink()[1]);
-
-                System.out.println("Ho controllato e sto linkando");
                 components[x][y] = component;
             }
             else{
