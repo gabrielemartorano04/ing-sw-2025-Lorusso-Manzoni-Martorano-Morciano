@@ -47,10 +47,6 @@ public class Game {
         this.gameDeck = new ArrayList<>();
         this.components = new AvailableComponents();
         int j=0;
-        for(Component c: components.getComponents()){
-            System.out.println(j+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-            j++;
-        }
         this.gameLevel = gameLevel;
         this.deck = new Deck(gameLevel);
         this.cardStacks = new Stack[4];
