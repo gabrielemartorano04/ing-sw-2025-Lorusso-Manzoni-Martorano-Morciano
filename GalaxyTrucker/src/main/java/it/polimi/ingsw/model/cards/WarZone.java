@@ -97,7 +97,7 @@ public class WarZone extends Card implements Serializable {
                 this.getName(),
                 this.getDescription(),
                 Game.getIstance().getTruckerList().getFirst().getNickname(),
-                "Press -warzone- to start WarZone card", //TODO: Check piu dire a frenk
+                "Type 'warzone' to start WarZone card",
                 -1,
                 -1,
                 -1,
@@ -114,7 +114,7 @@ public class WarZone extends Card implements Serializable {
         );
     }
 
-
+    @Override
     public ServerEvent handleCurrentCondition() throws GeneralError{
         if(state != CardState.WARZONE){
             throw new GeneralError("CombatZone not callable in the state " + state);
@@ -169,7 +169,7 @@ public class WarZone extends Card implements Serializable {
 
         }
 
-        if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()) {
+        if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()-1) {
             this.state = CardState.FIND_WEAKEST;
             indexOfCurrTrucker=0;
             return findWeakestTrucker();
@@ -204,7 +204,7 @@ public class WarZone extends Card implements Serializable {
 
         }
 
-        if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()) {
+        if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()-1) {
             this.state = CardState.FIND_WEAKEST;
             return findWeakestTrucker();
         }
