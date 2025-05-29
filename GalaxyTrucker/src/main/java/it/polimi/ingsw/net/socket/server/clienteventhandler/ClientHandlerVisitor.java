@@ -544,8 +544,13 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
     @Override
     public ServerEvent visit(WarzoneStartEvent event) {
-        System.out.println("Evento non ancora gestito ");
-        return null;
+        try {
+            return cardController.getCurrCard().handleCurrentCondition();
+        } catch (WrongCallerException e) {
+            return new GenericErrorEvent(e.getMessage(), false);
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), false);
+        }
     }
 
     @Override
