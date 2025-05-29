@@ -207,12 +207,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
                     }
                     case FILL->{
-                        if(!sentCabinCoord){
-                            event= new AlienCoordinatesRequest();
-                            sentCabinCoord=true;
-                        }
-
-                        else event= inputParser.parseFillTheShip(input);
+                         event= inputParser.parseFillTheShip(input);
                     }
                     case FLIGTH-> {
                         if(startFlight){
