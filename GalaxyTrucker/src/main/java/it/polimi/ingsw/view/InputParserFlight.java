@@ -180,7 +180,7 @@ public class InputParserFlight {
                     System.out.println("Error: invalid command");
                     return null;
                 }
-                return new DrawCardEvent();
+                return new DrawCardEvent(nickname);
             case PLANET_DECISION:
                 String[] planetDecision=input.split("\\s+");
                 if(planetDecision.length!=1){
