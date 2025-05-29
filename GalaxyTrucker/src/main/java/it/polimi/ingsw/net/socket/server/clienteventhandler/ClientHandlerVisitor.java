@@ -288,10 +288,10 @@ public class ClientHandlerVisitor implements ClientVisitor {
         showShipLayout(currentClient.getTruckerController().getNickname(), currentClient.getTruckerController().getSpaceShip().getComponents());
         Component[][] spaceship= copyShip(currentClient.getTruckerController().getSpaceShip().getComponents());
         showShipLayout(currentClient.getTruckerController().getNickname(), spaceship);
-        int cannonPower=currentClient.getTruckerController().getSpaceShip().getSingleCannonPower();
-        int enginePower=currentClient.getTruckerController().getSpaceShip().getSingleEnginePower();
         currentClient.getTruckerController().getSpaceShip().increaseLost(currentClient.getTruckerController().getTrucker().getKeptComponents().size());
         currentClient.getTruckerController().getSpaceShip().countExposedConnectors();
+        int cannonPower=currentClient.getTruckerController().getSpaceShip().getSingleCannonPower();
+        int enginePower=currentClient.getTruckerController().getSpaceShip().getSingleEnginePower();
         int position=currentClient.getTruckerController().getPosition();
         int batteryCount=currentClient.getTruckerController().getSpaceShip().getNumBatteries();
         int humanCount=currentClient.getTruckerController().getSpaceShip().getNumHuman();
