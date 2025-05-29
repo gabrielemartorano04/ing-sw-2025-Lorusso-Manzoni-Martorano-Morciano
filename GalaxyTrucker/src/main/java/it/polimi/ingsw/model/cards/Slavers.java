@@ -12,6 +12,7 @@ import it.polimi.ingsw.exceptions.NotEnoughBatteries;
 import it.polimi.ingsw.view.ParserState;
 
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ import java.util.ArrayList;
  * For all the defeated truckers, they have to remove some crew members
  */
 public class Slavers extends Card implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final int slaversPower;
     private final int credits;
@@ -32,10 +34,10 @@ public class Slavers extends Card implements Serializable {
     private CardState cardState;
     private int indexOfCurrentTrucker;
     private Trucker winnerTrucker; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
-    private ArrayList<Trucker> defeatedTruckers;
+    private final ArrayList<Trucker> defeatedTruckers;
     private boolean winDecision;
 
-    private ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveHumans;
+    private final ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveHumans;
     // contiene le coordinate delle cabine scelte dall'utente per rimuovere gli umani. Queste coordinate sono organizzate
     // in liste di liste. La lista esterna è una per ogni trucker, la lista interna contiene la lista di coordinate per quel
     // trucker, mantenute nell'ordine dei trucker.
@@ -239,8 +241,9 @@ public class Slavers extends Card implements Serializable {
                 i++;
             }
         }
-        Game.getIstance().endTurn();
-        return new CardFinished(true, Game.getIstance().getTruckerList());
+        ArrayList<Trucker> truckerRemoved;
+        truckerRemoved = Game.getIstance().endTurn();
+        return new CardFinished(false, Game.getIstance().getTruckerList(), truckerRemoved);
     }
 
 

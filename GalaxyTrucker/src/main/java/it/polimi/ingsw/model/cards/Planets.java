@@ -11,22 +11,24 @@ import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.exceptions.PlanetNotFreeException;
 import it.polimi.ingsw.view.ParserState;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Planets extends Card implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    private ArrayList<ArrayList<Goods>> planets;
-    private int daysLoss;
+    private final ArrayList<ArrayList<Goods>> planets;
+    private final int daysLoss;
     private CardState cardState;
 
-    private ArrayList<Trucker> planetsOccupied;
-    private ArrayList<Trucker> truckersLanded;
+    private final ArrayList<Trucker> planetsOccupied;
+    private final ArrayList<Trucker> truckersLanded;
     private int indexOfTrucker;
 
     private Goods currentGood;
-    private ArrayList<Goods> currentGoodsList;
+    private final ArrayList<Goods> currentGoodsList;
     private ArrayList<Goods> goodsPassed;
     private int currGoodIndex;
 
@@ -42,7 +44,6 @@ public class Planets extends Card implements Serializable {
      */
     public Planets(boolean trialFlight, int daysLoss, int level, ArrayList<ArrayList<Goods>> planets, String frontImage, String backImage) {
         super("Planets", "A new planetary system discovered", trialFlight, level, frontImage, backImage);
-        planets = new ArrayList<>();
         goodsPassed = new ArrayList<>();
         planetsOccupied = new ArrayList<>();
         for (int i = 0; i < planets.size(); i++) {
@@ -215,8 +216,9 @@ public class Planets extends Card implements Serializable {
             Game.getIstance().moveBackward(truckersLanded.get(i), daysLoss);
         }
         cardState = CardState.EXIT;
-        Game.getIstance().endTurn();
-        return new CardFinished(true, Game.getIstance().getTruckerList());
+        ArrayList<Trucker> truckerRemoved;
+        truckerRemoved = Game.getIstance().endTurn();
+        return new CardFinished(false, Game.getIstance().getTruckerList(), truckerRemoved);
     }
 
 }

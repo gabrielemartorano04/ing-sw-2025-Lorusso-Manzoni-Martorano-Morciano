@@ -12,6 +12,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
 import it.polimi.ingsw.view.ParserState;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ import java.util.ArrayList;
  * If it's a big shoot, there is no way possible for the trucker to protect his/her ship.
  */
 public class Pirates extends Card implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final int credits;
     private final int days;
@@ -40,14 +42,14 @@ public class Pirates extends Card implements Serializable {
 
     private int indexOfCurrentTrucker;
     private Trucker winnerTrucker = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
-    private ArrayList<Trucker> defeatedTruckers;
+    private final ArrayList<Trucker> defeatedTruckers;
     private boolean winDecision;
 
     private int currShootIndex;
     private int[] shoot;
     private int roll;
 
-    private ArrayList<Boolean> shieldAnswers;
+    private final ArrayList<Boolean> shieldAnswers;
 
     /**
      * Pirates constructor, initialise the attributes of this class
@@ -289,8 +291,9 @@ public class Pirates extends Card implements Serializable {
             }
         }
         if (shoots.size()==(currShootIndex)) {
-            Game.getIstance().endTurn();
-            return new CardFinished(true, Game.getIstance().getTruckerList());
+            ArrayList<Trucker> truckerRemoved;
+            truckerRemoved = Game.getIstance().endTurn();
+            return new CardFinished(false, Game.getIstance().getTruckerList(), truckerRemoved);
         }else {
             this.cardState = CardState.ROLL_DICE;
             return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());

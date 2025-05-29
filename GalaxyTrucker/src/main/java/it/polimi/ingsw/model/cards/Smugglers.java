@@ -9,6 +9,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
 import it.polimi.ingsw.view.ParserState;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,11 +23,12 @@ import java.util.Arrays;
  * For all the defeated truckers, they have to lose some of their most valuable goods.
  */
 public class Smugglers extends Card implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final int smugglersPower;
     private final int goodsLost;
     private final int days;
-    private Goods[] goodsGained = new Goods[3];
+    private final Goods[] goodsGained;
 
     private CardState cardState;
     private int indexOfCurrentTrucker;
@@ -40,7 +42,7 @@ public class Smugglers extends Card implements Serializable {
     // variabili per la remove
     private int colorOfCurrGoodToRemove; // vale 0 se è rosso, 1 se è giallo, 2 se è verde e 3 se è blu
     private int numGoodCurrType;
-    private ArrayList<Goods> goodsToRemove;// verrà creata al più una volta per istanza di questa classe
+    private final ArrayList<Goods> goodsToRemove;// verrà creata al più una volta per istanza di questa classe
     // fine variabili per la remove
 
     /**
@@ -64,36 +66,35 @@ public class Smugglers extends Card implements Serializable {
         this.winnerTrucker =null;
         this.winDecision=false;
         this.currGoodIndex = 0;
-        this.goodsLostCurrTrucker = goodsLostCurrTrucker;
         this.colorOfCurrGoodToRemove = 4;
         this.numGoodCurrType = 0;
         this.goodsToRemove = new ArrayList<>();
         this.defeatedTruckers = new ArrayList<>();
     }
 
-    /**
-     * Returns the cannon power required
-     * @return cannon power required
-     */
-    public int getSmugglersPower() {
-        return smugglersPower;
-    }
+//    /**
+//     * Returns the cannon power required
+//     * @return cannon power required
+//     */
+//    public int getSmugglersPower() {
+//        return smugglersPower;
+//    }
 
-    /**
-     * Returns the number of goods to lose
-     * @return goods to lose
-     */
-    public int getGoodsLost() {
-        return goodsLost;
-    }
+//    /**
+//     * Returns the number of goods to lose
+//     * @return goods to lose
+//     */
+//    public int getGoodsLost() {
+//        return goodsLost;
+//    }
 
-    /**
-     * Returns an array of goods to gain
-     * @return array of goods to gain
-     */
-    public Goods[] getGoodsGained() {
-        return goodsGained;
-    }
+//    /**
+//     * Returns an array of goods to gain
+//     * @return array of goods to gain
+//     */
+//    public Goods[] getGoodsGained() {
+//        return goodsGained;
+//    }
 
     /**
      * Returns the number of days of flight to lose
@@ -434,7 +435,8 @@ public class Smugglers extends Card implements Serializable {
             winDecision = false;
             Game.getIstance().moveBackward(winnerTrucker, days);
         }
-        Game.getIstance().endTurn();
-        return new CardFinished(true, Game.getIstance().getTruckerList());
+        ArrayList<Trucker> truckerRemoved;
+        truckerRemoved = Game.getIstance().endTurn();
+        return new CardFinished(false, Game.getIstance().getTruckerList(), truckerRemoved);
     }
 }
