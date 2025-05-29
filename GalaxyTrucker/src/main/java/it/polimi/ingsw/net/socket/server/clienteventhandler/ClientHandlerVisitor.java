@@ -124,11 +124,6 @@ public class ClientHandlerVisitor implements ClientVisitor {
         Component component = event.getComponent();
         try {
             currentClient.getTruckerController().keep(component);
-//            int i = 0;
-//            for(Component c: gameController.getGame().getComponents().getComponents()){
-//                System.out.println(i+") tipo: "+c.getType()+" covered:"+ c.getCovered()+ " selected: "+c.getSelected()+"\n");
-//                i++;
-//            }
             return new KeptComponentEvent(component,gameController.getGame().getComponents().getComponents());
         } catch (InvalidComponentsException e) {
             return new GenericErrorEvent(e.getMessage(), false);
@@ -278,31 +273,19 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(ShowOtherShipEvent event) {
         for(Trucker t:gameController.getGame().getTruckerList()){
             if(t.getNickname().equals(event.getNicknameRequested())){
-                //todo togli dopo debug
                 Component[][] original = t.getSpaceShip().getComponents();
-
-                for(Component[] list: t.getSpaceShip().getComponents()){
-                    for(Component component: list){
-                        if(component!=null && !component.getType().equals("Empty Space")){
-                            System.out.println(component);
-                        }
-                    }
-                }
-
                 Component[][] copy = new Component[original.length][];
                 for (int i = 0; i < original.length; i++) {
                     copy[i] = new Component[original[i].length];
                     for (int j = 0; j < original[i].length; j++) {
                         Component c = original[i][j];
                         if (c != null) {
-                            // Here we create a shallow copy (same object reference)
                             copy[i][j] = c;
-                            // If you want a deep copy, you'd need a clone() or copy constructor in Component
                         }
                     }
                 }
                 //
-                return new ShowOtherShipResponse(copy,event.getNicknameRequested());
+                return new ShowOtherShipResponse(t.getSpaceShip().getComponents().clone(),event.getNicknameRequested());
             }
         }
         return new GenericErrorEvent("No such trucker with that nickname",false);
@@ -438,6 +421,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
 
         return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,track, spaceship);
     }
+
 
     @Override
     public ServerEvent visit(OkStartFlight event) {

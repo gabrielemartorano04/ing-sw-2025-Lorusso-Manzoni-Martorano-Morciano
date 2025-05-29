@@ -23,7 +23,7 @@ final public class BatteryStorage extends Component implements Serializable  {
     public BatteryStorage(int linkU, int linkR, int linkD, int linkL, String type, String imagePath, int capacity) {
         super(linkU, linkR, linkD, linkL, type, imagePath);
         this.capacity = capacity;
-        this.quantity = capacity;
+        this.quantity = 0;
     }
 
     /**
