@@ -21,7 +21,7 @@ public class Trucker implements Serializable {
     private int position; //posizione assoluta
     private int cosmicCredit;
     private BuildingState buildingState;
-    private ArrayList<Component> keptComponents;
+    private final ArrayList<Component> keptComponents;
     private Component selectedComponent;
 
     public Trucker(String nickName, PlayerColors color) {
@@ -75,7 +75,7 @@ public class Trucker implements Serializable {
     public String getNickname() {return nickname;}
 
     public SpaceShip getSpaceShip() {
-        return spaceShip;
+        return this.spaceShip;
     }
 
 
