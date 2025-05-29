@@ -20,6 +20,7 @@ public class NetworkServer {
     }
 
     public void sendMessage(ServerEvent event) throws IOException {
+        outputStream.reset();
         outputStream.writeObject(event);
         outputStream.flush();
     }

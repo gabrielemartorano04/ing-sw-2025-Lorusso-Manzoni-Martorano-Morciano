@@ -33,6 +33,7 @@ public class NetworkClient {
         if (socket == null || socket.isClosed()) {
             throw new IOException("Inactive connection");
         }
+        outputStream.reset();
         outputStream.writeObject(event);
         outputStream.flush();
     }
