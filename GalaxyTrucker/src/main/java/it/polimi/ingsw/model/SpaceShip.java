@@ -15,7 +15,7 @@ import java.util.*;
 
 public class SpaceShip implements Serializable {
 
-    private Component[][] components; //components in the matrix
+    private final Component[][] components; //components in the matrix
     private int lost; //number of lost components
     private int redGoods, greenGoods, blueGoods, yellowGoods; // number of goods for each type color
     private int numHuman; //number of astronauts on the spaceship
