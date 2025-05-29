@@ -367,16 +367,6 @@ public class SpaceShip implements Serializable {
                     || (components[x][y+1]!=null && !components[x][y+1].getType().equals("Empty Space") && compatibleLinks(component.getLink()[1],components[x][y+1].getLink()[3]))
                     || (components[x][y-1]!=null && !components[x][y-1].getType().equals("Empty Space") && compatibleLinks(component.getLink()[3],components[x][y-1].getLink()[1]))
             ){
-                if(components[x+1][y]!=null)
-                System.out.println("link compatibili: "+component.getLink()[2] +" e "+ components[x+1][y].getLink()[0]);
-                if(components[x-1][y]!=null)
-                System.out.println("link compatibili: "+component.getLink()[0] +" e "+ components[x-1][y].getLink()[2]);
-                if(components[x][y+1]!=null)
-                System.out.println("link compatibili: "+component.getLink()[1]+" e "+ components[x][y+1].getLink()[3]);
-                if(components[x][y-1]!=null)
-                System.out.println("link compatibili: "+component.getLink()[3] +" e "+ components[x][y-1].getLink()[1]);
-
-                System.out.println("Ho controllato e sto linkando");
                 components[x][y] = component;
             }
             else{
