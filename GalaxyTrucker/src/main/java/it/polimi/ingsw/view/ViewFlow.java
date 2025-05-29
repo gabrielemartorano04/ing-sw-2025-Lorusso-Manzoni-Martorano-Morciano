@@ -33,7 +33,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
     private final InputParserFlight inputParserFlight;
     private final UI ui;
     private String nickname;
-    private final Component[][] ship;
+    private Component[][] ship;
     private int position;
     private int batteryCount;
     private int enginePower;
@@ -234,12 +234,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         return ship;
     }
 
-    public void setShip(Component[][] shipToCopy) {
-        for (int i = 0; i < shipToCopy.length; i++) {
-            for (int j = 0; j < shipToCopy[i].length; j++) {
-                this.ship[i][j] = shipToCopy[i][j];
-            }
-        }
+    public void setShip(Component[][] ship) {
+        this.ship=ship;
     }
 
     public int getPosition() {
