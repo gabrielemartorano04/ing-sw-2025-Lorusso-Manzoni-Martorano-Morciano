@@ -3,15 +3,11 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.exceptions.InvalidStateException;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 
-import java.util.ArrayList;
-
 public class TruckerController  {
-    private Trucker trucker;
+    private final Trucker trucker;
     private int selectedComponentIndex;
 
     /**
@@ -91,14 +87,6 @@ public class TruckerController  {
 
     public void addKeptComponent(Component component) throws GeneralError {
         trucker.addKeptComponent(component);
-    }
-
-    public void finish() throws InvalidStateException {
-        trucker.finish();
-    }
-
-    public void fillSpaceship(ArrayList<int[]> coordAliens) {
-        trucker.fillSpaceship(coordAliens);
     }
 
     public Trucker getTrucker() {
