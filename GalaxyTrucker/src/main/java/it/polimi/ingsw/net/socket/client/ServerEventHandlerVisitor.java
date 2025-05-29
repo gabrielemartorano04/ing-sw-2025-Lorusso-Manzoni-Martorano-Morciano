@@ -216,13 +216,14 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         for(Trucker t: event.getTruckers()){
             if(t.getNickname().equalsIgnoreCase(viewFlow.getNickname())){
                 viewFlow.setShip(t.getSpaceShip().getComponents());
+                ui.showMessage("Your updated ship\n");
+                ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+                ui.showBuildComplete();
+                ui.showMessage("Type 'alien' to see where you can place aliens");
+                viewFlow.setViewState(ViewFlow.ViewState.FILL);
+                break;
             }
         }
-        ui.showMessage("Your updated ship\n");
-        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
-        ui.showBuildComplete();
-        ui.showMessage("Type 'alien' to see where you can place aliens");
-        viewFlow.setViewState(ViewFlow.ViewState.FILL);
         //ui.showMessage("It's time to fill the spaceship\n");
     }
 
