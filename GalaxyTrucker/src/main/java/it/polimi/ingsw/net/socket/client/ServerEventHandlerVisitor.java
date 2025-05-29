@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.events.serverevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.AlienCabinCoord;
@@ -214,7 +215,19 @@ public class ServerEventHandlerVisitor implements ServerEventVisitor{
         viewFlow.getTimerDisplay().stop();
         for(Trucker t: event.getTruckers()){
             if(t.getNickname().equalsIgnoreCase(viewFlow.getNickname())){
-                viewFlow.setShip(t.getSpaceShip().getComponents());
+                Component[][] original = t.getSpaceShip().getComponents();
+                Component[][] copy = new Component[original.length][];
+                for (int i = 0; i < original.length; i++) {
+                    copy[i] = new Component[original[i].length];
+                    for (int j = 0; j < original[i].length; j++) {
+                        Component c = original[i][j];
+                        if (c != null) {
+                            copy[i][j] = c;
+                        }
+                    }
+                }
+                viewFlow.setShip(copy);
+
             }
         }
         ui.showMessage("Your updated ship\n");
