@@ -272,18 +272,7 @@ public class ClientHandlerVisitor implements ClientVisitor {
     public ServerEvent visit(ShowOtherShipEvent event) {
         for(Trucker t:gameController.getGame().getTruckerList()){
             if(t.getNickname().equals(event.getNicknameRequested())){
-                Component[][] original = t.getSpaceShip().getComponents();
-                Component[][] copy = new Component[original.length][];
-                for (int i = 0; i < original.length; i++) {
-                    copy[i] = new Component[original[i].length];
-                    for (int j = 0; j < original[i].length; j++) {
-                        Component c = original[i][j];
-                        if (c != null) {
-                            copy[i][j] = c;
-                        }
-                    }
-                }
-                return new ShowOtherShipResponse(copy,event.getNicknameRequested());
+                return new ShowOtherShipResponse(copyShip(t.getSpaceShip().getComponents()),event.getNicknameRequested());
             }
         }
         return new GenericErrorEvent("No such trucker with that nickname",false);
@@ -559,6 +548,24 @@ public class ClientHandlerVisitor implements ClientVisitor {
                 return new GenericErrorEvent(e.getMessage(), true);
             }
         }
+    }
+
+
+
+    // private
+
+    private Component[][] copyShip(Component[][] original) {
+        Component[][] copy = new Component[original.length][];
+        for (int i = 0; i < original.length; i++) {
+            copy[i] = new Component[original[i].length];
+            for (int j = 0; j < original[i].length; j++) {
+                Component c = original[i][j];
+                if (c != null) {
+                    copy[i][j] = c;
+                }
+            }
+        }
+        return copy;
     }
 
 }
