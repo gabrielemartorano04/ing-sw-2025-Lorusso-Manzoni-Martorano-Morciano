@@ -92,7 +92,7 @@ public class OpenSpace extends Card implements Serializable {
 
         }
 
-        if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()) {
+        if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
             this.state = CardState.ESECUZIONE;
             return cardEffect();
         }

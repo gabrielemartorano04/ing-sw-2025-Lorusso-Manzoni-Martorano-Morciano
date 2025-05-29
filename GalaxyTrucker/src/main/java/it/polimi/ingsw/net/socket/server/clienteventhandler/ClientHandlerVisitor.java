@@ -438,6 +438,9 @@ public class ClientHandlerVisitor implements ClientVisitor {
         Card card;
         cardController.setCurrCard(gameController.pickCardFromDeck());
         card = cardController.getCurrCard();
+        if(!gameController.getGame().getTrucker(0).getNickname().equals(event.getCurrNickname())){
+            return new GenericErrorEvent("You cannot draw a card while you are not the first player",false);
+        }
         if(card!=null){
             return cardController.startCard();
         }else{
