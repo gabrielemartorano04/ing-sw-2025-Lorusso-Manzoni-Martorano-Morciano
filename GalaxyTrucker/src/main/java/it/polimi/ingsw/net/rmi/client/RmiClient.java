@@ -12,7 +12,6 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RmiClient extends UnicastRemoteObject implements ClientHandler {
     private final RmiServer server;
-    private TruckerController controller;
 
 
     public RmiClient(RmiServer server) throws RemoteException {
