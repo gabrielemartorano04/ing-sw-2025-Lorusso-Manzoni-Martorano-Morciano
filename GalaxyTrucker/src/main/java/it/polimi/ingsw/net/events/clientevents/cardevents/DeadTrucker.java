@@ -1,8 +1,8 @@
-package it.polimi.ingsw.net.socket.events.clientevents.cardevents;
+package it.polimi.ingsw.net.events.clientevents.cardevents;
 
 import it.polimi.ingsw.net.VirtualServer;
-import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardEvent;
+import it.polimi.ingsw.net.events.clientevents.ClientEvent;
+
 
 public class DeadTrucker extends ClientEvent {
 

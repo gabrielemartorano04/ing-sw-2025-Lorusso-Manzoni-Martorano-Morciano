@@ -430,6 +430,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             if(nicknames.equalsIgnoreCase(viewFlow.getNickname())) {
                 System.out.println(viewFlow.getNickname() + " morto");
                 viewFlow.setOut();
+                viewFlow.setParserFlightState(ParserState.DEAD);
             }
         }
         if(!viewFlow.getOut()){
