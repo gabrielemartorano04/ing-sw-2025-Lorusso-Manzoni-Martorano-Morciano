@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.WaitOthersBuildingEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
@@ -99,7 +100,7 @@ public class Game {
         truckers.sort(Comparator.comparingInt(Trucker::getPosition).reversed());
     }
 
-    public void reorderPlayersByPosition(ArrayList<ClientHandlerSocket> players) {
+    public void reorderPlayersByPosition(ArrayList<Client> players) {
         players.sort((a, b) -> Integer.compare(a.getTruckerController().getPosition(), b.getTruckerController().getPosition()));
     }
 

@@ -35,7 +35,8 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
 
     @Override
     public void connect(ClientHandler client) throws RemoteException {
-        this.controller.addClient(client);
+        //TODO: fare questo
+        // this.controller.addClient(client);
     }
 
     @Override

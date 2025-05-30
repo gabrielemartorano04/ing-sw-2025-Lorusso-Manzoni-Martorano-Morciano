@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.BuildCompleteEvent;
@@ -14,17 +15,21 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientHandlerVisitor
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
 public class ServerController {
-    private final ArrayList<ClientHandler> clients;
+    private final ArrayList<Client> clients;
     private final ClientHandlerVisitor visitor;
     private boolean gameCreated;
     private GameController gameController;
     private static ServerController istance;
 
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
+    private final ExecutorService executorService = Executors.newFixedThreadPool(4); // 4 worker thread
+
 
     public ServerController() {
         startDispatcher();
@@ -42,21 +47,18 @@ public class ServerController {
         ServerController.istance = istance;
     }
 
-    public void handleEvent(ClientEvent event, ClientHandlerSocket client) {
-        eventQueue.offer(new EventWithSource(event, client));
-    }
 
-    public synchronized void addClient(ClientHandler client) {
+    public synchronized void addClient(Client client) {
         if (clients.isEmpty()) {
             FirstConnectionEvent event = new FirstConnectionEvent(
                     "First player in the game, choose the total number of players of the Game"
             );
-            client.handleEvent(event);
+            client.getClientHandler().handleEvent(event);
 
         }else{
             AvailableColorsEvent event = new AvailableColorsEvent(gameController.getAvailablePlayerColors(),
                     "Login");
-            client.handleEvent(event);
+            client.getClientHandler().handleEvent(event);
         }
         clients.add(client);
 
@@ -67,12 +69,28 @@ public class ServerController {
         System.out.println("Client disconnected and removed from the game.");
     }
 
+    public void handleEvent(ClientEvent event, ClientHandlerSocket client) {
+        for(Client c : clients) {
+            if(c.getClientHandler().equals(client)) {
+                eventQueue.offer(new EventWithSource(event, c));
+            }
+        }
+    }
+
+    // questo metodo serve sia per la socket (chiamato dentro il dispatcher) che per l'RMI
+    // il client tramite RMI server deve chiamare questo metodo per gestire l'evento che ha appena creato
+    private void launchThreadEvent(EventWithSource entry) {
+        executorService.submit(() -> processEvent(entry, visitor));
+    }
+
+
+    // startDispatcher serve solo per la socket perché con la socket mettiamo gli eventi nella coda
     public void startDispatcher() {
         Thread dispatcher = new Thread(() -> {
             while (true){
                 try {
                     EventWithSource entry = eventQueue.take();
-                    processEvent(entry, visitor);
+                    launchThreadEvent(entry);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
@@ -86,9 +104,9 @@ public class ServerController {
 
     public void processEvent(EventWithSource eventWithSource, ClientHandlerVisitor visitor) {
         ClientEvent event = eventWithSource.getEvent();
-        ClientHandlerSocket client = eventWithSource.getClient();
+        Client client = eventWithSource.getClient();
 
-        visitor.setClientHandlerServer(client);
+        visitor.setCurrentClient(client);
         event.call(visitor);
         ServerEvent response =visitor.getServerEvent();
 
@@ -100,7 +118,7 @@ public class ServerController {
                 this.gameCreated = true;
             } catch (Exception e) {
                 e.printStackTrace();
-                client.handleEvent(response);
+                client.getClientHandler().handleEvent(response);
                 return;
             }
         }
@@ -109,13 +127,13 @@ public class ServerController {
         if(response.isForAll()){
             broadcastEvent(response);
         }else{
-            client.handleEvent(response);
+            client.getClientHandler().handleEvent(response);
         }
     }
 
     public void broadcastEvent(ServerEvent event) {
-        for(ClientHandler c: clients){
-            c.handleEvent(event);
+        for(Client c: clients){
+            c.getClientHandler().handleEvent(event);
         }
     }
 

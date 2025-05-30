@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.socket.server;
 
 
 import it.polimi.ingsw.controller.ServerController;
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.rmi.server.RmiServer;
 
 import java.io.IOException;
@@ -24,6 +25,8 @@ public class MainServer {
 
                 NetworkServer networkServer = new NetworkServer(clientSocket);
                 ClientHandlerSocket clientHandlerSocket = new ClientHandlerSocket(networkServer, serverController);
+                Client client = new Client(clientHandlerSocket);
+                serverController.addClient(client);
 
             }
         } catch (IOException e) {

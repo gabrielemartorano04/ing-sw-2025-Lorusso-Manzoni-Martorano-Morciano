@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
@@ -12,14 +13,14 @@ import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 public class EventWithSource {
     private final ClientEvent event;
-    private final ClientHandlerSocket client;
+    private final Client client;
 
     /**
      * Class constructor
      * @param event client event
      * @param client client's clientHandlerSocket
      */
-    public EventWithSource(ClientEvent event, ClientHandlerSocket client) {
+    public EventWithSource(ClientEvent event, Client client) {
         this.event = event;
         this.client = client;
     }
@@ -34,7 +35,7 @@ public class EventWithSource {
     /**
      * @return client
      */
-    public ClientHandlerSocket getClient() {
+    public Client getClient() {
         return client;
     }
 }
