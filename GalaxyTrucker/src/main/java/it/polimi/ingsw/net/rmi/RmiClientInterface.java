@@ -4,7 +4,7 @@ import java.rmi.Remote;
 
 import java.rmi.RemoteException;
 
-import it.polimi.ingsw.net.socket.events.serverevents.*;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 
 public interface RmiClientInterface extends Remote {

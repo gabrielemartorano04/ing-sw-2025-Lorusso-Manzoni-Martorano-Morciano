@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.exceptions.GeneralError;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 import javafx.scene.image.Image;
 

@@ -1,10 +1,10 @@
 package it.polimi.ingsw.net;
 
-import it.polimi.ingsw.net.socket.events.serverevents.*;
-import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.*;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
-import it.polimi.ingsw.net.socket.events.serverevents.flightevents.*;
-import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
+import it.polimi.ingsw.net.events.serverevents.*;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
+import it.polimi.ingsw.net.events.serverevents.cardevents.*;
+import it.polimi.ingsw.net.events.serverevents.flightevents.*;
+import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 
 import java.rmi.RemoteException;
 

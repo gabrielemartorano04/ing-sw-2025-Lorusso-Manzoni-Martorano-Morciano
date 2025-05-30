@@ -1,0 +1,26 @@
+package it.polimi.ingsw.net.events.serverevents.buildingevents;
+
+
+import it.polimi.ingsw.net.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.events.serverevents.ServerEventType;
+
+/**
+ * Event from server to client. The time is expired
+ */
+public class TimeExpiredEvent extends ServerEvent {
+    String message;
+    public TimeExpiredEvent() {
+        super(ServerEventType.TIME_EXPIRED, true);
+        message = "Time is expired";
+    }
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    @Override
+    public void call (ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
+    }
+}

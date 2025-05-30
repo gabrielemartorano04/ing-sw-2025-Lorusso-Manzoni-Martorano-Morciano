@@ -1,14 +1,12 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**

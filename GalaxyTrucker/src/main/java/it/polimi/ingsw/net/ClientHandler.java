@@ -1,10 +1,7 @@
 package it.polimi.ingsw.net;
 
-import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
@@ -12,5 +9,5 @@ import java.rmi.RemoteException;
  * The interface is used to permit us to not distinguish between RMI and Socket type of connection
  */
 public interface ClientHandler {
-    public void handleEvent(ServerEvent event);
+    public void handleEvent(ServerEvent event) throws RemoteException;
 }

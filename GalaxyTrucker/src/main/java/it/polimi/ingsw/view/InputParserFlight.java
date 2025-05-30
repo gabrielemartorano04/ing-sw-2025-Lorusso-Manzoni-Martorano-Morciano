@@ -1,7 +1,8 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
+import it.polimi.ingsw.net.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.events.clientevents.cardevents.*;
+
 
 import java.util.ArrayList;
 
@@ -286,6 +287,9 @@ public class InputParserFlight {
                     indexes.add(Integer.parseInt(removeGoods[i].trim()));
                 }
                 return new RemoveAskingEvent(indexes, nickname);
+            case DEAD:
+                setParserState(ParserState.DO_NOTHING);
+                return new DeadTrucker();
             default: {
                 System.out.println("Error: invalid command. Stato non gestito");
                 return null;

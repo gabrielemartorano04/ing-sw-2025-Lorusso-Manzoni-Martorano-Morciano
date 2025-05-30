@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.events.serverevents.ServerEventType;
+import it.polimi.ingsw.net.events.serverevents.cardevents.BooleanDecision;
+import it.polimi.ingsw.net.events.serverevents.cardevents.CardFinished;
+import it.polimi.ingsw.net.events.serverevents.cardevents.HumanCoordinates;
+import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.exceptions.GeneralError;

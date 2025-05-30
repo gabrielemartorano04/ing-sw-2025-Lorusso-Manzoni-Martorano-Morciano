@@ -1,10 +1,9 @@
 // Classe RMI del client, il server la usa per inviare eventi
 package it.polimi.ingsw.net.rmi.client;
 
-import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.net.ClientHandler;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.rmi.server.RmiServer;
-import it.polimi.ingsw.net.socket.events.serverevents.*;
 
 
 import java.rmi.RemoteException;
@@ -21,7 +20,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientHandler {
     }
 
     @Override
-    public void handleEvent(ServerEvent event) {
+    public void handleEvent(ServerEvent event) throws RemoteException {
     }
 
 
