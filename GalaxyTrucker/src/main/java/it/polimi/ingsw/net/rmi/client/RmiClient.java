@@ -10,7 +10,7 @@ import it.polimi.ingsw.net.rmi.server.RmiServer;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class RmiClient extends UnicastRemoteObject implements ClientHandler {
+public class RmiClient extends UnicastRemoteObject implements RemoteClientHandler  {
     private final RmiServerInterface server;
 
 
