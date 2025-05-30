@@ -205,7 +205,7 @@ public class MeteorShower extends Card implements Serializable {
         if (meteors.size()==(currMeteorIndex)) {
             ArrayList<String> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
-            return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved);
+            return new CardFinished(false, Game.getIstance().getTruckerList(), truckerRemoved);
         }else {
             this.state = CardState.ROLL_DICE;
             return new BooleanDecision(ServerEventType.ROLL_DICE, false, ParserState.ROLL_DICE, "Roll the dice", Game.getIstance().getTruckerList().getFirst().getNickname());
