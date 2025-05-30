@@ -16,7 +16,7 @@ public class GainCosmicCreditsResponseEvent extends ClientEvent {
 
 
     @Override
-    public ServerEvent call(VirtualServer visitor) {
+    public void call(VirtualServer visitor) {
         return visitor.visit(this);
     }
-}
+

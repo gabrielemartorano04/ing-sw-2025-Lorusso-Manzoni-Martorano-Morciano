@@ -11,7 +11,7 @@ public class RollDiceEvent extends ClientEvent {
     }
 
     @Override
-    public ServerEvent call(VirtualServer visitor) {
-        return visitor.visit(this);
+    public void call(VirtualServer visitor) {
+         visitor.visit(this);
     }
 }
