@@ -11,8 +11,8 @@ import java.rmi.RemoteException;
  * Interface representing a single ClientConnection, including the instance of the trucker linked to that Client.
  * The interface is used to permit us to not distinguish between RMI and Socket type of connection
  */
-public interface ClientHandler extends Remote {
+public interface ClientHandler {
     public void setTruckerController(TruckerController truckerController);
     public TruckerController getTruckerController();
-    public void handleEvent(ServerEvent event) throws RemoteException;
+    public void handleEvent(ServerEvent event);
 }

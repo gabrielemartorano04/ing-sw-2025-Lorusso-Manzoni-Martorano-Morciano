@@ -20,18 +20,25 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class RmiServer extends UnicastRemoteObject {
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+
+public class RmiServer extends UnicastRemoteObject implements RmiServerInterface {
     private final ServerController controller;
 
     public RmiServer(ServerController controller) throws RemoteException {
+        super();
         this.controller = controller;
     }
 
-    public void connect(ClientHandler client){
+    @Override
+    public void connect(ClientHandler client) throws RemoteException {
         this.controller.addClient(client);
     }
 
-
+    @Override
     public String sayHello(String name) throws RemoteException {
         return "Hello, " + name + "!";
     }
@@ -39,16 +46,16 @@ public class RmiServer extends UnicastRemoteObject {
     public static void bind(ServerController serverController) {
         try {
             RmiServer server = new RmiServer(serverController);
-            Registry registry = LocateRegistry.createRegistry(1099); // Porta default RMI
-            registry.rebind("GalaxyTruckerRmiServer", server);
-            System.out.println("RMI Server bound under name 'GalaxyTruckerRmiServer'");
+            Registry registry = LocateRegistry.createRegistry(1099);
+            registry.rebind("MyService", server);
+            System.out.println("RMI Server bound under name 'MyService'");
         } catch (RemoteException e) {
             System.err.println("Error starting RMI server: " + e.getMessage());
             e.printStackTrace();
         }
     }
-
 }
+
 
 
 

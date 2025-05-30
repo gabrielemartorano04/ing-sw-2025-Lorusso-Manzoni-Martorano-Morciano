@@ -51,19 +51,12 @@ public class ServerController {
             FirstConnectionEvent event = new FirstConnectionEvent(
                     "First player in the game, choose the total number of players of the Game"
             );
-            try {
-                client.handleEvent(event);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            client.handleEvent(event);
+
         }else{
             AvailableColorsEvent event = new AvailableColorsEvent(gameController.getAvailablePlayerColors(),
                     "Login");
-            try {
-                client.handleEvent(event);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            client.handleEvent(event);
         }
         clients.add(client);
 
@@ -122,11 +115,7 @@ public class ServerController {
 
     public void broadcastEvent(ServerEvent event) {
         for(ClientHandler c: clients){
-            try {
-                c.handleEvent(event);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            c.handleEvent(event);
         }
     }
 
