@@ -22,7 +22,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientHandler {
     }
 
     @Override
-    public void handleEvent(ServerEvent event) throws RemoteException {
+    public void handleEvent(ServerEvent event) {
     }
 
 
