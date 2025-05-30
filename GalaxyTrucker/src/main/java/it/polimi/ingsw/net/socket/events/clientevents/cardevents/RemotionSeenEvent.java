@@ -9,7 +9,7 @@ public class RemotionSeenEvent extends ClientEvent {
     public RemotionSeenEvent() {
     }
     @Override
-    public ServerEvent call(VirtualServer visitor) {
-        return visitor.visit(this);
+    public void call(VirtualServer visitor) {
+         visitor.visit(this);
     }
 }

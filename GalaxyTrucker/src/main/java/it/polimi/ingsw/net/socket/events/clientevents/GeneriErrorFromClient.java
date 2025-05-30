@@ -14,8 +14,8 @@ public class GeneriErrorFromClient extends ClientEvent{
     }
 
     @Override
-    public ServerEvent call(VirtualServer visitor) {
-        return null;
+    public void call(VirtualServer visitor) {
+
     }
 
 }

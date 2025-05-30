@@ -7,7 +7,7 @@ import it.polimi.ingsw.net.VirtualServer;
 public class WarzoneStartEvent extends ClientEvent {
     public WarzoneStartEvent() {}
     @Override
-    public ServerEvent call(VirtualServer visitor) {
-        return visitor.visit(this);
+    public void call(VirtualServer visitor) {
+         visitor.visit(this);
     }
 }
