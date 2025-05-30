@@ -24,5 +24,5 @@ public abstract class ClientEvent implements Serializable {
     }
 
 
-    public abstract ServerEvent call(VirtualServer visitor);
+    public abstract void call(VirtualServer visitor);
 }

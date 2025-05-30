@@ -429,9 +429,13 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 break;
             }
         }
-        if(event.getTruckersRemoved().contains(viewFlow.getNickname())){
-            viewFlow.setOut();
-        }else {
+        for(String nicknames: event.getTruckersRemoved()){
+            if(nicknames.equalsIgnoreCase(viewFlow.getNickname()) && trucker!=null) {
+                System.out.println(viewFlow.getNickname() + " morto");
+                viewFlow.setOut();
+            }
+        }
+        if(!viewFlow.getOut()){
             ui.showShipLayout(viewFlow.getNickname(), trucker.getSpaceShip().getComponents());
             viewFlow.setPosition(trucker.getPosition());
             viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());

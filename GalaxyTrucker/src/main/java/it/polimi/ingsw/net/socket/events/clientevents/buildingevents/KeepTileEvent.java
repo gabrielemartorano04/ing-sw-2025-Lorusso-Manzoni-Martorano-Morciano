@@ -19,7 +19,7 @@ public class KeepTileEvent extends ClientEvent {
         return "I want to keep the selected tile";
     }
 
-    public ServerEvent call(VirtualServer visitor) {
-        return visitor.visit(this);
+    public void call(VirtualServer visitor) {
+         visitor.visit(this);
     }
 }
