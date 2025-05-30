@@ -10,5 +10,5 @@ import java.rmi.RemoteException;
  */
 public interface ClientHandler {
     public void handleEvent(ServerEvent event) throws RemoteException;
-    public int getId();
+    public int getId() throws RemoteException;
 }

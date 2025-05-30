@@ -8,4 +8,6 @@ import java.rmi.RemoteException;
 
 public interface RemoteClientHandler extends Remote, ClientHandler {
     void handleEvent(ServerEvent event) throws RemoteException;
+    @Override
+    int getId() throws RemoteException;
 }

@@ -72,9 +72,13 @@ public class ServerController {
 
     public void handleEvent(ClientEvent event, ClientHandlerSocket client) {
         for(Client c : clients) {
-            if(c.getClientHandler().getId()==client.getId()) {
-                eventQueue.offer(new EventWithSource(event, c));
-                return;
+            try {
+                if(c.getClientHandler().getId()==client.getId()) {
+                    eventQueue.offer(new EventWithSource(event, c));
+                    return;
+                }
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
             }
         }
     }
