@@ -26,13 +26,11 @@ public class MainServer {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("New client connected: " + clientSocket.getInetAddress());
 
-                System.out.println(clientSocketId);
                 NetworkServer networkServer = new NetworkServer(clientSocket);
                 ClientHandlerSocket clientHandlerSocket = new ClientHandlerSocket(networkServer, serverController, clientSocketId);
                 Client client = new Client(clientHandlerSocket);
                 serverController.addClient(client);
                 clientSocketId++;
-                System.out.println(clientSocketId);
             }
         } catch (IOException e) {
             System.err.println("Error in server: " + e.getMessage());
