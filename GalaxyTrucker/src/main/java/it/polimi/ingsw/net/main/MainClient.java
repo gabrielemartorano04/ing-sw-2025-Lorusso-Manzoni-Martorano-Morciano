@@ -1,5 +1,6 @@
-package it.polimi.ingsw.net;
+package it.polimi.ingsw.net.main;
 
+import it.polimi.ingsw.net.ConnectionType;
 import it.polimi.ingsw.net.rmi.server.RmiServer;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkClient;

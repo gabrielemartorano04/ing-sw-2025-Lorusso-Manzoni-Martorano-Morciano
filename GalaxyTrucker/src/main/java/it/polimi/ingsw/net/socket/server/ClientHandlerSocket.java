@@ -7,6 +7,7 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 public class ClientHandlerSocket implements ClientHandler {
     private final NetworkServer network;
