@@ -6,6 +6,7 @@ import it.polimi.ingsw.net.VirtualServer;
 
 public class GainCosmicCreditsResponseEvent extends ClientEvent {
     private boolean answer;
+
     public GainCosmicCreditsResponseEvent(boolean answer) {
         this.answer = answer;
     }
@@ -17,6 +18,7 @@ public class GainCosmicCreditsResponseEvent extends ClientEvent {
 
     @Override
     public void call(VirtualServer visitor) {
-        return visitor.visit(this);
+        visitor.visit(this);
     }
 
+}

@@ -96,7 +96,8 @@ public class ServerController {
         ClientHandlerSocket client = eventWithSource.getClient();
 
         visitor.setClientHandlerServer(client);
-        ServerEvent response = event.call(visitor);
+        event.call(visitor);
+        ServerEvent response =visitor.getServerEvent();
 
 
         if (!gameCreated && visitor.getNumOfPlayers() > 0) {
