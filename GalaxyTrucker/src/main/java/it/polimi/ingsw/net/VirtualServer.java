@@ -10,75 +10,72 @@ import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 
 /**
  * Interface of the visitor used to handle the events coming from the Client with the data used in the cards
  */
 
 public interface VirtualServer {
-    public ServerEvent visit(CreateGameEvent event);
-    public ServerEvent visit(DiscardTileEvent event);
-    public ServerEvent visit(EndBuildingEvent event);
-    public ServerEvent visit(KeepTileEvent event);
-    public ServerEvent visit(LinkTileEvent event);
-    public ServerEvent visit(LoginEvent event);
-    public ServerEvent visit(SelectTileEvent event);
+    public void visit(CreateGameEvent event);
+    public void visit(DiscardTileEvent event);
+    public void visit(EndBuildingEvent event);
+    public void visit(KeepTileEvent event);
+    public void visit(LinkTileEvent event);
+    public void visit(LoginEvent event);
+    public void visit(SelectTileEvent event);
 
-    public ServerEvent visit(SelectKeptTileEvent event);
+    public void visit(SelectKeptTileEvent event);
 
-    public ServerEvent visit(ShowStackEvent event);
-    public ServerEvent visit(TurnHourglassEvent event);
+    public void visit(ShowStackEvent event);
+    public void visit(TurnHourglassEvent event);
 
     void setGameController(GameController event);
 
-    ServerEvent visit(ShowTilesListEvent event);
+    void visit(ShowOtherShipEvent event);
 
-    ServerEvent visit(ShowOtherShipEvent event);
+    void visit(GeneriErrorFromClient event);
 
-    ServerEvent visit(GeneriErrorFromClient event);
+    void visit(AlienCoordinatesRequest event);
 
-    ServerEvent visit(AlienCoordinatesRequest event);
+    void visit(SendAlienCoord event);
 
-    ServerEvent visit(SendAlienCoord event);
+    void visit(OkStartFlight event);
 
-    ServerEvent visit(OkStartFlight event);
+    void visit(HumanCoordEvent event);
 
-    ServerEvent visit(HumanCoordEvent event);
+    void visit(PlotGoodEvent event);
 
-    ServerEvent visit(PlotGoodEvent event);
+    void visit(PlanetDecisionEvent event);
 
-    ServerEvent visit(PlanetDecisionEvent event);
+    void visit(RollDiceEvent event);
 
-    ServerEvent visit(RollDiceEvent event);
+    void visit(ActivateShieldEvent event);
 
-    ServerEvent visit(ActivateShieldEvent event);
+    void visit(ActivateCannonsEvent event);
 
-    ServerEvent visit(ActivateCannonsEvent event);
+    void visit(ActivateEnginesEvent event);
 
-    ServerEvent visit(ActivateEnginesEvent event);
+    void visit(DrawCardEvent event);
 
-    ServerEvent visit(DrawCardEvent event);
+    void visit(TruckerLandingEvent event);
 
-    ServerEvent visit(TruckerLandingEvent event);
+    void visit(RearrangeEvent event);
 
-    ServerEvent visit(RearrangeEvent event);
+    void visit(SetWinDecision event);
 
-    ServerEvent visit(SetWinDecision event);
+    void visit(RemoveGoodsEvent event);
 
-    ServerEvent visit(RemoveGoodsEvent event);
+    void visit(RemoveAskingEvent event);
 
-    ServerEvent visit(RemoveAskingEvent event);
+    void visit(RemoveBatteriesEvent event);
 
-    ServerEvent visit(RemoveBatteriesEvent event);
+    void visit(TurnComponentEvent event);
 
-    ServerEvent visit(TurnComponentEvent event);
+    void visit(StackDroppedEvent event);
 
-    ServerEvent visit(StackDroppedEvent event);
+    void visit(GainCosmicCreditsResponseEvent event);
 
-    ServerEvent visit(GainCosmicCreditsResponseEvent event);
+    void visit(WarzoneStartEvent event);
 
-    ServerEvent visit(WarzoneStartEvent event);
-
-    ServerEvent visit(RemotionSeenEvent event);
+    void visit(RemotionSeenEvent event);
 }
