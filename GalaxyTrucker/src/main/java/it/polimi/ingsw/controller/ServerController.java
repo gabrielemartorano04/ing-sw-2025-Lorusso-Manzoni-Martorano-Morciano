@@ -53,6 +53,7 @@ public class ServerController {
             FirstConnectionEvent event = new FirstConnectionEvent(
                     "First player in the game, choose the total number of players of the Game"
             );
+            System.out.println("Ho aggiunto il client" + client.getClientHandler());
             clientHandleEvent(client.getClientHandler(), event);
 
         }else{
@@ -71,17 +72,18 @@ public class ServerController {
 
     public void handleEvent(ClientEvent event, ClientHandlerSocket client) {
         for(Client c : clients) {
-            if(c.getClientHandler().equals(client)) {
+            if(c.getClientHandler()==client) {
                 eventQueue.offer(new EventWithSource(event, c));
+                return;
             }
         }
     }
 
     // questo metodo serve sia per la socket (chiamato dentro il dispatcher) che per l'RMI
     // il client tramite RMI server deve chiamare questo metodo per gestire l'evento che ha appena creato
-    private void launchThreadEvent(EventWithSource entry) {
-        executorService.submit(() -> processEvent(entry, visitor));
-    }
+//    private void launchThreadEvent(EventWithSource entry) {
+//        executorService.submit(() -> processEvent(entry, visitor));
+//    }
 
 
     // startDispatcher serve solo per la socket perché con la socket mettiamo gli eventi nella coda
@@ -90,7 +92,7 @@ public class ServerController {
             while (true){
                 try {
                     EventWithSource entry = eventQueue.take();
-                    launchThreadEvent(entry);
+                    processEvent(entry, visitor);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;

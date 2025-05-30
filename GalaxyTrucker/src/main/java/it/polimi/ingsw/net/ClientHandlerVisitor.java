@@ -51,7 +51,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     //se login event prendo nickname e color, controllo da model e creo evento risposta
 
     public void setCurrentClient(Client currentClient) {
-        currentClient = currentClient;
+        this.currentClient = currentClient;
     }
 
     public int getNumOfPlayers() {
