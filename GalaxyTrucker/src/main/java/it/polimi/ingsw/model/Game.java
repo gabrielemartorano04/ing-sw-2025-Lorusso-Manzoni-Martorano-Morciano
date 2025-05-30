@@ -162,8 +162,14 @@ public class Game {
      * @param trucker the trucker to withdraw
      */
     public void withdraw(Trucker trucker) {
-        truckersOut.add(trucker);
-        truckers.remove(trucker);
+        for (Trucker t: truckers) {
+            if (t.getNickname().equalsIgnoreCase(trucker.getNickname())){
+                truckersOut.add(trucker);
+                truckers.remove(trucker);
+                System.out.println("trucker out: " + trucker.getNickname());
+                break;
+            }
+        }
     }
 
     //i=posizione assoluta
@@ -431,11 +437,17 @@ public class Game {
             }
         }
 
-        toRemove.forEach(this::withdraw);
+        for (Trucker t : toRemove) {
+            System.out.println("chiamo withdraw");
+            withdraw(t);
+            System.out.println("sto eliminando:" + t.getNickname());
+        }
+
         sortTruckers();
         for(Trucker t: toRemove){
             toReturn.add(t.getNickname());
         }
+        System.out.println("sono morti:" + toReturn);
 
         return toReturn;
     }

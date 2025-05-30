@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.EpidemicEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
@@ -115,10 +116,11 @@ public class OpenSpace extends Card implements Serializable {
             Trucker trucker = truckers.get(i);
             enginePowerPerTrucker[i] = trucker.getSpaceShip().getTotalEnginePower();
         }
-        
+
+        //elimino tutti gli umani così in automatico withdraw elimina trucker
         for (int i = 0; i < truckers.size(); i++) {
             if (enginePowerPerTrucker[i] == 0) {
-                Game.getIstance().withdraw(truckers.get(i));
+                truckers.get(i).getSpaceShip().removeAllHumans();
             }
         }
         
@@ -132,7 +134,8 @@ public class OpenSpace extends Card implements Serializable {
 
         ArrayList<String> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved);
+        System.out.println("sono morti (open space):" + truckerRemoved);
+        return new CardFinished(false, Game.getIstance().getTruckerList(), truckerRemoved);
     }
 
 }

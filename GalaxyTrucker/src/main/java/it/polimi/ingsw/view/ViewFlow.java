@@ -147,6 +147,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     ui.showShipLayout(nickname, ship);
                     ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
                     ui.showTrack(track);
+                    System.out.println("you are out?" + out);
                 }
                 case END -> {
                     event.call(serverEventVisitor);
@@ -207,6 +208,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                             }
                         }else{
                             System.out.println("You are out of the flight, please wait for others to finish it and see the results");
+                            event = null;
                         }
                     }
                 }
