@@ -12,6 +12,7 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.net.ClientHandlerVisitor;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -52,12 +53,12 @@ public class ServerController {
             FirstConnectionEvent event = new FirstConnectionEvent(
                     "First player in the game, choose the total number of players of the Game"
             );
-            client.getClientHandler().handleEvent(event);
+            clientHandleEvent(client.getClientHandler(), event);
 
         }else{
             AvailableColorsEvent event = new AvailableColorsEvent(gameController.getAvailablePlayerColors(),
                     "Login");
-            client.getClientHandler().handleEvent(event);
+            clientHandleEvent(client.getClientHandler(), event);
         }
         clients.add(client);
 
@@ -117,7 +118,7 @@ public class ServerController {
                 this.gameCreated = true;
             } catch (Exception e) {
                 e.printStackTrace();
-                client.getClientHandler().handleEvent(response);
+                clientHandleEvent(client.getClientHandler(), response);
                 return;
             }
         }
@@ -126,13 +127,21 @@ public class ServerController {
         if(response.isForAll()){
             broadcastEvent(response);
         }else{
-            client.getClientHandler().handleEvent(response);
+            clientHandleEvent(client.getClientHandler(), response);
         }
     }
 
     public void broadcastEvent(ServerEvent event) {
         for(Client c: clients){
-            c.getClientHandler().handleEvent(event);
+            clientHandleEvent(c.getClientHandler(), event);
+        }
+    }
+
+    private void clientHandleEvent(ClientHandler c, ServerEvent e){
+        try {
+            c.handleEvent(e);
+        } catch (RemoteException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
