@@ -15,6 +15,8 @@ import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientHandlerVisitor
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -26,6 +28,8 @@ public class ServerController {
     private static ServerController istance;
 
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
+    private final ExecutorService executorService = Executors.newFixedThreadPool(4); // 4 worker thread
+
 
     public ServerController() {
         startDispatcher();
@@ -43,13 +47,6 @@ public class ServerController {
         ServerController.istance = istance;
     }
 
-    public void handleEvent(ClientEvent event, ClientHandlerSocket client) {
-        for(Client c : clients) {
-            if(c.getClientHandler().equals(client)) {
-                eventQueue.offer(new EventWithSource(event, c));
-            }
-        }
-    }
 
     public synchronized void addClient(Client client) {
         if (clients.isEmpty()) {
@@ -72,12 +69,28 @@ public class ServerController {
         System.out.println("Client disconnected and removed from the game.");
     }
 
+    public void handleEvent(ClientEvent event, ClientHandlerSocket client) {
+        for(Client c : clients) {
+            if(c.getClientHandler().equals(client)) {
+                eventQueue.offer(new EventWithSource(event, c));
+            }
+        }
+    }
+
+    // questo metodo serve sia per la socket (chiamato dentro il dispatcher) che per l'RMI
+    // il client tramite RMI server deve chiamare questo metodo per gestire l'evento che ha appena creato
+    private void launchThreadEvent(EventWithSource entry) {
+        executorService.submit(() -> processEvent(entry, visitor));
+    }
+
+
+    // startDispatcher serve solo per la socket perché con la socket mettiamo gli eventi nella coda
     public void startDispatcher() {
         Thread dispatcher = new Thread(() -> {
             while (true){
                 try {
                     EventWithSource entry = eventQueue.take();
-                    processEvent(entry, visitor);
+                    launchThreadEvent(entry);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
