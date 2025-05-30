@@ -12,11 +12,17 @@ import java.rmi.RemoteException;
 public class ClientHandlerSocket implements ClientHandler {
     private final NetworkServer network;
     private final ServerController controller;
+    private final int clientSocketId;
 
-    public ClientHandlerSocket(NetworkServer network, ServerController controller) {
+    public ClientHandlerSocket(NetworkServer network, ServerController controller, int id) {
         this.network = network;
         this.controller = controller;
+        this.clientSocketId = id;
         startListener();
+    }
+
+    public int getId(){
+        return clientSocketId;
     }
 
     private void startListener() {

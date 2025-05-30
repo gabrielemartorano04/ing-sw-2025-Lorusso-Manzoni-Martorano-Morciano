@@ -72,7 +72,7 @@ public class ServerController {
 
     public void handleEvent(ClientEvent event, ClientHandlerSocket client) {
         for(Client c : clients) {
-            if(c.getClientHandler()==client) {
+            if(c.getClientHandler().getId()==client.getId()) {
                 eventQueue.offer(new EventWithSource(event, c));
                 return;
             }
@@ -81,9 +81,9 @@ public class ServerController {
 
     // questo metodo serve sia per la socket (chiamato dentro il dispatcher) che per l'RMI
     // il client tramite RMI server deve chiamare questo metodo per gestire l'evento che ha appena creato
-//    private void launchThreadEvent(EventWithSource entry) {
-//        executorService.submit(() -> processEvent(entry, visitor));
-//    }
+    private void launchThreadEvent(EventWithSource entry) {
+        executorService.submit(() -> processEvent(entry, visitor));
+    }
 
 
     // startDispatcher serve solo per la socket perché con la socket mettiamo gli eventi nella coda
@@ -92,7 +92,7 @@ public class ServerController {
             while (true){
                 try {
                     EventWithSource entry = eventQueue.take();
-                    processEvent(entry, visitor);
+                    launchThreadEvent(entry);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;

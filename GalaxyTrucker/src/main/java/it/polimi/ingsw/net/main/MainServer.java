@@ -14,6 +14,7 @@ import java.net.Socket;
 public class MainServer {
     public static void main(String[] args) {
         final int PORT = 12346;
+        int clientSocketId = 0;
         ServerController serverController = new ServerController();
 
         RmiServer.bind(serverController);
@@ -25,11 +26,13 @@ public class MainServer {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("New client connected: " + clientSocket.getInetAddress());
 
+                System.out.println(clientSocketId);
                 NetworkServer networkServer = new NetworkServer(clientSocket);
-                ClientHandlerSocket clientHandlerSocket = new ClientHandlerSocket(networkServer, serverController);
+                ClientHandlerSocket clientHandlerSocket = new ClientHandlerSocket(networkServer, serverController, clientSocketId);
                 Client client = new Client(clientHandlerSocket);
                 serverController.addClient(client);
-
+                clientSocketId++;
+                System.out.println(clientSocketId);
             }
         } catch (IOException e) {
             System.err.println("Error in server: " + e.getMessage());

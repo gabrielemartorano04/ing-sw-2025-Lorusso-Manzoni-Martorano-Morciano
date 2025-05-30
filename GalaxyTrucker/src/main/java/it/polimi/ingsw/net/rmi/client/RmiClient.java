@@ -23,5 +23,10 @@ public class RmiClient extends UnicastRemoteObject implements ClientHandler {
     public void handleEvent(ServerEvent event) throws RemoteException {
     }
 
+    @Override
+    public int getId() {
+        return -1;
+    }
+
 
 }
