@@ -2,10 +2,9 @@ package it.polimi.ingsw.net.socket.server;
 
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.ClientHandler;
-import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 import java.io.IOException;
 

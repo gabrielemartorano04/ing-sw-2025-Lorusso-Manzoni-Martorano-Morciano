@@ -2,9 +2,9 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StarDustEvent;
+import it.polimi.ingsw.net.events.serverevents.GenericErrorEvent;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.events.serverevents.cardevents.StarDustEvent;
 import it.polimi.ingsw.exceptions.GeneralError;
 
 import java.io.Serial;

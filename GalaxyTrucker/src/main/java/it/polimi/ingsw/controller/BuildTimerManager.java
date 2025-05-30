@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.BuildCompleteEvent;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent;
 
 /**
  * This class is used to manage the timer that controls the building time.

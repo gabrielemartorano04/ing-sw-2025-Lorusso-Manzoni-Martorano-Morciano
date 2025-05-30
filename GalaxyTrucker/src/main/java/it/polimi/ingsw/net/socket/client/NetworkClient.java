@@ -1,6 +1,6 @@
 package it.polimi.ingsw.net.socket.client;
 
-import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

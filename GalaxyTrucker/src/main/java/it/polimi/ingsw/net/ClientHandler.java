@@ -1,11 +1,6 @@
 package it.polimi.ingsw.net;
 
-import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
  * Interface representing a single ClientConnection, including the instance of the trucker linked to that Client.

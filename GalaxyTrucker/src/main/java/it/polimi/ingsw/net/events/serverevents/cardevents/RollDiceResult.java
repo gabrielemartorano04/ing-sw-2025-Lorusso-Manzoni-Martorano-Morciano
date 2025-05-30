@@ -1,0 +1,40 @@
+package it.polimi.ingsw.net.events.serverevents.cardevents;
+
+import it.polimi.ingsw.net.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.events.serverevents.ServerEventType;
+import it.polimi.ingsw.view.ParserState;
+
+public class RollDiceResult extends CardEvent {
+
+    private int currIndex;
+    private int diceResult;
+    private String message;
+
+    public RollDiceResult(String Message, int currIndex, int diceResult, String nickname, boolean forAll){
+        super(ServerEventType.ROLL_DICE, forAll, ParserState.ROLL_DICE, nickname);
+        this.currIndex = currIndex;
+        this.diceResult = diceResult;
+        this.message = message;
+    }
+
+    public int getCurrIndex() {return currIndex;}
+
+    public int getDiceResult() {return diceResult;}
+
+    @Override
+    public void call(ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public String getMessage(){
+        return message;
+    }
+
+    public String getInfoForOthers(){
+        return getNickname()+" got "+diceResult+ " from the dice\n";
+    }
+}
+
+
+

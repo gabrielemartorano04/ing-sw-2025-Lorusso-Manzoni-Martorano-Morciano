@@ -2,12 +2,11 @@ package it.polimi.ingsw.view.text;
 
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
-import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.*;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;

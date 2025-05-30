@@ -2,16 +2,15 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.net.socket.events.clientevents.*;
-import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
-import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
-import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.GenericErrorInsertedData;
+import it.polimi.ingsw.net.events.clientevents.AlienCoordinatesRequest;
+import it.polimi.ingsw.net.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.events.clientevents.SendAlienCoord;
+import it.polimi.ingsw.net.events.clientevents.ShowOtherShipEvent;
+import it.polimi.ingsw.net.events.clientevents.buildingevents.*;
+import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
+import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class InputParser {
     // TODO: AGGIUNGERE COMANDI CHE SONO VALIDI SEMPRE

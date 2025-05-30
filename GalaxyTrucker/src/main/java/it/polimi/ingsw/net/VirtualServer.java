@@ -2,14 +2,14 @@ package it.polimi.ingsw.net;
 
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.net.socket.events.clientevents.AlienCoordinatesRequest;
-import it.polimi.ingsw.net.socket.events.clientevents.GeneriErrorFromClient;
-import it.polimi.ingsw.net.socket.events.clientevents.SendAlienCoord;
-import it.polimi.ingsw.net.socket.events.clientevents.ShowOtherShipEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.buildingevents.*;
-import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
-import it.polimi.ingsw.net.socket.events.clientevents.setupevents.CreateGameEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.setupevents.LoginEvent;
+import it.polimi.ingsw.net.events.clientevents.AlienCoordinatesRequest;
+import it.polimi.ingsw.net.events.clientevents.GeneriErrorFromClient;
+import it.polimi.ingsw.net.events.clientevents.SendAlienCoord;
+import it.polimi.ingsw.net.events.clientevents.ShowOtherShipEvent;
+import it.polimi.ingsw.net.events.clientevents.buildingevents.*;
+import it.polimi.ingsw.net.events.clientevents.cardevents.*;
+import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
+import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 
 /**
  * Interface of the visitor used to handle the events coming from the Client with the data used in the cards

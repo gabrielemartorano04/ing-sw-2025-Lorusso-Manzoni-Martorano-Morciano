@@ -7,9 +7,9 @@ import it.polimi.ingsw.exceptions.NotEnoughBatteries;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
-import it.polimi.ingsw.net.socket.events.serverevents.cardevents.*;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.events.serverevents.ServerEventType;
+import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.view.ParserState;
 
 import java.io.Serial;

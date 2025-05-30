@@ -4,17 +4,16 @@ import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
-import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
-import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.cardevents.OkStartFlight;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
+import it.polimi.ingsw.net.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.events.clientevents.cardevents.OkStartFlight;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.text.TUI;
 import it.polimi.ingsw.view.text.TimerDisplay;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ViewFlow implements NetworkListenerClient.EventReceiver {

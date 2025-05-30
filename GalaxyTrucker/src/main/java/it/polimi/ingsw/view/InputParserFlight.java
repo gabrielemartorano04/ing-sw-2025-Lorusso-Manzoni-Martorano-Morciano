@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.cardevents.*;
+import it.polimi.ingsw.net.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.events.clientevents.cardevents.*;
 
 import java.util.ArrayList;
 

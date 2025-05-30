@@ -4,12 +4,10 @@ import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.Client;
-import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.WaitOthersBuildingEvent;
-import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.WaitOthersBuildingEvent;
 import it.polimi.ingsw.exceptions.CannotTurnHourglassException;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 //gestisce la partita
