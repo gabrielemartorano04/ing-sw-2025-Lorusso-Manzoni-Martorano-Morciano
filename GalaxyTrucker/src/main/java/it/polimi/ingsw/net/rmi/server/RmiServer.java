@@ -20,27 +20,17 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class RmiServer extends UnicastRemoteObject implements RmiServerInterface, ClientHandler {
+public class RmiServer extends UnicastRemoteObject {
     private final ServerController controller;
-    private TruckerController truckerController;
 
     public RmiServer(ServerController controller) throws RemoteException {
         this.controller = controller;
     }
 
-    public void addClient(ClientHandler client){
+    public void connect(ClientHandler client){
         this.controller.addClient(client);
     }
 
-    @Override
-    public void setTruckerController(TruckerController truckerController) {
-        this.truckerController = truckerController;
-    }
-
-    @Override
-    public TruckerController getTruckerController() {
-        return truckerController;
-    }
 
     public String sayHello(String name) throws RemoteException {
         return "Hello, " + name + "!";
@@ -58,186 +48,6 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
         }
     }
 
-
-    @Override
-    public void sendEvent(ServerEvent event) {
-    }
-
-
-    @Override
-    public void registerClient(RmiClientInterface client) throws RemoteException {
-
-    }
-
-    @Override
-    public void receiveMessage(ClientEvent event, RmiClientInterface client) throws RemoteException {
-
-    }
-
-    @Override
-    public ServerEvent visit(CreateGameEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(DiscardTileEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(EndBuildingEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(KeepTileEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(LinkTileEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(LoginEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(SelectTileEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(SelectKeptTileEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(ShowStackEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(TurnHourglassEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(ShowOtherShipEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(AlienCoordinatesRequest event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(SendAlienCoord event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(OkStartFlight event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(DrawCardEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(HumanCoordEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(PlotGoodEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(PlanetDecisionEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(RollDiceEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(ActivateShieldEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(ActivateCannonsEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(ActivateEnginesEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(TruckerLandingEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(RearrangeEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(SetWinDecision event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(RemoveGoodsEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(RemoveAskingEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(RemoveBatteriesEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(TurnComponentEvent turnComponentEvent) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(StackDroppedEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(GainCosmicCreditsResponseEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(WarzoneStartEvent event) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public ServerEvent visit(RemotionSeenEvent event) throws RemoteException {
-        return null;
-    }
 }
 
 

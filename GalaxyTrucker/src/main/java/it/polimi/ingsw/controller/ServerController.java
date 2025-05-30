@@ -10,6 +10,8 @@ import it.polimi.ingsw.net.socket.events.serverevents.setupevents.FirstConnectio
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.net.socket.server.clienteventhandler.ClientHandlerVisitor;
+
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -49,11 +51,19 @@ public class ServerController {
             FirstConnectionEvent event = new FirstConnectionEvent(
                     "First player in the game, choose the total number of players of the Game"
             );
-            client.sendEvent(event);
+            try {
+                client.handleEvent(event);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }else{
             AvailableColorsEvent event = new AvailableColorsEvent(gameController.getAvailablePlayerColors(),
                     "Login");
-            client.sendEvent(event);
+            try {
+                client.handleEvent(event);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
         clients.add(client);
 
@@ -96,7 +106,7 @@ public class ServerController {
                 this.gameCreated = true;
             } catch (Exception e) {
                 e.printStackTrace();
-                client.sendEvent(response);
+                client.handleEvent(response);
                 return;
             }
         }
@@ -105,13 +115,17 @@ public class ServerController {
         if(response.isForAll()){
             broadcastEvent(response);
         }else{
-            client.sendEvent(response);
+            client.handleEvent(response);
         }
     }
 
     public void broadcastEvent(ServerEvent event) {
         for(ClientHandler c: clients){
-            c.sendEvent(event);
+            try {
+                c.handleEvent(event);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

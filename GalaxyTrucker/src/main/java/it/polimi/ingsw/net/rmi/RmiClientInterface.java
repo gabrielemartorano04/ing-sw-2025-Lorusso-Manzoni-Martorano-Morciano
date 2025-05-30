@@ -12,8 +12,7 @@ import it.polimi.ingsw.net.socket.events.serverevents.flightevents.*;
 import it.polimi.ingsw.net.socket.events.serverevents.setupevents.*;
 
 public interface RmiClientInterface extends Remote {
-    void receiveMessage(ServerEvent event) throws RemoteException;
-
+    void handleEvent(ServerEvent event) throws RemoteException;
 
 }
 

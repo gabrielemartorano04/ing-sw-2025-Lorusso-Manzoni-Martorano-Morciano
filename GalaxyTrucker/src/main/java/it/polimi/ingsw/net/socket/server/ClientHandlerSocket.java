@@ -52,7 +52,7 @@ public class ClientHandlerSocket implements ClientHandler {
     }
 
     @Override
-    public void sendEvent(ServerEvent event) {
+    public void handleEvent(ServerEvent event) {
         try {
 
             network.sendMessage(event);
