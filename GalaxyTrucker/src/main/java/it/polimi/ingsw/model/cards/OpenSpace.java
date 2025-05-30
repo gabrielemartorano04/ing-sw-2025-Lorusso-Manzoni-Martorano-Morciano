@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.BooleanDecision;
+import it.polimi.ingsw.net.socket.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.EpidemicEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
@@ -132,7 +133,7 @@ public class OpenSpace extends Card implements Serializable {
 
         ArrayList<String> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved);
+        return new CardFinished(false, Game.getIstance().getTruckerList(), truckerRemoved);
     }
 
 }
