@@ -34,6 +34,8 @@ class EngineTest {
 
     @Test
     void turn() {
-
+        engine.setOrientation(Orientation.E);
+        engine.turn();
+        assertEquals(Orientation.S, engine.getOrientation());
     }
 }

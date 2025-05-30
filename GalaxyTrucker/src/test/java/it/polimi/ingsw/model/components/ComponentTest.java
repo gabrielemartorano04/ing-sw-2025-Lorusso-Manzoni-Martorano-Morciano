@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 
+import java.awt.*;
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ComponentTest {
@@ -18,7 +21,7 @@ class ComponentTest {
 
     @Test
     void getFrontImage() {
-//        ImageIcon image=new ImageIcon(getClass().getResource("/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web.jpg"));
+//        Image image = new ImageIcon(Objects.requireNonNull(getClass().getResource("it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web.jpg"))).getImage();
 //        assertEquals(image,component.getFrontImage());
     }
 
@@ -29,8 +32,9 @@ class ComponentTest {
     }
 
     @Test
-    void getRearImage() {
-//        assertEquals(component.getRearImage(), new ImageIcon(getClass().getResource("/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web157.jpg")));
+    void getBackImage() {
+//        ImageIcon image=new ImageIcon(Objects.requireNonNull(getClass().getResource("it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web.jpg")));
+//        assertEquals(image,component.getBackImage());
     }
 
     @Test
