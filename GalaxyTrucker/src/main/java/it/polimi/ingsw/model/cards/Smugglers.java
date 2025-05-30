@@ -40,7 +40,7 @@ public class Smugglers extends Card implements Serializable {
     private int currGoodIndex;
 
     // variabili per la remove
-    private int colorOfCurrGoodToRemove; // vale 0 se è rosso, 1 se è giallo, 2 se è verde e 3 se è blu
+    private int colorOfCurrGoodToRemove;
     private int numGoodCurrType;
     private final ArrayList<Goods> goodsToRemove;// verrà creata al più una volta per istanza di questa classe
     // fine variabili per la remove
@@ -70,6 +70,7 @@ public class Smugglers extends Card implements Serializable {
         this.numGoodCurrType = 0;
         this.goodsToRemove = new ArrayList<>();
         this.defeatedTruckers = new ArrayList<>();
+        this.goodsLostCurrTrucker = goodsLost;
     }
 
 //    /**
@@ -332,6 +333,9 @@ public class Smugglers extends Card implements Serializable {
                 return new RemoveBatteries(true, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsLostCurrTrucker);
             }
         }else{
+            System.out.println(colorOfCurrGoodToRemove);
+            System.out.println(goodsLostCurrTrucker);
+
             throw new GeneralError("RemoveGoods not working correctly");
         }
     }

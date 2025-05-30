@@ -18,8 +18,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ServerController {
     private final ArrayList<ClientHandler> clients;
     private final ClientHandlerVisitor visitor;
-    private TurnManager turnManager;
-    private boolean turnStarted;
     private boolean gameCreated;
     private GameController gameController;
     private static ServerController istance;
@@ -29,7 +27,6 @@ public class ServerController {
     public ServerController() {
         startDispatcher();
         this.visitor = new ClientHandlerVisitor();
-        this.turnStarted = false;
         this.clients = new ArrayList<>();
         this.gameCreated = false;
         setIstance(this);
@@ -83,14 +80,6 @@ public class ServerController {
         dispatcher.start();
     }
 
-    /**
-     * method used to create the turnManager once all the players have joined the game
-     * @param players players' client handlers
-     */
-    private void CreateTurnManager(ArrayList<ClientHandlerSocket> players) {
-        this.turnManager = new TurnManager(players);
-        this.turnStarted = true;
-    }
 
     public void processEvent(EventWithSource eventWithSource, ClientHandlerVisitor visitor) {
         ClientEvent event = eventWithSource.getEvent();
@@ -98,6 +87,7 @@ public class ServerController {
 
         visitor.setClientHandlerServer(client);
         ServerEvent response = event.call(visitor);
+
 
         if (!gameCreated && visitor.getNumOfPlayers() > 0) {
             try {

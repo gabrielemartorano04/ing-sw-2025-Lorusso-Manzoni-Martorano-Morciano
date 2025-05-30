@@ -13,6 +13,8 @@ public class MainServer {
         final int PORT = 12346;
         ServerController serverController = new ServerController();
 
+        RmiServer.bind(serverController);
+
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server listening on port " + PORT + "...");
 
