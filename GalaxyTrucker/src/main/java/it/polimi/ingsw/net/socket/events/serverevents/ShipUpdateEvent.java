@@ -1,7 +1,6 @@
 package it.polimi.ingsw.net.socket.events.serverevents;
 
 import it.polimi.ingsw.controller.TruckerController;
-import it.polimi.ingsw.controller.TurnManager;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 

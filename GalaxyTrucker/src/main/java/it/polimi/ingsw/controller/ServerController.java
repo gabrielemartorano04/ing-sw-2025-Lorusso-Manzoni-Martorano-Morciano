@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.buildingevents.BuildCompleteEvent;
@@ -18,7 +19,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 
 public class ServerController {
-    private final ArrayList<ClientHandler> clients;
+    private final ArrayList<Client> clients;
     private final ClientHandlerVisitor visitor;
     private boolean gameCreated;
     private GameController gameController;
@@ -43,20 +44,24 @@ public class ServerController {
     }
 
     public void handleEvent(ClientEvent event, ClientHandlerSocket client) {
-        eventQueue.offer(new EventWithSource(event, client));
+        for(Client c : clients) {
+            if(c.getClientHandler().equals(client)) {
+                eventQueue.offer(new EventWithSource(event, c));
+            }
+        }
     }
 
-    public synchronized void addClient(ClientHandler client) {
+    public synchronized void addClient(Client client) {
         if (clients.isEmpty()) {
             FirstConnectionEvent event = new FirstConnectionEvent(
                     "First player in the game, choose the total number of players of the Game"
             );
-            client.handleEvent(event);
+            client.getClientHandler().handleEvent(event);
 
         }else{
             AvailableColorsEvent event = new AvailableColorsEvent(gameController.getAvailablePlayerColors(),
                     "Login");
-            client.handleEvent(event);
+            client.getClientHandler().handleEvent(event);
         }
         clients.add(client);
 
@@ -86,9 +91,9 @@ public class ServerController {
 
     public void processEvent(EventWithSource eventWithSource, ClientHandlerVisitor visitor) {
         ClientEvent event = eventWithSource.getEvent();
-        ClientHandlerSocket client = eventWithSource.getClient();
+        Client client = eventWithSource.getClient();
 
-        visitor.setClientHandlerServer(client);
+        visitor.setCurrentClient(client);
         event.call(visitor);
         ServerEvent response =visitor.getServerEvent();
 
@@ -100,7 +105,7 @@ public class ServerController {
                 this.gameCreated = true;
             } catch (Exception e) {
                 e.printStackTrace();
-                client.handleEvent(response);
+                client.getClientHandler().handleEvent(response);
                 return;
             }
         }
@@ -109,13 +114,13 @@ public class ServerController {
         if(response.isForAll()){
             broadcastEvent(response);
         }else{
-            client.handleEvent(response);
+            client.getClientHandler().handleEvent(response);
         }
     }
 
     public void broadcastEvent(ServerEvent event) {
-        for(ClientHandler c: clients){
-            c.handleEvent(event);
+        for(Client c: clients){
+            c.getClientHandler().handleEvent(event);
         }
     }
 

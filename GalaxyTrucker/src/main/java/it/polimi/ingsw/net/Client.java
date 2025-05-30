@@ -4,11 +4,10 @@ import it.polimi.ingsw.controller.TruckerController;
 
 public class Client {
     private final ClientHandler clientHandler;
-    private final TruckerController truckerController;
+    private TruckerController truckerController;
 
-    public Client(ClientHandler clientHandler, TruckerController truckerController) {
+    public Client(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
-        this.truckerController = truckerController;
     }
 
     public ClientHandler getClientHandler() {
@@ -17,5 +16,9 @@ public class Client {
 
     public TruckerController getTruckerController() {
         return truckerController;
+    }
+
+    public void setTruckerController(TruckerController truckerController) {
+        this.truckerController = truckerController;
     }
 }

@@ -18,18 +18,7 @@ public class ClientHandlerSocket implements ClientHandler {
     public ClientHandlerSocket(NetworkServer network, ServerController controller) {
         this.network = network;
         this.controller = controller;
-        controller.addClient(this);
         startListener();
-    }
-
-    @Override
-    public void setTruckerController(TruckerController truckerController) {
-        this.truckerController = truckerController;
-    }
-
-    @Override
-    public TruckerController getTruckerController() {
-        return truckerController;
     }
 
     private void startListener() {

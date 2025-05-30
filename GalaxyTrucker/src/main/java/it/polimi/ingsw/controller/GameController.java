@@ -3,6 +3,7 @@ import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 import java.util.*;
@@ -113,7 +114,7 @@ public class GameController {
      * This method sorts players by their position
      * @param players arraylist of players' Client handler sockets
      */
-    public void orderByPosition(ArrayList<ClientHandlerSocket> players){
+    public void orderByPosition(ArrayList<Client> players){
         game.reorderPlayersByPosition(players);
     }
 

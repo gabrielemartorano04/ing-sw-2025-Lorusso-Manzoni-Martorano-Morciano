@@ -26,14 +26,4 @@ public class RmiClient extends UnicastRemoteObject implements ClientHandler {
     }
 
 
-    @Override
-    public void setTruckerController(TruckerController truckerController) {
-        this.controller = truckerController;
-    }
-
-    @Override
-    public TruckerController getTruckerController() {
-        return controller;
-    }
-
 }

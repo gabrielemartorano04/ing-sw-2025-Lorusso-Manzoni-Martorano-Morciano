@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.*;
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.socket.events.clientevents.AlienCoordinatesRequest;
 import it.polimi.ingsw.net.socket.events.clientevents.GeneriErrorFromClient;
@@ -35,7 +36,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     private int numOfPlayers;
     private GameController gameController;
     private int numLog;
-    private ClientHandlerSocket currentClient;
+    private Client currentClient;
     private int gameLevel;
     private int endBuilding;
     private int startFlight;
@@ -54,8 +55,8 @@ public class ClientHandlerVisitor implements VirtualServer {
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
 
-    public void setClientHandlerServer(ClientHandlerSocket clientHandlerServer) {
-        currentClient = clientHandlerServer;
+    public void setCurrentClient(Client currentClient) {
+        currentClient = currentClient;
     }
 
     public int getNumOfPlayers() {
