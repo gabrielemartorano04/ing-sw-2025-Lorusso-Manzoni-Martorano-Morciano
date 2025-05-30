@@ -431,6 +431,7 @@ public class Game {
     public ArrayList<String> endTurn() {
         ArrayList<Trucker> toRemove = new ArrayList<>();
         ArrayList<String> toReturn = new ArrayList<>();
+        System.out.println("sono in endTurn");
         for (Trucker t : truckers) {
             if (noHumans(t) || checkOvertaken(t)) {
                 toRemove.add(t);
