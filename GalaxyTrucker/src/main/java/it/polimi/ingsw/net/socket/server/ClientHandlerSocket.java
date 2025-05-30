@@ -12,8 +12,6 @@ import java.rmi.RemoteException;
 public class ClientHandlerSocket implements ClientHandler {
     private final NetworkServer network;
     private final ServerController controller;
-    private Thread listenerThread;
-    private TruckerController truckerController;
 
     public ClientHandlerSocket(NetworkServer network, ServerController controller) {
         this.network = network;
@@ -22,7 +20,7 @@ public class ClientHandlerSocket implements ClientHandler {
     }
 
     private void startListener() {
-        listenerThread = new Thread(() -> {
+        Thread listenerThread = new Thread(() -> {
             try {
                 while (!network.isClosed()) {
                     ClientEvent event = network.receiveMessage();
