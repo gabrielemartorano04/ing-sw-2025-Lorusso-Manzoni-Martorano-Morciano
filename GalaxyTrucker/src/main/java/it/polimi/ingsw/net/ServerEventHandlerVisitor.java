@@ -427,7 +427,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             }
         }
         for(String nicknames: event.getTruckersRemoved()){
-            if(nicknames.equalsIgnoreCase(viewFlow.getNickname()) && trucker!=null) {
+            if(nicknames.equalsIgnoreCase(viewFlow.getNickname())) {
                 System.out.println(viewFlow.getNickname() + " morto");
                 viewFlow.setOut();
             }

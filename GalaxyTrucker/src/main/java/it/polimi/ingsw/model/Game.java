@@ -432,6 +432,7 @@ public class Game {
         ArrayList<String> toReturn = new ArrayList<>();
         System.out.println("sono in endTurn");
         for (Trucker t : truckers) {
+            System.out.println("num human per " + t.getNickname() + ": " + t.getSpaceShip().getNumHuman());
             if (noHumans(t) || checkOvertaken(t)) {
                 toRemove.add(t);
             }

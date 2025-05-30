@@ -452,4 +452,24 @@ public class ClientHandlerVisitor implements VirtualServer {
         return serverEvent;
     }
 
+    @Override
+    public void visit(DeadTrucker event){
+        Card card;
+        if (!gameController.getGame().getTruckerList().isEmpty()) {
+            cardController.setCurrCard(gameController.pickCardFromDeck());
+            card = cardController.getCurrCard();
+            if (card != null) {
+                serverEvent = cardController.startCard();
+                return;
+            }
+        }
+        int[] scores;
+        Map<String, Integer> playersScores = new HashMap<>();
+        scores = gameController.getGame().computeScores(numOfPlayers);
+        for(int i=0; i<numOfPlayers; i++){
+            playersScores.put(gameController.getGame().getTrucker(i).getNickname(), scores[i]);
+        }
+        serverEvent= new EndGameEvent(playersScores);
+    }
+
 }
