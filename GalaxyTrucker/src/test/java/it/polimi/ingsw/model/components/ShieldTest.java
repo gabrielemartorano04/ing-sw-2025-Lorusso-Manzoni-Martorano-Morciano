@@ -20,6 +20,11 @@ class ShieldTest {
         assertEquals(Direction.NE, shield.getDirection());
     }
 
+    void setAndGetIsActive() {
+        shield.setIsActive(true);
+        assertTrue(shield.getIsActive());
+    }
+
     @Test
     void turn() {
         shield.turn();

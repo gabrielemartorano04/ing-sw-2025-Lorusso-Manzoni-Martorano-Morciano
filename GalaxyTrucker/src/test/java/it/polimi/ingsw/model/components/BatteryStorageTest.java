@@ -26,4 +26,11 @@ class BatteryStorageTest {
     void getCapacity() {
         assertEquals(2,batteryStorage.getCapacity());
     }
+
+    @Test
+    void removeNumOfBatteries() {
+        batteryStorage.setQuantity(2);
+        batteryStorage.removeNumOfBatteries(1);
+        assertEquals(1,batteryStorage.getQuantity());
+    }
 }

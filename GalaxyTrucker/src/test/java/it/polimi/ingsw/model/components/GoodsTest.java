@@ -31,4 +31,9 @@ class GoodsTest {
         assertEquals(2,goods.getY());
     }
 
+    @Test
+    void getColor() {
+        assertEquals("red",goods.getColor());
+    }
+
 }
