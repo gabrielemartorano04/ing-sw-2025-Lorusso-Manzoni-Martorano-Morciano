@@ -12,6 +12,6 @@ public class DeadTrucker extends ClientEvent {
 
     @Override
     public void call(VirtualServer visitor) {
-
+        //todo
     }
 }
