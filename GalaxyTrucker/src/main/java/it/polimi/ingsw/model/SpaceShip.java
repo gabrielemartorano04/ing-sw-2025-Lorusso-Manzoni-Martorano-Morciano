@@ -1876,6 +1876,7 @@ public class SpaceShip implements Serializable {
                                 cabin.setAlien(null);
                             }else {
                                 cabin.removeHumans(cabin.getQuantity());
+                                numHuman=0;
                             }
                         }
                         default -> {}

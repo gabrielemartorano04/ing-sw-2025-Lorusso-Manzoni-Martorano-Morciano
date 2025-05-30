@@ -6,6 +6,7 @@ import it.polimi.ingsw.net.socket.client.ClientHandler;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.socket.client.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.socket.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.DeadTrucker;
 import it.polimi.ingsw.net.socket.events.clientevents.cardevents.OkStartFlight;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.socket.events.serverevents.ServerEventType;
@@ -117,7 +118,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
             ui.showInsertNumPlayers();
         } else {
             if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS || event.getEventType()==ServerEventType.COMPONENT_LINKED
-            || event.getEventType()==ServerEventType.COMPONENT_SELECTED || event.getEventType()==ServerEventType.DISCART_SUCCESS ) {
+            || event.getEventType()==ServerEventType.COMPONENT_SELECTED || event.getEventType()==ServerEventType.DISCART_SUCCESS || event.getEventType()==ServerEventType.CARD_FINISHED ) {
                 event.call(serverEventVisitor);
                 done = true;
             }
@@ -411,6 +412,9 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
 
     public void setOut() {
         this.out = true;
+        ClientEvent event = new DeadTrucker();
+        clientHandler.handleEvent(event);
+
     }
     public boolean getOut() {
         return out;

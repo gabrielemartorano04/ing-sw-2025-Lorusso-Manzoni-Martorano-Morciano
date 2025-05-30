@@ -78,4 +78,6 @@ public interface VirtualServer {
     void visit(WarzoneStartEvent event);
 
     void visit(RemotionSeenEvent event);
+
+    void visit(DeadTrucker event);
 }
