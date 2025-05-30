@@ -8,10 +8,10 @@ import java.io.IOException;
  * riceve eventi dalla view e li invia al server
  */
 
-public class ClientHandler {
+public class ClientEventSender {
     private final NetworkClient network;
 
-    public ClientHandler(NetworkClient network) {
+    public ClientEventSender(NetworkClient network) {
         this.network = network;
     }
 

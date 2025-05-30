@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.rmi.server;
 
 import it.polimi.ingsw.controller.ServerController;
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.rmi.RmiServerInterface;
 
@@ -19,8 +20,8 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
 
     @Override
     public void connect(ClientHandler client) throws RemoteException {
-        //TODO: fare questo
-        // this.controller.addClient(client);
+        System.out.println("Adding client to the clients in the serverController");
+        this.controller.addClient(new Client(client));
     }
 
     @Override

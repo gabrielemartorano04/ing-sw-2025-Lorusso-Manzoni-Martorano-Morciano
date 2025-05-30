@@ -1,8 +1,12 @@
 package it.polimi.ingsw.net.main;
 
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.ConnectionType;
+import it.polimi.ingsw.net.rmi.RmiServerInterface;
+import it.polimi.ingsw.net.rmi.client.RmiClient;
 import it.polimi.ingsw.net.rmi.server.RmiServer;
-import it.polimi.ingsw.net.socket.client.ClientHandler;
+import it.polimi.ingsw.net.ClientHandler;
+import it.polimi.ingsw.net.socket.client.ClientEventSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
@@ -53,8 +57,8 @@ public class MainClient {
                 //Inserire tipo di connessione?
                 networkClient.connect(); // Connetti al server
 
-                it.polimi.ingsw.net.socket.client.ClientHandler clientHandler = new ClientHandler(networkClient);
-                ViewFlow view = new ViewFlow(clientHandler);
+                ClientEventSender sender = new ClientEventSender(networkClient);
+                ViewFlow view = new ViewFlow(sender);
 
                 NetworkListenerClient listenerClient = new NetworkListenerClient(networkClient.getSocket(), new NetworkListenerClient.EventReceiver() {
                     @Override
@@ -75,8 +79,10 @@ public class MainClient {
             // === RMI client ===
             try {
                 String url = "rmi://" + serverAddress + ":1099/MyService";
-                RmiServer rmiServer = (RmiServer) Naming.lookup(url);
+                RmiServerInterface rmiServer = (RmiServerInterface) Naming.lookup(url);
 
+                ClientHandler client = new RmiClient(rmiServer);
+                rmiServer.connect(client);
                 System.out.println("Connected to RMI server!");
                 // Esempio chiamata remota
                 String response = rmiServer.sayHello("ClientUser");

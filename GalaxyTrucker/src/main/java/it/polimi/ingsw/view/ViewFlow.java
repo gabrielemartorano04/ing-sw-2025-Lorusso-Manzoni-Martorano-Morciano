@@ -2,7 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.net.socket.client.ClientHandler;
+import it.polimi.ingsw.net.socket.client.ClientEventSender;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ViewFlow implements NetworkListenerClient.EventReceiver {
-    private final ClientHandler clientHandler;
+    private final ClientEventSender clientEventSender;
     private boolean done = false;
     private final InputReader inputReader;
     private final InputParser inputParser;
@@ -68,8 +68,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
         END;
     }
 
-    public ViewFlow(ClientHandler clientHandler) {
-        this.clientHandler = clientHandler;
+    public ViewFlow(ClientEventSender clientEventSender) {
+        this.clientEventSender = clientEventSender;
         this.inputReader = new InputReader();
         this.inputParser = new InputParser();
         this.inputParserFlight = new InputParserFlight();
@@ -212,7 +212,7 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                     }
                 }
                 if (event != null) {
-                    clientHandler.handleEvent(event);
+                    clientEventSender.handleEvent(event);
                 }
             }
         }, "UserInputThread").start();
