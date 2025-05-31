@@ -23,11 +23,18 @@ class ShieldTest {
     void setAndGetIsActive() {
         shield.setIsActive(true);
         assertTrue(shield.getIsActive());
+
+        shield.setIsActive(false);
+        assertFalse(shield.getIsActive());
     }
 
     @Test
     void turn() {
         shield.turn();
         assertEquals(Direction.SE, shield.getDirection());
+        assertEquals(shield.getLink()[0],1);
+        assertEquals(shield.getLink()[1],1);
+        assertEquals(shield.getLink()[2],2);
+        assertEquals(shield.getLink()[3],3);
     }
 }
