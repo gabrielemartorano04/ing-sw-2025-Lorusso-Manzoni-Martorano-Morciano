@@ -50,22 +50,13 @@ public class MainClient {
         if(choice.equals("1")) {
             connectionType = ConnectionType.SOCKET;
             final int SERVER_PORT = 12346;
-
-            // Crea il NetworkClient e si connette al server
             NetworkClient networkClient = new NetworkClient(serverAddress, SERVER_PORT);
             try {
-                //Inserire tipo di connessione?
-                networkClient.connect(); // Connetti al server
-
+                networkClient.connect();
                 ClientEventSender sender = new ClientEventSender(networkClient);
                 ViewFlow view = new ViewFlow(sender);
 
-                NetworkListenerClient listenerClient = new NetworkListenerClient(networkClient.getSocket(), new NetworkListenerClient.EventReceiver() {
-                    @Override
-                    public void onEventReceived(ServerEvent event) {
-                        view.onEventReceived(event);
-                    }
-                });
+                NetworkListenerClient listenerClient = new NetworkListenerClient(networkClient.getSocket(), view);
 
                 listenerClient.start();
                 view.start();

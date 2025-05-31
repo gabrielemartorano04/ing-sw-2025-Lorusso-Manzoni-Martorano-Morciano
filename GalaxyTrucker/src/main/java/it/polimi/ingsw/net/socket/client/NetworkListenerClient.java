@@ -1,18 +1,21 @@
 package it.polimi.ingsw.net.socket.client;
 
+import it.polimi.ingsw.net.EventReceiver;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.view.ViewFlow;
 
+import javax.swing.text.View;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
 public class NetworkListenerClient {
     private final Socket socket;
-    private final EventReceiver receiver;
+    private final ViewFlow receiver;
     private Thread listenerThread;
     private boolean running;
 
-    public NetworkListenerClient(Socket socket, EventReceiver receiver) {
+    public NetworkListenerClient(Socket socket, ViewFlow receiver) {
         this.socket = socket;
         this.receiver = receiver;
     }
@@ -46,7 +49,4 @@ public class NetworkListenerClient {
         }
     }
 
-    public interface EventReceiver {
-        void onEventReceived(ServerEvent event);
-    }
 }
