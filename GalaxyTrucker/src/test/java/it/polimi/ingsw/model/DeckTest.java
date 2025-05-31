@@ -25,6 +25,8 @@ class DeckTest {
     @Test
     void getDeck() {
         assertNotNull(deck1.getDeck());
+        assertEquals(8,deck1.getDeck().size());
         assertNotNull(deck2.getDeck());
+        assertEquals(40,deck2.getDeck().size());
     }
 }
