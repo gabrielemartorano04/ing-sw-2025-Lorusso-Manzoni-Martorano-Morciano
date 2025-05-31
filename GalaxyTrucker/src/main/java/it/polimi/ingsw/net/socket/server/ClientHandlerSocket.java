@@ -12,17 +12,13 @@ import java.rmi.RemoteException;
 public class ClientHandlerSocket implements ClientHandler {
     private final NetworkServer network;
     private final ServerController controller;
-    private final int clientSocketId;
+    private int id;
 
-    public ClientHandlerSocket(NetworkServer network, ServerController controller, int id) {
+    public ClientHandlerSocket(NetworkServer network, ServerController controller) {
         this.network = network;
         this.controller = controller;
-        this.clientSocketId = id;
+        this.id = -1;
         startListener();
-    }
-
-    public int getId(){
-        return clientSocketId;
     }
 
     private void startListener() {
@@ -52,6 +48,16 @@ public class ClientHandlerSocket implements ClientHandler {
         } catch (IOException e) {
             System.err.println("Error while sending event to the client: " + e.getMessage());
         }
+    }
+
+    @Override
+    public int getId() throws RemoteException {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) throws RemoteException {
+        this.id = id;
     }
 
     public void close() {
