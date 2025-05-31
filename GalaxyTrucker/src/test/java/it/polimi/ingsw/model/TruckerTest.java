@@ -3,18 +3,19 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.model.components.*;
+import it.polimi.ingsw.model.components.Engine;
+import it.polimi.ingsw.model.components.Load;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TruckerTest {
+
     private Trucker trucker;
 
     @BeforeEach
     public void setup(){
-
         this.trucker =new Trucker("frenk", PlayerColors.BLUE);
         this.trucker.getSpaceShip().setSpaceship(2,PlayerColors.BLUE);
     }
@@ -37,10 +38,6 @@ class TruckerTest {
         assertEquals(PlayerColors.BLUE, trucker.getColor());
     }
 
-    @Test
-    public void getNickname(){
-        assertEquals("frenk", trucker.getNickname());
-    }
 
     @Test
     public void addAndGetCosmicCredit(){
@@ -52,13 +49,36 @@ class TruckerTest {
     }
 
     @Test
+    void getSelectedComponent() {
+        AvailableComponents av=new AvailableComponents();
+        try {
+            trucker.selectComponent(1,av);
+        } catch (GeneralError e) {
+            System.out.println(e.getMessage());
+        }
+        assertNotNull(trucker.getSelectedComponent());
+        assertEquals(av.getComponents().get(1),trucker.getSelectedComponent());
+
+    }
+
+    @Test
+    public void getNickname(){
+        assertEquals("frenk", trucker.getNickname());
+    }
+
+    @Test
     public void getSpaceship(){
         assertNotNull(trucker.getSpaceShip());
     }
 
     @Test
     public void showStack(){
-        //assertNotNull(trucker.showStack(1,new Game()));
+        try {
+            assertNotNull(trucker.showStack(1,new Game(2,2)));
+        } catch (GeneralError e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @Test
@@ -92,11 +112,59 @@ class TruckerTest {
     }
 
     @Test
-    public void finish() {
+    void addAndGetKeptComponentAndGetComponents() {
+        Load load=new Load(1,1,1,1,"Load","",2,false);
+        Engine engine=new Engine(1,1,1,"Engine","",true);
+        try {
+            trucker.addKeptComponent(load);
+
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            trucker.addKeptComponent(engine);
+
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            assertNotNull(trucker.getKeptComponent(0));
+            assertEquals(trucker.getKeptComponent(0),load);
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            assertNotNull(trucker.getKeptComponent(1));
+            assertEquals(trucker.getKeptComponent(1),engine);
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(2,trucker.getKeptComponents().size());
     }
 
     @Test
-    public void fillSpaceShip() {
+    void removeKeptComponent() {
+        Load load=new Load(1,1,1,1,"Load","",2,false);
+        Engine engine=new Engine(1,1,1,"Engine","",true);
+        try {
+            trucker.addKeptComponent(load);
 
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            trucker.addKeptComponent(engine);
+
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
+
+        trucker.removeKeptComponent(0);
+        assertEquals(1,trucker.getKeptComponents().size());
+        try {
+            assertEquals(engine,trucker.getKeptComponent(0));
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
     }
 }

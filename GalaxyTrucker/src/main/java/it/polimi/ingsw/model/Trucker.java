@@ -9,8 +9,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- *
+ * This method identifies the player
  */
+
 public class Trucker implements Serializable {
 
 
