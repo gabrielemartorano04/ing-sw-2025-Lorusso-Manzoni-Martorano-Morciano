@@ -6,11 +6,15 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.*;
+import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -755,6 +759,26 @@ public class TUI extends UI {
                     "Type '<n/y>, (<x1> <y1> - <value1>,<x2> <y2> - <value2>...)'");
             case COSMIC_CREDITS -> System.out.println("Do you want to gain that cosmic credits? Type <y/n>.");
 
+        }
+    }
+
+    @Override
+    public void showRules() {
+        System.out.println("Type 'rules' to open the rules.");
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        if (input.equalsIgnoreCase("rules")) {
+            try {
+                File pdf = new File("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf");
+                if (pdf.exists()) {
+                    Desktop.getDesktop().open(pdf);
+                } else {
+                    System.out.println("File not found.");
+                }
+            } catch (IOException e) {
+                System.out.println("Error in file opening");
+                throw new RuntimeException(e);
+            }
         }
     }
 }
