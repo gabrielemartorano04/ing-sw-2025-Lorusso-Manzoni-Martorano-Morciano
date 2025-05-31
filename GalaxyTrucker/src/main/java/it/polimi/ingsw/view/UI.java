@@ -86,7 +86,7 @@ public abstract class UI {
     public abstract void showShipLayout(String nickname, Component[][] layout);
 
     public abstract void showMessage(String message);
-    public abstract void showTrack(Map<String, Integer> truckers);
+    public abstract void showTrack(Map<String, Integer> truckers, int level);
 
     public abstract void showBooleanOption(String message);
 
