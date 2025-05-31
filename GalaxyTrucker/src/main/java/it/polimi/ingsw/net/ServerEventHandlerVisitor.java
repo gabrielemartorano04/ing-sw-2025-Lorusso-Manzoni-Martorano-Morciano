@@ -87,7 +87,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setLevel(event.getLevel());
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
         viewFlow.setShip(event.getSpaceShip().getComponents());
-        viewFlow.setStacks(event.getStacks());
         viewFlow.fillAvailableComponents(event.getComponents());
         ui.showBuildPhaseStart(event.getComponents());
         ui.showBuildOptions();
