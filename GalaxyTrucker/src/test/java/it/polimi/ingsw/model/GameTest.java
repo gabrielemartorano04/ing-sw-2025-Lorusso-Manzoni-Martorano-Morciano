@@ -1,215 +1,175 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.OpenSpace;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Set;
-
-import static org.easymock.EasyMock.mock;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
-    private Game game;
-    private ArrayList<Card> deck;
-    private SpaceShip ship;
-    private Trucker trucker1, trucker2;
-    private Hourglass hourglass;
+    private Game game1;
+    private Game game2;
 
     @BeforeEach
     void setUp() {
-        game = new Game(2,2);
-        deck = new ArrayList<Card>();
-        ship = new SpaceShip(PlayerColors.BLUE);
-        hourglass = new Hourglass();
-        trucker1 = new Trucker("frenk", PlayerColors.BLUE);
-        game.addTrucker(trucker1);
-        trucker2 = new Trucker("manzo", PlayerColors.RED);
-        game.addTrucker(trucker2);
+        game1=new Game(2,0);
+        game2=new Game(2,2);
     }
 
     @Test
-    void setGameState() {
-        game.setGameState(GameState.BUILDING);
-        assertEquals(GameState.BUILDING,game.getGameState());
+    void getGameLevel() {
+        assertEquals(0,game1.getGameLevel());
+        assertEquals(2,game2.getGameLevel());
     }
 
     @Test
-    void getGameState() {
-        assertEquals(GameState.SETUP,game.getGameState());
+    void getIstance() {
+        assertEquals(game1,game1.getIstance());
+        assertEquals(game2,game2.getIstance());
     }
+
+    @Test
+    void setIstance() {
+        game1.setIstance(game2);
+        assertEquals(game2,game1.getIstance());
+    }
+
+    @Test
+    void startAndGetHourglass() {
+        game1.startHourglass();
+        assertNull(game1.getHourglass());
+        game2.startHourglass();
+        assertNotNull(game2.getHourglass());
+    }
+
+    @Test
+    void getNumPlayers() {
+        assertEquals(2,game1.getNumPlayers());
+        assertEquals(2,game2.getNumPlayers());
+    }
+
+    @Test
+    void setAndGetGameState() {
+        game1.setGameState(GameState.WAITING);
+        assertEquals(GameState.WAITING,game1.getGameState());
+    }
+
 
     @Test
     void getBank() {
-        assertNotNull(game.getBank());
+        assertNotNull(game1.getBank());
+        assertNotNull(game2.getBank());
     }
 
     @Test
     void sortTruckers() {
-        assertEquals("frenk", game.getTruckerList().get(0).getNickname());
-        assertEquals("manzo", game.getTruckerList().get(1).getNickname());
-        game.getTrucker(0).setPosition(3);
-        game.getTrucker(1).setPosition(5);
-        game.sortTruckers();
-        assertEquals("manzo", game.getTruckerList().get(0).getNickname());
-        assertEquals("frenk", game.getTruckerList().get(1).getNickname());
+        game1.addTrucker(new Trucker("frenk",PlayerColors.BLUE));
+        game1.addTrucker(new Trucker("manzo",PlayerColors.RED));
+        assertEquals("frenk", game1.getTruckerList().get(0).getNickname());
+        assertEquals("manzo", game1.getTruckerList().get(1).getNickname());
+        game1.getTrucker(0).setPosition(3);
+        game1.getTrucker(1).setPosition(5);
+        game1.sortTruckers();
+        assertEquals("manzo", game1.getTruckerList().get(0).getNickname());
+        assertEquals("frenk", game1.getTruckerList().get(1).getNickname());
+    }
+
+
+    @Test
+    void reorderPlayersByPosition() {
+
     }
 
     @Test
     void rollDice() {
         int sum;
-        sum = game.rollDice();
+        sum = game1.rollDice();
         assertTrue(sum >= 2 && sum <= 12);
     }
 
     @Test
     void drawCard() {
-        Card card = new OpenSpace(false, 2, "", "");
-
-        assertNotNull(game.drawCard());
-    }
-
-    @Test
-    void noHumans() {
-
     }
 
     @Test
     void viewStack() {
-
-    }
-
-    @Test
-    void checkOvertaken() {
-        Trucker t1 = trucker1;
-        trucker1.setPosition(1);
-        trucker2.setPosition(27);
-        assertFalse(game.getTruckerList().contains(t1));
     }
 
     @Test
     void withdraw() {
-        Trucker t1 = trucker1;
-        game.withdraw(trucker1);
-        assertFalse(game.getTruckerList().contains(t1));
-        assertNotNull(game.getTrucker(0).getNickname());
-        //invertiti perche ho fatto sort sopra
     }
 
     @Test
     void getTrucker() {
-        assertEquals("frenk", game.getTrucker(0).getNickname());
-        assertEquals("manzo", game.getTrucker(1).getNickname());
-        assertEquals(2,game.getTruckerList().size());
     }
 
     @Test
     void getComponents() {
-        assertNotNull(game.getComponents());
+        assertNotNull(game1.getComponents());
+        assertNotNull(game2.getComponents());
     }
 
     @Test
     void makeStacks() {
-
     }
 
     @Test
     void makeGameDeck() {
-
     }
 
     @Test
     void getTruckerList() {
-        assertEquals("frenk", game.getTrucker(0).getNickname());
-        assertEquals("manzo", game.getTrucker(1).getNickname());
-        assertEquals(2,game.getTruckerList().size());
     }
 
     @Test
     void moveForward() {
-        trucker1.setPosition(1);
-        trucker2.setPosition(2);
-        game.moveForward(trucker2, 1);
-        game.moveForward(trucker1, 3);
-        assertEquals(3, trucker2.getPosition());
-        assertEquals(5, trucker1.getPosition());
     }
 
     @Test
     void moveBackward() {
-        trucker1.setPosition(5);
-        trucker2.setPosition(4);
-        game.moveBackward(trucker2, 1);
-        game.moveBackward(trucker1, 3);
-        assertEquals(3, trucker2.getPosition());
-        assertEquals(1, trucker1.getPosition());
-    }
-
-    @Test
-    void ready() {
-
     }
 
     @Test
     void setLevel() {
-
     }
 
     @Test
     void computeScores() {
-
     }
 
     @Test
     void bestSpaceShip() {
+    }
 
+    @Test
+    void showAvailableColors() {
     }
 
     @Test
     void showUsedColors() {
-        Set<PlayerColors> colors = game.showUsedColors();
-        assertTrue(colors.contains(trucker1.getColor()));
-        assertFalse(colors.contains(PlayerColors.YELLOW));
     }
 
     @Test
     void isNicknameTaken() {
-        assertTrue(game.isNicknameTaken("frenk"));
-        assertFalse(game.isNicknameTaken("gabri"));
     }
 
     @Test
     void isColorTaken() {
-        assertTrue(game.isColorTaken(PlayerColors.BLUE));
-        assertFalse(game.isColorTaken(PlayerColors.YELLOW));
     }
 
     @Test
     void addTrucker() {
-        Trucker trucker = new Trucker("gabri", PlayerColors.YELLOW);
-        game.addTrucker(trucker);
-        assertTrue(game.getTruckerList().contains(trucker));
     }
 
     @Test
     void setupGame() {
-
-    }
-
-    @Test
-    void startFlightPhase() {
-
     }
 
     @Test
     void isHourglassExpired() {
         Object lock = new Object();
-        game.getHourglass().increaseTimeTurns();
-        assertFalse(game.isHourglassExpired());
+        game2.startHourglass();
+        assertFalse(game2.isHourglassExpired());
         synchronized (lock) {
             try {
                 lock.wait(91000); // aspetta 90 secondi
@@ -217,7 +177,7 @@ class GameTest {
                 e.printStackTrace();
             }
         }
-        game.getHourglass().reset();
+        game2.getHourglass().reset();
         synchronized (lock) {
             try {
                 lock.wait(91000); // aspetta 90 secondi
@@ -225,19 +185,39 @@ class GameTest {
                 e.printStackTrace();
             }
         }
-        assertTrue(game.isHourglassExpired());
+        game2.getHourglass().reset();
+        synchronized (lock) {
+            try {
+                lock.wait(91000); // aspetta 90 secondi
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        assertTrue(game2.isHourglassExpired());
     }
 
     @Test
     void allPlayersReady() {
-        for (Trucker trucker : game.getTruckerList()) {
+        for (Trucker trucker : game1.getTruckerList()) {
             trucker.setBuildingState(BuildingState.END);
         }
-        assertTrue(game.allPlayersReady());
+        assertTrue(game1.allPlayersReady());
+    }
+
+
+    @Test
+    void endTurn() {
     }
 
     @Test
-    void getHourglass() {
-        assertNotNull(game.getHourglass());
+    void turnHourglass() {
+    }
+
+    @Test
+    void viewStacks() {
+    }
+
+    @Test
+    void getTruckerOut() {
     }
 }

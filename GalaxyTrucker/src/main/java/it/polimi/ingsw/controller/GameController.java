@@ -114,8 +114,8 @@ public class GameController {
      * This method sorts players by their position
      * @param players arraylist of players' Client handler sockets
      */
-    public void orderByPosition(ArrayList<Client> players){
-        game.reorderPlayersByPosition(players);
+    public void orderByPosition(){
+        game.sortTruckers();
     }
 
     /**

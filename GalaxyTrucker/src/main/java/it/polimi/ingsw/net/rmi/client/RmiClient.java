@@ -12,10 +12,12 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RmiClient extends UnicastRemoteObject implements RemoteClientHandler  {
     private final RmiServerInterface server;
+    private int id;
 
 
     public RmiClient(RmiServerInterface server) throws RemoteException {
         super();
+        this.id = -1;
         this.server = server;
     }
 
@@ -24,8 +26,13 @@ public class RmiClient extends UnicastRemoteObject implements RemoteClientHandle
     }
 
     @Override
-    public int getId() {
-        return -1;
+    public int getId() throws RemoteException {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) throws RemoteException {
+        this.id = id;
     }
 
 
