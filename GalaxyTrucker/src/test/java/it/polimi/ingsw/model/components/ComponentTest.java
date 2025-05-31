@@ -21,8 +21,7 @@ class ComponentTest {
 
     @Test
     void getFrontImage() {
-//        Image image = new ImageIcon(Objects.requireNonNull(getClass().getResource("it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web.jpg"))).getImage();
-//        assertEquals(image,component.getFrontImage());
+        assertNotNull(component.getFrontImage());
     }
 
     @Test
@@ -33,8 +32,7 @@ class ComponentTest {
 
     @Test
     void getBackImage() {
-//        ImageIcon image=new ImageIcon(Objects.requireNonNull(getClass().getResource("it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web.jpg")));
-//        assertEquals(image,component.getBackImage());
+        assertNotNull(component.getBackImage());
     }
 
     @Test

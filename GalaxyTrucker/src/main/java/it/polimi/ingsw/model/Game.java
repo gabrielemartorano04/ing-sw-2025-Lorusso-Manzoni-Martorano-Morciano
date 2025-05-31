@@ -98,9 +98,6 @@ public class Game {
         truckers.sort(Comparator.comparingInt(Trucker::getPosition).reversed());
     }
 
-    public void reorderPlayersByPosition(ArrayList<Client> players) {
-        players.sort((a, b) -> Integer.compare(a.getTruckerController().getPosition(), b.getTruckerController().getPosition()));
-    }
 
     /**
      * Rolls two dice and returns their sum.
