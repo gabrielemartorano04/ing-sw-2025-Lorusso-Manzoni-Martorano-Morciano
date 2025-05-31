@@ -2,9 +2,9 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.EventReceiver;
 import it.polimi.ingsw.net.events.clientevents.cardevents.DeadTrucker;
 import it.polimi.ingsw.net.socket.client.ClientEventSender;
-import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.clientevents.cardevents.OkStartFlight;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViewFlow implements NetworkListenerClient.EventReceiver {
+public class ViewFlow implements EventReceiver {
     private final ClientEventSender clientEventSender;
     private boolean done = false;
     private final InputReader inputReader;
