@@ -72,7 +72,7 @@ public class Game {
     }
 
     public void startHourglass(){
-        hourglass=new Hourglass();
+        if(gameLevel==2) hourglass=new Hourglass();
     }
 
     public int getNumPlayers(){
