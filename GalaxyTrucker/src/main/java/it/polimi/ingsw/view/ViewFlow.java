@@ -50,6 +50,7 @@ public class ViewFlow implements EventReceiver {
     private boolean startFlightForAll;
     private int stackSelected;
     private boolean out;
+    private int level;
 
 
     public void setStacks(Stack[] stacks) {
@@ -101,6 +102,7 @@ public class ViewFlow implements EventReceiver {
         this.startFlightForAll=false;
         this.selectedComponent=null;
         this.out=false;
+        this.level=0;
     }
 
     @Override
@@ -146,7 +148,7 @@ public class ViewFlow implements EventReceiver {
                 case FLIGTH -> {
                     ui.showShipLayout(nickname, ship);
                     ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
-                    ui.showTrack(track);
+                    ui.showTrack(track, level);
                     System.out.println("you are out?" + out);
                 }
                 case END -> {
@@ -413,6 +415,13 @@ public class ViewFlow implements EventReceiver {
     }
     public boolean getOut() {
         return out;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+    public int getLevel() {
+        return level;
     }
 }
 

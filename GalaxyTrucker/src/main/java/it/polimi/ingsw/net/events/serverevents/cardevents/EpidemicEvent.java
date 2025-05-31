@@ -6,6 +6,7 @@ import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.ParserState;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class EpidemicEvent extends CardEvent {
 
@@ -13,12 +14,14 @@ public class EpidemicEvent extends CardEvent {
     private String cardDescription;
     private String cardName;
     private ArrayList<String> truckersRemoved;
+    private Map<String, Integer> track;
 
-    public EpidemicEvent(String cardName, String cardDescripition ,boolean forAll, ArrayList<Trucker> turckerList, String nickname, ArrayList<String> truckersRemoved) {
+    public EpidemicEvent(String cardName, String cardDescripition , boolean forAll, ArrayList<Trucker> turckerList, String nickname, ArrayList<String> truckersRemoved, Map<String, Integer> track) {
         super(ServerEventType.CARD_FINISHED, forAll, ParserState.DRAW_CARD, nickname);
         this.truckers = turckerList;
         this.cardDescription = cardDescripition;
         this.cardName = cardName;
+        this.track=track;
     }
 
     @Override
@@ -40,5 +43,9 @@ public class EpidemicEvent extends CardEvent {
 
     public ArrayList<String> getTruckersRemoved(){
         return truckersRemoved;
+    }
+
+    public Map<String, Integer> getTrack(){
+        return track;
     }
 }

@@ -14,6 +14,8 @@ import it.polimi.ingsw.view.ParserState;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class that manages the single card abandoned ship
@@ -219,7 +221,11 @@ public class AbandonedStation extends Card implements Serializable {
         Game.getIstance().moveBackward(truckerThatHasDecided, days);
         ArrayList<String> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
+        Map<String, Integer> track = new HashMap<>();
+        for (Trucker t : Game.getIstance().getTruckerList()) {
+            track.put(t.getNickname(), t.getPosition());
+        }
+        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
     }
 
 }

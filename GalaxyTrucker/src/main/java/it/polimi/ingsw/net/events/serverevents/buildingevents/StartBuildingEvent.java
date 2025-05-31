@@ -23,8 +23,9 @@ public class StartBuildingEvent extends ServerEvent {
     private ArrayList<Component> components;
     private final String nickname;
     private ArrayList<String> players;
+    private int level;
 
-    public StartBuildingEvent(String username, SpaceShip spaceShip, Stack[] stacks, ArrayList<Component> availableComponents, int seconds, ArrayList<String> players) {
+    public StartBuildingEvent(String username, SpaceShip spaceShip, Stack[] stacks, ArrayList<Component> availableComponents, int seconds, ArrayList<String> players, int level) {
         super(ServerEventType.START_BUILDING, true);
         message = username + " logged\nIt's time to start building";
         this.nickname = username;
@@ -33,6 +34,7 @@ public class StartBuildingEvent extends ServerEvent {
         this.stacks = stacks;
         this.seconds = seconds;
         this.players=players;
+        this.level=level;
     }
 
     public ArrayList<String> getPlayers() {
@@ -63,5 +65,9 @@ public class StartBuildingEvent extends ServerEvent {
 
     public int getSeconds() {
         return seconds;
+    }
+
+    public int getLevel() {
+        return level;
     }
 }

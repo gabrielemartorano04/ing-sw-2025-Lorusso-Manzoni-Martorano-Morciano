@@ -10,7 +10,9 @@ import it.polimi.ingsw.exceptions.GeneralError;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class that manages the single card epidemic
@@ -61,7 +63,11 @@ public class Epidemic extends Card implements Serializable {
         }
         ArrayList<String> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved);
+        Map<String, Integer> track = new HashMap<>();
+        for (Trucker t : Game.getIstance().getTruckerList()) {
+            track.put(t.getNickname(), t.getPosition());
+        }
+        return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved, track);
     }
 
 }

@@ -14,10 +14,9 @@ import it.polimi.ingsw.net.ClientHandlerVisitor;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.*;
 
 
 public class ServerController {
@@ -26,9 +25,11 @@ public class ServerController {
     private boolean gameCreated;
     private GameController gameController;
     private static ServerController istance;
+    private int idToSet;
 
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
     private final ExecutorService executorService = Executors.newFixedThreadPool(4); // 4 worker thread
+    private final Map<Integer, Object> userLocks = new ConcurrentHashMap<>();
 
 
     public ServerController() {
@@ -36,6 +37,7 @@ public class ServerController {
         this.visitor = new ClientHandlerVisitor();
         this.clients = new ArrayList<>();
         this.gameCreated = false;
+        this.idToSet = 0;
         setIstance(this);
     }
 
@@ -61,6 +63,8 @@ public class ServerController {
                     "Login");
             clientHandleEvent(client.getClientHandler(), event);
         }
+        client.setId(idToSet);
+        idToSet++;
         clients.add(client);
 
     }
@@ -73,7 +77,7 @@ public class ServerController {
     public void handleEvent(ClientEvent event, ClientHandlerSocket client) {
         for(Client c : clients) {
             try {
-                if(c.getClientHandler().getId()==client.getId()) {
+                if(c.getId()==client.getId()) {
                     eventQueue.offer(new EventWithSource(event, c));
                     return;
                 }
@@ -86,7 +90,13 @@ public class ServerController {
     // questo metodo serve sia per la socket (chiamato dentro il dispatcher) che per l'RMI
     // il client tramite RMI server deve chiamare questo metodo per gestire l'evento che ha appena creato
     private void launchThreadEvent(EventWithSource entry) {
-        executorService.submit(() -> processEvent(entry, visitor));
+        executorService.submit(() -> {
+            try {
+                processEvent(entry, visitor);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 
@@ -109,8 +119,29 @@ public class ServerController {
 
 
     public void processEvent(EventWithSource eventWithSource, ClientHandlerVisitor visitor) {
-        ClientEvent event = eventWithSource.getEvent();
-        Client client = eventWithSource.getClient();
+        Integer id = null;
+        try {
+            id = eventWithSource.getClient().getClientHandler().getId();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        Object lock;
+        if(userLocks.containsKey(id)) {
+            lock = userLocks.get(id);
+        }else{
+            userLocks.put(id,new Object());
+            lock = userLocks.get(id);
+        }
+        synchronized (lock) {
+            handleEventLogic(eventWithSource, visitor);
+        }
+
+    }
+
+    private void handleEventLogic(EventWithSource source, ClientHandlerVisitor visitor) {
+        ClientEvent event = source.getEvent();
+        Client client = source.getClient();
 
         visitor.setCurrentClient(client);
         event.call(visitor);
@@ -136,6 +167,7 @@ public class ServerController {
             clientHandleEvent(client.getClientHandler(), response);
         }
     }
+
 
     public void broadcastEvent(ServerEvent event) {
         for(Client c: clients){

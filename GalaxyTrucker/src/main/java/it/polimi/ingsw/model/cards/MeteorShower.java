@@ -15,7 +15,9 @@ import it.polimi.ingsw.view.ParserState;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class that manages the single card meteor shower
@@ -208,7 +210,11 @@ public class MeteorShower extends Card implements Serializable {
         if (meteors.size()==(currMeteorIndex)) {
             ArrayList<String> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
-            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
+            Map<String, Integer> track = new HashMap<>();
+            for (Trucker t : Game.getIstance().getTruckerList()) {
+                track.put(t.getNickname(), t.getPosition());
+            }
+            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
         }else {
             this.state = CardState.ROLL_DICE;
             return new BooleanDecision(ServerEventType.ROLL_DICE, false, ParserState.ROLL_DICE, "Roll the dice", Game.getIstance().getTruckerList().getFirst().getNickname());

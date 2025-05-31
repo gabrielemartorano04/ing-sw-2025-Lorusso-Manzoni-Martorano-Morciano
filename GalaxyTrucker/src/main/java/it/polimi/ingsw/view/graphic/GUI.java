@@ -1681,7 +1681,7 @@ public class GUI extends UI {
     }
 
     @Override
-    public void showTrack(Map<String, Integer> truckers) {
+    public void showTrack(Map<String, Integer> truckers, int level) {
         double width = 850;
         double height = 550;
 

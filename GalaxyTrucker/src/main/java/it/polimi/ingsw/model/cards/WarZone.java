@@ -12,6 +12,7 @@ import it.polimi.ingsw.view.ParserState;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
@@ -122,7 +123,11 @@ public class WarZone extends Card implements Serializable {
         if(Game.getIstance().getTruckerList().size() == 1){
             ArrayList<String> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
-            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
+            Map<String, Integer> track = new HashMap<>();
+            for (Trucker t : Game.getIstance().getTruckerList()) {
+                track.put(t.getNickname(), t.getPosition());
+            }
+            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
         }
         if(currConditionIndex == conditionsOrder.size()){
             throw new GeneralError("All conditions have been verified");
@@ -507,7 +512,11 @@ public class WarZone extends Card implements Serializable {
                     if(currConditionIndex == conditionsOrder.size()){
                         ArrayList<String> truckerRemoved;
                         truckerRemoved = Game.getIstance().endTurn();
-                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
+                        Map<String, Integer> track = new HashMap<>();
+                        for (Trucker t : Game.getIstance().getTruckerList()) {
+                            track.put(t.getNickname(), t.getPosition());
+                        }
+                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
                     }else{
                         state = CardState.WARZONE;
                         return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition);
@@ -521,7 +530,11 @@ public class WarZone extends Card implements Serializable {
                     if(currConditionIndex == conditionsOrder.size()){
                         ArrayList<String> truckerRemoved;
                         truckerRemoved = Game.getIstance().endTurn();
-                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
+                        Map<String, Integer> track = new HashMap<>();
+                        for (Trucker t : Game.getIstance().getTruckerList()) {
+                            track.put(t.getNickname(), t.getPosition());
+                        }
+                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
                     }else{
                         state = CardState.WARZONE;
                         return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition);
@@ -535,7 +548,11 @@ public class WarZone extends Card implements Serializable {
                     if(currConditionIndex == conditionsOrder.size()){
                         ArrayList<String> truckerRemoved;
                         truckerRemoved = Game.getIstance().endTurn();
-                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
+                        Map<String, Integer> track = new HashMap<>();
+                        for (Trucker t : Game.getIstance().getTruckerList()) {
+                            track.put(t.getNickname(), t.getPosition());
+                        }
+                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
                     }else{
                         state = CardState.WARZONE;
                         return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition);
@@ -562,7 +579,11 @@ public class WarZone extends Card implements Serializable {
                         if(currConditionIndex == conditionsOrder.size()){
                             ArrayList<String> truckerRemoved;
                             truckerRemoved = Game.getIstance().endTurn();
-                            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
+                            Map<String, Integer> track = new HashMap<>();
+                            for (Trucker t : Game.getIstance().getTruckerList()) {
+                                track.put(t.getNickname(), t.getPosition());
+                            }
+                            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
                         }else{
                             state = CardState.WARZONE;
                             return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition);
