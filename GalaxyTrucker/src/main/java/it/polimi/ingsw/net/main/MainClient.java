@@ -12,6 +12,7 @@ import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.view.ViewFlow;
 
+import javax.swing.text.View;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.util.Scanner;
@@ -72,7 +73,10 @@ public class MainClient {
                 String url = "rmi://" + serverAddress + ":1099/MyService";
                 RmiServerInterface rmiServer = (RmiServerInterface) Naming.lookup(url);
 
-                ClientHandler client = new RmiClient(rmiServer);
+                //TODO omogolare la creazione della view sia per RMI che per Socket
+                // SISTEMARE CREAZIONE VIEW ORA NON DA ERRORE MA E SBAGLIATA
+                ViewFlow view = new ViewFlow(new ClientEventSender(new NetworkClient(serverAddress, 12346)));
+                ClientHandler client = new RmiClient(rmiServer, view);
                 rmiServer.connect(client);
                 System.out.println("Connected to RMI server!");
                 // Esempio chiamata remota

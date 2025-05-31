@@ -26,7 +26,7 @@ public class ClientHandlerSocket implements ClientHandler {
             try {
                 while (!network.isClosed()) {
                     ClientEvent event = network.receiveMessage();
-                    controller.handleEvent(event, this);
+                    controller.addEventToQueue(event, this);
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.err.println("Error receiving the event: " + e.getMessage());

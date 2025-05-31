@@ -74,7 +74,7 @@ public class ServerController {
         System.out.println("Client disconnected and removed from the game.");
     }
 
-    public void handleEvent(ClientEvent event, ClientHandlerSocket client) {
+    public void addEventToQueue(ClientEvent event, ClientHandlerSocket client) {
         for(Client c : clients) {
             try {
                 if(c.getId()==client.getId()) {
@@ -87,9 +87,18 @@ public class ServerController {
         }
     }
 
+    public EventWithSource generateSourceForRmi(ClientEvent event, int id){
+        for(Client c : clients) {
+            if(c.getId()==id) {
+                return new EventWithSource(event, c);
+            }
+        }
+        throw new RuntimeException("No client found with id: " + id);
+    }
+
     // questo metodo serve sia per la socket (chiamato dentro il dispatcher) che per l'RMI
     // il client tramite RMI server deve chiamare questo metodo per gestire l'evento che ha appena creato
-    private void launchThreadEvent(EventWithSource entry) {
+    public void launchThreadEvent(EventWithSource entry) {
         executorService.submit(() -> {
             try {
                 processEvent(entry, visitor);

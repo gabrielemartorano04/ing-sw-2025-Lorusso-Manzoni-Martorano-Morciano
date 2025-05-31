@@ -3,6 +3,8 @@ package it.polimi.ingsw.net.rmi.server;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.ClientHandler;
+import it.polimi.ingsw.net.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.rmi.RmiServerInterface;
 
 import java.rmi.RemoteException;
@@ -39,6 +41,17 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
             e.printStackTrace();
         }
     }
+
+    public void handleIncomingEvent(ClientEvent event, ClientHandler client) throws RemoteException {
+        //TODO: metodo che il client chiama in modo remoto per invocare il visitor del server
+        controller.launchThreadEvent(controller.generateSourceForRmi(event, client.getId()));
+    }
+
+    public void handleOutgoingEvent (ServerEvent event) throws RemoteException {
+        //TODO:metodo che il server chiama per invocare il visitor del client
+        // client.handleInComingEvent(event);
+    }
+
 }
 
 
