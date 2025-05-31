@@ -246,15 +246,21 @@ public class Game {
      * Creates the game deck by shuffling the card stacks.
      */
     public void makeGameDeck() {
-        for (Stack cardStack: cardStacks ) {
-            gameDeck.addAll(cardStack.getStack());
-        }
-        //TODO: non mischio per debug, poi bisgona mischiare
+        if(gameLevel==2){
+            for (Stack cardStack: cardStacks ) {
+                gameDeck.addAll(cardStack.getStack());
+            }
+            //TODO: non mischio per debug, poi bisgona mischiare
 //        do{
 //
 //            //Collections.shuffle(gameDeck);
 //            //System.out.println("sto mescolando");
 //        }while(gameDeck.getFirst().getLevel() != gameLevel);
+        }
+        else{
+            gameDeck.addAll(deck.getDeck());
+        }
+
     }
 
     /**

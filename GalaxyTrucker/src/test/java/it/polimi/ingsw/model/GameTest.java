@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.GeneralError;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,13 +24,11 @@ class GameTest {
     }
 
     @Test
-    void getIstance() {
+    void setAndGetIstance() {
+        game1.setIstance(game1);
         assertEquals(game1,game1.getIstance());
+        game2.setIstance(game2);
         assertEquals(game2,game2.getIstance());
-    }
-
-    @Test
-    void setIstance() {
         game1.setIstance(game2);
         assertEquals(game2,game1.getIstance());
     }
@@ -74,12 +73,6 @@ class GameTest {
         assertEquals("frenk", game1.getTruckerList().get(1).getNickname());
     }
 
-
-    @Test
-    void reorderPlayersByPosition() {
-
-    }
-
     @Test
     void rollDice() {
         int sum;
@@ -89,18 +82,30 @@ class GameTest {
 
     @Test
     void drawCard() {
-    }
+        game2.makeStacks();
+        game2.makeGameDeck();
+        assertNotNull(game2.drawCard());
 
-    @Test
-    void viewStack() {
+        game1.makeGameDeck();
+        assertNotNull(game1.drawCard());
     }
 
     @Test
     void withdraw() {
+        Trucker trucker=new Trucker("frenk",PlayerColors.BLUE);
+        game1.addTrucker(trucker);
+        game1.withdraw(trucker);
+        assertFalse(game1.getTruckerList().contains(trucker));
     }
 
     @Test
     void getTrucker() {
+        Trucker trucker1=new Trucker("frenk",PlayerColors.BLUE);
+        Trucker trucker2=new Trucker("manzo",PlayerColors.RED);
+        game1.addTrucker(trucker1);
+        game1.addTrucker(trucker2);
+        assertEquals(trucker1,game1.getTruckerList().get(0));
+        assertEquals(trucker2,game1.getTruckerList().get(1));
     }
 
     @Test
@@ -110,31 +115,72 @@ class GameTest {
     }
 
     @Test
-    void makeStacks() {
+    void makeAndViewStacks() {
+        game2.makeStacks();
+        try {
+            assertNotNull(game2.viewStack(0));
+            assertNotNull(game2.viewStack(1));
+            assertNotNull(game2.viewStack(2));
+            assertNotNull(game2.viewStacks());
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     void makeGameDeck() {
+        game2.makeStacks();
+        game2.makeGameDeck();
+        assertNotNull(game2.drawCard());
+
+        game1.makeGameDeck();
+        assertNotNull(game1.drawCard());
     }
 
     @Test
     void getTruckerList() {
+        Trucker trucker1=new Trucker("frenk",PlayerColors.BLUE);
+        Trucker trucker2=new Trucker("manzo",PlayerColors.RED);
+        game1.addTrucker(trucker1);
+        game1.addTrucker(trucker2);
+        assertEquals(game1.getTruckerList().size(),2);
     }
 
     @Test
     void moveForward() {
+        Trucker trucker1=new Trucker("frenk",PlayerColors.BLUE);
+        Trucker trucker2=new Trucker("manzo",PlayerColors.RED);
+        game1.addTrucker(trucker1);
+        game1.addTrucker(trucker2);
+        trucker1.setPosition(2);
+        trucker2.setPosition(3);
+        game1.moveForward(trucker1,1);
+        assertEquals(4,trucker1.getPosition());
     }
 
     @Test
     void moveBackward() {
+        Trucker trucker1=new Trucker("frenk",PlayerColors.BLUE);
+        Trucker trucker2=new Trucker("manzo",PlayerColors.RED);
+        game1.addTrucker(trucker1);
+        game1.addTrucker(trucker2);
+        trucker1.setPosition(2);
+        trucker2.setPosition(3);
+        game1.moveBackward(trucker2,1);
+        assertEquals(1,trucker2.getPosition());
     }
 
     @Test
     void setLevel() {
+        game1.setLevel(2);
+        assertEquals(2,game1.getGameLevel());
+        game2.setLevel(0);
+        assertEquals(0,game2.getGameLevel());
     }
 
     @Test
     void computeScores() {
+
     }
 
     @Test
@@ -211,10 +257,6 @@ class GameTest {
 
     @Test
     void turnHourglass() {
-    }
-
-    @Test
-    void viewStacks() {
     }
 
     @Test
