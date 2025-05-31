@@ -148,7 +148,7 @@ public class ViewFlow implements EventReceiver {
                 case FLIGTH -> {
                     ui.showShipLayout(nickname, ship);
                     ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
-                    ui.showTrack(track);
+                    ui.showTrack(track, level);
                     System.out.println("you are out?" + out);
                 }
                 case END -> {
