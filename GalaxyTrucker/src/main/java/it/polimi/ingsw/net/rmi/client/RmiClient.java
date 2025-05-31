@@ -27,7 +27,7 @@ public class RmiClient extends UnicastRemoteObject implements RemoteClientHandle
 
     @Override
     public int getId() throws RemoteException {
-        return -1;
+        return id;
     }
 
     @Override
