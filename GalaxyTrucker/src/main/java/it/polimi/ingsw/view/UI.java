@@ -98,6 +98,4 @@ public abstract class UI {
 
     public abstract void showInputFormat(ParserState parserState);
 
-    public abstract void showRules();
-
 }

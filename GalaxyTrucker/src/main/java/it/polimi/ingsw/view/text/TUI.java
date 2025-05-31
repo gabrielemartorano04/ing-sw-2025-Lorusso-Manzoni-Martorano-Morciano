@@ -761,24 +761,4 @@ public class TUI extends UI {
 
         }
     }
-
-    @Override
-    public void showRules() {
-        System.out.println("Type 'rules' to open the rules.");
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        if (input.equalsIgnoreCase("rules")) {
-            try {
-                File pdf = new File("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf");
-                if (pdf.exists()) {
-                    Desktop.getDesktop().open(pdf);
-                } else {
-                    System.out.println("File not found.");
-                }
-            } catch (IOException e) {
-                System.out.println("Error in file opening");
-                throw new RuntimeException(e);
-            }
-        }
-    }
 }

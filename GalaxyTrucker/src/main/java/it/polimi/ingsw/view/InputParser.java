@@ -10,6 +10,11 @@ import it.polimi.ingsw.net.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class InputParser {
@@ -85,6 +90,30 @@ public ClientEvent parseFirstConnection(String input) {
             if (component != null) {
                 if (isFromKept) {
                     switch (command) {
+                        case "rules":
+                            try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
+                                if (is == null) {
+                                    System.out.println("File not found");
+                                    return null;
+                                }
+
+                                File tempPdf = File.createTempFile("galaxy-trucker-rules", ".pdf");
+                                tempPdf.deleteOnExit();
+
+                                try (FileOutputStream os = new FileOutputStream(tempPdf)) {
+                                    byte[] buffer = new byte[1024];
+                                    int bytesRead;
+                                    while ((bytesRead = is.read(buffer)) != -1) {
+                                        os.write(buffer, 0, bytesRead);
+                                    }
+                                }
+
+                                Desktop.getDesktop().open(tempPdf);
+
+                            } catch (IOException e) {
+                                System.out.println("Error in file opening: " + e.getMessage());
+                            }
+                            return null;
                         case "turn":
                             if (tokens.length != 1) {
                                 System.out.println("Error: illegal command.");
@@ -121,6 +150,30 @@ public ClientEvent parseFirstConnection(String input) {
                     }
                 }
                 switch (command) {
+                    case "rules":
+                        try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
+                            if (is == null) {
+                                System.out.println("File not found");
+                                return null;
+                            }
+
+                            File tempPdf = File.createTempFile("galaxy-trucker-rules", ".pdf");
+                            tempPdf.deleteOnExit();
+
+                            try (FileOutputStream os = new FileOutputStream(tempPdf)) {
+                                byte[] buffer = new byte[1024];
+                                int bytesRead;
+                                while ((bytesRead = is.read(buffer)) != -1) {
+                                    os.write(buffer, 0, bytesRead);
+                                }
+                            }
+
+                            Desktop.getDesktop().open(tempPdf);
+
+                        } catch (IOException e) {
+                            System.out.println("Error in file opening: " + e.getMessage());
+                        }
+                        return null;
                     case "turn":
                         if (tokens.length != 1) {
                             System.out.println("Error: illegal command.");
@@ -162,6 +215,30 @@ public ClientEvent parseFirstConnection(String input) {
                 }
             } else {
                 switch (command) {
+                    case "rules":
+                        try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
+                            if (is == null) {
+                                System.out.println("File not found");
+                                return null;
+                            }
+
+                            File tempPdf = File.createTempFile("galaxy-trucker-rules", ".pdf");
+                            tempPdf.deleteOnExit();
+
+                            try (FileOutputStream os = new FileOutputStream(tempPdf)) {
+                                byte[] buffer = new byte[1024];
+                                int bytesRead;
+                                while ((bytesRead = is.read(buffer)) != -1) {
+                                    os.write(buffer, 0, bytesRead);
+                                }
+                            }
+
+                            Desktop.getDesktop().open(tempPdf);
+
+                        } catch (IOException e) {
+                            System.out.println("Error in file opening: " + e.getMessage());
+                        }
+                        return null;
                     case "ship":
                         if (tokens.length != 2) {
                             System.out.println("Error: illegal command. Type 'ship <nickname>'.");
@@ -232,6 +309,30 @@ public ClientEvent parseFirstConnection(String input) {
         String[] tokens = input.split("\\s+", 3);
         String command = tokens[0].toLowerCase();
         switch (command){
+            case "rules":
+                try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
+                    if (is == null) {
+                        System.out.println("File not found");
+                        return null;
+                    }
+
+                    File tempPdf = File.createTempFile("galaxy-trucker-rules", ".pdf");
+                    tempPdf.deleteOnExit();
+
+                    try (FileOutputStream os = new FileOutputStream(tempPdf)) {
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = is.read(buffer)) != -1) {
+                            os.write(buffer, 0, bytesRead);
+                        }
+                    }
+
+                    Desktop.getDesktop().open(tempPdf);
+
+                } catch (IOException e) {
+                    System.out.println("Error in file opening: " + e.getMessage());
+                }
+                return null;
             case "alien":
                 if(tokens.length != 1){
                     System.out.println("Error: illegal command. Type 'alien' if you want to see where you can place aliens.");

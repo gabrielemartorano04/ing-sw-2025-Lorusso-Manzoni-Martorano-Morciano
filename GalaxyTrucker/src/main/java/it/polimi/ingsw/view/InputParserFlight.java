@@ -4,6 +4,11 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.clientevents.cardevents.*;
 
 
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class InputParserFlight {
@@ -23,7 +28,31 @@ public class InputParserFlight {
         if (input == null || input.isEmpty()) {
             return null;
         }
+        if(input.trim().toLowerCase().equalsIgnoreCase("rules")){
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
+                if (is == null) {
+                    System.out.println("File not found");
+                    return null;
+                }
 
+                File tempPdf = File.createTempFile("galaxy-trucker-rules", ".pdf");
+                tempPdf.deleteOnExit();
+
+                try (FileOutputStream os = new FileOutputStream(tempPdf)) {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = is.read(buffer)) != -1) {
+                        os.write(buffer, 0, bytesRead);
+                    }
+                }
+
+                Desktop.getDesktop().open(tempPdf);
+
+            } catch (IOException e) {
+                System.out.println("Error in file opening: " + e.getMessage());
+            }
+            return null;
+        }
         switch (parserState) {
             case HUMAN_COORD:
                 String[] groups= input.split("\\s*,\\s*");
