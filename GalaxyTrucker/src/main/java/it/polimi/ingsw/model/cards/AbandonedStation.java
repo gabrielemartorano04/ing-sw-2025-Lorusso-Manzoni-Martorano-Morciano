@@ -219,7 +219,7 @@ public class AbandonedStation extends Card implements Serializable {
         Game.getIstance().moveBackward(truckerThatHasDecided, days);
         ArrayList<String> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        return new CardFinished(false, Game.getIstance().getTruckerList(), truckerRemoved);
+        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
     }
 
 }

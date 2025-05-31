@@ -243,7 +243,7 @@ public class Slavers extends Card implements Serializable {
         }
         ArrayList<String> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        return new CardFinished(false, Game.getIstance().getTruckerList(), truckerRemoved);
+        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
     }
 
 

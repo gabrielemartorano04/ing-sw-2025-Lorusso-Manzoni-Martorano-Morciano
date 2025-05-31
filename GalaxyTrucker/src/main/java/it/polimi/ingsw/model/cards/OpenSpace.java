@@ -134,7 +134,7 @@ public class OpenSpace extends Card implements Serializable {
         ArrayList<String> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
         System.out.println("sono morti (open space):" + truckerRemoved);
-        return new CardFinished(false, Game.getIstance().getTruckerList(), truckerRemoved);
+        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
     }
 
 }

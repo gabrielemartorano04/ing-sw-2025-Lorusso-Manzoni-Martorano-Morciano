@@ -10,6 +10,11 @@ public class DeadTrucker extends ClientEvent {
     }
 
     @Override
+    public String getMessage() {
+        return "Dead Trucker";
+    }
+
+    @Override
     public void call(VirtualServer visitor) {
         visitor.visit(this);
     }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.events.clientevents.cardevents.DeadTrucker;
 import it.polimi.ingsw.net.socket.client.ClientEventSender;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
@@ -194,7 +195,6 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                          event= inputParser.parseFillTheShip(input);
                     }
                     case FLIGTH-> {
-                        //TODO: aggiungere che se arriva la visione dei risultati anche gli eliminati la vedono
                         if(!out) {
                             if (startFlight) {
                                 event = new OkStartFlight();
@@ -206,8 +206,8 @@ public class ViewFlow implements NetworkListenerClient.EventReceiver {
                                 event = null;
                             }
                         }else{
+                            event = new DeadTrucker();
                             System.out.println("You are out of the flight, please wait for others to finish it and see the results");
-                            event = null;
                         }
                     }
                 }
