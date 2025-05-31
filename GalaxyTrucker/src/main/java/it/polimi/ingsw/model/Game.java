@@ -469,5 +469,9 @@ public class Game {
     public Stack[] viewStacks() {
         return cardStacks;
     }
+
+    public ArrayList<Trucker> getTruckerOut() {
+        return truckersOut;
+    }
 }
 
