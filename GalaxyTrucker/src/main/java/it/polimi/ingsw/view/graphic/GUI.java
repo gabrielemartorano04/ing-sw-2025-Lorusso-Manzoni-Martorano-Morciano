@@ -1847,4 +1847,9 @@ public class GUI extends UI {
     public void showInputFormat(ParserState parserState) {
 
     }
+
+    @Override
+    public void showRules() {
+
+    }
 }
