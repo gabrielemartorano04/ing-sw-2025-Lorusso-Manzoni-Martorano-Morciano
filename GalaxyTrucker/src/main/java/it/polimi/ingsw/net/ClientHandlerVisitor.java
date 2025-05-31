@@ -454,10 +454,8 @@ public class ClientHandlerVisitor implements VirtualServer {
 
     @Override
     public void visit(DeadTrucker event){
-        System.out.println("sono in dead trucker");
         Card card;
         if (!gameController.getGame().getTruckerList().isEmpty()) {
-            System.out.println("ci sono giocatori");
             cardController.setCurrCard(gameController.pickCardFromDeck());
             card = cardController.getCurrCard();
             if (card != null) {
@@ -465,17 +463,12 @@ public class ClientHandlerVisitor implements VirtualServer {
                 return;
             }
         }
-        System.out.println("non ci sono giocatori");
         int[] scores;
         Map<String, Integer> playersScores = new HashMap<>();
         scores = gameController.getGame().computeScores(numOfPlayers);
-        System.out.println("sono in dead trucker e sto calcolando scores");
         for(int i=0; i<numOfPlayers; i++){
-            System.out.println("clacolo punteggio di " + gameController.getGame().getTrucker(i).getNickname());
-            playersScores.put(gameController.getGame().getTrucker(i).getNickname(), scores[i]);
-            System.out.println(gameController.getGame().getTrucker(i).getNickname() + " ha punteggio " + scores[i]);
+            playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
         }
-        System.out.println("non ci sono giocatori e mando scores");
         serverEvent= new EndGameEvent(playersScores);
     }
 
