@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.EventReceiver;
 import it.polimi.ingsw.net.events.clientevents.cardevents.DeadTrucker;
@@ -33,33 +32,22 @@ public class ViewFlow implements EventReceiver {
     private int humanCount;
     private Map<String, Integer> goodsByColor;
     private Map<String, Integer> track;
-    private ServerEventHandlerVisitor serverEventVisitor;
+    private final ServerEventHandlerVisitor serverEventVisitor;
     private Component selectedComponent;
     private int selectedComponentIndex; // is equal -1 if selectedComponent is null
-    private ArrayList<Component> availableComponents;
+    private final ArrayList<Component> availableComponents;
     private volatile boolean running;
-    private ArrayList<Component> keptComponent= new ArrayList<>();
+    private final ArrayList<Component> keptComponent= new ArrayList<>();
     private ViewState viewState;
-    private TimerDisplay timerDisplay;
-    private Stack[] stacks;
+    private final TimerDisplay timerDisplay;
     private boolean isFromKept;
     private boolean nameAlreadySet;
     private boolean end;
-    private boolean sentCabinCoord;
     private boolean startFlight;
     private boolean startFlightForAll;
     private int stackSelected;
     private boolean out;
     private int level;
-
-
-    public void setStacks(Stack[] stacks) {
-        this.stacks=stacks;
-    }
-
-    public boolean getStartFlightForAll() {
-        return startFlightForAll;
-    }
 
     public enum ViewState {
         FIRST,
@@ -67,7 +55,7 @@ public class ViewFlow implements EventReceiver {
         BULDING,
         FILL,
         FLIGTH,
-        END;
+        END
     }
 
     public ViewFlow(ClientEventSender clientEventSender) {
@@ -87,7 +75,6 @@ public class ViewFlow implements EventReceiver {
         this.isFromKept = false;
         this.nameAlreadySet = false;
         this.end = false;
-        this.sentCabinCoord = false;
         this.stackSelected=-1;
         this.ship = new Component[11][12];
         this.goodsByColor = new HashMap<>(){
@@ -133,7 +120,7 @@ public class ViewFlow implements EventReceiver {
                 }
                 case BULDING -> {
                     ui.showShipLayout(nickname, ship);
-                    if (keptComponent != null) {
+                    if (!keptComponent.isEmpty()) {
                         ui.showKeptComponents(keptComponent);
                     }
                     if (getSelectedComponent() == null) {
@@ -141,19 +128,14 @@ public class ViewFlow implements EventReceiver {
                     }
 
                 }
-                case FILL->{
-                    ui.showShipLayout(nickname, ship);
-
-                }
+                case FILL-> ui.showShipLayout(nickname, ship);
                 case FLIGTH -> {
                     ui.showShipLayout(nickname, ship);
                     ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
                     ui.showTrack(track, level);
                     System.out.println("you are out?" + out);
                 }
-                case END -> {
-                    event.call(serverEventVisitor);
-                }
+                case END -> event.call(serverEventVisitor);
             }
             if (!done) {
                 event.call(serverEventVisitor);
@@ -168,7 +150,7 @@ public class ViewFlow implements EventReceiver {
         new Thread(() -> {
             ClientEvent event=null;
             while (running) {
-                String input = null;
+                String input;
                 try {
                     input = inputReader.nextLineBlocking();
                 } catch (InterruptedException e) {
@@ -179,10 +161,8 @@ public class ViewFlow implements EventReceiver {
                     break;
                 }
                 switch (viewState) {
-                    case FIRST -> {
-                        event = inputParser.parseFirstConnection(input);
-                    }
-                    case START-> { event = inputParser.parseLogin(input);}
+                    case FIRST -> event = inputParser.parseFirstConnection(input);
+                    case START-> event = inputParser.parseLogin(input);
                     case BULDING-> {
                         if (!this.end) {
                                 event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected);
@@ -193,9 +173,7 @@ public class ViewFlow implements EventReceiver {
                         }
 
                     }
-                    case FILL->{
-                         event= inputParser.parseFillTheShip(input);
-                    }
+                    case FILL-> event= inputParser.parseFillTheShip(input);
                     case FLIGTH-> {
                         if(!out) {
                             if (startFlight) {
@@ -221,16 +199,16 @@ public class ViewFlow implements EventReceiver {
 
     }
 
-    public void run() {
-        start();
-        while (running) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
+//    public void run() {
+//        start();
+//        while (running) {
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                Thread.currentThread().interrupt();
+//            }
+//        }
+//    }
 
     public Component[][] getShip() {
         return ship;
@@ -248,41 +226,41 @@ public class ViewFlow implements EventReceiver {
         this.position = position;
     }
 
-    public int getBatteryCount() {
-        return batteryCount;
-    }
+//    public int getBatteryCount() {
+//        return batteryCount;
+//    }
 
     public void setBatteryCount(int batteryCount) {
         this.batteryCount = batteryCount;
     }
 
-    public int getEnginePower() {
-        return enginePower;
-    }
+//    public int getEnginePower() {
+//        return enginePower;
+//    }
 
     public void setEnginePower(int enginePower) {
         this.enginePower = enginePower;
     }
 
-    public int getCannonPower() {
-        return cannonPower;
-    }
+//    public int getCannonPower() {
+//        return cannonPower;
+//    }
 
     public void setCannonPower(int cannonPower) {
         this.cannonPower = cannonPower;
     }
 
-    public int getHumanCount() {
-        return humanCount;
-    }
+//    public int getHumanCount() {
+//        return humanCount;
+//    }
 
     public void setHumanCount(int humanCount) {
         this.humanCount = humanCount;
     }
 
-    public Map<String, Integer> getGoodsByColor() {
-        return goodsByColor;
-    }
+//    public Map<String, Integer> getGoodsByColor() {
+//        return goodsByColor;
+//    }
 
     public void setGoodsByColor(Map<String, Integer> goodsByColor) {
         this.goodsByColor = goodsByColor;
@@ -291,9 +269,10 @@ public class ViewFlow implements EventReceiver {
     public void setEnd() {
         this.end = true;
     }
-    public boolean getEnd(){
-        return end;
-    }
+
+//    public boolean getEnd(){
+//        return end;
+//    }
 
     public Map<String, Integer> getTrack() {
         return track;
@@ -315,7 +294,6 @@ public class ViewFlow implements EventReceiver {
 
     /**
      * serve anche cosi
-     * @param component
      */
     public void setSelectedComponent(Component component, boolean isFromKept) {
         this.selectedComponent = component;
@@ -341,9 +319,9 @@ public class ViewFlow implements EventReceiver {
         }else throw new IllegalArgumentException("no more space to keep components");
     }
 
-    public void removeKeptComponent(int index) {
-        this.keptComponent.remove(index);
-    }
+//    public void removeKeptComponent(int index) {
+//        this.keptComponent.remove(index);
+//    }
 
     public ArrayList<Component> getSelectedKeptComponent() {
         return keptComponent;
@@ -385,7 +363,6 @@ public class ViewFlow implements EventReceiver {
 
     /**
      * sets the component at the index as not Covered since it has been selected by a client
-     * @param index
      */
     public void componentAsUncovered(int index){
         availableComponents.get(index).setCovered(false);
