@@ -15,7 +15,9 @@ import it.polimi.ingsw.view.ParserState;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -47,6 +49,7 @@ public class OpenSpace extends Card implements Serializable {
 
     @Override
     public ServerEvent startCard() {
+        System.out.println("startPos in startCard of OpenSpace of the first trucker is " + Game.getIstance().getTruckerList().getFirst().getPosition());
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
@@ -126,6 +129,7 @@ public class OpenSpace extends Card implements Serializable {
         for (int i = 0; i < truckers.size(); i++) {
             Trucker trucker = truckers.get(i);
             if (enginePowerPerTrucker[i] > 0) {
+                System.out.println("startPos before calling moveForward of " + trucker.getNickname() + " is " + trucker.getPosition());
                 Game.getIstance().moveForward(trucker, enginePowerPerTrucker[i]);
             }
             trucker.getSpaceShip().deactivateDoubleEngines();
@@ -134,7 +138,11 @@ public class OpenSpace extends Card implements Serializable {
         ArrayList<String> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
         System.out.println("sono morti (open space):" + truckerRemoved);
-        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved);
+        Map<String, Integer> track = new HashMap<>();
+        for (Trucker t : Game.getIstance().getTruckerList()) {
+            track.put(t.getNickname(), t.getPosition());
+        }
+        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
     }
 
 }

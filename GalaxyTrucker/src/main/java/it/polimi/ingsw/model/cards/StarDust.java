@@ -49,7 +49,11 @@ public class StarDust extends Card implements Serializable {
         Collections.reverse(truckers); //rigiro i Truckers così ritorno all'ordine originale della lista
         ArrayList<String> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        return new StarDustEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved);
+        Map<String, Integer> track = new HashMap<>();
+        for (Trucker t : Game.getIstance().getTruckerList()) {
+            track.put(t.getNickname(), t.getPosition());
+        }
+        return new StarDustEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved, track);
     }
 
     @Override

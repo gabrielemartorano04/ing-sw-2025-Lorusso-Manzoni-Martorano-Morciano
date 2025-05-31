@@ -184,7 +184,7 @@ public class ClientHandlerVisitor implements VirtualServer {
                 players.add(t.getNickname());
             }
             gameController.getGame().startHourglass();
-            serverEvent= new StartBuildingEvent(nickname, currentClient.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondiRimanenti(),players);
+            serverEvent= new StartBuildingEvent(nickname, currentClient.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondiRimanenti(),players, gameController.getGame().getGameLevel());
             return;
         }
         serverEvent= new NoAvailableSpaceError();

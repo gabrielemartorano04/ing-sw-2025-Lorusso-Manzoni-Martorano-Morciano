@@ -84,6 +84,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setNickname(event.getNickname());
         }
         ui.showPlayers(event.getPlayers());
+        viewFlow.setLevel(event.getLevel());
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
         viewFlow.setShip(event.getSpaceShip().getComponents());
         viewFlow.setStacks(event.getStacks());
@@ -440,6 +441,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setHumanCount(trucker.getSpaceShip().getNumHuman());
             viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
             viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
+            viewFlow.setTrack(event.getTrack());
             ui.showFlightPhaseStart();
             String message = "Truckers' positions order:\n";
             int i = 1;

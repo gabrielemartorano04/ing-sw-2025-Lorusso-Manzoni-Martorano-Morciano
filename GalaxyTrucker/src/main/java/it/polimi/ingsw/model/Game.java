@@ -273,6 +273,7 @@ public class Game {
      */
     public void moveForward(Trucker trucker, int days){
         int finalPos = trucker.getPosition();
+        System.out.println("startPos of " + trucker.getNickname() + ": " + finalPos);
         for (int i=0; i<days; i++){
             finalPos ++;
             for(Trucker t: truckers){
@@ -281,6 +282,7 @@ public class Game {
                 }
             }
         }
+        System.out.println("finalPos of " + trucker.getNickname() + ": " + finalPos);
         trucker.setPosition(finalPos);
     }
 
