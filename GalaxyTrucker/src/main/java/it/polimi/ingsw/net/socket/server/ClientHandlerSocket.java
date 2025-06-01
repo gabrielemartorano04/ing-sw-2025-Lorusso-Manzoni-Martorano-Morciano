@@ -26,7 +26,7 @@ public class ClientHandlerSocket implements ClientHandler {
             try {
                 while (!network.isClosed()) {
                     ClientEvent event = network.receiveMessage();
-                    controller.addEventToQueue(event, this.id);
+                    controller.addEventToQueue(event, this.getId());
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.err.println("Error receiving the event: " + e.getMessage());
@@ -42,7 +42,7 @@ public class ClientHandlerSocket implements ClientHandler {
 
     @Override
     public void setId(int id) {
-        if(id==-1){
+        if(this.id==-1){
             this.id = id;
         }
     }

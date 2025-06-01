@@ -9,8 +9,6 @@ import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
-import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.net.ClientHandlerVisitor;
 
 import java.util.ArrayList;
@@ -51,20 +49,29 @@ public class ServerController {
 
     public synchronized void addClient(Client client) {
         if (clients.isEmpty()) {
+            System.out.println(idToSet + " Id to set at the current client");
+            client.setId(idToSet);
+            System.out.println(client.getId() + " In the current client");
+            System.out.println(client.getSocketClient().getId() + " In the current socket client");
+
+            idToSet++;
+            clients.add(client);
+
             FirstConnectionEvent event = new FirstConnectionEvent(
                     "First player in the game, choose the total number of players of the Game"
             );
             client.updateClient(event);
 
         }else{
+            System.out.println(idToSet);
+            client.setId(idToSet);
+            idToSet++;
+            clients.add(client);
+
             AvailableColorsEvent event = new AvailableColorsEvent(gameController.getAvailablePlayerColors(),
                     "Login");
             client.updateClient(event);
         }
-        client.setId(idToSet);
-        idToSet++;
-        clients.add(client);
-
     }
 
     public synchronized void removeClient(ClientHandler client) {
@@ -73,8 +80,10 @@ public class ServerController {
     }
 
     public void addEventToQueue(ClientEvent event, int id) {
+        System.out.println(id + " id of the client");
         for(Client c : clients) {
             if(c.getId()==id) {
+                System.out.println("Entrato");
                 eventQueue.offer(new EventWithSource(event, c));
                 return;
             }

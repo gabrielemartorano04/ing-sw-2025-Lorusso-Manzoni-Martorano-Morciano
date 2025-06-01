@@ -19,19 +19,23 @@ public class Client {
     }
 
     public void setId(int id) {
-        this.id = id;
-        System.out.println(id + " Classe client nel server");
-        if(clientHandler != null){
-            clientHandler.setId(id);
-        }else{
-            try {
-                System.out.println(id + " Settando questo id nel rmiClient");
-                remoteClientHandler.setId(id);
-            } catch (RemoteException e) {
-                System.out.println("Errore");
-                throw new RuntimeException(e);
+        if(this.id == -1){
+            this.id = id;
+            if(clientHandler != null){
+                System.out.println("Entrato dentro set del socket client");
+                clientHandler.setId(id);
+                System.out.println(clientHandler.getId() + " id appena settato nel socket client");
+            }else{
+                try {
+                    remoteClientHandler.setId(id);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
+        }else{
+            throw new RuntimeException("Errore");
         }
+
     }
 
     public int getId() {
