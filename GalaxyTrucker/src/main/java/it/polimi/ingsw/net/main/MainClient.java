@@ -68,6 +68,7 @@ public class MainClient {
                 RemoteClientHandler client = new RmiClient(rmiServer, view);
                 view.setRmiClient(client);
                 rmiServer.connect(client);
+                view.start();
 
             } catch (Exception e) {
                 System.err.println("Error connecting to RMI server: " + e.getMessage());
