@@ -94,6 +94,15 @@ public ClientEvent parseFirstConnection(String input) {
                 if (component != null) {
                     if (isFromKept) {
                         switch (command) {
+                            case "help":
+                                String message = "Commands:\n";
+                                message+="- rules : to open pdf file with game rules\n";
+                                message+="- turn : to turn selected component\n";
+                                message+="- link <x> <y> : to link selected component in position (x,y)\n";
+                                message+="- keep : to keep the selected component\n";
+                                message+="- ship <nickname> : to see the ship of another player\n";
+                                System.out.println(message);
+                                return null;
                             case "rules":
                                 try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
                                     if (is == null) {
@@ -154,6 +163,16 @@ public ClientEvent parseFirstConnection(String input) {
                         }
                     }
                     switch (command) {
+                        case "help":
+                            String message = "Commands:\n";
+                            message+="- rules : to open pdf file with game rules\n";
+                            message+="- turn : to turn selected component\n";
+                            message+="- link <x> <y> : to link selected component in position (x,y)\n";
+                            message+="- keep : to keep the selected component\n";
+                            message+="- ship <nickname> : to see the ship of another player\n";
+                            message+="- discard : to discard the selected component\n";
+                            System.out.println(message);
+                            return null;
                         case "rules":
                             try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
                                 if (is == null) {
@@ -219,6 +238,16 @@ public ClientEvent parseFirstConnection(String input) {
                     }
                 } else {
                     switch (command) {
+                        case "help":
+                            String message = "Commands:\n";
+                            message+="- rules : to open pdf file with game rules\n";
+                            message+="- ship <nickname> : to see the ship of another player\n";
+                            message+="- hourglass : to turn the hourglass\n";
+                            message+="- select <index> : to select a component\n";
+                            message+="- selectkept <index> : to select one of your kept components\n";
+                            message+="- stack <index> : to see a stack\n";
+                            System.out.println(message);
+                            return null;
                         case "rules":
                             try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
                                 if (is == null) {
@@ -297,6 +326,13 @@ public ClientEvent parseFirstConnection(String input) {
                     }
                 }
             }else{
+                if(command.equals("help") && tokens.length == 1){
+                    String message = "Commands:\n";
+                    message+="- dropstack: to drop the stack\n";
+                    System.out.println(message);
+                    return null;
+                }
+
                 if(command.equals("dropstack") && tokens.length == 1) {
                     return new StackDroppedEvent(stackSelected);
                 }else {
@@ -309,6 +345,15 @@ public ClientEvent parseFirstConnection(String input) {
             if (component != null) {
                 if (isFromKept) {
                     switch (command) {
+                        case "help":
+                            String message = "Commands:\n";
+                            message+="- rules : to open pdf file with game rules\n";
+                            message+="- turn : to turn selected component\n";
+                            message+="- link <x> <y> : to link selected component in position (x,y)\n";
+                            message+="- keep : to keep the selected component\n";
+                            message+="- ship <nickname> : to see the ship of another player\n";
+                            System.out.println(message);
+                            return null;
                         case "rules":
                             try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
                                 if (is == null) {
@@ -369,6 +414,16 @@ public ClientEvent parseFirstConnection(String input) {
                     }
                 }
                 switch (command) {
+                    case "help":
+                        String message = "Commands:\n";
+                        message+="- rules : to open pdf file with game rules\n";
+                        message+="- turn : to turn selected component\n";
+                        message+="- link <x> <y> : to link selected component in position (x,y)\n";
+                        message+="- keep : to keep the selected component\n";
+                        message+="- ship <nickname> : to see the ship of another player\n";
+                        message+="- discard : to discard the selected component\n";
+                        System.out.println(message);
+                        return null;
                     case "rules":
                         try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
                             if (is == null) {
@@ -434,6 +489,14 @@ public ClientEvent parseFirstConnection(String input) {
                 }
             } else {
                 switch (command) {
+                    case "help":
+                        String message = "Commands:\n";
+                        message+="- rules : to open pdf file with game rules\n";
+                        message+="- ship <nickname> : to see the ship of another player\n";
+                        message+="- select <index> : to select a component\n";
+                        message+="- selectkept <index> : to select one of your kept components\n";
+                        System.out.println(message);
+                        return null;
                     case "rules":
                         try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
                             if (is == null) {
