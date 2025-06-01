@@ -27,6 +27,11 @@ public class TUI extends UI {
     }
 
     @Override
+    public void showWelcome(EnumSet<PlayerColors> availableColors) {
+
+    }
+
+    @Override
     public void showWelcome() {
         System.out.println("""
                          __        __   _                            _       \s
