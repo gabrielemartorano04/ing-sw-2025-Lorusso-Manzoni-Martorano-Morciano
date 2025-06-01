@@ -878,9 +878,38 @@ public class SpaceShip implements Serializable {
     }
 
     /**
+     * This method checks and corrects the spaceship for level 2
      * @return true if all the components are correctly linked
      */
     public boolean wellDone() {
+        boolean wellDone=true;
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if (components[i][j]!=null && !isValid(i, j)){
+                    try{
+                        removeComponent(i,j);
+                        lost++;
+                    } catch (InvalidCoordinates e) {
+                        throw new RuntimeException(e);
+                    }
+                    wellDone=false;
+                }
+
+            }
+        }
+        if(!wellDone){
+            componentsVisited(7,7);
+            lost+=removeUnlinkedComponents();
+        }
+        return wellDone;
+    }
+
+
+    /**
+     * This method checks and corrects the spaceship for level 2
+     * @return true if all the components are correctly linked
+     */
+    public boolean wellDoneForTrialFlight() {
         boolean wellDone=true;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
@@ -901,7 +930,6 @@ public class SpaceShip implements Serializable {
         }
         return wellDone;
     }
-
     /**
      * This method controll if the spaceship is hit
      * @param direction direction of the attack
@@ -1149,7 +1177,8 @@ public class SpaceShip implements Serializable {
      * component as unvisited for the next check. It's usually called when a component is destroyed by a cannon shot
      * or a meteorite
      */
-    private void removeUnlinkedComponents(){
+    private int removeUnlinkedComponents(){
+        int cont=0;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if(components[i][j] != null ) {
@@ -1162,7 +1191,7 @@ public class SpaceShip implements Serializable {
                                 } catch (InvalidCoordinates e) {
                                     throw new RuntimeException(e);
                                 }
-                                lost++;
+                                cont++;
                             }
                         }
                     }
@@ -1182,6 +1211,7 @@ public class SpaceShip implements Serializable {
                 }
             }
         }
+        return cont;
     }
 
     /**

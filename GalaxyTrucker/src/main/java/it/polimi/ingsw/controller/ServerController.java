@@ -201,6 +201,9 @@ public class ServerController {
                         }
                     }
                 }
+                if(gameController.getGame().getGameLevel()==2)
+                    t.getSpaceShip().wellDone();
+                else t.getSpaceShip().wellDoneForTrialFlight();
             }
             //TODO:TOGLI DOPO DEBUG
             StringBuilder message= new StringBuilder();
