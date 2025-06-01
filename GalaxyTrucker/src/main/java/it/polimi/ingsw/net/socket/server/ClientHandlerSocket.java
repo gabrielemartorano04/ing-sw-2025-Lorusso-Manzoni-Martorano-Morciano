@@ -39,7 +39,7 @@ public class ClientHandlerSocket implements ClientHandler {
     }
 
     @Override
-    public void handleEvent(ServerEvent event) {
+    public void sendEvent(ServerEvent event) {
         try {
 
             network.sendMessage(event);

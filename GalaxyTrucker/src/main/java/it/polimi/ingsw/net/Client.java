@@ -3,7 +3,6 @@ package it.polimi.ingsw.net;
 import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
-import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 import java.rmi.RemoteException;
 
@@ -46,7 +45,7 @@ public class Client {
 
     public void updateClient(ServerEvent event){
         if(clientHandler != null){
-            clientHandler.handleEvent(event);
+            clientHandler.sendEvent(event);
         }else if (remoteClientHandler != null){
             try {
                 remoteClientHandler.handleIncomingEvent(event);
