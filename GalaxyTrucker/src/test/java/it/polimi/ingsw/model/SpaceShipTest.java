@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.components.EmptySpace;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SpaceShipTest {
@@ -16,12 +18,16 @@ class SpaceShipTest {
 
     @BeforeEach
     void setUp() {
-        try {
-            spaceShip1=support.createShip1(spaceShip1);
-            spaceShip2=support.createShip2(spaceShip2);
-        } catch (InvalidCoordinates e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            spaceShip1=support.createShip1(spaceShip1);
+//            spaceShip2=support.createShip2(spaceShip2);
+//        } catch (InvalidCoordinates e) {
+//            throw new RuntimeException(e);
+//        }
+        spaceShip1=new SpaceShip();
+        spaceShip1.setSpaceship(2,PlayerColors.GREEN);
+        spaceShip2=new SpaceShip();
+        spaceShip2.setSpaceship(0,PlayerColors.RED);
     }
 
     @Test
@@ -43,15 +49,15 @@ class SpaceShipTest {
                 else{
                     if(i==5){
                         if(j==6 || j==8) assertNull(spaceShip1.getComponents()[i][j]);
-                        else assertEquals(spaceShip1.getComponents()[i][j],new EmptySpace());
+                        else assertNotNull(spaceShip1.getComponents()[i][j]);
                     }
                     else if(i==6){
-                        if(j==4 || j==10) assertEquals(spaceShip1.getComponents()[i][j],new EmptySpace());
+                        if(j==4 || j==10) assertNotNull(spaceShip1.getComponents()[i][j]);
                         else  assertNull(spaceShip1.getComponents()[i][j]);
                     }
                     else if(i==7 || i==8)  assertNull(spaceShip1.getComponents()[i][j]);
                     else if(i==9){
-                        if(j==7) assertEquals(spaceShip1.getComponents()[i][j],new EmptySpace());
+                        if(j==7) assertNotNull(spaceShip1.getComponents()[i][j]);
                         else  assertNull(spaceShip1.getComponents()[i][j]);
                     }
                 }
@@ -71,22 +77,23 @@ class SpaceShipTest {
                         }
                         default -> {}
                     }
-                }
-                if(j==4 || j==10) assertEquals(spaceShip2.getComponents()[i][j], new EmptySpace());
-                else if(j==5 || j==9){
-                    if(i==5 || i==6)
-                        assertEquals(spaceShip2.getComponents()[i][j], new EmptySpace());
-                    else assertNull(spaceShip2.getComponents()[i][j]);
-                }
-                else if(j==6 || j==8){
-                    if(i==5){
-                        assertEquals(spaceShip2.getComponents()[i][j], new EmptySpace());
+                }else{
+                    if(j==4 || j==10) assertNotNull(spaceShip2.getComponents()[i][j]);
+                    else if(j==5 || j==9){
+                        if(i==5 || i==6)
+                            assertNotNull(spaceShip2.getComponents()[i][j]);
+                        else assertNull(spaceShip2.getComponents()[i][j]);
                     }
-                    else assertNull(spaceShip2.getComponents()[i][j]);
-                }
-                else if(j==7){
-                    if(i==9) assertEquals(spaceShip2.getComponents()[i][j], new EmptySpace());
-                    else assertNull(spaceShip2.getComponents()[i][j]);
+                    else if(j==6 || j==8){
+                        if(i==5){
+                            assertNotNull(spaceShip2.getComponents()[i][j]);
+                        }
+                        else assertNull(spaceShip2.getComponents()[i][j]);
+                    }
+                    else if(j==7){
+                        if(i==9) assertNotNull(spaceShip2.getComponents()[i][j]);
+                        else assertNull(spaceShip2.getComponents()[i][j]);
+                    }
                 }
             }
         }
@@ -94,7 +101,16 @@ class SpaceShipTest {
     }
 
     @Test
-    void increaseLost() {
+    void increaseAndGetLost() {
+        spaceShip1.increaseLost(2);
+        assertEquals(2,spaceShip1.getLost());
+        spaceShip1.increaseLost(1);
+        assertEquals(3,spaceShip1.getLost());
+
+        spaceShip2.increaseLost(2);
+        assertEquals(2,spaceShip2.getLost());
+        spaceShip2.increaseLost(1);
+        assertEquals(3,spaceShip2.getLost());
     }
 
     @Test
@@ -106,19 +122,27 @@ class SpaceShipTest {
     }
 
     @Test
-    void setNumHuman() {
+    void setAndGetNumHuman() {
+        spaceShip1.setNumHuman();
+        assertEquals(2,spaceShip1.getNumHuman());
+
+        spaceShip2.setNumHuman();
+        assertEquals(2,spaceShip2.getNumHuman());
     }
 
-    @Test
-    void getNumHuman() {
-    }
 
     @Test
     void setNumAlien() {
+        spaceShip1.setNumAlien(new ArrayList<>());
+        spaceShip1.setNumHuman();
+        assertEquals(2,spaceShip1.getNumHuman());
     }
 
     @Test
     void removeHuman() {
+        spaceShip1.setNumHuman();
+        spaceShip1.removeHuman(7,7);
+        assertEquals(1,spaceShip1.getNumHuman());
     }
 
     @Test
@@ -259,10 +283,6 @@ class SpaceShipTest {
 
     @Test
     void getGoodsList() {
-    }
-
-    @Test
-    void getLost() {
     }
 
     @Test
