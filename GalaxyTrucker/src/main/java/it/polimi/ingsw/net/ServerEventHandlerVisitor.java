@@ -24,7 +24,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(LobbyEvent event) {
         ui.showWaitingForPlayers(event.getTruckers().size());
-        ui.showStartCountdown(event.getCountdown());
     }
 
     @Override
@@ -40,6 +39,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(NicknameAlreadyInError event) {
         ui.showNicknameTaken();
         ui.showChooseColor(event.getColors());
+        System.out.print("> ");
     }
 
     @Override
@@ -47,6 +47,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showWelcome();
         System.out.println("I received: "+ event.getEventType());
         ui.showChooseColor(event.getColors());
+        System.out.print("> ");
     }
 
     @Override
@@ -54,6 +55,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showError(event.getMessage());
         ui.showColorTaken();
         ui.showChooseColor(event.getAvailableColors());
+        System.out.print("> ");
     }
 
     @Override
@@ -78,9 +80,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     // === PHASE 3: Costruzione nave ===
     @Override
     public void visit(StartBuildingEvent event) {
-        //potrebbe non funzionare come player joined
         if(!viewFlow.getNameAlreadySet()){
-            System.out.println("Inside");
             viewFlow.setNickname(event.getNickname());
         }
         ui.showPlayers(event.getPlayers());
@@ -90,6 +90,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.fillAvailableComponents(event.getComponents());
         ui.showBuildPhaseStart(event.getComponents());
         ui.showBuildOptions();
+        System.out.print("> ");
         if(viewFlow.getLevel()==2) viewFlow.getTimerDisplay().start(event.getSeconds());
     }
     @Override
@@ -98,13 +99,15 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.deleteSelectedComponent();
         ui.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
         ui.showAvailableComponent(event.getAvComponents());
+        System.out.print("> ");
     }
 
     @Override
     public void visit(ComponentNotAvailableError event) {
         ui.showError(event.getMessage());
         ui.showAvailableComponent(viewFlow.getAvailableComponents());
-        ui.showMessage("Please select a component between 0 and " + (viewFlow.getAvailableComponents().size()-1));
+        ui.showMessage("Please select a component between 0 and " + (viewFlow.getAvailableComponents().size()-1)+"\n");
+        System.out.print("> ");
     }
 
     @Override
@@ -116,6 +119,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             ui.showComponentSelected(viewFlow.getSelectedComponent());
             ui.showComponentOptions();
         }
+        System.out.print("> ");
     }
 
     @Override
@@ -126,23 +130,27 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
         viewFlow.componentAsUnselected(event.getIndex());
         ui.showAvailableComponent(viewFlow.getAvailableComponents());
+        System.out.print("> ");
     }
 
     @Override
     public void visit(CoordRequest event) {
         ui.askCoordinates();
+        System.out.print("> ");
     }
 
     @Override
     public void visit(InvalidCoordinatesError event) {
         ui.showError(event.getMessage());
         ui.askCoordinates();
+        System.out.print("> ");
     }
 
     @Override
     public void visit(InvalidPositionError event) {
         ui.showInvalidPlacement(event.getMessage());
         ui.askCoordinates();
+        System.out.print("> ");
     }
 
     @Override
@@ -153,12 +161,14 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(TurnHourglassError event) {
         ui.showError(event.getMessage());
+        System.out.print("> ");
     }
 
     @Override
     public void visit(AvailableComponentsEvent event) {
         ui.showAvailableComponent(event.getComponents());
         ui.showSelectComponent();
+        System.out.print("> ");
     }
 
     @Override
@@ -181,6 +191,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(HourglassTurnEvent event) {
         viewFlow.getTimerDisplay().start(event.getSeconds());
+        System.out.print("> ");
     }
 
     @Override
@@ -206,6 +217,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(TimeExpiredEvent event){
         ui.showTimeExpired();
+        System.out.print("> ");
     }
 
     @Override
@@ -215,14 +227,16 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         ui.showBuildComplete();
         if(viewFlow.getLevel()==2){
-            ui.showMessage("Type 'alien' to see where you can place aliens");
+            ui.showMessage("Type 'alien' to see where you can place aliens\n" +
+                    "> ");
 
         }
         else{
-            ui.showMessage("Type 'continue' to start flight phase");
+            ui.showMessage("Type 'continue' to start flight phase\n" +
+                    "> ");
         }
         viewFlow.setViewState(ViewFlow.ViewState.FILL);
-        //ui.showMessage("It's time to fill the spaceship\n");
+        System.out.print("> ");
     }
 
 
