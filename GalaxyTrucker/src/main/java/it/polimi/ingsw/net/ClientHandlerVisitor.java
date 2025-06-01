@@ -135,9 +135,17 @@ public class ClientHandlerVisitor implements VirtualServer {
             serverEvent= new WaitOthersBuildingEvent();
         }else{
             BuildTimerManager.getInstance().stop();
-            for(Trucker t: gameController.getGame().getTruckerList()){
-                t.getSpaceShip().wellDone();
+            if(gameLevel==2){
+                for(Trucker t: gameController.getGame().getTruckerList()){
+                    t.getSpaceShip().wellDone();
+                }
             }
+            else{
+                for(Trucker t: gameController.getGame().getTruckerList()){
+                    t.getSpaceShip().wellDoneForTrialFlight();
+                }
+            }
+
             serverEvent= new BuildCompleteEvent(gameController.getGame().getTruckerList());
 
         }
