@@ -72,18 +72,18 @@ public class ServerController {
         System.out.println("Client disconnected and removed from the game.");
     }
 
-    public void addEventToQueue(ClientEvent event, ClientHandlerSocket client) {
+    public void addEventToQueue(ClientEvent event, int id) {
         for(Client c : clients) {
-            if(c.getSocketClient()==client) {
+            if(c.getId()==id) {
                 eventQueue.offer(new EventWithSource(event, c));
                 return;
             }
         }
     }
 
-    public EventWithSource generateSourceForRmi(ClientEvent event, RemoteClientHandler remoteClient) {
+    public EventWithSource generateSourceForRmi(ClientEvent event, int id) {
         for(Client c : clients) {
-            if(c.getRmiClient() == remoteClient) {
+            if(c.getId() == id) {
                 return new EventWithSource(event, c);
             }
         }
