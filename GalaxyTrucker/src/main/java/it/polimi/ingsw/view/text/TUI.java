@@ -221,7 +221,7 @@ public class TUI extends UI {
 
     @Override
     public void showBuildOptions() {
-
+        System.out.println("Type 'help' if you want to see commands:");
     }
 
     @Override
