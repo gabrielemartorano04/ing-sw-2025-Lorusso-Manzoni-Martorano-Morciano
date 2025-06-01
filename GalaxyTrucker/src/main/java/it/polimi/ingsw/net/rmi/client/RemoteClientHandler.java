@@ -10,4 +10,6 @@ import java.rmi.RemoteException;
 public interface RemoteClientHandler extends Remote {
     void handleIncomingEvent(ServerEvent event) throws RemoteException;
     void handleOutgoingEvent(ClientEvent event) throws RemoteException;
+    void setId(int id) throws RemoteException;
+    int getId() throws RemoteException;
 }

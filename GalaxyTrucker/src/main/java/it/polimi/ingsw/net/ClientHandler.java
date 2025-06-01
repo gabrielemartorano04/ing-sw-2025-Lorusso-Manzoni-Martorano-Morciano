@@ -7,5 +7,7 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
  * The interface is used to permit us to not distinguish between RMI and Socket type of connection
  */
 public interface ClientHandler {
-    public void sendEvent(ServerEvent event);
+    void sendEvent(ServerEvent event);
+    void setId(int id);
+    int getId();
 }

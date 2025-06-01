@@ -14,9 +14,10 @@ import java.util.*;
  */
 public abstract class UI {
 
+    public abstract void showWelcome(EnumSet<PlayerColors> availableColors);
+
     //SETUP
     public abstract void showWelcome();
-    public abstract void showWelcome(EnumSet<PlayerColors> availableColors);
     public abstract void showInsertNumPlayers();
 
     public abstract void showChooseColor(EnumSet<PlayerColors> availableColors);

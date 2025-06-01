@@ -14,12 +14,14 @@ import java.rmi.server.UnicastRemoteObject;
 public class RmiClient extends UnicastRemoteObject implements RemoteClientHandler  {
     private final RmiServerInterface server;
     private final ViewFlow view;
+    private int id;
 
 
     public RmiClient(RmiServerInterface server, ViewFlow view) throws RemoteException {
         super();
         this.server = server;
         this.view = view;
+        this.id = -1;
     }
 
 
@@ -31,6 +33,20 @@ public class RmiClient extends UnicastRemoteObject implements RemoteClientHandle
     public void handleOutgoingEvent (ClientEvent event) throws RemoteException {
         // metodo che il client chiama per invocare il visitor del server
         server.handleIncomingEvent(event, this);
+    }
+
+    @Override
+    public void setId(int id) throws RemoteException {
+        System.out.println("Entrato nel setId rmiClient");
+        if (this.id == -1){
+            this.id = id;
+            System.out.println(this.id + "RmiClient local id");
+        }
+    }
+
+    @Override
+    public int getId() throws RemoteException {
+        return id;
     }
 
 

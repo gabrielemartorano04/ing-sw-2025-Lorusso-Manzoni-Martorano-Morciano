@@ -9,8 +9,6 @@ import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
-import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.net.ClientHandlerVisitor;
 
 import java.util.ArrayList;
@@ -51,20 +49,25 @@ public class ServerController {
 
     public synchronized void addClient(Client client) {
         if (clients.isEmpty()) {
+            client.setId(idToSet);
+            idToSet++;
+            clients.add(client);
+
             FirstConnectionEvent event = new FirstConnectionEvent(
                     "First player in the game, choose the total number of players of the Game"
             );
             client.updateClient(event);
 
         }else{
+            System.out.println(idToSet);
+            client.setId(idToSet);
+            idToSet++;
+            clients.add(client);
+
             AvailableColorsEvent event = new AvailableColorsEvent(gameController.getAvailablePlayerColors(),
                     "Login");
             client.updateClient(event);
         }
-        client.setId(idToSet);
-        idToSet++;
-        clients.add(client);
-
     }
 
     public synchronized void removeClient(ClientHandler client) {
@@ -72,18 +75,19 @@ public class ServerController {
         System.out.println("Client disconnected and removed from the game.");
     }
 
-    public void addEventToQueue(ClientEvent event, ClientHandlerSocket client) {
+    public void addEventToQueue(ClientEvent event, int id) {
         for(Client c : clients) {
-            if(c.getSocketClient()==client) {
+            if(c.getId()==id) {
                 eventQueue.offer(new EventWithSource(event, c));
                 return;
             }
         }
     }
 
-    public EventWithSource generateSourceForRmi(ClientEvent event, RemoteClientHandler remoteClient) {
+    public EventWithSource generateSourceForRmi(ClientEvent event, int id) {
         for(Client c : clients) {
-            if(c.getRmiClient() == remoteClient) {
+            System.out.println(c.getId());
+            if(c.getId() == id) {
                 return new EventWithSource(event, c);
             }
         }
@@ -199,6 +203,9 @@ public class ServerController {
                         }
                     }
                 }
+                if(gameController.getGame().getGameLevel()==2)
+                    t.getSpaceShip().wellDone();
+                else t.getSpaceShip().wellDoneForTrialFlight();
             }
             //TODO:TOGLI DOPO DEBUG
             StringBuilder message= new StringBuilder();

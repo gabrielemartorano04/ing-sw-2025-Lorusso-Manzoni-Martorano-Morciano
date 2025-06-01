@@ -19,7 +19,21 @@ public class Client {
     }
 
     public void setId(int id) {
-        this.id = id;
+        if(this.id == -1){
+            this.id = id;
+            if(clientHandler != null){
+                clientHandler.setId(id);
+            }else{
+                try {
+                    remoteClientHandler.setId(id);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }else{
+            throw new RuntimeException("Errore");
+        }
+
     }
 
     public int getId() {

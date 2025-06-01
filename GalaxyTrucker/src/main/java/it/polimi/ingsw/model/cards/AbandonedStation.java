@@ -132,7 +132,7 @@ public class AbandonedStation extends Card implements Serializable {
             }while(true);
 
         }else{
-            if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()){
+            if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()-1){
                 cardState = CardState.ESECUZIONE;
                 return cardEffect();
             }
@@ -218,7 +218,9 @@ public class AbandonedStation extends Card implements Serializable {
         if (cardState != CardState.ESECUZIONE) {
             throw new GeneralError("risposte mancanti");
         }
-        Game.getIstance().moveBackward(truckerThatHasDecided, days);
+        if(truckerThatHasDecided != null) {
+            Game.getIstance().moveBackward(truckerThatHasDecided, days);
+        }
         ArrayList<String> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
         Map<String, Integer> track = new HashMap<>();

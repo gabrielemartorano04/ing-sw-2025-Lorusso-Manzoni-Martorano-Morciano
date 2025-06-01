@@ -8,12 +8,10 @@ import java.util.ArrayList;
 
 public class LobbyEvent extends ServerEvent {
     public String message;
-    public int countdown;
     private ArrayList<String> truckers;
-    public LobbyEvent( ArrayList<String> truckers, int countdown) {
+    public LobbyEvent( ArrayList<String> truckers) {
         super(ServerEventType.LOBBY, true);
         message = "Current players: " + truckers;
-        this.countdown = countdown;
         this.truckers = truckers;
     }
 
@@ -25,8 +23,6 @@ public class LobbyEvent extends ServerEvent {
     public ArrayList<String> getTruckers() {
         return truckers;
     }
-
-    public int getCountdown() {return countdown;}
 
     @Override
     public void call (ServerEventHandlerVisitor visitor) {

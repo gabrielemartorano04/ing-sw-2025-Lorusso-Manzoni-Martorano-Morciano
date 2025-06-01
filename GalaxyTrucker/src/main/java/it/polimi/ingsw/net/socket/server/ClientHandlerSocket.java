@@ -12,10 +12,12 @@ import java.rmi.RemoteException;
 public class ClientHandlerSocket implements ClientHandler {
     private final NetworkServer network;
     private final ServerController controller;
+    private int id;
 
     public ClientHandlerSocket(NetworkServer network, ServerController controller) {
         this.network = network;
         this.controller = controller;
+        this.id = -1;
         startListener();
     }
 
@@ -24,7 +26,7 @@ public class ClientHandlerSocket implements ClientHandler {
             try {
                 while (!network.isClosed()) {
                     ClientEvent event = network.receiveMessage();
-                    controller.addEventToQueue(event, this);
+                    controller.addEventToQueue(event, this.getId());
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.err.println("Error receiving the event: " + e.getMessage());
@@ -36,6 +38,18 @@ public class ClientHandlerSocket implements ClientHandler {
         });
         listenerThread.setDaemon(true);
         listenerThread.start();
+    }
+
+    @Override
+    public void setId(int id) {
+        if(this.id==-1){
+            this.id = id;
+        }
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     @Override

@@ -123,7 +123,7 @@ public class AbandonedShip extends Card implements Serializable {
             state = CardState.HUMANSTOREMOVE;
             return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
         }else{
-            if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()){
+            if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()-1){
                 state = CardState.ESECUZIONE;
                 return cardEffect();
             }else{
