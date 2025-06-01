@@ -221,8 +221,7 @@ public class TUI extends UI {
 
     @Override
     public void showBuildOptions() {
-        System.out.println("Options: [Select <x>] [SelectKept <x>] [Stack <x>] [Hourglass] [End]");
-        System.out.print("Choose your action: ");
+
     }
 
     @Override
