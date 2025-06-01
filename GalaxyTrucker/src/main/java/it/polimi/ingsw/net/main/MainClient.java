@@ -10,6 +10,7 @@ import it.polimi.ingsw.view.ViewFlow;
 
 import java.io.IOException;
 import java.rmi.Naming;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 /**
@@ -66,8 +67,8 @@ public class MainClient {
 
                 ViewFlow view = new ViewFlow(null);
                 RemoteClientHandler client = new RmiClient(rmiServer, view);
-                view.setRmiClient(client);
                 rmiServer.connect(client);
+                view.setRmiClient(client);
                 view.start();
 
             } catch (Exception e) {
