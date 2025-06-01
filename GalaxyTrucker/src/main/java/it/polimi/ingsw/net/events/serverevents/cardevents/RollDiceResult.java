@@ -9,12 +9,14 @@ public class RollDiceResult extends CardEvent {
     private int currIndex;
     private int diceResult;
     private String message;
+    private String hitType;
 
-    public RollDiceResult(String Message, int currIndex, int diceResult, String nickname, boolean forAll){
+    public RollDiceResult(String message, int currIndex, int diceResult, String nickname, boolean forAll, String hitType){
         super(ServerEventType.ROLL_DICE, forAll, ParserState.ROLL_DICE, nickname);
         this.currIndex = currIndex;
         this.diceResult = diceResult;
         this.message = message;
+        this.hitType = hitType;
     }
 
     public int getCurrIndex() {return currIndex;}
@@ -34,6 +36,8 @@ public class RollDiceResult extends CardEvent {
     public String getInfoForOthers(){
         return getNickname()+" got "+diceResult+ " from the dice\n";
     }
+
+    public String getHitType() {return hitType;}
 }
 
 
