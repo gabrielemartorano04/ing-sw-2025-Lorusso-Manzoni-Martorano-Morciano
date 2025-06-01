@@ -20,12 +20,15 @@ public class Client {
 
     public void setId(int id) {
         this.id = id;
+        System.out.println(id + " Classe client nel server");
         if(clientHandler != null){
             clientHandler.setId(id);
         }else{
             try {
+                System.out.println(id + " Settando questo id nel rmiClient");
                 remoteClientHandler.setId(id);
             } catch (RemoteException e) {
+                System.out.println("Errore");
                 throw new RuntimeException(e);
             }
         }

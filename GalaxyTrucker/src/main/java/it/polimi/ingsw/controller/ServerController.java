@@ -82,7 +82,9 @@ public class ServerController {
     }
 
     public EventWithSource generateSourceForRmi(ClientEvent event, int id) {
+        System.out.println(id + " id ricevuto dal client");
         for(Client c : clients) {
+            System.out.println(c.getId());
             if(c.getId() == id) {
                 return new EventWithSource(event, c);
             }
