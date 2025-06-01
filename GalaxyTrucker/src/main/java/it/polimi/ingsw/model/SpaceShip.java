@@ -169,7 +169,6 @@ public class SpaceShip implements Serializable {
                             goodsCapacity += c.getCapacity();
                         }
                         default -> {
-                            break;
                         }
                     }
                 }
@@ -504,7 +503,7 @@ public class SpaceShip implements Serializable {
                 if (components[i][j] != null) {
                     switch(components[i][j]){
                         case Engine e->{
-                            if (e.getIsDouble() && e.getIsActive() &&e.getOrientation() == Orientation.S);
+                            if (e.getIsDouble() && e.getIsActive() && e.getOrientation() == Orientation.S)
                                 doubleEngine++;
                         }
                         default -> {}
@@ -517,44 +516,12 @@ public class SpaceShip implements Serializable {
     }
 
     /**
-     * This method return the component in position (x,y)
-     * @param x x coordinate of the choosen component
-     * @param y coordinate of the choosen component
-     * @return the component with coordinates (x,y)
-     */
-    public Component chooseComponent(int x, int y) {
-        return components[x][y];
-    }
-
-    /**
-     * This method find all the shield e calculate the protection
-     * @return spaceship directions protected by the shields
-     */
-    public ArrayList<Direction> getProtection() {
-        ArrayList<Direction> p = new ArrayList<Direction>();
-
-        for (int i = 5; i <= 9; i++) {
-            for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null) {
-                    switch(components[i][j]){
-                        case Shield s->{
-                            p.add(s.getDirection());
-                        }
-                        default -> {}
-                    }
-                }
-            }
-        }
-        return p;
-    }
-
-    /**
      * This method takes two coordinates in input e return if the component is correctly linked with the others components
      * @param x x coordinate of the component
      * @param y y coordinate of the component
      * @return boolean that says if the component in position (x,y) is correctly linked with the others components
      */
-    public boolean isValid(int x, int y) {
+    private boolean isValid(int x, int y) {
 
         Cannon cannon = null;
         Component com = components[x][y];

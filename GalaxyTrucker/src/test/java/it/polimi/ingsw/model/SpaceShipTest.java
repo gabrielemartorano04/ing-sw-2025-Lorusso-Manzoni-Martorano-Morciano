@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.model.components.Cabin;
-import it.polimi.ingsw.model.components.EmptySpace;
+import it.polimi.ingsw.exceptions.NotEnoughBatteries;
+import it.polimi.ingsw.model.components.*;
+import it.polimi.ingsw.model.components.Component;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,16 +20,16 @@ class SpaceShipTest {
 
     @BeforeEach
     void setUp() {
-//        try {
-//            spaceShip1=support.createShip1(spaceShip1);
-//            spaceShip2=support.createShip2(spaceShip2);
-//        } catch (InvalidCoordinates e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            //spaceShip1=support.createShip1(spaceShip1);
+            spaceShip2=support.createShip3(spaceShip2); //spaceship di livello 0
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
         spaceShip1=new SpaceShip();
         spaceShip1.setSpaceship(2,PlayerColors.GREEN);
-        spaceShip2=new SpaceShip();
-        spaceShip2.setSpaceship(0,PlayerColors.RED);
+//        spaceShip2=new SpaceShip();
+//        spaceShip2.setSpaceship(0,PlayerColors.RED);
     }
 
     @Test
@@ -114,11 +116,14 @@ class SpaceShipTest {
     }
 
     @Test
-    void setBattery() {
+    void setAndGetBattery() {
+        spaceShip2.setBattery();
+        assertEquals(5, spaceShip2.getNumBatteries());
     }
 
     @Test
     void getGoodsCapacity() {
+        assertEquals(5, spaceShip2.getGoodsCapacity());
     }
 
     @Test
@@ -127,7 +132,7 @@ class SpaceShipTest {
         assertEquals(2,spaceShip1.getNumHuman());
 
         spaceShip2.setNumHuman();
-        assertEquals(2,spaceShip2.getNumHuman());
+        assertEquals(6,spaceShip2.getNumHuman());
     }
 
 
@@ -136,6 +141,8 @@ class SpaceShipTest {
         spaceShip1.setNumAlien(new ArrayList<>());
         spaceShip1.setNumHuman();
         assertEquals(2,spaceShip1.getNumHuman());
+
+
     }
 
     @Test
@@ -143,62 +150,115 @@ class SpaceShipTest {
         spaceShip1.setNumHuman();
         spaceShip1.removeHuman(7,7);
         assertEquals(1,spaceShip1.getNumHuman());
+
+        spaceShip2.setNumHuman();
+        spaceShip2.removeHuman(8,7);
+        assertEquals(5,spaceShip2.getNumHuman());
     }
 
     @Test
     void removeNumHuman() {
+        spaceShip1.setNumHuman();
+        ArrayList<int[]> coord1=new ArrayList<>();
+        coord1.add(new int[]{7,7,1});
+        spaceShip1.removeNumHuman(coord1);
+        assertEquals(1,spaceShip1.getNumHuman());
+
+        spaceShip2.setNumHuman();
+        ArrayList<int[]> coord2=new ArrayList<>();
+        coord2.add(new int[]{7,7,2});
+        coord2.add(new int[]{7,8,2});
+        coord2.add(new int[]{8,7,1});
+        spaceShip2.removeNumHuman(coord2);
+        assertEquals(1,spaceShip2.getNumHuman());
     }
 
     @Test
     void getComponents() {
+        assertNotNull(spaceShip2.getComponents());
+        for(int i=5;i<=9;i++){
+            for(int j=4;j<=10;j++){
+                if(j==4 || j==10) assertNotNull(spaceShip2.getComponents()[i][j]);
+                if(j==5 || j==9){
+                    assertNotNull(spaceShip2.getComponents()[i][j]);
+                }
+                if(j==6 || j==8){
+                    if(i==9 && j==6) assertNull(spaceShip2.getComponents()[i][j]);
+                    else assertNotNull(spaceShip2.getComponents()[i][j]);
+                }
+                if(j==7){
+                    assertNotNull(spaceShip2.getComponents()[i][j]);
+                }
+            }
+        }
     }
 
     @Test
     void getNumDoubleCannon() {
+        assertEquals(0,spaceShip2.getNumDoubleCannon());
     }
 
     @Test
     void getNumDoubleEngine() {
+        assertEquals(1,spaceShip2.getNumDoubleEngine());
     }
 
     @Test
-    void addComponent() {
+    void addAndRemoveComponent() {
+        try {
+            spaceShip2.removeComponent(9,8);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        assertNull(spaceShip2.getComponents()[9][8]);
+        Component component=new Engine(2,2,0,"Engine","",false);
+        try {
+            spaceShip2.addComponent(component,9,8);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        assertNotNull(spaceShip2.getComponents()[9][8]);
     }
 
-    @Test
-    void removeComponent() {
-    }
+
 
     @Test
     void getSingleCannonPower() {
+        assertEquals(2,spaceShip2.getSingleCannonPower());
     }
 
     @Test
     void getDoubleCannon() {
+        assertEquals(0,spaceShip2.getDoubleCannon());
+
     }
 
     @Test
     void getSingleEnginePower() {
+        assertEquals(2,spaceShip2.getSingleEnginePower());
     }
 
     @Test
-    void getDoubleEngine() {
-    }
+    void activateAndGetDoubleEngine() {
+        ArrayList<int[]> coord=new ArrayList<>();
+        ArrayList<int[]> batt=new ArrayList<>();
+        try {
+            spaceShip2.activateDoubleEngines(coord,batt);
+        } catch (NotEnoughBatteries e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(0,spaceShip2.getDoubleEngine());
 
-    @Test
-    void chooseComponent() {
-    }
+        spaceShip2.setBattery();
+        coord.add(new int[]{8,6});
+        batt.add(new int[]{8,8,1});
+        try {
+            spaceShip2.activateDoubleEngines(coord,batt);
+        } catch (NotEnoughBatteries e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(1,spaceShip2.getDoubleEngine());
 
-    @Test
-    void getProtection() {
-    }
-
-    @Test
-    void isValid() {
-    }
-
-    @Test
-    void activeDoubleCannons() {
     }
 
     @Test
@@ -211,10 +271,6 @@ class SpaceShipTest {
 
     @Test
     void deactivateDoubleEngines() {
-    }
-
-    @Test
-    void activateDoubleEngines() {
     }
 
     @Test
@@ -291,10 +347,6 @@ class SpaceShipTest {
 
     @Test
     void removeAllGoods() {
-    }
-
-    @Test
-    void getNumBatteries() {
     }
 
     @Test
