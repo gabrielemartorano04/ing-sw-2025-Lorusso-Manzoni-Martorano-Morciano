@@ -49,11 +49,7 @@ public class ServerController {
 
     public synchronized void addClient(Client client) {
         if (clients.isEmpty()) {
-            System.out.println(idToSet + " Id to set at the current client");
             client.setId(idToSet);
-            System.out.println(client.getId() + " In the current client");
-            System.out.println(client.getSocketClient().getId() + " In the current socket client");
-
             idToSet++;
             clients.add(client);
 
@@ -80,10 +76,8 @@ public class ServerController {
     }
 
     public void addEventToQueue(ClientEvent event, int id) {
-        System.out.println(id + " id of the client");
         for(Client c : clients) {
             if(c.getId()==id) {
-                System.out.println("Entrato");
                 eventQueue.offer(new EventWithSource(event, c));
                 return;
             }
@@ -91,7 +85,6 @@ public class ServerController {
     }
 
     public EventWithSource generateSourceForRmi(ClientEvent event, int id) {
-        System.out.println(id + " id ricevuto dal client");
         for(Client c : clients) {
             System.out.println(c.getId());
             if(c.getId() == id) {
