@@ -1,9 +1,8 @@
 package it.polimi.ingsw.net.main;
 
-import it.polimi.ingsw.net.ConnectionType;
+import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 import it.polimi.ingsw.net.rmi.server.RmiServerInterface;
 import it.polimi.ingsw.net.rmi.client.RmiClient;
-import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.client.ClientEventSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
@@ -43,9 +42,7 @@ public class MainClient {
             serverAddress = scanner.nextLine().trim();
         }
 
-        ConnectionType connectionType;
         if(choice.equals("1")) {
-            connectionType = ConnectionType.SOCKET;
             final int SERVER_PORT = 12346;
             NetworkClient networkClient = new NetworkClient(serverAddress, SERVER_PORT);
             try {
@@ -62,33 +59,21 @@ public class MainClient {
                 System.err.println("Error in server connection: " + e.getMessage());
             }
         }
-        else if(choice.equals("2")) {
-            connectionType = ConnectionType.RMI;
-            // === RMI client ===
+        else {
             try {
                 String url = "rmi://" + serverAddress + ":1099/MyService";
                 RmiServerInterface rmiServer = (RmiServerInterface) Naming.lookup(url);
 
-                //TODO omogolare la creazione della view sia per RMI che per Socket
-                // SISTEMARE CREAZIONE VIEW ORA NON DA ERRORE MA E SBAGLIATA
-                ViewFlow view = new ViewFlow(new ClientEventSender(new NetworkClient(serverAddress, 12346)));
-                ClientHandler client = new RmiClient(rmiServer, view);
+                ViewFlow view = new ViewFlow(null);
+                RemoteClientHandler client = new RmiClient(rmiServer, view);
+                view.setRmiClient(client);
                 rmiServer.connect(client);
-                System.out.println("Connected to RMI server!");
-                // Esempio chiamata remota
-                String response = rmiServer.sayHello("ClientUser");
-                System.out.println("Server says: " + response);
-
-                // Qui puoi avviare la tua logica legata a ViewFlow, se hai un clientHandler RMI
-                // (serve creare un clientHandler dedicato per RMI se necessario)
 
             } catch (Exception e) {
                 System.err.println("Error connecting to RMI server: " + e.getMessage());
                 e.printStackTrace();
             }
 
-        } else {
-            System.out.println("Invalid choice. Exiting.");
         }
 
     }

@@ -864,10 +864,10 @@ public class SpaceShip implements Serializable {
                             Component comR = components[i][j + 1];
                             Component comD = components[i + 1][j];
                             Component comL = components[i][j - 1];
-                            if (comU == null) cont++;
-                            if (comR == null) cont++;
-                            if (comD == null) cont++;
-                            if (comL == null) cont++;
+                            if (comU == null && com.getLink()[0]>0) cont++;
+                            if (comR == null && com.getLink()[1]>0) cont++;
+                            if (comD == null && com.getLink()[2]>0) cont++;
+                            if (comL == null && com.getLink()[3]>0) cont++;
                         }
                     }
 

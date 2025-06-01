@@ -5,6 +5,7 @@ import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -20,13 +21,8 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
     }
 
     @Override
-    public void connect(ClientHandler client) throws RemoteException {
-        this.controller.addClient(new Client(client));
-    }
-
-    @Override
-    public String sayHello(String name) throws RemoteException {
-        return "Hello, " + name + "!";
+    public void connect(RemoteClientHandler client) throws RemoteException {
+        this.controller.addClient(new Client(null, client));
     }
 
     public static void bind(ServerController serverController) {
@@ -41,15 +37,8 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
         }
     }
 
-    public void handleIncomingEvent(ClientEvent event, ClientHandler client) throws RemoteException {
-        //TODO: metodo che il client chiama in modo remoto per invocare il visitor del server
-        controller.launchThreadEvent(controller.generateSourceForRmi(event, client.getId()));
-    }
-
-    //mi sa che questo lo tolgo e faccio fare l'aggiornamento direttamente al ServerController
-    public void handleOutgoingEvent (ServerEvent event, ClientHandler client) throws RemoteException {
-        //TODO:metodo che il server chiama per invocare il visitor del client
-        // client.handleInComingEvent(event);
+    public void handleIncomingEvent(ClientEvent event, RemoteClientHandler client) throws RemoteException {
+        controller.launchThreadEvent(controller.generateSourceForRmi(event, client));
     }
 
 }
