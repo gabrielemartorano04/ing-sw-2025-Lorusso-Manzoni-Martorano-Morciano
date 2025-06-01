@@ -47,7 +47,8 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
         controller.launchThreadEvent(controller.generateSourceForRmi(event, client.getId()));
     }
 
-    public void handleOutgoingEvent (ServerEvent event) throws RemoteException {
+    //mi sa che questo lo tolgo e faccio fare l'aggiornamento direttamente al ServerController
+    public void handleOutgoingEvent (ServerEvent event, ClientHandler client) throws RemoteException {
         //TODO:metodo che il server chiama per invocare il visitor del client
         // client.handleInComingEvent(event);
     }
