@@ -38,13 +38,13 @@ public class RmiClient extends UnicastRemoteObject implements RemoteClientHandle
     }
 
     public void handleIncomingEvent(ServerEvent event) throws RemoteException {
-        //TODO: metodo che il server chiama in modo remoto per invocare il visitor del client
+        // metodo che il server chiama in modo remoto per invocare il visitor del client
         view.onEventReceived(event);
     }
 
     public void handleOutgoingEvent (ClientEvent event) throws RemoteException {
-        //TODO:metodo che il client chiama per invocare il visitor del server
-        // server.handleIncomingEvent(event, this);
+        // metodo che il client chiama per invocare il visitor del server
+        server.handleIncomingEvent(event, this);
     }
 
 
