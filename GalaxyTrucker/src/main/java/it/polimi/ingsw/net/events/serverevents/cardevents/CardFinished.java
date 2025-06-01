@@ -17,6 +17,9 @@ public class CardFinished extends CardEvent {
         this.truckersList = truckerList;
         this.truckersRemoved = truckerRemoved;
         this.track = track;
+        for(Trucker trucker : truckerList){
+            System.out.println("trucker " + trucker.getNickname() + " in pos: " + trucker.getPosition());
+        }
     }
 
     public ArrayList<Trucker> getTruckersList() {
