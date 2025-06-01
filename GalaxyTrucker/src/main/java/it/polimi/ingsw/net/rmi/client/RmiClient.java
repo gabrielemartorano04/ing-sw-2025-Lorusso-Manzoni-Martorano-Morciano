@@ -1,11 +1,9 @@
 // Classe RMI del client, il server la usa per inviare eventi
 package it.polimi.ingsw.net.rmi.client;
 
-import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.rmi.RmiServerInterface;
-import it.polimi.ingsw.net.rmi.server.RmiServer;
+import it.polimi.ingsw.net.rmi.server.RmiServerInterface;
 import it.polimi.ingsw.view.ViewFlow;
 
 
@@ -40,13 +38,13 @@ public class RmiClient extends UnicastRemoteObject implements RemoteClientHandle
     }
 
     public void handleIncomingEvent(ServerEvent event) throws RemoteException {
-        //TODO: metodo che il server chiama in modo remoto per invocare il visitor del client
+        // metodo che il server chiama in modo remoto per invocare il visitor del client
         view.onEventReceived(event);
     }
 
     public void handleOutgoingEvent (ClientEvent event) throws RemoteException {
-        //TODO:metodo che il client chiama per invocare il visitor del server
-        // server.handleIncomingEvent(event, this);
+        // metodo che il client chiama per invocare il visitor del server
+        server.handleIncomingEvent(event, this);
     }
 
 

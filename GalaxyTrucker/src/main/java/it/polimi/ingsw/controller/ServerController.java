@@ -9,7 +9,6 @@ import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.rmi.server.RmiServer;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.net.ClientHandlerVisitor;
 
@@ -56,12 +55,12 @@ public class ServerController {
                     "First player in the game, choose the total number of players of the Game"
             );
             System.out.println("Ho aggiunto il client" + client.getClientHandler());
-            clientHandleEvent(client.getClientHandler(), event);
+            client.updateClient(event);
 
         }else{
             AvailableColorsEvent event = new AvailableColorsEvent(gameController.getAvailablePlayerColors(),
                     "Login");
-            clientHandleEvent(client.getClientHandler(), event);
+            client.updateClient(event);
         }
         client.setId(idToSet);
         idToSet++;
@@ -164,7 +163,7 @@ public class ServerController {
                 this.gameCreated = true;
             } catch (Exception e) {
                 e.printStackTrace();
-                clientHandleEvent(client.getClientHandler(), response);
+                client.updateClient(response);
                 return;
             }
         }
@@ -173,24 +172,17 @@ public class ServerController {
         if(response.isForAll()){
             broadcastEvent(response);
         }else{
-            clientHandleEvent(client.getClientHandler(), response);
+            client.updateClient(response);
         }
     }
 
 
     public void broadcastEvent(ServerEvent event) {
         for(Client c: clients){
-            clientHandleEvent(c.getClientHandler(), event);
+            c.updateClient(event);
         }
     }
 
-    private void clientHandleEvent(ClientHandler c, ServerEvent e){
-        try {
-            c.handleEvent(e);
-        } catch (RemoteException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
 
     public void startThreadHourglass(){
         BuildTimerManager.getInstance().start(this, 90);
