@@ -206,7 +206,11 @@ public class Slavers extends Card implements Serializable {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Card state in not HUMANSTOREMOVE");
         }
-        if(defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getNumHuman()<=astronautsLost){
+        if(defeatedTruckers
+                .get(indexOfCurrentTrucker)
+                .getSpaceShip()
+                .getNumHuman()
+                <=astronautsLost){
             defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeAllHumans();
             indexOfCurrentTrucker++;
             return new RemotionConfirmed(ServerEventType.HUMAN_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(), "Batteries removed, press continue!");
@@ -218,7 +222,7 @@ public class Slavers extends Card implements Serializable {
         } catch (InvalidCoordinates e) {
             throw new InvalidCoordinates(e.getMessage());
         }
-        if (indexOfCurrentTrucker==Game.getIstance().getTruckerList().size()) {
+        if (indexOfCurrentTrucker==Game.getIstance().getTruckerList().size()-1) {
             return cardEffect();
         }
         return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname());

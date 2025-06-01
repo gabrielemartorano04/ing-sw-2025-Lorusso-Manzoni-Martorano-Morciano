@@ -105,28 +105,36 @@ public class Planets extends Card implements Serializable {
         if(planetsOccupied.contains(Game.getIstance().getTrucker(indexOfTrucker))){
             throw new GeneralError("This trucker has already chosen");
         }
-        if(planetsOccupied.get(indexOfPlanet)!=null){
+        if(indexOfPlanet >= 0 && planetsOccupied.get(indexOfPlanet)!=null){
             throw new PlanetNotFreeException("You choose a planet that was already occupied");
         }
         if(indexOfPlanet != -1){
             planetsOccupied.set(indexOfPlanet, Game.getIstance().getTrucker(indexOfTrucker));
             truckersLanded.add(Game.getIstance().getTrucker(indexOfTrucker));
         }
-        if(indexOfTrucker == Game.getIstance().getNumPlayers()){
-            indexOfTrucker=0;
-            currentGoodsList.addAll(planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker))));
-            currentGoodsList.addAll(goodsPassed);
-            if(indexOfTrucker < truckersLanded.size()){
-                for(Goods currentGood : planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker)))){
-                    if(Game.getIstance().getBank().getGoodsInBank(currentGood.getValue())>0){
-                        // abbiamo la merce corrente
-                        this.cardState = CardState.GOODSTOADD;
-                        return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(), currentGood);
+        if(indexOfTrucker == Game.getIstance().getTruckerList().size() -1){
+            if(!truckersLanded.isEmpty()) {
+                indexOfTrucker = 0;
+                currentGoodsList.addAll(planets
+                        .get(planetsOccupied
+                                .indexOf(truckersLanded
+                                        .get(indexOfTrucker))));
+                currentGoodsList.addAll(goodsPassed);
+                if (indexOfTrucker < truckersLanded.size() - 1) {
+                    for (Goods currentGood : planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker)))) {
+                        if (Game.getIstance().getBank().getGoodsInBank(currentGood.getValue()) > 0) {
+                            // abbiamo la merce corrente
+                            this.cardState = CardState.GOODSTOADD;
+                            return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(), currentGood);
+                        }
                     }
+                    indexOfTrucker++;
+                    return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname());
                 }
-                indexOfTrucker++;
-                return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname());
+                cardState = CardState.ESECUZIONE;
+                return cardEffect();
             }
+            cardState = CardState.ESECUZIONE;
             return cardEffect();
         }
         indexOfTrucker++;
