@@ -26,7 +26,6 @@ public class ServerController {
     private GameController gameController;
     private static ServerController istance;
     private int idToSet;
-    private RmiServer rmiServer;
 
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
     private final ExecutorService executorService = Executors.newFixedThreadPool(4); // 4 worker thread
@@ -50,9 +49,6 @@ public class ServerController {
         ServerController.istance = istance;
     }
 
-    public void setRmiServer(RmiServer rmiServer) {
-        this.rmiServer = rmiServer;
-    }
 
     public synchronized void addClient(Client client) {
         if (clients.isEmpty()) {
