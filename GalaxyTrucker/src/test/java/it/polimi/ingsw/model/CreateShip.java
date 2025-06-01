@@ -33,23 +33,23 @@ public class CreateShip {
         Component c19 = new Engine(2, 1, 1, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web81.jpg", false);
         Component c20 = new Engine(0, 0, 3, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web89.jpg", false);
         Component c21 = new Load(0, 0, 0, 2, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web70.jpg", 2, true);
-        c1.turn();
-        ship.addComponent(c1, 5, 6);
-        ship.addComponent(c2, 5, 8);
-        c3.turn();
-        ship.addComponent(c3, 6, 5);
+        ship.addComponent(c10, 7, 8);
+        c9.turn();
+        ship.addComponent(c9, 7, 6);
+        c8.turn();
+        ship.addComponent(c8, 7, 5);
+        ship.addComponent(c11, 7, 9);
+        ship.addComponent(c5, 6, 7);
         c4.turn();
         ship.addComponent(c4, 6, 6);
-        ship.addComponent(c5, 6, 7);
+        c3.turn();
+        ship.addComponent(c3, 6, 5);
         c6.turn();
         ship.addComponent(c6, 6, 8);
         ship.addComponent(c7, 6, 9);
-        c8.turn();
-        ship.addComponent(c8, 7, 5);
-        c9.turn();
-        ship.addComponent(c9, 7, 6);
-        ship.addComponent(c10, 7, 8);
-        ship.addComponent(c11, 7, 9);
+        c1.turn();
+        ship.addComponent(c1, 5, 6);
+        ship.addComponent(c2, 5, 8);
         c12.turn();
         ship.addComponent(c12, 7, 10);
         ship.addComponent(c13, 8, 5);
@@ -92,32 +92,32 @@ public class CreateShip {
         Component c21 = new Engine(3, 2, 0, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web79.jpg", false);
         Component c22 = new Cannon(1, 3, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web107.jpg", false);
         Component c23 = new Engine(3, 0, 2, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web98.jpg", true);
-        ship.addComponent(c1, 5, 6);
-        ship.addComponent(c2, 5, 8);
-        c3.turn();
-        c3.turn();
-        c3.turn();
-        ship.addComponent(c3, 6, 5);
+        c10.turn();
+        c10.turn();
+        ship.addComponent(c10, 7, 6);
+        ship.addComponent(c11, 7, 8);
+        ship.addComponent(c9, 7, 5);
+        ship.addComponent(c8, 7, 4);
+        c12.turn();
+        c12.turn();
+        ship.addComponent(c12, 7, 9);
+        ship.addComponent(c13, 7, 10);
+        ship.addComponent(c5, 6, 7);
         c4.turn();
         c4.turn();
         c4.turn();
         ship.addComponent(c4, 6, 6);
-        ship.addComponent(c5, 6, 7);
+        c3.turn();
+        c3.turn();
+        c3.turn();
+        ship.addComponent(c3, 6, 5);
         c6.turn();
         c6.turn();
         c6.turn();
         ship.addComponent(c6, 6, 8);
         ship.addComponent(c7, 6, 9);
-        ship.addComponent(c8, 7, 4);
-        ship.addComponent(c9, 7, 5);
-        c10.turn();
-        c10.turn();
-        ship.addComponent(c10, 7, 6);
-        ship.addComponent(c11, 7, 8);
-        c12.turn();
-        c12.turn();
-        ship.addComponent(c12, 7, 9);
-        ship.addComponent(c13, 7, 10);
+        ship.addComponent(c1, 5, 6);
+        ship.addComponent(c2, 5, 8);
         c14.turn();
         ship.addComponent(c14, 8, 4);
         c15.turn();
@@ -135,6 +135,44 @@ public class CreateShip {
         c22.turn();
         ship.addComponent(c22, 9, 5);
         ship.addComponent(c23, 9, 9);
+        return ship;
+    }
+
+    public SpaceShip createShip3(SpaceShip ship) throws InvalidCoordinates {
+        ship = new SpaceShip();
+        ship.setSpaceship(0,PlayerColors.YELLOW);
+        Component c1 = new Cannon(0, 2, 3, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web124.jpg", false);
+        Component c2 = new Shield(2, 1, 2, 1, "Shield", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web151.jpg");
+        Component c3 = new Pipes(1, 3, 1, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web55.jpg");
+        Component c4 = new Cannon(0, 3, 1, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web114.jpg", false);
+        Component c5 = new Load(2, 1, 0, 3, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web65.jpg", 1, true);
+//        Component c6 = new
+//        Component c7 = new
+//        Component c8 = new
+//        Component c9 = new
+//        Component c10 = new
+//        Component c11 = new
+//        Component c12 = new
+//        Component c13 = new
+//        Component c14 = new
+//        Component c15 = new
+//        Component c16 = new
+//        Component c17 = new
+//        Component c18 = new
+//        Component c19 = new
+//        Component c20 = new
+//        Component c21 = new
+//        Component c22 = new
+//        Component c23 = new;
+        ship.addComponent(c1, 5, 7);
+        c2.turn();
+        ship.addComponent(c2, 6, 6);
+        c3.turn();
+        ship.addComponent(c3, 6, 7);
+        ship.addComponent(c4, 6, 8);
+        c5.turn();
+        c5.turn();
+        ship.addComponent(c5, 7, 5);
         return ship;
     }
 }
