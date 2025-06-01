@@ -5,7 +5,6 @@ import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.rmi.RmiServerInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

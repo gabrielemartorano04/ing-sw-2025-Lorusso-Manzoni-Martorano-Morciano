@@ -1,11 +1,9 @@
 // Classe RMI del client, il server la usa per inviare eventi
 package it.polimi.ingsw.net.rmi.client;
 
-import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.rmi.RmiServerInterface;
-import it.polimi.ingsw.net.rmi.server.RmiServer;
+import it.polimi.ingsw.net.rmi.server.RmiServerInterface;
 import it.polimi.ingsw.view.ViewFlow;
 
 

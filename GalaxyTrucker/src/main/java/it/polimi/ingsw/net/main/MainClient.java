@@ -1,18 +1,14 @@
 package it.polimi.ingsw.net.main;
 
-import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.ConnectionType;
-import it.polimi.ingsw.net.rmi.RmiServerInterface;
+import it.polimi.ingsw.net.rmi.server.RmiServerInterface;
 import it.polimi.ingsw.net.rmi.client.RmiClient;
-import it.polimi.ingsw.net.rmi.server.RmiServer;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.socket.client.ClientEventSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
-import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.view.ViewFlow;
 
-import javax.swing.text.View;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.util.Scanner;

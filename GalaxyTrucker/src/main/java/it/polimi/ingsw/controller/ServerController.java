@@ -9,7 +9,6 @@ import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.rmi.server.RmiServer;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.net.ClientHandlerVisitor;
 
