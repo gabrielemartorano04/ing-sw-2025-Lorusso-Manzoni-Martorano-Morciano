@@ -468,7 +468,41 @@ public class ServerEventHandlerVisitor implements VirtualView {
         for (Trucker t: event.getTruckers()) {
             ui.showMessage(t.getNickname() + " has lost ");
         }
-        viewFlow.setParserFlightState(ParserState.DRAW_CARD);
+        Trucker trucker=null;
+        for(Trucker t:event.getTruckers()){
+            if(t.getNickname().equals(viewFlow.getNickname())){
+                trucker=t;
+                break;
+            }
+        }
+        for(String nicknames: event.getTruckersRemoved()){
+            if(nicknames.equalsIgnoreCase(viewFlow.getNickname())) {
+                System.out.println(viewFlow.getNickname() + " morto");
+                viewFlow.setOut();
+                viewFlow.setParserFlightState(ParserState.DEAD);
+            }
+        }
+        if(!viewFlow.getOut()){
+            ui.showShipLayout(viewFlow.getNickname(), trucker.getSpaceShip().getComponents());
+            viewFlow.setPosition(trucker.getPosition());
+            viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
+            viewFlow.setHumanCount(trucker.getSpaceShip().getNumHuman());
+            viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
+            viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
+            viewFlow.setTrack(event.getTrack());
+            ui.showFlightPhaseStart();
+            String message = "Truckers' positions order:\n";
+            int i = 1;
+            for (Trucker t : event.getTruckers()) {
+                message += i + ") " + t.getNickname() + "\n";
+                i++;
+            }
+            ui.showMessage(message);
+            if (viewFlow.getNickname().equals(event.getTruckers().get(0).getNickname())) {
+                viewFlow.setParserFlightState(ParserState.DRAW_CARD);
+                ui.showInputFormat(ParserState.DRAW_CARD);
+            } else viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+        }
     }
 
     @Override
@@ -522,7 +556,42 @@ public class ServerEventHandlerVisitor implements VirtualView {
         for (Trucker t: event.getTruckers()) {
             ui.showMessage(t.getNickname() + " has lost " + t.getSpaceShip().countExposedConnectors() + String.format(t.getSpaceShip().countExposedConnectors() == 1 ? " day\n" : " days\n"));
         }
-        viewFlow.setParserFlightState(ParserState.DRAW_CARD);
+        Trucker trucker=null;
+        for(Trucker t:event.getTruckers()){
+            if(t.getNickname().equals(viewFlow.getNickname())){
+                trucker=t;
+                break;
+            }
+        }
+        for(String nicknames: event.getTruckersRemoved()){
+            if(nicknames.equalsIgnoreCase(viewFlow.getNickname())) {
+                System.out.println(viewFlow.getNickname() + " morto");
+                viewFlow.setOut();
+                viewFlow.setParserFlightState(ParserState.DEAD);
+            }
+        }
+        if(!viewFlow.getOut()){
+            ui.showShipLayout(viewFlow.getNickname(), trucker.getSpaceShip().getComponents());
+            viewFlow.setPosition(trucker.getPosition());
+            viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
+            viewFlow.setHumanCount(trucker.getSpaceShip().getNumHuman());
+            viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
+            viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
+            viewFlow.setTrack(event.getTrack());
+            ui.showFlightPhaseStart();
+            String message = "Truckers' positions order:\n";
+            int i = 1;
+            for (Trucker t : event.getTruckers()) {
+                message += i + ") " + t.getNickname() + "\n";
+                i++;
+            }
+            ui.showMessage(message);
+            if (viewFlow.getNickname().equals(event.getTruckers().get(0).getNickname())) {
+                viewFlow.setParserFlightState(ParserState.DRAW_CARD);
+                ui.showInputFormat(ParserState.DRAW_CARD);
+            } else viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+        }
+
     }
 
     @Override

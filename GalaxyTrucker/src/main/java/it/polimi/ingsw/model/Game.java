@@ -280,7 +280,7 @@ public class Game {
         for (int i=0; i<days; i++){
             finalPos ++;
             for(Trucker t: truckers){
-                if (t.getPosition() == finalPos && trucker !=t){
+                if (t.getPosition() == finalPos && trucker != t){
                     finalPos++;
                 }
             }

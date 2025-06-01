@@ -177,8 +177,14 @@ public class ViewFlow implements EventReceiver {
                     case FLIGTH-> {
                         if(!out) {
                             if (startFlight) {
-                                event = new OkStartFlight();
-                                startFlight = false;
+                                if(input.trim().equals("state")){
+                                    event = new OkStartFlight();
+                                    startFlight = false;
+                                }
+                                else{
+                                    System.out.println("Error: Invalid command. Type 'state'.");
+                                    event=null;
+                                }
                             } else if (startFlightForAll) {
                                 event = inputParserFlight.parseFlight(input, nickname);
                             } else {
