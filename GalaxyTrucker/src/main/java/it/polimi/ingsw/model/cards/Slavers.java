@@ -212,6 +212,9 @@ public class Slavers extends Card implements Serializable {
                 .getNumHuman()
                 <=astronautsLost){
             defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeAllHumans();
+            if(indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
+                return cardEffect();
+            }
             indexOfCurrentTrucker++;
             return new RemotionConfirmed(ServerEventType.HUMAN_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(), "Batteries removed, press continue!");
         }
