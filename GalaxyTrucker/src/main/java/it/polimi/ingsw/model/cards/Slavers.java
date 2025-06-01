@@ -194,6 +194,7 @@ public class Slavers extends Card implements Serializable {
         }
         winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
         winDecision = answer;
+        cardState = CardState.ESECUZIONE;
         return cardEffect();
     }
 
@@ -212,7 +213,9 @@ public class Slavers extends Card implements Serializable {
                 .getNumHuman()
                 <=astronautsLost){
             defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeAllHumans();
+            defeatedTruckers.remove(indexOfCurrentTrucker);
             if(indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
+                cardState = CardState.ESECUZIONE;
                 return cardEffect();
             }
             indexOfCurrentTrucker++;
@@ -226,6 +229,7 @@ public class Slavers extends Card implements Serializable {
             throw new InvalidCoordinates(e.getMessage());
         }
         if (indexOfCurrentTrucker==Game.getIstance().getTruckerList().size()-1) {
+            cardState = CardState.ESECUZIONE;
             return cardEffect();
         }
         return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname());
