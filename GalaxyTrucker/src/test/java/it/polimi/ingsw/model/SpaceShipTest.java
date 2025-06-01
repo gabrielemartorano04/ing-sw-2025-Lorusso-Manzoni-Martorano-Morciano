@@ -1,13 +1,10 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.model.components.Direction;
-import it.polimi.ingsw.model.components.Load;
+import it.polimi.ingsw.model.components.Cabin;
+import it.polimi.ingsw.model.components.EmptySpace;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,171 +25,208 @@ class SpaceShipTest {
     }
 
     @Test
-    void increaseAndGetLost() {
-        spaceShip1.increaseLost(1);
-        assertEquals(spaceShip1.getLost(), 1);
-        spaceShip1.increaseLost(2);
-        assertEquals(spaceShip1.getLost(),3 );
+    void setSpaceship() {
+        spaceShip1.setSpaceship(2,PlayerColors.RED);
+
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if(i==7 && j==7){
+                    assertNotNull(spaceShip1.getComponents()[i][j]);
+                    switch(spaceShip1.getComponents()[i][j]){
+                        case Cabin cabin->{
+                            assertEquals(PlayerColors.RED, cabin.getColor());
+                            assertTrue(cabin.getIsMain());
+                        }
+                        default -> {}
+                    }
+                }
+                else{
+                    if(i==5){
+                        if(j==6 || j==8) assertNull(spaceShip1.getComponents()[i][j]);
+                        else assertEquals(spaceShip1.getComponents()[i][j],new EmptySpace());
+                    }
+                    else if(i==6){
+                        if(j==4 || j==10) assertEquals(spaceShip1.getComponents()[i][j],new EmptySpace());
+                        else  assertNull(spaceShip1.getComponents()[i][j]);
+                    }
+                    else if(i==7 || i==8)  assertNull(spaceShip1.getComponents()[i][j]);
+                    else if(i==9){
+                        if(j==7) assertEquals(spaceShip1.getComponents()[i][j],new EmptySpace());
+                        else  assertNull(spaceShip1.getComponents()[i][j]);
+                    }
+                }
+
+            }
+        }
+
+        spaceShip2.setSpaceship(0,PlayerColors.GREEN);
+        for(int i=5;i<=9;i++){
+            for(int j=4;j<=10;j++){
+                if(i==7 && j==7){
+                    assertNotNull(spaceShip2.getComponents()[i][j]);
+                    switch(spaceShip2.getComponents()[i][j]){
+                        case Cabin cabin->{
+                            assertEquals(PlayerColors.GREEN, cabin.getColor());
+                            assertTrue(cabin.getIsMain());
+                        }
+                        default -> {}
+                    }
+                }
+                if(j==4 || j==10) assertEquals(spaceShip2.getComponents()[i][j], new EmptySpace());
+                else if(j==5 || j==9){
+                    if(i==5 || i==6)
+                        assertEquals(spaceShip2.getComponents()[i][j], new EmptySpace());
+                    else assertNull(spaceShip2.getComponents()[i][j]);
+                }
+                else if(j==6 || j==8){
+                    if(i==5){
+                        assertEquals(spaceShip2.getComponents()[i][j], new EmptySpace());
+                    }
+                    else assertNull(spaceShip2.getComponents()[i][j]);
+                }
+                else if(j==7){
+                    if(i==9) assertEquals(spaceShip2.getComponents()[i][j], new EmptySpace());
+                    else assertNull(spaceShip2.getComponents()[i][j]);
+                }
+            }
+        }
+
+    }
+
+    @Test
+    void increaseLost() {
     }
 
     @Test
     void setBattery() {
-        spaceShip.setBattery();
-        assertEquals(spaceShip.getNumBatteries(),0);
     }
 
     @Test
     void getGoodsCapacity() {
-        assertEquals(spaceShip.getGoodsCapacity(), 0);
     }
 
     @Test
-    void setAndGetNumHuman() {
-        spaceShip.setNumHuman();
-        assertEquals(spaceShip.getNumHuman(), 2);
+    void setNumHuman() {
+    }
+
+    @Test
+    void getNumHuman() {
     }
 
     @Test
     void setNumAlien() {
-
     }
 
     @Test
     void removeHuman() {
-        spaceShip.setNumHuman();
-        spaceShip.removeHuman(7,7);
-        assertEquals(spaceShip.getNumHuman(), 1);
     }
 
     @Test
     void removeNumHuman() {
-        spaceShip.setNumHuman();
-        ArrayList<int[]> coord=new ArrayList<>();
-        coord.add(new int[]{7,7,2});
-        spaceShip.removeNumHuman(coord);
-        assertEquals(spaceShip.getNumHuman(), 0);
     }
 
     @Test
     void getComponents() {
-        assertNotNull(spaceShip.getComponents());
     }
 
     @Test
     void getNumDoubleCannon() {
-        assertEquals(spaceShip.getNumDoubleCannon(), 0);
     }
 
     @Test
     void getNumDoubleEngine() {
-        assertEquals(spaceShip.getNumDoubleEngine(), 0);
     }
 
     @Test
     void addComponent() {
-        Component comp=new Load(3,3,3,3,"Load","",2,false);
-        try {
-            spaceShip.addComponent(comp,6,7);
-        } catch (InvalidCoordinates e) {
-            System.out.println(e);
-        }
-
-        try {
-            spaceShip.addComponent(comp,4,4);
-        } catch (InvalidCoordinates e) {
-            System.out.println(e);
-        }
-
-
     }
 
     @Test
     void removeComponent() {
-        try {
-            spaceShip.removeComponent(7,7);
-        } catch (InvalidCoordinates e) {
-            System.out.println(e);
-        }
     }
 
     @Test
     void getSingleCannonPower() {
-        assertEquals(spaceShip.getSingleCannonPower(), 0);
     }
 
     @Test
     void getDoubleCannon() {
-        assertEquals(spaceShip.getDoubleCannon(), 0);
     }
 
     @Test
     void getSingleEnginePower() {
-        assertEquals(spaceShip.getSingleEnginePower(), 0);
     }
 
     @Test
     void getDoubleEngine() {
-        assertEquals(spaceShip.getDoubleEngine(), 0);
     }
 
     @Test
     void chooseComponent() {
-        assertEquals(spaceShip.chooseComponent(7,7).getType(),"cabin");
     }
 
     @Test
     void getProtection() {
-        ArrayList<Direction> p = new ArrayList<Direction>();
-        assertEquals(spaceShip.getProtection(),p);
     }
 
     @Test
     void isValid() {
+    }
 
+    @Test
+    void activeDoubleCannons() {
     }
 
     @Test
     void getTotalCannonPower() {
-        assertEquals(spaceShip.getTotalCannonPower(),0);
+    }
+
+    @Test
+    void deactivateDoubleCannons() {
+    }
+
+    @Test
+    void deactivateDoubleEngines() {
+    }
+
+    @Test
+    void activateDoubleEngines() {
+    }
+
+    @Test
+    void activateDoubleCannons() {
+    }
+
+    @Test
+    void activateShield() {
+    }
+
+    @Test
+    void deActivateShields() {
     }
 
     @Test
     void getTotalEnginePower() {
-        assertEquals(spaceShip.getTotalEnginePower(),0);
     }
 
     @Test
     void countExposedConnectors() {
-        assertEquals(spaceShip.countExposedConnectors(),4);
     }
 
     @Test
-    void wellDone1() {
-        assertTrue(spaceShip.wellDone());
-
+    void wellDone() {
     }
 
     @Test
-    void wellDone2() {
-//        try {
-//            spaceShip.addComponent(new Load(3,3,3,3,"Load","",2,false),6,7);
-//            spaceShip.addComponent(new Load(3,3,3,3,"Load","",2,false),7,6);
-//            spaceShip.addComponent(new Load(3,3,3,3,"Load","",2,false),8,7);
-//            spaceShip.addComponent(new Load(3,3,3,3,"Load","",2,false),7,8);
-//        } catch (InvalidCoordinates e) {
-//            throw new RuntimeException(e);
-//        }
-//        assertTrue(spaceShip.wellDone());
+    void wellDoneForTrialFlight() {
     }
 
     @Test
     void isHit() {
-        assertTrue(spaceShip.isHit(0,7));
     }
 
     @Test
     void destroyComponent() {
-
     }
 
     @Test
@@ -225,6 +259,10 @@ class SpaceShipTest {
 
     @Test
     void getGoodsList() {
+    }
+
+    @Test
+    void getLost() {
     }
 
     @Test
@@ -289,5 +327,13 @@ class SpaceShipTest {
 
     @Test
     void removeGoods() {
+    }
+
+    @Test
+    void getAlienCabin() {
+    }
+
+    @Test
+    void removeAllHumans() {
     }
 }

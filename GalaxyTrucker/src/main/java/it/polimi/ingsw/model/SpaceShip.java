@@ -35,7 +35,6 @@ public class SpaceShip implements Serializable {
      * The counters are 0 because the spaceship is empty.
      * This constructor also initialize the main cabin in the middle of the spaceship.
      */
-    //chiedi per parametro color per inizializzare il colore della main cabin
 
     public SpaceShip() {
         components = new Component[11][12];
