@@ -9,12 +9,12 @@ import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.rmi.server.RmiServer;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.net.ClientHandlerVisitor;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -26,6 +26,7 @@ public class ServerController {
     private GameController gameController;
     private static ServerController istance;
     private int idToSet;
+    private RmiServer rmiServer;
 
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
     private final ExecutorService executorService = Executors.newFixedThreadPool(4); // 4 worker thread
@@ -49,6 +50,9 @@ public class ServerController {
         ServerController.istance = istance;
     }
 
+    public void setRmiServer(RmiServer rmiServer) {
+        this.rmiServer = rmiServer;
+    }
 
     public synchronized void addClient(Client client) {
         if (clients.isEmpty()) {
