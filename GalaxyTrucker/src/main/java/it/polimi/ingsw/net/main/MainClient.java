@@ -72,8 +72,9 @@ public class MainClient {
 
                 //TODO omogolare la creazione della view sia per RMI che per Socket
                 // SISTEMARE CREAZIONE VIEW ORA NON DA ERRORE MA E SBAGLIATA
-                ViewFlow view = new ViewFlow(new ClientEventSender(new NetworkClient(serverAddress, 12346)));
+                ViewFlow view = new ViewFlow(null);
                 RemoteClientHandler client = new RmiClient(rmiServer, view);
+                view.setRmiClient(client);
                 rmiServer.connect(client);
                 System.out.println("Connected to RMI server!");
                 // Esempio chiamata remota

@@ -7,6 +7,7 @@ import it.polimi.ingsw.net.rmi.server.RmiServerInterface;
 import it.polimi.ingsw.view.ViewFlow;
 
 
+import javax.swing.text.View;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 

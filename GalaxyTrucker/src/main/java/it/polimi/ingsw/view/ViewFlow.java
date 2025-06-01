@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.EventReceiver;
 import it.polimi.ingsw.net.events.clientevents.cardevents.DeadTrucker;
+import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 import it.polimi.ingsw.net.socket.client.ClientEventSender;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
@@ -12,12 +13,15 @@ import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.text.TUI;
 import it.polimi.ingsw.view.text.TimerDisplay;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ViewFlow implements EventReceiver {
-    private final ClientEventSender clientEventSender;
+    private final ClientEventSender sender;
+    private RemoteClientHandler rmiClient;
     private boolean done = false;
     private final InputReader inputReader;
     private final InputParser inputParser;
@@ -58,8 +62,8 @@ public class ViewFlow implements EventReceiver {
         END
     }
 
-    public ViewFlow(ClientEventSender clientEventSender) {
-        this.clientEventSender = clientEventSender;
+    public ViewFlow(ClientEventSender sender) {
+        this.sender = sender;
         this.inputReader = new InputReader();
         this.inputParser = new InputParser();
         this.inputParserFlight = new InputParserFlight();
@@ -198,7 +202,7 @@ public class ViewFlow implements EventReceiver {
                     }
                 }
                 if (event != null) {
-                    clientEventSender.handleEvent(event);
+                    handleOutgoingEvent(event);
                 }
             }
         }, "UserInputThread").start();
@@ -215,6 +219,22 @@ public class ViewFlow implements EventReceiver {
 //            }
 //        }
 //    }
+
+    public void setRmiClient(RemoteClientHandler rmiClient) {
+        this.rmiClient = rmiClient;
+    }
+
+    public void handleOutgoingEvent(ClientEvent event) {
+        if (this.sender != null){
+            sender.handleEvent(event);
+        }else if(this.rmiClient != null){
+            try {
+                rmiClient.handleOutgoingEvent(event);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     public Component[][] getShip() {
         return ship;
