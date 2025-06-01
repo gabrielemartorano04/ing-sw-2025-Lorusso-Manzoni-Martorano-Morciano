@@ -149,7 +149,7 @@ public class CreateShip {
         Component c5 = new Load(2, 1, 0, 3, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web65.jpg", 1, true);
         Component c6 = new BatteryStorage(1, 1, 2, 0, "Battery Storage", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web13.jpg", 3);
         Component c7 = new Cabin(1, 2, 2, 1, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web37.jpg", null, false);
-        Component c8 = new Load(2, 1, 0, 3, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web65.jpg", 1, true);
+        Component c8 = new Load(0, 0, 0, 2, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web29.jpg", 3, false);
         Component c9 = new Load(0, 2, 1, 3, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web62.jpg", 1, true);
         Component c10 = new Engine(0, 3, 3, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web99.jpg", true);
         Component c11 = new Cabin(0, 1, 1, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web46.jpg", null, false);
