@@ -150,7 +150,6 @@ public class ViewFlow implements EventReceiver {
 
     public void start() {
         // Thread per input utente
-        ui.showWelcome();
         new Thread(() -> {
             ClientEvent event=null;
             while (running) {
@@ -231,7 +230,7 @@ public class ViewFlow implements EventReceiver {
             try {
                 rmiClient.handleOutgoingEvent(event);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                System.out.println("RemoteException: " + e);
             }
         }
     }

@@ -27,24 +27,12 @@ public class TUI extends UI {
     }
 
     @Override
-    public void showWelcome() {
-        System.out.println("""
-                         __        __   _                            _       \s
-                         \\ \\      / /__| | ___ ___  _ __ ___   ___  | |_ ___ \s
-                          \\ \\ /\\ / / _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\ | __/ _ \\\s
-                           \\ V  V /  __/ | (_| (_) | | | | | |  __/ | || (_) |
-                            \\_/\\_/ \\___|_|\\___\\___/|_| |_| |_|\\___|  \\__\\___/\s        
-          ____    _    _        _    __  ____   __    _____ ____  _   _  ____ _  _______ ____ \s
-         / ___|  / \\  | |      / \\   \\ \\/ /\\ \\ / /   |_   _|  _ \\| | | |/ ___| |/ / ____|  _ \\\s
-        | |  _  / _ \\ | |     / _ \\   \\  /  \\ V /      | | | |_) | | | | |   | ' /|  _| | |_) |
-        | |_| |/ ___ \\| |___ / ___ \\  /  \\   | |       | | |  _ <| |_| | |___| . \\| |___|  _ <\s
-         \\____/_/   \\_\\_____/_/   \\_\\/_/\\_\\  |_|       |_| |_| \\_\\\\___/ \\____|_|\\_\\_____|_| \\_\\ 
-                                          by Cranio Creation            
-        """);
+    public void showWelcome(EnumSet<PlayerColors> availableColors) {
+
     }
 
     @Override
-    public void showWelcome(EnumSet<PlayerColors> availableColors) {
+    public void showWelcome() {
         System.out.println("""
                          __        __   _                            _       \s
                          \\ \\      / /__| | ___ ___  _ __ ___   ___  | |_ ___ \s
@@ -221,8 +209,7 @@ public class TUI extends UI {
 
     @Override
     public void showBuildOptions() {
-        System.out.println("Options: [Select <x>] [SelectKept <x>] [Stack <x>] [Hourglass] [End]");
-        System.out.print("Choose your action: ");
+        System.out.println("Type 'help' if you want to see commands.");
     }
 
     @Override

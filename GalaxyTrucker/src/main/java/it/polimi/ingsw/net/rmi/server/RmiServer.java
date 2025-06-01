@@ -38,7 +38,7 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
     }
 
     public void handleIncomingEvent(ClientEvent event, RemoteClientHandler client) throws RemoteException {
-        controller.launchThreadEvent(controller.generateSourceForRmi(event, client));
+        controller.launchThreadEvent(controller.generateSourceForRmi(event, client.getId()));
     }
 
 }
