@@ -10,6 +10,5 @@ import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 
 public interface RmiServerInterface extends Remote {
     void connect(RemoteClientHandler client) throws RemoteException;
-    String sayHello(String name) throws RemoteException;
     void handleIncomingEvent(ClientEvent event, RemoteClientHandler client) throws RemoteException;
 }

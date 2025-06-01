@@ -25,11 +25,6 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
         this.controller.addClient(new Client(null, client));
     }
 
-    @Override
-    public String sayHello(String name) throws RemoteException {
-        return "Hello, " + name + "!";
-    }
-
     public static void bind(ServerController serverController) {
         try {
             RmiServer server = new RmiServer(serverController);
@@ -43,14 +38,7 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
     }
 
     public void handleIncomingEvent(ClientEvent event, RemoteClientHandler client) throws RemoteException {
-        //TODO: metodo che il client chiama in modo remoto per invocare il visitor del server
         controller.launchThreadEvent(controller.generateSourceForRmi(event, client));
-    }
-
-    //mi sa che questo lo tolgo e faccio fare l'aggiornamento direttamente al ServerController
-    public void handleOutgoingEvent (ServerEvent event, ClientHandler client) throws RemoteException {
-        //TODO:metodo che il server chiama per invocare il visitor del client
-        // client.handleInComingEvent(event);
     }
 
 }
