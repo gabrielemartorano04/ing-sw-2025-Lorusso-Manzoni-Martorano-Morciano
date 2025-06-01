@@ -9,7 +9,5 @@ import java.rmi.RemoteException;
  * The interface is used to permit us to not distinguish between RMI and Socket type of connection
  */
 public interface ClientHandler {
-    public void handleEvent(ServerEvent event) throws RemoteException;
-    public int getId() throws RemoteException;
-    public void setId(int id) throws RemoteException;
+    public void handleEvent(ServerEvent event);
 }

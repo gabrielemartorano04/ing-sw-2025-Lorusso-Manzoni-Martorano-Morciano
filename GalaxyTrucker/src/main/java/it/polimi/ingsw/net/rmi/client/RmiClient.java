@@ -13,29 +13,14 @@ import java.rmi.server.UnicastRemoteObject;
 public class RmiClient extends UnicastRemoteObject implements RemoteClientHandler  {
     private final RmiServerInterface server;
     private final ViewFlow view;
-    private int id;
 
 
     public RmiClient(RmiServerInterface server, ViewFlow view) throws RemoteException {
         super();
-        this.id = -1;
         this.server = server;
         this.view = view;
     }
 
-    @Override
-    public void handleEvent(ServerEvent event) throws RemoteException {
-    }
-
-    @Override
-    public int getId() throws RemoteException {
-        return id;
-    }
-
-    @Override
-    public void setId(int id) throws RemoteException {
-        this.id = id;
-    }
 
     public void handleIncomingEvent(ServerEvent event) throws RemoteException {
         // metodo che il server chiama in modo remoto per invocare il visitor del client

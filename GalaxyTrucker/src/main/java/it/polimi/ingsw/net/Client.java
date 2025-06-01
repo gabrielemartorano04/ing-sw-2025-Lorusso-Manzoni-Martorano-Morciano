@@ -3,6 +3,7 @@ package it.polimi.ingsw.net;
 import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
+import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 import java.rmi.RemoteException;
 
@@ -12,18 +13,14 @@ public class Client {
     private TruckerController truckerController;
     private int id;
 
-    public Client(ClientHandler clientHandler) {
+    public Client(ClientHandler clientHandler, RemoteClientHandler remoteClientHandler) {
         this.clientHandler = clientHandler;
-        this.remoteClientHandler = null;
+        this.remoteClientHandler = remoteClientHandler;
+        this.id = -1;
     }
 
     public void setId(int id) {
         this.id = id;
-        try {
-            this.clientHandler.setId(id);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public int getId() {
@@ -31,8 +28,12 @@ public class Client {
     }
 
 
-    public ClientHandler getClientHandler() {
+    public ClientHandler getSocketClient() {
         return clientHandler;
+    }
+
+    public RemoteClientHandler getRmiClient() {
+        return remoteClientHandler;
     }
 
     public TruckerController getTruckerController() {
@@ -45,11 +46,7 @@ public class Client {
 
     public void updateClient(ServerEvent event){
         if(clientHandler != null){
-            try {
-                clientHandler.handleEvent(event);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            clientHandler.handleEvent(event);
         }else if (remoteClientHandler != null){
             try {
                 remoteClientHandler.handleIncomingEvent(event);

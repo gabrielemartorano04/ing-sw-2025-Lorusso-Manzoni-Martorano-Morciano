@@ -9,6 +9,7 @@ import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.net.ClientHandlerVisitor;
 
@@ -54,7 +55,6 @@ public class ServerController {
             FirstConnectionEvent event = new FirstConnectionEvent(
                     "First player in the game, choose the total number of players of the Game"
             );
-            System.out.println("Ho aggiunto il client" + client.getClientHandler());
             client.updateClient(event);
 
         }else{
@@ -75,24 +75,20 @@ public class ServerController {
 
     public void addEventToQueue(ClientEvent event, ClientHandlerSocket client) {
         for(Client c : clients) {
-            try {
-                if(c.getId()==client.getId()) {
-                    eventQueue.offer(new EventWithSource(event, c));
-                    return;
-                }
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
+            if(c.getSocketClient()==client) {
+                eventQueue.offer(new EventWithSource(event, c));
+                return;
             }
         }
     }
 
-    public EventWithSource generateSourceForRmi(ClientEvent event, int id){
+    public EventWithSource generateSourceForRmi(ClientEvent event, RemoteClientHandler remoteClient) {
         for(Client c : clients) {
-            if(c.getId()==id) {
+            if(c.getRmiClient() == remoteClient) {
                 return new EventWithSource(event, c);
             }
         }
-        throw new RuntimeException("No client found with id: " + id);
+        throw new RuntimeException("No client found");
     }
 
     // questo metodo serve sia per la socket (chiamato dentro il dispatcher) che per l'RMI
@@ -127,12 +123,8 @@ public class ServerController {
 
 
     public void processEvent(EventWithSource eventWithSource, ClientHandlerVisitor visitor) {
-        Integer id = null;
-        try {
-            id = eventWithSource.getClient().getClientHandler().getId();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        int id = eventWithSource.getClient().getId();
+
 
         Object lock;
         if(userLocks.containsKey(id)) {
