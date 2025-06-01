@@ -13,7 +13,6 @@ import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.net.ClientHandlerVisitor;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -88,7 +87,8 @@ public class ServerController {
                 return new EventWithSource(event, c);
             }
         }
-        throw new RuntimeException("No client found");
+        // per debug
+        throw new RuntimeException("No Rmi Client found");
     }
 
     // questo metodo serve sia per la socket (chiamato dentro il dispatcher) che per l'RMI
@@ -124,15 +124,11 @@ public class ServerController {
 
     public void processEvent(EventWithSource eventWithSource, ClientHandlerVisitor visitor) {
         int id = eventWithSource.getClient().getId();
-
-
         Object lock;
-        if(userLocks.containsKey(id)) {
-            lock = userLocks.get(id);
-        }else{
-            userLocks.put(id,new Object());
-            lock = userLocks.get(id);
+        if (!userLocks.containsKey(id)) {
+            userLocks.put(id, new Object());
         }
+        lock = userLocks.get(id);
         synchronized (lock) {
             handleEventLogic(eventWithSource, visitor);
         }
@@ -215,8 +211,5 @@ public class ServerController {
         }
     }
 
-    public GameController getGameController() {
-        return gameController;
-    }
 }
 
