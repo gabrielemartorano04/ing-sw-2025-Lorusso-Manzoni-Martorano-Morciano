@@ -36,7 +36,8 @@ public class GUIApplication extends Application {
         stack.add(card1);
         stack.add(card2);
         stack.add(card3);
-        spaceship = new SpaceShip(PlayerColors.RED);
+        spaceship = new SpaceShip();
+        //spaceship.setSpaceship(level, color); AGGIUNGIIIII
 //        Cabin cabin = new Cabin(3, 3, 3, 3, "Main Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
 //        trucker.getSpaceShip().addComponent(cabin, 7,7);
         kept.add(availableComponents.getComponents().get(15));
