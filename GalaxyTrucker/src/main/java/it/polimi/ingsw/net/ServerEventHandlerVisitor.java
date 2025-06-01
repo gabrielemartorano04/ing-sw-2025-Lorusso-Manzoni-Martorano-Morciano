@@ -90,7 +90,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.fillAvailableComponents(event.getComponents());
         ui.showBuildPhaseStart(event.getComponents());
         ui.showBuildOptions();
-        viewFlow.getTimerDisplay().start(event.getSeconds());
+        if(viewFlow.getLevel()==2) viewFlow.getTimerDisplay().start(event.getSeconds());
     }
     @Override
     public void visit(ComponentLinkedEvent event) {
@@ -214,7 +214,13 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showMessage("Your updated ship\n");
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         ui.showBuildComplete();
-        ui.showMessage("Type 'alien' to see where you can place aliens");
+        if(viewFlow.getLevel()==2){
+            ui.showMessage("Type 'alien' to see where you can place aliens");
+
+        }
+        else{
+            ui.showMessage("Type 'continue' to start flight phase");
+        }
         viewFlow.setViewState(ViewFlow.ViewState.FILL);
         //ui.showMessage("It's time to fill the spaceship\n");
     }

@@ -352,6 +352,12 @@ public ClientEvent parseFirstConnection(String input) {
                     System.out.println("Error: illegal command. Type 'coord <x1> <y1> <x2> <y2>...' .");
                     return null;
                 }
+            case "continue":
+                if(tokens.length != 1){
+                    System.out.println("Error: illegal command. Type 'coord <x1> <y1> <x2> <y2>...' .");
+                    return null;
+                }
+                return new SendAlienCoord(null);
             default:
                 System.out.println("Error: unknown command: " + command);
                 return null;

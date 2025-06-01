@@ -184,7 +184,12 @@ public class ClientHandlerVisitor implements VirtualServer {
                 players.add(t.getNickname());
             }
             gameController.getGame().startHourglass();
-            serverEvent= new StartBuildingEvent(nickname, currentClient.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondiRimanenti(),players, gameController.getGame().getGameLevel());
+            if (gameController.getGame().getGameLevel()==2){
+                serverEvent= new StartBuildingEvent(nickname, currentClient.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondiRimanenti(),players, gameController.getGame().getGameLevel());
+            }
+            else{
+                serverEvent= new StartBuildingEvent(nickname, currentClient.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), 0,players, gameController.getGame().getGameLevel());
+            }
             return;
         }
         serverEvent= new NoAvailableSpaceError();
@@ -286,7 +291,9 @@ public class ClientHandlerVisitor implements VirtualServer {
 
     @Override
     public void visit(SendAlienCoord event) {
-        currentClient.getTruckerController().getSpaceShip().setNumAlien(event.getCoord());
+        if(event.getCoord()!=null){
+            currentClient.getTruckerController().getSpaceShip().setNumAlien(event.getCoord());
+        }
         currentClient.getTruckerController().getSpaceShip().setNumHuman();
         currentClient.getTruckerController().getSpaceShip().setBattery();
         Component[][] spaceship= currentClient.getTruckerController().getSpaceShip().getComponents();
