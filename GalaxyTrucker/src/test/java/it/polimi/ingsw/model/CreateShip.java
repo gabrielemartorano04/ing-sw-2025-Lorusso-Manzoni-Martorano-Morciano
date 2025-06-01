@@ -52,15 +52,16 @@ public class CreateShip {
         ship.addComponent(c2, 5, 8);
         c12.turn();
         ship.addComponent(c12, 7, 10);
-        ship.addComponent(c13, 8, 5);
         ship.addComponent(c14, 8, 7);
+        ship.addComponent(c13, 8, 5);
         c15.turn();
         ship.addComponent(c15, 8, 8);
         ship.addComponent(c16, 8, 9);
         ship.addComponent(c17, 8, 10);
+        ship.addComponent(c20, 9, 6);
         ship.addComponent(c18, 9, 4);
         ship.addComponent(c19, 9, 5);
-        ship.addComponent(c20, 9, 6);
+
         c21.turn();
         ship.addComponent(c21, 9, 8);
         return ship;
@@ -146,33 +147,46 @@ public class CreateShip {
         Component c3 = new Pipes(1, 3, 1, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web55.jpg");
         Component c4 = new Cannon(0, 3, 1, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web114.jpg", false);
         Component c5 = new Load(2, 1, 0, 3, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web65.jpg", 1, true);
-//        Component c6 = new
-//        Component c7 = new
-//        Component c8 = new
-//        Component c9 = new
-//        Component c10 = new
-//        Component c11 = new
-//        Component c12 = new
-//        Component c13 = new
-//        Component c14 = new
-//        Component c15 = new
-//        Component c16 = new
-//        Component c17 = new
-//        Component c18 = new
-//        Component c19 = new
-//        Component c20 = new
-//        Component c21 = new
-//        Component c22 = new
-//        Component c23 = new;
-        ship.addComponent(c1, 5, 7);
-        c2.turn();
-        ship.addComponent(c2, 6, 6);
-        c3.turn();
-        ship.addComponent(c3, 6, 7);
-        ship.addComponent(c4, 6, 8);
+        Component c6 = new BatteryStorage(1, 1, 2, 0, "Battery Storage", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web13.jpg", 3);
+        Component c7 = new Cabin(1, 2, 2, 1, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web37.jpg", null, false);
+        Component c8 = new Load(0, 0, 0, 2, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web29.jpg", 3, false);
+        Component c9 = new Load(0, 2, 1, 3, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web62.jpg", 1, true);
+        Component c10 = new Cannon(0, 1, 3, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web136.jpg", true);
+        Component c11 = new Cabin(0, 1, 1, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web46.jpg", null, false);
+        Component c12 = new BatteryStorage(3, 2, 2, 2, "Battery Storage", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web7.jpg", 2);
+        Component c13 = new Shield(0, 0, 3, 2, "Shield", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web152.jpg");
+        Component c14 = new Cannon(0, 3, 2, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web120.jpg", false);
+        Component c15 = new LifeSupport(2, 0, 0, 3, "Life Support", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web148.jpg", AlienColor.PURPLE);
+        Component c16 = new Cannon(0, 1, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web102.jpg", false);
+        c6.turn();
+        c6.turn();
+        c6.turn();
+        ship.addComponent(c6, 7, 6);
+        ship.addComponent(c7, 7, 8);
         c5.turn();
         c5.turn();
         ship.addComponent(c5, 7, 5);
+        ship.addComponent(c8, 7, 9);
+        c3.turn();
+        ship.addComponent(c3, 6, 7);
+        c2.turn();
+        ship.addComponent(c2, 6, 6);
+        ship.addComponent(c4, 6, 8);
+        ship.addComponent(c1, 5, 7);
+        c11.turn();
+        c11.turn();
+        ship.addComponent(c11, 8, 7);
+        ship.addComponent(c10, 8, 6);
+        c9.turn();
+        c9.turn();
+        c9.turn();
+        ship.addComponent(c9, 8, 5);
+        ship.addComponent(c12, 8, 8);
+        ship.addComponent(c13, 8, 9);
+        ship.addComponent(c14, 9, 5);
+        c15.turn();
+        ship.addComponent(c15, 9, 8);
+        ship.addComponent(c16, 9, 9);
         return ship;
     }
 }
