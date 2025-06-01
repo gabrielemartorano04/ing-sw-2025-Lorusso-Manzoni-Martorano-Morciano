@@ -151,13 +151,13 @@ public class CreateShip {
         Component c7 = new Cabin(1, 2, 2, 1, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web37.jpg", null, false);
         Component c8 = new Load(0, 0, 0, 2, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web29.jpg", 3, false);
         Component c9 = new Load(0, 2, 1, 3, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web62.jpg", 1, true);
-        Component c10 = new Cannon(0, 1, 3, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web136.jpg", true);
+        Component c10 = new Engine(0, 3, 3, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web99.jpg", true);
         Component c11 = new Cabin(0, 1, 1, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web46.jpg", null, false);
         Component c12 = new BatteryStorage(3, 2, 2, 2, "Battery Storage", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web7.jpg", 2);
         Component c13 = new Shield(0, 0, 3, 2, "Shield", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web152.jpg");
-        Component c14 = new Cannon(0, 3, 2, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web120.jpg", false);
+        Component c14 = new Engine(2, 0, 0, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web77.jpg", false);
         Component c15 = new LifeSupport(2, 0, 0, 3, "Life Support", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web148.jpg", AlienColor.PURPLE);
-        Component c16 = new Cannon(0, 1, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web102.jpg", false);
+        Component c16 = new Engine(3, 1, 2, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web87.jpg", false);
         c6.turn();
         c6.turn();
         c6.turn();
