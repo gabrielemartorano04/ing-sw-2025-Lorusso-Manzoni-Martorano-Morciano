@@ -78,7 +78,7 @@ public class CreateShip {
         Component c6 = new Load(2, 1, 3, 0, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web18.jpg", 2, false);
         Component c7 = new Shield(0, 0, 3, 2, "Shield", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web152.jpg");
         Component c8 = new Pipes(1, 3, 1, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web55.jpg");
-        Component c9 = new Load(1, 1, 1, 3, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web64.jpg", 1, true);
+        Component c9 = new Load(2, 2, 2, 3, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web66.jpg", 1, true);
         Component c10 = new LifeSupport(2, 1, 0, 1, "Life Support", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web138.jpg", AlienColor.BROWN);
         Component c11 = new Cabin(0, 1, 1, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web46.jpg", null, false);
         Component c12 = new Shield(2, 1, 2, 1, "Shield", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web151.jpg");
@@ -97,6 +97,8 @@ public class CreateShip {
         c10.turn();
         ship.addComponent(c10, 7, 6);
         ship.addComponent(c11, 7, 8);
+        c9.turn();
+        c9.turn();
         ship.addComponent(c9, 7, 5);
         ship.addComponent(c8, 7, 4);
         c12.turn();
