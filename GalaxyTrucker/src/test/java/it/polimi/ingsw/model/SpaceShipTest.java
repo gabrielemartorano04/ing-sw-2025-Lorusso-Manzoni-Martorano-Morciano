@@ -13,20 +13,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SpaceShipTest {
 
-    private SpaceShip spaceShip;
+    private SpaceShip spaceShip1;
+    private SpaceShip spaceShip2;
+    private CreateShip support=new CreateShip();
 
     @BeforeEach
     void setUp() {
-        spaceShip = new SpaceShip(PlayerColors.BLUE);
-        spaceShip.setSpaceship(2,PlayerColors.BLUE);
+        try {
+            spaceShip1=support.createShip1(spaceShip1);
+            spaceShip2=support.createShip2(spaceShip2);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     void increaseAndGetLost() {
-        spaceShip.increaseLost(1);
-        assertEquals(spaceShip.getLost(), 1);
-        spaceShip.increaseLost(2);
-        assertEquals(spaceShip.getLost(), 3);
+        spaceShip1.increaseLost(1);
+        assertEquals(spaceShip1.getLost(), 1);
+        spaceShip1.increaseLost(2);
+        assertEquals(spaceShip1.getLost(),3 );
     }
 
     @Test
