@@ -44,9 +44,9 @@ public class CreateShip {
         ship.addComponent(c4, 6, 6);
         c3.turn();
         ship.addComponent(c3, 6, 5);
-        c6.turn();
         ship.addComponent(c6, 6, 8);
         ship.addComponent(c7, 6, 9);
+        c1.turn();
         c1.turn();
         ship.addComponent(c1, 5, 6);
         ship.addComponent(c2, 5, 8);
@@ -56,12 +56,12 @@ public class CreateShip {
         ship.addComponent(c13, 8, 5);
         c15.turn();
         ship.addComponent(c15, 8, 8);
+        c16.turn();
         ship.addComponent(c16, 8, 9);
         ship.addComponent(c17, 8, 10);
-        ship.addComponent(c20, 9, 6);
-        ship.addComponent(c18, 9, 4);
         ship.addComponent(c19, 9, 5);
-
+        ship.addComponent(c18, 9, 4);
+        ship.addComponent(c20, 9, 6);
         c21.turn();
         ship.addComponent(c21, 9, 8);
         return ship;
