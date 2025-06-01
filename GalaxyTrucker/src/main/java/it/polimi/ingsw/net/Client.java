@@ -22,9 +22,7 @@ public class Client {
         if(this.id == -1){
             this.id = id;
             if(clientHandler != null){
-                System.out.println("Entrato dentro set del socket client");
                 clientHandler.setId(id);
-                System.out.println(clientHandler.getId() + " id appena settato nel socket client");
             }else{
                 try {
                     remoteClientHandler.setId(id);
