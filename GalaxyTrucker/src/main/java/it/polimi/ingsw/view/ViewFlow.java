@@ -106,6 +106,7 @@ public class ViewFlow implements EventReceiver {
         }
         //!!questa deve gestire gli eventi dal server!!
         if(event.getEventType()==ServerEventType.FIRST_CONNECTION){
+            System.out.println("Entrato");
             ui.showWelcome();
             ui.showInsertNumPlayers();
         } else {

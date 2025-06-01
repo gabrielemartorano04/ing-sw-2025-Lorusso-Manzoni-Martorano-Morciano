@@ -16,7 +16,6 @@ public abstract class UI {
 
     //SETUP
     public abstract void showWelcome();
-    public abstract void showWelcome(EnumSet<PlayerColors> availableColors);
     public abstract void showInsertNumPlayers();
 
     public abstract void showChooseColor(EnumSet<PlayerColors> availableColors);
