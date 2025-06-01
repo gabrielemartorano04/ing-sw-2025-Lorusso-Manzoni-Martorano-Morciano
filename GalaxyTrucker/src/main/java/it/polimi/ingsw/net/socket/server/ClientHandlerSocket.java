@@ -12,12 +12,10 @@ import java.rmi.RemoteException;
 public class ClientHandlerSocket implements ClientHandler {
     private final NetworkServer network;
     private final ServerController controller;
-    private int id;
 
     public ClientHandlerSocket(NetworkServer network, ServerController controller) {
         this.network = network;
         this.controller = controller;
-        this.id = -1;
         startListener();
     }
 
@@ -41,7 +39,7 @@ public class ClientHandlerSocket implements ClientHandler {
     }
 
     @Override
-    public void handleEvent(ServerEvent event) {
+    public void sendEvent(ServerEvent event) {
         try {
 
             network.sendMessage(event);
@@ -50,15 +48,6 @@ public class ClientHandlerSocket implements ClientHandler {
         }
     }
 
-    @Override
-    public int getId() throws RemoteException {
-        return id;
-    }
-
-    @Override
-    public void setId(int id) throws RemoteException {
-        this.id = id;
-    }
 
     public void close() {
         try {

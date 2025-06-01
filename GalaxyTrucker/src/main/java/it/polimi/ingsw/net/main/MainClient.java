@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.main;
 
 import it.polimi.ingsw.net.ConnectionType;
+import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 import it.polimi.ingsw.net.rmi.server.RmiServerInterface;
 import it.polimi.ingsw.net.rmi.client.RmiClient;
 import it.polimi.ingsw.net.ClientHandler;
@@ -72,7 +73,7 @@ public class MainClient {
                 //TODO omogolare la creazione della view sia per RMI che per Socket
                 // SISTEMARE CREAZIONE VIEW ORA NON DA ERRORE MA E SBAGLIATA
                 ViewFlow view = new ViewFlow(new ClientEventSender(new NetworkClient(serverAddress, 12346)));
-                ClientHandler client = new RmiClient(rmiServer, view);
+                RemoteClientHandler client = new RmiClient(rmiServer, view);
                 rmiServer.connect(client);
                 System.out.println("Connected to RMI server!");
                 // Esempio chiamata remota

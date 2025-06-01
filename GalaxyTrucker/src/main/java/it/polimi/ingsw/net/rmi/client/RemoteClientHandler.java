@@ -7,12 +7,7 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface RemoteClientHandler extends Remote, ClientHandler {
-    @Override
-    void handleEvent(ServerEvent event) throws RemoteException;
-    @Override
-    int getId() throws RemoteException;
-    void setId(int id) throws RemoteException;
+public interface RemoteClientHandler extends Remote {
     void handleIncomingEvent(ServerEvent event) throws RemoteException;
     void handleOutgoingEvent(ClientEvent event) throws RemoteException;
 }
