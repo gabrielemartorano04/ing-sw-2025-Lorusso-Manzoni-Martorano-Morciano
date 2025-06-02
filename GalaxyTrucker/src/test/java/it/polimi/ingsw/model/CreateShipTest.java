@@ -3,11 +3,9 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.components.*;
 
-public class CreateShip {
+public class CreateShipTest {
 
-    public CreateShip() {
-
-    }
+    public CreateShipTest() {}
 
     public SpaceShip createShip1(SpaceShip ship) throws InvalidCoordinates {
         ship = new SpaceShip();

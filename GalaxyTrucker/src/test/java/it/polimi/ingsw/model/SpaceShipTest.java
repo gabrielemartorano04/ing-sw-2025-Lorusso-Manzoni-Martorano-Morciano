@@ -16,12 +16,12 @@ class SpaceShipTest {
 
     private SpaceShip spaceShip1;
     private SpaceShip spaceShip2;
-    private CreateShip support=new CreateShip();
+    private CreateShipTest support=new CreateShipTest();
 
     @BeforeEach
     void setUp() {
         try {
-            //spaceShip1=support.createShip1(spaceShip1);
+            //spaceShip1=support.createShip1(spaceShip1); //spaceship di livello 2
             spaceShip2=support.createShip3(spaceShip2); //spaceship di livello 0
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
