@@ -46,9 +46,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(AvailableColorsEvent event) {
         System.out.println("I received: "+ event.getEventType());
-        ui.showWelcome();
-        ui.showChooseColor(event.getColors());
-        System.out.print("> ");
+        ui.welcomeScene(event);
     }
 
     @Override
