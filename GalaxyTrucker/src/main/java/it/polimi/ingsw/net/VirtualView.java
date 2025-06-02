@@ -42,15 +42,9 @@ public interface VirtualView {
 
     void visit(InvalidPositionError event) throws RemoteException;
 
-    void visit(UpdateBuildingStateEvent event) throws RemoteException;
-
     void visit(TurnHourglassError event) throws RemoteException;
 
     void visit(AvailableComponentsEvent event);
-
-    void visit(NotYourTurnError event) throws RemoteException;
-
-    void visit(PlacedComponentRequest event) throws RemoteException;
 
     void visit(TruckerLostCrewEvent event) throws RemoteException;
 

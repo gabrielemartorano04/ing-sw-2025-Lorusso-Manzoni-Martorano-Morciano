@@ -121,6 +121,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.deleteSelectedComponent();
         }
         viewFlow.componentAsUnselected(event.getIndex());
+
         ui.showAvailableComponent(viewFlow.getAvailableComponents());
     }
 
@@ -139,10 +140,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.invalidPosition(event);
     }
 
-    @Deprecated
-    public void visit(UpdateBuildingStateEvent event) {
-        ui.showMessage(event.getMessage());
-    }
 
     @Override
     public void visit(TurnHourglassError event) {
@@ -157,15 +154,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         System.out.print("> ");
     }
 
-    @Deprecated
-    public void visit(NotYourTurnError event) {
-    }
-
-
-    @Override
-    public void visit(PlacedComponentRequest event) {
-
-    }
 
     @Override
     public void visit(TruckerLostCrewEvent event) {
