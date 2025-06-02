@@ -30,6 +30,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(PlayerJoinedEvent event) {
         ui.showPlayerJoined(event.getUsername());
+
         if(!viewFlow.getNameAlreadySet()){
             viewFlow.setNickname(event.getUsername());
         }
@@ -38,23 +39,17 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(NicknameAlreadyInError event) {
-        ui.showNicknameTaken();
-        ui.showChooseColor(event.getColors());
-        System.out.print("> ");
+        ui.nickNameAlreadyTaken(event);
     }
 
     @Override
     public void visit(AvailableColorsEvent event) {
-        System.out.println("I received: "+ event.getEventType());
         ui.welcomeScene(event);
     }
 
     @Override
     public void visit(ColorAlreadyInError event) {
-        ui.showError(event.getMessage());
-        ui.showColorTaken();
-        ui.showChooseColor(event.getAvailableColors());
-        System.out.print("> ");
+        ui.colorAlreadyTaken(event);
     }
 
     @Override
@@ -73,6 +68,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(SetupCompleteEvent event) {
         ui.showSetupComplete();
+
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
     }
 
@@ -82,31 +78,28 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if(!viewFlow.getNameAlreadySet()){
             viewFlow.setNickname(event.getNickname());
         }
-        ui.showPlayers(event.getPlayers());
         viewFlow.setLevel(event.getLevel());
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
         viewFlow.setShip(event.getSpaceShip().getComponents());
         viewFlow.fillAvailableComponents(event.getComponents());
-        ui.showBuildPhaseStart(event.getComponents());
-        ui.showBuildOptions();
-        System.out.print("> ");
-        if(viewFlow.getLevel()==2) viewFlow.getTimerDisplay().start(event.getSeconds());
+
+        ui.startBuildingScene(event);
+
+        if(viewFlow.getLevel()==2) {
+            viewFlow.getTimerDisplay().start(event.getSeconds());
+        }
     }
     @Override
     public void visit(ComponentLinkedEvent event) {
         viewFlow.getShip()[event.getX()][event.getY()]=event.getComponent();
         viewFlow.deleteSelectedComponent();
-        ui.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
-        ui.showAvailableComponent(event.getAvComponents());
-        System.out.print("> ");
+
+        ui.componentLinked(event);
     }
 
     @Override
     public void visit(ComponentNotAvailableError event) {
-        ui.showError(event.getMessage());
-        ui.showAvailableComponent(viewFlow.getAvailableComponents());
-        ui.showMessage("Please select a component between 0 and " + (viewFlow.getAvailableComponents().size()-1)+"\n");
-        System.out.print("> ");
+        ui.componentNotAvailable(event, viewFlow);
     }
 
     @Override

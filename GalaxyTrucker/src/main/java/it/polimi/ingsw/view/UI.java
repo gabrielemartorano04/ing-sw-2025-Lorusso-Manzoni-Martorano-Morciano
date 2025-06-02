@@ -6,8 +6,13 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.ComponentLinkedEvent;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.ComponentNotAvailableError;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.StartBuildingEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
+import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
+import it.polimi.ingsw.net.events.serverevents.setupevents.NicknameAlreadyInError;
 
 import java.util.*;
 
@@ -21,11 +26,25 @@ public interface UI {
     void showInsertNumPlayers();
 
     void welcomeScene(AvailableColorsEvent event);
-    // void
+
+    void nickNameAlreadyTaken(NicknameAlreadyInError event);
+
+    void colorAlreadyTaken(ColorAlreadyInError event);
+
+    void startBuildingScene(StartBuildingEvent event);
+
+    void componentLinked(ComponentLinkedEvent event);
+
+    void componentNotAvailable(ComponentNotAvailableError event, ViewFlow viewFlow);
+
+
+
 
     // fine omologazione GUI TUI
     // (penso che tutti gli altri metodi che seguono possonano diventare privati di GUI o TUI
     // e non dover essere ereditati da questa interface)
+
+
 
     void showWelcome(EnumSet<PlayerColors> availableColors);
 
