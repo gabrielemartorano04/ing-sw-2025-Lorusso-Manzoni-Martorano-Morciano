@@ -1462,7 +1462,7 @@ public class SpaceShip implements Serializable {
      * @param use true if the player wants to use the shield, false otherwise
      * @return true if the spaceship is protected
      */
-    public boolean blockLightCannonShot(int direction,int num, boolean use){
+    public boolean blockLightCannonShot(int direction, boolean use){
 
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
@@ -1502,33 +1502,32 @@ public class SpaceShip implements Serializable {
                             if(cabin.getQuantity()>0){
                                 switch(components[i+1][j]){
                                     case Cabin cabin1->{
-                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[2], cabin.getLink()[0])){
+                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[2], cabin1.getLink()[0])){
                                             removeHuman(i,j);
-                                            return;
+                                            continue;
                                         }
                                     }default -> {}
                                 }
                                 switch(components[i][j+1]){
                                     case Cabin cabin1->{
-                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[1], cabin.getLink()[3])){
+                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[1], cabin1.getLink()[3])){
                                             removeHuman(i,j);
-                                            return;
+                                            continue;
                                         }
                                     }default -> {}
                                 }
                                 switch(components[i-1][j]){
                                     case Cabin cabin1->{
-                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[0], cabin.getLink()[2])){
+                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[0], cabin1.getLink()[2])){
                                             removeHuman(i,j);
-                                            return;
+                                            continue;
                                         }
                                     }default -> {}
                                 }
                                 switch(components[i][j-1]){
                                     case Cabin cabin1->{
-                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[3], cabin.getLink()[1])){
+                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[3], cabin1.getLink()[1])){
                                             removeHuman(i,j);
-                                            return;
                                         }
                                     }default -> {}
                                 }

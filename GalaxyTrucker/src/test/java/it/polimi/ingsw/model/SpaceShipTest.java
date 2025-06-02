@@ -393,15 +393,25 @@ class SpaceShipTest {
 
     @Test
     void blockSmallMeteor() {
+        spaceShip2.
     }
 
     @Test
     void blockLightCannonShot() {
+        spaceShip2.setBattery();
+        assertTrue(spaceShip2.blockLightCannonShot(0,true));
+        assertTrue(spaceShip2.blockLightCannonShot(1,true));
+        assertTrue(spaceShip2.blockLightCannonShot(2,true));
+        assertFalse(spaceShip2.blockLightCannonShot(3,true));
+        assertFalse(spaceShip2.blockLightCannonShot(3,false));
     }
 
     @Test
     void epidemic() {
-
+        spaceShip2.setNumHuman();
+        assertEquals(6,spaceShip2.getNumHuman());
+        spaceShip2.epidemic();
+        assertEquals(3,spaceShip2.getNumHuman());
     }
 
     @Test
