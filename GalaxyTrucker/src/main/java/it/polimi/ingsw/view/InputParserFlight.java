@@ -289,6 +289,13 @@ public class InputParserFlight {
                     return null;
                 }
                 return new RemotionSeenEvent();
+            case CURRENT_CONDITION:
+                String[] currCond=input.split("\\s+");
+                if(currCond.length!=1 || !currCond[0].trim().equals("continue")){
+                    System.out.println("Error: invalid command");
+                    return null;
+                }
+                return new WarzoneStartEvent();
             case REMOVE_BATTERIES:
                 String[] removeBatteries=input.split("\\s*,\\s*");
                 ArrayList<int[]> coordinates=new ArrayList<>();

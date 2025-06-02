@@ -12,9 +12,6 @@ import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -760,6 +757,11 @@ public class TUI extends UI {
         System.out.printf("|   %s   |\n", c.getLink()[2]);
         System.out.print("|_______|\n");
 
+    }
+
+    @Override
+    public void showCurrCondition(Condition cond){
+        System.out.println("Current condition:" + cond);
     }
 
     //todo finisci

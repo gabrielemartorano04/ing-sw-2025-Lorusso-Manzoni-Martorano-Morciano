@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
@@ -96,6 +97,8 @@ public abstract class UI {
     public abstract void showStack(Stack stack);
 
     public abstract void showComponentSelected(Component component);
+
+    public abstract void showCurrCondition(Condition cond);
 
     public abstract void showInputFormat(ParserState parserState);
 
