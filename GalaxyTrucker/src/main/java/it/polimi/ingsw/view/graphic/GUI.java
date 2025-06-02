@@ -16,6 +16,8 @@ import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
+import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
+import it.polimi.ingsw.net.events.serverevents.setupevents.NicknameAlreadyInError;
 import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 
@@ -80,6 +82,17 @@ public class GUI implements UI {
     public void welcomeScene(AvailableColorsEvent event){
         // TODO:
     }
+
+    @Override
+    public void nickNameAlreadyTaken(NicknameAlreadyInError event){
+        //TODO:
+    }
+
+    @Override
+    public void colorAlreadyTaken(ColorAlreadyInError event){
+        //TODO:
+    }
+
 
 //    @Override
 //    public void showFirstWelcome() {

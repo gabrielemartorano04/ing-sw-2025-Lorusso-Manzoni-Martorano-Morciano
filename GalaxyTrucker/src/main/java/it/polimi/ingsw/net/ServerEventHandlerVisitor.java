@@ -38,23 +38,17 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(NicknameAlreadyInError event) {
-        ui.showNicknameTaken();
-        ui.showChooseColor(event.getColors());
-        System.out.print("> ");
+        ui.nickNameAlreadyTaken(event);
     }
 
     @Override
     public void visit(AvailableColorsEvent event) {
-        System.out.println("I received: "+ event.getEventType());
         ui.welcomeScene(event);
     }
 
     @Override
     public void visit(ColorAlreadyInError event) {
-        ui.showError(event.getMessage());
-        ui.showColorTaken();
-        ui.showChooseColor(event.getAvailableColors());
-        System.out.print("> ");
+        ui.colorAlreadyTaken(event);
     }
 
     @Override

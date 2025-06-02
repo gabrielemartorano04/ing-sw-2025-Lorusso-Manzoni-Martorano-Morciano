@@ -9,6 +9,8 @@ import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
+import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
+import it.polimi.ingsw.net.events.serverevents.setupevents.NicknameAlreadyInError;
 import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
@@ -31,6 +33,22 @@ public class TUI implements UI {
         System.out.print("> ");
 
     }
+
+    @Override
+    public void nickNameAlreadyTaken(NicknameAlreadyInError event){
+        this.showNicknameTaken();
+        this.showChooseColor(event.getColors());
+        System.out.print("> ");
+    }
+
+    @Override
+    public void colorAlreadyTaken(ColorAlreadyInError event){
+        this.showError(event.getMessage());
+        this.showColorTaken();
+        this.showChooseColor(event.getAvailableColors());
+        System.out.print("> ");
+    }
+
 
     @Override
     public void showWelcome(EnumSet<PlayerColors> availableColors) {
