@@ -50,8 +50,6 @@ public interface VirtualView {
 
     void visit(NotYourTurnError event) throws RemoteException;
 
-    void visit(NumberOfPlayersError event) throws RemoteException;
-
     void visit(PlacedComponentRequest event) throws RemoteException;
 
     void visit(TruckerLostCrewEvent event) throws RemoteException;

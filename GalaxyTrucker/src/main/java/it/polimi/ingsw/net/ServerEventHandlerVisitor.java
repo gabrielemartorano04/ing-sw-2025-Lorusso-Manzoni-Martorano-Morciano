@@ -122,30 +122,24 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
         viewFlow.componentAsUnselected(event.getIndex());
         ui.showAvailableComponent(viewFlow.getAvailableComponents());
-        System.out.print("> ");
     }
 
     @Override
     public void visit(CoordRequest event) {
         ui.askCoordinates();
-        System.out.print("> ");
     }
 
     @Override
     public void visit(InvalidCoordinatesError event) {
-        ui.showError(event.getMessage());
-        ui.askCoordinates();
-        System.out.print("> ");
+        ui.invalidCoordinates(event);
     }
 
     @Override
     public void visit(InvalidPositionError event) {
-        ui.showInvalidPlacement(event.getMessage());
-        ui.askCoordinates();
-        System.out.print("> ");
+        ui.invalidPosition(event);
     }
 
-    @Override
+    @Deprecated
     public void visit(UpdateBuildingStateEvent event) {
         ui.showMessage(event.getMessage());
     }
@@ -156,20 +150,17 @@ public class ServerEventHandlerVisitor implements VirtualView {
         System.out.print("> ");
     }
 
-    @Override
+    @Deprecated
     public void visit(AvailableComponentsEvent event) {
         ui.showAvailableComponent(event.getComponents());
         ui.showSelectComponent();
         System.out.print("> ");
     }
 
-    @Override
+    @Deprecated
     public void visit(NotYourTurnError event) {
     }
 
-    @Override
-    public void visit(NumberOfPlayersError event) {
-    }
 
     @Override
     public void visit(PlacedComponentRequest event) {
