@@ -284,7 +284,7 @@ public class Pirates extends Card implements Serializable {
                         ship.destroyComponent(roll, direction, Game.getIstance().getBank());
                     } else {
                         // Un colpo piccolo può solo essere fermato con lo scudo
-                        if (!ship.blockLightCannonShot(direction, roll, shieldAnswers.get(j))) {
+                        if (!ship.blockLightCannonShot(direction, shieldAnswers.get(j))) {
                             ship.destroyComponent(roll, direction, Game.getIstance().getBank());
                         }
                     }
