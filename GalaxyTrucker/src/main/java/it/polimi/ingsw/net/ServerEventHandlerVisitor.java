@@ -76,14 +76,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if(!viewFlow.getNameAlreadySet()){
             viewFlow.setNickname(event.getNickname());
         }
-        ui.showPlayers(event.getPlayers());
         viewFlow.setLevel(event.getLevel());
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
         viewFlow.setShip(event.getSpaceShip().getComponents());
         viewFlow.fillAvailableComponents(event.getComponents());
-        ui.showBuildPhaseStart(event.getComponents());
-        ui.showBuildOptions();
-        System.out.print("> ");
+        ui.startBuildingScene(event);
         if(viewFlow.getLevel()==2) viewFlow.getTimerDisplay().start(event.getSeconds());
     }
     @Override

@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.StartBuildingEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
@@ -28,11 +29,14 @@ public interface UI {
 
     void colorAlreadyTaken(ColorAlreadyInError event);
 
+    void startBuildingScene(StartBuildingEvent event);
+
+
+
+
     // fine omologazione GUI TUI
     // (penso che tutti gli altri metodi che seguono possonano diventare privati di GUI o TUI
     // e non dover essere ereditati da questa interface)
-
-
 
 
 

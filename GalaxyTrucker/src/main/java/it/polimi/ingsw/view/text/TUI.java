@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.StartBuildingEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
@@ -48,6 +49,18 @@ public class TUI implements UI {
         this.showChooseColor(event.getAvailableColors());
         System.out.print("> ");
     }
+
+    @Override
+    public void startBuildingScene(StartBuildingEvent event){
+        this.showPlayers(event.getPlayers());
+        this.showBuildPhaseStart(event.getComponents());
+        this.showBuildOptions();
+        System.out.print("> ");
+    }
+
+
+
+
 
 
     @Override
