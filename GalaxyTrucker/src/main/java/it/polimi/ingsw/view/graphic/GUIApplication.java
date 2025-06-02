@@ -59,7 +59,7 @@ public class GUIApplication extends Application {
         //gui.showKeptComponents(kept);
 
         //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
-        //gui.showKeptComponents(kept);
+        gui.showKeptComponents(kept);
         //gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
 //        gui.showWaitForOthers();
 //        gui.showBuildComplete();
@@ -71,7 +71,7 @@ public class GUIApplication extends Application {
         //gui.showTruckerLostAllCrew(trucker.getNickname());
         //gui.showConnectionLost();
         //gui.showMessage("luca ha perso tutte le merci");
-        //gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
+        gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
     }
 
     public static void main(String[] args) {

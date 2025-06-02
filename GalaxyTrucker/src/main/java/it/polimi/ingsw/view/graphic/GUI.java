@@ -806,12 +806,12 @@ public class GUI implements UI {
             final int index = i;
 
             StackPane slot = new StackPane();
-            slot.setPrefSize(80, 80);
-            slot.setMinSize(80, 80);
-            slot.setMaxSize(80, 80);
+            slot.setPrefSize(70, 70);
+            slot.setMinSize(70, 70);
+            slot.setMaxSize(70, 70);
             slot.setStyle("-fx-background-color: transparent;");
 
-            Rectangle border = new Rectangle(80, 80);
+            Rectangle border = new Rectangle(70, 70);
             border.setArcWidth(3);
             border.setArcHeight(3);
             border.setFill(Color.TRANSPARENT);
@@ -821,10 +821,10 @@ public class GUI implements UI {
             if (kept.get(i) != null) {
                 Component comp = kept.get(i);
                 ImageView imageView = new ImageView(comp.getFrontImage());
-                imageView.setFitWidth(80);
-                imageView.setFitHeight(80);
+                imageView.setFitWidth(70);
+                imageView.setFitHeight(70);
 
-                Rectangle clip = new Rectangle(80, 80);
+                Rectangle clip = new Rectangle(70, 70);
                 clip.setArcWidth(6);
                 clip.setArcHeight(6);
                 imageView.setClip(clip);
@@ -844,7 +844,7 @@ public class GUI implements UI {
         }
 
         StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
-        StackPane.setMargin(keptSlots, new Insets(28, 36, 0, 0));
+        StackPane.setMargin(keptSlots, new Insets(30, 50, 0, 0));
 
         Platform.runLater(() -> {
             StackPane stackRoot = (StackPane) stage.getScene().getRoot();
@@ -1009,41 +1009,40 @@ public class GUI implements UI {
 
         // Pulsante Hourglass (solo timer, no overlay)
         Button hourglassBtn = new Button("⏳");
-        hourglassBtn.setFont(Font.font("Bangers", 20));
+        hourglassBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
         hourglassBtn.setTextFill(Color.BLACK);
-        hourglassBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-        hourglassBtn.setPrefWidth(80);
         hourglassBtn.setCursor(Cursor.HAND);
+        hourglassBtn.setPrefWidth(70);
+        hourglassBtn.setPrefHeight(30);
+
+        CornerRadii roundedCorners = new CornerRadii(10);
+
+        Background activeBg = new Background(new BackgroundFill(Color.web("#FFDE69"), roundedCorners, Insets.EMPTY));
+
+        Background disabledBg = new Background(new BackgroundFill(Color.web("#FFDE69"), roundedCorners, Insets.EMPTY));
+        String disabledStyle = "-fx-opacity: 0.6;";
+
+        hourglassBtn.setBackground(activeBg);
 
         hourglassBtn.setOnAction(e -> {
-            hourglassBtn.setDisable(true);
             viewFlow.handleInput("hourglass");
+            hourglassBtn.setDisable(true);
+            hourglassBtn.setBackground(disabledBg);
+            hourglassBtn.setStyle(disabledStyle);
 
+            // Countdown
             IntegerProperty seconds = new SimpleIntegerProperty(90);
-
-            Label countdownLabel = new Label("90");
-            countdownLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 28));
-            countdownLabel.setTextFill(Color.WHITE);
-            countdownLabel.setBackground(new Background(
-                    new BackgroundFill(Color.rgb(0, 0, 0, 0.7), new CornerRadii(10), Insets.EMPTY)));
-            countdownLabel.setPadding(new Insets(10));
-
-            // Posiziona al centro-alto della finestra
-            StackPane.setAlignment(countdownLabel, Pos.TOP_CENTER);
-            StackPane.setMargin(countdownLabel, new Insets(20, 0, 0, 0));
-
-            StackPane root = (StackPane) stage.getScene().getRoot();
-            root.getChildren().add(countdownLabel);
+            hourglassBtn.textProperty().bind(seconds.asString("%ds"));
 
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
                 int current = seconds.get() - 1;
                 seconds.set(current);
-                countdownLabel.setText(current + "s");
-
                 if (current <= 0) {
                     hourglassBtn.setDisable(false);
+                    hourglassBtn.setStyle(""); // rimuovi opacità
+                    hourglassBtn.setBackground(activeBg);
+                    hourglassBtn.textProperty().unbind();
                     hourglassBtn.setText("⏳");
-                    root.getChildren().remove(countdownLabel);
                 }
             }));
             timeline.setCycleCount(90);
@@ -1078,43 +1077,50 @@ public class GUI implements UI {
             }
         });
 
-        // Pulsante Show Other
-//        Button otherBtn = new Button("Show other");
-//        styleButton.accept(otherBtn);
-//        otherBtn.setOnAction(e -> {
-//            VBox nicknameChoices = new VBox(15);
-//            nicknameChoices.setAlignment(Pos.CENTER);
-//
-//            List<String> truckerNicknames = null; //TODO Recupera i nickname
-//
-//            for (String nickname : truckerNicknames) {
-//                Button nickBtn = new Button(nickname);
-//                styleButton.accept(nickBtn);
-//                nickBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
-//
-//                nickBtn.setOnAction(ev -> {
-//                    viewFlow.handleInput("ship " + nickname);
-//                    ((StackPane) stage.getScene().getRoot()).getChildren().remove(nicknameChoices.getParent());
-//                });
-//
-//                nicknameChoices.getChildren().add(nickBtn);
-//            }
-//
-//            StackPane popup = new StackPane(
-//                    new Rectangle(800, 550, Color.rgb(0, 0, 0, 0.4)),
-//                    nicknameChoices
-//            );
-//            popup.setOnMouseClicked(ev -> ((StackPane) stage.getScene().getRoot()).getChildren().remove(popup));
-//            ((StackPane) stage.getScene().getRoot()).getChildren().add(popup);
-//        });
+        //Pulsante Show Other
+        Button otherBtn = new Button("Show other ship");
+        styleButton.accept(otherBtn);
+        otherBtn.setOnAction(e -> {
+            VBox nicknameChoices = new VBox(15);
+            nicknameChoices.setAlignment(Pos.CENTER);
 
-        optionsBox.getChildren().addAll(selectComponentBtn, finishBtn, stackBtn, rulesBtn/*, otherBtn*/, hourglassBtn);
+            List<String> truckerNicknames = new ArrayList<>(){
+                {
+                    add("Player1");
+                    add("Player2");
+                    add("Player3");
+                    add("Player4");
+                }
+            }; //TODO Recupera i nickname
+
+            for (String nickname : truckerNicknames) {
+                Button nickBtn = new Button(nickname);
+                styleButton.accept(nickBtn);
+                nickBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+
+                nickBtn.setOnAction(ev -> {
+                    viewFlow.handleInput("ship " + nickname);
+                    ((StackPane) stage.getScene().getRoot()).getChildren().remove(nicknameChoices.getParent());
+                });
+
+                nicknameChoices.getChildren().add(nickBtn);
+            }
+
+            StackPane popup = new StackPane(
+                    new Rectangle(800, 550, Color.rgb(0, 0, 0, 0.4)),
+                    nicknameChoices
+            );
+            popup.setOnMouseClicked(ev -> ((StackPane) stage.getScene().getRoot()).getChildren().remove(popup));
+            ((StackPane) stage.getScene().getRoot()).getChildren().add(popup);
+        });
+
+        optionsBox.getChildren().addAll(selectComponentBtn, stackBtn, otherBtn, finishBtn, rulesBtn, hourglassBtn);
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) stage.getScene().getRoot();
             if (!root.getChildren().contains(optionsBox)) {
                 StackPane.setAlignment(optionsBox, Pos.TOP_RIGHT);
-                StackPane.setMargin(optionsBox, new Insets(20, 0, 0, 10));
+                StackPane.setMargin(optionsBox, new Insets(20, 0, 0, 5));
                 root.getChildren().add(optionsBox);
             }
         });
@@ -1610,20 +1616,21 @@ public class GUI implements UI {
 
     @Override
     public void showPlayerShipStatus(int position, int batteryCount, int humanCount, int cannonPower, int enginePower, Map<String, Integer> goodsByColor) {
-        // Carica le icone
-        ImageView posIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
-        ImageView batteryIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
-        ImageView humanIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
-        ImageView cannonIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
-        ImageView engineIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
+        // Carica le icone (temporaneamente tutte uguali)
+        Image icon = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
+
+        ImageView posIcon = new ImageView(icon);
+        ImageView batteryIcon = new ImageView(icon);
+        ImageView humanIcon = new ImageView(icon);
+        ImageView cannonIcon = new ImageView(icon);
+        ImageView engineIcon = new ImageView(icon);
 
         List<ImageView> mainIcons = List.of(posIcon, batteryIcon, humanIcon, cannonIcon, engineIcon);
-        for (ImageView icon : mainIcons) {
-            icon.setFitWidth(15);
-            icon.setPreserveRatio(true);
+        for (ImageView iv : mainIcons) {
+            iv.setFitWidth(16);
+            iv.setPreserveRatio(true);
         }
 
-        // Crea le etichette
         Label posLabel = new Label(String.valueOf(position));
         Label battLabel = new Label(String.valueOf(batteryCount));
         Label humanLabel = new Label(String.valueOf(humanCount));
@@ -1631,62 +1638,56 @@ public class GUI implements UI {
         Label engineLabel = new Label(String.valueOf(enginePower));
 
         List<Label> labels = List.of(posLabel, battLabel, humanLabel, cannonLabel, engineLabel);
-        for (Label label : labels) {
-            label.setFont(Font.font("Arial", FontWeight.NORMAL, 13));
-            label.setTextFill(Color.WHITE);
+        for (Label l : labels) {
+            l.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+            l.setTextFill(Color.WHITE);
         }
 
-        // Crea blocchi icona + etichetta
         HBox posBox = new HBox(5, posIcon, posLabel);
         HBox battBox = new HBox(5, batteryIcon, battLabel);
         HBox humanBox = new HBox(5, humanIcon, humanLabel);
         HBox cannonBox = new HBox(5, cannonIcon, cannonLabel);
         HBox engineBox = new HBox(5, engineIcon, engineLabel);
 
-        List<HBox> infoBoxes = List.of(posBox, battBox, humanBox, cannonBox, engineBox);
-        for (HBox box : infoBoxes) {
-            box.setAlignment(Pos.CENTER);
+        for (HBox box : List.of(posBox, battBox, humanBox, cannonBox, engineBox)) {
+            box.setAlignment(Pos.CENTER_RIGHT);
         }
 
-        // Beni per colore
+        // Goods box
         HBox goodsBox = new HBox(10);
-        goodsBox.setAlignment(Pos.CENTER);
-
+        goodsBox.setAlignment(Pos.CENTER_RIGHT);
         for (Map.Entry<String, Integer> entry : goodsByColor.entrySet()) {
-            String color = entry.getKey();
-            Integer quantity = entry.getValue();
-
-            //Image icon = new Image(getClass().getResource("/it/polimi/ingsw/view/goods_" + color + ".png").toExternalForm());
-            Image icon = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
-            ImageView goodIcon = new ImageView(icon);
-            goodIcon.setFitWidth(15);
+            ImageView goodIcon = new ImageView(icon); // Sostituisci con getResource("/goods_" + color + ".png")
+            goodIcon.setFitWidth(16);
             goodIcon.setPreserveRatio(true);
 
-            Label qtyLabel = new Label(String.valueOf(quantity));
-            qtyLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 13));
-            qtyLabel.setTextFill(Color.WHITE);
+            Label qty = new Label(String.valueOf(entry.getValue()));
+            qty.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+            qty.setTextFill(Color.WHITE);
 
-            HBox singleGood = new HBox(4, goodIcon, qtyLabel);
-            singleGood.setAlignment(Pos.CENTER); // Allineamento centrale
+            HBox singleGood = new HBox(4, goodIcon, qty);
+            singleGood.setAlignment(Pos.CENTER_RIGHT);
             goodsBox.getChildren().add(singleGood);
         }
 
-        // Contenitore orizzontale finale
-        HBox statusBar = new HBox(20);
-        statusBar.getChildren().addAll(posBox, battBox, humanBox, cannonBox, engineBox, goodsBox);
-        statusBar.setAlignment(Pos.CENTER);
-        statusBar.setPadding(new Insets(6, 12, 6, 12));
+        // Contenitore finale con sfondo
+        HBox statusBar = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox);
+        statusBar.setAlignment(Pos.CENTER_RIGHT);
+        statusBar.setPadding(new Insets(10));
+        statusBar.setStyle("");
+        statusBar.setMaxWidth(800);
         statusBar.setMouseTransparent(true);
 
         Platform.runLater(() -> {
             Node rootNode = stage.getScene().getRoot();
-            if (rootNode.getClass().equals(StackPane.class)) {
-                StackPane root = (StackPane) rootNode;
-                StackPane.setAlignment(statusBar, Pos.BOTTOM_CENTER);
-                StackPane.setMargin(statusBar, new Insets(0, 0, 8, 0));
-                if (!root.getChildren().contains(statusBar)) {
-                    root.getChildren().add(statusBar);
-                }
+            // Supponiamo che sia sempre uno StackPane come da tua struttura
+            StackPane root = (StackPane) rootNode;
+
+            StackPane.setAlignment(statusBar, Pos.CENTER_RIGHT);
+            StackPane.setMargin(statusBar, new Insets(0, 150, -500, 0));
+
+            if (!root.getChildren().contains(statusBar)) {
+                root.getChildren().add(statusBar);
             }
         });
     }
@@ -1720,8 +1721,8 @@ public class GUI implements UI {
         grid.setHgap(2);
         grid.setVgap(2);
         grid.setAlignment(Pos.TOP_LEFT);
-        grid.setTranslateX(145);
-        grid.setTranslateY(30);
+        grid.setTranslateX(164.5);
+        grid.setTranslateY(25);
 
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {
