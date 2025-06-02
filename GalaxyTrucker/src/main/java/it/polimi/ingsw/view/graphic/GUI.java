@@ -19,6 +19,7 @@ import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 
+import it.polimi.ingsw.view.ViewFlow;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -56,6 +57,7 @@ public class GUI implements UI {
     private Scene mainScene;
     private ClientEvent currentEvent;
     private Component selectedComponent;
+    ViewFlow viewFlow;
 
     public GUI(Stage stage) {
         this.stage = stage;
@@ -160,7 +162,43 @@ public class GUI implements UI {
 
     @Override
     public void showWelcome() {
+        double width = 850;
+        double height = 550;
 
+        // Immagine di sfondo
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/WelcomeImage.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        // Bottone START (interattivo)
+        Button continueButton = new Button("START");
+        continueButton.setFont(Font.font("Bangers", 20));
+        continueButton.setTextFill(Color.WHITE);
+        continueButton.setStyle("-fx-background-color: rgba(255,222,105,0.7);");
+
+        // Azione quando si clicca il pulsante
+        continueButton.setOnAction(e -> {
+            //viewFlow.handleInput("start");
+        });
+
+        // Layout
+        StackPane root = new StackPane(backgroundView, continueButton);
+        StackPane.setAlignment(continueButton, Pos.BOTTOM_CENTER);
+        StackPane.setMargin(continueButton, new Insets(0, 0, 25, 0));
+
+        if (stage.getScene() == null) {
+            Scene scene = new Scene(root, width, height);
+            stage.setScene(scene);
+        } else {
+            stage.getScene().setRoot(root);
+        }
+        stage.setWidth(width);
+        stage.setHeight(height);
+        stage.centerOnScreen();
+        stage.show();
     }
 
     @Override
@@ -226,22 +264,13 @@ public class GUI implements UI {
         });
 
         submitButton.setOnAction(e -> {
-            String input = numberField.getText().trim();
+            StringBuilder input = new StringBuilder();
+            String player = numberField.getText().trim();
             Toggle selected = levelGroup.getSelectedToggle();
-            try {
-                int num = Integer.parseInt(input);
-                if (num < 2 || num > 4) {
-                    errorLabel.setText("Number must be between 2 and 4.");
-                } else if (selected == null) {
-                    errorLabel.setText("Please select a level.");
-                } else {
-                    int level = (int) selected.getUserData();
-                    errorLabel.setText("");
-                    setCurrentEvent(new CreateGameEvent(num, level));
-                }
-            } catch (NumberFormatException ex) {
-                errorLabel.setText("Please enter a valid number.");
-            }
+            int num = Integer.parseInt(player);
+            int level = (int) selected.getUserData();
+            input.append(num).append(" ").append(level);
+            viewFlow.handleInput(input.toString());
         });
 
         content.getChildren().addAll(questionLabel, numberField, levelBox, errorLabel, submitButton);
@@ -336,15 +365,10 @@ public class GUI implements UI {
         }
 
         doneButton.setOnAction(e -> {
+            StringBuilder input = new StringBuilder();
             String nickname = nicknameField.getText().trim();
-            if (nickname.isEmpty()) {
-                errorLabel.setText("Please enter a nickname.");
-            } else if (selectedColor[0] == null) {
-                errorLabel.setText("Please choose a color.");
-            } else {
-                errorLabel.setText("");
-                setCurrentEvent(new LoginEvent(nickname, selectedColor[0]));
-            }
+            input.append(nickname).append(" ").append(selectedColor[0]);
+            viewFlow.handleInput(input.toString());
         });
 
         nicknameField.textProperty().addListener((obs, oldText, newText) -> {
@@ -673,7 +697,9 @@ public class GUI implements UI {
 
         int col = 0;
         int row = 0;
+        int i = 0;
         for (Component component : components) {
+            final int index = i;
             ImageView imgView = new ImageView(component.getCovered() ? component.getBackImage() : component.getFrontImage());
             imgView.setFitWidth(70);
             imgView.setFitHeight(70);
@@ -689,18 +715,7 @@ public class GUI implements UI {
             button.setStyle("-fx-background-color: transparent; -fx-border-color: #cccccc; -fx-border-radius: 8px; -fx-cursor: hand; -fx-padding: 0px;");
 
             button.setOnAction(e -> {
-                selectedComponent = component;
-                showSelectComponent();  // Mostra sempre in overlay
-                showDiscardComponent(component);
-
-                // Se già scoperta, avvia drag subito
-                if (!component.getCovered()) {
-                    Dragboard db = button.startDragAndDrop(TransferMode.MOVE);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putString("component");
-                    db.setContent(content);
-                    db.setDragView(imgView.getImage());
-                }
+                viewFlow.handleInput("select " + index);
             });
 
             grid.add(button, col, row);
@@ -709,6 +724,7 @@ public class GUI implements UI {
                 col = 0;
                 row++;
             }
+            i++;
         }
 
         ScrollPane scrollPane = new ScrollPane(new StackPane(grid));
@@ -729,6 +745,8 @@ public class GUI implements UI {
         keptSlots.setAlignment(Pos.TOP_RIGHT);
 
         for (int i = 0; i < 2; i++) {
+            final int index = i;
+
             StackPane slot = new StackPane();
             slot.setPrefSize(80, 80);
             slot.setMinSize(80, 80);
@@ -742,8 +760,6 @@ public class GUI implements UI {
             border.setStroke(Color.WHITE);
             border.setStrokeWidth(2);
 
-            int index = i;
-
             if (kept.get(i) != null) {
                 Component comp = kept.get(i);
                 ImageView imageView = new ImageView(comp.getFrontImage());
@@ -755,13 +771,9 @@ public class GUI implements UI {
                 clip.setArcHeight(6);
                 imageView.setClip(clip);
 
-                imageView.setOnDragDetected(event -> {
-                    Dragboard db = imageView.startDragAndDrop(TransferMode.MOVE);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putString("kept:" + index);
-                    db.setContent(content);
-                    db.setDragView(imageView.snapshot(null, null));
-                    selectedComponent = comp;
+                // Azione al click
+                imageView.setOnMouseClicked(event -> {
+                    viewFlow.handleInput("selectkept " + index);
                     event.consume();
                 });
 
@@ -770,23 +782,6 @@ public class GUI implements UI {
                 slot.getChildren().add(border);
             }
 
-            slot.setOnDragOver(event -> {
-                if (event.getGestureSource() != slot && event.getDragboard().hasString()) {
-                    event.acceptTransferModes(TransferMode.MOVE);
-                }
-                event.consume();
-            });
-
-            slot.setOnDragDropped(event -> {
-                Dragboard db = event.getDragboard();
-                if (db.hasString()) {
-                    setCurrentEvent(new KeepTileEvent(selectedComponent));
-                    selectedComponent = null;
-                    event.setDropCompleted(true);
-                }
-                event.consume();
-            });
-
             keptSlots.getChildren().add(slot);
         }
 
@@ -794,7 +789,7 @@ public class GUI implements UI {
         StackPane.setMargin(keptSlots, new Insets(28, 36, 0, 0));
 
         Platform.runLater(() -> {
-            StackPane stackRoot = (StackPane) stage.getScene().getRoot();  // Assunto sempre valido
+            StackPane stackRoot = (StackPane) stage.getScene().getRoot();
             if (!stackRoot.getChildren().contains(keptSlots)) {
                 stackRoot.getChildren().add(keptSlots);
             }
@@ -803,7 +798,6 @@ public class GUI implements UI {
 
     @Override
     public void showSelectComponent() {
-
         if (selectedComponent == null) return;
 
         double width = 850;
