@@ -6,10 +6,9 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
-import it.polimi.ingsw.net.events.serverevents.buildingevents.ComponentLinkedEvent;
-import it.polimi.ingsw.net.events.serverevents.buildingevents.ComponentNotAvailableError;
-import it.polimi.ingsw.net.events.serverevents.buildingevents.StartBuildingEvent;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.NicknameAlreadyInError;
@@ -37,7 +36,11 @@ public interface UI {
 
     void componentNotAvailable(ComponentNotAvailableError event, ViewFlow viewFlow);
 
+    void componentSelected(ComponentSelectedEvent event, ViewFlow viewFlow);
 
+    void invalidCoordinates(InvalidCoordinatesError event);
+
+    void invalidPosition(InvalidPositionError event);
 
 
     // fine omologazione GUI TUI

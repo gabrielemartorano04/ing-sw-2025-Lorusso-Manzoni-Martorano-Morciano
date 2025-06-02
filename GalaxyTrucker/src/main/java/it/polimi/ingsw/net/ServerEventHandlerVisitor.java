@@ -106,12 +106,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(ComponentSelectedEvent event) {
         viewFlow.componentAsUncovered(event.getIndex());
         viewFlow.componentAsSelected(event.getIndex());
+
         if(viewFlow.getNickname().equals(event.getNickname())) {
             viewFlow.setSelectedComponent(event.getIndex(), false);
-            ui.showComponentSelected(viewFlow.getSelectedComponent());
-            ui.showComponentOptions();
+
+            ui.componentSelected(event, viewFlow);
         }
-        System.out.print("> ");
     }
 
     @Override
@@ -121,34 +121,25 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.deleteSelectedComponent();
         }
         viewFlow.componentAsUnselected(event.getIndex());
+
         ui.showAvailableComponent(viewFlow.getAvailableComponents());
-        System.out.print("> ");
     }
 
     @Override
     public void visit(CoordRequest event) {
         ui.askCoordinates();
-        System.out.print("> ");
     }
 
     @Override
     public void visit(InvalidCoordinatesError event) {
-        ui.showError(event.getMessage());
-        ui.askCoordinates();
-        System.out.print("> ");
+        ui.invalidCoordinates(event);
     }
 
     @Override
     public void visit(InvalidPositionError event) {
-        ui.showInvalidPlacement(event.getMessage());
-        ui.askCoordinates();
-        System.out.print("> ");
+        ui.invalidPosition(event);
     }
 
-    @Override
-    public void visit(UpdateBuildingStateEvent event) {
-        ui.showMessage(event.getMessage());
-    }
 
     @Override
     public void visit(TurnHourglassError event) {
@@ -156,52 +147,40 @@ public class ServerEventHandlerVisitor implements VirtualView {
         System.out.print("> ");
     }
 
-    @Override
+    @Deprecated
     public void visit(AvailableComponentsEvent event) {
         ui.showAvailableComponent(event.getComponents());
         ui.showSelectComponent();
         System.out.print("> ");
     }
 
-    @Override
-    public void visit(NotYourTurnError event) {
-    }
 
-    @Override
-    public void visit(NumberOfPlayersError event) {
-    }
-
-    @Override
-    public void visit(PlacedComponentRequest event) {
-
-    }
-
-    @Override
+    @Deprecated
     public void visit(TruckerLostCrewEvent event) {
     }
 
     @Override
     public void visit(HourglassTurnEvent event) {
         viewFlow.getTimerDisplay().start(event.getSeconds());
-        System.out.print("> ");
+        System.out.println("> ");
     }
 
-    @Override
+    @Deprecated
     public void visit(GameCreatedEvent event) {
 
     }
 
-    @Override
+    @Deprecated
     public void visit(FirstConnectionEvent event) {
 
     }
 
-    @Override
+    @Deprecated
     public void visit(CoordListRequest event) {
 
     }
 
-    @Override
+    @Deprecated
     public void visit(AvailableComponentToSelectRequest event) {
 
     }
@@ -209,15 +188,16 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(TimeExpiredEvent event){
         ui.showTimeExpired();
-        System.out.print("> ");
     }
 
     @Override
     public void visit(BuildCompleteEvent event){
         viewFlow.getTimerDisplay().stop();
+
         ui.showMessage("Your updated ship\n");
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         ui.showBuildComplete();
+
         if(viewFlow.getLevel()==2){
             ui.showMessage("Type 'alien' to see where you can place aliens\n" +
                     "> ");

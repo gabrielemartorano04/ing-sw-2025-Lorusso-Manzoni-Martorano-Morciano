@@ -14,10 +14,9 @@ import it.polimi.ingsw.net.events.clientevents.buildingevents.ShowStackEvent;
 import it.polimi.ingsw.net.events.clientevents.buildingevents.TurnHourglassEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
-import it.polimi.ingsw.net.events.serverevents.buildingevents.ComponentLinkedEvent;
-import it.polimi.ingsw.net.events.serverevents.buildingevents.ComponentNotAvailableError;
-import it.polimi.ingsw.net.events.serverevents.buildingevents.StartBuildingEvent;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.NicknameAlreadyInError;
@@ -110,6 +109,24 @@ public class GUI implements UI {
     public void componentNotAvailable(ComponentNotAvailableError event, ViewFlow viewFlow){
         //TODO:
     }
+
+    @Override
+    public void componentSelected(ComponentSelectedEvent event, ViewFlow viewFlow){
+        //TODO:
+    }
+
+    @Override
+    public void invalidCoordinates(InvalidCoordinatesError event) {
+        //TODO:
+    }
+
+    @Override
+    public void invalidPosition(InvalidPositionError event){
+        //TODO:
+    }
+
+
+
 
 
 //    @Override
