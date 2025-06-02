@@ -106,12 +106,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(ComponentSelectedEvent event) {
         viewFlow.componentAsUncovered(event.getIndex());
         viewFlow.componentAsSelected(event.getIndex());
+
         if(viewFlow.getNickname().equals(event.getNickname())) {
             viewFlow.setSelectedComponent(event.getIndex(), false);
-            ui.showComponentSelected(viewFlow.getSelectedComponent());
-            ui.showComponentOptions();
+
+            ui.componentSelected(event, viewFlow);
         }
-        System.out.print("> ");
     }
 
     @Override
