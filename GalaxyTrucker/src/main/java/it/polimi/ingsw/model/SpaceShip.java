@@ -521,9 +521,9 @@ public class SpaceShip implements Serializable {
      * @param y y coordinate of the component
      * @return boolean that says if the component in position (x,y) is correctly linked with the others components
      */
-    private boolean isValid(int x, int y) {
-
-        Cannon cannon = null;
+    //todo rimetti a private
+    public boolean isValid(int x, int y) {
+        System.out.println("Entrato");
         Component com = components[x][y];
         Component comU = null;
         Component comR = null;
@@ -569,36 +569,85 @@ public class SpaceShip implements Serializable {
             }
         }
         //CONTROLLO CHE U,R,D,L SIA COLLEGATO BENE
-        switch (components[x][y]) {
+        switch (com) {
             case Cannon c->{
                 switch (c.getOrientation()) {
                     case N:
-                        if (components[x - 1][y] != null && !components[x - 1][y].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x - 1][y] != null) {
+                            switch(components[x - 1][y]) {
+                                case EmptySpace e->{}
+                                default -> {
+                                    return false;}
+                            }
+                        }
                         break;
                     case E:
-                        if (components[x][y + 1] != null && !components[x][y + 1].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x][y + 1] != null) {
+                            switch (components[x][y+1]){
+                                case EmptySpace e->{}
+                                default -> {
+                                    return false;}
+                            }
+                        }
                         break;
                     case S:
-                        if (components[x + 1][y] != null && !components[x + 1][y].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x + 1][y] != null) {
+                            switch (components[x + 1][y]){
+                                case EmptySpace e->{}
+                                default -> {
+                                    return false;}
+                            }
+                        }
                         break;
                     case W:
-                        if (components[x][y - 1] != null && !components[x][y - 1].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x][y - 1] != null && !components[x][y - 1].getType().equalsIgnoreCase("Empty Space")) {
+                            switch(components[x][y - 1]){
+                                case EmptySpace e->{}
+                                default -> {
+                                    return false;}
+                            }
+                        }
                         break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + c.getOrientation());
                 }
             }
             case Engine e->{
                 switch (e.getOrientation()) {
                     case N:
-                        if (components[x - 1][y] != null && !components[x - 1][y].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x - 1][y] != null) {
+                            switch(components[x - 1][y]) {
+                                case EmptySpace c->{}
+                                default -> {  return false;}
+                            }
+                        }
                         break;
                     case E:
-                        if (components[x][y + 1] != null && !components[x][y + 1].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x][y + 1] != null) {
+                            switch (components[x][y+1]){
+                                case EmptySpace c->{}
+                                default -> {
+                                    return false;}
+                            }
+                        }
                         break;
                     case S:
-                        if (components[x + 1][y] != null && !components[x + 1][y].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x + 1][y] != null) {
+                            switch (components[x + 1][y]){
+                                case EmptySpace c->{}
+                                default -> {
+                                    return false;}
+                            }
+                        }
                         break;
                     case W:
-                        if (components[x][y - 1] != null && !components[x][y - 1].getType().equalsIgnoreCase("Empty Space")) return false;
+                        if (components[x][y - 1] != null && !components[x][y - 1].getType().equalsIgnoreCase("Empty Space")) {
+                            switch(components[x][y - 1]){
+                                case EmptySpace c->{}
+                                default -> {
+                                    return false;}
+                            }
+                        }
                         break;
                 }
             }
@@ -606,11 +655,18 @@ public class SpaceShip implements Serializable {
 
 
         }
-
-        if (linkU!=-1 && !compatibleLinks(link[0], linkU)) return false;
-        if (linkR!=-1 && !compatibleLinks(link[1], linkR)) return false;
-        if (linkD!=-1 && !compatibleLinks(link[2], linkD)) return false;
-        if (linkL!=-1 && !compatibleLinks(link[3], linkL)) return false;
+        if (linkU!=-1 && !compatibleLinks(link[0], linkU) && !(linkU==0 && link[0]==0)){
+            return false;
+        }
+        if (linkR!=-1 && !compatibleLinks(link[1], linkR) && !(linkR==0 && link[1]==0)){
+            return false;
+        }
+        if (linkD!=-1 && !compatibleLinks(link[2], linkD) && !(linkD==0 && link[2]==0)){
+            return false;
+        }
+        if (linkL!=-1 && !compatibleLinks(link[3], linkL) && !(linkL==0 && link[3]==0)){
+            return false;
+        }
         return true;
     }
 
@@ -809,7 +865,7 @@ public class SpaceShip implements Serializable {
                 }
             }
         }
-        return power + getSingleEnginePower() + getDoubleEngine();
+        return power + getSingleEnginePower() + 2*getDoubleEngine();
     }
 
 
@@ -830,9 +886,48 @@ public class SpaceShip implements Serializable {
                             Component comR = components[i][j + 1];
                             Component comD = components[i + 1][j];
                             Component comL = components[i][j - 1];
+                            if(comU!=null) {
+                                switch (comU) {
+                                    case EmptySpace emptySpace -> {
+                                        if (com.getLink()[0] > 0) cont++;
+                                    }
+                                    default -> {
+                                    }
+                                }
+                            }
                             if (comU == null && com.getLink()[0]>0) cont++;
+
+                            if(comR!=null) {
+                                switch (comR) {
+                                    case EmptySpace emptySpace -> {
+                                        if (com.getLink()[1] > 0) cont++;
+                                    }
+                                    default -> {
+                                    }
+                                }
+                            }
                             if (comR == null && com.getLink()[1]>0) cont++;
+
+                            if(comD!=null) {
+                                switch (comD) {
+                                    case EmptySpace emptySpace -> {
+                                        if (com.getLink()[2] > 0) cont++;
+                                    }
+                                    default -> {
+                                    }
+                                }
+                            }
                             if (comD == null && com.getLink()[2]>0) cont++;
+
+                            if(comL!=null) {
+                                switch (comL) {
+                                    case EmptySpace emptySpace -> {
+                                        if (com.getLink()[3] > 0) cont++;
+                                    }
+                                    default -> {
+                                    }
+                                }
+                            }
                             if (comL == null && com.getLink()[3]>0) cont++;
                         }
                     }
@@ -851,14 +946,21 @@ public class SpaceShip implements Serializable {
         boolean wellDone=true;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j]!=null && !isValid(i, j)){
-                    try{
-                        removeComponent(i,j);
-                        lost++;
-                    } catch (InvalidCoordinates e) {
-                        throw new RuntimeException(e);
+                if (components[i][j]!=null){
+                    switch(components[i][j]){
+                        case EmptySpace emptySpace->{}
+                        default -> {
+                            if(!isValid(i, j)){
+                                try{
+                                    removeComponent(i,j);
+                                    lost++;
+                                } catch (InvalidCoordinates e) {
+                                    throw new RuntimeException(e);
+                                }
+                                if(wellDone) wellDone=false;
+                            }
+                        }
                     }
-                    wellDone=false;
                 }
 
             }
@@ -879,13 +981,20 @@ public class SpaceShip implements Serializable {
         boolean wellDone=true;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j]!=null && !isValid(i, j)){
-                    try{
-                        removeComponent(i,j);
-                    } catch (InvalidCoordinates e) {
-                        throw new RuntimeException(e);
+                if (components[i][j]!=null){
+                    switch(components[i][j]){
+                        case EmptySpace emptySpace->{}
+                        default -> {
+                            if(!isValid(i, j)){
+                                try{
+                                    removeComponent(i,j);
+                                } catch (InvalidCoordinates e) {
+                                    throw new RuntimeException(e);
+                                }
+                                if(wellDone) wellDone=false;
+                            }
+                        }
                     }
-                    wellDone=false;
                 }
 
             }

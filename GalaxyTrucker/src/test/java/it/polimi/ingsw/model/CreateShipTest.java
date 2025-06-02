@@ -144,7 +144,7 @@ public class CreateShipTest {
         ship.setSpaceship(0,PlayerColors.YELLOW);
         Component c1 = new Cannon(0, 2, 3, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web124.jpg", false);
         Component c2 = new Shield(2, 1, 2, 1, "Shield", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web151.jpg");
-        Component c3 = new Pipes(1, 3, 1, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web55.jpg");
+        Component c3 = new Pipes(1, 3, 2, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web56.jpg");
         Component c4 = new Cannon(0, 3, 1, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web114.jpg", false);
         Component c5 = new Load(2, 1, 0, 3, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web65.jpg", 1, true);
         Component c6 = new BatteryStorage(1, 1, 2, 0, "Battery Storage", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web13.jpg", 3);
@@ -167,6 +167,7 @@ public class CreateShipTest {
         c5.turn();
         ship.addComponent(c5, 7, 5);
         ship.addComponent(c8, 7, 9);
+        c3.turn();
         c3.turn();
         ship.addComponent(c3, 6, 7);
         c2.turn();
