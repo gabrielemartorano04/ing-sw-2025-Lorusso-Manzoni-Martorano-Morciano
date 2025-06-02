@@ -385,15 +385,36 @@ class SpaceShipTest {
 
     @Test
     void destroyComponent() {
+        spaceShip2.destroyComponent(9,0,new Bank());
+        assertEquals(2,spaceShip2.getGoodsCapacity());
+
+        spaceShip2.destroyComponent(8,1,new Bank());
+        assertNull(spaceShip2.getComponents()[8][8]);
     }
 
     @Test
     void shootMeteor() {
+        assertTrue(spaceShip2.shootMeteor(0,7));
+        assertTrue(spaceShip2.shootMeteor(0,8));
     }
 
     @Test
     void blockSmallMeteor() {
-        spaceShip2.
+        spaceShip2.setBattery();
+        assertTrue( spaceShip2.blockSmallMeteor(0,7,false));
+        assertTrue( spaceShip2.blockSmallMeteor(0,8,false));
+        assertTrue( spaceShip2.blockSmallMeteor(0,9,false));
+        assertFalse( spaceShip2.blockSmallMeteor(0,6,false));
+
+        assertTrue( spaceShip2.blockSmallMeteor(1,9,true));
+        assertTrue( spaceShip2.blockSmallMeteor(1,7,false));
+
+        assertTrue( spaceShip2.blockSmallMeteor(2,7,false));
+        assertTrue( spaceShip2.blockSmallMeteor(2,8,false));
+
+        assertFalse( spaceShip2.blockSmallMeteor(3,7,false));
+        assertTrue( spaceShip2.blockSmallMeteor(3,8,false));
+
     }
 
     @Test
@@ -490,14 +511,38 @@ class SpaceShipTest {
 
     @Test
     void getRedGoods() {
+        ArrayList<Goods> goods=new ArrayList<>();
+        Goods good1=new Goods(4);
+        goods.add(good1);
+        ArrayList<int[]> coord=new ArrayList<>();
+        coord.add(new int[]{7,5});
+        spaceShip2.addGoods(goods,coord,new Bank());
+
+        assertEquals(1,spaceShip2.getRedGoods());
     }
 
     @Test
     void getGreenGoods() {
+        ArrayList<Goods> goods=new ArrayList<>();
+        Goods good1=new Goods(2);
+        goods.add(good1);
+        ArrayList<int[]> coord=new ArrayList<>();
+        coord.add(new int[]{7,5});
+        spaceShip2.addGoods(goods,coord,new Bank());
+
+        assertEquals(1,spaceShip2.getGreenGoods());
     }
 
     @Test
     void getBlueGoods() {
+        ArrayList<Goods> goods=new ArrayList<>();
+        Goods good1=new Goods(1);
+        goods.add(good1);
+        ArrayList<int[]> coord=new ArrayList<>();
+        coord.add(new int[]{7,5});
+        spaceShip2.addGoods(goods,coord,new Bank());
+
+        assertEquals(1,spaceShip2.getBlueGoods());
     }
 
     @Test
@@ -550,7 +595,4 @@ class SpaceShipTest {
         assertEquals(0,spaceShip2.getNumHuman());
     }
 
-    public static void main(String[] args){
-
-    }
 }

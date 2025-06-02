@@ -1370,86 +1370,153 @@ public class SpaceShip implements Serializable {
 
 
             switch (direction) {
+                //if the meteor comes from nord
                 case 0:
                     for (int i = 5; i <= 9; i++) {
                         if (components[i][num] != null) {
                             switch(components[i][num]){
                                 case EmptySpace emptySpace->{}
                                 default -> {
-                                    if (components[i][num].getLink()[0] == 0)
+                                    if (components[i][num].getLink()[0] == 0){
+                                        System.out.println(components[i][num].toString());
                                         return true;
+                                    }
+                                    else {
+                                        if(numOfBattery>0 && use){
+                                            for (int w = 5; w <= 9; w++) {
+                                                for (int z = 4; z <= 10; z++) {
+                                                    if (components[w][z] != null) {
+                                                        switch(components[w][z]) {
+                                                            case Shield shield->{
+                                                                if(shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.NW)){
+                                                                    return true;
+                                                                }
+                                                            }
+                                                            default -> {}
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        }else return false;
+                                    }
                                 }
                             }
                         }
                     }
                     break;
+                //if the meteor comes from est
                 case 1:
                     for (int j = 10; j > 3; j--) {
                         if (components[num][j] != null) {
                             switch(components[num][j]){
                                 case EmptySpace emptySpace->{}
                                 default -> {
-                                    if (components[num][j].getLink()[1] == 0)
+                                    if (components[num][j].getLink()[1] == 0){
+                                        System.out.println(components[num][j].toString());
                                         return true;
+                                    }
+                                    else{
+                                        if(numOfBattery>0 && use){
+                                                for (int w = 5; w <= 9; w++) {
+                                                    for (int z = 4; z <= 10; z++) {
+                                                        if (components[w][z] != null) {
+                                                            switch(components[w][z]) {
+                                                                case Shield shield->{
+                                                                    if (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.SE)){
+                                                                        return true;
+                                                                    }
+                                                                }
+                                                                default -> {}
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+
+                                        }else return false;
+                                    }
                                 }
                             }
 
                         }
                     }
                     break;
+                //if the meteor comes from sud
                 case 2:
                     for (int i = 9; i > 4; i--) {
                         if (components[i][num] != null) {
                             switch(components[i][num]){
                                 case EmptySpace emptySpace->{}
                                 default -> {
-                                    if (components[i][num].getLink()[2] == 0)
+                                    if (components[i][num].getLink()[2] == 0){
+                                        System.out.println(components[i][num].toString());
                                         return true;
+                                    }
+                                    else{
+                                        if(numOfBattery>0 && use){
+
+                                                for (int w = 5; w <= 9; w++) {
+                                                    for (int z = 4; z <= 10; z++) {
+                                                        if (components[w][z] != null) {
+                                                            switch(components[w][z]) {
+                                                                case Shield shield->{
+                                                                    if(shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)){
+                                                                        return true;
+                                                                    }
+                                                                }
+                                                                default -> {}
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+
+                                        }else return false;
+                                    }
                                 }
                             }
 
                         }
                     }
                     break;
+                //if the meteor comes from ovest
                 case 3:
                     for (int j = 4; j <= 10; j++) {
                         if (components[num][j] != null) {
                             switch(components[num][j]){
                                 case EmptySpace emptySpace->{}
                                 default -> {
-                                    if (components[num][j].getLink()[3] == 0)
+                                    if (components[num][j].getLink()[3] == 0){
+                                        System.out.println(components[num][j].toString());
                                         return true;
+                                    }
+                                    else{
+                                        if(numOfBattery>0 && use){
+                                                for (int w = 5; w <= 9; w++) {
+                                                    for (int z = 4; z <= 10; z++) {
+                                                        if (components[w][z] != null) {
+                                                            switch(components[w][z]) {
+                                                                case Shield shield->{
+                                                                    if(shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)){
+                                                                        return true;
+                                                                    }
+                                                                }
+                                                                default -> {}
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+
+                                        } else return false;
+                                    }
                                 }
                             }
                         }
                     }
                     break;
             }
-
-        for (int i = 5; i <= 9; i++) {
-            for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null) {
-                    switch(components[i][j]) {
-                        case Shield shield->{
-                            if(
-                                    (direction == 0 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.NW)))
-                                            || (direction == 1 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.SE)))
-                                            || (direction == 2 && (shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)))
-                                            || (direction == 3 && (shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)))
-                            ){
-                                if(numOfBattery>0 && use){
-                                    return true;
-                                }
-                            }
-                        }
-                        default -> {}
-                    }
-
-                }
-            }
-        }
-
-
         return false;
     }
 
@@ -1458,7 +1525,6 @@ public class SpaceShip implements Serializable {
      * if the spaceship has protection in the critical direction, the player can choose to use or not the
      * shield. This is possible only if there is enough batteries to use the shield.
      * @param direction Direction 0-->N, 1-->E, 2-->S, 3-->W from which the meteorite arrives
-     * @param num number of row or colon from which the meteorite arrives
      * @param use true if the player wants to use the shield, false otherwise
      * @return true if the spaceship is protected
      */
