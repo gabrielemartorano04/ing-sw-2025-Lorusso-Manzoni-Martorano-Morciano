@@ -49,7 +49,7 @@ public class GUIApplication extends Application {
         GUI gui = new GUI(primaryStage);
 
         //gui.showTrack(mockTrack);
-        //gui.showShipLayout("Luca", spaceship.getComponents());
+        gui.showShipLayout("Luca", spaceship.getComponents());
         //gui.showChooseColor(EnumSet.allOf(PlayerColors.class));
         //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
         //gui.showInsertNumPlayers();
@@ -66,7 +66,7 @@ public class GUIApplication extends Application {
         //gui.showSelectComponent();
         //gui.showAvailableComponent(availableComponents.getComponents());
         //gui.showStack(stack);
-        //gui.showBuildOptions();
+        gui.showBuildOptions();
         //gui.showCardDrawn(card2);
         //gui.showTruckerLostAllCrew(trucker.getNickname());
         //gui.showConnectionLost();

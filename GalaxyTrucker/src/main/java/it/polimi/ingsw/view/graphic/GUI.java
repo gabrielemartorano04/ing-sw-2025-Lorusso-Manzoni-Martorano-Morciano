@@ -36,6 +36,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -52,7 +56,13 @@ import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class GUI implements UI {
@@ -846,53 +856,53 @@ public class GUI implements UI {
 
     @Override
     public void showSelectComponent() {
-        if (selectedComponent == null) return;
-
-        double width = 850;
-        double height = 550;
-
-        // Overlay trasparente grigio
-        Rectangle overlay = new Rectangle(width, height);
-        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
-        overlay.setMouseTransparent(true);
-
-        // Immagine componente selezionato
-        ImageView imgView = new ImageView(selectedComponent.getFrontImage());
-        imgView.setFitWidth(150);
-        imgView.setFitHeight(150);
-
-        Rectangle clip = new Rectangle(150, 150);
-        clip.setArcWidth(20);
-        clip.setArcHeight(20);
-        imgView.setClip(clip);
-
-        StackPane popup = new StackPane(imgView);
-        popup.setAlignment(Pos.CENTER);
-
-        imgView.setOnDragDetected(e -> {
-            Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            content.putString("component");
-            db.setContent(content);
-            db.setDragView(imgView.snapshot(null, null));
-
-            // Rimuove overlay e popup
-            Parent rootNode = stage.getScene().getRoot();
-            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
-                ((StackPane) rootNode).getChildren().removeAll(overlay, popup);
-            }
-
-            e.consume();
-        });
-
-        Platform.runLater(() -> {
-            Parent rootNode = stage.getScene().getRoot();
-            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
-                ((StackPane) rootNode).getChildren().addAll(overlay, popup);
-            } else {
-                System.err.println("Root non è uno StackPane");
-            }
-        });
+//        if (selectedComponent == null) return;
+//
+//        double width = 850;
+//        double height = 550;
+//
+//        // Overlay trasparente grigio
+//        Rectangle overlay = new Rectangle(width, height);
+//        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+//        overlay.setMouseTransparent(true);
+//
+//        // Immagine componente selezionato
+//        ImageView imgView = new ImageView(selectedComponent.getFrontImage());
+//        imgView.setFitWidth(150);
+//        imgView.setFitHeight(150);
+//
+//        Rectangle clip = new Rectangle(150, 150);
+//        clip.setArcWidth(20);
+//        clip.setArcHeight(20);
+//        imgView.setClip(clip);
+//
+//        StackPane popup = new StackPane(imgView);
+//        popup.setAlignment(Pos.CENTER);
+//
+//        imgView.setOnDragDetected(e -> {
+//            Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
+//            ClipboardContent content = new ClipboardContent();
+//            content.putString("component");
+//            db.setContent(content);
+//            db.setDragView(imgView.snapshot(null, null));
+//
+//            // Rimuove overlay e popup
+//            Parent rootNode = stage.getScene().getRoot();
+//            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
+//                ((StackPane) rootNode).getChildren().removeAll(overlay, popup);
+//            }
+//
+//            e.consume();
+//        });
+//
+//        Platform.runLater(() -> {
+//            Parent rootNode = stage.getScene().getRoot();
+//            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
+//                ((StackPane) rootNode).getChildren().addAll(overlay, popup);
+//            } else {
+//                System.err.println("Root non è uno StackPane");
+//            }
+//        });
     }
 
     @Override
@@ -901,11 +911,10 @@ public class GUI implements UI {
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
-        // Stile compatto per bottoni
         Consumer<Button> styleButton = (btn) -> {
             btn.setFont(Font.font("Bangers", 12));
             btn.setTextFill(Color.BLACK);
-            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), CornerRadii.EMPTY, Insets.EMPTY)));
+            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
             btn.setCursor(Cursor.HAND);
             btn.setPrefWidth(120);
         };
@@ -917,11 +926,15 @@ public class GUI implements UI {
         selectComponentBtn.setOnAction(e -> showAvailableComponent(availableComponents.getComponents()));
 
         // Pulsante Finish Ship
-        Button finishBtn = new Button("Finish spaceschip");
+        Button finishBtn = new Button("Finish spaceship");
         styleButton.accept(finishBtn);
         finishBtn.setOnAction(e -> {
-            StackPane confirmation = new StackPane();
-            Rectangle bg = new Rectangle(800, 550, Color.rgb(0, 0, 0, 0.4));
+            StackPane root = (StackPane) stage.getScene().getRoot();
+
+            Rectangle bg = new Rectangle();
+            bg.widthProperty().bind(stage.getScene().widthProperty());
+            bg.heightProperty().bind(stage.getScene().heightProperty());
+            bg.setFill(Color.rgb(0, 0, 0, 0.4));
 
             VBox box = new VBox(20);
             box.setAlignment(Pos.CENTER);
@@ -933,37 +946,46 @@ public class GUI implements UI {
             Button yes = new Button("YES");
             yes.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
             yes.setTextFill(Color.WHITE);
-            yes.setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+            yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
             yes.setCursor(Cursor.HAND);
             yes.setPrefWidth(100);
 
             Button no = new Button("NO");
             no.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
             no.setTextFill(Color.WHITE);
-            no.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+            no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
             no.setCursor(Cursor.HAND);
             no.setPrefWidth(100);
 
+            StackPane confirmation = new StackPane(bg, box);
+
             yes.setOnAction(ev -> {
-                setCurrentEvent(new EndBuildingEvent());
-                ((StackPane) stage.getScene().getRoot()).getChildren().remove(confirmation);
+                viewFlow.handleInput("end");
+                root.getChildren().remove(confirmation);
             });
 
-            no.setOnAction(ev -> ((StackPane) stage.getScene().getRoot()).getChildren().remove(confirmation));
+            no.setOnAction(ev -> root.getChildren().remove(confirmation));
 
             HBox buttons = new HBox(20, yes, no);
             buttons.setAlignment(Pos.CENTER);
 
             box.getChildren().addAll(confirm, buttons);
-            confirmation.getChildren().addAll(bg, box);
 
-            ((StackPane) stage.getScene().getRoot()).getChildren().add(confirmation);
+
+            root.getChildren().add(confirmation);
         });
 
         // Pulsante Show Stack
         Button stackBtn = new Button("Show stack");
         styleButton.accept(stackBtn);
         stackBtn.setOnAction(e -> {
+            StackPane root = (StackPane) stage.getScene().getRoot();
+
+            Rectangle bg = new Rectangle();
+            bg.widthProperty().bind(stage.getScene().widthProperty());
+            bg.heightProperty().bind(stage.getScene().heightProperty());
+            bg.setFill(Color.rgb(0, 0, 0, 0.4));
+
             VBox stackChoices = new VBox(15);
             stackChoices.setAlignment(Pos.CENTER);
 
@@ -973,58 +995,127 @@ public class GUI implements UI {
                 pile.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
                 int index = i;
                 pile.setOnAction(ev -> {
-                    setCurrentEvent(new ShowStackEvent(index));
-                    //TODO inserire lo stack
-                    showStack(null);
-                    ((StackPane) stage.getScene().getRoot()).getChildren().remove(stackChoices.getParent());
+                    viewFlow.handleInput("stack " + index);
+                    root.getChildren().remove(pile.getScene().getRoot().lookup("#popupOverlay"));
                 });
                 stackChoices.getChildren().add(pile);
             }
 
-            StackPane popup = new StackPane(new Rectangle(800, 550, Color.rgb(0, 0, 0, 0.4)), stackChoices);
-            popup.setOnMouseClicked(ev -> ((StackPane) stage.getScene().getRoot()).getChildren().remove(popup));
-            ((StackPane) stage.getScene().getRoot()).getChildren().add(popup);
+            StackPane popup = new StackPane(bg, stackChoices);
+            popup.setId("popupOverlay");
+            popup.setOnMouseClicked(ev -> root.getChildren().remove(popup));
+            root.getChildren().add(popup);
         });
 
-        // Pulsante Hourglass con countdown
+        // Pulsante Hourglass (solo timer, no overlay)
         Button hourglassBtn = new Button("⏳");
         hourglassBtn.setFont(Font.font("Bangers", 20));
         hourglassBtn.setTextFill(Color.BLACK);
-        hourglassBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), CornerRadii.EMPTY, Insets.EMPTY)));
-        hourglassBtn.setPrefWidth(70);
+        hourglassBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        hourglassBtn.setPrefWidth(80);
         hourglassBtn.setCursor(Cursor.HAND);
 
         hourglassBtn.setOnAction(e -> {
             hourglassBtn.setDisable(true);
-            setCurrentEvent(new TurnHourglassEvent());
+            viewFlow.handleInput("hourglass");
 
             IntegerProperty seconds = new SimpleIntegerProperty(90);
-            hourglassBtn.textProperty().bind(seconds.asString("%ds"));
+
+            Label countdownLabel = new Label("90");
+            countdownLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 28));
+            countdownLabel.setTextFill(Color.WHITE);
+            countdownLabel.setBackground(new Background(
+                    new BackgroundFill(Color.rgb(0, 0, 0, 0.7), new CornerRadii(10), Insets.EMPTY)));
+            countdownLabel.setPadding(new Insets(10));
+
+            // Posiziona al centro-alto della finestra
+            StackPane.setAlignment(countdownLabel, Pos.TOP_CENTER);
+            StackPane.setMargin(countdownLabel, new Insets(20, 0, 0, 0));
+
+            StackPane root = (StackPane) stage.getScene().getRoot();
+            root.getChildren().add(countdownLabel);
 
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-                seconds.set(seconds.get() - 1);
-                if (seconds.get() <= 0) {
+                int current = seconds.get() - 1;
+                seconds.set(current);
+                countdownLabel.setText(current + "s");
+
+                if (current <= 0) {
                     hourglassBtn.setDisable(false);
-                    hourglassBtn.textProperty().unbind();
                     hourglassBtn.setText("⏳");
+                    root.getChildren().remove(countdownLabel);
                 }
             }));
             timeline.setCycleCount(90);
             timeline.play();
         });
 
-        // Ordine: Select - Finish - Stack - Hourglass
-        optionsBox.getChildren().addAll(selectComponentBtn, finishBtn, stackBtn, hourglassBtn);
+        // Pulsante Rules
+        Button rulesBtn = new Button("Rules");
+        styleButton.accept(rulesBtn);
+        rulesBtn.setOnAction(e -> {
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
+                if (is == null) {
+                    System.out.println("File not found");
+                    return;
+                }
+
+                File tempPdf = File.createTempFile("galaxy-trucker-rules", ".pdf");
+                tempPdf.deleteOnExit();
+
+                try (FileOutputStream os = new FileOutputStream(tempPdf)) {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = is.read(buffer)) != -1) {
+                        os.write(buffer, 0, bytesRead);
+                    }
+                }
+
+                Desktop.getDesktop().open(tempPdf);
+
+            } catch (IOException e1) {
+                System.out.println("Error in file opening");
+            }
+        });
+
+        // Pulsante Show Other
+//        Button otherBtn = new Button("Show other");
+//        styleButton.accept(otherBtn);
+//        otherBtn.setOnAction(e -> {
+//            VBox nicknameChoices = new VBox(15);
+//            nicknameChoices.setAlignment(Pos.CENTER);
+//
+//            List<String> truckerNicknames = null; //TODO Recupera i nickname
+//
+//            for (String nickname : truckerNicknames) {
+//                Button nickBtn = new Button(nickname);
+//                styleButton.accept(nickBtn);
+//                nickBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+//
+//                nickBtn.setOnAction(ev -> {
+//                    viewFlow.handleInput("ship " + nickname);
+//                    ((StackPane) stage.getScene().getRoot()).getChildren().remove(nicknameChoices.getParent());
+//                });
+//
+//                nicknameChoices.getChildren().add(nickBtn);
+//            }
+//
+//            StackPane popup = new StackPane(
+//                    new Rectangle(800, 550, Color.rgb(0, 0, 0, 0.4)),
+//                    nicknameChoices
+//            );
+//            popup.setOnMouseClicked(ev -> ((StackPane) stage.getScene().getRoot()).getChildren().remove(popup));
+//            ((StackPane) stage.getScene().getRoot()).getChildren().add(popup);
+//        });
+
+        optionsBox.getChildren().addAll(selectComponentBtn, finishBtn, stackBtn, rulesBtn/*, otherBtn*/, hourglassBtn);
 
         Platform.runLater(() -> {
-            Node rootNode = stage.getScene().getRoot();
-            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
-                StackPane root = (StackPane) rootNode;
-                if (!root.getChildren().contains(optionsBox)) {
-                    StackPane.setAlignment(optionsBox, Pos.TOP_RIGHT);
-                    StackPane.setMargin(optionsBox, new Insets(18, 0, 0, 18));  // più staccato dal bordo
-                    root.getChildren().add(optionsBox);
-                }
+            StackPane root = (StackPane) stage.getScene().getRoot();
+            if (!root.getChildren().contains(optionsBox)) {
+                StackPane.setAlignment(optionsBox, Pos.TOP_RIGHT);
+                StackPane.setMargin(optionsBox, new Insets(20, 0, 0, 10));
+                root.getChildren().add(optionsBox);
             }
         });
     }
@@ -1039,8 +1130,7 @@ public class GUI implements UI {
         discardButton.setId("discardBtn");
 
         discardButton.setOnAction(e -> {
-            // TODO: allineare con modifiche
-            // setCurrentEvent(new DiscardTileEvent(component));
+            viewFlow.handleInput("discard");
             selectedComponent = null;
 
             Node root = stage.getScene().getRoot();
