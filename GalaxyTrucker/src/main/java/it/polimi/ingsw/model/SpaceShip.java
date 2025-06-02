@@ -618,7 +618,7 @@ public class SpaceShip implements Serializable {
                         if (components[x - 1][y] != null) {
                             switch(components[x - 1][y]) {
                                 case EmptySpace c->{}
-                                default -> {  System.out.println("Riga 621");return false;}
+                                default -> {  return false;}
                             }
                         }
                         break;
@@ -627,7 +627,6 @@ public class SpaceShip implements Serializable {
                             switch (components[x][y+1]){
                                 case EmptySpace c->{}
                                 default -> {
-                                    System.out.println("Riga 630");
                                     return false;}
                             }
                         }
@@ -637,7 +636,6 @@ public class SpaceShip implements Serializable {
                             switch (components[x + 1][y]){
                                 case EmptySpace c->{}
                                 default -> {
-                                    System.out.println("Riga 640");
                                     return false;}
                             }
                         }
@@ -647,7 +645,6 @@ public class SpaceShip implements Serializable {
                             switch(components[x][y - 1]){
                                 case EmptySpace c->{}
                                 default -> {
-                                    System.out.println("Riga 650");
                                     return false;}
                             }
                         }
@@ -658,28 +655,18 @@ public class SpaceShip implements Serializable {
 
 
         }
-        System.out.println("Controllo i link");
-        if (linkU!=-1 && !compatibleLinks(link[0], linkU)){
-            System.out.println(linkU+ " "+ link[0] +" ko");
-            System.out.println("riga 664");
+        if (linkU!=-1 && !compatibleLinks(link[0], linkU) && !(linkU==0 && link[0]==0)){
             return false;
         }
-        if (linkR!=-1 && !compatibleLinks(link[1], linkR)){
-            System.out.println(linkR+ " "+ link[1] +" ko");
-            System.out.println("riga 669");
+        if (linkR!=-1 && !compatibleLinks(link[1], linkR) && !(linkR==0 && link[1]==0)){
             return false;
         }
-        if (linkD!=-1 && !compatibleLinks(link[2], linkD)){
-            System.out.println(linkD+ " "+ link[2] +" ko");
-            System.out.println("riga 674");
+        if (linkD!=-1 && !compatibleLinks(link[2], linkD) && !(linkD==0 && link[2]==0)){
             return false;
         }
-        if (linkL!=-1 && !compatibleLinks(link[3], linkL)){
-            System.out.println(linkL+ " "+ link[3] +" ko");
-            System.out.println("riga 679");
+        if (linkL!=-1 && !compatibleLinks(link[3], linkL) && !(linkL==0 && link[3]==0)){
             return false;
         }
-        System.out.println("tutto ok");
         return true;
     }
 
@@ -994,13 +981,20 @@ public class SpaceShip implements Serializable {
         boolean wellDone=true;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
-                if (components[i][j]!=null && !isValid(i, j)){
-                    try{
-                        removeComponent(i,j);
-                    } catch (InvalidCoordinates e) {
-                        throw new RuntimeException(e);
+                if (components[i][j]!=null){
+                    switch(components[i][j]){
+                        case EmptySpace emptySpace->{}
+                        default -> {
+                            if(!isValid(i, j)){
+                                try{
+                                    removeComponent(i,j);
+                                } catch (InvalidCoordinates e) {
+                                    throw new RuntimeException(e);
+                                }
+                                if(wellDone) wellDone=false;
+                            }
+                        }
                     }
-                    wellDone=false;
                 }
 
             }

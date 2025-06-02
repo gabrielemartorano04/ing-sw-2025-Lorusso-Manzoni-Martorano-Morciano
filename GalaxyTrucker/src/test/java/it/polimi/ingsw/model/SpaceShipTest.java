@@ -359,15 +359,17 @@ class SpaceShipTest {
 
     @Test
     void wellDone() {
-        assertTrue(spaceShip2.isValid(6,6));
+        assertTrue(spaceShip2.wellDone());
     }
 
     @Test
     void wellDoneForTrialFlight() {
+        assertTrue(spaceShip2.wellDoneForTrialFlight());
     }
 
     @Test
     void isHit() {
+
     }
 
     @Test
