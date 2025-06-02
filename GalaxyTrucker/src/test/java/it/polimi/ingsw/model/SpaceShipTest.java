@@ -262,39 +262,104 @@ class SpaceShipTest {
     }
 
     @Test
-    void getTotalCannonPower() {
-    }
-
-    @Test
-    void deactivateDoubleCannons() {
-    }
-
-    @Test
     void deactivateDoubleEngines() {
-    }
+        spaceShip2.setBattery();
+        ArrayList<int[]> coord=new ArrayList<>();
+        ArrayList<int[]> batt=new ArrayList<>();
+        coord.add(new int[]{8,6});
+        batt.add(new int[]{8,8,1});
+        try {
+            spaceShip2.activateDoubleEngines(coord,batt);
+        } catch (NotEnoughBatteries e) {
+            throw new RuntimeException(e);
+        }
+        spaceShip2.deactivateDoubleEngines();
+        switch(spaceShip2.getComponents()[8][6]){
+            case Engine component->{
+                assertFalse(component.getIsActive());
+            }
+            default -> {}
+        }
 
-    @Test
-    void activateDoubleCannons() {
-    }
-
-    @Test
-    void activateShield() {
-    }
-
-    @Test
-    void deActivateShields() {
     }
 
     @Test
     void getTotalEnginePower() {
+        assertEquals(2,spaceShip2.getTotalEnginePower());
+
+        spaceShip2.setBattery();
+        ArrayList<int[]> coord=new ArrayList<>();
+        ArrayList<int[]> batt=new ArrayList<>();
+        coord.add(new int[]{8,6});
+        batt.add(new int[]{8,8,1});
+        try {
+            spaceShip2.activateDoubleEngines(coord,batt);
+        } catch (NotEnoughBatteries e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(4,spaceShip2.getTotalEnginePower());
+    }
+
+    @Test
+    void checkDoubleEngine() {
+        ArrayList<int[]> coord=new ArrayList<>();
+        coord.add(new int[]{8,6});
+        assertTrue(spaceShip2.checkDoubleEngine(coord));
+
+        coord.add(new int[]{8,8});
+        assertFalse(spaceShip2.checkDoubleEngine(coord));
+    }
+
+    @Test
+    void getTotalCannonPower() {
+        assertEquals(2,spaceShip2.getTotalCannonPower());
+    }
+
+    @Test
+    void deactivateDoubleCannons() {
+        //farlo con spaceship 1 con double cannons
+    }
+
+    @Test
+    void activateDoubleCannons() {
+        //
+    }
+
+    @Test
+    void activateShield() {
+        spaceShip2.setBattery();
+        spaceShip2.activateShield(new int[]{6,6},new int[]{8,8,1});
+
+        switch(spaceShip2.getComponents()[6][6]){
+            case Shield component->{
+                assertTrue(component.getIsActive());
+            }
+            default -> {}
+        }
+    }
+
+    @Test
+    void deActivateShields() {
+        spaceShip2.setBattery();
+        spaceShip2.activateShield(new int[]{6,6},new int[]{8,8,1});
+
+        spaceShip2.deActivateShields();
+        switch(spaceShip2.getComponents()[6][6]){
+            case Shield component->{
+                assertFalse(component.getIsActive());
+            }
+            default -> {}
+        }
     }
 
     @Test
     void countExposedConnectors() {
+        assertEquals(5, spaceShip2.countExposedConnectors());
     }
 
     @Test
     void wellDone() {
+        assertTrue(spaceShip2.isValid(6,6));
     }
 
     @Test
@@ -358,10 +423,6 @@ class SpaceShipTest {
     }
 
     @Test
-    void checkDoubleEngine() {
-    }
-
-    @Test
     void checkDoubleCannon() {
     }
 
@@ -407,5 +468,16 @@ class SpaceShipTest {
 
     @Test
     void removeAllHumans() {
+    }
+
+    public static void main(String[] args){
+        CreateShipTest test = new CreateShipTest();
+        SpaceShip spaceShip=new SpaceShip();
+        try {
+            spaceShip=test.createShip3(spaceShip);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        spaceShip.isValid(6,6);
     }
 }
