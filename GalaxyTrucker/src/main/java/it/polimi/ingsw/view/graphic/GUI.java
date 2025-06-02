@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
@@ -1840,6 +1841,11 @@ public class GUI extends UI {
 
     @Override
     public void showComponentSelected(Component component) {
+
+    }
+
+    @Override
+    public void showCurrCondition(Condition cond) {
 
     }
 

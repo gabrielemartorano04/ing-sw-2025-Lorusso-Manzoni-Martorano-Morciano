@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net;
 
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
@@ -256,8 +257,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
     }
 
     @Override
-    public void visit(CurrentCondition currentCondition) {
-
+    public void visit(CurrentCondition event) {
+        viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
+        ui.showCurrCondition(event.getCondition());
+        System.out.print("> ");
     }
 
 

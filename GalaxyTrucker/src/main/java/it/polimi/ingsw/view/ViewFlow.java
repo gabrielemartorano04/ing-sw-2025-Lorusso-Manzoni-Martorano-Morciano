@@ -148,10 +148,12 @@ public class ViewFlow implements EventReceiver {
         }
     }
 
+    /**
+     * this method is used by the TUI to read client's input while the GUI directly calls handleInput
+     */
     public void start() {
         // Thread per input utente
         new Thread(() -> {
-            ClientEvent event=null;
             while (running) {
                 String input;
                 try {
@@ -163,49 +165,58 @@ public class ViewFlow implements EventReceiver {
                     running = false;
                     break;
                 }
-                switch (viewState) {
-                    case FIRST -> event = inputParser.parseFirstConnection(input);
-                    case START-> event = inputParser.parseLogin(input);
-                    case BULDING-> {
-                        if (!this.end) {
-                                event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected);
-                        }
-                        else {
-                            System.out.println("You can only wait for others to finish buildin");
-                            event = null;
-                        }
-
-                    }
-                    case FILL-> event= inputParser.parseFillTheShip(input);
-                    case FLIGTH-> {
-                        if(!out) {
-                            if (startFlight) {
-                                if(input.trim().equals("state")){
-                                    event = new OkStartFlight();
-                                    startFlight = false;
-                                }
-                                else{
-                                    System.out.println("Error: Invalid command. Type 'state'.");
-                                    event=null;
-                                }
-                            } else if (startFlightForAll) {
-                                event = inputParserFlight.parseFlight(input, nickname);
-                            } else {
-                                System.out.println("You can only wait for others to start flight");
-                                event = null;
-                            }
-                        }else{
-                            event = new DeadTrucker();
-                            System.out.println("You are out of the flight, please wait for others to finish it and see the results");
-                        }
-                    }
-                }
-                if (event != null) {
-                    handleOutgoingEvent(event);
-                }
+                handleInput(input);
             }
         }, "UserInputThread").start();
 
+    }
+
+    /**
+     * method called by viewFlow and GUI's handlers to generate and send events to the server
+     */
+    public void handleInput(String input){
+        //TODO: gestire il caso in cui input è exit per la GUI
+        ClientEvent event=null;
+        switch (viewState) {
+            case FIRST -> event = inputParser.parseFirstConnection(input);
+            case START-> event = inputParser.parseLogin(input);
+            case BULDING-> {
+                if (!this.end) {
+                    event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected);
+                }
+                else {
+                    System.out.println("You can only wait for others to finish buildin");
+                    event = null;
+                }
+
+            }
+            case FILL-> event= inputParser.parseFillTheShip(input);
+            case FLIGTH-> {
+                if(!out) {
+                    if (startFlight) {
+                        if(input.trim().equals("state")){
+                            event = new OkStartFlight();
+                            startFlight = false;
+                        }
+                        else{
+                            System.out.println("Error: Invalid command. Type 'state'.");
+                            event=null;
+                        }
+                    } else if (startFlightForAll) {
+                        event = inputParserFlight.parseFlight(input, nickname);
+                    } else {
+                        System.out.println("You can only wait for others to start flight");
+                        event = null;
+                    }
+                }else{
+                    event = new DeadTrucker();
+                    System.out.println("You are out of the flight, please wait for others to finish it and see the results");
+                }
+            }
+        }
+        if (event != null) {
+            handleOutgoingEvent(event);
+        }
     }
 
 //    public void run() {
