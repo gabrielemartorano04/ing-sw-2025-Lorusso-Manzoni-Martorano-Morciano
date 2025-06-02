@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.ComponentLinkedEvent;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.StartBuildingEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
@@ -58,6 +59,12 @@ public class TUI implements UI {
         System.out.print("> ");
     }
 
+    @Override
+    public void componentLinked(ComponentLinkedEvent event){
+        this.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
+        this.showAvailableComponent(event.getAvComponents());
+        System.out.print("> ");
+    }
 
 
 

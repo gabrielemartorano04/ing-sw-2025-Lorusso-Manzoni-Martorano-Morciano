@@ -30,6 +30,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(PlayerJoinedEvent event) {
         ui.showPlayerJoined(event.getUsername());
+
         if(!viewFlow.getNameAlreadySet()){
             viewFlow.setNickname(event.getUsername());
         }
@@ -67,6 +68,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(SetupCompleteEvent event) {
         ui.showSetupComplete();
+
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
     }
 
@@ -80,16 +82,19 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
         viewFlow.setShip(event.getSpaceShip().getComponents());
         viewFlow.fillAvailableComponents(event.getComponents());
+
         ui.startBuildingScene(event);
-        if(viewFlow.getLevel()==2) viewFlow.getTimerDisplay().start(event.getSeconds());
+
+        if(viewFlow.getLevel()==2) {
+            viewFlow.getTimerDisplay().start(event.getSeconds());
+        }
     }
     @Override
     public void visit(ComponentLinkedEvent event) {
         viewFlow.getShip()[event.getX()][event.getY()]=event.getComponent();
         viewFlow.deleteSelectedComponent();
-        ui.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
-        ui.showAvailableComponent(event.getAvComponents());
-        System.out.print("> ");
+
+        ui.componentLinked(event);
     }
 
     @Override
