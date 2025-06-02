@@ -19,6 +19,7 @@ import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 
 import javafx.animation.*;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -48,7 +49,7 @@ import javafx.util.Duration;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class GUI extends UI {
+public class GUI implements UI {
 
     private Stage stage;
     private Scene mainScene;

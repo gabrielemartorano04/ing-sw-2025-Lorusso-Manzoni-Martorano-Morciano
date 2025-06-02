@@ -15,7 +15,7 @@ import it.polimi.ingsw.view.UI;
 import java.util.*;
 import java.util.List;
 
-public class TUI extends UI {
+public class TUI implements UI {
 
     private final InputReader inputReader;
 
