@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
+import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.NicknameAlreadyInError;
 
 import java.util.*;
@@ -25,8 +26,7 @@ public interface UI {
 
     void nickNameAlreadyTaken(NicknameAlreadyInError event);
 
-
-
+    void colorAlreadyTaken(ColorAlreadyInError event);
 
     // fine omologazione GUI TUI
     // (penso che tutti gli altri metodi che seguono possonano diventare privati di GUI o TUI
