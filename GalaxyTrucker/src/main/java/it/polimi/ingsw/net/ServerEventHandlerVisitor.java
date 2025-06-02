@@ -155,32 +155,32 @@ public class ServerEventHandlerVisitor implements VirtualView {
     }
 
 
-    @Override
+    @Deprecated
     public void visit(TruckerLostCrewEvent event) {
     }
 
     @Override
     public void visit(HourglassTurnEvent event) {
         viewFlow.getTimerDisplay().start(event.getSeconds());
-        System.out.print("> ");
+        System.out.println("> ");
     }
 
-    @Override
+    @Deprecated
     public void visit(GameCreatedEvent event) {
 
     }
 
-    @Override
+    @Deprecated
     public void visit(FirstConnectionEvent event) {
 
     }
 
-    @Override
+    @Deprecated
     public void visit(CoordListRequest event) {
 
     }
 
-    @Override
+    @Deprecated
     public void visit(AvailableComponentToSelectRequest event) {
 
     }
@@ -188,15 +188,16 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(TimeExpiredEvent event){
         ui.showTimeExpired();
-        System.out.print("> ");
     }
 
     @Override
     public void visit(BuildCompleteEvent event){
         viewFlow.getTimerDisplay().stop();
+
         ui.showMessage("Your updated ship\n");
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         ui.showBuildComplete();
+
         if(viewFlow.getLevel()==2){
             ui.showMessage("Type 'alien' to see where you can place aliens\n" +
                     "> ");

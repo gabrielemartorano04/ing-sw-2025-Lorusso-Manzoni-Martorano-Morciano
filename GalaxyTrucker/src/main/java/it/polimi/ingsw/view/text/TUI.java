@@ -311,6 +311,7 @@ public class TUI implements UI {
     @Override
     public void showTimeExpired() {
         System.out.println("Time expired, end of turn.!");
+        System.out.print("> ");
     }
 
     @Override
