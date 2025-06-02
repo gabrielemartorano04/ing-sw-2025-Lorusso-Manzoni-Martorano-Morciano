@@ -17,7 +17,7 @@ public class Trucker implements Serializable {
 
     private final PlayerColors color;
     private final String nickname;
-    private final SpaceShip spaceShip;
+    private SpaceShip spaceShip;
     private int position; //posizione assoluta
     private int cosmicCredit;
     private BuildingState buildingState;
@@ -144,6 +144,10 @@ public class Trucker implements Serializable {
 
     public void removeKeptComponent(int index) {
         keptComponents.remove(index);
+    }
+
+    public void setSpaceShip(SpaceShip spaceShip) {
+        this.spaceShip = spaceShip;
     }
 }
 

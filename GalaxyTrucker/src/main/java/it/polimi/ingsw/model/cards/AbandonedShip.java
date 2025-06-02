@@ -85,6 +85,13 @@ public class AbandonedShip extends Card implements Serializable {
         return state;
     }
 
+    public int getIndexOfCurrTrucker() {
+        return indexOfCurrTrucker;
+    }
+
+    public CardState getState() {
+        return state;
+    }
 
     @Override
     public ServerEvent startCard() {
