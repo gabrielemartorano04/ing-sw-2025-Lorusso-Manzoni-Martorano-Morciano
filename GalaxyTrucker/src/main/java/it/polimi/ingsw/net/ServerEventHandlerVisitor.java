@@ -99,10 +99,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(ComponentNotAvailableError event) {
-        ui.showError(event.getMessage());
-        ui.showAvailableComponent(viewFlow.getAvailableComponents());
-        ui.showMessage("Please select a component between 0 and " + (viewFlow.getAvailableComponents().size()-1)+"\n");
-        System.out.print("> ");
+        ui.componentNotAvailable(event, viewFlow);
     }
 
     @Override

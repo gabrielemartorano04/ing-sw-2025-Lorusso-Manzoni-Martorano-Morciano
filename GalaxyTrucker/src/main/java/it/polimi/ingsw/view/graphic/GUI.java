@@ -15,6 +15,7 @@ import it.polimi.ingsw.net.events.clientevents.buildingevents.TurnHourglassEvent
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.ComponentLinkedEvent;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.ComponentNotAvailableError;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.StartBuildingEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
@@ -102,6 +103,11 @@ public class GUI implements UI {
 
     @Override
     public void componentLinked(ComponentLinkedEvent event){
+        //TODO:
+    }
+
+    @Override
+    public void componentNotAvailable(ComponentNotAvailableError event, ViewFlow viewFlow){
         //TODO:
     }
 

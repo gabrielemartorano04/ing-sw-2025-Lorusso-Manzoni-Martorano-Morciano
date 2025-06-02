@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.ComponentLinkedEvent;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.ComponentNotAvailableError;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.StartBuildingEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
@@ -33,6 +34,8 @@ public interface UI {
     void startBuildingScene(StartBuildingEvent event);
 
     void componentLinked(ComponentLinkedEvent event);
+
+    void componentNotAvailable(ComponentNotAvailableError event, ViewFlow viewFlow);
 
 
 

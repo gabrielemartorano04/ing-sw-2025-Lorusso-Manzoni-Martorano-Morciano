@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.ComponentLinkedEvent;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.ComponentNotAvailableError;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.StartBuildingEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
@@ -16,7 +17,9 @@ import it.polimi.ingsw.net.events.serverevents.setupevents.NicknameAlreadyInErro
 import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
+import it.polimi.ingsw.view.ViewFlow;
 
+import javax.swing.text.View;
 import java.util.*;
 import java.util.List;
 
@@ -63,6 +66,14 @@ public class TUI implements UI {
     public void componentLinked(ComponentLinkedEvent event){
         this.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
         this.showAvailableComponent(event.getAvComponents());
+        System.out.print("> ");
+    }
+
+    @Override
+    public void componentNotAvailable(ComponentNotAvailableError event, ViewFlow viewFlow){
+        this.showError(event.getMessage());
+        this.showAvailableComponent(viewFlow.getAvailableComponents());
+        this.showMessage("Please select a component between 0 and " + (viewFlow.getAvailableComponents().size()-1)+"\n");
         System.out.print("> ");
     }
 
