@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
@@ -15,12 +16,20 @@ import it.polimi.ingsw.view.UI;
 import java.util.*;
 import java.util.List;
 
-public class TUI extends UI {
+public class TUI implements UI {
 
     private final InputReader inputReader;
 
     public TUI() {
         this.inputReader = new InputReader();
+    }
+
+    @Override
+    public void welcomeScene(AvailableColorsEvent event){
+        this.showWelcome();
+        this.showChooseColor(event.getColors());
+        System.out.print("> ");
+
     }
 
     @Override

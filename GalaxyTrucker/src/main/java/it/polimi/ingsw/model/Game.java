@@ -59,6 +59,30 @@ public class Game {
         setIstance(this);
     }
 
+    public static void initializeForTest(SpaceShip ship1, SpaceShip ship2) {
+        Game testGame = new Game(2, 2);
+
+        Trucker t1 = new Trucker("Alice", PlayerColors.RED);
+        Trucker t2 = new Trucker("Bob", PlayerColors.BLUE);
+
+            t1.setSpaceShip(ship1);
+            t2.setSpaceShip(ship2);
+
+        // Aggiungi i trucker al gioco
+        try {
+            testGame.addTrucker(t1);
+            testGame.addTrucker(t2);
+        } catch (Exception e) {
+            throw new RuntimeException("Errore durante addTrucker nel test", e);
+        }
+
+        // Imposta il game come stato di volo se serve bypassare la build
+        testGame.setGameState(GameState.FLIGHT);
+
+        // Imposta l'istanza statica
+        Game.setIstance(testGame);
+    }
+
     public int getGameLevel(){
         return gameLevel;
     }

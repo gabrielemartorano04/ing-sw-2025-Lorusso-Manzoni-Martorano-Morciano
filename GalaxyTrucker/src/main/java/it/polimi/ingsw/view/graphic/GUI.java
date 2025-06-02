@@ -15,10 +15,12 @@ import it.polimi.ingsw.net.events.clientevents.buildingevents.TurnHourglassEvent
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 
 import javafx.animation.*;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -48,7 +50,7 @@ import javafx.util.Duration;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class GUI extends UI {
+public class GUI implements UI {
 
     private Stage stage;
     private Scene mainScene;
@@ -70,6 +72,11 @@ public class GUI extends UI {
 
     public ClientEvent getCurrentEvent() {
         return currentEvent;
+    }
+
+    @Override
+    public void welcomeScene(AvailableColorsEvent event){
+        // TODO:
     }
 
 //    @Override
