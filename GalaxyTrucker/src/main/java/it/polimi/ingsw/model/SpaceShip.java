@@ -1636,9 +1636,10 @@ public class SpaceShip implements Serializable {
                             if (load.getIsSpecial() && goods.get(index).getValue() == 4) {
                                 goods.get(index).setX(i);
                                 goods.get(index).setY(j);
+                                load.removeGood(load.getGoods().size()-1);
                                 load.addGood(goods.get(index));
                                 addGoodsList(goods.get(index));
-                                switch(goods.get(index).getValue()){
+                                switch(load.getGoods().getLast().getValue()){
                                     case 1: blueGoods++;
                                     case 2: greenGoods++;
                                     case 3: yellowGoods++;
@@ -1650,9 +1651,10 @@ public class SpaceShip implements Serializable {
                             else if (goods.get(index).getValue() != 4) {
                                 goods.get(index).setX(i);
                                 goods.get(index).setY(j);
+                                load.removeGood(load.getGoods().size()-1);
                                 load.addGood(goods.get(index));
                                 addGoodsList(goods.get(index));
-                                switch(goods.get(index).getValue()){
+                                switch(load.getGoods().getLast().getValue()){
                                     case 1: blueGoods++;
                                     case 2: greenGoods++;
                                     case 3: yellowGoods++;
@@ -1682,6 +1684,7 @@ public class SpaceShip implements Serializable {
                                             bank.addGoodsInBank(g.getValue());
                                             goods.get(j).setX(g.getX());
                                             goods.get(j).setY(g.getY());
+                                            l.removeGood(l.getGoods().size()-1);
                                             l.addGood(goods.get(j));
                                             addGoodsList(goods.get(j));
                                             bank.removeGoodsInBank(goods.get(j).getValue());
@@ -1705,6 +1708,7 @@ public class SpaceShip implements Serializable {
                                 bank.removeGoodsInBank(goods.get(j).getValue());
                                 goods.get(j).setX(goodsList.get(i).getX());
                                 goods.get(j).setY(goodsList.get(i).getY());
+                                loadToRemove.removeGood(loadToRemove.getGoods().size()-1);
                                 loadToRemove.addGood(goods.get(j));
                                 goodsList.remove(i);
                                 addGoodsList(goods.get(j));
@@ -1734,15 +1738,18 @@ public class SpaceShip implements Serializable {
                         throw new InvalidPositionException("Special load expected");
                     }
                     if(load.getCapacity()-load.getQuantity()>0){
+                        load.getGoods().remove(value);
                         load.addGood(value,good);
                         bank.removeGoodsInBank(good.getValue());
                         addGoodsList(good);
                     }
                     else{
                         Goods g=load.getGoods().get(value);
-                        load.getGoods().remove(g);
-                        bank.addGoodsInBank(g.getValue());
-                        load.getGoods().add(value,good);
+                        if(g.getValue()!=-1){
+                            bank.addGoodsInBank(g.getValue());
+                        }
+                        load.removeGood(value);
+                        load.addGood(value,good);
                         bank.removeGoodsInBank(good.getValue());
                         goodsList.remove(g);
                         addGoodsList(good);

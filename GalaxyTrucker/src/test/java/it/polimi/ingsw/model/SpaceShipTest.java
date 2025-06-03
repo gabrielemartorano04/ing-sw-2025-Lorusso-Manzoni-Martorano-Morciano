@@ -533,13 +533,14 @@ class SpaceShipTest {
     void addGood() {
         Goods good1=new Goods(3);
         try {
-            good1.setX(7);
-            good1.setY(8);
-            spaceShip3.addGood(good1,new int[]{7,8},0,new Bank());
+            good1.setX(8);
+            good1.setY(9);
+            spaceShip3.addGood(good1,new int[]{8,9},0,new Bank());
+            spaceShip3.addGood(good1,new int[]{8,9},2,new Bank());
         } catch (InvalidPositionException e) {
             throw new RuntimeException(e);
         }
-        switch(spaceShip3.getComponents()[7][8]){
+        switch(spaceShip3.getComponents()[8][9]){
             case Load load->{
                 assertNotNull(load.getGoods().get(0));
                 assertEquals(load.getGoods().get(0),good1);
@@ -578,27 +579,73 @@ class SpaceShipTest {
 
     @Test
     void checkLoad() {
-
+        assertTrue(spaceShip3.checkLoad(new int[]{8,9}));
+        assertFalse(spaceShip3.checkLoad(new int[]{6,8}));
     }
 
     @Test
     void checkDoubleCannon() {
+        ArrayList<int[]> coord=new ArrayList<>();
+        coord.add(new int[]{5,8});
+        assertTrue(spaceShip3.checkDoubleCannon(coord));
+        coord.add(new int[]{5,6});
+        assertFalse(spaceShip3.checkDoubleCannon(coord));
     }
 
     @Test
     void checkShield() {
+       assertTrue(spaceShip3.checkShield(new int[]{8,8}));
+       assertFalse(spaceShip3.checkShield(new int[]{7,8}));
     }
 
     @Test
     void checkBatteryStorage() {
+        ArrayList<int[]> coord=new ArrayList<>();
+        coord.add(new int[]{6,9});
+        coord.add(new int[]{5,6});
+        assertTrue(spaceShip3.checkBatteryStorage(coord));
+        coord.add(new int[]{7,6});
+        assertFalse(spaceShip3.checkBatteryStorage(coord));
     }
 
     @Test
     void checkCabin() {
+        spaceShip3.setNumHuman();
+        ArrayList<int[]> coord=new ArrayList<>();
+        coord.add(new int[]{7,7,1});
+        coord.add(new int[]{7,6,1});
+        try {
+            assertTrue(spaceShip3.checkCabin(coord,2));
+           // assertFalse(spaceShip3.checkCabin(coord,5));
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        coord.add(new int[]{6,7,1});
+//        try {
+//            //assertFalse(spaceShip3.checkCabin(coord,2));
+//        } catch (InvalidCoordinates e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     @Test
     void swapGoods() {
+        Goods good1=new Goods(3);
+        Goods good2=new Goods(2);
+        try {
+            spaceShip3.addGood(good1,new int[]{7,8},0,new Bank());
+            spaceShip3.addGood(good2,new int[]{8,9},0,new Bank());
+        } catch (InvalidPositionException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceShip3.swapGoods(new int[]{7,8},0,new int[]{8,9},0);
+        } catch (InvalidPositionException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(((Load)spaceShip3.getComponents()[7][8]).getGoods().get(0),good2);
+        assertEquals(((Load)spaceShip3.getComponents()[8][9]).getGoods().get(0),good1);
+
     }
 
     @Test

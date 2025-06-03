@@ -31,8 +31,8 @@ final public class Load extends Component implements Serializable {
         this.isSpecial = isSpecial;
         this.capacity = capacity;
         goods = new ArrayList<>(capacity);
-        for(Goods g : goods){
-            g=null;
+        for(int i = 0; i < capacity; i++){
+            goods.add(new Goods(-1));
         }
     }
 
@@ -91,11 +91,20 @@ final public class Load extends Component implements Serializable {
         goods.remove(good);
     }
 
+    public void removeGood(int index){
+        goods.remove(index);
+    }
     /**
      * Returns the list of goods contained in the load
      * @return list of goods
      */
     public ArrayList<Goods> getGoods() {
         return goods;
+    }
+
+    public static void main(String[] args) {
+        Load load =new Load(3,3,3,3,"Load","",2,false);
+        load.removeGood(1);
+        load.addGood(1,new Goods(3));
     }
 }
