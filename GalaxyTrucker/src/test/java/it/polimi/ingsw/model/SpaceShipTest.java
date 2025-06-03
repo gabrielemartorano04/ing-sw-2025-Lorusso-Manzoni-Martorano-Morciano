@@ -1,12 +1,14 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.exceptions.NotEnoughBatteries;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -242,14 +244,26 @@ class SpaceShipTest {
     @Test
     void getSingleCannonPower() {
         assertEquals(2,spaceShip2.getSingleCannonPower());
-
-        assertEquals(2.5,spaceShip3.getSingleCannonPower());
+        float expected=(1/2)+2;
+        assertEquals(expected,spaceShip3.getSingleCannonPower());
     }
 
     @Test
-    void getDoubleCannon() {
+    void activateAndGetDoubleCannon() {
         assertEquals(0,spaceShip2.getDoubleCannon());
 
+        assertEquals(0,spaceShip3.getDoubleCannon());
+        spaceShip3.setBattery();
+        ArrayList<int[]> coord=new ArrayList<>();
+        ArrayList<int[]> batt=new ArrayList<>();
+        coord.add(new int[]{5,8});
+        batt.add(new int[]{6,9,1});
+        try {
+            spaceShip3.activateDoubleCannons(coord,batt);
+        } catch (NotEnoughBatteries e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(2,spaceShip3.getDoubleCannon());
     }
 
     @Test
@@ -332,17 +346,40 @@ class SpaceShipTest {
     @Test
     void getTotalCannonPower() {
         assertEquals(2,spaceShip2.getTotalCannonPower());
+
+
+        spaceShip3.setBattery();
+        ArrayList<int[]> coord=new ArrayList<>();
+        ArrayList<int[]> batt=new ArrayList<>();
+        coord.add(new int[]{5,8});
+        batt.add(new int[]{6,9,1});
+        try {
+            spaceShip3.activateDoubleCannons(coord,batt);
+        } catch (NotEnoughBatteries e) {
+            throw new RuntimeException(e);
+        }
+        float expected=(1/2)+4;
+        assertEquals(expected,spaceShip3.getTotalCannonPower());
+
     }
 
     @Test
     void deactivateDoubleCannons() {
-        //farlo con spaceship 1 con double cannons
+        spaceShip3.setBattery();
+        ArrayList<int[]> coord=new ArrayList<>();
+        ArrayList<int[]> batt=new ArrayList<>();
+        coord.add(new int[]{5,8});
+        batt.add(new int[]{6,9,1});
+        try {
+            spaceShip3.activateDoubleCannons(coord,batt);
+        } catch (NotEnoughBatteries e) {
+            throw new RuntimeException(e);
+        }
+
+        spaceShip3.deactivateDoubleCannons();
+        assertEquals(0,spaceShip3.getDoubleCannon());
     }
 
-    @Test
-    void activateDoubleCannons() {
-        //
-    }
 
     @Test
     void activateShield() {
@@ -374,11 +411,15 @@ class SpaceShipTest {
     @Test
     void countExposedConnectors() {
         assertEquals(5, spaceShip2.countExposedConnectors());
+
+        assertEquals(5, spaceShip2.countExposedConnectors());
     }
 
     @Test
     void wellDone() {
         assertTrue(spaceShip2.wellDone());
+
+        assertTrue(spaceShip3.wellDone());
     }
 
     @Test
@@ -490,10 +531,29 @@ class SpaceShipTest {
 
     @Test
     void addGood() {
+        Goods good1=new Goods(3);
+        try {
+            good1.setX(7);
+            good1.setY(8);
+            spaceShip3.addGood(good1,new int[]{7,8},0,new Bank());
+        } catch (InvalidPositionException e) {
+            throw new RuntimeException(e);
+        }
+        switch(spaceShip3.getComponents()[7][8]){
+            case Load load->{
+                assertNotNull(load.getGoods().get(0));
+                assertEquals(load.getGoods().get(0),good1);
+                assertEquals(load.getGoods().get(0).getValue(),3);
+            }
+            default -> {}
+        }
+
     }
 
     @Test
     void removeBatteries() {
+        spaceShip3.setBattery();
+        spaceShip3.removeBatteries();
     }
 
     @Test

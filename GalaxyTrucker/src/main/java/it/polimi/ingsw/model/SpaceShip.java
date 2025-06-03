@@ -434,7 +434,7 @@ public class SpaceShip implements Serializable {
                                     power++;
                                 }
                                 else{
-                                    power += 0.5;
+                                    power += 1/2;
                                 }
                             }
                         }
