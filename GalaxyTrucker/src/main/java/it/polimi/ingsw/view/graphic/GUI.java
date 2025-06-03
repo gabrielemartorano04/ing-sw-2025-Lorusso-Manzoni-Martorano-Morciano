@@ -33,6 +33,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,6 +41,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -65,10 +67,14 @@ public class GUI implements UI {
     private ClientEvent currentEvent;
     private Component selectedComponent;
     private final ViewFlow viewFlow;
+    private boolean isLinkingEnabled;
+    private final Map<String, Integer> previousPositions;
 
     public GUI(Stage stage, ViewFlow viewFlow) {
         this.stage = stage;
         this.viewFlow = viewFlow;
+        this.isLinkingEnabled = false;
+        this.previousPositions = new HashMap<>();
         Scene loadingScene = new Scene(new StackPane(), 850, 550);
         stage.setScene(loadingScene);
         stage.setTitle("Galaxy Trucker");
@@ -259,44 +265,6 @@ public class GUI implements UI {
 
     // fine gioco
 
-
-
-//    @Override
-//    public void showFirstWelcome() {
-//        double width = 800;
-//        double height = 550;
-//
-//        // Immagine di sfondo
-//        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/WelcomeImage.jpeg").toExternalForm());
-//        ImageView backgroundView = new ImageView(backgroundImage);
-//        backgroundView.setFitWidth(width);
-//        backgroundView.setFitHeight(height);
-//        backgroundView.setPreserveRatio(false);
-//        backgroundView.setMouseTransparent(true);
-//
-//        // Bottone START (interattivo)
-//        Button continueButton = new Button("START");
-//        continueButton.setFont(Font.font("Bangers", 20));
-//        continueButton.setTextFill(Color.WHITE);
-//        continueButton.setStyle("-fx-background-color: rgba(255,222,105,0.7);");
-//
-//        // Azione quando si clicca il pulsante
-//        continueButton.setOnAction(e -> {
-//            showInsertNumPlayers();
-//        });
-//
-//        // Layout
-//        StackPane root = new StackPane(backgroundView, continueButton);
-//        StackPane.setAlignment(continueButton, Pos.BOTTOM_CENTER);
-//        StackPane.setMargin(continueButton, new Insets(0, 0, 25, 0));
-//
-//        Scene scene = new Scene(root, width, height);
-//        stage.setScene(scene);
-//        stage.setWidth(width);
-//        stage.setHeight(height);
-//        stage.centerOnScreen();
-//        stage.show();
-//    }
 
     @Override
     public void showWelcome(EnumSet<PlayerColors> availableColors) {
@@ -605,6 +573,7 @@ public class GUI implements UI {
 
             button.setOnAction(e -> {
                 viewFlow.handleInput("select " + index);
+                //TODO inserire ritorno alla schermata precedente con la spaceship e il resto
             });
 
             grid.add(button, col, row);
@@ -620,7 +589,20 @@ public class GUI implements UI {
         scrollPane.setFitToWidth(true);
         scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 
-        StackPane root = new StackPane(backgroundView, scrollPane);
+        // Pulsante "Back"
+        Button backBtn = new Button("←");
+        backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 14));
+        backBtn.setTextFill(Color.BLACK);
+        backBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        backBtn.setCursor(Cursor.HAND);
+        backBtn.setPadding(new Insets(10, 12, 10, 12));
+        backBtn.setOnAction(e -> viewFlow.handleInput("back")); //TODO inserire il ritorno corretto alla schermata precedente
+
+        // Contenitore principale
+        StackPane root = new StackPane(backgroundView, scrollPane, backBtn);
+        StackPane.setAlignment(backBtn, Pos.TOP_LEFT);
+        StackPane.setMargin(backBtn, new Insets(20, 0, 0, 20));
+
         Scene scene = new Scene(root, width, height);
         stage.setScene(scene);
         stage.centerOnScreen();
@@ -666,6 +648,7 @@ public class GUI implements UI {
 
                 imageView.setOnMouseClicked(event -> {
                     viewFlow.handleInput("selectkept " + index);
+                    isLinkingEnabled = true;
                     event.consume();
                 });
 
@@ -844,42 +827,34 @@ public class GUI implements UI {
         Button hourglassBtn = new Button("⏳");
         hourglassBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
         hourglassBtn.setTextFill(Color.BLACK);
-        hourglassBtn.setCursor(Cursor.HAND);
+        hourglassBtn.setCursor(javafx.scene.Cursor.HAND);
         hourglassBtn.setPrefWidth(70);
         hourglassBtn.setPrefHeight(30);
-
-        CornerRadii roundedCorners = new CornerRadii(10);
-
-        Background activeBg = new Background(new BackgroundFill(Color.web("#FFDE69"), roundedCorners, Insets.EMPTY));
-
-        Background disabledBg = new Background(new BackgroundFill(Color.web("#FFDE69"), roundedCorners, Insets.EMPTY));
-        String disabledStyle = "-fx-opacity: 0.6;";
-
-        hourglassBtn.setBackground(activeBg);
+        hourglassBtn.setBackground(new Background(new BackgroundFill(
+                Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
 
         hourglassBtn.setOnAction(e -> {
-            viewFlow.handleInput("hourglass");
             hourglassBtn.setDisable(true);
-            hourglassBtn.setBackground(disabledBg);
-            hourglassBtn.setStyle(disabledStyle);
 
-            // Countdown
-            IntegerProperty seconds = new SimpleIntegerProperty(90);
-            hourglassBtn.textProperty().bind(seconds.asString("%ds"));
+            ColorAdjust grayOverlay = new ColorAdjust();
+            grayOverlay.setBrightness(-0.5);
+            hourglassBtn.setEffect(grayOverlay);
 
-            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-                int current = seconds.get() - 1;
-                seconds.set(current);
-                if (current <= 0) {
-                    hourglassBtn.setDisable(false);
-                    hourglassBtn.setStyle(""); // rimuovi opacità
-                    hourglassBtn.setBackground(activeBg);
-                    hourglassBtn.textProperty().unbind();
+            final int[] secondsLeft = {90};
+            hourglassBtn.setText(secondsLeft[0] + "s");
+
+            Timeline countdown = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+                secondsLeft[0]--;
+                if (secondsLeft[0] > 0) {
+                    hourglassBtn.setText(secondsLeft[0] + "s");
+                } else {
                     hourglassBtn.setText("⏳");
+                    hourglassBtn.setDisable(false);
+                    hourglassBtn.setEffect(null); // remove overlay
                 }
             }));
-            timeline.setCycleCount(90);
-            timeline.play();
+            countdown.setCycleCount(90);
+            countdown.play();
         });
 
         // Pulsante Rules
@@ -940,7 +915,7 @@ public class GUI implements UI {
             }
 
             StackPane popup = new StackPane(
-                    new Rectangle(800, 550, Color.rgb(0, 0, 0, 0.4)),
+                    new Rectangle(850, 550, Color.rgb(0, 0, 0, 0.4)),
                     nicknameChoices
             );
             popup.setOnMouseClicked(ev -> ((StackPane) stage.getScene().getRoot()).getChildren().remove(popup));
@@ -971,7 +946,6 @@ public class GUI implements UI {
         discardButton.setOnAction(e -> {
             viewFlow.handleInput("discard");
             selectedComponent = null;
-
             Node root = stage.getScene().getRoot();
             Node toRemove = root.lookup("#discardBtn");
             if (toRemove != null) {
@@ -1577,25 +1551,18 @@ public class GUI implements UI {
                         cell.getChildren().add(imageView);
                     }
 
-                    final int r = row;
+                    final int rIndex = row;
                     final int cIndex = col;
-                    cell.setOnDragOver(event -> {
-                        if (event.getGestureSource() != cell && event.getDragboard().hasString()) {
-                            event.acceptTransferModes(TransferMode.MOVE);
+
+                    //attivo il booleano per poter avviare la link quando premo
+                    cell.setOnMouseClicked(event -> {
+                        if (isLinkingEnabled) {
+                            viewFlow.handleInput("link " + rIndex + " " + cIndex);
+                            isLinkingEnabled = false;
                         }
                         event.consume();
                     });
 
-                    cell.setOnDragDropped(event -> {
-                        Dragboard db = event.getDragboard();
-                        if (db.hasString()) {
-                            // TODO: allineare ai cambiamenti
-                            //setCurrentEvent(new LinkTileEvent(selectedComponent, r, cIndex));
-                            selectedComponent = null;
-                            event.setDropCompleted(true);
-                        }
-                        event.consume();
-                    });
                 } else {
                     cell.setStyle("-fx-background-color: transparent;");
                 }
@@ -1659,29 +1626,26 @@ public class GUI implements UI {
         double width = 850;
         double height = 550;
 
-        // 1. Sfondo standard
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-
-        // 2. Immagine della board (centrata sopra)
+        // 1. Board di sfondo
         Image boardImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-5.png").toExternalForm());
         ImageView boardView = new ImageView(boardImage);
-        boardView.setFitWidth(width);
-        boardView.setFitHeight(height);
-        boardView.setPreserveRatio(false);
+        boardView.setFitHeight(500);
+        boardView.setPreserveRatio(true);
         boardView.setMouseTransparent(true);
 
-        // 3. Overlay dei triangoli
+        // 2. Overlay contenente triangoli
         Pane overlay = new Pane();
-        double centerX = width / 2;
-        double centerY = height / 2;
-        double radiusX = 300;
-        double radiusY = 200;
 
-        // Mappa colori giocatori (puoi renderla dinamica)
+        // 3. Parametri del tracciato (ellisse)
+        double centerX = width / 2 - 5;
+        double centerY = height / 2 + 2;
+        double radiusX = 315;
+        double radiusY = 175;
+
+        int totalSteps = 24;
+        int startOffset = 2; // posizione iniziale ruotata (0 = alto, 6 = basso)
+
+        // 4. Colori associati ai giocatori
         Map<String, Color> playerColors = Map.of(
                 "RED", Color.RED,
                 "GREEN", Color.LIMEGREEN,
@@ -1689,24 +1653,27 @@ public class GUI implements UI {
                 "YELLOW", Color.GOLD
         );
 
-        // 4. Disegna i triangoli
-        for (int i = 0; i < 24; i++) {
-            double angle = 2 * Math.PI * i / 24 - Math.PI / 2;
+        // 5. Disegna i triangoli (track positions)
+        for (int i = 0; i < totalSteps; i++) {
+            // Calcolo angolo e posizione
+            double angle = 2 * Math.PI * ((i + startOffset) % totalSteps) / totalSteps - Math.PI / 2;
             double x = centerX + radiusX * Math.cos(angle);
             double y = centerY + radiusY * Math.sin(angle);
 
+            // Triangolo
             Polygon triangle = new Polygon();
             triangle.getPoints().addAll(
-                    x, y - 10,
-                    x - 8, y + 6,
-                    x + 8, y + 6
+                    x, y - 15,      // punta
+                    x - 15, y + 5,   // base sinistra
+                    x + 15, y + 5    // base destra
             );
 
-            triangle.setFill(Color.TRANSPARENT);
             triangle.setStroke(Color.WHITE);
             triangle.setStrokeWidth(2);
+            triangle.setRotate(Math.toDegrees(angle) + 180); // punta verso direzione inversa
+            triangle.setFill(Color.TRANSPARENT); // default: trasparente
 
-            // Colora se qualcuno è su questa posizione
+            // Colora il triangolo se un giocatore si trova qui
             for (Map.Entry<String, Integer> entry : truckers.entrySet()) {
                 if (entry.getValue() == i) {
                     String name = entry.getKey().toUpperCase();
@@ -1718,8 +1685,8 @@ public class GUI implements UI {
             overlay.getChildren().add(triangle);
         }
 
-        // 5. Stack finale
-        StackPane root = new StackPane(backgroundView, boardView, overlay);
+        // 6. Stack finale
+        StackPane root = new StackPane(boardView, overlay);
         Scene scene = new Scene(root, width, height);
         stage.setScene(scene);
         stage.centerOnScreen();
@@ -1817,78 +1784,98 @@ public class GUI implements UI {
         VBox componentBox = new VBox(10);
         componentBox.setPadding(new Insets(10));
         componentBox.setAlignment(Pos.BOTTOM_LEFT);
-        componentBox.setMouseTransparent(false);
-        componentBox.setPickOnBounds(true);
 
-        // Immagine del componente selezionato
+        // 1. Immagine con bordo bianco smussato
+        double borderSize = 116;
+        double imageSize = 116;
+
         ImageView componentView = new ImageView(selected.getFrontImage());
-        componentView.setFitWidth(120);
+        componentView.setFitWidth(imageSize);
         componentView.setPreserveRatio(true);
-        componentView.setMouseTransparent(false);
+        componentView.setMouseTransparent(true);
 
-        // Funzione per stilare i bottoni standard
-        Consumer<Button> styleButton = (btn) -> {
+        Rectangle clip = new Rectangle(imageSize, imageSize);
+        clip.setArcWidth(18);
+        clip.setArcHeight(18);
+        componentView.setClip(clip);
+
+        Rectangle border = new Rectangle(borderSize, borderSize);
+        border.setArcWidth(16);
+        border.setArcHeight(16);
+        border.setFill(Color.TRANSPARENT);
+        border.setStroke(Color.WHITE);
+        border.setStrokeWidth(2);
+        border.setMouseTransparent(true);
+
+        StackPane imageContainer = new StackPane(border, componentView);
+        imageContainer.setPrefSize(borderSize, borderSize);
+        imageContainer.setAlignment(Pos.CENTER);
+        imageContainer.setTranslateX(-353);
+        imageContainer.setTranslateY(0);
+
+        // 2. Stile pulsanti
+        Consumer<Button> styleYellowButton = (btn) -> {
             btn.setFont(Font.font("Bangers", 12));
             btn.setTextFill(Color.BLACK);
             btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-            btn.setPrefWidth(120);
             btn.setCursor(Cursor.HAND);
-            btn.setMouseTransparent(false);
-            btn.setPickOnBounds(true);
+            btn.setPrefWidth(120);
         };
 
-        StackPane root = (StackPane) stage.getScene().getRoot();
+        Consumer<Button> styleRedButton = (btn) -> {
+            btn.setFont(Font.font("Bangers", 12));
+            btn.setTextFill(Color.WHITE);
+            btn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+            btn.setCursor(Cursor.HAND);
+            btn.setPrefWidth(120);
+        };
 
-        // Pulsanti
+        // 3. Pulsanti con handler
         Button turnBtn = new Button("Turn");
-        styleButton.accept(turnBtn);
-
-        Button linkBtn = new Button("Link");
-        styleButton.accept(linkBtn);
+        styleYellowButton.accept(turnBtn);
+        turnBtn.setOnAction(e -> viewFlow.handleInput("turn"));
 
         Button keepBtn = new Button("Keep");
-        styleButton.accept(keepBtn);
+        styleYellowButton.accept(keepBtn);
+        keepBtn.setOnAction(e -> viewFlow.handleInput("keep"));
 
         Button discardBtn = new Button("Discard");
-        discardBtn.setFont(Font.font("Bangers", 12));
-        discardBtn.setTextFill(Color.WHITE);
-        discardBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
-        discardBtn.setPrefWidth(120);
-        discardBtn.setCursor(Cursor.HAND);
-        discardBtn.setMouseTransparent(false);
-        discardBtn.setPickOnBounds(true);
-
-        // Azioni dei pulsanti
-        turnBtn.setOnAction(e -> viewFlow.handleInput("turn"));
-        keepBtn.setOnAction(e -> viewFlow.handleInput("keep"));
+        styleRedButton.accept(discardBtn);
         discardBtn.setOnAction(e -> viewFlow.handleInput("discard"));
 
+        Button linkBtn = new Button("Link");
+        styleYellowButton.accept(linkBtn);
         linkBtn.setOnAction(e -> {
-            viewFlow.handleInput("link");
-
-            // Disabilita e grigia gli altri bottoni
+            isLinkingEnabled = true;
+            System.out.println("Link premuto");
+            // Disattiva altri pulsanti
             Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
                 btn.setDisable(true);
-                btn.setStyle("-fx-opacity: 0.5;");
+                btn.setOpacity(0.5); // uso opacity vera, non via CSS
             });
+            viewFlow.handleInput("link");
         });
 
+        // 4. Raggruppamento in VBox
         VBox buttonsBox = new VBox(8, turnBtn, linkBtn, keepBtn, discardBtn);
         buttonsBox.setAlignment(Pos.CENTER_LEFT);
-        buttonsBox.setMouseTransparent(false);
-        buttonsBox.setPickOnBounds(true);
 
-        componentBox.getChildren().addAll(componentView, buttonsBox);
+        // 5. Aggiunta al componente
+        componentBox.getChildren().addAll(imageContainer, buttonsBox);
 
+        // 6. Mostra nella scena
         Platform.runLater(() -> {
+            StackPane root = (StackPane) stage.getScene().getRoot();
             if (!root.getChildren().contains(componentBox)) {
                 StackPane.setAlignment(componentBox, Pos.BOTTOM_LEFT);
                 StackPane.setMargin(componentBox, new Insets(0, 0, 20, 5));
                 root.getChildren().add(componentBox);
+                componentBox.toFront(); // assicura che sia in primo piano
+            } else {
+                System.out.println("ComponentBox already present");
             }
         });
     }
-
     @Override
     public void showCurrCondition(Condition cond) {
 

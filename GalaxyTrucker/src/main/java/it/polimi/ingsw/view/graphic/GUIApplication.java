@@ -56,7 +56,7 @@ public class GUIApplication extends Application {
         // DA SISTEMARE la creazione della gui e il collegamento a viewFlow
         GUI gui = new GUI(primaryStage, null);
 
-        //gui.showTrack(mockTrack);
+        gui.showTrack(mockTrack, 2);
         //gui.showShipLayout("Luca", spaceship.getComponents());
         //gui.showChooseColor(EnumSet.allOf(PlayerColors.class));
         //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
@@ -67,15 +67,15 @@ public class GUIApplication extends Application {
         //gui.showKeptComponents(kept);
 
         //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
-        gui.showKeptComponents(kept);
-        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
-        gui.showComponentSelected(c);
+        //gui.showKeptComponents(kept);
+        //gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
+        //gui.showComponentSelected(c);
 //        gui.showWaitForOthers();
 //        gui.showBuildComplete();
         //gui.showSelectComponent();
         //gui.showAvailableComponent(availableComponents.getComponents());
         //gui.showStack(stack);
-        gui.showBuildOptions();
+        //gui.showBuildOptions();
         //gui.showCardDrawn(card2);
         //gui.showTruckerLostAllCrew(trucker.getNickname());
         //gui.showConnectionLost();
