@@ -553,19 +553,32 @@ class SpaceShipTest {
     @Test
     void removeBatteries() {
         spaceShip3.setBattery();
-        //spaceShip3.removeBatteries();
-    }
-
-    @Test
-    void removeAllGoods() {
+        ArrayList<int[]> batt=new ArrayList<>();
+        batt.add(new int[]{5,6,2});
+        batt.add(new int[]{6,9,1});
+        try {
+            spaceShip3.removeBatteries(batt);
+        } catch (NotEnoughBatteries e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(2,spaceShip3.getNumBatteries());
+        switch (spaceShip3.getComponents()[5][6]){
+            case BatteryStorage bs->{
+                assertEquals(0,bs.getQuantity());
+            }
+            default -> {}
+        }
+        switch (spaceShip3.getComponents()[6][9]){
+            case BatteryStorage bs->{
+                assertEquals(2,bs.getQuantity());
+            }
+            default -> {}
+        }
     }
 
     @Test
     void checkLoad() {
-    }
 
-    @Test
-    void testCheckLoad() {
     }
 
     @Test
