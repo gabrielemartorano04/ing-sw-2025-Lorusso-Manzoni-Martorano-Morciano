@@ -13,7 +13,6 @@ import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.text.TUI;
 import it.polimi.ingsw.view.text.TimerDisplay;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +31,7 @@ public class ViewFlow implements EventReceiver {
     private int position;
     private int batteryCount;
     private int enginePower;
-    private int cannonPower;
+    private float cannonPower;
     private int humanCount;
     private Map<String, Integer> goodsByColor;
     private Map<String, Integer> track;
@@ -281,7 +280,7 @@ public class ViewFlow implements EventReceiver {
 //        return cannonPower;
 //    }
 
-    public void setCannonPower(int cannonPower) {
+    public void setCannonPower(float cannonPower) {
         this.cannonPower = cannonPower;
     }
 

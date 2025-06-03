@@ -8,12 +8,6 @@ import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.events.clientevents.buildingevents.EndBuildingEvent;
-import it.polimi.ingsw.net.events.clientevents.buildingevents.KeepTileEvent;
-import it.polimi.ingsw.net.events.clientevents.buildingevents.ShowStackEvent;
-import it.polimi.ingsw.net.events.clientevents.buildingevents.TurnHourglassEvent;
-import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
-import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
@@ -25,7 +19,6 @@ import it.polimi.ingsw.view.UI;
 
 import it.polimi.ingsw.view.ViewFlow;
 import javafx.animation.*;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -33,7 +26,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -43,7 +35,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
@@ -1579,7 +1570,7 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showPlayerShipStatus(int position, int batteryCount, int humanCount, int cannonPower, int enginePower, Map<String, Integer> goodsByColor) {
+    public void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor) {
         // Carica le icone (temporaneamente tutte uguali)
         Image icon = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
 

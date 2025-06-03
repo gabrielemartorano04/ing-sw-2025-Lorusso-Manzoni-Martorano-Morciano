@@ -10,7 +10,11 @@ public class ShipUpdateEvent extends ServerEvent {
 
     private String message;
     private Component[][] ship;
-    private int truckerPosition,numBatteries,numCrew,cannonPower,enginePower;
+    private int truckerPosition;
+    private int numBatteries;
+    private int numCrew;
+    private float cannonPower;
+    private int enginePower;
     private Map<String, Integer> goods;
 
     public ShipUpdateEvent(TruckerController truckerController) {

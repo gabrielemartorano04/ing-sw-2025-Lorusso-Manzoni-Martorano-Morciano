@@ -422,7 +422,7 @@ public class SpaceShip implements Serializable {
      * This method calculate the single cannons power
      * @return the single cannons power
      */
-    public int getSingleCannonPower() {
+    public float getSingleCannonPower() {
         int power = 0;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
@@ -430,8 +430,12 @@ public class SpaceShip implements Serializable {
                     switch(components[i][j]){
                         case Cannon c->{
                             if (!c.getIsDouble()) {
-                                if (c.getOrientation() == Orientation.N) power++;
-                                else power += 0.5;
+                                if (c.getOrientation() == Orientation.N) {
+                                    power++;
+                                }
+                                else{
+                                    power += 0.5;
+                                }
                             }
                         }
                         default -> {}
@@ -701,7 +705,7 @@ public class SpaceShip implements Serializable {
      * Before calling this method setting the aliens is needed
      * @return power of cannons of the spaceship
      */
-    public int getTotalCannonPower() {
+    public float getTotalCannonPower() {
 
         int power = 0;
         for (int i = 5; i <= 9; i++) {

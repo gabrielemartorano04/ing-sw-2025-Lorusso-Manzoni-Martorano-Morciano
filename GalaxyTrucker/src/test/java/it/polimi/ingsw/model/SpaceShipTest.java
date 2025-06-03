@@ -149,6 +149,12 @@ class SpaceShipTest {
         aliencoord.add(new int[]{7,6});
         spaceShip3.setNumAlien(aliencoord);
         spaceShip3.setNumHuman();
+        switch (spaceShip3.getComponents()[7][6]){
+            case Cabin cabin->{assertNotNull(cabin.getAlien());
+            assertEquals(AlienColor.BROWN, cabin.getAlien().getColor());}
+            default -> {}
+        }
+
         assertEquals(7, spaceShip3.getNumCrew());
     }
 
@@ -203,11 +209,15 @@ class SpaceShipTest {
     @Test
     void getNumDoubleCannon() {
         assertEquals(0,spaceShip2.getNumDoubleCannon());
+
+        assertEquals(1,spaceShip3.getNumDoubleCannon());
     }
 
     @Test
     void getNumDoubleEngine() {
         assertEquals(1,spaceShip2.getNumDoubleEngine());
+
+        assertEquals(2,spaceShip3.getNumDoubleEngine());
     }
 
     @Test
@@ -232,6 +242,8 @@ class SpaceShipTest {
     @Test
     void getSingleCannonPower() {
         assertEquals(2,spaceShip2.getSingleCannonPower());
+
+        assertEquals(2.5,spaceShip3.getSingleCannonPower());
     }
 
     @Test
