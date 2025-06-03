@@ -218,6 +218,8 @@ public class Smugglers extends Card implements Serializable {
         }else {
             try {
                 // addGood fa anche la remove dalla bank della merce corrente
+                goodsGained[currGoodIndex].setX(goodsCoordinates[0]);
+                goodsGained[currGoodIndex].setY(goodsCoordinates[1]);
                 winnerTrucker.getSpaceShip().addGood(goodsGained[currGoodIndex], goodsCoordinates, value, Game.getIstance().getBank());
             } catch (InvalidPositionException e) {
                 cardState = CardState.GOODSTOADD;

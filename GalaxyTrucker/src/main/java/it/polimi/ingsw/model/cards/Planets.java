@@ -152,6 +152,8 @@ public class Planets extends Card implements Serializable {
             }
             try {
                 Goods g; // bene che mi viene passato dalla nave di trucker se nel load c'era già qualcosa
+                currentGood.setX(goodsCoordinates[0]);
+                currentGood.setY(goodsCoordinates[1]);
                 g=truckersLanded.get(indexOfTrucker).getSpaceShip().addGood(currentGood, goodsCoordinates, positionInLoad, Game.getIstance().getBank());
                 if (g!=null){
                     goodsPassed.add(g);
