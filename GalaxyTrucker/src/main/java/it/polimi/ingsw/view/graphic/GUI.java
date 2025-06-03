@@ -218,45 +218,9 @@ public class GUI implements UI {
     }
 
 
-    @Override
+    @Deprecated
     public void showWelcome() {
-        double width = 850;
-        double height = 550;
-
-        // Immagine di sfondo
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/WelcomeImage.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
-
-        // Bottone START (interattivo)
-        Button continueButton = new Button("START");
-        continueButton.setFont(Font.font("Bangers", 20));
-        continueButton.setTextFill(Color.WHITE);
-        continueButton.setStyle("-fx-background-color: rgba(255,222,105,0.7);");
-
-        // Azione quando si clicca il pulsante
-        continueButton.setOnAction(e -> {
-            //viewFlow.handleInput("start");
-        });
-
-        // Layout
-        StackPane root = new StackPane(backgroundView, continueButton);
-        StackPane.setAlignment(continueButton, Pos.BOTTOM_CENTER);
-        StackPane.setMargin(continueButton, new Insets(0, 0, 25, 0));
-
-        if (stage.getScene() == null) {
-            Scene scene = new Scene(root, width, height);
-            stage.setScene(scene);
-        } else {
-            stage.getScene().setRoot(root);
-        }
-        stage.setWidth(width);
-        stage.setHeight(height);
-        stage.centerOnScreen();
-        stage.show();
+        //NON servira piu probabilmente
     }
 
     @Override
