@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.view.ViewFlow;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -46,7 +47,16 @@ public class GUIApplication extends Application {
         mockTrack.put("GREEN", 5);
         mockTrack.put("BLUE", 12);
         mockTrack.put("YELLOW", 20);
-        GUI gui = new GUI(primaryStage);
+
+        // questa Gui dovrà essere creata in modo diverso per essere collegata al viewFlow
+
+        GUI gui = new GUI(primaryStage, null);
+
+        // LEGGI SOPRA
+
+
+
+
 
         //gui.showTrack(mockTrack);
         //gui.showShipLayout("Luca", spaceship.getComponents());
