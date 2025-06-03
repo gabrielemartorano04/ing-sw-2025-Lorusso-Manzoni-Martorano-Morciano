@@ -17,19 +17,18 @@ class SpaceShipTest {
     private SpaceShip spaceShip1;
     private SpaceShip spaceShip2;
     private CreateShipTest support=new CreateShipTest();
+    private SpaceShip spaceShip3;
 
     @BeforeEach
     void setUp() {
         try {
-            //spaceShip1=support.createShip1(spaceShip1); //spaceship di livello 2
-            spaceShip2=support.createShip3(spaceShip2); //spaceship di livello 0
+            spaceShip3=support.createShip1(spaceShip3); // level 2 spaceship
+            spaceShip2=support.createShip3(spaceShip2); // level trial flight spaceship
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }
         spaceShip1=new SpaceShip();
-        spaceShip1.setSpaceship(2,PlayerColors.GREEN);
-//        spaceShip2=new SpaceShip();
-//        spaceShip2.setSpaceship(0,PlayerColors.RED);
+        spaceShip1.setSpaceship(2,PlayerColors.GREEN); // empty spaceship
     }
 
     @Test
@@ -119,11 +118,16 @@ class SpaceShipTest {
     void setAndGetBattery() {
         spaceShip2.setBattery();
         assertEquals(5, spaceShip2.getNumBatteries());
+
+        spaceShip3.setBattery();
+        assertEquals(5, spaceShip3.getNumBatteries());
     }
 
     @Test
     void getGoodsCapacity() {
         assertEquals(5, spaceShip2.getGoodsCapacity());
+
+        assertEquals(6, spaceShip3.getGoodsCapacity());
     }
 
     @Test
@@ -142,7 +146,11 @@ class SpaceShipTest {
         spaceShip1.setNumHuman();
         assertEquals(2,spaceShip1.getNumHuman());
 
-
+        ArrayList<int[]> aliencoord=new ArrayList<>();
+        aliencoord.add(new int[]{7,6});
+        spaceShip3.setNumAlien(aliencoord);
+        spaceShip3.setNumHuman();
+        assertEquals(7, spaceShip3.getNumHuman());
     }
 
     @Test

@@ -153,7 +153,6 @@ public class SpaceShip implements Serializable {
                 }
             }
         }
-        System.out.println(numOfBattery);
     }
 
     /**
@@ -1378,7 +1377,6 @@ public class SpaceShip implements Serializable {
                                 case EmptySpace emptySpace->{}
                                 default -> {
                                     if (components[i][num].getLink()[0] == 0){
-                                        System.out.println(components[i][num].toString());
                                         return true;
                                     }
                                     else {
@@ -1413,7 +1411,6 @@ public class SpaceShip implements Serializable {
                                 case EmptySpace emptySpace->{}
                                 default -> {
                                     if (components[num][j].getLink()[1] == 0){
-                                        System.out.println(components[num][j].toString());
                                         return true;
                                     }
                                     else{
@@ -1450,7 +1447,6 @@ public class SpaceShip implements Serializable {
                                 case EmptySpace emptySpace->{}
                                 default -> {
                                     if (components[i][num].getLink()[2] == 0){
-                                        System.out.println(components[i][num].toString());
                                         return true;
                                     }
                                     else{
@@ -1488,7 +1484,6 @@ public class SpaceShip implements Serializable {
                                 case EmptySpace emptySpace->{}
                                 default -> {
                                     if (components[num][j].getLink()[3] == 0){
-                                        System.out.println(components[num][j].toString());
                                         return true;
                                     }
                                     else{
