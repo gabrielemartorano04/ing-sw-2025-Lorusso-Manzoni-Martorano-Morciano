@@ -9,11 +9,12 @@ import java.util.Map;
 
 public class FlightStartEvent extends ServerEvent {
     private String message;
-    private int position, batteryCount, humanCount,cannonPower, enginePower;
+    private int position, batteryCount, humanCount, enginePower;
+    private float cannonPower;
     private Map<String,Integer> track;
     private Component[][] spaceShip;
 
-    public FlightStartEvent(int position, int batteryCount, int humanCount, int cannonPower, int enginePower, Map<String,Integer> track, Component[][] spaceShip) {
+    public FlightStartEvent(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String,Integer> track, Component[][] spaceShip) {
         super(ServerEventType.START_FLIGHT, false);
         message = "Flight started, your spaceship were also filled";
         this.position = position;
@@ -38,7 +39,7 @@ public class FlightStartEvent extends ServerEvent {
         return humanCount;
     }
 
-    public int getCannonPower() {
+    public float getCannonPower() {
         return cannonPower;
     }
     public int getEnginePower() {

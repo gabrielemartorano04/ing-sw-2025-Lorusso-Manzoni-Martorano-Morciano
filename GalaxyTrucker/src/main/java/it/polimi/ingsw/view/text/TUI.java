@@ -18,7 +18,6 @@ import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 import it.polimi.ingsw.view.ViewFlow;
 
-import javax.swing.text.View;
 import java.util.*;
 import java.util.List;
 
@@ -463,7 +462,7 @@ public class TUI implements UI {
 
     @Override
     public void showPlayerShipStatus(int position, int batteryCount, int humanCount,
-                                     int cannonPower, int enginePower, Map<String, Integer> goods) {
+                                     float cannonPower, int enginePower, Map<String, Integer> goods) {
         System.out.println("Position: " + position);
         System.out.println("Total batteries: " + batteryCount);
         System.out.println("Total crew members: " + humanCount);

@@ -1604,7 +1604,7 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showPlayerShipStatus(int position, int batteryCount, int humanCount, int cannonPower, int enginePower, Map<String, Integer> goodsByColor) {
+    public void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor) {
         // Carica le icone (temporaneamente tutte uguali)
         Image icon = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
 

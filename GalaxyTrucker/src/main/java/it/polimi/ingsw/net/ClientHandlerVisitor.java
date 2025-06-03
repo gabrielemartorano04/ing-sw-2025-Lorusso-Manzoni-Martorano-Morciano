@@ -327,7 +327,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         Component[][] spaceship= currentClient.getTruckerController().getSpaceShip().getComponents();
         currentClient.getTruckerController().getSpaceShip().increaseLost(currentClient.getTruckerController().getTrucker().getKeptComponents().size());
         currentClient.getTruckerController().getSpaceShip().countExposedConnectors();
-        int cannonPower=currentClient.getTruckerController().getSpaceShip().getSingleCannonPower();
+        float cannonPower=currentClient.getTruckerController().getSpaceShip().getSingleCannonPower();
         int enginePower=currentClient.getTruckerController().getSpaceShip().getSingleEnginePower();
         int position=currentClient.getTruckerController().getPosition();
         int batteryCount=currentClient.getTruckerController().getSpaceShip().getNumBatteries();

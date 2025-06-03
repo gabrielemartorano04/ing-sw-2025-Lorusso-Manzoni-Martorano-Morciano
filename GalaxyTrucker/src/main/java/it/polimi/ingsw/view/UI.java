@@ -117,7 +117,7 @@ public interface UI {
     void askPlacedComponent();
 
     //PLAYER DATA
-    void showPlayerShipStatus(int position, int batteryCount, int humanCount, int cannonPower, int enginePower, Map<String, Integer> goodsByColor);
+    void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor);
     void showShipLayout(String nickname, Component[][] layout);
 
     void showMessage(String message);
