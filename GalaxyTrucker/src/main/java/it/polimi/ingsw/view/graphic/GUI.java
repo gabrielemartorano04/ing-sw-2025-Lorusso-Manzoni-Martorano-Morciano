@@ -59,15 +59,15 @@ import java.util.function.Consumer;
 public class GUI implements UI {
 
     private Stage stage;
-    private Scene mainScene;
+    private Scene currentScene;
     private ClientEvent currentEvent;
     private Component selectedComponent;
     ViewFlow viewFlow;
 
     public GUI(Stage stage) {
         this.stage = stage;
-        this.mainScene = new Scene(new StackPane(), 850, 550);
-        this.stage.setScene(mainScene);
+        this.currentScene = new Scene(new StackPane(), 850, 550);
+        this.stage.setScene(currentScene);
         this.stage.setTitle("Galaxy Trucker");
         this.stage.setResizable(false);
         this.stage.show();
@@ -81,52 +81,169 @@ public class GUI implements UI {
         return currentEvent;
     }
 
+
+    // insertnumPlayerscene
+
+    @Override
+    public void showInsertNumPlayers() {
+        double width = 850;
+        double height = 550;
+
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        VBox content = new VBox(20);
+        content.setAlignment(Pos.CENTER);
+
+        Label questionLabel = new Label("Insert the number of truckers and flight mode");
+        questionLabel.setFont(Font.font("Bangers", javafx.scene.text.FontWeight.BOLD, 20));
+        questionLabel.setTextFill(Color.web("#FFDE69"));
+
+        TextField numberField = new TextField();
+        numberField.setMaxWidth(200);
+        numberField.setAlignment(Pos.CENTER);
+
+        ToggleGroup levelGroup = new ToggleGroup();
+        RadioButton trialButton = new RadioButton("Trial Flight");
+        trialButton.setToggleGroup(levelGroup);
+        trialButton.setUserData(0);
+        trialButton.setTextFill(Color.WHITE);
+
+        RadioButton fullButton = new RadioButton("Full Game");
+        fullButton.setToggleGroup(levelGroup);
+        fullButton.setUserData(2);
+        fullButton.setTextFill(Color.WHITE);
+
+        HBox levelBox = new HBox(20, trialButton, fullButton);
+        levelBox.setAlignment(Pos.CENTER);
+
+        Label errorLabel = new Label();
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Arial", 12));
+
+        Button submitButton = new Button("START");
+        submitButton.setFont(Font.font("Bangers", 16));
+        submitButton.setDisable(true);
+        submitButton.setStyle("-fx-background-color: gray; -fx-text-fill: white;");
+
+        numberField.textProperty().addListener((obs, oldText, newText) -> {
+            boolean valid = !newText.trim().isEmpty();
+            submitButton.setDisable(!valid || levelGroup.getSelectedToggle() == null);
+            submitButton.setStyle((valid && levelGroup.getSelectedToggle() != null) ?
+                    "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
+                    "-fx-background-color: gray; -fx-text-fill: white;");
+        });
+
+        levelGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            boolean valid = !numberField.getText().trim().isEmpty();
+            submitButton.setDisable(newToggle == null || !valid);
+            submitButton.setStyle((newToggle != null && valid) ?
+                    "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
+                    "-fx-background-color: gray; -fx-text-fill: white;");
+        });
+
+        submitButton.setOnAction(e -> {
+            StringBuilder input = new StringBuilder();
+            String player = numberField.getText().trim();
+            Toggle selected = levelGroup.getSelectedToggle();
+            int num = Integer.parseInt(player);
+            int level = (int) selected.getUserData();
+            input.append(num).append(" ").append(level);
+            viewFlow.handleInput(input.toString());
+        });
+
+        content.getChildren().addAll(questionLabel, numberField, levelBox, errorLabel, submitButton);
+
+        StackPane insertPane = new StackPane(backgroundView, content);
+        if (stage.getScene() == null) {
+            Scene scene = new Scene(insertPane, width, height);
+            stage.setScene(scene);
+        } else {
+            stage.getScene().setRoot(insertPane);
+        }
+        stage.centerOnScreen();
+    }
+
+    //fine insertNumPlayerscene
+
+
+
+    // welcome scene
+
     @Override
     public void welcomeScene(AvailableColorsEvent event){
-        // TODO:
+        // TODO: crea la schermata di welcome con le informazioni dall'evento
+        // sostituisce la schermata corrente se prima avevo chiamato insertNumPlayer altrimenti crea la prima scena del gioco
+        this.showWelcome(event.getColors());
+
     }
 
     @Override
     public void nickNameAlreadyTaken(NicknameAlreadyInError event){
-        //TODO:
+        //TODO: notifica che il nickname che hai scelto è già in uso tramite popup o quello che vuoi
     }
 
     @Override
     public void colorAlreadyTaken(ColorAlreadyInError event){
-        //TODO:
+        //TODO: notifica che il colore che hai scelto è già in uso tramite popup o quello che vuoi
     }
+
+    // fine welcome scene
+
+
+    // building scene
 
     @Override
     public void startBuildingScene(StartBuildingEvent event){
-        //TODO:
+        //TODO:crea la scena di Building iniziale riempendola con le informazioni dall'evento
+        //setta la scena corrente a quella appena creata dopo aver eliminato la scena precedente
     }
+
 
     @Override
     public void componentLinked(ComponentLinkedEvent event){
-        //TODO:
+        //TODO: componente è stato linkato correttamente quindi modifichiamo la scena attaccandolo alla nave
     }
 
     @Override
     public void componentNotAvailable(ComponentNotAvailableError event, ViewFlow viewFlow){
-        //TODO:
+        //TODO: notifica che il componente che hai provato a selezionare non è disponibile
+        // vogliamo farti restare nella parte dove vedi le componenti disponibili e farti selezionare un altra componente
+        // vogliamo che venga aggiornata la lista dei componenti cioè non devono essere plottati tutti quelli che hanno il selected a true
+
     }
 
     @Override
     public void componentSelected(ComponentSelectedEvent event, ViewFlow viewFlow){
-        //TODO:
+        //TODO: ti riporta nella schermata dove vedi la nave con visualizzato il componente che hai selezionato e le posibili azioni
     }
 
     @Override
     public void invalidCoordinates(InvalidCoordinatesError event) {
-        //TODO:
+        //TODO: notifica errore di questo tipo
     }
 
     @Override
     public void invalidPosition(InvalidPositionError event){
-        //TODO:
+        //TODO: notifica errore di questo tipo
     }
 
 
+    // fine building scene
+
+
+    // flight scene
+
+
+    // fine flight scene
+
+    // end scene
+
+    // fine gioco
 
 
 
@@ -214,89 +331,6 @@ public class GUI implements UI {
         //NON servira piu probabilmente
     }
 
-    @Override
-    public void showInsertNumPlayers() {
-        double width = 850;
-        double height = 550;
-
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
-
-        VBox content = new VBox(20);
-        content.setAlignment(Pos.CENTER);
-
-        Label questionLabel = new Label("Insert the number of truckers and flight mode");
-        questionLabel.setFont(Font.font("Bangers", javafx.scene.text.FontWeight.BOLD, 20));
-        questionLabel.setTextFill(Color.web("#FFDE69"));
-
-        TextField numberField = new TextField();
-        numberField.setMaxWidth(200);
-        numberField.setAlignment(Pos.CENTER);
-
-        ToggleGroup levelGroup = new ToggleGroup();
-        RadioButton trialButton = new RadioButton("Trial Flight");
-        trialButton.setToggleGroup(levelGroup);
-        trialButton.setUserData(0);
-        trialButton.setTextFill(Color.WHITE);
-
-        RadioButton fullButton = new RadioButton("Full Game");
-        fullButton.setToggleGroup(levelGroup);
-        fullButton.setUserData(2);
-        fullButton.setTextFill(Color.WHITE);
-
-        HBox levelBox = new HBox(20, trialButton, fullButton);
-        levelBox.setAlignment(Pos.CENTER);
-
-        Label errorLabel = new Label();
-        errorLabel.setTextFill(Color.RED);
-        errorLabel.setFont(Font.font("Arial", 12));
-
-        Button submitButton = new Button("START");
-        submitButton.setFont(Font.font("Bangers", 16));
-        submitButton.setDisable(true);
-        submitButton.setStyle("-fx-background-color: gray; -fx-text-fill: white;");
-
-        numberField.textProperty().addListener((obs, oldText, newText) -> {
-            boolean valid = !newText.trim().isEmpty();
-            submitButton.setDisable(!valid || levelGroup.getSelectedToggle() == null);
-            submitButton.setStyle((valid && levelGroup.getSelectedToggle() != null) ?
-                    "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
-                    "-fx-background-color: gray; -fx-text-fill: white;");
-        });
-
-        levelGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
-            boolean valid = !numberField.getText().trim().isEmpty();
-            submitButton.setDisable(newToggle == null || !valid);
-            submitButton.setStyle((newToggle != null && valid) ?
-                    "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
-                    "-fx-background-color: gray; -fx-text-fill: white;");
-        });
-
-        submitButton.setOnAction(e -> {
-            StringBuilder input = new StringBuilder();
-            String player = numberField.getText().trim();
-            Toggle selected = levelGroup.getSelectedToggle();
-            int num = Integer.parseInt(player);
-            int level = (int) selected.getUserData();
-            input.append(num).append(" ").append(level);
-            viewFlow.handleInput(input.toString());
-        });
-
-        content.getChildren().addAll(questionLabel, numberField, levelBox, errorLabel, submitButton);
-
-        StackPane insertPane = new StackPane(backgroundView, content);
-        if (stage.getScene() == null) {
-            Scene scene = new Scene(insertPane, width, height);
-            stage.setScene(scene);
-        } else {
-            stage.getScene().setRoot(insertPane);
-        }
-        stage.centerOnScreen();
-    }
 
     @Override
     public void showChooseColor(EnumSet<PlayerColors> availableColors) {
