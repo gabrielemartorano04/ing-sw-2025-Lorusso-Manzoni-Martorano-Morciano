@@ -18,6 +18,7 @@ import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 
 import it.polimi.ingsw.view.ViewFlow;
+import it.polimi.ingsw.view.graphic.scenes.LoginScene;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -60,6 +61,7 @@ public class GUI implements UI {
 
     private Stage stage;
     private Scene currentScene;
+    private LoginScene loginScene;
     private ClientEvent currentEvent;
     private Component selectedComponent;
     ViewFlow viewFlow;
@@ -334,127 +336,9 @@ public class GUI implements UI {
 
     @Override
     public void showChooseColor(EnumSet<PlayerColors> availableColors) {
-        double width = 850;
-        double height = 550;
-
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
-
-        Label nicknameLabel = new Label("Insert your nickname and choose a color");
-        nicknameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 24));
-        nicknameLabel.setTextFill(Color.web("#FFDE69"));
-        nicknameLabel.setAlignment(Pos.CENTER);
-
-        TextField nicknameField = new TextField();
-        nicknameField.setPromptText("Enter your nickname");
-        nicknameField.setMaxWidth(200);
-        nicknameField.setAlignment(Pos.CENTER);
-
-        Label errorLabel = new Label();
-        errorLabel.setTextFill(Color.RED);
-        errorLabel.setFont(Font.font("Arial", 12));
-
-        TilePane colorPane = new TilePane();
-        colorPane.setHgap(15);
-        colorPane.setVgap(15);
-        colorPane.setAlignment(Pos.CENTER);
-
-        Map<PlayerColors, StackPane> colorBoxes = new HashMap<>();
-        final PlayerColors[] selectedColor = {null};
-
-        Button doneButton = new Button("DONE");
-        doneButton.setFont(Font.font("Bangers", 16));
-        doneButton.setDisable(true);
-        doneButton.setStyle("-fx-background-color: gray; -fx-text-fill: white;");
-
-        for (PlayerColors color : availableColors) {
-            Rectangle rect = new Rectangle(60, 60);
-            rect.setArcWidth(18);
-            rect.setArcHeight(18);
-
-            Color fxColor = switch (color) {
-                case RED -> Color.RED;
-                case GREEN -> Color.LIMEGREEN;
-                case BLUE -> Color.DODGERBLUE;
-                case YELLOW -> Color.GOLD;
-                default -> Color.GRAY;
-            };
-
-            rect.setFill(fxColor);
-
-            Label checkmark = new Label("✓");
-            checkmark.setTextFill(Color.WHITE);
-            checkmark.setFont(Font.font("Arial", FontWeight.BOLD, 30));
-            checkmark.setVisible(false);
-
-            StackPane stack = new StackPane(rect, checkmark);
-            stack.setPrefSize(60, 60);
-            stack.setCursor(Cursor.HAND);
-
-            stack.setOnMouseClicked(e -> {
-                colorBoxes.values().forEach(box -> ((Label) box.getChildren().get(1)).setVisible(false));
-                checkmark.setVisible(true);
-                selectedColor[0] = color;
-
-                boolean nicknameOk = !nicknameField.getText().trim().isEmpty();
-                doneButton.setDisable(!nicknameOk);
-                doneButton.setStyle(nicknameOk ?
-                        "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
-                        "-fx-background-color: gray; -fx-text-fill: white;");
-            });
-
-            colorBoxes.put(color, stack);
-            colorPane.getChildren().add(stack);
-        }
-
-        doneButton.setOnAction(e -> {
-            StringBuilder input = new StringBuilder();
-            String nickname = nicknameField.getText().trim();
-            input.append(nickname).append(" ").append(selectedColor[0]);
-            viewFlow.handleInput(input.toString());
-        });
-
-        nicknameField.textProperty().addListener((obs, oldText, newText) -> {
-            boolean nicknameOk = !newText.trim().isEmpty();
-            boolean colorOk = selectedColor[0] != null;
-            doneButton.setDisable(!(nicknameOk && colorOk));
-            doneButton.setStyle((nicknameOk && colorOk) ?
-                    "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
-                    "-fx-background-color: gray; -fx-text-fill: white;");
-        });
-
-        VBox content = new VBox();
-        content.setAlignment(Pos.CENTER);
-        content.setPadding(new Insets(40));
-
-        // Controlla la distanza tra i singoli elementi
-        VBox.setMargin(nicknameLabel, new Insets(0, 0, 30, 0));
-        VBox.setMargin(nicknameField, new Insets(0, 0, 30, 0));
-        VBox.setMargin(colorPane, new Insets(0, 0, 20, 0));
-        VBox.setMargin(doneButton, new Insets(5, 0, 0, 0));
-        VBox.setMargin(errorLabel, new Insets(5, 0, 0, 0));
-
-        content.getChildren().addAll(
-                nicknameLabel,
-                nicknameField,
-                colorPane,
-                doneButton,
-                errorLabel
-        );
-
-        StackPane root = new StackPane(backgroundView, content);
-        StackPane.setAlignment(content, Pos.CENTER);
-
-        if (stage.getScene() == null) {
-            Scene scene = new Scene(root, width, height);
-            stage.setScene(scene);
-        } else {
-            stage.getScene().setRoot(root);
-        }
+        this.loginScene = new LoginScene(availableColors, this.viewFlow);
+        Scene scene = loginScene.createScene();
+        stage.setScene(scene);
         stage.centerOnScreen();
     }
 
