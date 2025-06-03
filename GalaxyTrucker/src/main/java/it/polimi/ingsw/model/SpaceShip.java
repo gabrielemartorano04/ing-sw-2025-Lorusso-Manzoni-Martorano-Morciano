@@ -1734,7 +1734,7 @@ public class SpaceShip implements Serializable {
                         throw new InvalidPositionException("Special load expected");
                     }
                     if(load.getCapacity()-load.getQuantity()>0){
-                        load.getGoods().add(value,good);
+                        load.addGood(value,good);
                         bank.removeGoodsInBank(good.getValue());
                         addGoodsList(good);
                     }
@@ -1796,53 +1796,11 @@ public class SpaceShip implements Serializable {
     }
 
     /**
-     * This method remove all the goods from the spaceship
-     */
-    public void removeAllGoods(){
-        ArrayList<Goods> c=new ArrayList<>();
-        for (int i = 5; i <= 9; i++) {
-            for (int j = 4; j <= 10; j++) {
-                if(components[i][j] != null){
-                    switch(components[i][j]){
-                        case Load load->{
-                            for(Goods g: load.getGoods()){
-                                c.add(g);
-                            }
-                        }
-                        default -> {}
-                    }
-                }
-            }
-        }
-        removeGoods(c);
-    }
-
-    /**
      * This method returns the number of batteries in the spaceship
      * @return number of batteries in the spaceship
      */
     public int getNumBatteries(){
         return numOfBattery;
-    }
-
-    /**
-     * This method checks that components with given coordinates are Loads
-     * @param coord coordinates to check
-     * @return true if every component with given coordinates is a Loads, false otherwise
-     */
-    //TODO CAMBIA OGNI CHECK
-    public boolean checkLoad(ArrayList<int[]> coord){
-
-        for (int[] c : coord) {
-            if (components[c[0]][c[1]] != null) {
-                switch (components[c[0]][c[1]]){
-                    case Load load->{}
-                    default -> { return false; }
-                }
-            }
-            else return false;
-        }
-        return true;
     }
 
     public boolean checkLoad(int[] c){

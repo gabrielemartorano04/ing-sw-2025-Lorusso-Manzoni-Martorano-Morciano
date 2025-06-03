@@ -31,6 +31,9 @@ final public class Load extends Component implements Serializable {
         this.isSpecial = isSpecial;
         this.capacity = capacity;
         goods = new ArrayList<>(capacity);
+        for(Goods g : goods){
+            g=null;
+        }
     }
 
     /**
@@ -67,6 +70,10 @@ final public class Load extends Component implements Serializable {
             i++;
         }
         goods.add(i, good);
+    }
+
+    public void addGood(int index, Goods good) {
+        goods.add(index, good);
     }
 
     /**
