@@ -124,7 +124,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showAvailableComponent(viewFlow.getAvailableComponents());
     }
 
-    @Override
+    @Deprecated
     public void visit(CoordRequest event) {
         ui.askCoordinates();
     }
@@ -142,8 +142,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(TurnHourglassError event) {
-        ui.showError(event.getMessage());
-        System.out.print("> ");
+        ui.turnHourGlassError(event);
     }
 
     @Deprecated

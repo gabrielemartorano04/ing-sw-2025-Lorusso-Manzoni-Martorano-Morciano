@@ -29,6 +29,8 @@ public class TUI implements UI {
         this.inputReader = new InputReader();
     }
 
+    // Metodi omolagati tra GUI e TUI
+
     @Override
     public void welcomeScene(AvailableColorsEvent event){
         this.showWelcome();
@@ -96,7 +98,15 @@ public class TUI implements UI {
         System.out.print("> ");
     }
 
+    @Override
+    public void turnHourGlassError(TurnHourglassError event){
+        this.showError(event.getMessage());
+        System.out.print("> ");
+    }
 
+
+
+    // fine metodi omologati tra GUI e TUI
 
 
     @Override

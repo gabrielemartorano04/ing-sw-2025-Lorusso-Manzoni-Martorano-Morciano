@@ -42,6 +42,8 @@ public interface UI {
 
     void invalidPosition(InvalidPositionError event);
 
+    void turnHourGlassError(TurnHourglassError event);
+
 
     // fine omologazione GUI TUI
     // (penso che tutti gli altri metodi che seguono possonano diventare privati di GUI o TUI

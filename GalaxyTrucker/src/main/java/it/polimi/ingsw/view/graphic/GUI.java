@@ -234,8 +234,13 @@ public class GUI implements UI {
         //TODO: notifica errore di questo tipo
     }
 
+    @Override
+    public void turnHourGlassError(TurnHourglassError event) {
+        //TODO:
+    }
 
-    // fine building scene
+
+        // fine building scene
 
 
     // flight scene
