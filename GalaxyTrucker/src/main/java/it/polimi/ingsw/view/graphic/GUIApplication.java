@@ -2,8 +2,10 @@ package it.polimi.ingsw.view.graphic;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.model.components.Cannon;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -19,14 +21,17 @@ public class GUIApplication extends Application {
     private SpaceShip spaceship;
     private Stack stack;
     private Map<String, Integer> mockTrack;
-    private ArrayList<Component> kept;
+    private ArrayList<Component> kept, kept2;
+    private Component c;
 
 
     @Override
     public void start(Stage primaryStage) throws InvalidCoordinates {
         availableComponents = new AvailableComponents();
+        c = new Cannon(3, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web129.jpg", true);
         Trucker trucker = new Trucker("luca", PlayerColors.BLUE);
         kept = new ArrayList<>();
+        kept2 = new ArrayList<>();
         //stack = new Stack();
         Card card1 = new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "");
         Card card2 = new Epidemic(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_015.jpg", "");
@@ -53,25 +58,27 @@ public class GUIApplication extends Application {
         //gui.showChooseColor(EnumSet.allOf(PlayerColors.class));
         //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
         //gui.showInsertNumPlayers();
-        gui.showNicknameTaken();
+        //gui.showNicknameTaken();
         //gui.showStartCountdown(3);
         //gui.showBuildPhaseStart(components);
         //gui.showKeptComponents(kept);
 
-        gui.showWelcome(EnumSet.allOf(PlayerColors.class));
-        //gui.showKeptComponents(kept);
-        //gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
+        //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
+        gui.showKeptComponents(kept);
+        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
+        gui.showComponentSelected(c);
 //        gui.showWaitForOthers();
 //        gui.showBuildComplete();
         //gui.showSelectComponent();
         //gui.showAvailableComponent(availableComponents.getComponents());
         //gui.showStack(stack);
-        //gui.showBuildOptions();
+        gui.showBuildOptions();
         //gui.showCardDrawn(card2);
         //gui.showTruckerLostAllCrew(trucker.getNickname());
         //gui.showConnectionLost();
         //gui.showMessage("luca ha perso tutte le merci");
         //gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
+        //gui.colorAlreadyTaken(new ColorAlreadyInError(PlayerColors.RED, EnumSet.of(PlayerColors.GREEN, PlayerColors.BLUE, PlayerColors.YELLOW)));
     }
 
     public static void main(String[] args) {

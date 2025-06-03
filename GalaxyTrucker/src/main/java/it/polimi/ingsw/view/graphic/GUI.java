@@ -56,6 +56,7 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class GUI implements UI {
 
@@ -617,11 +618,15 @@ public class GUI implements UI {
 
     @Override
     public void showKeptComponents(ArrayList<Component> kept) {
+        if (kept == null || kept.isEmpty()) return;  // Non mostra nulla se vuota
+
         HBox keptSlots = new HBox(10);
         keptSlots.setMaxWidth(200);
         keptSlots.setAlignment(Pos.TOP_RIGHT);
 
-        for (int i = 0; i < 2; i++) {
+        int maxSlots = Math.min(kept.size(), 2);  // massimo 2, ma solo se esistono
+
+        for (int i = 0; i < maxSlots; i++) {
             final int index = i;
 
             StackPane slot = new StackPane();
@@ -637,8 +642,8 @@ public class GUI implements UI {
             border.setStroke(Color.WHITE);
             border.setStrokeWidth(2);
 
-            if (kept.get(i) != null) {
-                Component comp = kept.get(i);
+            Component comp = kept.get(i);
+            if (comp != null) {
                 ImageView imageView = new ImageView(comp.getFrontImage());
                 imageView.setFitWidth(70);
                 imageView.setFitHeight(70);
@@ -648,7 +653,6 @@ public class GUI implements UI {
                 clip.setArcHeight(6);
                 imageView.setClip(clip);
 
-                // Azione al click
                 imageView.setOnMouseClicked(event -> {
                     viewFlow.handleInput("selectkept " + index);
                     event.consume();
@@ -672,7 +676,6 @@ public class GUI implements UI {
             }
         });
     }
-
     @Override
     public void showSelectComponent() {
 //        if (selectedComponent == null) return;
@@ -897,7 +900,7 @@ public class GUI implements UI {
         });
 
         //Pulsante Show Other
-        Button otherBtn = new Button("Show other ship");
+        Button otherBtn = new Button("Show others ship");
         styleButton.accept(otherBtn);
         otherBtn.setOnAction(e -> {
             VBox nicknameChoices = new VBox(15);
@@ -1799,8 +1802,80 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showComponentSelected(Component component) {
+    public void showComponentSelected(Component selected) {
+        VBox componentBox = new VBox(10);
+        componentBox.setPadding(new Insets(10));
+        componentBox.setAlignment(Pos.BOTTOM_LEFT);
+        componentBox.setMouseTransparent(false);
+        componentBox.setPickOnBounds(true);
 
+        // Immagine del componente selezionato
+        ImageView componentView = new ImageView(selected.getFrontImage());
+        componentView.setFitWidth(120);
+        componentView.setPreserveRatio(true);
+        componentView.setMouseTransparent(false);
+
+        // Funzione per stilare i bottoni standard
+        Consumer<Button> styleButton = (btn) -> {
+            btn.setFont(Font.font("Bangers", 12));
+            btn.setTextFill(Color.BLACK);
+            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            btn.setPrefWidth(120);
+            btn.setCursor(Cursor.HAND);
+            btn.setMouseTransparent(false);
+            btn.setPickOnBounds(true);
+        };
+
+        StackPane root = (StackPane) stage.getScene().getRoot();
+
+        // Pulsanti
+        Button turnBtn = new Button("Turn");
+        styleButton.accept(turnBtn);
+
+        Button linkBtn = new Button("Link");
+        styleButton.accept(linkBtn);
+
+        Button keepBtn = new Button("Keep");
+        styleButton.accept(keepBtn);
+
+        Button discardBtn = new Button("Discard");
+        discardBtn.setFont(Font.font("Bangers", 12));
+        discardBtn.setTextFill(Color.WHITE);
+        discardBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+        discardBtn.setPrefWidth(120);
+        discardBtn.setCursor(Cursor.HAND);
+        discardBtn.setMouseTransparent(false);
+        discardBtn.setPickOnBounds(true);
+
+        // Azioni dei pulsanti
+        turnBtn.setOnAction(e -> viewFlow.handleInput("turn"));
+        keepBtn.setOnAction(e -> viewFlow.handleInput("keep"));
+        discardBtn.setOnAction(e -> viewFlow.handleInput("discard"));
+
+        linkBtn.setOnAction(e -> {
+            viewFlow.handleInput("link");
+
+            // Disabilita e grigia gli altri bottoni
+            Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
+                btn.setDisable(true);
+                btn.setStyle("-fx-opacity: 0.5;");
+            });
+        });
+
+        VBox buttonsBox = new VBox(8, turnBtn, linkBtn, keepBtn, discardBtn);
+        buttonsBox.setAlignment(Pos.CENTER_LEFT);
+        buttonsBox.setMouseTransparent(false);
+        buttonsBox.setPickOnBounds(true);
+
+        componentBox.getChildren().addAll(componentView, buttonsBox);
+
+        Platform.runLater(() -> {
+            if (!root.getChildren().contains(componentBox)) {
+                StackPane.setAlignment(componentBox, Pos.BOTTOM_LEFT);
+                StackPane.setMargin(componentBox, new Insets(0, 0, 20, 5));
+                root.getChildren().add(componentBox);
+            }
+        });
     }
 
     @Override

@@ -35,11 +35,13 @@ public class LoginScene {
     private Button doneButton;
     private final ViewFlow viewFlow;
     private StackPane root;
+    private final Set<PlayerColors> unavailableColors;
 
 
     public LoginScene(EnumSet<PlayerColors> availableColors, ViewFlow viewFlow) {
         this.availableColors = availableColors;
         this.viewFlow = viewFlow;
+        this.unavailableColors = EnumSet.noneOf(PlayerColors.class);
     }
 
     public Scene createScene() {
@@ -89,13 +91,29 @@ public class LoginScene {
             stack.setCursor(Cursor.HAND);
 
             stack.setOnMouseClicked(e -> {
-                colorBoxes.values().forEach(box -> ((Label) box.getChildren().get(1)).setVisible(false));
+                if (unavailableColors.contains(color)) {
+                    showColorTakenPopup();
+                    return;
+                }
+
+                // Deseleziona tutte le checkmark
+                colorBoxes.values().forEach(box -> {
+                    for (javafx.scene.Node node : box.getChildren()) {
+                        if (node instanceof Label lbl && "✓".equals(lbl.getText())) {
+                            lbl.setVisible(false);
+                        }
+                    }
+                });
+
+                // Mostra la checkmark selezionata
                 checkmark.setVisible(true);
                 selectedColor[0] = color;
 
                 boolean nicknameOk = !nicknameField.getText().trim().isEmpty();
                 doneButton.setDisable(!nicknameOk);
-                doneButton.setStyle(nicknameOk ? "-fx-background-color: #FFDE69; -fx-text-fill: black;" : "-fx-background-color: gray; -fx-text-fill: white;");
+                doneButton.setStyle(nicknameOk
+                        ? "-fx-background-color: #FFDE69; -fx-text-fill: black;"
+                        : "-fx-background-color: gray; -fx-text-fill: white;");
             });
 
             colorBoxes.put(color, stack);
@@ -134,11 +152,28 @@ public class LoginScene {
     }
 
     public void markColorAsUnavailable(PlayerColors color) {
+        unavailableColors.add(color);
+
         StackPane box = colorBoxes.get(color);
-        if (box != null) {
-            Rectangle rect = (Rectangle) box.getChildren().get(0);
-            rect.setFill(Color.GRAY);
-            box.setDisable(true);
+        if (box != null && box.getChildren().size() >= 1) {
+            Rectangle grayOverlay = new Rectangle(60, 60);
+            grayOverlay.setArcWidth(18);
+            grayOverlay.setArcHeight(18);
+            grayOverlay.setFill(Color.rgb(50, 50, 50, 0.5));
+            grayOverlay.setMouseTransparent(true);
+
+            Label cross = new Label("✖");
+            cross.setTextFill(Color.WHITE);
+            cross.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 30));
+            cross.setMouseTransparent(true);
+
+            if (box.getChildren().size() == 2) {
+                box.getChildren().add(1, grayOverlay);
+                box.getChildren().add(2, cross);
+            } else {
+                box.getChildren().addAll(grayOverlay, cross);
+            }
+
             Tooltip.install(box, new Tooltip("Color already taken"));
         }
     }
