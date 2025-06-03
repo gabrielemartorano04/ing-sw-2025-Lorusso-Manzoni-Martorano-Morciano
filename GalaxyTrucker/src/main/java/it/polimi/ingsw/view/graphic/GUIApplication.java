@@ -49,29 +49,29 @@ public class GUIApplication extends Application {
         GUI gui = new GUI(primaryStage);
 
         //gui.showTrack(mockTrack);
-        gui.showShipLayout("Luca", spaceship.getComponents());
+        //gui.showShipLayout("Luca", spaceship.getComponents());
         //gui.showChooseColor(EnumSet.allOf(PlayerColors.class));
         //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
         //gui.showInsertNumPlayers();
-        //gui.showNicknameTaken();
+        gui.showNicknameTaken();
         //gui.showStartCountdown(3);
         //gui.showBuildPhaseStart(components);
         //gui.showKeptComponents(kept);
 
-        //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
-        gui.showKeptComponents(kept);
+        gui.showWelcome(EnumSet.allOf(PlayerColors.class));
+        //gui.showKeptComponents(kept);
         //gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
 //        gui.showWaitForOthers();
 //        gui.showBuildComplete();
         //gui.showSelectComponent();
         //gui.showAvailableComponent(availableComponents.getComponents());
         //gui.showStack(stack);
-        gui.showBuildOptions();
+        //gui.showBuildOptions();
         //gui.showCardDrawn(card2);
         //gui.showTruckerLostAllCrew(trucker.getNickname());
         //gui.showConnectionLost();
         //gui.showMessage("luca ha perso tutte le merci");
-        gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
+        //gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
     }
 
     public static void main(String[] args) {
