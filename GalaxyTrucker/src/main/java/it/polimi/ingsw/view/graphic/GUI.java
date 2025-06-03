@@ -64,10 +64,11 @@ public class GUI implements UI {
     private LoginScene loginScene;
     private ClientEvent currentEvent;
     private Component selectedComponent;
-    ViewFlow viewFlow;
+    private final ViewFlow viewFlow;
 
-    public GUI(Stage stage) {
+    public GUI(Stage stage, ViewFlow viewFlow) {
         this.stage = stage;
+        this.viewFlow = viewFlow;
         Scene loadingScene = new Scene(new StackPane(), 850, 550);
         stage.setScene(loadingScene);
         stage.setTitle("Galaxy Trucker");
@@ -155,7 +156,7 @@ public class GUI implements UI {
             int num = Integer.parseInt(player);
             int level = (int) selected.getUserData();
             input.append(num).append(" ").append(level);
-            viewFlow.handleInput(input.toString());
+            this.viewFlow.handleInput(input.toString());
         });
 
         content.getChildren().addAll(questionLabel, numberField, levelBox, errorLabel, submitButton);
@@ -213,7 +214,7 @@ public class GUI implements UI {
     }
 
     @Override
-    public void componentNotAvailable(ComponentNotAvailableError event, ViewFlow viewFlow){
+    public void componentNotAvailable(ComponentNotAvailableError event){
         //TODO: notifica che il componente che hai provato a selezionare non è disponibile
         // vogliamo farti restare nella parte dove vedi le componenti disponibili e farti selezionare un altra componente
         // vogliamo che venga aggiornata la lista dei componenti cioè non devono essere plottati tutti quelli che hanno il selected a true
@@ -221,7 +222,7 @@ public class GUI implements UI {
     }
 
     @Override
-    public void componentSelected(ComponentSelectedEvent event, ViewFlow viewFlow){
+    public void componentSelected(ComponentSelectedEvent event){
         //TODO: ti riporta nella schermata dove vedi la nave con visualizzato il componente che hai selezionato e le posibili azioni
     }
 
@@ -235,8 +236,18 @@ public class GUI implements UI {
         //TODO: notifica errore di questo tipo
     }
 
+    @Override
+    public void turnHourGlassError(TurnHourglassError event) {
+        //TODO:
+    }
 
-    // fine building scene
+    @Override
+    public void turnHourGlass(HourglassTurnEvent event){
+        //TODO:
+    }
+
+
+        // fine building scene
 
 
     // flight scene

@@ -24,10 +24,14 @@ import java.util.List;
 public class TUI implements UI {
 
     private final InputReader inputReader;
+    private final ViewFlow viewFlow;
 
-    public TUI() {
+    public TUI(ViewFlow viewFlow) {
         this.inputReader = new InputReader();
+        this.viewFlow = viewFlow;
     }
+
+    // Metodi omolagati tra GUI e TUI
 
     @Override
     public void welcomeScene(AvailableColorsEvent event){
@@ -68,16 +72,16 @@ public class TUI implements UI {
     }
 
     @Override
-    public void componentNotAvailable(ComponentNotAvailableError event, ViewFlow viewFlow){
+    public void componentNotAvailable(ComponentNotAvailableError event){
         this.showError(event.getMessage());
-        this.showAvailableComponent(viewFlow.getAvailableComponents());
-        this.showMessage("Please select a component between 0 and " + (viewFlow.getAvailableComponents().size()-1)+"\n");
+        this.showAvailableComponent(this.viewFlow.getAvailableComponents());
+        this.showMessage("Please select a component between 0 and " + (this.viewFlow.getAvailableComponents().size()-1)+"\n");
         System.out.print("> ");
     }
 
     @Override
-    public void componentSelected (ComponentSelectedEvent event, ViewFlow viewFlow){
-        this.showComponentSelected(viewFlow.getSelectedComponent());
+    public void componentSelected (ComponentSelectedEvent event){
+        this.showComponentSelected(this.viewFlow.getSelectedComponent());
         this.showComponentOptions();
         System.out.print("> ");
     }
@@ -96,7 +100,20 @@ public class TUI implements UI {
         System.out.print("> ");
     }
 
+    @Override
+    public void turnHourGlassError(TurnHourglassError event){
+        this.showError(event.getMessage());
+        System.out.print("> ");
+    }
 
+    @Override
+    public void turnHourGlass(HourglassTurnEvent event){
+        System.out.print("> ");
+    }
+
+
+
+    // fine metodi omologati tra GUI e TUI
 
 
     @Override
