@@ -239,6 +239,11 @@ public class GUI implements UI {
         //TODO:
     }
 
+    @Override
+    public void turnHourGlass(HourglassTurnEvent event){
+        //TODO:
+    }
+
 
         // fine building scene
 

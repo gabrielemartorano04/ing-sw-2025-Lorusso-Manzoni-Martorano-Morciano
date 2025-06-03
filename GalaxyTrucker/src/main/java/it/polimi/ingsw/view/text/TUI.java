@@ -104,6 +104,11 @@ public class TUI implements UI {
         System.out.print("> ");
     }
 
+    @Override
+    public void turnHourGlass(HourglassTurnEvent event){
+        System.out.print("> ");
+    }
+
 
 
     // fine metodi omologati tra GUI e TUI

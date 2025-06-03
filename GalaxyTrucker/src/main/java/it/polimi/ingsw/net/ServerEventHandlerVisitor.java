@@ -160,7 +160,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(HourglassTurnEvent event) {
         viewFlow.getTimerDisplay().start(event.getSeconds());
-        System.out.println("> ");
+        ui.turnHourGlass(event);
     }
 
     @Deprecated
