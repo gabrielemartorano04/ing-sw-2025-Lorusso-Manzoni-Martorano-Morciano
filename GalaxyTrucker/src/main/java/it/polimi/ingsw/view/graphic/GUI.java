@@ -185,12 +185,11 @@ public class GUI implements UI {
 
     @Override
     public void nickNameAlreadyTaken(NicknameAlreadyInError event){
-        //TODO: notifica che il nickname che hai scelto è già in uso tramite popup o quello che vuoi
+        this.loginScene.showNicknameTakenPopup();
     }
 
     @Override
     public void colorAlreadyTaken(ColorAlreadyInError event){
-        //TODO: notifica che il colore che hai scelto è già in uso tramite popup o quello che vuoi
         loginScene.showColorTakenPopup();
         loginScene.markColorAsUnavailable(event.getColor());
     }
@@ -348,9 +347,9 @@ public class GUI implements UI {
         //
     }
 
-    @Override
+    @Deprecated
     public void showNicknameTaken() {
-        this.loginScene.showNicknameTakenPopup();
+        //
     }
 
     @Override
