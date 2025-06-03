@@ -60,7 +60,6 @@ import java.util.function.Consumer;
 public class GUI implements UI {
 
     private Stage stage;
-    private Scene currentScene;
     private LoginScene loginScene;
     private ClientEvent currentEvent;
     private Component selectedComponent;
@@ -68,11 +67,11 @@ public class GUI implements UI {
 
     public GUI(Stage stage) {
         this.stage = stage;
-        this.currentScene = new Scene(new StackPane(), 850, 550);
-        this.stage.setScene(currentScene);
-        this.stage.setTitle("Galaxy Trucker");
-        this.stage.setResizable(false);
-        this.stage.show();
+        Scene loadingScene = new Scene(new StackPane(), 850, 550);
+        stage.setScene(loadingScene);
+        stage.setTitle("Galaxy Trucker");
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void setCurrentEvent(ClientEvent currentEvent) {
@@ -376,34 +375,7 @@ public class GUI implements UI {
 
     @Override
     public void showNicknameTaken() {
-        double width = stage.getScene().getWidth();
-        double height = stage.getScene().getHeight();
-
-        // Overlay grigio trasparente
-        Rectangle overlay = new Rectangle(width, height);
-        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
-        overlay.setMouseTransparent(true);
-
-        // Messaggio di errore
-        Label errorLabel = new Label("ERROR! Nickname already taken");
-        errorLabel.setTextFill(Color.RED);
-        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 28));
-        errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
-
-        StackPane popup = new StackPane(overlay, errorLabel);
-        popup.setMouseTransparent(true);
-        StackPane.setAlignment(errorLabel, Pos.CENTER);
-
-        // Aggiunge e rimuove automaticamente dopo 2s
-        Platform.runLater(() -> {
-            Pane parent = (Pane) stage.getScene().getRoot();  // assumiamo sempre un Pane
-            if (!parent.getChildren().contains(popup)) {
-                parent.getChildren().add(popup);
-                PauseTransition delay = new PauseTransition(Duration.seconds(2));
-                delay.setOnFinished(e -> parent.getChildren().remove(popup));
-                delay.play();
-            }
-        });
+        this.loginScene.showNicknameTakenPopup();
     }
 
     @Override

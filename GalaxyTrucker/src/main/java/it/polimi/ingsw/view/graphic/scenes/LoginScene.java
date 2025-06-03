@@ -6,6 +6,7 @@ import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 
 import it.polimi.ingsw.view.ViewFlow;
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -21,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.util.*;
@@ -32,6 +34,8 @@ public class LoginScene {
     private TextField nicknameField;
     private Button doneButton;
     private final ViewFlow viewFlow;
+    private StackPane root;
+
 
     public LoginScene(EnumSet<PlayerColors> availableColors, ViewFlow viewFlow) {
         this.availableColors = availableColors;
@@ -115,7 +119,7 @@ public class LoginScene {
         content.setAlignment(Pos.CENTER);
         content.setPadding(new Insets(40));
 
-        StackPane root = new StackPane(backgroundView, content);
+        this.root = new StackPane(backgroundView, content);
         return new Scene(root, width, height);
     }
 
@@ -138,4 +142,34 @@ public class LoginScene {
             Tooltip.install(box, new Tooltip("Color already taken"));
         }
     }
+
+    public void showNicknameTakenPopup() {
+        double width = root.getWidth();
+        double height = root.getHeight();
+
+        // Overlay grigio trasparente
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlay.setMouseTransparent(true);
+
+        // Messaggio di errore
+        Label errorLabel = new Label("ERROR! Nickname already taken");
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 28));
+        errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
+
+        StackPane popup = new StackPane(overlay, errorLabel);
+        popup.setMouseTransparent(true);
+        StackPane.setAlignment(errorLabel, Pos.CENTER);
+
+        Platform.runLater(() -> {
+            if (!root.getChildren().contains(popup)) {
+                root.getChildren().add(popup);
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                delay.setOnFinished(e -> root.getChildren().remove(popup));
+                delay.play();
+            }
+        });
+    }
+
 }
