@@ -18,6 +18,7 @@ import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 
 import it.polimi.ingsw.view.ViewFlow;
+import it.polimi.ingsw.view.graphic.scenes.LoginScene;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -59,18 +60,19 @@ import java.util.function.Consumer;
 public class GUI implements UI {
 
     private Stage stage;
-    private Scene currentScene;
+    private LoginScene loginScene;
     private ClientEvent currentEvent;
     private Component selectedComponent;
-    ViewFlow viewFlow;
+    private final ViewFlow viewFlow;
 
-    public GUI(Stage stage) {
+    public GUI(Stage stage, ViewFlow viewFlow) {
         this.stage = stage;
-        this.currentScene = new Scene(new StackPane(), 850, 550);
-        this.stage.setScene(currentScene);
-        this.stage.setTitle("Galaxy Trucker");
-        this.stage.setResizable(false);
-        this.stage.show();
+        this.viewFlow = viewFlow;
+        Scene loadingScene = new Scene(new StackPane(), 850, 550);
+        stage.setScene(loadingScene);
+        stage.setTitle("Galaxy Trucker");
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void setCurrentEvent(ClientEvent currentEvent) {
@@ -153,7 +155,7 @@ public class GUI implements UI {
             int num = Integer.parseInt(player);
             int level = (int) selected.getUserData();
             input.append(num).append(" ").append(level);
-            viewFlow.handleInput(input.toString());
+            this.viewFlow.handleInput(input.toString());
         });
 
         content.getChildren().addAll(questionLabel, numberField, levelBox, errorLabel, submitButton);
@@ -184,12 +186,13 @@ public class GUI implements UI {
 
     @Override
     public void nickNameAlreadyTaken(NicknameAlreadyInError event){
-        //TODO: notifica che il nickname che hai scelto è già in uso tramite popup o quello che vuoi
+        this.loginScene.showNicknameTakenPopup();
     }
 
     @Override
     public void colorAlreadyTaken(ColorAlreadyInError event){
-        //TODO: notifica che il colore che hai scelto è già in uso tramite popup o quello che vuoi
+        loginScene.showColorTakenPopup();
+        loginScene.markColorAsUnavailable(event.getColor());
     }
 
     // fine welcome scene
@@ -210,7 +213,7 @@ public class GUI implements UI {
     }
 
     @Override
-    public void componentNotAvailable(ComponentNotAvailableError event, ViewFlow viewFlow){
+    public void componentNotAvailable(ComponentNotAvailableError event){
         //TODO: notifica che il componente che hai provato a selezionare non è disponibile
         // vogliamo farti restare nella parte dove vedi le componenti disponibili e farti selezionare un altra componente
         // vogliamo che venga aggiornata la lista dei componenti cioè non devono essere plottati tutti quelli che hanno il selected a true
@@ -218,7 +221,7 @@ public class GUI implements UI {
     }
 
     @Override
-    public void componentSelected(ComponentSelectedEvent event, ViewFlow viewFlow){
+    public void componentSelected(ComponentSelectedEvent event){
         //TODO: ti riporta nella schermata dove vedi la nave con visualizzato il componente che hai selezionato e le posibili azioni
     }
 
@@ -232,8 +235,18 @@ public class GUI implements UI {
         //TODO: notifica errore di questo tipo
     }
 
+    @Override
+    public void turnHourGlassError(TurnHourglassError event) {
+        //TODO:
+    }
 
-    // fine building scene
+    @Override
+    public void turnHourGlass(HourglassTurnEvent event){
+        //TODO:
+    }
+
+
+        // fine building scene
 
 
     // flight scene
@@ -334,192 +347,20 @@ public class GUI implements UI {
 
     @Override
     public void showChooseColor(EnumSet<PlayerColors> availableColors) {
-        double width = 850;
-        double height = 550;
-
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
-
-        Label nicknameLabel = new Label("Insert your nickname and choose a color");
-        nicknameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 24));
-        nicknameLabel.setTextFill(Color.web("#FFDE69"));
-        nicknameLabel.setAlignment(Pos.CENTER);
-
-        TextField nicknameField = new TextField();
-        nicknameField.setPromptText("Enter your nickname");
-        nicknameField.setMaxWidth(200);
-        nicknameField.setAlignment(Pos.CENTER);
-
-        Label errorLabel = new Label();
-        errorLabel.setTextFill(Color.RED);
-        errorLabel.setFont(Font.font("Arial", 12));
-
-        TilePane colorPane = new TilePane();
-        colorPane.setHgap(15);
-        colorPane.setVgap(15);
-        colorPane.setAlignment(Pos.CENTER);
-
-        Map<PlayerColors, StackPane> colorBoxes = new HashMap<>();
-        final PlayerColors[] selectedColor = {null};
-
-        Button doneButton = new Button("DONE");
-        doneButton.setFont(Font.font("Bangers", 16));
-        doneButton.setDisable(true);
-        doneButton.setStyle("-fx-background-color: gray; -fx-text-fill: white;");
-
-        for (PlayerColors color : availableColors) {
-            Rectangle rect = new Rectangle(60, 60);
-            rect.setArcWidth(18);
-            rect.setArcHeight(18);
-
-            Color fxColor = switch (color) {
-                case RED -> Color.RED;
-                case GREEN -> Color.LIMEGREEN;
-                case BLUE -> Color.DODGERBLUE;
-                case YELLOW -> Color.GOLD;
-                default -> Color.GRAY;
-            };
-
-            rect.setFill(fxColor);
-
-            Label checkmark = new Label("✓");
-            checkmark.setTextFill(Color.WHITE);
-            checkmark.setFont(Font.font("Arial", FontWeight.BOLD, 30));
-            checkmark.setVisible(false);
-
-            StackPane stack = new StackPane(rect, checkmark);
-            stack.setPrefSize(60, 60);
-            stack.setCursor(Cursor.HAND);
-
-            stack.setOnMouseClicked(e -> {
-                colorBoxes.values().forEach(box -> ((Label) box.getChildren().get(1)).setVisible(false));
-                checkmark.setVisible(true);
-                selectedColor[0] = color;
-
-                boolean nicknameOk = !nicknameField.getText().trim().isEmpty();
-                doneButton.setDisable(!nicknameOk);
-                doneButton.setStyle(nicknameOk ?
-                        "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
-                        "-fx-background-color: gray; -fx-text-fill: white;");
-            });
-
-            colorBoxes.put(color, stack);
-            colorPane.getChildren().add(stack);
-        }
-
-        doneButton.setOnAction(e -> {
-            StringBuilder input = new StringBuilder();
-            String nickname = nicknameField.getText().trim();
-            input.append(nickname).append(" ").append(selectedColor[0]);
-            viewFlow.handleInput(input.toString());
-        });
-
-        nicknameField.textProperty().addListener((obs, oldText, newText) -> {
-            boolean nicknameOk = !newText.trim().isEmpty();
-            boolean colorOk = selectedColor[0] != null;
-            doneButton.setDisable(!(nicknameOk && colorOk));
-            doneButton.setStyle((nicknameOk && colorOk) ?
-                    "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
-                    "-fx-background-color: gray; -fx-text-fill: white;");
-        });
-
-        VBox content = new VBox();
-        content.setAlignment(Pos.CENTER);
-        content.setPadding(new Insets(40));
-
-        // Controlla la distanza tra i singoli elementi
-        VBox.setMargin(nicknameLabel, new Insets(0, 0, 30, 0));
-        VBox.setMargin(nicknameField, new Insets(0, 0, 30, 0));
-        VBox.setMargin(colorPane, new Insets(0, 0, 20, 0));
-        VBox.setMargin(doneButton, new Insets(5, 0, 0, 0));
-        VBox.setMargin(errorLabel, new Insets(5, 0, 0, 0));
-
-        content.getChildren().addAll(
-                nicknameLabel,
-                nicknameField,
-                colorPane,
-                doneButton,
-                errorLabel
-        );
-
-        StackPane root = new StackPane(backgroundView, content);
-        StackPane.setAlignment(content, Pos.CENTER);
-
-        if (stage.getScene() == null) {
-            Scene scene = new Scene(root, width, height);
-            stage.setScene(scene);
-        } else {
-            stage.getScene().setRoot(root);
-        }
+        this.loginScene = new LoginScene(availableColors, this.viewFlow);
+        Scene scene = loginScene.createScene();
+        stage.setScene(scene);
         stage.centerOnScreen();
     }
 
-    @Override
+    @Deprecated
     public void showColorTaken() {
-        double width = stage.getScene().getWidth();
-        double height = stage.getScene().getHeight();
-
-        // Overlay grigio trasparente
-        Rectangle overlay = new Rectangle(width, height);
-        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
-        overlay.setMouseTransparent(true);
-
-        // Messaggio di errore
-        Label errorLabel = new Label("ERROR! Colour already taken");
-        errorLabel.setTextFill(Color.RED);
-        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 28));
-        errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
-
-        StackPane popup = new StackPane(overlay, errorLabel);
-        popup.setMouseTransparent(true);
-        StackPane.setAlignment(errorLabel, Pos.CENTER);
-
-        // Aggiunge e rimuove automaticamente dopo 2s
-        Platform.runLater(() -> {
-            Pane parent = (Pane) stage.getScene().getRoot();  // assumiamo sempre un Pane
-            if (!parent.getChildren().contains(popup)) {
-                parent.getChildren().add(popup);
-                PauseTransition delay = new PauseTransition(Duration.seconds(2));
-                delay.setOnFinished(e -> parent.getChildren().remove(popup));
-                delay.play();
-            }
-        });
+        //
     }
 
-    @Override
+    @Deprecated
     public void showNicknameTaken() {
-        double width = stage.getScene().getWidth();
-        double height = stage.getScene().getHeight();
-
-        // Overlay grigio trasparente
-        Rectangle overlay = new Rectangle(width, height);
-        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
-        overlay.setMouseTransparent(true);
-
-        // Messaggio di errore
-        Label errorLabel = new Label("ERROR! Nickname already taken");
-        errorLabel.setTextFill(Color.RED);
-        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 28));
-        errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
-
-        StackPane popup = new StackPane(overlay, errorLabel);
-        popup.setMouseTransparent(true);
-        StackPane.setAlignment(errorLabel, Pos.CENTER);
-
-        // Aggiunge e rimuove automaticamente dopo 2s
-        Platform.runLater(() -> {
-            Pane parent = (Pane) stage.getScene().getRoot();  // assumiamo sempre un Pane
-            if (!parent.getChildren().contains(popup)) {
-                parent.getChildren().add(popup);
-                PauseTransition delay = new PauseTransition(Duration.seconds(2));
-                delay.setOnFinished(e -> parent.getChildren().remove(popup));
-                delay.play();
-            }
-        });
+        //
     }
 
     @Override

@@ -15,9 +15,9 @@ import java.util.ArrayList;
 public class ServerEventHandlerVisitor implements VirtualView {
     private final UI ui;
     private final ViewFlow viewFlow;
-    public ServerEventHandlerVisitor(ViewFlow viewFlow){
+    public ServerEventHandlerVisitor(ViewFlow viewFlow, UI ui){
         this.viewFlow = viewFlow;
-        ui = new TUI();
+        this.ui = ui;
     }
 
     // === PHASE 1: Lobby ===
@@ -98,7 +98,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(ComponentNotAvailableError event) {
-        ui.componentNotAvailable(event, viewFlow);
+        ui.componentNotAvailable(event);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if(viewFlow.getNickname().equals(event.getNickname())) {
             viewFlow.setSelectedComponent(event.getIndex(), false);
 
-            ui.componentSelected(event, viewFlow);
+            ui.componentSelected(event);
         }
     }
 
@@ -124,7 +124,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showAvailableComponent(viewFlow.getAvailableComponents());
     }
 
-    @Override
+    @Deprecated
     public void visit(CoordRequest event) {
         ui.askCoordinates();
     }
@@ -142,8 +142,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(TurnHourglassError event) {
-        ui.showError(event.getMessage());
-        System.out.print("> ");
+        ui.turnHourGlassError(event);
     }
 
     @Deprecated
@@ -161,7 +160,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(HourglassTurnEvent event) {
         viewFlow.getTimerDisplay().start(event.getSeconds());
-        System.out.println("> ");
+        ui.turnHourGlass(event);
     }
 
     @Deprecated
@@ -184,7 +183,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     }
 
-    @Override
+    @Deprecated
     public void visit(TimeExpiredEvent event){
         ui.showTimeExpired();
     }

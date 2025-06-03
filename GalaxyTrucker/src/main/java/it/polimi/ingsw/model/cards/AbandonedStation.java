@@ -180,6 +180,8 @@ public class AbandonedStation extends Card implements Serializable {
             }
             try {
                 // addGood fa anche la remove dalla bank della merce corrente
+                goods.get(currGood).setX(goodsCoordinates[0]);
+                goods.get(currGood).setY(goodsCoordinates[1]);
                 truckerThatHasDecided.getSpaceShip().addGood(goods.get(currGood), goodsCoordinates, positionInLoad, Game.getIstance().getBank());
             } catch (InvalidPositionException e) {
                 cardState = CardState.GOODSTOADD;
