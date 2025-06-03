@@ -467,7 +467,7 @@ public class WarZone extends Card implements Serializable {
         int minValueCurrCondition = Integer.MAX_VALUE;
         for (Trucker trucker : Game.getIstance().getTruckerList()) {
             int currValue = switch (currCondition) {
-                case HUMANS -> trucker.getSpaceShip().getNumHuman();
+                case HUMANS -> trucker.getSpaceShip().getNumCrew();
                 case CANNONS -> trucker.getSpaceShip().getTotalCannonPower();
                 case ENGINES -> trucker.getSpaceShip().getTotalEnginePower();
             };

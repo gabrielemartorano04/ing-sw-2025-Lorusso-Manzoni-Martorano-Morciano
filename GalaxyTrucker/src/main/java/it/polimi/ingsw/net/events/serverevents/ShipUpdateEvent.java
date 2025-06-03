@@ -19,7 +19,7 @@ public class ShipUpdateEvent extends ServerEvent {
         this.ship = truckerController.getSpaceShip().getComponents();
         this.truckerPosition = truckerController.getPosition();
         this.numBatteries = truckerController.getSpaceShip().getNumBatteries();
-        this.numCrew = truckerController.getSpaceShip().getNumHuman();
+        this.numCrew = truckerController.getSpaceShip().getNumCrew();
         this.cannonPower = truckerController.getSpaceShip().getSingleCannonPower();
         this.enginePower = truckerController.getSpaceShip().getSingleEnginePower();
         this.goods.put("RED", truckerController.getSpaceShip().getRedGoods());

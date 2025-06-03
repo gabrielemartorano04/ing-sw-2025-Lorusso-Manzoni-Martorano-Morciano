@@ -210,7 +210,7 @@ public class Slavers extends Card implements Serializable {
         if(defeatedTruckers
                 .get(indexOfCurrentTrucker)
                 .getSpaceShip()
-                .getNumHuman()
+                .getNumCrew()
                 <=astronautsLost){
             defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeAllHumans();
             defeatedTruckers.remove(indexOfCurrentTrucker);

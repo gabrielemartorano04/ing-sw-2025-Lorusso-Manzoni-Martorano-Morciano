@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.components.Component;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -131,12 +130,12 @@ class SpaceShipTest {
     }
 
     @Test
-    void setAndGetNumHuman() {
+    void setAndGetNumCrew() {
         spaceShip1.setNumHuman();
-        assertEquals(2,spaceShip1.getNumHuman());
+        assertEquals(2,spaceShip1.getNumCrew());
 
         spaceShip2.setNumHuman();
-        assertEquals(6,spaceShip2.getNumHuman());
+        assertEquals(6,spaceShip2.getNumCrew());
     }
 
 
@@ -144,24 +143,24 @@ class SpaceShipTest {
     void setNumAlien() {
         spaceShip1.setNumAlien(new ArrayList<>());
         spaceShip1.setNumHuman();
-        assertEquals(2,spaceShip1.getNumHuman());
+        assertEquals(2,spaceShip1.getNumCrew());
 
         ArrayList<int[]> aliencoord=new ArrayList<>();
         aliencoord.add(new int[]{7,6});
         spaceShip3.setNumAlien(aliencoord);
         spaceShip3.setNumHuman();
-        assertEquals(7, spaceShip3.getNumHuman());
+        assertEquals(7, spaceShip3.getNumCrew());
     }
 
     @Test
     void removeHuman() {
         spaceShip1.setNumHuman();
         spaceShip1.removeHuman(7,7);
-        assertEquals(1,spaceShip1.getNumHuman());
+        assertEquals(1,spaceShip1.getNumCrew());
 
         spaceShip2.setNumHuman();
         spaceShip2.removeHuman(8,7);
-        assertEquals(5,spaceShip2.getNumHuman());
+        assertEquals(5,spaceShip2.getNumCrew());
     }
 
     @Test
@@ -170,7 +169,7 @@ class SpaceShipTest {
         ArrayList<int[]> coord1=new ArrayList<>();
         coord1.add(new int[]{7,7,1});
         spaceShip1.removeNumHuman(coord1);
-        assertEquals(1,spaceShip1.getNumHuman());
+        assertEquals(1,spaceShip1.getNumCrew());
 
         spaceShip2.setNumHuman();
         ArrayList<int[]> coord2=new ArrayList<>();
@@ -178,7 +177,7 @@ class SpaceShipTest {
         coord2.add(new int[]{7,8,2});
         coord2.add(new int[]{8,7,1});
         spaceShip2.removeNumHuman(coord2);
-        assertEquals(1,spaceShip2.getNumHuman());
+        assertEquals(1,spaceShip2.getNumCrew());
     }
 
     @Test
@@ -438,9 +437,9 @@ class SpaceShipTest {
     @Test
     void epidemic() {
         spaceShip2.setNumHuman();
-        assertEquals(6,spaceShip2.getNumHuman());
+        assertEquals(6,spaceShip2.getNumCrew());
         spaceShip2.epidemic();
-        assertEquals(3,spaceShip2.getNumHuman());
+        assertEquals(3,spaceShip2.getNumCrew());
     }
 
     @Test
@@ -600,7 +599,7 @@ class SpaceShipTest {
     void removeAllHumans() {
         spaceShip2.setNumHuman();
         spaceShip2.removeAllHumans();
-        assertEquals(0,spaceShip2.getNumHuman());
+        assertEquals(0,spaceShip2.getNumCrew());
     }
 
 }

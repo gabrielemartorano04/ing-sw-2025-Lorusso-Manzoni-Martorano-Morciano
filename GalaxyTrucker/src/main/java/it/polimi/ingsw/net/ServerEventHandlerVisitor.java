@@ -1,7 +1,6 @@
 package it.polimi.ingsw.net;
 
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
@@ -453,7 +452,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             ui.showShipLayout(viewFlow.getNickname(), trucker.getSpaceShip().getComponents());
             viewFlow.setPosition(trucker.getPosition());
             viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
-            viewFlow.setHumanCount(trucker.getSpaceShip().getNumHuman());
+            viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
             viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
             viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
             viewFlow.setTrack(event.getTrack());
@@ -497,7 +496,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             ui.showShipLayout(viewFlow.getNickname(), trucker.getSpaceShip().getComponents());
             viewFlow.setPosition(trucker.getPosition());
             viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
-            viewFlow.setHumanCount(trucker.getSpaceShip().getNumHuman());
+            viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
             viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
             viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
             viewFlow.setTrack(event.getTrack());
@@ -602,7 +601,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             ui.showShipLayout(viewFlow.getNickname(), trucker.getSpaceShip().getComponents());
             viewFlow.setPosition(trucker.getPosition());
             viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
-            viewFlow.setHumanCount(trucker.getSpaceShip().getNumHuman());
+            viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
             viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
             viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
             viewFlow.setTrack(event.getTrack());

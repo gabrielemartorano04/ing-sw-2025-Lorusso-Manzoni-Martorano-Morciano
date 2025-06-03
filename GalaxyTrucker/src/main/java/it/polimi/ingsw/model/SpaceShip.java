@@ -208,7 +208,7 @@ public class SpaceShip implements Serializable {
      * This method
      * @return number of astronauts and aliens in the spaceship
      */
-    public int getNumHuman(){
+    public int getNumCrew(){
         return numHuman+numAlien;
     }
 

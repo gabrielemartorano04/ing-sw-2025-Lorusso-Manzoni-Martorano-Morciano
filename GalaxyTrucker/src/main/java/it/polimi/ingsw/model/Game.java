@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
-import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.WaitOthersBuildingEvent;
 import it.polimi.ingsw.exceptions.CannotTurnHourglassException;
@@ -147,7 +146,7 @@ public class Game {
      * @param trucker the trucker to check
      */
     private boolean noHumans(Trucker trucker) {
-        return trucker.getSpaceShip().getNumHuman() == 0;
+        return trucker.getSpaceShip().getNumCrew() == 0;
     }
 
     /**
@@ -461,7 +460,7 @@ public class Game {
         ArrayList<String> toReturn = new ArrayList<>();
         System.out.println("sono in endTurn");
         for (Trucker t : truckers) {
-            System.out.println("num human per " + t.getNickname() + ": " + t.getSpaceShip().getNumHuman());
+            System.out.println("num human per " + t.getNickname() + ": " + t.getSpaceShip().getNumCrew());
             if (noHumans(t) || checkOvertaken(t)) {
                 toRemove.add(t);
             }
