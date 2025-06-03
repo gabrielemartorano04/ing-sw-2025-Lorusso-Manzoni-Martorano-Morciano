@@ -191,6 +191,8 @@ public class GUI implements UI {
     @Override
     public void colorAlreadyTaken(ColorAlreadyInError event){
         //TODO: notifica che il colore che hai scelto è già in uso tramite popup o quello che vuoi
+        loginScene.showColorTakenPopup();
+        loginScene.markColorAsUnavailable(event.getColor());
     }
 
     // fine welcome scene
@@ -341,36 +343,9 @@ public class GUI implements UI {
         stage.centerOnScreen();
     }
 
-    @Override
+    @Deprecated
     public void showColorTaken() {
-        double width = stage.getScene().getWidth();
-        double height = stage.getScene().getHeight();
-
-        // Overlay grigio trasparente
-        Rectangle overlay = new Rectangle(width, height);
-        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
-        overlay.setMouseTransparent(true);
-
-        // Messaggio di errore
-        Label errorLabel = new Label("ERROR! Colour already taken");
-        errorLabel.setTextFill(Color.RED);
-        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 28));
-        errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
-
-        StackPane popup = new StackPane(overlay, errorLabel);
-        popup.setMouseTransparent(true);
-        StackPane.setAlignment(errorLabel, Pos.CENTER);
-
-        // Aggiunge e rimuove automaticamente dopo 2s
-        Platform.runLater(() -> {
-            Pane parent = (Pane) stage.getScene().getRoot();  // assumiamo sempre un Pane
-            if (!parent.getChildren().contains(popup)) {
-                parent.getChildren().add(popup);
-                PauseTransition delay = new PauseTransition(Duration.seconds(2));
-                delay.setOnFinished(e -> parent.getChildren().remove(popup));
-                delay.play();
-            }
-        });
+        //
     }
 
     @Override

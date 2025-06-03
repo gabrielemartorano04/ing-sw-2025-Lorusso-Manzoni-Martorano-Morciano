@@ -172,4 +172,33 @@ public class LoginScene {
         });
     }
 
+    public void showColorTakenPopup() {
+        double width = root.getWidth();
+        double height = root.getHeight();
+
+        // Overlay grigio trasparente
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlay.setMouseTransparent(true);
+
+        // Messaggio di errore
+        Label errorLabel = new Label("ERROR! Color already taken");
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 28));
+        errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
+
+        StackPane popup = new StackPane(overlay, errorLabel);
+        popup.setMouseTransparent(true);
+        StackPane.setAlignment(errorLabel, Pos.CENTER);
+
+        Platform.runLater(() -> {
+            if (!root.getChildren().contains(popup)) {
+                root.getChildren().add(popup);
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                delay.setOnFinished(e -> root.getChildren().remove(popup));
+                delay.play();
+            }
+        });
+    }
+
 }
