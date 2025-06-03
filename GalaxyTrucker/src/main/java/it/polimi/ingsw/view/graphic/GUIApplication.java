@@ -51,7 +51,10 @@ public class GUIApplication extends Application {
         mockTrack.put("GREEN", 5);
         mockTrack.put("BLUE", 12);
         mockTrack.put("YELLOW", 20);
-        GUI gui = new GUI(primaryStage);
+
+
+        // DA SISTEMARE la creazione della gui e il collegamento a viewFlow
+        GUI gui = new GUI(primaryStage, null);
 
         //gui.showTrack(mockTrack);
         //gui.showShipLayout("Luca", spaceship.getComponents());
