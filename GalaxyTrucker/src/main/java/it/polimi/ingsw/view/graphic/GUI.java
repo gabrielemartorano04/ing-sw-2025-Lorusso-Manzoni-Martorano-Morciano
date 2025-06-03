@@ -14,11 +14,16 @@ import it.polimi.ingsw.net.events.clientevents.buildingevents.ShowStackEvent;
 import it.polimi.ingsw.net.events.clientevents.buildingevents.TurnHourglassEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
+import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
+import it.polimi.ingsw.net.events.serverevents.setupevents.NicknameAlreadyInError;
 import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 
+import it.polimi.ingsw.view.ViewFlow;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -31,6 +36,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -47,7 +56,13 @@ import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class GUI implements UI {
@@ -56,6 +71,7 @@ public class GUI implements UI {
     private Scene mainScene;
     private ClientEvent currentEvent;
     private Component selectedComponent;
+    ViewFlow viewFlow;
 
     public GUI(Stage stage) {
         this.stage = stage;
@@ -78,6 +94,50 @@ public class GUI implements UI {
     public void welcomeScene(AvailableColorsEvent event){
         // TODO:
     }
+
+    @Override
+    public void nickNameAlreadyTaken(NicknameAlreadyInError event){
+        //TODO:
+    }
+
+    @Override
+    public void colorAlreadyTaken(ColorAlreadyInError event){
+        //TODO:
+    }
+
+    @Override
+    public void startBuildingScene(StartBuildingEvent event){
+        //TODO:
+    }
+
+    @Override
+    public void componentLinked(ComponentLinkedEvent event){
+        //TODO:
+    }
+
+    @Override
+    public void componentNotAvailable(ComponentNotAvailableError event, ViewFlow viewFlow){
+        //TODO:
+    }
+
+    @Override
+    public void componentSelected(ComponentSelectedEvent event, ViewFlow viewFlow){
+        //TODO:
+    }
+
+    @Override
+    public void invalidCoordinates(InvalidCoordinatesError event) {
+        //TODO:
+    }
+
+    @Override
+    public void invalidPosition(InvalidPositionError event){
+        //TODO:
+    }
+
+
+
+
 
 //    @Override
 //    public void showFirstWelcome() {
@@ -158,9 +218,9 @@ public class GUI implements UI {
     }
 
 
-    @Override
+    @Deprecated
     public void showWelcome() {
-
+        //NON servira piu probabilmente
     }
 
     @Override
@@ -226,22 +286,13 @@ public class GUI implements UI {
         });
 
         submitButton.setOnAction(e -> {
-            String input = numberField.getText().trim();
+            StringBuilder input = new StringBuilder();
+            String player = numberField.getText().trim();
             Toggle selected = levelGroup.getSelectedToggle();
-            try {
-                int num = Integer.parseInt(input);
-                if (num < 2 || num > 4) {
-                    errorLabel.setText("Number must be between 2 and 4.");
-                } else if (selected == null) {
-                    errorLabel.setText("Please select a level.");
-                } else {
-                    int level = (int) selected.getUserData();
-                    errorLabel.setText("");
-                    setCurrentEvent(new CreateGameEvent(num, level));
-                }
-            } catch (NumberFormatException ex) {
-                errorLabel.setText("Please enter a valid number.");
-            }
+            int num = Integer.parseInt(player);
+            int level = (int) selected.getUserData();
+            input.append(num).append(" ").append(level);
+            viewFlow.handleInput(input.toString());
         });
 
         content.getChildren().addAll(questionLabel, numberField, levelBox, errorLabel, submitButton);
@@ -336,15 +387,10 @@ public class GUI implements UI {
         }
 
         doneButton.setOnAction(e -> {
+            StringBuilder input = new StringBuilder();
             String nickname = nicknameField.getText().trim();
-            if (nickname.isEmpty()) {
-                errorLabel.setText("Please enter a nickname.");
-            } else if (selectedColor[0] == null) {
-                errorLabel.setText("Please choose a color.");
-            } else {
-                errorLabel.setText("");
-                setCurrentEvent(new LoginEvent(nickname, selectedColor[0]));
-            }
+            input.append(nickname).append(" ").append(selectedColor[0]);
+            viewFlow.handleInput(input.toString());
         });
 
         nicknameField.textProperty().addListener((obs, oldText, newText) -> {
@@ -673,7 +719,9 @@ public class GUI implements UI {
 
         int col = 0;
         int row = 0;
+        int i = 0;
         for (Component component : components) {
+            final int index = i;
             ImageView imgView = new ImageView(component.getCovered() ? component.getBackImage() : component.getFrontImage());
             imgView.setFitWidth(70);
             imgView.setFitHeight(70);
@@ -689,18 +737,7 @@ public class GUI implements UI {
             button.setStyle("-fx-background-color: transparent; -fx-border-color: #cccccc; -fx-border-radius: 8px; -fx-cursor: hand; -fx-padding: 0px;");
 
             button.setOnAction(e -> {
-                selectedComponent = component;
-                showSelectComponent();  // Mostra sempre in overlay
-                showDiscardComponent(component);
-
-                // Se già scoperta, avvia drag subito
-                if (!component.getCovered()) {
-                    Dragboard db = button.startDragAndDrop(TransferMode.MOVE);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putString("component");
-                    db.setContent(content);
-                    db.setDragView(imgView.getImage());
-                }
+                viewFlow.handleInput("select " + index);
             });
 
             grid.add(button, col, row);
@@ -709,6 +746,7 @@ public class GUI implements UI {
                 col = 0;
                 row++;
             }
+            i++;
         }
 
         ScrollPane scrollPane = new ScrollPane(new StackPane(grid));
@@ -729,39 +767,35 @@ public class GUI implements UI {
         keptSlots.setAlignment(Pos.TOP_RIGHT);
 
         for (int i = 0; i < 2; i++) {
+            final int index = i;
+
             StackPane slot = new StackPane();
-            slot.setPrefSize(80, 80);
-            slot.setMinSize(80, 80);
-            slot.setMaxSize(80, 80);
+            slot.setPrefSize(70, 70);
+            slot.setMinSize(70, 70);
+            slot.setMaxSize(70, 70);
             slot.setStyle("-fx-background-color: transparent;");
 
-            Rectangle border = new Rectangle(80, 80);
+            Rectangle border = new Rectangle(70, 70);
             border.setArcWidth(3);
             border.setArcHeight(3);
             border.setFill(Color.TRANSPARENT);
             border.setStroke(Color.WHITE);
             border.setStrokeWidth(2);
 
-            int index = i;
-
             if (kept.get(i) != null) {
                 Component comp = kept.get(i);
                 ImageView imageView = new ImageView(comp.getFrontImage());
-                imageView.setFitWidth(80);
-                imageView.setFitHeight(80);
+                imageView.setFitWidth(70);
+                imageView.setFitHeight(70);
 
-                Rectangle clip = new Rectangle(80, 80);
+                Rectangle clip = new Rectangle(70, 70);
                 clip.setArcWidth(6);
                 clip.setArcHeight(6);
                 imageView.setClip(clip);
 
-                imageView.setOnDragDetected(event -> {
-                    Dragboard db = imageView.startDragAndDrop(TransferMode.MOVE);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putString("kept:" + index);
-                    db.setContent(content);
-                    db.setDragView(imageView.snapshot(null, null));
-                    selectedComponent = comp;
+                // Azione al click
+                imageView.setOnMouseClicked(event -> {
+                    viewFlow.handleInput("selectkept " + index);
                     event.consume();
                 });
 
@@ -770,31 +804,14 @@ public class GUI implements UI {
                 slot.getChildren().add(border);
             }
 
-            slot.setOnDragOver(event -> {
-                if (event.getGestureSource() != slot && event.getDragboard().hasString()) {
-                    event.acceptTransferModes(TransferMode.MOVE);
-                }
-                event.consume();
-            });
-
-            slot.setOnDragDropped(event -> {
-                Dragboard db = event.getDragboard();
-                if (db.hasString()) {
-                    setCurrentEvent(new KeepTileEvent(selectedComponent));
-                    selectedComponent = null;
-                    event.setDropCompleted(true);
-                }
-                event.consume();
-            });
-
             keptSlots.getChildren().add(slot);
         }
 
         StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
-        StackPane.setMargin(keptSlots, new Insets(28, 36, 0, 0));
+        StackPane.setMargin(keptSlots, new Insets(30, 50, 0, 0));
 
         Platform.runLater(() -> {
-            StackPane stackRoot = (StackPane) stage.getScene().getRoot();  // Assunto sempre valido
+            StackPane stackRoot = (StackPane) stage.getScene().getRoot();
             if (!stackRoot.getChildren().contains(keptSlots)) {
                 stackRoot.getChildren().add(keptSlots);
             }
@@ -803,54 +820,53 @@ public class GUI implements UI {
 
     @Override
     public void showSelectComponent() {
-
-        if (selectedComponent == null) return;
-
-        double width = 850;
-        double height = 550;
-
-        // Overlay trasparente grigio
-        Rectangle overlay = new Rectangle(width, height);
-        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
-        overlay.setMouseTransparent(true);
-
-        // Immagine componente selezionato
-        ImageView imgView = new ImageView(selectedComponent.getFrontImage());
-        imgView.setFitWidth(150);
-        imgView.setFitHeight(150);
-
-        Rectangle clip = new Rectangle(150, 150);
-        clip.setArcWidth(20);
-        clip.setArcHeight(20);
-        imgView.setClip(clip);
-
-        StackPane popup = new StackPane(imgView);
-        popup.setAlignment(Pos.CENTER);
-
-        imgView.setOnDragDetected(e -> {
-            Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            content.putString("component");
-            db.setContent(content);
-            db.setDragView(imgView.snapshot(null, null));
-
-            // Rimuove overlay e popup
-            Parent rootNode = stage.getScene().getRoot();
-            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
-                ((StackPane) rootNode).getChildren().removeAll(overlay, popup);
-            }
-
-            e.consume();
-        });
-
-        Platform.runLater(() -> {
-            Parent rootNode = stage.getScene().getRoot();
-            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
-                ((StackPane) rootNode).getChildren().addAll(overlay, popup);
-            } else {
-                System.err.println("Root non è uno StackPane");
-            }
-        });
+//        if (selectedComponent == null) return;
+//
+//        double width = 850;
+//        double height = 550;
+//
+//        // Overlay trasparente grigio
+//        Rectangle overlay = new Rectangle(width, height);
+//        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+//        overlay.setMouseTransparent(true);
+//
+//        // Immagine componente selezionato
+//        ImageView imgView = new ImageView(selectedComponent.getFrontImage());
+//        imgView.setFitWidth(150);
+//        imgView.setFitHeight(150);
+//
+//        Rectangle clip = new Rectangle(150, 150);
+//        clip.setArcWidth(20);
+//        clip.setArcHeight(20);
+//        imgView.setClip(clip);
+//
+//        StackPane popup = new StackPane(imgView);
+//        popup.setAlignment(Pos.CENTER);
+//
+//        imgView.setOnDragDetected(e -> {
+//            Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
+//            ClipboardContent content = new ClipboardContent();
+//            content.putString("component");
+//            db.setContent(content);
+//            db.setDragView(imgView.snapshot(null, null));
+//
+//            // Rimuove overlay e popup
+//            Parent rootNode = stage.getScene().getRoot();
+//            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
+//                ((StackPane) rootNode).getChildren().removeAll(overlay, popup);
+//            }
+//
+//            e.consume();
+//        });
+//
+//        Platform.runLater(() -> {
+//            Parent rootNode = stage.getScene().getRoot();
+//            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
+//                ((StackPane) rootNode).getChildren().addAll(overlay, popup);
+//            } else {
+//                System.err.println("Root non è uno StackPane");
+//            }
+//        });
     }
 
     @Override
@@ -859,11 +875,10 @@ public class GUI implements UI {
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
-        // Stile compatto per bottoni
         Consumer<Button> styleButton = (btn) -> {
             btn.setFont(Font.font("Bangers", 12));
             btn.setTextFill(Color.BLACK);
-            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), CornerRadii.EMPTY, Insets.EMPTY)));
+            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
             btn.setCursor(Cursor.HAND);
             btn.setPrefWidth(120);
         };
@@ -875,11 +890,15 @@ public class GUI implements UI {
         selectComponentBtn.setOnAction(e -> showAvailableComponent(availableComponents.getComponents()));
 
         // Pulsante Finish Ship
-        Button finishBtn = new Button("Finish spaceschip");
+        Button finishBtn = new Button("Finish spaceship");
         styleButton.accept(finishBtn);
         finishBtn.setOnAction(e -> {
-            StackPane confirmation = new StackPane();
-            Rectangle bg = new Rectangle(800, 550, Color.rgb(0, 0, 0, 0.4));
+            StackPane root = (StackPane) stage.getScene().getRoot();
+
+            Rectangle bg = new Rectangle();
+            bg.widthProperty().bind(stage.getScene().widthProperty());
+            bg.heightProperty().bind(stage.getScene().heightProperty());
+            bg.setFill(Color.rgb(0, 0, 0, 0.4));
 
             VBox box = new VBox(20);
             box.setAlignment(Pos.CENTER);
@@ -891,37 +910,46 @@ public class GUI implements UI {
             Button yes = new Button("YES");
             yes.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
             yes.setTextFill(Color.WHITE);
-            yes.setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+            yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
             yes.setCursor(Cursor.HAND);
             yes.setPrefWidth(100);
 
             Button no = new Button("NO");
             no.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
             no.setTextFill(Color.WHITE);
-            no.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+            no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
             no.setCursor(Cursor.HAND);
             no.setPrefWidth(100);
 
+            StackPane confirmation = new StackPane(bg, box);
+
             yes.setOnAction(ev -> {
-                setCurrentEvent(new EndBuildingEvent());
-                ((StackPane) stage.getScene().getRoot()).getChildren().remove(confirmation);
+                viewFlow.handleInput("end");
+                root.getChildren().remove(confirmation);
             });
 
-            no.setOnAction(ev -> ((StackPane) stage.getScene().getRoot()).getChildren().remove(confirmation));
+            no.setOnAction(ev -> root.getChildren().remove(confirmation));
 
             HBox buttons = new HBox(20, yes, no);
             buttons.setAlignment(Pos.CENTER);
 
             box.getChildren().addAll(confirm, buttons);
-            confirmation.getChildren().addAll(bg, box);
 
-            ((StackPane) stage.getScene().getRoot()).getChildren().add(confirmation);
+
+            root.getChildren().add(confirmation);
         });
 
         // Pulsante Show Stack
         Button stackBtn = new Button("Show stack");
         styleButton.accept(stackBtn);
         stackBtn.setOnAction(e -> {
+            StackPane root = (StackPane) stage.getScene().getRoot();
+
+            Rectangle bg = new Rectangle();
+            bg.widthProperty().bind(stage.getScene().widthProperty());
+            bg.heightProperty().bind(stage.getScene().heightProperty());
+            bg.setFill(Color.rgb(0, 0, 0, 0.4));
+
             VBox stackChoices = new VBox(15);
             stackChoices.setAlignment(Pos.CENTER);
 
@@ -931,38 +959,52 @@ public class GUI implements UI {
                 pile.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
                 int index = i;
                 pile.setOnAction(ev -> {
-                    setCurrentEvent(new ShowStackEvent(index));
-                    //TODO inserire lo stack
-                    showStack(null);
-                    ((StackPane) stage.getScene().getRoot()).getChildren().remove(stackChoices.getParent());
+                    viewFlow.handleInput("stack " + index);
+                    root.getChildren().remove(pile.getScene().getRoot().lookup("#popupOverlay"));
                 });
                 stackChoices.getChildren().add(pile);
             }
 
-            StackPane popup = new StackPane(new Rectangle(800, 550, Color.rgb(0, 0, 0, 0.4)), stackChoices);
-            popup.setOnMouseClicked(ev -> ((StackPane) stage.getScene().getRoot()).getChildren().remove(popup));
-            ((StackPane) stage.getScene().getRoot()).getChildren().add(popup);
+            StackPane popup = new StackPane(bg, stackChoices);
+            popup.setId("popupOverlay");
+            popup.setOnMouseClicked(ev -> root.getChildren().remove(popup));
+            root.getChildren().add(popup);
         });
 
-        // Pulsante Hourglass con countdown
+        // Pulsante Hourglass (solo timer, no overlay)
         Button hourglassBtn = new Button("⏳");
-        hourglassBtn.setFont(Font.font("Bangers", 20));
+        hourglassBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
         hourglassBtn.setTextFill(Color.BLACK);
-        hourglassBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), CornerRadii.EMPTY, Insets.EMPTY)));
-        hourglassBtn.setPrefWidth(70);
         hourglassBtn.setCursor(Cursor.HAND);
+        hourglassBtn.setPrefWidth(70);
+        hourglassBtn.setPrefHeight(30);
+
+        CornerRadii roundedCorners = new CornerRadii(10);
+
+        Background activeBg = new Background(new BackgroundFill(Color.web("#FFDE69"), roundedCorners, Insets.EMPTY));
+
+        Background disabledBg = new Background(new BackgroundFill(Color.web("#FFDE69"), roundedCorners, Insets.EMPTY));
+        String disabledStyle = "-fx-opacity: 0.6;";
+
+        hourglassBtn.setBackground(activeBg);
 
         hourglassBtn.setOnAction(e -> {
+            viewFlow.handleInput("hourglass");
             hourglassBtn.setDisable(true);
-            setCurrentEvent(new TurnHourglassEvent());
+            hourglassBtn.setBackground(disabledBg);
+            hourglassBtn.setStyle(disabledStyle);
 
+            // Countdown
             IntegerProperty seconds = new SimpleIntegerProperty(90);
             hourglassBtn.textProperty().bind(seconds.asString("%ds"));
 
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-                seconds.set(seconds.get() - 1);
-                if (seconds.get() <= 0) {
+                int current = seconds.get() - 1;
+                seconds.set(current);
+                if (current <= 0) {
                     hourglassBtn.setDisable(false);
+                    hourglassBtn.setStyle(""); // rimuovi opacità
+                    hourglassBtn.setBackground(activeBg);
                     hourglassBtn.textProperty().unbind();
                     hourglassBtn.setText("⏳");
                 }
@@ -971,18 +1013,79 @@ public class GUI implements UI {
             timeline.play();
         });
 
-        // Ordine: Select - Finish - Stack - Hourglass
-        optionsBox.getChildren().addAll(selectComponentBtn, finishBtn, stackBtn, hourglassBtn);
+        // Pulsante Rules
+        Button rulesBtn = new Button("Rules");
+        styleButton.accept(rulesBtn);
+        rulesBtn.setOnAction(e -> {
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
+                if (is == null) {
+                    System.out.println("File not found");
+                    return;
+                }
+
+                File tempPdf = File.createTempFile("galaxy-trucker-rules", ".pdf");
+                tempPdf.deleteOnExit();
+
+                try (FileOutputStream os = new FileOutputStream(tempPdf)) {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = is.read(buffer)) != -1) {
+                        os.write(buffer, 0, bytesRead);
+                    }
+                }
+
+                Desktop.getDesktop().open(tempPdf);
+
+            } catch (IOException e1) {
+                System.out.println("Error in file opening");
+            }
+        });
+
+        //Pulsante Show Other
+        Button otherBtn = new Button("Show other ship");
+        styleButton.accept(otherBtn);
+        otherBtn.setOnAction(e -> {
+            VBox nicknameChoices = new VBox(15);
+            nicknameChoices.setAlignment(Pos.CENTER);
+
+            List<String> truckerNicknames = new ArrayList<>(){
+                {
+                    add("Player1");
+                    add("Player2");
+                    add("Player3");
+                    add("Player4");
+                }
+            }; //TODO Recupera i nickname
+
+            for (String nickname : truckerNicknames) {
+                Button nickBtn = new Button(nickname);
+                styleButton.accept(nickBtn);
+                nickBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+
+                nickBtn.setOnAction(ev -> {
+                    viewFlow.handleInput("ship " + nickname);
+                    ((StackPane) stage.getScene().getRoot()).getChildren().remove(nicknameChoices.getParent());
+                });
+
+                nicknameChoices.getChildren().add(nickBtn);
+            }
+
+            StackPane popup = new StackPane(
+                    new Rectangle(800, 550, Color.rgb(0, 0, 0, 0.4)),
+                    nicknameChoices
+            );
+            popup.setOnMouseClicked(ev -> ((StackPane) stage.getScene().getRoot()).getChildren().remove(popup));
+            ((StackPane) stage.getScene().getRoot()).getChildren().add(popup);
+        });
+
+        optionsBox.getChildren().addAll(selectComponentBtn, stackBtn, otherBtn, finishBtn, rulesBtn, hourglassBtn);
 
         Platform.runLater(() -> {
-            Node rootNode = stage.getScene().getRoot();
-            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
-                StackPane root = (StackPane) rootNode;
-                if (!root.getChildren().contains(optionsBox)) {
-                    StackPane.setAlignment(optionsBox, Pos.TOP_RIGHT);
-                    StackPane.setMargin(optionsBox, new Insets(18, 0, 0, 18));  // più staccato dal bordo
-                    root.getChildren().add(optionsBox);
-                }
+            StackPane root = (StackPane) stage.getScene().getRoot();
+            if (!root.getChildren().contains(optionsBox)) {
+                StackPane.setAlignment(optionsBox, Pos.TOP_RIGHT);
+                StackPane.setMargin(optionsBox, new Insets(20, 0, 0, 5));
+                root.getChildren().add(optionsBox);
             }
         });
     }
@@ -997,8 +1100,7 @@ public class GUI implements UI {
         discardButton.setId("discardBtn");
 
         discardButton.setOnAction(e -> {
-            // TODO: allineare con modifiche
-            // setCurrentEvent(new DiscardTileEvent(component));
+            viewFlow.handleInput("discard");
             selectedComponent = null;
 
             Node root = stage.getScene().getRoot();
@@ -1478,20 +1580,21 @@ public class GUI implements UI {
 
     @Override
     public void showPlayerShipStatus(int position, int batteryCount, int humanCount, int cannonPower, int enginePower, Map<String, Integer> goodsByColor) {
-        // Carica le icone
-        ImageView posIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
-        ImageView batteryIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
-        ImageView humanIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
-        ImageView cannonIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
-        ImageView engineIcon = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm()));
+        // Carica le icone (temporaneamente tutte uguali)
+        Image icon = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
+
+        ImageView posIcon = new ImageView(icon);
+        ImageView batteryIcon = new ImageView(icon);
+        ImageView humanIcon = new ImageView(icon);
+        ImageView cannonIcon = new ImageView(icon);
+        ImageView engineIcon = new ImageView(icon);
 
         List<ImageView> mainIcons = List.of(posIcon, batteryIcon, humanIcon, cannonIcon, engineIcon);
-        for (ImageView icon : mainIcons) {
-            icon.setFitWidth(15);
-            icon.setPreserveRatio(true);
+        for (ImageView iv : mainIcons) {
+            iv.setFitWidth(16);
+            iv.setPreserveRatio(true);
         }
 
-        // Crea le etichette
         Label posLabel = new Label(String.valueOf(position));
         Label battLabel = new Label(String.valueOf(batteryCount));
         Label humanLabel = new Label(String.valueOf(humanCount));
@@ -1499,62 +1602,56 @@ public class GUI implements UI {
         Label engineLabel = new Label(String.valueOf(enginePower));
 
         List<Label> labels = List.of(posLabel, battLabel, humanLabel, cannonLabel, engineLabel);
-        for (Label label : labels) {
-            label.setFont(Font.font("Arial", FontWeight.NORMAL, 13));
-            label.setTextFill(Color.WHITE);
+        for (Label l : labels) {
+            l.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+            l.setTextFill(Color.WHITE);
         }
 
-        // Crea blocchi icona + etichetta
         HBox posBox = new HBox(5, posIcon, posLabel);
         HBox battBox = new HBox(5, batteryIcon, battLabel);
         HBox humanBox = new HBox(5, humanIcon, humanLabel);
         HBox cannonBox = new HBox(5, cannonIcon, cannonLabel);
         HBox engineBox = new HBox(5, engineIcon, engineLabel);
 
-        List<HBox> infoBoxes = List.of(posBox, battBox, humanBox, cannonBox, engineBox);
-        for (HBox box : infoBoxes) {
-            box.setAlignment(Pos.CENTER);
+        for (HBox box : List.of(posBox, battBox, humanBox, cannonBox, engineBox)) {
+            box.setAlignment(Pos.CENTER_RIGHT);
         }
 
-        // Beni per colore
+        // Goods box
         HBox goodsBox = new HBox(10);
-        goodsBox.setAlignment(Pos.CENTER);
-
+        goodsBox.setAlignment(Pos.CENTER_RIGHT);
         for (Map.Entry<String, Integer> entry : goodsByColor.entrySet()) {
-            String color = entry.getKey();
-            Integer quantity = entry.getValue();
-
-            //Image icon = new Image(getClass().getResource("/it/polimi/ingsw/view/goods_" + color + ".png").toExternalForm());
-            Image icon = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
-            ImageView goodIcon = new ImageView(icon);
-            goodIcon.setFitWidth(15);
+            ImageView goodIcon = new ImageView(icon); // Sostituisci con getResource("/goods_" + color + ".png")
+            goodIcon.setFitWidth(16);
             goodIcon.setPreserveRatio(true);
 
-            Label qtyLabel = new Label(String.valueOf(quantity));
-            qtyLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 13));
-            qtyLabel.setTextFill(Color.WHITE);
+            Label qty = new Label(String.valueOf(entry.getValue()));
+            qty.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+            qty.setTextFill(Color.WHITE);
 
-            HBox singleGood = new HBox(4, goodIcon, qtyLabel);
-            singleGood.setAlignment(Pos.CENTER); // Allineamento centrale
+            HBox singleGood = new HBox(4, goodIcon, qty);
+            singleGood.setAlignment(Pos.CENTER_RIGHT);
             goodsBox.getChildren().add(singleGood);
         }
 
-        // Contenitore orizzontale finale
-        HBox statusBar = new HBox(20);
-        statusBar.getChildren().addAll(posBox, battBox, humanBox, cannonBox, engineBox, goodsBox);
-        statusBar.setAlignment(Pos.CENTER);
-        statusBar.setPadding(new Insets(6, 12, 6, 12));
+        // Contenitore finale con sfondo
+        HBox statusBar = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox);
+        statusBar.setAlignment(Pos.CENTER_RIGHT);
+        statusBar.setPadding(new Insets(10));
+        statusBar.setStyle("");
+        statusBar.setMaxWidth(800);
         statusBar.setMouseTransparent(true);
 
         Platform.runLater(() -> {
             Node rootNode = stage.getScene().getRoot();
-            if (rootNode.getClass().equals(StackPane.class)) {
-                StackPane root = (StackPane) rootNode;
-                StackPane.setAlignment(statusBar, Pos.BOTTOM_CENTER);
-                StackPane.setMargin(statusBar, new Insets(0, 0, 8, 0));
-                if (!root.getChildren().contains(statusBar)) {
-                    root.getChildren().add(statusBar);
-                }
+            // Supponiamo che sia sempre uno StackPane come da tua struttura
+            StackPane root = (StackPane) rootNode;
+
+            StackPane.setAlignment(statusBar, Pos.CENTER_RIGHT);
+            StackPane.setMargin(statusBar, new Insets(0, 150, -500, 0));
+
+            if (!root.getChildren().contains(statusBar)) {
+                root.getChildren().add(statusBar);
             }
         });
     }
@@ -1588,8 +1685,8 @@ public class GUI implements UI {
         grid.setHgap(2);
         grid.setVgap(2);
         grid.setAlignment(Pos.TOP_LEFT);
-        grid.setTranslateX(145);
-        grid.setTranslateY(30);
+        grid.setTranslateX(164.5);
+        grid.setTranslateY(25);
 
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {

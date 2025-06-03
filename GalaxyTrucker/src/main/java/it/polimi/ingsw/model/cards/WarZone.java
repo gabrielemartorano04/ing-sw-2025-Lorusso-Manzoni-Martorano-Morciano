@@ -567,7 +567,7 @@ public class WarZone extends Card implements Serializable {
                         if (isHeavy) {
                             ship.destroyComponent(this.roll, direction, Game.getIstance().getBank());
                         } else {
-                            if (!ship.blockLightCannonShot(direction, this.roll, this.useShield)) {
+                            if (!ship.blockLightCannonShot(direction, this.useShield)) {
                                 ship.destroyComponent(this.roll, direction, Game.getIstance().getBank());
                             }
                         }

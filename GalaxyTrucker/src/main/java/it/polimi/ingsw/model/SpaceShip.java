@@ -523,7 +523,6 @@ public class SpaceShip implements Serializable {
      */
     //todo rimetti a private
     public boolean isValid(int x, int y) {
-        System.out.println("Entrato");
         Component com = components[x][y];
         Component comU = null;
         Component comR = null;
@@ -1012,49 +1011,60 @@ public class SpaceShip implements Serializable {
      * @return true if the spaceship is hit else false
      */
     public boolean isHit(int direction, int num) {
-        switch (direction) {
-            case 0:
-                for (int i = 5; i <= 9; i++) {
-                    if (components[i][num] != null){
-                        switch(components[i][num]){
-                            case EmptySpace emptySpace->{}
-                            default -> {return true;}
+            if(direction==0 || direction==2){
+                if(num<4 || num>10){
+                    return false;
+                }
+            }
+            if(direction==1 || direction==3){
+                if(num<5 || num>9){
+                    return false;
+                }
+            }
+            switch (direction) {
+                case 0:
+                    for (int i = 5; i <= 9; i++) {
+                        if (components[i][num] != null){
+                            switch(components[i][num]){
+                                case EmptySpace emptySpace->{}
+                                default -> {return true;}
+                            }
                         }
                     }
-                }
-                break;
-            case 1:
-                for (int j = 10; j > 3; j--) {
-                    if (components[num][j] != null) {
-                        switch(components[num][j]){
-                            case EmptySpace emptySpace->{}
-                            default -> {return true;}
+                    break;
+                case 1:
+                    for (int j = 10; j > 3; j--) {
+                        if (components[num][j] != null) {
+                            switch(components[num][j]){
+                                case EmptySpace emptySpace->{}
+                                default -> {return true;}
+                            }
                         }
                     }
-                }
-                break;
-            case 2:
-                for (int i = 9; i > 4; i--) {
-                    if (components[i][num] != null) {
-                        switch(components[i][num]){
-                            case EmptySpace emptySpace->{}
-                            default -> {return true;}
+                    break;
+                case 2:
+                    for (int i = 9; i > 4; i--) {
+                        if (components[i][num] != null) {
+                            switch(components[i][num]){
+                                case EmptySpace emptySpace->{}
+                                default -> {return true;}
+                            }
                         }
                     }
-                }
-                break;
-            case 3:
-                for (int j = 4; j <= 10; j++) {
-                    if (components[num][j] != null) {
-                        switch(components[num][j]){
-                            case EmptySpace emptySpace->{}
-                            default -> {return true;}
+                    break;
+                case 3:
+                    for (int j = 4; j <= 10; j++) {
+                        if (components[num][j] != null) {
+                            switch(components[num][j]){
+                                case EmptySpace emptySpace->{}
+                                default -> {return true;}
+                            }
                         }
                     }
-                }
-                break;
-        }
-        return false;
+                    break;
+            }
+            return false;
+
     }
 
     /**
@@ -1360,86 +1370,153 @@ public class SpaceShip implements Serializable {
 
 
             switch (direction) {
+                //if the meteor comes from nord
                 case 0:
                     for (int i = 5; i <= 9; i++) {
                         if (components[i][num] != null) {
                             switch(components[i][num]){
                                 case EmptySpace emptySpace->{}
                                 default -> {
-                                    if (components[i][num].getLink()[0] == 0)
+                                    if (components[i][num].getLink()[0] == 0){
+                                        System.out.println(components[i][num].toString());
                                         return true;
+                                    }
+                                    else {
+                                        if(numOfBattery>0 && use){
+                                            for (int w = 5; w <= 9; w++) {
+                                                for (int z = 4; z <= 10; z++) {
+                                                    if (components[w][z] != null) {
+                                                        switch(components[w][z]) {
+                                                            case Shield shield->{
+                                                                if(shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.NW)){
+                                                                    return true;
+                                                                }
+                                                            }
+                                                            default -> {}
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        }else return false;
+                                    }
                                 }
                             }
                         }
                     }
                     break;
+                //if the meteor comes from est
                 case 1:
                     for (int j = 10; j > 3; j--) {
                         if (components[num][j] != null) {
                             switch(components[num][j]){
                                 case EmptySpace emptySpace->{}
                                 default -> {
-                                    if (components[num][j].getLink()[1] == 0)
+                                    if (components[num][j].getLink()[1] == 0){
+                                        System.out.println(components[num][j].toString());
                                         return true;
+                                    }
+                                    else{
+                                        if(numOfBattery>0 && use){
+                                                for (int w = 5; w <= 9; w++) {
+                                                    for (int z = 4; z <= 10; z++) {
+                                                        if (components[w][z] != null) {
+                                                            switch(components[w][z]) {
+                                                                case Shield shield->{
+                                                                    if (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.SE)){
+                                                                        return true;
+                                                                    }
+                                                                }
+                                                                default -> {}
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+
+                                        }else return false;
+                                    }
                                 }
                             }
 
                         }
                     }
                     break;
+                //if the meteor comes from sud
                 case 2:
                     for (int i = 9; i > 4; i--) {
                         if (components[i][num] != null) {
                             switch(components[i][num]){
                                 case EmptySpace emptySpace->{}
                                 default -> {
-                                    if (components[i][num].getLink()[2] == 0)
+                                    if (components[i][num].getLink()[2] == 0){
+                                        System.out.println(components[i][num].toString());
                                         return true;
+                                    }
+                                    else{
+                                        if(numOfBattery>0 && use){
+
+                                                for (int w = 5; w <= 9; w++) {
+                                                    for (int z = 4; z <= 10; z++) {
+                                                        if (components[w][z] != null) {
+                                                            switch(components[w][z]) {
+                                                                case Shield shield->{
+                                                                    if(shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)){
+                                                                        return true;
+                                                                    }
+                                                                }
+                                                                default -> {}
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+
+                                        }else return false;
+                                    }
                                 }
                             }
 
                         }
                     }
                     break;
+                //if the meteor comes from ovest
                 case 3:
                     for (int j = 4; j <= 10; j++) {
                         if (components[num][j] != null) {
                             switch(components[num][j]){
                                 case EmptySpace emptySpace->{}
                                 default -> {
-                                    if (components[num][j].getLink()[3] == 0)
+                                    if (components[num][j].getLink()[3] == 0){
+                                        System.out.println(components[num][j].toString());
                                         return true;
+                                    }
+                                    else{
+                                        if(numOfBattery>0 && use){
+                                                for (int w = 5; w <= 9; w++) {
+                                                    for (int z = 4; z <= 10; z++) {
+                                                        if (components[w][z] != null) {
+                                                            switch(components[w][z]) {
+                                                                case Shield shield->{
+                                                                    if(shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)){
+                                                                        return true;
+                                                                    }
+                                                                }
+                                                                default -> {}
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+
+                                        } else return false;
+                                    }
                                 }
                             }
                         }
                     }
                     break;
             }
-
-        for (int i = 5; i <= 9; i++) {
-            for (int j = 4; j <= 10; j++) {
-                if (components[i][j] != null) {
-                    switch(components[i][j]) {
-                        case Shield shield->{
-                            if(
-                                    (direction == 0 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.NW)))
-                                            || (direction == 1 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.SE)))
-                                            || (direction == 2 && (shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)))
-                                            || (direction == 3 && (shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)))
-                            ){
-                                if(numOfBattery>0 && use){
-                                    return true;
-                                }
-                            }
-                        }
-                        default -> {}
-                    }
-
-                }
-            }
-        }
-
-
         return false;
     }
 
@@ -1448,11 +1525,10 @@ public class SpaceShip implements Serializable {
      * if the spaceship has protection in the critical direction, the player can choose to use or not the
      * shield. This is possible only if there is enough batteries to use the shield.
      * @param direction Direction 0-->N, 1-->E, 2-->S, 3-->W from which the meteorite arrives
-     * @param num number of row or colon from which the meteorite arrives
      * @param use true if the player wants to use the shield, false otherwise
      * @return true if the spaceship is protected
      */
-    public boolean blockLightCannonShot(int direction,int num, boolean use){
+    public boolean blockLightCannonShot(int direction, boolean use){
 
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
@@ -1492,33 +1568,32 @@ public class SpaceShip implements Serializable {
                             if(cabin.getQuantity()>0){
                                 switch(components[i+1][j]){
                                     case Cabin cabin1->{
-                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[2], cabin.getLink()[0])){
+                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[2], cabin1.getLink()[0])){
                                             removeHuman(i,j);
-                                            return;
+                                            continue;
                                         }
                                     }default -> {}
                                 }
                                 switch(components[i][j+1]){
                                     case Cabin cabin1->{
-                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[1], cabin.getLink()[3])){
+                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[1], cabin1.getLink()[3])){
                                             removeHuman(i,j);
-                                            return;
+                                            continue;
                                         }
                                     }default -> {}
                                 }
                                 switch(components[i-1][j]){
                                     case Cabin cabin1->{
-                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[0], cabin.getLink()[2])){
+                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[0], cabin1.getLink()[2])){
                                             removeHuman(i,j);
-                                            return;
+                                            continue;
                                         }
                                     }default -> {}
                                 }
                                 switch(components[i][j-1]){
                                     case Cabin cabin1->{
-                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[3], cabin.getLink()[1])){
+                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[3], cabin1.getLink()[1])){
                                             removeHuman(i,j);
-                                            return;
                                         }
                                     }default -> {}
                                 }
@@ -1560,14 +1635,30 @@ public class SpaceShip implements Serializable {
                     case Load load->{
                         while(load.getCapacity()-load.getQuantity()>0 && index<goods.size()){
                             if (load.getIsSpecial() && goods.get(index).getValue() == 4) {
+                                goods.get(index).setX(i);
+                                goods.get(index).setY(j);
                                 load.addGood(goods.get(index));
                                 addGoodsList(goods.get(index));
+                                switch(goods.get(index).getValue()){
+                                    case 1: blueGoods++;
+                                    case 2: greenGoods++;
+                                    case 3: yellowGoods++;
+                                    case 4: redGoods++;
+                                }
                                 bank.removeGoodsInBank(goods.get(index).getValue());
                                 index++;
                             }
                             else if (goods.get(index).getValue() != 4) {
+                                goods.get(index).setX(i);
+                                goods.get(index).setY(j);
                                 load.addGood(goods.get(index));
                                 addGoodsList(goods.get(index));
+                                switch(goods.get(index).getValue()){
+                                    case 1: blueGoods++;
+                                    case 2: greenGoods++;
+                                    case 3: yellowGoods++;
+                                    case 4: redGoods++;
+                                }
                                 bank.removeGoodsInBank(goods.get(index).getValue());
                                 index++;
                             }
@@ -1590,6 +1681,8 @@ public class SpaceShip implements Serializable {
                                             l.removeGood(g);
                                             goodsList.remove(i);
                                             bank.addGoodsInBank(g.getValue());
+                                            goods.get(j).setX(g.getX());
+                                            goods.get(j).setY(g.getY());
                                             l.addGood(goods.get(j));
                                             addGoodsList(goods.get(j));
                                             bank.removeGoodsInBank(goods.get(j).getValue());
@@ -1611,6 +1704,8 @@ public class SpaceShip implements Serializable {
                                 bank.addGoodsInBank(goodsList.get(i).getValue());
                                 loadToRemove.removeGood(goodsList.get(i));
                                 bank.removeGoodsInBank(goods.get(j).getValue());
+                                goods.get(j).setX(goodsList.get(i).getX());
+                                goods.get(j).setY(goodsList.get(i).getY());
                                 loadToRemove.addGood(goods.get(j));
                                 goodsList.remove(i);
                                 addGoodsList(goods.get(j));
@@ -1914,18 +2009,22 @@ public class SpaceShip implements Serializable {
         return yellowGoods;
     }
 
-    public void removeGoods(ArrayList<Goods> list){
-        for(Goods g: list){
-            switch(components[g.getX()][g.getY()]){
-                case Load load->{
-                    load.removeGood(g);
+    public void removeGoods(ArrayList<Goods> list) {
+        for (Goods g : list) {
+            switch (components[g.getX()][g.getY()]) {
+                case Load load -> {
+                        Iterator<Goods> iterator = load.getGoods().iterator();
+                        while (iterator.hasNext()) {
+                            Goods good = iterator.next();
+                            if (good.getValue() == g.getValue()) {
+                                iterator.remove();
+                            }
+                        }
                 }
                 default -> {}
             }
         }
     }
-
-    //TODO sta cosa non va, mannaggia (per il politically correct)
 
     public ArrayList<int[]> getAlienCabin() {
         ArrayList<int[]> alienCabin = new ArrayList<>();

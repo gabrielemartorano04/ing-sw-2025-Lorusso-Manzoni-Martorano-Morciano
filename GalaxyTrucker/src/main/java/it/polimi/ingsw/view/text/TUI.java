@@ -7,12 +7,18 @@ import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
+import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
+import it.polimi.ingsw.net.events.serverevents.setupevents.NicknameAlreadyInError;
 import it.polimi.ingsw.view.InputReader;
 import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
+import it.polimi.ingsw.view.ViewFlow;
 
+import javax.swing.text.View;
 import java.util.*;
 import java.util.List;
 
@@ -31,6 +37,68 @@ public class TUI implements UI {
         System.out.print("> ");
 
     }
+
+    @Override
+    public void nickNameAlreadyTaken(NicknameAlreadyInError event){
+        this.showNicknameTaken();
+        this.showChooseColor(event.getColors());
+        System.out.print("> ");
+    }
+
+    @Override
+    public void colorAlreadyTaken(ColorAlreadyInError event){
+        this.showError(event.getMessage());
+        this.showColorTaken();
+        this.showChooseColor(event.getAvailableColors());
+        System.out.print("> ");
+    }
+
+    @Override
+    public void startBuildingScene(StartBuildingEvent event){
+        this.showPlayers(event.getPlayers());
+        this.showBuildPhaseStart(event.getComponents());
+        this.showBuildOptions();
+        System.out.print("> ");
+    }
+
+    @Override
+    public void componentLinked(ComponentLinkedEvent event){
+        this.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
+        this.showAvailableComponent(event.getAvComponents());
+        System.out.print("> ");
+    }
+
+    @Override
+    public void componentNotAvailable(ComponentNotAvailableError event, ViewFlow viewFlow){
+        this.showError(event.getMessage());
+        this.showAvailableComponent(viewFlow.getAvailableComponents());
+        this.showMessage("Please select a component between 0 and " + (viewFlow.getAvailableComponents().size()-1)+"\n");
+        System.out.print("> ");
+    }
+
+    @Override
+    public void componentSelected (ComponentSelectedEvent event, ViewFlow viewFlow){
+        this.showComponentSelected(viewFlow.getSelectedComponent());
+        this.showComponentOptions();
+        System.out.print("> ");
+    }
+
+    @Override
+    public void invalidCoordinates(InvalidCoordinatesError event){
+        this.showError(event.getMessage());
+        this.askCoordinates();
+        System.out.print("> ");
+    }
+
+    @Override
+    public void invalidPosition(InvalidPositionError event){
+        this.showInvalidPlacement(event.getMessage());
+        this.askCoordinates();
+        System.out.print("> ");
+    }
+
+
+
 
     @Override
     public void showWelcome(EnumSet<PlayerColors> availableColors) {
@@ -190,6 +258,8 @@ public class TUI implements UI {
                 i++;
             }
         }
+
+        System.out.print("> ");
     }
 
     @Override
@@ -241,6 +311,7 @@ public class TUI implements UI {
     @Override
     public void showTimeExpired() {
         System.out.println("Time expired, end of turn.!");
+        System.out.print("> ");
     }
 
     @Override
@@ -584,6 +655,7 @@ public class TUI implements UI {
     @Override
     public void askCoordinates() {
         System.out.print("Insert coordinates (x y): ");
+        System.out.print("> ");
     }
 
     @Override

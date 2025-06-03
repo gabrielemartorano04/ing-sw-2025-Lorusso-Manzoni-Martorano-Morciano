@@ -369,43 +369,108 @@ class SpaceShipTest {
 
     @Test
     void isHit() {
+        assertFalse(spaceShip2.isHit(0,4));
+        assertFalse(spaceShip2.isHit(0,10));
+        assertTrue(spaceShip2.isHit(0,5));
+        assertTrue(spaceShip2.isHit(0,6));
+        assertTrue(spaceShip2.isHit(0,7));
+        assertTrue(spaceShip2.isHit(0,8));
+        assertTrue(spaceShip2.isHit(0,9));
+        assertFalse(spaceShip2.isHit(0,12));
 
+        assertFalse(spaceShip2.isHit(0,13));
+
+        assertFalse(spaceShip2.isHit(1,11));
     }
 
     @Test
     void destroyComponent() {
+        spaceShip2.destroyComponent(9,0,new Bank());
+        assertEquals(2,spaceShip2.getGoodsCapacity());
+
+        spaceShip2.destroyComponent(8,1,new Bank());
+        assertNull(spaceShip2.getComponents()[8][8]);
     }
 
     @Test
     void shootMeteor() {
+        assertTrue(spaceShip2.shootMeteor(0,7));
+        assertTrue(spaceShip2.shootMeteor(0,8));
     }
 
     @Test
     void blockSmallMeteor() {
+        spaceShip2.setBattery();
+        assertTrue( spaceShip2.blockSmallMeteor(0,7,false));
+        assertTrue( spaceShip2.blockSmallMeteor(0,8,false));
+        assertTrue( spaceShip2.blockSmallMeteor(0,9,false));
+        assertFalse( spaceShip2.blockSmallMeteor(0,6,false));
+
+        assertTrue( spaceShip2.blockSmallMeteor(1,9,true));
+        assertTrue( spaceShip2.blockSmallMeteor(1,7,false));
+
+        assertTrue( spaceShip2.blockSmallMeteor(2,7,false));
+        assertTrue( spaceShip2.blockSmallMeteor(2,8,false));
+
+        assertFalse( spaceShip2.blockSmallMeteor(3,7,false));
+        assertTrue( spaceShip2.blockSmallMeteor(3,8,false));
+
     }
 
     @Test
     void blockLightCannonShot() {
+        spaceShip2.setBattery();
+        assertTrue(spaceShip2.blockLightCannonShot(0,true));
+        assertTrue(spaceShip2.blockLightCannonShot(1,true));
+        assertTrue(spaceShip2.blockLightCannonShot(2,true));
+        assertFalse(spaceShip2.blockLightCannonShot(3,true));
+        assertFalse(spaceShip2.blockLightCannonShot(3,false));
     }
 
     @Test
     void epidemic() {
+        spaceShip2.setNumHuman();
+        assertEquals(6,spaceShip2.getNumHuman());
+        spaceShip2.epidemic();
+        assertEquals(3,spaceShip2.getNumHuman());
     }
 
     @Test
-    void addGoodsList() {
+    void addAndGetGoodsList() {
+        Goods good1=new Goods(2);
+        spaceShip2.addGoodsList(good1);
+        assertEquals(1,spaceShip2.getGoodsList().size());
+        Goods good2=new Goods(4);
+        spaceShip2.addGoodsList(good2);
+        assertEquals(2,spaceShip2.getGoodsList().size());
+        assertEquals(good2,spaceShip2.getGoodsList().get(0));
+        assertEquals(good1,spaceShip2.getGoodsList().get(1));
+        Goods good3=new Goods(3);
+        spaceShip2.addGoodsList(good3);
+        assertEquals(good2,spaceShip2.getGoodsList().get(0));
+        assertEquals(good3,spaceShip2.getGoodsList().get(1));
+        assertEquals(good1,spaceShip2.getGoodsList().get(2));
     }
 
     @Test
     void addGoods() {
+        ArrayList<Goods> goods=new ArrayList<>();
+        Goods good1=new Goods(3);
+        goods.add(good1);
+        ArrayList<int[]> coord=new ArrayList<>();
+        coord.add(new int[]{7,5});
+        spaceShip2.addGoods(goods,coord,new Bank());
+
+        switch(spaceShip2.getComponents()[7][5]){
+            case Load load->{
+                assertEquals(load.getGoods().size(),1);
+            }
+            default -> {}
+        }
     }
 
     @Test
     void addGood() {
-    }
-
-    @Test
-    void getGoodsList() {
     }
 
     @Test
@@ -446,40 +511,88 @@ class SpaceShipTest {
 
     @Test
     void getRedGoods() {
+        ArrayList<Goods> goods=new ArrayList<>();
+        Goods good1=new Goods(4);
+        goods.add(good1);
+        ArrayList<int[]> coord=new ArrayList<>();
+        coord.add(new int[]{7,5});
+        spaceShip2.addGoods(goods,coord,new Bank());
+
+        assertEquals(1,spaceShip2.getRedGoods());
     }
 
     @Test
     void getGreenGoods() {
+        ArrayList<Goods> goods=new ArrayList<>();
+        Goods good1=new Goods(2);
+        goods.add(good1);
+        ArrayList<int[]> coord=new ArrayList<>();
+        coord.add(new int[]{7,5});
+        spaceShip2.addGoods(goods,coord,new Bank());
+
+        assertEquals(1,spaceShip2.getGreenGoods());
     }
 
     @Test
     void getBlueGoods() {
+        ArrayList<Goods> goods=new ArrayList<>();
+        Goods good1=new Goods(1);
+        goods.add(good1);
+        ArrayList<int[]> coord=new ArrayList<>();
+        coord.add(new int[]{7,5});
+        spaceShip2.addGoods(goods,coord,new Bank());
+
+        assertEquals(1,spaceShip2.getBlueGoods());
     }
 
     @Test
     void getYellowGoods() {
+        ArrayList<Goods> goods=new ArrayList<>();
+        Goods good1=new Goods(3);
+        goods.add(good1);
+        ArrayList<int[]> coord=new ArrayList<>();
+        coord.add(new int[]{7,5});
+        spaceShip2.addGoods(goods,coord,new Bank());
+
+        assertEquals(1,spaceShip2.getYellowGoods());
+
     }
 
     @Test
     void removeGoods() {
+        ArrayList<Goods> goods=new ArrayList<>();
+        Goods good=new Goods(4);
+        good.setX(7);
+        good.setY(5);
+        goods.add(good);
+        switch(spaceShip2.getComponents()[7][5]){
+            case Load component->{
+                Goods good1=new Goods(4);
+                good1.setX(7);
+                good1.setY(5);
+                component.addGood(good1);
+            }
+            default -> {}
+        }
+        spaceShip2.removeGoods(goods);
+        switch(spaceShip2.getComponents()[7][5]){
+            case Load component->{
+                assertTrue(component.getGoods().isEmpty());
+            }
+            default -> {}
+        }
     }
 
     @Test
     void getAlienCabin() {
+        assertEquals(0,spaceShip2.getAlienCabin().size());
     }
 
     @Test
     void removeAllHumans() {
+        spaceShip2.setNumHuman();
+        spaceShip2.removeAllHumans();
+        assertEquals(0,spaceShip2.getNumHuman());
     }
 
-    public static void main(String[] args){
-        CreateShipTest test = new CreateShipTest();
-        SpaceShip spaceShip=new SpaceShip();
-        try {
-            spaceShip=test.createShip3(spaceShip);
-        } catch (InvalidCoordinates e) {
-            throw new RuntimeException(e);
-        }
-        spaceShip.isValid(6,6);
-    }
 }

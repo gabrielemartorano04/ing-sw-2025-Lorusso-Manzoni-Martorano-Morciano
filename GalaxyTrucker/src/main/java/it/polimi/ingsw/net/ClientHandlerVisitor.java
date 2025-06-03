@@ -63,11 +63,6 @@ public class ClientHandlerVisitor implements VirtualServer {
     public void visit(CreateGameEvent event) {
         int numPlayers= event.getNumberOfPlayers();
         this.gameLevel=event.getGameLevel();
-        //todo ripetuto nel parser togliere?
-        if (numPlayers<0 || numPlayers>4) {
-            serverEvent= new NumberOfPlayersError();
-            return;
-        }
         this.numOfPlayers = numPlayers;
         serverEvent=new AvailableColorsEvent(EnumSet.allOf(PlayerColors.class), "First Player in the game, start login");
     }
