@@ -83,6 +83,14 @@ public class AbandonedStation extends Card implements Serializable {
         return cardState;
     }
 
+    public int getCurrGood() {
+        return currGood;
+    }
+
+    public int getIndexOfCurrTrucker() {
+        return indexOfCurrTrucker;
+    }
+
     @Override
     public ServerEvent startCard() {
         return new StartCardEvent(
