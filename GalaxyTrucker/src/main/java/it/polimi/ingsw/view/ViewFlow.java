@@ -68,10 +68,10 @@ public class ViewFlow implements EventReceiver {
         this.inputParserFlight = new InputParserFlight();
         this.nickname = null;
         this.running = true;
-        ui = new TUI();
+        ui = new TUI(this);
         this.viewState = ViewState.FIRST;
         this.timerDisplay = new TimerDisplay();
-        this.serverEventVisitor = new ServerEventHandlerVisitor(this);
+        this.serverEventVisitor = new ServerEventHandlerVisitor(this, ui);
         this.availableComponents= new ArrayList<>();
         new Thread(inputReader, "InputReaderThread").start();
         this.selectedComponentIndex = -1;

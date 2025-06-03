@@ -55,6 +55,14 @@ public class AbandonedStation extends Card implements Serializable {
     }
 
 
+    public void setCardState(CardState cardState) {
+        this.cardState = cardState;
+    }
+
+    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided) {
+        this.truckerThatHasDecided = truckerThatHasDecided;
+    }
+
     /**
      * Returns the number of days of flight to lose
      * @return days to lose
@@ -89,6 +97,10 @@ public class AbandonedStation extends Card implements Serializable {
 
     public int getIndexOfCurrTrucker() {
         return indexOfCurrTrucker;
+    }
+
+    public Trucker getTruckerThatHasDecided() {
+        return truckerThatHasDecided;
     }
 
     @Override
@@ -159,13 +171,13 @@ public class AbandonedStation extends Card implements Serializable {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
-        if (!truckerThatHasDecided.getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
-            throw new InvalidCoordinates("Not goods deposit");
-        }
         if(stop){
             cardState = CardState.REARRANGE;
             return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
         }else {
+            if (!truckerThatHasDecided.getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
+                throw new InvalidCoordinates("Not goods deposit");
+            }
             try {
                 // addGood fa anche la remove dalla bank della merce corrente
                 goods.get(currGood).setX(goodsCoordinates[0]);
@@ -184,7 +196,7 @@ public class AbandonedStation extends Card implements Serializable {
                 do {
                     if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
                         cardState = CardState.CHOOSE_TO_GAIN;
-                        return new PlotGood(false, truckerThatHasDecided.getNickname(), goods.get(currGood));
+                        return new PlotGood(true, truckerThatHasDecided.getNickname(), goods.get(currGood));
                     } else {
                         currGood++;
                         if (currGood == goods.size()) {

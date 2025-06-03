@@ -34,13 +34,17 @@ public interface UI {
 
     void componentLinked(ComponentLinkedEvent event);
 
-    void componentNotAvailable(ComponentNotAvailableError event, ViewFlow viewFlow);
+    void componentNotAvailable(ComponentNotAvailableError event);
 
-    void componentSelected(ComponentSelectedEvent event, ViewFlow viewFlow);
+    void componentSelected(ComponentSelectedEvent event);
 
     void invalidCoordinates(InvalidCoordinatesError event);
 
     void invalidPosition(InvalidPositionError event);
+
+    void turnHourGlassError(TurnHourglassError event);
+
+    void turnHourGlass(HourglassTurnEvent event);
 
 
     // fine omologazione GUI TUI
