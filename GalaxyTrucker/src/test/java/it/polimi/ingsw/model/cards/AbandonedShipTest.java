@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.CreateShipTest;
 import it.polimi.ingsw.model.Game;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 class AbandonedShipTest {
@@ -105,7 +107,13 @@ class AbandonedShipTest {
 
                 CardFinished event = (CardFinished) sEvent;
 
+                // a uno tolgo tutti gli umani per vedere se lo elimina, l'altro ne avrà di più e non verrà eliminato
 
+                Game.getIstance().getTruckerList().getFirst().getSpaceShip().removeAllHumans();
+
+                assertEquals(Game.getIstance().getTruckerOut().stream()
+                        .map(Trucker::getNickname)
+                        .collect(Collectors.toCollection(ArrayList::new)), event.getTruckersRemoved());
 
                 Map<String, Integer> track = new HashMap<>();
                 for (Trucker t : Game.getIstance().getTruckerList()) {
@@ -114,14 +122,20 @@ class AbandonedShipTest {
 
                 assertTrue(event.isForAll());
                 assertEquals(Game.getIstance().getTruckerList(), event.getTruckersList());
-                //assertEquals(new ArrayList<>(), event.getTruckerRemoved());
                 assertEquals(track, event.getTrack());
             }catch (Exception e){
                 fail();
             }
         }else{
             try {
-                assertEquals( new BooleanDecision(ServerEventType.LAND, true, ParserState.LAND, "Do you want to land on this Abandoned Ship?",  Game.getIstance().getTrucker(abandonedShip.getIndexOfCurrTrucker()).getNickname()), abandonedShip.truckerLanding(false));
+                ServerEvent sEvent = abandonedShip.truckerLanding(false);
+                BooleanDecision event = (BooleanDecision) sEvent;
+
+                assertEquals(ServerEventType.LAND, event.getEventType());
+                assertTrue(event.isForAll());
+                assertEquals(Game.getIstance().getTrucker(abandonedShip.getIndexOfCurrTrucker()).getNickname(), event.getNickname());
+                assertEquals("Do you want to land on this Abandoned Ship?", event.getMessage());
+                assertEquals(ParserState.LAND, event.getParserState());
             }catch (Exception e){}
         }
     }
@@ -129,26 +143,122 @@ class AbandonedShipTest {
     @Test
     void setHumansCoordinates() {
         ArrayList<int[]> coordinates = new ArrayList<>();
-        coordinates.add(new int[]{7,7});
-        coordinates.add(new int[]{,});
-        try {
-            assertEquals(abandonedShip.cardEffect(), abandonedShip.setHumansCoordinates(coordinates));
-        }catch(Exception e){
-            fail();
-        }
-    }
+        coordinates.add(new int[]{7,7, 1});
+        coordinates.add(new int[]{6,5, 1});
 
-    @Test
-    void cardEffect() {
-        ArrayList<String> truckerRemoved = Game.getIstance().endTurn();
+        abandonedShip.setState(CardState.HUMANSTOREMOVE);
+        abandonedShip.setTruckerThatHasDecided(Game.getIstance().getTruckerList().getFirst());
+        Game.getIstance().getTruckerList().getFirst().getSpaceShip().setNumHuman();
+
+        ServerEvent sEvent = null;
+        try {
+            sEvent = abandonedShip.setHumansCoordinates(coordinates);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
+
+        CardFinished event = (CardFinished) sEvent;
+
+        // a uno tolgo tutti gli umani per vedere se lo elimina, l'altro ne avrà di più e non verrà eliminato
+
+        Game.getIstance().getTruckerList().getFirst().getSpaceShip().removeAllHumans();
+
+        assertEquals(Game.getIstance().getTruckerOut().stream()
+                .map(Trucker::getNickname)
+                .collect(Collectors.toCollection(ArrayList::new)), event.getTruckersRemoved());
+
         Map<String, Integer> track = new HashMap<>();
         for (Trucker t : Game.getIstance().getTruckerList()) {
             track.put(t.getNickname(), t.getPosition());
         }
-        try {
-            assertEquals( new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track), abandonedShip.cardEffect());
-        }catch (Exception e){
-            fail();
-        }
+
+        assertTrue(event.isForAll());
+        assertEquals(Game.getIstance().getTruckerList(), event.getTruckersList());
+        assertEquals(track, event.getTrack());
     }
+
+    @Test
+    void cardEffect() {
+        abandonedShip.setState(CardState.HUMANSTOREMOVE);
+        abandonedShip.setTruckerThatHasDecided(Game.getIstance().getTruckerList().getFirst());
+        Game.getIstance().getTruckerList().getFirst().getSpaceShip().setNumHuman();
+        Game.getIstance().getTruckerList().get(1).getSpaceShip().setNumHuman();
+        ArrayList<int[]> coordinates = new ArrayList<>();
+        coordinates.add(new int[]{7,7, 1});
+        coordinates.add(new int[]{6,5, 1});
+        try {
+            abandonedShip.setHumansCoordinates(coordinates);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        } catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
+
+        abandonedShip.setState(CardState.ESECUZIONE);
+        //con trucker che atterrno
+        ServerEvent sEvent = null;
+        try {
+            sEvent = abandonedShip.cardEffect();
+        }catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
+
+        CardFinished event = (CardFinished) sEvent;
+
+        // a uno tolgo tutti gli umani per vedere se lo elimina, l'altro ne avrà di più e non verrà eliminato
+
+        Game.getIstance().getTruckerList().getFirst().getSpaceShip().removeAllHumans();
+
+        assertEquals(Game.getIstance().getTruckerOut().stream()
+                .map(Trucker::getNickname)
+                .collect(Collectors.toCollection(ArrayList::new)), event.getTruckersRemoved());
+
+        Map<String, Integer> track = new HashMap<>();
+        for (Trucker t : Game.getIstance().getTruckerList()) {
+            track.put(t.getNickname(), t.getPosition());
+        }
+
+        assertTrue(event.isForAll());
+        assertEquals(Game.getIstance().getTruckerList(), event.getTruckersList());
+        assertEquals(track, event.getTrack());
+
+    }
+
+    @Test
+    void cardEffect_noLanding() {
+        abandonedShip.setState(CardState.ESECUZIONE);
+        Game.getIstance().getTruckerList().getFirst().getSpaceShip().setNumHuman();
+
+        //senza trucker che atterrno
+        ServerEvent sEvent = null;
+        try {
+            sEvent = abandonedShip.cardEffect();
+        }catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
+
+        CardFinished event = (CardFinished) sEvent;
+
+        // a uno tolgo tutti gli umani per vedere se lo elimina, l'altro ne avrà di più e non verrà eliminato
+
+        Game.getIstance().getTruckerList().getFirst().getSpaceShip().removeAllHumans();
+
+        assertEquals(Game.getIstance().getTruckerOut().stream()
+                .map(Trucker::getNickname)
+                .collect(Collectors.toCollection(ArrayList::new)), event.getTruckersRemoved());
+
+        Map<String, Integer> track = new HashMap<>();
+        for (Trucker t : Game.getIstance().getTruckerList()) {
+            track.put(t.getNickname(), t.getPosition());
+        }
+
+        assertTrue(event.isForAll());
+        assertEquals(Game.getIstance().getTruckerList(), event.getTruckersList());
+        assertEquals(track, event.getTrack());
+
+    }
+
+
 }

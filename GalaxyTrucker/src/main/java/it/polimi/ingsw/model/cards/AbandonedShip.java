@@ -93,6 +93,14 @@ public class AbandonedShip extends Card implements Serializable {
         return state;
     }
 
+    public void setState(CardState state) {
+        this.state = state;
+    }
+
+    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided){
+        this.truckerThatHasDecided = truckerThatHasDecided;
+    };
+
     @Override
     public ServerEvent startCard() {
         return new StartCardEvent(
