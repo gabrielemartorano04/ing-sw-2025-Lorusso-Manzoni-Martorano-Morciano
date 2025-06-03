@@ -30,7 +30,7 @@ final public class Load extends Component implements Serializable {
         super(linkU, linkR, linkD, linkL, type, imagePath);
         this.isSpecial = isSpecial;
         this.capacity = capacity;
-        goods = new ArrayList<>();
+        goods = new ArrayList<>(capacity);
     }
 
     /**
