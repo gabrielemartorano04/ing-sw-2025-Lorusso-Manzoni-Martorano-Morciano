@@ -2,16 +2,23 @@ package it.polimi.ingsw.view.graphic.scenes;
 
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 
 public class BuildingScene {
@@ -25,6 +32,8 @@ public class BuildingScene {
     private Scene scene;
     private HBox keptSlots;
     private final ViewFlow viewFlow;
+    private Button finishBtn;
+    private Button stackBtn;
 
 
     public BuildingScene(String nickname, Component[][] layout, ViewFlow viewFlow) {
@@ -130,8 +139,166 @@ public class BuildingScene {
 
         StackPane root = new StackPane(backgroundView, grid, keptSlots);
         scene = new Scene(root, width, height);
+        addFinishButtonToScene(scene, viewFlow);
+        addStackButtonToScene(scene, viewFlow);
+        attachOptionsBoxToScene(scene);
         return scene;
     }
+
+    private void attachOptionsBoxToScene(Scene scene) {
+        VBox optionsBox = new VBox(8);
+        optionsBox.setPadding(new Insets(10));
+        optionsBox.setAlignment(Pos.TOP_LEFT);
+
+        optionsBox.getChildren().addAll(stackBtn, finishBtn);  // Aggiungi qui altri bottoni se ne hai
+
+        Platform.runLater(() -> {
+            StackPane root = (StackPane) scene.getRoot();
+            if (!root.getChildren().contains(optionsBox)) {
+                StackPane.setAlignment(optionsBox, Pos.TOP_RIGHT);
+                StackPane.setMargin(optionsBox, new Insets(20, 0, 0, 5));
+                root.getChildren().add(optionsBox);
+            }
+        });
+    }
+
+    private Scene addFinishButtonToScene(Scene scene, ViewFlow viewFlow) {
+        StackPane root = (StackPane) scene.getRoot(); // Assumiamo che root sia StackPane
+
+        // VBox contenitore dei bottoni
+        VBox optionsBox = new VBox(8);
+        optionsBox.setPadding(new Insets(10));
+        optionsBox.setAlignment(Pos.TOP_LEFT);
+
+        // Stile comune
+        Consumer<Button> styleButton = (btn) -> {
+            btn.setFont(Font.font("Bangers", 12));
+            btn.setTextFill(Color.BLACK);
+            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            btn.setCursor(Cursor.HAND);
+            btn.setPrefWidth(120);
+        };
+
+        // === Bottone Finish ===
+        Button finishBtn = new Button("Finish spaceship");
+        styleButton.accept(finishBtn);
+
+        finishBtn.setOnAction(e -> {
+            Rectangle bg = new Rectangle();
+            bg.widthProperty().bind(scene.widthProperty());
+            bg.heightProperty().bind(scene.heightProperty());
+            bg.setFill(Color.rgb(0, 0, 0, 0.4));
+
+            VBox box = new VBox(20);
+            box.setAlignment(Pos.CENTER);
+
+            Label confirm = new Label("Confirm finish building?");
+            confirm.setTextFill(Color.web("#FFDE69"));
+            confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
+
+            Button yes = new Button("YES");
+            yes.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+            yes.setTextFill(Color.WHITE);
+            yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
+            yes.setCursor(Cursor.HAND);
+            yes.setPrefWidth(100);
+
+            Button no = new Button("NO");
+            no.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+            no.setTextFill(Color.WHITE);
+            no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+            no.setCursor(Cursor.HAND);
+            no.setPrefWidth(100);
+
+            StackPane confirmation = new StackPane(bg, box);
+
+            yes.setOnAction(ev -> {
+                viewFlow.handleInput("end");
+                root.getChildren().remove(confirmation);
+            });
+
+            no.setOnAction(ev -> root.getChildren().remove(confirmation));
+
+            HBox buttons = new HBox(20, yes, no);
+            buttons.setAlignment(Pos.CENTER);
+
+            box.getChildren().addAll(confirm, buttons);
+
+            root.getChildren().add(confirmation);
+        });
+
+        optionsBox.getChildren().add(finishBtn);
+
+        // Posiziona in alto a sinistra nella scena
+        StackPane.setAlignment(optionsBox, Pos.TOP_LEFT);
+        StackPane.setMargin(optionsBox, new Insets(20, 0, 0, 5));
+
+        root.getChildren().add(optionsBox);
+        this.finishBtn = finishBtn;
+        return scene;
+    }
+
+    private Scene addStackButtonToScene(Scene scene, ViewFlow viewFlow) {
+        StackPane root = (StackPane) scene.getRoot(); // Assumiamo che sia uno StackPane
+
+        VBox container = new VBox(8);
+        container.setAlignment(Pos.TOP_LEFT);
+        container.setPadding(new Insets(10));
+
+        // Stile comune ai bottoni
+        Consumer<Button> styleButton = (btn) -> {
+            btn.setFont(Font.font("Bangers", 12));
+            btn.setTextFill(Color.BLACK);
+            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            btn.setCursor(Cursor.HAND);
+            btn.setPrefWidth(120);
+        };
+
+        // === Bottone "Show stack"
+        Button stackBtn = new Button("Show stack");
+        styleButton.accept(stackBtn);
+
+        stackBtn.setOnAction(e -> {
+            Rectangle bg = new Rectangle();
+            bg.widthProperty().bind(scene.widthProperty());
+            bg.heightProperty().bind(scene.heightProperty());
+            bg.setFill(Color.rgb(0, 0, 0, 0.4));
+
+            VBox stackChoices = new VBox(15);
+            stackChoices.setAlignment(Pos.CENTER);
+
+            for (int i = 0; i < 3; i++) {
+                Button pile = new Button("Stack " + (i + 1));
+                styleButton.accept(pile);
+                pile.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+                final int index = i;
+                pile.setOnAction(ev -> {
+                    viewFlow.handleInput("stack " + index);
+                    root.getChildren().remove(root.lookup("#popupOverlay"));
+                });
+                stackChoices.getChildren().add(pile);
+            }
+
+            StackPane popup = new StackPane(bg, stackChoices);
+            popup.setId("popupOverlay");
+            popup.setOnMouseClicked(ev -> root.getChildren().remove(popup));
+
+            root.getChildren().add(popup);
+        });
+
+        container.getChildren().add(stackBtn);
+
+        StackPane.setAlignment(container, Pos.TOP_LEFT);
+        StackPane.setMargin(container, new Insets(20, 0, 0, 140)); // leggermente spostato
+
+        root.getChildren().add(container);
+        this.stackBtn = stackBtn;
+        return scene;
+    }
+
+
+
+
 
     public Scene getScene() {
         return scene;

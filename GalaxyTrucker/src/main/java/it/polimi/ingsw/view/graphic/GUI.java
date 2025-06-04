@@ -815,55 +815,6 @@ public class GUI implements UI {
         AvailableComponents availableComponents = new AvailableComponents();
         selectComponentBtn.setOnAction(e -> showAvailableComponent(availableComponents.getComponents()));
 
-        // Pulsante Finish Ship
-        Button finishBtn = new Button("Finish spaceship");
-        styleButton.accept(finishBtn);
-        finishBtn.setOnAction(e -> {
-            StackPane root = (StackPane) stage.getScene().getRoot();
-
-            Rectangle bg = new Rectangle();
-            bg.widthProperty().bind(stage.getScene().widthProperty());
-            bg.heightProperty().bind(stage.getScene().heightProperty());
-            bg.setFill(Color.rgb(0, 0, 0, 0.4));
-
-            VBox box = new VBox(20);
-            box.setAlignment(Pos.CENTER);
-
-            Label confirm = new Label("Confirm finish building?");
-            confirm.setTextFill(Color.web("#FFDE69"));
-            confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
-
-            Button yes = new Button("YES");
-            yes.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-            yes.setTextFill(Color.WHITE);
-            yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
-            yes.setCursor(Cursor.HAND);
-            yes.setPrefWidth(100);
-
-            Button no = new Button("NO");
-            no.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-            no.setTextFill(Color.WHITE);
-            no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
-            no.setCursor(Cursor.HAND);
-            no.setPrefWidth(100);
-
-            StackPane confirmation = new StackPane(bg, box);
-
-            yes.setOnAction(ev -> {
-                viewFlow.handleInput("end");
-                root.getChildren().remove(confirmation);
-            });
-
-            no.setOnAction(ev -> root.getChildren().remove(confirmation));
-
-            HBox buttons = new HBox(20, yes, no);
-            buttons.setAlignment(Pos.CENTER);
-
-            box.getChildren().addAll(confirm, buttons);
-
-
-            root.getChildren().add(confirmation);
-        });
 
         // Pulsante Show Stack
         Button stackBtn = new Button("Show stack");
@@ -996,7 +947,7 @@ public class GUI implements UI {
             ((StackPane) stage.getScene().getRoot()).getChildren().add(popup);
         });
 
-        optionsBox.getChildren().addAll(selectComponentBtn, stackBtn, otherBtn, finishBtn, rulesBtn, hourglassBtn);
+        optionsBox.getChildren().addAll(selectComponentBtn, stackBtn, otherBtn, rulesBtn, hourglassBtn);
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) stage.getScene().getRoot();
