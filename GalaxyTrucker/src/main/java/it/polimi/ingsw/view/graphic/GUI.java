@@ -23,6 +23,7 @@ import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -105,75 +106,112 @@ public class GUI implements UI {
         backgroundView.setPreserveRatio(false);
         backgroundView.setMouseTransparent(true);
 
-        VBox content = new VBox(20);
+        VBox content = new VBox(12);
         content.setAlignment(Pos.CENTER);
 
-        Label questionLabel = new Label("Insert the number of truckers and flight mode");
-        questionLabel.setFont(Font.font("Bangers", javafx.scene.text.FontWeight.BOLD, 20));
-        questionLabel.setTextFill(Color.web("#FFDE69"));
+        // === Scritta numero truckers ===
+        Label truckerLabel = new Label("Insert the number of truckers...");
+        truckerLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+        truckerLabel.setTextFill(Color.web("#FFDE69"));
 
-        TextField numberField = new TextField();
-        numberField.setMaxWidth(200);
-        numberField.setAlignment(Pos.CENTER);
+        // === Pulsanti 2,3,4 ===
+        ToggleGroup truckerGroup = new ToggleGroup();
+        HBox truckerButtons = new HBox(10);
+        truckerButtons.setAlignment(Pos.CENTER);
 
+        for (int i = 2; i <= 4; i++) {
+            RadioButton btn = new RadioButton(String.valueOf(i));
+            btn.setToggleGroup(truckerGroup);
+            btn.setUserData(i);
+            btn.setFont(Font.font("Bangers", 16));
+            btn.setTextFill(Color.WHITE);
+            btn.setMinWidth(60);
+            btn.setPrefHeight(35);
+            truckerButtons.getChildren().add(btn);
+        }
+
+        // === Scritta livello ===
+        Label levelLabel = new Label("...and the flight level");
+        levelLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+        levelLabel.setTextFill(Color.web("#FFDE69"));
+
+        // === Pulsanti Trial / Full ===
         ToggleGroup levelGroup = new ToggleGroup();
-        RadioButton trialButton = new RadioButton("Trial Flight");
-        trialButton.setToggleGroup(levelGroup);
-        trialButton.setUserData(0);
-        trialButton.setTextFill(Color.WHITE);
+        HBox levelButtons = new HBox(10);
+        levelButtons.setAlignment(Pos.CENTER);
 
-        RadioButton fullButton = new RadioButton("Full Game");
-        fullButton.setToggleGroup(levelGroup);
-        fullButton.setUserData(2);
-        fullButton.setTextFill(Color.WHITE);
+        RadioButton trialBtn = new RadioButton("Trial Flight");
+        trialBtn.setToggleGroup(levelGroup);
+        trialBtn.setUserData(0);
+        trialBtn.setFont(Font.font("Bangers", 16));
+        trialBtn.setTextFill(Color.WHITE);
+        trialBtn.setPrefWidth(120);
+        trialBtn.setPrefHeight(35);
 
-        HBox levelBox = new HBox(20, trialButton, fullButton);
-        levelBox.setAlignment(Pos.CENTER);
+        RadioButton fullBtn = new RadioButton("Full Game");
+        fullBtn.setToggleGroup(levelGroup);
+        fullBtn.setUserData(2);
+        fullBtn.setFont(Font.font("Bangers", 16));
+        fullBtn.setTextFill(Color.WHITE);
+        fullBtn.setPrefWidth(120);
+        fullBtn.setPrefHeight(35);
 
-        Label errorLabel = new Label();
-        errorLabel.setTextFill(Color.RED);
-        errorLabel.setFont(Font.font("Arial", 12));
 
+        levelButtons.getChildren().addAll(trialBtn, fullBtn);
+
+        // === Pulsante START ===
         Button submitButton = new Button("START");
-        submitButton.setFont(Font.font("Bangers", 16));
+        submitButton.setFont(Font.font("Bangers", 18));
         submitButton.setDisable(true);
+        submitButton.setPrefWidth(150);
         submitButton.setStyle("-fx-background-color: gray; -fx-text-fill: white;");
 
-        numberField.textProperty().addListener((obs, oldText, newText) -> {
-            boolean valid = !newText.trim().isEmpty();
-            submitButton.setDisable(!valid || levelGroup.getSelectedToggle() == null);
-            submitButton.setStyle((valid && levelGroup.getSelectedToggle() != null) ?
-                    "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
-                    "-fx-background-color: gray; -fx-text-fill: white;");
-        });
+        // Abilita solo quando entrambi sono selezionati
+        ChangeListener<Toggle> updateStart = (obs, oldVal, newVal) -> {
+            boolean enabled = truckerGroup.getSelectedToggle() != null && levelGroup.getSelectedToggle() != null;
+            submitButton.setDisable(!enabled);
+            submitButton.setStyle(enabled
+                    ? "-fx-background-color: #FFDE69; -fx-text-fill: black;"
+                    : "-fx-background-color: gray; -fx-text-fill: white;");
+        };
 
-        levelGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
-            boolean valid = !numberField.getText().trim().isEmpty();
-            submitButton.setDisable(newToggle == null || !valid);
-            submitButton.setStyle((newToggle != null && valid) ?
-                    "-fx-background-color: #FFDE69; -fx-text-fill: black;" :
-                    "-fx-background-color: gray; -fx-text-fill: white;");
-        });
+        truckerGroup.selectedToggleProperty().addListener(updateStart);
+        levelGroup.selectedToggleProperty().addListener(updateStart);
 
         submitButton.setOnAction(e -> {
-            StringBuilder input = new StringBuilder();
-            String player = numberField.getText().trim();
-            Toggle selected = levelGroup.getSelectedToggle();
-            int num = Integer.parseInt(player);
-            int level = (int) selected.getUserData();
-            input.append(num).append(" ").append(level);
-            this.viewFlow.handleInput(input.toString());
+            int players = (int) truckerGroup.getSelectedToggle().getUserData();
+            int level = (int) levelGroup.getSelectedToggle().getUserData();
+            viewFlow.handleInput(players + " " + level);
         });
 
-        content.getChildren().addAll(questionLabel, numberField, levelBox, errorLabel, submitButton);
+        // === Layout ===
+        truckerLabel.setAlignment(Pos.CENTER);
+        levelLabel.setAlignment(Pos.CENTER);
+        submitButton.setAlignment(Pos.CENTER);
 
-        StackPane insertPane = new StackPane(backgroundView, content);
+        VBox.setMargin(truckerLabel, new Insets(10, 0, 0, 0));
+        VBox.setMargin(truckerButtons, new Insets(5, 0, 0, 0));
+        VBox.setMargin(levelLabel, new Insets(15, 0, 0, 0));
+        VBox.setMargin(levelButtons, new Insets(5, 0, 0, 0));
+        VBox.setMargin(submitButton, new Insets(20, 0, 0, 0));
+
+        content.getChildren().setAll(
+                truckerLabel,
+                truckerButtons,
+                levelLabel,
+                levelButtons,
+                submitButton
+        );
+
+        StackPane root = new StackPane(backgroundView, content);
+        StackPane.setAlignment(content, Pos.CENTER);
+
         if (stage.getScene() == null) {
-            Scene scene = new Scene(insertPane, width, height);
-            stage.setScene(scene);
+            stage.setScene(new Scene(root, width, height));
         } else {
-            stage.getScene().setRoot(insertPane);
+            stage.getScene().setRoot(root);
         }
+
         stage.centerOnScreen();
     }
 
