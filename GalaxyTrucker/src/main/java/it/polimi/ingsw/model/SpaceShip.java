@@ -1620,109 +1620,6 @@ public class SpaceShip implements Serializable {
     }
 
     /**
-     * This method insert a list of goods in the Load components choosen by the player
-     * @param goods list of goods the player wants to add
-     * @param coord coordinates of Load components
-     */
-    public void addGoods(List <Goods> goods,ArrayList<int[]> coord,Bank bank){
-        int index=0;
-        for(int[] c : coord){
-            int i=c[0];
-            int j=c[1];
-            if (components[i][j] != null) {
-                switch(components[i][j]){
-                    case Load load->{
-                        while(load.getCapacity()-load.getQuantity()>0 && index<goods.size()){
-                            if (load.getIsSpecial() && goods.get(index).getValue() == 4) {
-                                goods.get(index).setX(i);
-                                goods.get(index).setY(j);
-                                load.removeGood(load.getGoods().size()-1);
-                                load.addGood(goods.get(index));
-                                addGoodsList(goods.get(index));
-                                switch(load.getGoods().getLast().getValue()){
-                                    case 1: blueGoods++;
-                                    case 2: greenGoods++;
-                                    case 3: yellowGoods++;
-                                    case 4: redGoods++;
-                                }
-                                bank.removeGoodsInBank(goods.get(index).getValue());
-                                index++;
-                            }
-                            else if (goods.get(index).getValue() != 4) {
-                                goods.get(index).setX(i);
-                                goods.get(index).setY(j);
-                                load.removeGood(load.getGoods().size()-1);
-                                load.addGood(goods.get(index));
-                                addGoodsList(goods.get(index));
-                                switch(load.getGoods().getLast().getValue()){
-                                    case 1: blueGoods++;
-                                    case 2: greenGoods++;
-                                    case 3: yellowGoods++;
-                                    case 4: redGoods++;
-                                }
-                                bank.removeGoodsInBank(goods.get(index).getValue());
-                                index++;
-                            }
-                        }
-                    }default -> {}
-                }
-            }
-        }
-
-        for(int j = index; j<goods.size(); j++){
-            for(int i=goodsList.size()-1;i>=0;i--){
-                if(goods.get(j).getValue() >goodsList.get(i).getValue()){
-                    if(goods.get(j).getValue() == 4){
-                            // vedi se c'è spazio per un rosso e poi inserisci
-                        for(Goods g : goodsList){
-                            if(g.getValue() < 4){
-                                switch(components[g.getX()][g.getY()]){
-                                    case Load l->{
-                                        if(l.getIsSpecial()){
-                                            l.removeGood(g);
-                                            goodsList.remove(i);
-                                            bank.addGoodsInBank(g.getValue());
-                                            goods.get(j).setX(g.getX());
-                                            goods.get(j).setY(g.getY());
-                                            l.removeGood(l.getGoods().size()-1);
-                                            l.addGood(goods.get(j));
-                                            addGoodsList(goods.get(j));
-                                            bank.removeGoodsInBank(goods.get(j).getValue());
-                                        }
-                                    }
-                                    default -> {}
-                                }
-
-
-                            }
-                        }
-                    }
-                    else{
-                            //inserisci in qualsiasi spazio vuoto
-                        goods.get(j).setX(goodsList.get(i).getX());
-                        goods.get(j).setY(goodsList.get(i).getY());
-                        switch(components[goodsList.get(i).getX()][goodsList.get(i).getY()]){
-                            case Load loadToRemove->{
-                                bank.addGoodsInBank(goodsList.get(i).getValue());
-                                loadToRemove.removeGood(goodsList.get(i));
-                                bank.removeGoodsInBank(goods.get(j).getValue());
-                                goods.get(j).setX(goodsList.get(i).getX());
-                                goods.get(j).setY(goodsList.get(i).getY());
-                                loadToRemove.removeGood(loadToRemove.getGoods().size()-1);
-                                loadToRemove.addGood(goods.get(j));
-                                goodsList.remove(i);
-                                addGoodsList(goods.get(j));
-                            }default -> {}
-                        }
-                    }
-                }
-            }
-        }
-
-
-    }
-
-    /**
      * This method adds the specified good in the specified component, also the position is given.
      * If there's space in the load it just add the good, otherwise we have to remove the good that occupies the gived position
      * @param good good the user wants to add
@@ -1740,6 +1637,13 @@ public class SpaceShip implements Serializable {
                     if(load.getCapacity()-load.getQuantity()>0){
                         load.getGoods().remove(value);
                         load.addGood(value,good);
+                        System.out.println("value: "+good.getValue());
+                        switch(good.getValue()){
+                            case 1: blueGoods++;
+                            case 2: greenGoods++;
+                            case 3: yellowGoods++;
+                            case 4: redGoods++;
+                        }
                         bank.removeGoodsInBank(good.getValue());
                         addGoodsList(good);
                     }
@@ -1750,6 +1654,13 @@ public class SpaceShip implements Serializable {
                         }
                         load.removeGood(value);
                         load.addGood(value,good);
+                        System.out.println("value: "+good.getValue());
+                        switch(good.getValue()){
+                            case 1: blueGoods++;
+                            case 2: greenGoods++;
+                            case 3: yellowGoods++;
+                            case 4: redGoods++;
+                        }
                         bank.removeGoodsInBank(good.getValue());
                         goodsList.remove(g);
                         addGoodsList(good);
