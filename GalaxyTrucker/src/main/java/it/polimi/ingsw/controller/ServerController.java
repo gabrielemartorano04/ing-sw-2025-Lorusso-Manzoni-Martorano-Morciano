@@ -175,6 +175,14 @@ public class ServerController {
         }
     }
 
+    public void broadcastEventExceptSome(ServerEvent event, int clientId) {
+        for(Client c: clients){
+            if(c.getId()!=clientId){
+                c.updateClient(event);
+            }
+        }
+    }
+
 
     public void startThreadHourglass(){
         BuildTimerManager.getInstance().start(this, 90);
@@ -217,6 +225,5 @@ public class ServerController {
             broadcastEvent(new BuildCompleteEvent(gameController.getGame().getTruckerList()));
         }
     }
-
 }
 

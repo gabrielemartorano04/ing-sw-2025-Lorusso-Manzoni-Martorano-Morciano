@@ -352,12 +352,15 @@ public class Game {
 
     /**
      * Computes the scores for each player at the end of the game.
-     * @param numPlayer the number of players
      * @return an array of scores
      */
     public int[] computeScores(){
         int i=0;
         int[] scores = new int[numPlayers];
+        for(i=0; i<numPlayers; i++){
+            scores[i]=0;
+        }
+        i=0;
         ArrayList<Goods> goodsList;
         for(Trucker t: truckers) {
             if(t.getCosmicCredit()<t.getSpaceShip().getLost()) {

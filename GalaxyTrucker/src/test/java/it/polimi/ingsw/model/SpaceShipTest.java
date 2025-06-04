@@ -145,7 +145,7 @@ class SpaceShipTest {
         assertEquals(2,spaceShip1.getNumCrew());
 
         ArrayList<int[]> aliencoord=new ArrayList<>();
-        aliencoord.add(new int[]{7,6});
+        aliencoord.add(new int[]{7,6,1});
         spaceShip3.setNumAlien(aliencoord);
         spaceShip3.setNumHuman();
         switch (spaceShip3.getComponents()[7][6]){

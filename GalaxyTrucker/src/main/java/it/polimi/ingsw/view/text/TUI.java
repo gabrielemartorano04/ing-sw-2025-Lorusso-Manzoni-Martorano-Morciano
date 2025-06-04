@@ -157,12 +157,18 @@ public class TUI implements UI {
             this.showMessage("you can't place any alien. Please type 'coord' to go on\n");
         }
         else {
-            String message="";
+            StringBuilder message= new StringBuilder();
             for(int[] c:coord){
-                message+="x: "+c[0]+" y: "+c[1]+"\n";
+                message.append("in ( ").append(c[0]).append(" , ").append(c[1]).append(" ): ");
+                if(c[1]==0){
+                    message.append(" purple alien\n");
+                }
+                else{
+                    message.append(" brown alien\n");
+                }
             }
             this.showMessage("\nList of cabin available for aliens:\n" + message);
-            this.showMessage("Insert coordinates (coord <x1> <y1> <x2> <y2>...):\n");
+            this.showMessage("Insert coordinates (coord <x1> <y1> <color> <x2> <y2> <color>...):\n");
         }
         System.out.print("> ");
     }
@@ -521,6 +527,10 @@ public class TUI implements UI {
 
     @Override
     public void showScores(Map<String, Integer> finalScores) {
+        if(finalScores.isEmpty()){
+            System.out.println("No scores. The game isn't started");
+            return;
+        }
         System.out.println("Final scores:");
         finalScores.forEach((name, score) -> System.out.println("- " + name + ": " + score));
         System.out.println("Winner: " + finalScores.keySet().iterator().next() + "!");
