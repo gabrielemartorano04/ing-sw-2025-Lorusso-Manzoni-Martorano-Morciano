@@ -8,7 +8,8 @@ import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
-import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.events.serverevents.cardevents.*;
+import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
@@ -23,6 +24,8 @@ public interface UI {
 
     // omologazione GUI TUI
 
+    // WELCOME + CREATION
+
     void showInsertNumPlayers();
 
     void welcomeScene(AvailableColorsEvent event);
@@ -30,6 +33,8 @@ public interface UI {
     void nickNameAlreadyTaken(NicknameAlreadyInError event);
 
     void colorAlreadyTaken(ColorAlreadyInError event);
+
+    // BUILDING
 
     void startBuildingScene(StartBuildingEvent event);
 
@@ -60,6 +65,26 @@ public interface UI {
     void showStack(Stack stack);
 
     void dropStack(StackDropOk event);
+
+    // FLIGHT
+
+    // void flightScene(FlightStartEvent event);
+
+    // void showCondition(CurrentCondition event);
+
+    // void takeDecision(BooleanDecision event);
+
+    // void cardFinished(CardFinished event);
+
+    // void epidemic(EpidemicEvent event);
+
+    // void insertHumanCoordinates(HumanCoordinates event);
+
+    void showInputFormat(ParserState parserState);
+
+    // void starduts(StarDustEvent event);
+
+
 
 
     // fine omologazione GUI TUI
@@ -149,7 +174,5 @@ public interface UI {
     void showComponentSelected(Component component);
 
     void showCurrCondition(Condition cond);
-
-    void showInputFormat(ParserState parserState);
 
 }

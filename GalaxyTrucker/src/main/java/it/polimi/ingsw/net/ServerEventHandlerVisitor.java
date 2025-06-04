@@ -194,7 +194,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setEnginePower(event.getEnginePower());
         ui.showShipLayout(viewFlow.getNickname(), event.getSpaceShip());
         viewFlow.setShip(event.getSpaceShip());
-        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         viewFlow.setStartFlightForAll();
         ui.showFlightPhaseStart();
@@ -353,16 +352,16 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             switch (event.getHitType()) {
                 case "bigmeteor" -> {
-                    ui.showMessage("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
                     viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
+                    ui.showMessage("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
                 }
                 case "smallmeteor" -> {
-                    ui.showMessage("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
                     viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
+                    ui.showMessage("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
                 }
                 case "smallshot"-> {
-                    ui.showMessage("The dices result for the shot # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
                     viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
+                    ui.showMessage("The dices result for the shot # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
                 }
             }
             System.out.print("> ");
