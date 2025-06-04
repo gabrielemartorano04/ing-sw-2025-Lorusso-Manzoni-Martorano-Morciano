@@ -45,13 +45,13 @@ public class LoginScene {
     }
 
     public Scene createScene() {
-        double width = 850;
-        double height = 550;
+        double width = 1600;
+        double height = 900;
 
         ImageView backgroundView = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm()));
         backgroundView.setFitWidth(width);
         backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
+        backgroundView.setPreserveRatio(true);
         backgroundView.setMouseTransparent(true);
 
         Label nicknameLabel = new Label("Insert your nickname and choose a color");
