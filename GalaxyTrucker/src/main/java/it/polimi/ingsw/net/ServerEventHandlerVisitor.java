@@ -8,8 +8,6 @@ import it.polimi.ingsw.net.events.serverevents.flightevents.*;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
 
-import java.util.ArrayList;
-
 
 public class ServerEventHandlerVisitor implements VirtualView {
     private final UI ui;
@@ -169,20 +167,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(AlienCabinCoord event) {
-        ArrayList<int[]> coord=event.getAlienCabinCoord();
-
-        if(event.getAlienCabinCoord().isEmpty()){
-            ui.showMessage("you can't place any alien. Please type 'coord' to go on\n");
-        }
-        else {
-            String message="";
-            for(int[] c:coord){
-                message+="x: "+c[0]+" y: "+c[1]+"\n";
-            }
-            ui.showMessage("\nList of cabin available for aliens:\n" + message);
-            ui.showMessage("Insert coordinates (coord <x1> <y1> <x2> <y2>...):\n");
-        }
-        System.out.print("> ");
+        ui.askAlienCabin(event);
     }
 
     @Override

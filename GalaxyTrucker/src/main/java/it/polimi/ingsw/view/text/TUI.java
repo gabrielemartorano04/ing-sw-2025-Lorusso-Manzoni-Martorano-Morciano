@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
@@ -145,6 +146,24 @@ public class TUI implements UI {
     @Override
     public void keptSelected(SuccessSelectKept event){
         this.showComponentSelected(viewFlow.getSelectedComponent());
+        System.out.print("> ");
+    }
+
+    @Override
+    public void askAlienCabin(AlienCabinCoord event){
+        ArrayList<int[]> coord=event.getAlienCabinCoord();
+
+        if(event.getAlienCabinCoord().isEmpty()){
+            this.showMessage("you can't place any alien. Please type 'coord' to go on\n");
+        }
+        else {
+            String message="";
+            for(int[] c:coord){
+                message+="x: "+c[0]+" y: "+c[1]+"\n";
+            }
+            this.showMessage("\nList of cabin available for aliens:\n" + message);
+            this.showMessage("Insert coordinates (coord <x1> <y1> <x2> <y2>...):\n");
+        }
         System.out.print("> ");
     }
 
