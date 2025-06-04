@@ -191,22 +191,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(BuildCompleteEvent event){
         viewFlow.getTimerDisplay().stop();
-
-        ui.showMessage("Your updated ship\n");
-        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
-        ui.showBuildComplete();
-
-        if(viewFlow.getLevel()==2){
-            ui.showMessage("Type 'alien' to see where you can place aliens\n" +
-                    "> ");
-
-        }
-        else{
-            ui.showMessage("Type 'continue' to start flight phase\n" +
-                    "> ");
-        }
         viewFlow.setViewState(ViewFlow.ViewState.FILL);
-        System.out.print("> ");
+
+        ui.buildingComplete(event);
     }
 
 

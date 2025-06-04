@@ -290,6 +290,11 @@ public class GUI implements UI {
         //TODO:
     }
 
+    @Override
+    public void  buildingComplete(BuildCompleteEvent event){
+        //TODO:
+    }
+
 
         // fine building scene
 
