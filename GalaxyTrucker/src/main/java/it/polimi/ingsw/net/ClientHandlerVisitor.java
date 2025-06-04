@@ -367,8 +367,11 @@ public class ClientHandlerVisitor implements VirtualServer {
             int[] scores;
             Map<String, Integer> playersScores = new HashMap<>();
             scores = gameController.getGame().computeScores();
-            for(int i=0; i<numOfPlayers; i++){
+            for(int i=0; i<gameController.getGame().getTruckerList().size()-1; i++){
                 playersScores.put(gameController.getGame().getTrucker(i).getNickname(), scores[i]);
+            }
+            for(int i=0; i<gameController.getGame().getTruckerOut().size()-1; i++){
+                playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
             }
             serverEvent= new EndGameEvent(playersScores);
         }

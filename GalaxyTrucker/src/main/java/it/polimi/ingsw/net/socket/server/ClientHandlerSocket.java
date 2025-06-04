@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.EndGameEvent;
@@ -40,14 +41,21 @@ public class ClientHandlerSocket implements ClientHandler {
             } finally {
                 System.out.println("Client disconnected.");
                 controller.removeClient(this);
-                Game.getIstance().setNumPlayers(Game.getIstance().getNumPlayers()-1);
                 int[] scores;
                 Map<String, Integer> playersScores = new HashMap<>();
                 scores = Game.getIstance().computeScores();
-                for(int i=0; i<Game.getIstance().getNumPlayers(); i++){
+                for(int i=0; i<Game.getIstance().getTruckerList().size()-1; i++){
+                    if (Game.getIstance().getTrucker(i).getNickname()!=null) {
+                        playersScores.put(Game.getIstance().getTrucker(i).getNickname(), scores[i]);
+                    }else {
+                        playersScores.put("giocatore " + i, scores[i]);
+                    }
+                }
+                for(int i=0; i<Game.getIstance().getTruckerOut().size()-1; i++){
                     playersScores.put(Game.getIstance().getTruckerOut().get(i).getNickname(), scores[i]);
                 }
-                sendEvent(new EndGameEvent(playersScores));
+                playersScores.forEach((name, score) -> System.out.println("- " + name + ": " + score));
+                controller.broadcastEventExceptSome(new EndGameEvent(playersScores), this.getId());
                 close();
             }
         });
@@ -70,7 +78,6 @@ public class ClientHandlerSocket implements ClientHandler {
     @Override
     public void sendEvent(ServerEvent event) {
         try {
-
             network.sendMessage(event);
         } catch (IOException e) {
             System.err.println("Error while sending event to the client: " + e.getMessage());
