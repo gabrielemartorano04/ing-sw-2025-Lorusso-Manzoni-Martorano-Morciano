@@ -92,21 +92,21 @@ public class GUIApplication extends Application {
         //gui.colorAlreadyTaken(new ColorAlreadyInError(PlayerColors.RED, EnumSet.of(PlayerColors.GREEN, PlayerColors.BLUE, PlayerColors.YELLOW)));ù
 
 
-        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(),trucker.getSpaceShip().getComponents(), viewFlow); // assicurati che esista questa classe
-        Scene scene = buildingScene.createScene();
-
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(true);
-        primaryStage.setFullScreen(true);
-        primaryStage.setTitle("Test Building Scene");
-        primaryStage.show();
-
-//        LoginScene loginScene = new LoginScene(EnumSet.allOf(PlayerColors.class), viewFlow);
+//        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(),trucker.getSpaceShip().getComponents(), viewFlow); // assicurati che esista questa classe
+//        Scene scene = buildingScene.createScene();
 //
-//        primaryStage.setScene(loginScene.createScene());
-//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-//        primaryStage.setFullScreen(true); // ← facoltativo, se in fullscreen
+//        primaryStage.setScene(scene);
+//        primaryStage.setResizable(true);
+//        primaryStage.setFullScreenExitHint("");
+//        primaryStage.setTitle("Test Building Scene");
 //        primaryStage.show();
+
+        LoginScene loginScene = new LoginScene(EnumSet.allOf(PlayerColors.class), viewFlow);
+
+        primaryStage.setScene(loginScene.createScene());
+        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+        primaryStage.show();
     }
 
     public static void main(String[] args) {

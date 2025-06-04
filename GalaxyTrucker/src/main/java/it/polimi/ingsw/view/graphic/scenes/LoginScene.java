@@ -55,39 +55,37 @@ public class LoginScene {
         backgroundView.setMouseTransparent(true);
 
         Label nicknameLabel = new Label("Insert your nickname and choose a color");
-        nicknameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 24));
+        nicknameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 30));
         nicknameLabel.setTextFill(Color.web("#FFDE69"));
         nicknameLabel.setAlignment(Pos.CENTER);
 
         nicknameField = new TextField();
         nicknameField.setPromptText("Enter your nickname");
-        nicknameField.setMaxWidth(200);
+        nicknameField.setMaxWidth(300);
         nicknameField.setAlignment(Pos.CENTER);
+        nicknameField.setStyle("-fx-padding: 10 16 10 16; -fx-font-size: 16px;");
 
-        Label errorLabel = new Label();
-        errorLabel.setTextFill(Color.RED);
-        errorLabel.setFont(Font.font("Arial", 12));
-
-        TilePane colorPane = new TilePane(15, 15);
+        TilePane colorPane = new TilePane(25, 25);
         colorPane.setAlignment(Pos.CENTER);
 
         doneButton = new Button("DONE");
-        doneButton.setFont(Font.font("Bangers", 16));
+        doneButton.setFont(Font.font("Bangers", 20));
         doneButton.setDisable(true);
         doneButton.setStyle("-fx-background-color: gray; -fx-text-fill: white;");
+        doneButton.setCursor(Cursor.HAND);
 
         for (PlayerColors color : availableColors) {
-            Rectangle rect = new Rectangle(60, 60, getColorForEnum(color));
-            rect.setArcWidth(18);
-            rect.setArcHeight(18);
+            Rectangle rect = new Rectangle(80, 80, getColorForEnum(color));
+            rect.setArcWidth(20);
+            rect.setArcHeight(20);
 
             Label checkmark = new Label("✓");
             checkmark.setTextFill(Color.WHITE);
-            checkmark.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+            checkmark.setFont(Font.font("Arial", FontWeight.BOLD, 40));
             checkmark.setVisible(false);
 
             StackPane stack = new StackPane(rect, checkmark);
-            stack.setPrefSize(60, 60);
+            stack.setPrefSize(80, 80);
             stack.setCursor(Cursor.HAND);
 
             stack.setOnMouseClicked(e -> {
@@ -99,8 +97,11 @@ public class LoginScene {
                 // Deseleziona tutte le checkmark
                 colorBoxes.values().forEach(box -> {
                     for (javafx.scene.Node node : box.getChildren()) {
-                        if (node instanceof Label lbl && "✓".equals(lbl.getText())) {
-                            lbl.setVisible(false);
+                        if (node.getClass() == Label.class) {
+                            Label lbl = (Label) node;
+                            if ("✓".equals(lbl.getText())) {
+                                lbl.setVisible(false);
+                            }
                         }
                     }
                 });
@@ -133,7 +134,7 @@ public class LoginScene {
             viewFlow.handleInput(input);
         });
 
-        VBox content = new VBox(30, nicknameLabel, nicknameField, colorPane, doneButton, errorLabel);
+        VBox content = new VBox(30, nicknameLabel, nicknameField, colorPane, doneButton);
         content.setAlignment(Pos.CENTER);
         content.setPadding(new Insets(40));
 
@@ -156,15 +157,15 @@ public class LoginScene {
 
         StackPane box = colorBoxes.get(color);
         if (box != null && box.getChildren().size() >= 1) {
-            Rectangle grayOverlay = new Rectangle(60, 60);
-            grayOverlay.setArcWidth(18);
-            grayOverlay.setArcHeight(18);
+            Rectangle grayOverlay = new Rectangle(80, 80);
+            grayOverlay.setArcWidth(20);
+            grayOverlay.setArcHeight(20);
             grayOverlay.setFill(Color.rgb(50, 50, 50, 0.5));
             grayOverlay.setMouseTransparent(true);
 
             Label cross = new Label("✖");
             cross.setTextFill(Color.WHITE);
-            cross.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 30));
+            cross.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 35));
             cross.setMouseTransparent(true);
 
             if (box.getChildren().size() == 2) {
@@ -190,7 +191,7 @@ public class LoginScene {
         // Messaggio di errore
         Label errorLabel = new Label("ERROR! Nickname already taken");
         errorLabel.setTextFill(Color.RED);
-        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 28));
+        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
         errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
 
         StackPane popup = new StackPane(overlay, errorLabel);
@@ -219,7 +220,7 @@ public class LoginScene {
         // Messaggio di errore
         Label errorLabel = new Label("ERROR! Color already taken");
         errorLabel.setTextFill(Color.RED);
-        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 28));
+        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
         errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
 
         StackPane popup = new StackPane(overlay, errorLabel);

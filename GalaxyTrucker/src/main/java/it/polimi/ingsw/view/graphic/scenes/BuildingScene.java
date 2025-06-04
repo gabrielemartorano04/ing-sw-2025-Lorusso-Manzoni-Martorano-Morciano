@@ -37,6 +37,7 @@ public class BuildingScene {
     private Scene scene;
     private HBox keptSlots;
     private final ViewFlow viewFlow;
+    private boolean isLinkEnabled;
     private Button finishBtn;
     private Button stackBtn;
     private Button rulesBtn;
@@ -49,6 +50,7 @@ public class BuildingScene {
         this.keptSlotsRef = new ArrayList<>();
         this.keptImages = new ArrayList<>();
         this.viewFlow = viewFlow;
+        this.isLinkEnabled = false;
 
         this.validCells = new boolean[][]{
                 {false, false, false, false, false, false, false, false, false, false, false},
@@ -64,6 +66,7 @@ public class BuildingScene {
         };
     }
 
+    //TODO aggiungere per ogni componente un bottone in modo che premendo parla la link con la posizione x,y
     public Scene createScene() {
         double width = 1600;
         double height = 900;
@@ -157,7 +160,7 @@ public class BuildingScene {
     }
 
     private void attachOptionsBoxToScene(Scene scene) {
-        VBox optionsBox = new VBox(8);
+        VBox optionsBox = new VBox(10);
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
@@ -176,7 +179,7 @@ public class BuildingScene {
     private VBox prepareButtonArea(Scene scene) {
         StackPane root = (StackPane) scene.getRoot();
 
-        VBox optionsBox = new VBox(8);
+        VBox optionsBox = new VBox(10);
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
@@ -187,11 +190,11 @@ public class BuildingScene {
 
     private Consumer<Button> createDefaultButtonStyler() {
         return (btn) -> {
-            btn.setFont(Font.font("Bangers", 12));
+            btn.setFont(Font.font("Bangers", 15));
             btn.setTextFill(Color.BLACK);
             btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
             btn.setCursor(Cursor.HAND);
-            btn.setPrefWidth(120);
+            btn.setPrefWidth(180);
         };
     }
 
@@ -334,9 +337,9 @@ public class BuildingScene {
         if (cell != null) {
             cell.getChildren().clear();
 
-            imageView.setFitWidth(90);
-            imageView.setFitHeight(89);
-            Rectangle clip = new Rectangle(89, 89);
+            imageView.setFitWidth(136);
+            imageView.setFitHeight(136);
+            Rectangle clip = new Rectangle(136, 136);
             clip.setArcWidth(6);
             clip.setArcHeight(6);
             imageView.setClip(clip);
@@ -370,9 +373,9 @@ public class BuildingScene {
         slot.getChildren().removeIf(n -> n instanceof ImageView);  // Rimuove l'immagine esistente
 
         ImageView imageView = new ImageView(component.getFrontImage());
-        imageView.setFitWidth(70);
-        imageView.setFitHeight(70);
-        Rectangle clip = new Rectangle(70, 70);
+        imageView.setFitWidth(110);
+        imageView.setFitHeight(110);
+        Rectangle clip = new Rectangle(110, 110);
         clip.setArcWidth(6);
         clip.setArcHeight(6);
         imageView.setClip(clip);
@@ -380,6 +383,7 @@ public class BuildingScene {
         final int finalIndex = index;
         imageView.setOnMouseClicked(event -> {
             viewFlow.handleInput("selectkept " + finalIndex);
+            isLinkEnabled = true;
             event.consume();
         });
 
@@ -391,7 +395,7 @@ public class BuildingScene {
         if (index < 0 || index >= keptSlotsRef.size()) return;
 
         StackPane slot = keptSlotsRef.get(index);
-        slot.getChildren().removeIf(n -> n instanceof ImageView);
+        slot.getChildren().removeIf(n -> n.getClass() == ImageView.class);
         keptImages.set(index, null);
     }
 
