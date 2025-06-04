@@ -6,7 +6,12 @@ import it.polimi.ingsw.model.components.Cannon;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
+import it.polimi.ingsw.net.socket.client.ClientEventSender;
+import it.polimi.ingsw.net.socket.client.NetworkClient;
+import it.polimi.ingsw.view.ViewFlow;
+import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -27,6 +32,7 @@ public class GUIApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws InvalidCoordinates {
+        ViewFlow viewFlow = new ViewFlow(new ClientEventSender(new NetworkClient("localhost", 12346)));
         availableComponents = new AvailableComponents();
         c = new Cannon(3, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web129.jpg", true);
         Trucker trucker = new Trucker("luca", PlayerColors.BLUE);
@@ -60,7 +66,7 @@ public class GUIApplication extends Application {
         //gui.showShipLayout("Luca", spaceship.getComponents());
         //gui.showChooseColor(EnumSet.allOf(PlayerColors.class));
         //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
-        gui.showInsertNumPlayers();
+        //gui.showInsertNumPlayers();
         //gui.showNicknameTaken();
         //gui.showStartCountdown(3);
         //gui.showBuildPhaseStart(components);
@@ -68,10 +74,10 @@ public class GUIApplication extends Application {
 
         //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
 //        gui.showKeptComponents(kept);
-//        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
-//        gui.showComponentSelected(c);
+        //gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
+        //gui.showComponentSelected(c);
 //        gui.showWaitForOthers();
-//        gui.showBuildComplete();
+        //gui.showBuildComplete();
         //gui.showSelectComponent();
         //gui.showAvailableComponent(availableComponents.getComponents());
         //gui.showStack(stack);
@@ -81,7 +87,15 @@ public class GUIApplication extends Application {
         //gui.showConnectionLost();
         //gui.showMessage("luca ha perso tutte le merci");
         //gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
-        //gui.colorAlreadyTaken(new ColorAlreadyInError(PlayerColors.RED, EnumSet.of(PlayerColors.GREEN, PlayerColors.BLUE, PlayerColors.YELLOW)));
+        //gui.colorAlreadyTaken(new ColorAlreadyInError(PlayerColors.RED, EnumSet.of(PlayerColors.GREEN, PlayerColors.BLUE, PlayerColors.YELLOW)));ù
+
+
+        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(),trucker.getSpaceShip().getComponents(), viewFlow); // assicurati che esista questa classe
+        Scene scene = buildingScene.createScene();
+
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Test Building Scene");
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
