@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
+import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
@@ -48,7 +49,17 @@ public interface UI {
 
     void buildingComplete(BuildCompleteEvent event);
 
+    void keptComponent(KeptComponentEvent event);
 
+    void componentTurned(TurnedComponentSuccessEvent event);
+
+    void keptSelected(SuccessSelectKept event);
+
+    void askAlienCabin(AlienCabinCoord event);
+
+    void showStack(Stack stack);
+
+    void dropStack(StackDropOk event);
 
 
     // fine omologazione GUI TUI
@@ -134,8 +145,6 @@ public interface UI {
     void showBooleanOption(String message);
 
     void updateHourglass(int secondsLeft);
-
-    void showStack(Stack stack);
 
     void showComponentSelected(Component component);
 

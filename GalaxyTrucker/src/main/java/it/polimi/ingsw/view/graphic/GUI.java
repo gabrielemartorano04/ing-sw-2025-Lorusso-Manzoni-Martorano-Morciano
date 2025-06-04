@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
@@ -295,8 +296,34 @@ public class GUI implements UI {
         //TODO:
     }
 
+    @Override
+    public void keptComponent(KeptComponentEvent event){
+        //TODO:
+    }
 
-        // fine building scene
+    @Override
+    public void componentTurned(TurnedComponentSuccessEvent event){
+        //TODO:
+    }
+
+    @Override
+    public void keptSelected(SuccessSelectKept event){
+        //TODO:
+    }
+
+    @Override
+    public void askAlienCabin(AlienCabinCoord event){
+        //TODO:
+    }
+
+    @Override
+    public void dropStack(StackDropOk event){
+        //TODO:
+    }
+
+
+
+    // fine building scene
 
 
     // flight scene

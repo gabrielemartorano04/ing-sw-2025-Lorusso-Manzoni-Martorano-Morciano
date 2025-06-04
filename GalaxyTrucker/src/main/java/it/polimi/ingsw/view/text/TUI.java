@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
@@ -129,6 +130,54 @@ public class TUI implements UI {
         System.out.print("> ");
     }
 
+    @Override
+    public void keptComponent(KeptComponentEvent event){
+        this.showAvailableComponent(event.getAvComponents());
+        System.out.print("> ");
+    }
+
+    @Override
+    public void componentTurned(TurnedComponentSuccessEvent event){
+        this.showComponentSelected(event.getComponent());
+        System.out.print("> ");
+    }
+
+
+    @Override
+    public void keptSelected(SuccessSelectKept event){
+        this.showComponentSelected(viewFlow.getSelectedComponent());
+        System.out.print("> ");
+    }
+
+    @Override
+    public void askAlienCabin(AlienCabinCoord event){
+        ArrayList<int[]> coord=event.getAlienCabinCoord();
+
+        if(event.getAlienCabinCoord().isEmpty()){
+            this.showMessage("you can't place any alien. Please type 'coord' to go on\n");
+        }
+        else {
+            StringBuilder message= new StringBuilder();
+            for(int[] c:coord){
+                message.append("in ( ").append(c[0]).append(" , ").append(c[1]).append(" ): ");
+                if(c[1]==0){
+                    message.append(" purple alien\n");
+                }
+                else{
+                    message.append(" brown alien\n");
+                }
+            }
+            this.showMessage("\nList of cabin available for aliens:\n" + message);
+            this.showMessage("Insert coordinates (coord <x1> <y1> <color> <x2> <y2> <color>...):\n");
+        }
+        System.out.print("> ");
+    }
+
+    @Override
+    public void dropStack(StackDropOk event){
+        this.showMessage(event.getMessage());
+        System.out.print("> ");
+    }
 
 
 
@@ -478,6 +527,10 @@ public class TUI implements UI {
 
     @Override
     public void showScores(Map<String, Integer> finalScores) {
+        if(finalScores.isEmpty()){
+            System.out.println("No scores. The game isn't started");
+            return;
+        }
         System.out.println("Final scores:");
         finalScores.forEach((name, score) -> System.out.println("- " + name + ": " + score));
         System.out.println("Winner: " + finalScores.keySet().iterator().next() + "!");
@@ -830,6 +883,7 @@ public class TUI implements UI {
             System.out.printf(" [%02d] %-15s (Level %d)%n",
                     i, card.getName(), card.getLevel());
         }
+        System.out.print("> ");
     }
 
     @Override

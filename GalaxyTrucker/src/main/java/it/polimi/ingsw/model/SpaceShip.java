@@ -1899,43 +1899,76 @@ public class SpaceShip implements Serializable {
         }
     }
 
+    /**
+     * This method checks every cabin in the spaceship. If it's next to a life support the method adds its coordinate
+     * and the color in the list. (0: purple, 1:brown)
+     * @return list of coordinates of cabin where the player cn place aliens and color of the alien
+     */
     public ArrayList<int[]> getAlienCabin() {
         ArrayList<int[]> alienCabin = new ArrayList<>();
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++){
                 if(components[i][j]!=null){
-                    if (components[i][j].getType().equalsIgnoreCase("Cabin")) {
-                        if (!(i==7 && j==7)) {
-                            if (components[i + 1][j] != null) {
-                                if (components[i + 1][j].getType().equalsIgnoreCase("Life Support")) {
-                                    int link1 = components[i][j].getLink()[2];
-                                    int link2 = components[i + 1][j].getLink()[0];
-                                    if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
+                    switch(components[i][j]){
+                        case Cabin cabin->{
+                                if (!(i==7 && j==7)) {
+                                    if (components[i + 1][j] != null) {
+                                        switch(components[i+1][j]){
+                                            case LifeSupport lifeSupport->{
+                                                if (components[i + 1][j].getType().equalsIgnoreCase("Life Support")) {
+                                                    int link1 = components[i][j].getLink()[2];
+                                                    int link2 = components[i + 1][j].getLink()[0];
+                                                    if (compatibleLinks(link1, link2)) {
+                                                        if(lifeSupport.getColor()==AlienColor.PURPLE) alienCabin.add(new int[]{i,j,0});
+                                                        else alienCabin.add(new int[]{i,j,1});
+                                                    }
+                                                }
+                                            }
+                                            default -> {}
+                                        }
+                                    }
+                                    if (components[i - 1][j] != null) {
+                                        switch(components[i-1][j]){
+                                            case LifeSupport lifeSupport->{
+                                                int link1 = components[i][j].getLink()[0];
+                                                int link2 = components[i - 1][j].getLink()[2];
+                                                if (compatibleLinks(link1, link2)) {
+                                                    if(lifeSupport.getColor()==AlienColor.PURPLE) alienCabin.add(new int[]{i,j,0});
+                                                    else alienCabin.add(new int[]{i,j,1});
+                                                }                                            }
+                                            default -> {}
+                                        }
+                                    }
+                                    if (components[i][j + 1] != null) {
+                                        switch (components[i][j + 1]) {
+                                            case LifeSupport lifeSupport->{
+                                                int link1 = components[i][j].getLink()[1];
+                                                int link2 = components[i][j + 1].getLink()[3];
+                                                if (compatibleLinks(link1, link2)) {
+                                                    if(lifeSupport.getColor()==AlienColor.PURPLE) alienCabin.add(new int[]{i,j,0});
+                                                    else alienCabin.add(new int[]{i,j,1});
+                                                }
+                                            }
+                                            default -> {}
+                                        }
+                                    }
+                                    if (components[i][j - 1] != null) {
+                                        switch(components[i][j-1]){
+                                            case LifeSupport lifeSupport->{
+                                                int link1 = components[i][j].getLink()[3];
+                                                int link2 = components[i][j - 1].getLink()[1];
+                                                if (compatibleLinks(link1, link2)) {
+                                                    if(lifeSupport.getColor()==AlienColor.PURPLE) alienCabin.add(new int[]{i,j,0});
+                                                    else alienCabin.add(new int[]{i,j,1});
+                                                }
+                                            }
+                                            default -> {}
+                                        }
+                                    }
                                 }
-                            }
-                            if (components[i - 1][j] != null) {
-                                if (components[i - 1][j].getType().equalsIgnoreCase("Life Support")) {
-                                    int link1 = components[i][j].getLink()[0];
-                                    int link2 = components[i - 1][j].getLink()[2];
-                                    if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
-                                }
-                            }
-                            if (components[i][j + 1] != null) {
-                                if (components[i][j + 1].getType().equalsIgnoreCase("Life Support")) {
-                                    int link1 = components[i][j].getLink()[1];
-                                    int link2 = components[i][j + 1].getLink()[3];
-                                    if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
-                                }
-                            }
-                            if (components[i][j - 1] != null) {
-                                if (components[i][j - 1].getType().equalsIgnoreCase("Life Support")) {
-                                    int link1 = components[i][j].getLink()[3];
-                                    int link2 = components[i][j - 1].getLink()[1];
-                                    if (compatibleLinks(link1, link2)) alienCabin.add(new int[]{i, j});
-                                }
-                            }
+
                         }
-                    } else {
+                        default -> {}
                     }
                 }
             }
