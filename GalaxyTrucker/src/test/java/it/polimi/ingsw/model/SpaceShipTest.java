@@ -721,6 +721,12 @@ class SpaceShipTest {
     @Test
     void getAlienCabin() {
         assertEquals(0,spaceShip2.getAlienCabin().size());
+
+        ArrayList<int[]> coord=spaceShip3.getAlienCabin();
+        assertEquals(1,coord.size());
+        assertEquals(7, coord.get(0)[0]);
+        assertEquals(6, coord.get(0)[1]);
+        assertEquals(1, coord.get(0)[2]);
     }
 
     @Test
