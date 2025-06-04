@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
@@ -179,7 +180,13 @@ public class TUI implements UI {
         System.out.print("> ");
     }
 
-
+    @Override
+    public void flightScene(FlightStartEvent event){
+        this.showShipLayout(viewFlow.getNickname(), event.getSpaceShip());
+        this.showFlightPhaseStart();
+        this.showMessage("Please type 'state' to see your spaceship state\n");
+        System.out.print("> ");
+    }
 
 
 
