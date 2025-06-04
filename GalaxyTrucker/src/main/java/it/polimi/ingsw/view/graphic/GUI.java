@@ -815,39 +815,6 @@ public class GUI implements UI {
         AvailableComponents availableComponents = new AvailableComponents();
         selectComponentBtn.setOnAction(e -> showAvailableComponent(availableComponents.getComponents()));
 
-
-        // Pulsante Show Stack
-        Button stackBtn = new Button("Show stack");
-        styleButton.accept(stackBtn);
-        stackBtn.setOnAction(e -> {
-            StackPane root = (StackPane) stage.getScene().getRoot();
-
-            Rectangle bg = new Rectangle();
-            bg.widthProperty().bind(stage.getScene().widthProperty());
-            bg.heightProperty().bind(stage.getScene().heightProperty());
-            bg.setFill(Color.rgb(0, 0, 0, 0.4));
-
-            VBox stackChoices = new VBox(15);
-            stackChoices.setAlignment(Pos.CENTER);
-
-            for (int i = 0; i < 3; i++) {
-                Button pile = new Button("Stack " + (i + 1));
-                styleButton.accept(pile);
-                pile.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
-                int index = i;
-                pile.setOnAction(ev -> {
-                    viewFlow.handleInput("stack " + index);
-                    root.getChildren().remove(pile.getScene().getRoot().lookup("#popupOverlay"));
-                });
-                stackChoices.getChildren().add(pile);
-            }
-
-            StackPane popup = new StackPane(bg, stackChoices);
-            popup.setId("popupOverlay");
-            popup.setOnMouseClicked(ev -> root.getChildren().remove(popup));
-            root.getChildren().add(popup);
-        });
-
         // Pulsante Hourglass (solo timer, no overlay)
         Button hourglassBtn = new Button("⏳");
         hourglassBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
@@ -947,7 +914,7 @@ public class GUI implements UI {
             ((StackPane) stage.getScene().getRoot()).getChildren().add(popup);
         });
 
-        optionsBox.getChildren().addAll(selectComponentBtn, stackBtn, otherBtn, rulesBtn, hourglassBtn);
+        optionsBox.getChildren().addAll(selectComponentBtn, otherBtn, rulesBtn, hourglassBtn);
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) stage.getScene().getRoot();

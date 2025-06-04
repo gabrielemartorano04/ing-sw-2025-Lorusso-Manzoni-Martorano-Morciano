@@ -17,6 +17,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
@@ -34,6 +39,7 @@ public class BuildingScene {
     private final ViewFlow viewFlow;
     private Button finishBtn;
     private Button stackBtn;
+    private Button rulesBtn;
 
 
     public BuildingScene(String nickname, Component[][] layout, ViewFlow viewFlow) {
@@ -139,8 +145,13 @@ public class BuildingScene {
 
         StackPane root = new StackPane(backgroundView, grid, keptSlots);
         scene = new Scene(root, width, height);
-        addFinishButtonToScene(scene, viewFlow);
-        addStackButtonToScene(scene, viewFlow);
+        VBox optionsBox = prepareButtonArea(scene);
+        Consumer<Button> styleButton = createDefaultButtonStyler();
+
+
+        addFinishButtonToScene(optionsBox, viewFlow, styleButton);
+        addStackButtonToScene(optionsBox, viewFlow, styleButton);
+        addRulesButtonToScene(optionsBox, styleButton);
         attachOptionsBoxToScene(scene);
         return scene;
     }
@@ -150,7 +161,7 @@ public class BuildingScene {
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
-        optionsBox.getChildren().addAll(stackBtn, finishBtn);  // Aggiungi qui altri bottoni se ne hai
+        optionsBox.getChildren().addAll(stackBtn, finishBtn, rulesBtn);
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) scene.getRoot();
@@ -162,28 +173,35 @@ public class BuildingScene {
         });
     }
 
-    private Scene addFinishButtonToScene(Scene scene, ViewFlow viewFlow) {
-        StackPane root = (StackPane) scene.getRoot(); // Assumiamo che root sia StackPane
+    private VBox prepareButtonArea(Scene scene) {
+        StackPane root = (StackPane) scene.getRoot();
 
-        // VBox contenitore dei bottoni
         VBox optionsBox = new VBox(8);
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
-        // Stile comune
-        Consumer<Button> styleButton = (btn) -> {
+        root.getChildren().add(optionsBox);
+
+        return optionsBox;
+    }
+
+    private Consumer<Button> createDefaultButtonStyler() {
+        return (btn) -> {
             btn.setFont(Font.font("Bangers", 12));
             btn.setTextFill(Color.BLACK);
             btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
             btn.setCursor(Cursor.HAND);
             btn.setPrefWidth(120);
         };
+    }
 
-        // === Bottone Finish ===
+    private void addFinishButtonToScene(VBox optionsBox, ViewFlow viewFlow, Consumer<Button> styleButton) {
         Button finishBtn = new Button("Finish spaceship");
         styleButton.accept(finishBtn);
 
         finishBtn.setOnAction(e -> {
+            StackPane root = (StackPane) scene.getRoot();
+
             Rectangle bg = new Rectangle();
             bg.widthProperty().bind(scene.widthProperty());
             bg.heightProperty().bind(scene.heightProperty());
@@ -227,38 +245,17 @@ public class BuildingScene {
             root.getChildren().add(confirmation);
         });
 
-        optionsBox.getChildren().add(finishBtn);
-
-        // Posiziona in alto a sinistra nella scena
-        StackPane.setAlignment(optionsBox, Pos.TOP_LEFT);
-        StackPane.setMargin(optionsBox, new Insets(20, 0, 0, 5));
-
-        root.getChildren().add(optionsBox);
         this.finishBtn = finishBtn;
-        return scene;
+        optionsBox.getChildren().add(finishBtn);
     }
 
-    private Scene addStackButtonToScene(Scene scene, ViewFlow viewFlow) {
-        StackPane root = (StackPane) scene.getRoot(); // Assumiamo che sia uno StackPane
-
-        VBox container = new VBox(8);
-        container.setAlignment(Pos.TOP_LEFT);
-        container.setPadding(new Insets(10));
-
-        // Stile comune ai bottoni
-        Consumer<Button> styleButton = (btn) -> {
-            btn.setFont(Font.font("Bangers", 12));
-            btn.setTextFill(Color.BLACK);
-            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-            btn.setCursor(Cursor.HAND);
-            btn.setPrefWidth(120);
-        };
-
-        // === Bottone "Show stack"
+    private void addStackButtonToScene(VBox optionsBox, ViewFlow viewFlow, Consumer<Button> styleButton) {
         Button stackBtn = new Button("Show stack");
         styleButton.accept(stackBtn);
 
         stackBtn.setOnAction(e -> {
+            StackPane root = (StackPane) scene.getRoot();
+
             Rectangle bg = new Rectangle();
             bg.widthProperty().bind(scene.widthProperty());
             bg.heightProperty().bind(scene.heightProperty());
@@ -286,18 +283,42 @@ public class BuildingScene {
             root.getChildren().add(popup);
         });
 
-        container.getChildren().add(stackBtn);
-
-        StackPane.setAlignment(container, Pos.TOP_LEFT);
-        StackPane.setMargin(container, new Insets(20, 0, 0, 140)); // leggermente spostato
-
-        root.getChildren().add(container);
         this.stackBtn = stackBtn;
-        return scene;
+        optionsBox.getChildren().add(stackBtn);
     }
 
+    private void addRulesButtonToScene(VBox optionsBox, Consumer<Button> styleButton) {
+        Button rulesBtn = new Button("Rules");
+        styleButton.accept(rulesBtn);
 
+        rulesBtn.setOnAction(e -> {
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
+                if (is == null) {
+                    System.out.println("File not found");
+                    return;
+                }
 
+                File tempPdf = File.createTempFile("galaxy-trucker-rules", ".pdf");
+                tempPdf.deleteOnExit();
+
+                try (FileOutputStream os = new FileOutputStream(tempPdf)) {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = is.read(buffer)) != -1) {
+                        os.write(buffer, 0, bytesRead);
+                    }
+                }
+
+                Desktop.getDesktop().open(tempPdf);
+
+            } catch (IOException e1) {
+                System.out.println("Error in file opening");
+            }
+        });
+
+        this.rulesBtn = rulesBtn;
+        optionsBox.getChildren().add(rulesBtn);
+    }
 
 
     public Scene getScene() {
