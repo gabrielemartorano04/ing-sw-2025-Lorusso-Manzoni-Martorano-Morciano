@@ -111,6 +111,27 @@ public class TUI implements UI {
         System.out.print("> ");
     }
 
+    @Override
+    public void buildingComplete(BuildCompleteEvent event){
+        this.showMessage("Your updated ship\n");
+        this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+        this.showBuildComplete();
+
+        if(viewFlow.getLevel()==2){
+            this.showMessage("Type 'alien' to see where you can place aliens\n" +
+                    "> ");
+
+        }
+        else{
+            this.showMessage("Type 'continue' to start flight phase\n" +
+                    "> ");
+        }
+        System.out.print("> ");
+    }
+
+
+
+
 
 
     // fine metodi omologati tra GUI e TUI

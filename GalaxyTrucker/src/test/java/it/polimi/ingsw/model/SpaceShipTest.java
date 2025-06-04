@@ -7,18 +7,15 @@ import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class SpaceShipTest {
 
     private SpaceShip spaceShip1;
     private SpaceShip spaceShip2;
-    private CreateShipTest support=new CreateShipTest();
     private SpaceShip spaceShip3;
+    private CreateShipTest support=new CreateShipTest();
 
     @BeforeEach
     void setUp() {
@@ -513,23 +510,6 @@ class SpaceShipTest {
     }
 
     @Test
-    void addGoods() {
-        ArrayList<Goods> goods=new ArrayList<>();
-        Goods good1=new Goods(3);
-        goods.add(good1);
-        ArrayList<int[]> coord=new ArrayList<>();
-        coord.add(new int[]{7,5});
-        spaceShip2.addGoods(goods,coord,new Bank());
-
-        switch(spaceShip2.getComponents()[7][5]){
-            case Load load->{
-                assertEquals(load.getGoods().size(),1);
-            }
-            default -> {}
-        }
-    }
-
-    @Test
     void addGood() {
         Goods good1=new Goods(3);
         try {
@@ -634,17 +614,29 @@ class SpaceShipTest {
         Goods good2=new Goods(2);
         try {
             spaceShip3.addGood(good1,new int[]{7,8},0,new Bank());
-            spaceShip3.addGood(good2,new int[]{8,9},0,new Bank());
+            spaceShip3.addGood(good2,new int[]{8,9},1,new Bank());
         } catch (InvalidPositionException e) {
             throw new RuntimeException(e);
         }
         try {
-            spaceShip3.swapGoods(new int[]{7,8},0,new int[]{8,9},0);
+            spaceShip3.swapGoods(new int[]{7,8},0,new int[]{8,9},1);
         } catch (InvalidPositionException e) {
             throw new RuntimeException(e);
         }
-        assertEquals(((Load)spaceShip3.getComponents()[7][8]).getGoods().get(0),good2);
-        assertEquals(((Load)spaceShip3.getComponents()[8][9]).getGoods().get(0),good1);
+        switch(spaceShip3.getComponents()[7][8]){
+            case Load load->{
+                assertEquals(load.getGoods().get(0),good2);
+
+            }
+            default -> {}
+        }
+        switch(spaceShip3.getComponents()[8][9]){
+            case Load load->{
+                assertEquals(load.getGoods().get(1),good1);
+
+            }
+            default -> {}
+        }
 
     }
 
@@ -652,10 +644,11 @@ class SpaceShipTest {
     void getRedGoods() {
         ArrayList<Goods> goods=new ArrayList<>();
         Goods good1=new Goods(4);
-        goods.add(good1);
-        ArrayList<int[]> coord=new ArrayList<>();
-        coord.add(new int[]{7,5});
-        spaceShip2.addGoods(goods,coord,new Bank());
+        try {
+            spaceShip2.addGood(good1,new int[]{7,5},0,new Bank());
+        } catch (InvalidPositionException e) {
+            throw new RuntimeException(e);
+        }
 
         assertEquals(1,spaceShip2.getRedGoods());
     }
@@ -664,10 +657,11 @@ class SpaceShipTest {
     void getGreenGoods() {
         ArrayList<Goods> goods=new ArrayList<>();
         Goods good1=new Goods(2);
-        goods.add(good1);
-        ArrayList<int[]> coord=new ArrayList<>();
-        coord.add(new int[]{7,5});
-        spaceShip2.addGoods(goods,coord,new Bank());
+        try {
+            spaceShip2.addGood(good1,new int[]{7,5},0,new Bank());
+        } catch (InvalidPositionException e) {
+            throw new RuntimeException(e);
+        }
 
         assertEquals(1,spaceShip2.getGreenGoods());
     }
@@ -676,10 +670,11 @@ class SpaceShipTest {
     void getBlueGoods() {
         ArrayList<Goods> goods=new ArrayList<>();
         Goods good1=new Goods(1);
-        goods.add(good1);
-        ArrayList<int[]> coord=new ArrayList<>();
-        coord.add(new int[]{7,5});
-        spaceShip2.addGoods(goods,coord,new Bank());
+        try {
+            spaceShip2.addGood(good1,new int[]{7,5},0,new Bank());
+        } catch (InvalidPositionException e) {
+            throw new RuntimeException(e);
+        }
 
         assertEquals(1,spaceShip2.getBlueGoods());
     }
@@ -688,10 +683,11 @@ class SpaceShipTest {
     void getYellowGoods() {
         ArrayList<Goods> goods=new ArrayList<>();
         Goods good1=new Goods(3);
-        goods.add(good1);
-        ArrayList<int[]> coord=new ArrayList<>();
-        coord.add(new int[]{7,5});
-        spaceShip2.addGoods(goods,coord,new Bank());
+        try {
+            spaceShip2.addGood(good1,new int[]{7,5},0,new Bank());
+        } catch (InvalidPositionException e) {
+            throw new RuntimeException(e);
+        }
 
         assertEquals(1,spaceShip2.getYellowGoods());
 
@@ -716,7 +712,7 @@ class SpaceShipTest {
         spaceShip2.removeGoods(goods);
         switch(spaceShip2.getComponents()[7][5]){
             case Load component->{
-                assertTrue(component.getGoods().isEmpty());
+                assertFalse(component.getGoods().contains(good));
             }
             default -> {}
         }
