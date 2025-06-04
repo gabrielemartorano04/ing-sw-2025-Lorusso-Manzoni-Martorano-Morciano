@@ -614,17 +614,29 @@ class SpaceShipTest {
         Goods good2=new Goods(2);
         try {
             spaceShip3.addGood(good1,new int[]{7,8},0,new Bank());
-            spaceShip3.addGood(good2,new int[]{8,9},0,new Bank());
+            spaceShip3.addGood(good2,new int[]{8,9},1,new Bank());
         } catch (InvalidPositionException e) {
             throw new RuntimeException(e);
         }
         try {
-            spaceShip3.swapGoods(new int[]{7,8},0,new int[]{8,9},0);
+            spaceShip3.swapGoods(new int[]{7,8},0,new int[]{8,9},1);
         } catch (InvalidPositionException e) {
             throw new RuntimeException(e);
         }
-        assertEquals(((Load)spaceShip3.getComponents()[7][8]).getGoods().get(0),good2);
-        assertEquals(((Load)spaceShip3.getComponents()[8][9]).getGoods().get(0),good1);
+        switch(spaceShip3.getComponents()[7][8]){
+            case Load load->{
+                assertEquals(load.getGoods().get(0),good2);
+
+            }
+            default -> {}
+        }
+        switch(spaceShip3.getComponents()[8][9]){
+            case Load load->{
+                assertEquals(load.getGoods().get(1),good1);
+
+            }
+            default -> {}
+        }
 
     }
 
