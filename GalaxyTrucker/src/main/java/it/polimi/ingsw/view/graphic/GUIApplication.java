@@ -10,8 +10,10 @@ import it.polimi.ingsw.net.socket.client.ClientEventSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.view.ViewFlow;
 import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
+import it.polimi.ingsw.view.graphic.scenes.LoginScene;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -90,11 +92,20 @@ public class GUIApplication extends Application {
         //gui.colorAlreadyTaken(new ColorAlreadyInError(PlayerColors.RED, EnumSet.of(PlayerColors.GREEN, PlayerColors.BLUE, PlayerColors.YELLOW)));ù
 
 
-        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(),trucker.getSpaceShip().getComponents(), viewFlow); // assicurati che esista questa classe
-        Scene scene = buildingScene.createScene();
+//        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(),trucker.getSpaceShip().getComponents(), viewFlow); // assicurati che esista questa classe
+//        Scene scene = buildingScene.createScene();
+//
+//        primaryStage.setScene(scene);
+//        primaryStage.setResizable(true);
+//        primaryStage.setFullScreen(true);
+//        primaryStage.setTitle("Test Building Scene");
+//        primaryStage.show();
 
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Test Building Scene");
+        LoginScene loginScene = new LoginScene(EnumSet.allOf(PlayerColors.class), viewFlow);
+
+        primaryStage.setScene(loginScene.createScene());
+        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+        primaryStage.setFullScreen(true); // ← facoltativo, se in fullscreen
         primaryStage.show();
     }
 
