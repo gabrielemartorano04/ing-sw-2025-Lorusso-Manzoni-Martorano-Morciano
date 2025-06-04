@@ -56,20 +56,20 @@ public class GUIApplication extends Application {
         // DA SISTEMARE la creazione della gui e il collegamento a viewFlow
         GUI gui = new GUI(primaryStage, null);
 
-        gui.showTrack(mockTrack, 2);
+        //gui.showTrack(mockTrack, 2);
         //gui.showShipLayout("Luca", spaceship.getComponents());
         //gui.showChooseColor(EnumSet.allOf(PlayerColors.class));
         //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
-        //gui.showInsertNumPlayers();
+        gui.showInsertNumPlayers();
         //gui.showNicknameTaken();
         //gui.showStartCountdown(3);
         //gui.showBuildPhaseStart(components);
         //gui.showKeptComponents(kept);
 
         //gui.showWelcome(EnumSet.allOf(PlayerColors.class));
-        //gui.showKeptComponents(kept);
-        //gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
-        //gui.showComponentSelected(c);
+//        gui.showKeptComponents(kept);
+//        gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
+//        gui.showComponentSelected(c);
 //        gui.showWaitForOthers();
 //        gui.showBuildComplete();
         //gui.showSelectComponent();

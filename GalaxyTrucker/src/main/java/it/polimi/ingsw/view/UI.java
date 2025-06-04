@@ -46,6 +46,10 @@ public interface UI {
 
     void turnHourGlass(HourglassTurnEvent event);
 
+    void buildingComplete(BuildCompleteEvent event);
+
+
+
 
     // fine omologazione GUI TUI
     // (penso che tutti gli altri metodi che seguono possonano diventare privati di GUI o TUI
