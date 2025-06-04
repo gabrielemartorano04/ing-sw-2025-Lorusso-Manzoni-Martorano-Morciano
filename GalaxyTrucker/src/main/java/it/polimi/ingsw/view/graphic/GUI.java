@@ -296,7 +296,17 @@ public class GUI implements UI {
     }
 
     @Override
-    public void afterKeptComponent(KeptComponentEvent event){
+    public void keptComponent(KeptComponentEvent event){
+        //TODO:
+    }
+
+    @Override
+    public void componentTurned(TurnedComponentSuccessEvent event){
+        //TODO:
+    }
+
+    @Override
+    public void keptSelected(SuccessSelectKept event){
         //TODO:
     }
 

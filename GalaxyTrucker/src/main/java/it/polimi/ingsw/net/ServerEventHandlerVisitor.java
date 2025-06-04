@@ -7,7 +7,6 @@ import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.flightevents.*;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
-import it.polimi.ingsw.view.text.TUI;
 
 import java.util.ArrayList;
 
@@ -139,22 +138,21 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.addKeptComponent(event.getKept());
         viewFlow.deleteSelectedComponent();
 
-        ui.afterKeptComponent(event);
+        ui.keptComponent(event);
     }
 
     @Override
     public void visit(TurnedComponentSuccessEvent event) {
         viewFlow.setSelectedComponent(event.getComponent());
-        ui.showComponentSelected(event.getComponent());
-        System.out.print("> ");
+
+        ui.componentTurned(event);
     }
 
     @Override
     public void visit(SuccessSelectKept event){
         viewFlow.setSelectedComponent(event.getComponent(), true);
         viewFlow.getSelectedKeptComponent().remove(event.getComponent());
-        ui.showComponentSelected(viewFlow.getSelectedComponent());
-        System.out.print("> ");
+        ui.keptSelected(event);
     }
 
     @Override

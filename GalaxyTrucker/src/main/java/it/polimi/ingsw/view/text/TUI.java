@@ -130,11 +130,23 @@ public class TUI implements UI {
     }
 
     @Override
-    public void afterKeptComponent(KeptComponentEvent event){
+    public void keptComponent(KeptComponentEvent event){
         this.showAvailableComponent(event.getAvComponents());
         System.out.print("> ");
     }
 
+    @Override
+    public void componentTurned(TurnedComponentSuccessEvent event){
+        this.showComponentSelected(event.getComponent());
+        System.out.print("> ");
+    }
+
+
+    @Override
+    public void keptSelected(SuccessSelectKept event){
+        this.showComponentSelected(viewFlow.getSelectedComponent());
+        System.out.print("> ");
+    }
 
 
 

@@ -48,7 +48,11 @@ public interface UI {
 
     void buildingComplete(BuildCompleteEvent event);
 
-    void afterKeptComponent(KeptComponentEvent event);
+    void keptComponent(KeptComponentEvent event);
+
+    void componentTurned(TurnedComponentSuccessEvent event);
+
+    void keptSelected(SuccessSelectKept event);
 
 
     // fine omologazione GUI TUI
