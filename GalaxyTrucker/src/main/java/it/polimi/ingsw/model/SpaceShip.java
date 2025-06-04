@@ -280,8 +280,8 @@ public class SpaceShip implements Serializable {
                                 int[] currentCoord = {i, j};
                                 for (int[] selectedCoord : coord) {
                                     if (selectedCoord[0] == currentCoord[0] && selectedCoord[1] == currentCoord[1]) {
-                                        // è una delle cabine selezionate
-                                        alien = new Alien(l.getColor());
+                                        if(selectedCoord[2]==0) alien = new Alien(AlienColor.PURPLE);
+                                        else alien =new Alien(AlienColor.BROWN);
                                         c.setAlien(alien);
                                         c.setQuantity(1);
                                         numAlien++;
