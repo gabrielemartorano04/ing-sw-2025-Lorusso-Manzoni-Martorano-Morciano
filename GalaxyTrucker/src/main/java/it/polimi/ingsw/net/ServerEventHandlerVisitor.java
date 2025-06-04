@@ -122,6 +122,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(HourglassTurnEvent event) {
         viewFlow.getTimerDisplay().start(event.getSeconds());
+
         ui.turnHourGlass(event);
     }
 
@@ -137,8 +138,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(KeptComponentEvent event){
         viewFlow.addKeptComponent(event.getKept());
         viewFlow.deleteSelectedComponent();
-        ui.showAvailableComponent(event.getAvComponents());
-        System.out.print("> ");
+
+        ui.afterKeptComponent(event);
     }
 
     @Override

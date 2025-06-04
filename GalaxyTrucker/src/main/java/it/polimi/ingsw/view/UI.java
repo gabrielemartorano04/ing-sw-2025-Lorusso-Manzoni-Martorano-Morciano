@@ -48,7 +48,7 @@ public interface UI {
 
     void buildingComplete(BuildCompleteEvent event);
 
-
+    void afterKeptComponent(KeptComponentEvent event);
 
 
     // fine omologazione GUI TUI

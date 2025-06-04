@@ -295,6 +295,11 @@ public class GUI implements UI {
         //TODO:
     }
 
+    @Override
+    public void afterKeptComponent(KeptComponentEvent event){
+        //TODO:
+    }
+
 
         // fine building scene
 

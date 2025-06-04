@@ -129,6 +129,11 @@ public class TUI implements UI {
         System.out.print("> ");
     }
 
+    @Override
+    public void afterKeptComponent(KeptComponentEvent event){
+        this.showAvailableComponent(event.getAvComponents());
+        System.out.print("> ");
+    }
 
 
 
