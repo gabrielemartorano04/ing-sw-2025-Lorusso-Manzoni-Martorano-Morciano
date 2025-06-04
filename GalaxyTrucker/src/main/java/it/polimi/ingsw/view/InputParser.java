@@ -598,21 +598,26 @@ public ClientEvent parseFirstConnection(String input) {
                 }
                 return new AlienCoordinatesRequest();
             case "coord":
-                if(tokens.length%2 !=0){
+                if(tokens.length%3 !=0){
                     ArrayList<int[]> coord=new ArrayList<>();
-                    for(int i=1;i<tokens.length-1;i+=2){
+                    for(int i=1;i<tokens.length-2;i+=3){
                         if(tokens[i]!=null && tokens[i+1]!=null){
-                            coord.add(new int[]{Integer.parseInt(tokens[i]),Integer.parseInt(tokens[i+1])});
+                            if(tokens[i+2].trim().equalsIgnoreCase("purple")) {
+                                coord.add(new int[]{Integer.parseInt(tokens[i]), Integer.parseInt(tokens[i + 1]),0});
+                            }
+                            else{
+                                coord.add(new int[]{Integer.parseInt(tokens[i]), Integer.parseInt(tokens[i + 1]),1});
+                            }
                         }
                     }
                     return new SendAlienCoord(coord);
                 }else {
-                    System.out.println("Error: illegal command. Type 'coord <x1> <y1> <x2> <y2>...' .");
+                    System.out.println("Error: illegal command. Type 'coord <x1> <y1> <color> <x2> <y2> <color>...' .");
                     return null;
                 }
             case "continue":
                 if(tokens.length != 1){
-                    System.out.println("Error: illegal command. Type 'coord <x1> <y1> <x2> <y2>...' .");
+                    System.out.println("Error: illegal command. Type 'continue' .");
                     return null;
                 }
                 return new SendAlienCoord(null);
