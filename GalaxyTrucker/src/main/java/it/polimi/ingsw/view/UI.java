@@ -68,7 +68,7 @@ public interface UI {
 
     // FLIGHT
 
-    // void flightScene(FlightStartEvent event);
+    void flightScene(FlightStartEvent event);
 
     // void showCondition(CurrentCondition event);
 

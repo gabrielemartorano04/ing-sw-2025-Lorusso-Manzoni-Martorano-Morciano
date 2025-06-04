@@ -192,14 +192,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setHumanCount(event.getHumanCount());
         viewFlow.setCannonPower(event.getCannonPower());
         viewFlow.setEnginePower(event.getEnginePower());
-        ui.showShipLayout(viewFlow.getNickname(), event.getSpaceShip());
         viewFlow.setShip(event.getSpaceShip());
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         viewFlow.setStartFlightForAll();
-        ui.showFlightPhaseStart();
-        ui.showMessage("Please type 'state' to see your spaceship state\n");
         viewFlow.setTrack(event.getTrack());
-        System.out.print("> ");
+
+        ui.flightScene(event);
     }
 
     @Override
