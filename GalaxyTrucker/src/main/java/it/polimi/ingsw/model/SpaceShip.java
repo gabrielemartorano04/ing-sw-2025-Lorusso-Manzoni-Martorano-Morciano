@@ -1637,7 +1637,6 @@ public class SpaceShip implements Serializable {
                     if(load.getCapacity()-load.getQuantity()>0){
                         load.getGoods().remove(value);
                         load.addGood(value,good);
-                        System.out.println("value: "+good.getValue());
                         switch(good.getValue()){
                             case 1: blueGoods++;
                             case 2: greenGoods++;
@@ -1654,7 +1653,6 @@ public class SpaceShip implements Serializable {
                         }
                         load.removeGood(value);
                         load.addGood(value,good);
-                        System.out.println("value: "+good.getValue());
                         switch(good.getValue()){
                             case 1: blueGoods++;
                             case 2: greenGoods++;
