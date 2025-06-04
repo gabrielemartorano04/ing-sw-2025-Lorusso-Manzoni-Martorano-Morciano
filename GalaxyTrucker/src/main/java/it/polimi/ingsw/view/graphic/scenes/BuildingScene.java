@@ -59,8 +59,8 @@ public class BuildingScene {
     }
 
     public Scene createScene() {
-        double width = 850;
-        double height = 550;
+        double width = 1600;
+        double height = 900;
 
         // Sfondo
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpeg").toExternalForm());
