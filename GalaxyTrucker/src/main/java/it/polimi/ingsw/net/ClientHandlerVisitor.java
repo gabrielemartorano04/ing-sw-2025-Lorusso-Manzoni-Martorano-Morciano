@@ -366,7 +366,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         }else{
             int[] scores;
             Map<String, Integer> playersScores = new HashMap<>();
-            scores = gameController.getGame().computeScores(numOfPlayers);
+            scores = gameController.getGame().computeScores();
             for(int i=0; i<numOfPlayers; i++){
                 playersScores.put(gameController.getGame().getTrucker(i).getNickname(), scores[i]);
             }
@@ -500,7 +500,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         }
         int[] scores;
         Map<String, Integer> playersScores = new HashMap<>();
-        scores = gameController.getGame().computeScores(numOfPlayers);
+        scores = gameController.getGame().computeScores();
         for(int i=0; i<numOfPlayers; i++){
             playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
         }
