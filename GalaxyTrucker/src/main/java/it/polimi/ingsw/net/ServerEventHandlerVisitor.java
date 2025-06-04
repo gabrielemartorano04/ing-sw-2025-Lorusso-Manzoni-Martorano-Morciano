@@ -179,8 +179,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(StackDropOk event) {
         viewFlow.setHasStack(-1);
-        ui.showMessage(event.getMessage());
-        System.out.print("> ");
+        ui.dropStack(event);
     }
 
 

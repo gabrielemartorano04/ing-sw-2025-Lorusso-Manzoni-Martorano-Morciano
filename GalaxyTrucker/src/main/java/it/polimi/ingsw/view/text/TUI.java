@@ -167,6 +167,13 @@ public class TUI implements UI {
         System.out.print("> ");
     }
 
+    @Override
+    public void dropStack(StackDropOk event){
+        this.showMessage(event.getMessage());
+        System.out.print("> ");
+    }
+
+
 
 
 

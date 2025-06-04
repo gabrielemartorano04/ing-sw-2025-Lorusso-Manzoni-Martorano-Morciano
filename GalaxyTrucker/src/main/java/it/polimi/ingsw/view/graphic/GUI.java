@@ -316,8 +316,14 @@ public class GUI implements UI {
         //TODO:
     }
 
+    @Override
+    public void dropStack(StackDropOk event){
+        //TODO:
+    }
 
-        // fine building scene
+
+
+    // fine building scene
 
 
     // flight scene

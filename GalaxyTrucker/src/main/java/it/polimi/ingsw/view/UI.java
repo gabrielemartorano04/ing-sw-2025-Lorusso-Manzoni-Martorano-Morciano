@@ -59,6 +59,8 @@ public interface UI {
 
     void showStack(Stack stack);
 
+    void dropStack(StackDropOk event);
+
 
     // fine omologazione GUI TUI
     // (penso che tutti gli altri metodi che seguono possonano diventare privati di GUI o TUI
