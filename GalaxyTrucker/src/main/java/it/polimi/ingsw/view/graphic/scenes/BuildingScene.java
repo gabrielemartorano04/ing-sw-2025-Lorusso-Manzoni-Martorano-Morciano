@@ -73,31 +73,31 @@ public class BuildingScene {
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(width);
         backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
+        backgroundView.setPreserveRatio(true);
         backgroundView.setMouseTransparent(true);
 
         // Griglia nave
         grid = new GridPane();
-        grid.setHgap(2);
-        grid.setVgap(2);
-        grid.setAlignment(Pos.TOP_LEFT);
-        grid.setTranslateX(164.5);
-        grid.setTranslateY(25);
+        grid.setHgap(3.5);
+        grid.setVgap(3.5);
+        grid.setAlignment(Pos.CENTER);
+        grid.setTranslateX(1);
+        grid.setTranslateY(-10);
 
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {
                 StackPane cell = new StackPane();
-                cell.setPrefSize(90, 90);
+                cell.setPrefSize(136, 136);
 
                 if (validCells[row][col]) {
-                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 3px; -fx-background-radius: 3px;");
+                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 6px; -fx-background-radius: 6px;");
 
                     Component c = layout[row][col];
                     if (c != null) {
                         ImageView imageView = new ImageView(c.getFrontImage());
-                        imageView.setFitWidth(90);
-                        imageView.setFitHeight(89);
-                        Rectangle clip = new Rectangle(89, 89);
+                        imageView.setFitWidth(136);
+                        imageView.setFitHeight(136);
+                        Rectangle clip = new Rectangle(136, 136);
                         clip.setArcWidth(6);
                         clip.setArcHeight(6);
                         imageView.setClip(clip);
@@ -114,34 +114,34 @@ public class BuildingScene {
         }
 
         // Slot vuoti per i kept
-        keptSlots = new HBox(10);
+        keptSlots = new HBox(15);
         keptSlots.setMaxWidth(200);
         keptSlots.setAlignment(Pos.TOP_RIGHT);
         keptSlotsRef.clear();
         keptImages.clear();
 
-        for (int i = 0; i < 2; i++) {
-            StackPane slot = new StackPane();
-            slot.setPrefSize(70, 70);
-            slot.setMinSize(70, 70);
-            slot.setMaxSize(70, 70);
-            slot.setStyle("-fx-background-color: transparent;");
+        if(!keptSlotsRef.isEmpty()) {
+            for (int i = 0; i < 2; i++) {
+                StackPane slot = new StackPane();
+                slot.setPrefSize(110, 110);
+                slot.setStyle("-fx-background-color: transparent;");
 
-            Rectangle border = new Rectangle(70, 70);
-            border.setArcWidth(3);
-            border.setArcHeight(3);
-            border.setFill(Color.TRANSPARENT);
-            border.setStroke(Color.WHITE);
-            border.setStrokeWidth(2);
+                Rectangle border = new Rectangle(110, 110);
+                border.setArcWidth(6);
+                border.setArcHeight(6);
+                border.setFill(Color.TRANSPARENT);
+                border.setStroke(Color.WHITE);
+                border.setStrokeWidth(2);
 
-            slot.getChildren().add(border);
-            keptSlots.getChildren().add(slot);
-            keptSlotsRef.add(slot);
-            keptImages.add(null);  // Nessuna immagine inizialmente
+                slot.getChildren().add(border);
+                keptSlots.getChildren().add(slot);
+                keptSlotsRef.add(slot);
+                keptImages.add(null);  // Nessuna immagine inizialmente
+            }
+
+            StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
+            StackPane.setMargin(keptSlots, new Insets(0, 235, 590, 0));
         }
-
-        StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
-        StackPane.setMargin(keptSlots, new Insets(30, 50, 0, 0));
 
         StackPane root = new StackPane(backgroundView, grid, keptSlots);
         scene = new Scene(root, width, height);
