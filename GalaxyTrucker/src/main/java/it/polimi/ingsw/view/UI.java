@@ -57,6 +57,8 @@ public interface UI {
 
     void askAlienCabin(AlienCabinCoord event);
 
+    void showStack(Stack stack);
+
 
     // fine omologazione GUI TUI
     // (penso che tutti gli altri metodi che seguono possonano diventare privati di GUI o TUI
@@ -141,8 +143,6 @@ public interface UI {
     void showBooleanOption(String message);
 
     void updateHourglass(int secondsLeft);
-
-    void showStack(Stack stack);
 
     void showComponentSelected(Component component);
 

@@ -172,9 +172,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(ReturnStackEvent event){
-        ui.showStack(event.getStack());
         viewFlow.setHasStack(event.getStack().getIndexOfThis());
-        System.out.print("> ");
+        ui.showStack(event.getStack());
     }
 
     @Override

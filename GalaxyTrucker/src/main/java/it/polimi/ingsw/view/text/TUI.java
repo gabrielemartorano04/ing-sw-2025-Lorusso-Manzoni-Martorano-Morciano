@@ -866,6 +866,7 @@ public class TUI implements UI {
             System.out.printf(" [%02d] %-15s (Level %d)%n",
                     i, card.getName(), card.getLevel());
         }
+        System.out.print("> ");
     }
 
     @Override
