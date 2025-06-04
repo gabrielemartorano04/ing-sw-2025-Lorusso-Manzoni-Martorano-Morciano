@@ -35,7 +35,7 @@ public class Game {
     private final Set<String> nicknames = new HashSet<>();
     private final Set<PlayerColors> usedColors = new HashSet<>();
     private final EnumSet<PlayerColors> availableColors;
-    private final int numPlayers;
+    private int numPlayers;
     /**
      * Constructor that initializes the game attributes.
      */
@@ -355,9 +355,9 @@ public class Game {
      * @param numPlayer the number of players
      * @return an array of scores
      */
-    public int[] computeScores(int numPlayer){
+    public int[] computeScores(){
         int i=0;
-        int[] scores = new int[numPlayer];
+        int[] scores = new int[numPlayers];
         ArrayList<Goods> goodsList;
         for(Trucker t: truckers) {
             if(t.getCosmicCredit()<t.getSpaceShip().getLost()) {
@@ -500,6 +500,10 @@ public class Game {
 
     public ArrayList<Trucker> getTruckerOut() {
         return truckersOut;
+    }
+
+    public void setNumPlayers(int i) {
+        numPlayers = i;
     }
 }
 
