@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.graphic.scenes;
 
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -32,6 +33,7 @@ public class BuildingScene {
     private HBox keptSlots;
     private final ViewFlow viewFlow;
     private Button finishBtn;
+    private Button stackBtn;
 
 
     public BuildingScene(String nickname, Component[][] layout, ViewFlow viewFlow) {
@@ -138,9 +140,27 @@ public class BuildingScene {
         StackPane root = new StackPane(backgroundView, grid, keptSlots);
         scene = new Scene(root, width, height);
         addFinishButtonToScene(scene, viewFlow);
+        addStackButtonToScene(scene, viewFlow);
+        attachOptionsBoxToScene(scene);
         return scene;
     }
 
+    private void attachOptionsBoxToScene(Scene scene) {
+        VBox optionsBox = new VBox(8);
+        optionsBox.setPadding(new Insets(10));
+        optionsBox.setAlignment(Pos.TOP_LEFT);
+
+        optionsBox.getChildren().addAll(stackBtn, finishBtn);  // Aggiungi qui altri bottoni se ne hai
+
+        Platform.runLater(() -> {
+            StackPane root = (StackPane) scene.getRoot();
+            if (!root.getChildren().contains(optionsBox)) {
+                StackPane.setAlignment(optionsBox, Pos.TOP_RIGHT);
+                StackPane.setMargin(optionsBox, new Insets(20, 0, 0, 5));
+                root.getChildren().add(optionsBox);
+            }
+        });
+    }
 
     private Scene addFinishButtonToScene(Scene scene, ViewFlow viewFlow) {
         StackPane root = (StackPane) scene.getRoot(); // Assumiamo che root sia StackPane
@@ -218,6 +238,63 @@ public class BuildingScene {
         return scene;
     }
 
+    private Scene addStackButtonToScene(Scene scene, ViewFlow viewFlow) {
+        StackPane root = (StackPane) scene.getRoot(); // Assumiamo che sia uno StackPane
+
+        VBox container = new VBox(8);
+        container.setAlignment(Pos.TOP_LEFT);
+        container.setPadding(new Insets(10));
+
+        // Stile comune ai bottoni
+        Consumer<Button> styleButton = (btn) -> {
+            btn.setFont(Font.font("Bangers", 12));
+            btn.setTextFill(Color.BLACK);
+            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            btn.setCursor(Cursor.HAND);
+            btn.setPrefWidth(120);
+        };
+
+        // === Bottone "Show stack"
+        Button stackBtn = new Button("Show stack");
+        styleButton.accept(stackBtn);
+
+        stackBtn.setOnAction(e -> {
+            Rectangle bg = new Rectangle();
+            bg.widthProperty().bind(scene.widthProperty());
+            bg.heightProperty().bind(scene.heightProperty());
+            bg.setFill(Color.rgb(0, 0, 0, 0.4));
+
+            VBox stackChoices = new VBox(15);
+            stackChoices.setAlignment(Pos.CENTER);
+
+            for (int i = 0; i < 3; i++) {
+                Button pile = new Button("Stack " + (i + 1));
+                styleButton.accept(pile);
+                pile.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+                final int index = i;
+                pile.setOnAction(ev -> {
+                    viewFlow.handleInput("stack " + index);
+                    root.getChildren().remove(root.lookup("#popupOverlay"));
+                });
+                stackChoices.getChildren().add(pile);
+            }
+
+            StackPane popup = new StackPane(bg, stackChoices);
+            popup.setId("popupOverlay");
+            popup.setOnMouseClicked(ev -> root.getChildren().remove(popup));
+
+            root.getChildren().add(popup);
+        });
+
+        container.getChildren().add(stackBtn);
+
+        StackPane.setAlignment(container, Pos.TOP_LEFT);
+        StackPane.setMargin(container, new Insets(20, 0, 0, 140)); // leggermente spostato
+
+        root.getChildren().add(container);
+        this.stackBtn = stackBtn;
+        return scene;
+    }
 
 
 
