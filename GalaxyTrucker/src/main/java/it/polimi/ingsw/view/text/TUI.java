@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.text;
 
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
@@ -9,9 +10,7 @@ import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
-import it.polimi.ingsw.net.events.serverevents.cardevents.BooleanDecision;
-import it.polimi.ingsw.net.events.serverevents.cardevents.CurrentCondition;
-import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
@@ -130,7 +129,6 @@ public class TUI implements UI {
             this.showMessage("Type 'continue' to start flight phase\n" +
                     "> ");
         }
-        System.out.print("> ");
     }
 
     @Override
@@ -194,6 +192,58 @@ public class TUI implements UI {
     public void showCurrCondition(CurrentCondition event){
         System.out.println("Current condition:" + event.getCondition());
         System.out.print("> ");
+    }
+
+    @Override
+    public void cardFinished(CardFinished event){
+        for(String nicknames: event.getTruckersRemoved()){
+            System.out.println(nicknames + " died");
+        }
+        String message = "Truckers' positions order:\n";
+        int i = 1;
+        for (Trucker t : event.getTruckersList()) {
+            message += i + ") " + t.getNickname() + "\n";
+            i++;
+        }
+        System.out.println(message);
+    }
+
+    @Override
+    public  void epidemic(EpidemicEvent event){
+        System.out.println("Card drawn: "+event.getCardName()+"\n Card description: "+event.getCardDescription()+"\n");
+        for (Trucker t: event.getTruckers()) {
+            System.out.println(t.getNickname() + " has lost ");
+        }
+        for(String nicknames: event.getTruckersRemoved()){
+            System.out.println(nicknames + " died");
+        }
+
+        String message = "Truckers' positions order:\n";
+        int i = 1;
+        for (Trucker t : event.getTruckers()) {
+            message += i + ") " + t.getNickname() + "\n";
+            i++;
+        }
+        System.out.println(message);
+    }
+
+    @Override
+    public void stardust(StarDustEvent event){
+        System.out.println("Card drawn: "+event.getCardName().toUpperCase()+"\n Card description: "+event.getCardDescription()+"\n");
+        for (Trucker t: event.getTruckers()) {
+            System.out.println(t.getNickname() + " has lost " + t.getSpaceShip().countExposedConnectors() + String.format(t.getSpaceShip().countExposedConnectors() == 1 ? " day\n" : " days\n"));
+        }
+        for(String nicknames: event.getTruckersRemoved()){
+            System.out.println(nicknames + " died");
+        }
+
+        String message = "Truckers' positions order:\n";
+        int i = 1;
+        for (Trucker t : event.getTruckers()) {
+            message += i + ") " + t.getNickname() + "\n";
+            i++;
+        }
+        System.out.println(message);
     }
 
     @Override

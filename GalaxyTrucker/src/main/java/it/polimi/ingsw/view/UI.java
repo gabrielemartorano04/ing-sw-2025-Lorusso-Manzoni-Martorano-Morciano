@@ -72,15 +72,24 @@ public interface UI {
 
     void showCurrCondition(CurrentCondition event);
 
-    // void cardFinished(CardFinished event);
+    void cardFinished(CardFinished event);
 
-    // void epidemic(EpidemicEvent event);
-
-    // void insertHumanCoordinates(HumanCoordinates event);
+    void epidemic(EpidemicEvent event);
 
     void showInputFormat(ParserState parserState);
 
-    // void stardust(StarDustEvent event);
+    void stardust(StarDustEvent event);
+
+    void showError(String message);
+
+    void showTruckerWithdrawn(String nickname);
+
+    //END GAME
+
+    void showGameEnded();
+
+    void showScores(Map<String, Integer> finalScores);
+
 
 
 
@@ -135,17 +144,12 @@ public interface UI {
     void showCardEffectEnd(Card card);
 
     void showTruckerMoved(String nickname, int newPosition);
-    void showTruckerWithdrawn(String nickname);
     void showTruckerLostAllCrew(String nickname);
 
     void showGoodsGained(Goods goods);
 
-    //END OF GAME
-    void showGameEnded();
-    void showScores(Map<String, Integer> finalScores);
 
     //ERRORS/SYSTEM
-    void showError(String message);
     void showConnectionLost();
     void showInvalidCommand(String expectedFormat);
 
