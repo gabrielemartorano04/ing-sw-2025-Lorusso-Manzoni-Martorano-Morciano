@@ -54,7 +54,6 @@ public class GUIApplication extends Application {
 //        stack.add(card2);
 //        stack.add(card3);
         spaceship = new SpaceShip();
-
         //spaceship.setSpaceship(level, color); AGGIUNGIIIII
 //        Cabin cabin = new Cabin(3, 3, 3, 3, "Main Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
 //        trucker.getSpaceShip().addComponent(cabin, 7,7);
@@ -98,6 +97,7 @@ public class GUIApplication extends Application {
         //gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
         //gui.colorAlreadyTaken(new ColorAlreadyInError(PlayerColors.RED, EnumSet.of(PlayerColors.GREEN, PlayerColors.BLUE, PlayerColors.YELLOW)));ù
 
+        trucker.initSpaceShip(2);
 
 //        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(),trucker.getSpaceShip().getComponents(), viewFlow); // assicurati che esista questa classe
 //        Scene scene = buildingScene.createScene();
@@ -114,7 +114,7 @@ public class GUIApplication extends Application {
 
         StackPane stackPane = new StackPane();
         BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
-        primaryStage.setScene(buildingScene.createScene(playersNames));
+        primaryStage.setScene(buildingScene.createScene(playersNames, 2));
 
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
