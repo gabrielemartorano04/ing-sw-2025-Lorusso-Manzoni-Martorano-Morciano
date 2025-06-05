@@ -242,7 +242,7 @@ public class ServerController {
                     client.getSocketClient().close();
                     toRemove.add(client);
                 } else {
-                    client.getSocketClient().sendPing();
+                    client.notifyPing();
                 }
 
             }

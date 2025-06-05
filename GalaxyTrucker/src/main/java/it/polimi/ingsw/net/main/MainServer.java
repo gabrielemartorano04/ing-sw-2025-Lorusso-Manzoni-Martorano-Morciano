@@ -16,7 +16,9 @@ public class MainServer {
         final int PORT = 12346;
         ServerController serverController = new ServerController();
 
-        RmiServer.bind(serverController);
+        String ip = "172.20.10.3";
+
+        RmiServer.bind(serverController, ip);
 
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server listening on port " + PORT + "...");

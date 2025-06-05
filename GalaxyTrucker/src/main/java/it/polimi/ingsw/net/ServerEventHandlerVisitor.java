@@ -595,6 +595,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showScores(event.getScores());
         ui.showGameEnded();
         System.out.print("> ");
+        viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+        viewFlow.setViewState(ViewFlow.ViewState.END);
     }
 
     @Override
