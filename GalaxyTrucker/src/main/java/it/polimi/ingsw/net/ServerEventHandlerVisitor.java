@@ -324,6 +324,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             switch (event.getHitType()) {
                 case "bigmeteor" -> {
+                    //todo show resul
                     ui.showMessage("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
                     viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
                 }
@@ -383,6 +384,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if (event.getFirstPlayerNickname().equals(viewFlow.getNickname())) {
             ui.showMessage(event.getQuestion());
             viewFlow.setParserFlightState(event.getParserState());
+            ui.showInputFormat(event.getParserState());
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());

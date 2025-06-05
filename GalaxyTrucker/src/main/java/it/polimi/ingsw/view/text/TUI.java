@@ -264,6 +264,8 @@ public class TUI implements UI {
             case REARRANGE -> System.out.println("Choose if you want to rearrange your goods. If yes, insert coordinates.\n" +
                     "Type '<n/y>, (<x1> <y1> - <value1>,<x2> <y2> - <value2>...)'");
             case COSMIC_CREDITS -> System.out.println("Do you want to gain that cosmic credits? Type <y/n>.");
+            case WARZONE -> System.out.println("Type 'warzone' to start warzone card");
+
         }
         System.out.print("> ");
     }
