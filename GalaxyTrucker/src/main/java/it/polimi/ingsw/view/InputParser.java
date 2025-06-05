@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class InputParser {
-    // TODO: AGGIUNGERE COMANDI CHE SONO VALIDI SEMPRE
     private int level;
 
 public ClientEvent parseFirstConnection(String input) {

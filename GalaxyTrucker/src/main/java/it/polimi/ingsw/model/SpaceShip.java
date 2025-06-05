@@ -524,8 +524,7 @@ public class SpaceShip implements Serializable {
      * @param y y coordinate of the component
      * @return boolean that says if the component in position (x,y) is correctly linked with the others components
      */
-    //todo rimetti a private
-    public boolean isValid(int x, int y) {
+    private boolean isValid(int x, int y) {
         Component com = components[x][y];
         Component comU = null;
         Component comR = null;
