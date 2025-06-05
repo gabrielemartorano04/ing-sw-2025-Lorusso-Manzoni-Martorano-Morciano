@@ -233,8 +233,7 @@ public class InputParserFlight {
                 else if(land[0].trim().equals("y")) {
                     return new TruckerLandingEvent(true);
                 }
-            case WARZONE://type warzone when you are ready
-                //todo inserire input format
+            case WARZONE:
                 String[] warzone=input.split("\\s+");
                 if(warzone.length!=1 || !warzone[0].trim().equals("warzone")){
                     System.out.println("Error: invalid command");

@@ -360,6 +360,16 @@ public class GUI implements UI {
 
     }
 
+    @Override
+    public void showResult(String result){
+
+    }
+
+    @Override
+    public void showDead(){
+
+    }
+
     // fine flight scene
 
     // end scene
