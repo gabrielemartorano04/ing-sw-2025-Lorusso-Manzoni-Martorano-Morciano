@@ -20,7 +20,7 @@ public class MainServer {
 
         String ip;
         do{
-            System.out.println("Insert the IP of the server, with the format x.y.z.w");
+            System.out.println("Insert the IP of the server (format x.y.z.w). \n Insert -- 127.0.0.1 -- for localhost");
             ip = scanner.nextLine().trim();
         }while(!isValidIp(ip));
 
