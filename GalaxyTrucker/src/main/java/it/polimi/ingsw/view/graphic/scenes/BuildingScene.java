@@ -21,7 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.util.List;
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public class BuildingScene {
     private Button hourglassBtn;
     private Button selectBtn;
 
-    private List<Node> shipScreenContentSnapshot;
+    private List<Node> shipScreenContent;
 
     private final StackPane root;
 
@@ -411,7 +410,7 @@ public class BuildingScene {
         styleButton.accept(selectComponentBtn);
 
         selectComponentBtn.setOnAction(e -> {
-            shipScreenContentSnapshot = new ArrayList<>(root.getChildren());
+            shipScreenContent = new ArrayList<>(root.getChildren());
 
             ArrayList<Component> components = new AvailableComponents().getComponents();
             //TODO: ora tieni components per vedere ma poi sarà showAvailableComponent(viewFlow.getAvailableComponents());
@@ -480,8 +479,8 @@ public class BuildingScene {
         backBtn.setPadding(new Insets(10, 12, 10, 12));
 
         backBtn.setOnAction(e -> {
-            if (shipScreenContentSnapshot != null) {
-                root.getChildren().setAll(shipScreenContentSnapshot);
+            if (shipScreenContent != null) {
+                root.getChildren().setAll(shipScreenContent);
             }
         });
 
@@ -492,6 +491,10 @@ public class BuildingScene {
         root.getChildren().setAll(componentView);
     }
 
+
+    public void loadShipView(){
+        root.getChildren().setAll(shipScreenContent);
+    }
 
 
     public Scene getScene() {
