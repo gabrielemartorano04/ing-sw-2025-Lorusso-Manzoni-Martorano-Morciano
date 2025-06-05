@@ -250,7 +250,7 @@ public class ServerController {
             for (Client c : toRemove) {
                 removeClient((ClientHandler) c);
             }
-        }, 0, 5, TimeUnit.SECONDS);
+        }, 10, 5, TimeUnit.SECONDS);
     }
 }
 

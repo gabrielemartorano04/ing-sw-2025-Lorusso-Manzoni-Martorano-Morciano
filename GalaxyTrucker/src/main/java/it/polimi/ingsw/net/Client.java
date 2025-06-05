@@ -18,6 +18,7 @@ public class Client {
         this.clientHandler = clientHandler;
         this.remoteClientHandler = remoteClientHandler;
         this.id = -1;
+        this.lastPongTime = System.currentTimeMillis();
     }
 
     public void setId(int id) {

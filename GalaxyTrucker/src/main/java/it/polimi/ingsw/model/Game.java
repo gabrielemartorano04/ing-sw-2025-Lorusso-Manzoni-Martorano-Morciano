@@ -355,8 +355,13 @@ public class Game {
      * @return an array of scores
      */
     public int[] computeScores(){
-        int i=0;
         int[] scores = new int[numPlayers];
+        if (gameState!= GameState.FLIGHT && gameState!= GameState.ENDED) {
+            for(int j=0; j<numPlayers; j++){
+                scores[j]=0;
+            }
+        }
+        int i=0;
         for(i=0; i<numPlayers; i++){
             scores[i]=0;
         }
