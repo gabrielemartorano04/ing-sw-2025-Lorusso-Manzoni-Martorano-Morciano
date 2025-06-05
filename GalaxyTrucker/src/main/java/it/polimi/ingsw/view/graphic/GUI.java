@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.graphic;
 import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
@@ -10,9 +11,7 @@ import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
-import it.polimi.ingsw.net.events.serverevents.cardevents.BooleanDecision;
-import it.polimi.ingsw.net.events.serverevents.cardevents.CurrentCondition;
-import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
@@ -341,7 +340,25 @@ public class GUI implements UI {
         //todo
     }
 
+    @Override
+    public void cardFinished(CardFinished event){
+        //todo
+    }
 
+    @Override
+    public  void epidemic(EpidemicEvent event){
+        //todo
+    }
+
+    @Override
+    public void stardust(StarDustEvent event){
+        //todo
+    }
+
+    @Override
+    public void showInputFormat(ParserState parserState) {
+
+    }
 
     // fine flight scene
 
@@ -1782,8 +1799,5 @@ public class GUI implements UI {
         });
     }
 
-    @Override
-    public void showInputFormat(ParserState parserState) {
 
-    }
 }
