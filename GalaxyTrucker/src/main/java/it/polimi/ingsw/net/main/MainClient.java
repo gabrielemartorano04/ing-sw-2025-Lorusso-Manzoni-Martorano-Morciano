@@ -64,9 +64,9 @@ public class MainClient {
         }
         else {
             try {
-                Registry registry = LocateRegistry.getRegistry(serverAddress, 1099);
+                Registry registry = LocateRegistry.getRegistry(serverAddress, 4321);
                 System.out.println(serverAddress);
-                RmiServerInterface rmiServer = (RmiServerInterface) registry.lookup("MyService");
+                RmiServerInterface rmiServer = (RmiServerInterface) registry.lookup("GalaxyTrucker");
 
                 ViewFlow view = new ViewFlow(null);
                 RemoteClientHandler client = new RmiClient(rmiServer, view);
