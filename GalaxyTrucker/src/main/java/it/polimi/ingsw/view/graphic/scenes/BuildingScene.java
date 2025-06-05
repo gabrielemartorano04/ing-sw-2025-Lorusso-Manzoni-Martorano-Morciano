@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.graphic.scenes;
 
+import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
 import javafx.animation.KeyFrame;
@@ -29,6 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.function.Consumer;
+import javafx.scene.control.ScrollPane;
+
 
 
 public class BuildingScene {
@@ -48,9 +51,13 @@ public class BuildingScene {
     private Button rulesBtn;
     private Button otherBtn;
     private Button hourglassBtn;
+    private Button selectBtn;
+
+    private final StackPane root;
 
 
-    public BuildingScene(String nickname, Component[][] layout, ViewFlow viewFlow) {
+
+    public BuildingScene(String nickname, Component[][] layout, ViewFlow viewFlow, StackPane root) {
         this.nickname = nickname;
         this.layout = layout;
         this.cellMatrix = new StackPane[10][11];
@@ -58,6 +65,7 @@ public class BuildingScene {
         this.keptImages = new ArrayList<>();
         this.viewFlow = viewFlow;
         this.isLinkEnabled = false;
+        this.root = root;
 
         this.validCells = new boolean[11][12];
         for (int i = 0; i < layout.length; i++) {
@@ -148,17 +156,17 @@ public class BuildingScene {
             StackPane.setMargin(keptSlots, new Insets(0, 235, 590, 0));
         }
 
-        StackPane root = new StackPane(backgroundView, grid, keptSlots);
+        root.getChildren().setAll(backgroundView, grid, keptSlots);
         scene = new Scene(root, width, height);
-        VBox optionsBox = prepareButtonArea(scene);
         Consumer<Button> styleButton = createDefaultButtonStyler();
 
 
-        addFinishButtonToScene(optionsBox, viewFlow, styleButton);
-        addStackButtonToScene(optionsBox, viewFlow, styleButton);
-        addRulesButtonToScene(optionsBox, styleButton);
-        addShowOtherButtonToScene(optionsBox, viewFlow, styleButton, playersNames);
-        addHourglassButtonToScene(optionsBox, viewFlow);
+        addFinishButtonToScene(viewFlow, styleButton);
+        addStackButtonToScene(viewFlow, styleButton);
+        addRulesButtonToScene(styleButton);
+        addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
+        addHourglassButtonToScene(viewFlow);
+        addSelectComponentButton(styleButton);
         attachOptionsBoxToScene(scene);
 
         return scene;
@@ -169,7 +177,7 @@ public class BuildingScene {
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
-        optionsBox.getChildren().addAll(stackBtn, otherBtn, finishBtn, rulesBtn, hourglassBtn);
+        optionsBox.getChildren().addAll(selectBtn, stackBtn, otherBtn, finishBtn, rulesBtn, hourglassBtn);
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) scene.getRoot();
@@ -179,18 +187,6 @@ public class BuildingScene {
                 root.getChildren().add(optionsBox);
             }
         });
-    }
-
-    private VBox prepareButtonArea(Scene scene) {
-        StackPane root = (StackPane) scene.getRoot();
-
-        VBox optionsBox = new VBox(10);
-        optionsBox.setPadding(new Insets(10));
-        optionsBox.setAlignment(Pos.TOP_LEFT);
-
-        root.getChildren().add(optionsBox);
-
-        return optionsBox;
     }
 
     private Consumer<Button> createDefaultButtonStyler() {
@@ -203,7 +199,7 @@ public class BuildingScene {
         };
     }
 
-    private void addFinishButtonToScene(VBox optionsBox, ViewFlow viewFlow, Consumer<Button> styleButton) {
+    private void addFinishButtonToScene(ViewFlow viewFlow, Consumer<Button> styleButton) {
         Button finishBtn = new Button("Finish spaceship");
         styleButton.accept(finishBtn);
 
@@ -254,10 +250,9 @@ public class BuildingScene {
         });
 
         this.finishBtn = finishBtn;
-        optionsBox.getChildren().add(finishBtn);
     }
 
-    private void addStackButtonToScene(VBox optionsBox, ViewFlow viewFlow, Consumer<Button> styleButton) {
+    private void addStackButtonToScene(ViewFlow viewFlow, Consumer<Button> styleButton) {
         Button stackBtn = new Button("Show stack");
         styleButton.accept(stackBtn);
 
@@ -292,10 +287,9 @@ public class BuildingScene {
         });
 
         this.stackBtn = stackBtn;
-        optionsBox.getChildren().add(stackBtn);
     }
 
-    private void addRulesButtonToScene(VBox optionsBox, Consumer<Button> styleButton) {
+    private void addRulesButtonToScene(Consumer<Button> styleButton) {
         Button rulesBtn = new Button("Rules");
         styleButton.accept(rulesBtn);
 
@@ -325,10 +319,9 @@ public class BuildingScene {
         });
 
         this.rulesBtn = rulesBtn;
-        optionsBox.getChildren().add(rulesBtn);
     }
 
-    private void addShowOtherButtonToScene(VBox optionsBox, ViewFlow viewFlow, Consumer<Button> styleButton, ArrayList<String> playersNames) {
+    private void addShowOtherButtonToScene(ViewFlow viewFlow, Consumer<Button> styleButton, ArrayList<String> playersNames) {
         Button otherBtn = new Button("Show others ship");
         styleButton.accept(otherBtn);
 
@@ -358,10 +351,9 @@ public class BuildingScene {
         });
 
         this.otherBtn = otherBtn;
-        optionsBox.getChildren().add(otherBtn);
     }
 
-    private void addHourglassButtonToScene(VBox optionsBox, ViewFlow viewFlow) {
+    private void addHourglassButtonToScene(ViewFlow viewFlow) {
         Button hourglassBtn = new Button("⏳");
         hourglassBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
         hourglassBtn.setTextFill(Color.BLACK);
@@ -397,8 +389,89 @@ public class BuildingScene {
         });
 
         this.hourglassBtn = hourglassBtn;
-        optionsBox.getChildren().add(hourglassBtn);
     }
+
+    private void addSelectComponentButton(Consumer<Button> styleButton) {
+        Button selectComponentBtn = new Button("Select component");
+        styleButton.accept(selectComponentBtn);
+
+        selectComponentBtn.setOnAction(e -> {
+            ArrayList<Component> components = new AvailableComponents().getComponents();
+            showAvailableComponent(components);
+        });
+
+        this.selectBtn = selectComponentBtn;
+    }
+
+    public void showAvailableComponent(ArrayList<Component> components) {
+        double width = 1600;
+        double height = 900;
+
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(true);
+
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(20));
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
+
+        int col = 0, row = 0;
+        for (int i = 0; i < components.size(); i++) {
+            Component component = components.get(i);
+            final int index = i;
+
+            ImageView imgView = new ImageView(component.getCovered() ? component.getBackImage() : component.getFrontImage());
+            imgView.setFitWidth(70);
+            imgView.setFitHeight(70);
+
+            Rectangle clip = new Rectangle(75, 75);
+            clip.setArcWidth(16);
+            clip.setArcHeight(16);
+            imgView.setClip(clip);
+
+            Button button = new Button();
+            button.setGraphic(imgView);
+            button.setPrefSize(75, 75);
+            button.setStyle("-fx-background-color: transparent; -fx-border-color: #cccccc; -fx-border-radius: 8px; -fx-cursor: hand; -fx-padding: 0px;");
+
+            button.setOnAction(e -> {
+                viewFlow.handleInput("select " + index);
+                // Rimane su questa schermata, o torna se vuoi
+            });
+
+            grid.add(button, col, row);
+            if (++col == 8) {
+                col = 0;
+                row++;
+            }
+        }
+
+        ScrollPane scrollPane = new ScrollPane(new StackPane(grid));
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+
+        Button backBtn = new Button("←");
+        backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 14));
+        backBtn.setTextFill(Color.BLACK);
+        backBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        backBtn.setCursor(Cursor.HAND);
+        backBtn.setPadding(new Insets(10, 12, 10, 12));
+
+        backBtn.setOnAction(e -> {
+            root.getChildren().setAll(grid, keptSlots);  // Torna alla schermata principale
+        });
+
+        StackPane componentView = new StackPane(backgroundView, scrollPane, backBtn);
+        StackPane.setAlignment(backBtn, Pos.TOP_LEFT);
+        StackPane.setMargin(backBtn, new Insets(20, 0, 0, 20));
+
+        root.getChildren().setAll(componentView);
+    }
+
 
 
     public Scene getScene() {

@@ -14,6 +14,7 @@ import it.polimi.ingsw.view.graphic.scenes.LoginScene;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -110,7 +111,8 @@ public class GUIApplication extends Application {
 
         primaryStage.setScene(loginScene.createScene());
 
-        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow);
+        StackPane stackPane = new StackPane();
+        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
         primaryStage.setScene(buildingScene.createScene(playersNames));
 
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
