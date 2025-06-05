@@ -25,9 +25,9 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
     public void connect(RemoteClientHandler client) throws RemoteException {
         this.controller.addClient(new Client(null, client));
     }
-
     public static void bind(ServerController serverController, String hostname) {
         try {
+            System.setProperty("java.rmi.server.hostname", hostname);
             RmiServer server = new RmiServer(serverController);
 
             try {
@@ -44,6 +44,7 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
             e.printStackTrace();
         }
     }
+
 
 
     public void handleIncomingEvent(ClientEvent event, RemoteClientHandler client) throws RemoteException {
