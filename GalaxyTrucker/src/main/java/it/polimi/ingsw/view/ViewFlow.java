@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.EventReceiver;
+import it.polimi.ingsw.net.events.clientevents.PongEvent;
 import it.polimi.ingsw.net.events.clientevents.cardevents.DeadTrucker;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 import it.polimi.ingsw.net.socket.client.ClientEventSender;
@@ -97,52 +98,55 @@ public class ViewFlow implements EventReceiver {
 
     @Override
     public void onEventReceived(ServerEvent event) {
-        if(nickname == null) {
-            System.out.println("[SERVER] Message received: " + event.getMessage() + ". || EventType ||: " + event.getEventType());
+        if (event.getEventType() != ServerEventType.PING) {
+            if (nickname == null) {
+                System.out.println("[SERVER] Message received: " + event.getMessage() + ". || EventType ||: " + event.getEventType());
 
-        }else {
-            System.out.println("[SERVER] Message received: " + event.getMessage() + ". || EventType ||: " + event.getEventType() + " per " + nickname);
-        }
+            } else {
+                System.out.println("[SERVER] Message received: " + event.getMessage() + ". || EventType ||: " + event.getEventType() + " per " + nickname);
+            }
         //!!questa deve gestire gli eventi dal server!!
-        if(event.getEventType()==ServerEventType.FIRST_CONNECTION){
-            ui.showInsertNumPlayers();
-        } else {
-            if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS || event.getEventType()==ServerEventType.COMPONENT_LINKED
-            || event.getEventType()==ServerEventType.COMPONENT_SELECTED || event.getEventType()==ServerEventType.DISCART_SUCCESS || event.getEventType()==ServerEventType.CARD_FINISHED ) {
-                event.call(serverEventVisitor);
-                done = true;
-            }
-            if(event.getEventType() == ServerEventType.CHOOSE_COLOURS){
-                viewState = ViewState.START;
-            }
-            switch (viewState) {
-                case START -> {
+
+            if (event.getEventType() == ServerEventType.FIRST_CONNECTION) {
+                ui.showInsertNumPlayers();
+            } else {
+                if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS || event.getEventType() == ServerEventType.COMPONENT_LINKED
+                        || event.getEventType() == ServerEventType.COMPONENT_SELECTED || event.getEventType() == ServerEventType.DISCART_SUCCESS || event.getEventType() == ServerEventType.CARD_FINISHED) {
                     event.call(serverEventVisitor);
                     done = true;
                 }
-                case BULDING -> {
-                    ui.showShipLayout(nickname, ship);
-                    if (!keptComponent.isEmpty()) {
-                        ui.showKeptComponents(keptComponent);
+                if (event.getEventType() == ServerEventType.CHOOSE_COLOURS) {
+                    viewState = ViewState.START;
+                }
+                switch (viewState) {
+                    case START -> {
+                        event.call(serverEventVisitor);
+                        done = true;
                     }
-                    if (getSelectedComponent() == null) {
-                        ui.showBuildOptions();
-                    }
+                    case BULDING -> {
+                        ui.showShipLayout(nickname, ship);
+                        if (!keptComponent.isEmpty()) {
+                            ui.showKeptComponents(keptComponent);
+                        }
+                        if (getSelectedComponent() == null) {
+                            ui.showBuildOptions();
+                        }
 
+                    }
+                    case FILL -> ui.showShipLayout(nickname, ship);
+                    case FLIGTH -> {
+                        ui.showShipLayout(nickname, ship);
+                        ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
+                        ui.showTrack(track, level);
+                        System.out.println("you are out?" + out);
+                    }
+                    case END -> event.call(serverEventVisitor);
                 }
-                case FILL-> ui.showShipLayout(nickname, ship);
-                case FLIGTH -> {
-                    ui.showShipLayout(nickname, ship);
-                    ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
-                    ui.showTrack(track, level);
-                    System.out.println("you are out?" + out);
+                if (!done) {
+                    event.call(serverEventVisitor);
                 }
-                case END -> event.call(serverEventVisitor);
+                done = false;
             }
-            if (!done) {
-                event.call(serverEventVisitor);
-            }
-            done = false;
         }
     }
 
@@ -433,6 +437,18 @@ public class ViewFlow implements EventReceiver {
     }
     public int getLevel() {
         return level;
+    }
+
+    public void respondToPing() {
+            if (this.sender != null){
+                sender.handleEvent(new PongEvent());
+            }else if(this.rmiClient != null){
+                try {
+                    rmiClient.handleOutgoingEvent(new PongEvent());
+                } catch (RemoteException e) {
+                    System.out.println("RemoteException: " + e);
+                }
+            }
     }
 }
 

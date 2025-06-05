@@ -70,9 +70,7 @@ public interface UI {
 
     void flightScene(FlightStartEvent event);
 
-    // void showCondition(CurrentCondition event);
-
-    // void takeDecision(BooleanDecision event);
+    void showCurrCondition(CurrentCondition event);
 
     // void cardFinished(CardFinished event);
 
@@ -82,7 +80,7 @@ public interface UI {
 
     void showInputFormat(ParserState parserState);
 
-    // void starduts(StarDustEvent event);
+    // void stardust(StarDustEvent event);
 
 
 
@@ -173,6 +171,6 @@ public interface UI {
 
     void showComponentSelected(Component component);
 
-    void showCurrCondition(Condition cond);
+
 
 }

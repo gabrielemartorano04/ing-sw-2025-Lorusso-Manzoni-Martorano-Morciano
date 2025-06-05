@@ -2,10 +2,7 @@ package it.polimi.ingsw.net;
 
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.net.events.clientevents.AlienCoordinatesRequest;
-import it.polimi.ingsw.net.events.clientevents.GeneriErrorFromClient;
-import it.polimi.ingsw.net.events.clientevents.SendAlienCoord;
-import it.polimi.ingsw.net.events.clientevents.ShowOtherShipEvent;
+import it.polimi.ingsw.net.events.clientevents.*;
 import it.polimi.ingsw.net.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
@@ -80,4 +77,6 @@ public interface VirtualServer {
     void visit(RemotionSeenEvent event);
 
     void visit(DeadTrucker event);
+
+    void visit(PongEvent pongEvent);
 }

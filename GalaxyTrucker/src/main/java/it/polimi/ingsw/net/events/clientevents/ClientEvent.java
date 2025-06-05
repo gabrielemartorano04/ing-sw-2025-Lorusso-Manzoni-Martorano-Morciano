@@ -17,7 +17,6 @@ public abstract class ClientEvent implements Serializable {
         message="";
     }
 
-
     public String getMessage() {
         return message;
     }

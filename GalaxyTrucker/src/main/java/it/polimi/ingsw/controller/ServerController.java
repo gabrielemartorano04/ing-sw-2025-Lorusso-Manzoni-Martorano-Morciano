@@ -10,6 +10,7 @@ import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.ClientHandlerVisitor;
+import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -24,6 +25,7 @@ public class ServerController {
     private static ServerController istance;
     private int idToSet;
 
+
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
     private final ExecutorService executorService = Executors.newFixedThreadPool(4); // 4 worker thread
     private final Map<Integer, Object> userLocks = new ConcurrentHashMap<>();
@@ -36,6 +38,7 @@ public class ServerController {
         this.gameCreated = false;
         this.idToSet = 0;
         setIstance(this);
+        startHeartbeat();
     }
 
     public static ServerController getIstance() {
@@ -160,11 +163,12 @@ public class ServerController {
             }
         }
 
-
-        if(response.isForAll()){
-            broadcastEvent(response);
-        }else{
-            client.updateClient(response);
+        if (response != null) {
+            if (response.isForAll()) {
+                broadcastEvent(response);
+            } else {
+                client.updateClient(response);
+            }
         }
     }
 
@@ -224,6 +228,29 @@ public class ServerController {
             System.out.println(message);
             broadcastEvent(new BuildCompleteEvent(gameController.getGame().getTruckerList()));
         }
+    }
+
+    private void startHeartbeat() {
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(() -> {
+            long now = System.currentTimeMillis();
+            ArrayList<Client> toRemove = new ArrayList<>();
+
+            for (Client client : new ArrayList<>(clients)) {
+                if (client.getSocketClient().isTimedOut(now)) {
+                    System.out.println("Client " + client.getId() + " timed out. Removing...");
+                    client.getSocketClient().close();
+                    toRemove.add(client);
+                } else {
+                    client.getSocketClient().sendPing();
+                }
+
+            }
+
+            for (Client c : toRemove) {
+                removeClient((ClientHandler) c);
+            }
+        }, 0, 5, TimeUnit.SECONDS);
     }
 }
 

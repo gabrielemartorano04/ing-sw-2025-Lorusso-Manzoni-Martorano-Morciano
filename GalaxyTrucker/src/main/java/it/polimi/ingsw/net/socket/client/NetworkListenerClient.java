@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.socket.client;
 
 import it.polimi.ingsw.net.EventReceiver;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.ViewFlow;
 
 import javax.swing.text.View;
@@ -27,7 +28,12 @@ public class NetworkListenerClient {
                 while (running && !socket.isClosed()) {
                     try {
                         ServerEvent event = (ServerEvent) inputStream.readObject();
-                        receiver.onEventReceived(event);
+                        if(event.getEventType() == ServerEventType.PING) {
+                            receiver.respondToPing();
+                        }else {
+                            receiver.onEventReceived(event);
+                        }
+
                     } catch (ClassCastException e) {
                         System.err.println("Error: object received not in ServerEvent. Type: " + e.getMessage());
                     }
