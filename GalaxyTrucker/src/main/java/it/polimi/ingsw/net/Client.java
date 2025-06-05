@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net;
 
 import it.polimi.ingsw.controller.TruckerController;
+import it.polimi.ingsw.net.events.serverevents.PingEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 
@@ -11,11 +12,13 @@ public class Client {
     private final RemoteClientHandler remoteClientHandler;
     private TruckerController truckerController;
     private int id;
+    private long lastPongTime;
 
     public Client(ClientHandler clientHandler, RemoteClientHandler remoteClientHandler) {
         this.clientHandler = clientHandler;
         this.remoteClientHandler = remoteClientHandler;
         this.id = -1;
+        this.lastPongTime = System.currentTimeMillis();
     }
 
     public void setId(int id) {
@@ -57,6 +60,18 @@ public class Client {
         this.truckerController = truckerController;
     }
 
+    public void notifyPing(){
+        if(clientHandler != null){
+            sendPing();
+        }else {
+            try {
+                remoteClientHandler.respondToPing();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     public void updateClient(ServerEvent event){
         if(clientHandler != null){
             clientHandler.sendEvent(event);
@@ -69,6 +84,27 @@ public class Client {
         }
         else{
             System.out.println("Both remoteClientHandler and clientHandler are null!");
+        }
+    }
+
+    public void updateLastPong() {
+        this.lastPongTime = System.currentTimeMillis();
+    }
+
+    public boolean isTimedOut(long now) {
+        return now - lastPongTime > 10000; // 10 secondi
+    }
+
+    public void sendPing() {
+        try {
+            if(clientHandler != null){
+                clientHandler.sendEvent(new PingEvent());
+            } else if (remoteClientHandler!=null) {
+                remoteClientHandler.respondToPing();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Errore durante l'invio del ping: " + e.getMessage());
         }
     }
 }

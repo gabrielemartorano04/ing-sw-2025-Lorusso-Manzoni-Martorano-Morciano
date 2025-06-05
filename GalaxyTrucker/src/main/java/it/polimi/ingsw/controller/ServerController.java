@@ -237,12 +237,12 @@ public class ServerController {
             ArrayList<Client> toRemove = new ArrayList<>();
 
             for (Client client : new ArrayList<>(clients)) {
-                if (client.getSocketClient().isTimedOut(now)) {
+                if (client.isTimedOut(now)) {
                     System.out.println("Client " + client.getId() + " timed out. Removing...");
                     client.getSocketClient().close();
                     toRemove.add(client);
                 } else {
-                    client.getSocketClient().sendPing();
+                    client.notifyPing();
                 }
 
             }
@@ -250,7 +250,7 @@ public class ServerController {
             for (Client c : toRemove) {
                 removeClient((ClientHandler) c);
             }
-        }, 0, 5, TimeUnit.SECONDS);
+        }, 10, 5, TimeUnit.SECONDS);
     }
 }
 

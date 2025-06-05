@@ -18,25 +18,6 @@ public class ClientHandlerSocket implements ClientHandler {
     private int id;
     private long lastPongTime = System.currentTimeMillis();
 
-    @Override
-    public void updateLastPong() {
-        this.lastPongTime = System.currentTimeMillis();
-    }
-
-    @Override
-    public boolean isTimedOut(long now) {
-        return now - lastPongTime > 10000; // 10 secondi
-    }
-
-    @Override
-    public void sendPing() {
-        try {
-            sendEvent(new PingEvent());
-        } catch (Exception e) {
-            System.err.println("Errore durante l'invio del ping: " + e.getMessage());
-        }
-    }
-
     public ClientHandlerSocket(NetworkServer network, ServerController controller) {
         this.network = network;
         this.controller = controller;
@@ -54,24 +35,26 @@ public class ClientHandlerSocket implements ClientHandler {
             } catch (IOException | ClassNotFoundException e) {
                 System.err.println("Error receiving the event: " + e.getMessage());
             } finally {
-                System.out.println("Client disconnected.");
-                controller.removeClient(this);
-                int[] scores;
-                Map<String, Integer> playersScores = new HashMap<>();
-                scores = Game.getIstance().computeScores();
-                for(int i=0; i<Game.getIstance().getTruckerList().size()-1; i++){
-                    if (Game.getIstance().getTrucker(i).getNickname()!=null) {
-                        playersScores.put(Game.getIstance().getTrucker(i).getNickname(), scores[i]);
-                    }else {
-                        playersScores.put("giocatore " + i, scores[i]);
+                if(Game.getIstance()!=null) {
+                    System.out.println("Client disconnected.");
+                    controller.removeClient(this);
+                    int[] scores;
+                    Map<String, Integer> playersScores = new HashMap<>();
+                    scores = Game.getIstance().computeScores();
+                    for (int i = 0; i < Game.getIstance().getTruckerList().size() - 1; i++) {
+                        if (Game.getIstance().getTrucker(i).getNickname() != null) {
+                            playersScores.put(Game.getIstance().getTrucker(i).getNickname(), scores[i]);
+                        } else {
+                            playersScores.put("giocatore " + i, scores[i]);
+                        }
                     }
+                    for (int i = 0; i < Game.getIstance().getTruckerOut().size() - 1; i++) {
+                        playersScores.put(Game.getIstance().getTruckerOut().get(i).getNickname(), scores[i]);
+                    }
+                    playersScores.forEach((name, score) -> System.out.println("- " + name + ": " + score));
+                    controller.broadcastEventExceptSome(new EndGameEvent(playersScores), this.getId());
+                    close();
                 }
-                for(int i=0; i<Game.getIstance().getTruckerOut().size()-1; i++){
-                    playersScores.put(Game.getIstance().getTruckerOut().get(i).getNickname(), scores[i]);
-                }
-                playersScores.forEach((name, score) -> System.out.println("- " + name + ": " + score));
-                controller.broadcastEventExceptSome(new EndGameEvent(playersScores), this.getId());
-                close();
             }
         });
         listenerThread.setDaemon(true);

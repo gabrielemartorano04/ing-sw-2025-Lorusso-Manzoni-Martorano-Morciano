@@ -35,6 +35,10 @@ public class RmiClient extends UnicastRemoteObject implements RemoteClientHandle
         server.handleIncomingEvent(event, this);
     }
 
+    public void respondToPing() throws RemoteException{
+        view.respondToPing();
+    }
+
     @Override
     public void setId(int id) throws RemoteException {
         System.out.println("Entrato nel setId rmiClient");

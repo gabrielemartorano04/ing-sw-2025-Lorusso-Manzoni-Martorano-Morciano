@@ -510,7 +510,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     @Override
     public void visit(PongEvent event) {
         serverEvent = null;
-        currentClient.getSocketClient().updateLastPong();
+        currentClient.updateLastPong();
     }
 
 }

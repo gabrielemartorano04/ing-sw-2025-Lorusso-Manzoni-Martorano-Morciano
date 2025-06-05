@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,13 +23,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.util.List;
+import java.util.ArrayList;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.function.Consumer;
 import javafx.scene.control.ScrollPane;
 
@@ -52,6 +54,8 @@ public class BuildingScene {
     private Button otherBtn;
     private Button hourglassBtn;
     private Button selectBtn;
+
+    private List<Node> shipScreenContentSnapshot;
 
     private final StackPane root;
 
@@ -77,12 +81,17 @@ public class BuildingScene {
     }
 
     //TODO aggiungere per ogni componente un bottone in modo che premendo parla la link con la posizione x,y
-    public Scene createScene(ArrayList<String> playersNames) {
+    public Scene createScene(ArrayList<String> playersNames, int level) {
         double width = 1600;
         double height = 900;
 
         // Sfondo
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpeg").toExternalForm());
+        Image backgroundImage;
+        if(level == 0){
+            backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1.jpeg").toExternalForm());
+        } else {
+            backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpeg").toExternalForm());
+        }
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(width);
         backgroundView.setFitHeight(height);
@@ -111,8 +120,8 @@ public class BuildingScene {
                         imageView.setFitWidth(136);
                         imageView.setFitHeight(136);
                         Rectangle clip = new Rectangle(136, 136);
-                        clip.setArcWidth(6);
-                        clip.setArcHeight(6);
+                        clip.setArcWidth(12);
+                        clip.setArcHeight(12);
                         imageView.setClip(clip);
                         cell.getChildren().add(imageView);
                     }
@@ -165,19 +174,25 @@ public class BuildingScene {
         addStackButtonToScene(viewFlow, styleButton);
         addRulesButtonToScene(styleButton);
         addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
-        addHourglassButtonToScene(viewFlow);
+        if(level == 2){
+            addHourglassButtonToScene(viewFlow);
+        }
         addSelectComponentButton(styleButton);
-        attachOptionsBoxToScene(scene);
+        attachOptionsBoxToScene(scene, level);
 
         return scene;
     }
 
-    private void attachOptionsBoxToScene(Scene scene) {
+    private void attachOptionsBoxToScene(Scene scene, int level) {
         VBox optionsBox = new VBox(10);
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
-        optionsBox.getChildren().addAll(selectBtn, stackBtn, otherBtn, finishBtn, rulesBtn, hourglassBtn);
+        if(level ==0){
+            optionsBox.getChildren().addAll(selectBtn, stackBtn, otherBtn, finishBtn, rulesBtn);
+        }else{
+            optionsBox.getChildren().addAll(selectBtn, stackBtn, otherBtn, finishBtn, rulesBtn, hourglassBtn);
+        }
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) scene.getRoot();
@@ -191,7 +206,7 @@ public class BuildingScene {
 
     private Consumer<Button> createDefaultButtonStyler() {
         return (btn) -> {
-            btn.setFont(Font.font("Bangers", 15));
+            btn.setFont(Font.font("Bangers", 18));
             btn.setTextFill(Color.BLACK);
             btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
             btn.setCursor(Cursor.HAND);
@@ -355,7 +370,7 @@ public class BuildingScene {
 
     private void addHourglassButtonToScene(ViewFlow viewFlow) {
         Button hourglassBtn = new Button("⏳");
-        hourglassBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+        hourglassBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
         hourglassBtn.setTextFill(Color.BLACK);
         hourglassBtn.setCursor(Cursor.HAND);
         hourglassBtn.setPrefWidth(70);
@@ -396,14 +411,17 @@ public class BuildingScene {
         styleButton.accept(selectComponentBtn);
 
         selectComponentBtn.setOnAction(e -> {
+            shipScreenContentSnapshot = new ArrayList<>(root.getChildren());
+
             ArrayList<Component> components = new AvailableComponents().getComponents();
-            showAvailableComponent(components);
+            //TODO: ora tieni components per vedere ma poi sarà showAvailableComponent(viewFlow.getAvailableComponents());
+            loadComponentsView(components);
         });
 
         this.selectBtn = selectComponentBtn;
     }
 
-    public void showAvailableComponent(ArrayList<Component> components) {
+    public void loadComponentsView(ArrayList<Component> components) {
         double width = 1600;
         double height = 900;
 
@@ -415,8 +433,8 @@ public class BuildingScene {
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20));
-        grid.setHgap(10);
-        grid.setVgap(10);
+        grid.setHgap(15);
+        grid.setVgap(15);
         grid.setAlignment(Pos.CENTER);
 
         int col = 0, row = 0;
@@ -425,17 +443,17 @@ public class BuildingScene {
             final int index = i;
 
             ImageView imgView = new ImageView(component.getCovered() ? component.getBackImage() : component.getFrontImage());
-            imgView.setFitWidth(70);
-            imgView.setFitHeight(70);
+            imgView.setFitWidth(90);
+            imgView.setFitHeight(90);
 
-            Rectangle clip = new Rectangle(75, 75);
+            Rectangle clip = new Rectangle(90, 90);
             clip.setArcWidth(16);
             clip.setArcHeight(16);
             imgView.setClip(clip);
 
             Button button = new Button();
             button.setGraphic(imgView);
-            button.setPrefSize(75, 75);
+            button.setPrefSize(90, 90);
             button.setStyle("-fx-background-color: transparent; -fx-border-color: #cccccc; -fx-border-radius: 8px; -fx-cursor: hand; -fx-padding: 0px;");
 
             button.setOnAction(e -> {
@@ -462,12 +480,14 @@ public class BuildingScene {
         backBtn.setPadding(new Insets(10, 12, 10, 12));
 
         backBtn.setOnAction(e -> {
-            root.getChildren().setAll(grid, keptSlots);  // Torna alla schermata principale
+            if (shipScreenContentSnapshot != null) {
+                root.getChildren().setAll(shipScreenContentSnapshot);
+            }
         });
 
         StackPane componentView = new StackPane(backgroundView, scrollPane, backBtn);
         StackPane.setAlignment(backBtn, Pos.TOP_LEFT);
-        StackPane.setMargin(backBtn, new Insets(20, 0, 0, 20));
+        StackPane.setMargin(backBtn, new Insets(20, 0, 0, 120));
 
         root.getChildren().setAll(componentView);
     }
