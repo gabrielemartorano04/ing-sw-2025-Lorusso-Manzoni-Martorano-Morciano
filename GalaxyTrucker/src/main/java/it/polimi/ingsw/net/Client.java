@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net;
 
 import it.polimi.ingsw.controller.TruckerController;
+import it.polimi.ingsw.net.events.serverevents.PingEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 
@@ -55,6 +56,18 @@ public class Client {
 
     public void setTruckerController(TruckerController truckerController) {
         this.truckerController = truckerController;
+    }
+
+    public void notifyPing(){
+        if(clientHandler != null){
+            clientHandler.sendPing();
+        }else {
+            try {
+                remoteClientHandler.respondToPing();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void updateClient(ServerEvent event){
