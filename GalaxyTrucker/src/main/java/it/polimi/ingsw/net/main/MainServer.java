@@ -10,13 +10,19 @@ import it.polimi.ingsw.net.socket.server.NetworkServer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class MainServer {
     public static void main(String[] args) {
         final int PORT = 12346;
         ServerController serverController = new ServerController();
+        Scanner scanner = new Scanner(System.in);
 
-        String ip = "172.20.10.3";
+        String ip;
+        do{
+            System.out.println("Insert the IP of the server, with the format x.y.z.w");
+            ip = scanner.nextLine().trim();
+        }while(!isValidIp(ip));
 
         RmiServer.bind(serverController, ip);
 
@@ -36,6 +42,26 @@ public class MainServer {
             System.err.println("Error in server: " + e.getMessage());
         }
     }
+
+
+    public static boolean isValidIp(String ip) {
+        if (ip == null || ip.isEmpty()) return false;
+
+        String[] parts = ip.split("\\.");
+        if (parts.length != 4) return false;
+
+        for (String part : parts) {
+            try {
+                int value = Integer.parseInt(part);
+                if (value < 0 || value > 255) return false;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
 }
 
