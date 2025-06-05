@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
+import it.polimi.ingsw.net.events.serverevents.cardevents.CurrentCondition;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
@@ -325,13 +326,19 @@ public class GUI implements UI {
 
     // fine building scene
 
+
+
+    // flight scene
+
     @Override
     public void flightScene(FlightStartEvent event){
         //TODO:
     }
 
-    // flight scene
-
+    @Override
+    public void showCurrCondition(CurrentCondition event) {
+        //todo
+    }
 
     // fine flight scene
 
@@ -1770,10 +1777,6 @@ public class GUI implements UI {
                 System.out.println("ComponentBox already present");
             }
         });
-    }
-    @Override
-    public void showCurrCondition(Condition cond) {
-
     }
 
     @Override
