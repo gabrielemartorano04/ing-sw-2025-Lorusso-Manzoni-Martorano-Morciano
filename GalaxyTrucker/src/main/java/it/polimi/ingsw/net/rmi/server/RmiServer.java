@@ -7,7 +7,6 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -26,29 +25,17 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
         this.controller.addClient(new Client(null, client));
     }
 
-
-    public static void bind(ServerController serverController, String ip) {
+    public static void bind(ServerController serverController) {
         try {
-            System.setProperty("java.rmi.server.hostname", ip);
             RmiServer server = new RmiServer(serverController);
-
-            try {
-                LocateRegistry.createRegistry(1099);
-                System.out.println("RMI registry created at port 1099");
-            } catch (RemoteException e) {
-                System.out.println("RMI registry already exists.");
-            }
-
-            Naming.rebind("rmi://" + ip + ":1099/MyService", server);
-            System.out.println("RMI Server bound under name 'MyService' at " + ip);
-        } catch (Exception e) {
+            Registry registry = LocateRegistry.createRegistry(1099);
+            registry.rebind("MyService", server);
+            System.out.println("RMI Server bound under name 'MyService'");
+        } catch (RemoteException e) {
             System.err.println("Error starting RMI server: " + e.getMessage());
             e.printStackTrace();
         }
     }
-
-
-
 
     public void handleIncomingEvent(ClientEvent event, RemoteClientHandler client) throws RemoteException {
         controller.launchThreadEvent(controller.generateSourceForRmi(event, client.getId()));
