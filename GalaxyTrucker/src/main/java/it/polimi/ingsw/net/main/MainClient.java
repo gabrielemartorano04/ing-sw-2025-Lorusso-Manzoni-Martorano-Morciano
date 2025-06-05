@@ -10,6 +10,8 @@ import it.polimi.ingsw.view.ViewFlow;
 
 import java.io.IOException;
 import java.rmi.Naming;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
@@ -62,8 +64,8 @@ public class MainClient {
         }
         else {
             try {
-                String url = "rmi://" + serverAddress + ":1099/MyService";
-                RmiServerInterface rmiServer = (RmiServerInterface) Naming.lookup(url);
+                Registry registry = LocateRegistry.getRegistry(serverAddress, 1099);
+                RmiServerInterface rmiServer = (RmiServerInterface) registry.lookup("MyService");
 
                 ViewFlow view = new ViewFlow(null);
                 RemoteClientHandler client = new RmiClient(rmiServer, view);
