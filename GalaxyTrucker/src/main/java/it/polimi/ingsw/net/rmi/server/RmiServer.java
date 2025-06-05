@@ -28,9 +28,9 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
     public static void bind(ServerController serverController) {
         try {
             RmiServer server = new RmiServer(serverController);
-            Registry registry = LocateRegistry.createRegistry(1099);
-            registry.rebind("MyService", server);
-            System.out.println("RMI Server bound under name 'MyService'");
+            Registry registry = LocateRegistry.createRegistry(4321);
+            registry.rebind("GalaxyTrucker", server);
+            System.out.println("RMI Server bound under name 'GalaxyTrucker'");
         } catch (RemoteException e) {
             System.err.println("Error starting RMI server: " + e.getMessage());
             e.printStackTrace();
