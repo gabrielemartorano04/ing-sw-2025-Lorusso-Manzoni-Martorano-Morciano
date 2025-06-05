@@ -26,12 +26,12 @@ class SpaceShipTest {
             throw new RuntimeException(e);
         }
         spaceShip1=new SpaceShip();
-        spaceShip1.setSpaceship(2,PlayerColors.GREEN); // empty spaceship
+        spaceShip1.initSpaceShip(2,PlayerColors.GREEN); // empty spaceship
     }
 
     @Test
-    void setSpaceship() {
-        spaceShip1.setSpaceship(2,PlayerColors.RED);
+    void initSpaceShip() {
+        spaceShip1.initSpaceShip(2,PlayerColors.RED);
 
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
@@ -64,7 +64,7 @@ class SpaceShipTest {
             }
         }
 
-        spaceShip2.setSpaceship(0,PlayerColors.GREEN);
+        spaceShip2.initSpaceShip(0,PlayerColors.GREEN);
         for(int i=5;i<=9;i++){
             for(int j=4;j<=10;j++){
                 if(i==7 && j==7){

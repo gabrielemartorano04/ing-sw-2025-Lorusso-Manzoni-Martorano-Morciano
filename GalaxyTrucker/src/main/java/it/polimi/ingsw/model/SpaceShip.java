@@ -69,7 +69,7 @@ public class SpaceShip implements Serializable {
         numDoubleEngine=0;
     }
 
-    public void setSpaceship(int level, PlayerColors color){
+    public void initSpaceShip(int level, PlayerColors color){
         if(level==0){
             for(int i=5;i<=9;i++){
                 for(int j=4;j<=10;j++){
