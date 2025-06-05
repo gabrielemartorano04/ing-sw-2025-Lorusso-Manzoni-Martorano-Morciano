@@ -82,7 +82,8 @@ public class BuildingScene {
 
     //TODO aggiungere per ogni componente un bottone in modo che premendo parla la link con la posizione x,y
     public Scene createScene(ArrayList<String> playersNames, int level) {
-
+        double width = 1600;
+        double height = 900;
 
         // Sfondo
         Image backgroundImage;
@@ -92,6 +93,8 @@ public class BuildingScene {
             backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpeg").toExternalForm());
         }
         ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
         backgroundView.setPreserveRatio(true);
         backgroundView.setMouseTransparent(true);
 
@@ -163,7 +166,7 @@ public class BuildingScene {
         }
 
         root.getChildren().setAll(backgroundView, grid, keptSlots);
-        scene = new Scene(root);
+        scene = new Scene(root, width, height);
         Consumer<Button> styleButton = createDefaultButtonStyler();
 
 
