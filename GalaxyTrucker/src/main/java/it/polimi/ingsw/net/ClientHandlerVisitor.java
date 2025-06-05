@@ -8,10 +8,7 @@ import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.*;
-import it.polimi.ingsw.net.events.clientevents.AlienCoordinatesRequest;
-import it.polimi.ingsw.net.events.clientevents.GeneriErrorFromClient;
-import it.polimi.ingsw.net.events.clientevents.SendAlienCoord;
-import it.polimi.ingsw.net.events.clientevents.ShowOtherShipEvent;
+import it.polimi.ingsw.net.events.clientevents.*;
 import it.polimi.ingsw.net.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.*;
@@ -508,6 +505,12 @@ public class ClientHandlerVisitor implements VirtualServer {
             playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
         }
         serverEvent= new EndGameEvent(playersScores);
+    }
+
+    @Override
+    public void visit(PongEvent event) {
+        serverEvent = null;
+        currentClient.getSocketClient().updateLastPong();
     }
 
 }

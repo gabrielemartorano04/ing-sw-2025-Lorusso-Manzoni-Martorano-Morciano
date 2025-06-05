@@ -1,12 +1,15 @@
 package it.polimi.ingsw.net;
 
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.net.events.clientevents.PongEvent;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.flightevents.*;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
+
+import java.io.IOException;
 
 
 public class ServerEventHandlerVisitor implements VirtualView {
@@ -192,12 +195,15 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setHumanCount(event.getHumanCount());
         viewFlow.setCannonPower(event.getCannonPower());
         viewFlow.setEnginePower(event.getEnginePower());
+        ui.showShipLayout(viewFlow.getNickname(), event.getSpaceShip());
         viewFlow.setShip(event.getSpaceShip());
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         viewFlow.setStartFlightForAll();
+        ui.showFlightPhaseStart();
+        ui.showMessage("Please type 'state' to see your spaceship state\n");
         viewFlow.setTrack(event.getTrack());
-
-        ui.flightScene(event);
+        System.out.print("> ");
     }
 
     @Override
@@ -344,16 +350,16 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             switch (event.getHitType()) {
                 case "bigmeteor" -> {
-                    viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
                     ui.showMessage("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
+                    viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
                 }
                 case "smallmeteor" -> {
-                    viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
                     ui.showMessage("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
+                    viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
                 }
                 case "smallshot"-> {
-                    viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
                     ui.showMessage("The dices result for the shot # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
+                    viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
                 }
             }
             System.out.print("> ");
@@ -764,5 +770,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
         System.out.print("> ");
     }
 
+    @Deprecated
+    public void visit(PingEvent event){
 
+    }
 }
