@@ -341,10 +341,7 @@ public class GUI implements UI {
         //todo
     }
 
-    @Override
-    public void takeDecision(BooleanDecision event) {
-        //todo
-    }
+
 
     // fine flight scene
 
