@@ -174,19 +174,25 @@ public class BuildingScene {
         addStackButtonToScene(viewFlow, styleButton);
         addRulesButtonToScene(styleButton);
         addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
-        addHourglassButtonToScene(viewFlow);
+        if(level == 2){
+            addHourglassButtonToScene(viewFlow);
+        }
         addSelectComponentButton(styleButton);
-        attachOptionsBoxToScene(scene);
+        attachOptionsBoxToScene(scene, level);
 
         return scene;
     }
 
-    private void attachOptionsBoxToScene(Scene scene) {
+    private void attachOptionsBoxToScene(Scene scene, int level) {
         VBox optionsBox = new VBox(10);
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
-        optionsBox.getChildren().addAll(selectBtn, stackBtn, otherBtn, finishBtn, rulesBtn, hourglassBtn);
+        if(level ==0){
+            optionsBox.getChildren().addAll(selectBtn, stackBtn, otherBtn, finishBtn, rulesBtn);
+        }else{
+            optionsBox.getChildren().addAll(selectBtn, stackBtn, otherBtn, finishBtn, rulesBtn, hourglassBtn);
+        }
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) scene.getRoot();
