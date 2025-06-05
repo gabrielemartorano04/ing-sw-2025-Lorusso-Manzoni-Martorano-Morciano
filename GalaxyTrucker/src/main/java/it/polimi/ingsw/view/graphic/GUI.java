@@ -849,34 +849,6 @@ public class GUI implements UI {
             countdown.play();
         });
 
-        // Pulsante Rules
-        Button rulesBtn = new Button("Rules");
-        styleButton.accept(rulesBtn);
-        rulesBtn.setOnAction(e -> {
-            try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
-                if (is == null) {
-                    System.out.println("File not found");
-                    return;
-                }
-
-                File tempPdf = File.createTempFile("galaxy-trucker-rules", ".pdf");
-                tempPdf.deleteOnExit();
-
-                try (FileOutputStream os = new FileOutputStream(tempPdf)) {
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = is.read(buffer)) != -1) {
-                        os.write(buffer, 0, bytesRead);
-                    }
-                }
-
-                Desktop.getDesktop().open(tempPdf);
-
-            } catch (IOException e1) {
-                System.out.println("Error in file opening");
-            }
-        });
-
         //Pulsante Show Other
         Button otherBtn = new Button("Show others ship");
         styleButton.accept(otherBtn);
@@ -914,7 +886,7 @@ public class GUI implements UI {
             ((StackPane) stage.getScene().getRoot()).getChildren().add(popup);
         });
 
-        optionsBox.getChildren().addAll(selectComponentBtn, otherBtn, rulesBtn, hourglassBtn);
+        optionsBox.getChildren().addAll(selectComponentBtn, otherBtn, hourglassBtn);
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) stage.getScene().getRoot();

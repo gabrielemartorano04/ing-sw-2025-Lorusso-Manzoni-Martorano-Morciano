@@ -36,6 +36,11 @@ public class GUIApplication extends Application {
     public void start(Stage primaryStage) throws InvalidCoordinates {
         ViewFlow viewFlow = new ViewFlow(new ClientEventSender(new NetworkClient("localhost", 12346)));
         availableComponents = new AvailableComponents();
+        ArrayList<String> playersNames = new ArrayList<>();
+        playersNames.add("Luca");
+        playersNames.add("Manzo");
+        playersNames.add("Gabri");
+
         c = new Cannon(3, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web129.jpg", true);
         Trucker trucker = new Trucker("luca", PlayerColors.BLUE);
         kept = new ArrayList<>();
@@ -106,7 +111,7 @@ public class GUIApplication extends Application {
         primaryStage.setScene(loginScene.createScene());
 
         BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow);
-        primaryStage.setScene(buildingScene.createScene());
+        primaryStage.setScene(buildingScene.createScene(playersNames));
 
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen

@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.File;
@@ -41,6 +42,7 @@ public class BuildingScene {
     private Button finishBtn;
     private Button stackBtn;
     private Button rulesBtn;
+    private Button otherBtn;
 
 
     public BuildingScene(String nickname, Component[][] layout, ViewFlow viewFlow) {
@@ -67,7 +69,7 @@ public class BuildingScene {
     }
 
     //TODO aggiungere per ogni componente un bottone in modo che premendo parla la link con la posizione x,y
-    public Scene createScene() {
+    public Scene createScene(ArrayList<String> playersNames) {
         double width = 1600;
         double height = 900;
 
@@ -155,7 +157,9 @@ public class BuildingScene {
         addFinishButtonToScene(optionsBox, viewFlow, styleButton);
         addStackButtonToScene(optionsBox, viewFlow, styleButton);
         addRulesButtonToScene(optionsBox, styleButton);
+        addShowOtherButtonToScene(optionsBox, viewFlow, styleButton, playersNames);
         attachOptionsBoxToScene(scene);
+
         return scene;
     }
 
@@ -164,7 +168,7 @@ public class BuildingScene {
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
-        optionsBox.getChildren().addAll(stackBtn, finishBtn, rulesBtn);
+        optionsBox.getChildren().addAll(stackBtn, finishBtn, rulesBtn, otherBtn);
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) scene.getRoot();
@@ -322,6 +326,40 @@ public class BuildingScene {
         this.rulesBtn = rulesBtn;
         optionsBox.getChildren().add(rulesBtn);
     }
+
+    private void addShowOtherButtonToScene(VBox optionsBox, ViewFlow viewFlow, Consumer<Button> styleButton, ArrayList<String> playersNames) {
+        Button otherBtn = new Button("Show others ship");
+        styleButton.accept(otherBtn);
+
+        otherBtn.setOnAction(e -> {
+            VBox nicknameChoices = new VBox(15);
+            nicknameChoices.setAlignment(Pos.CENTER);
+
+            for (String nickname : playersNames) {
+                Button nickBtn = new Button(nickname);
+                styleButton.accept(nickBtn);
+                nickBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+
+                nickBtn.setOnAction(ev -> {
+                    viewFlow.handleInput("ship " + nickname);
+                    ((StackPane) scene.getRoot()).getChildren().remove(nicknameChoices.getParent());
+                });
+
+                nicknameChoices.getChildren().add(nickBtn);
+            }
+
+            StackPane popup = new StackPane(
+                    new Rectangle(1600, 900, Color.rgb(0, 0, 0, 0.4)),
+                    nicknameChoices
+            );
+            popup.setOnMouseClicked(ev -> ((StackPane) scene.getRoot()).getChildren().remove(popup));
+            ((StackPane) scene.getRoot()).getChildren().add(popup);
+        });
+
+        this.otherBtn = otherBtn;
+        optionsBox.getChildren().add(otherBtn);
+    }
+
 
 
     public Scene getScene() {
