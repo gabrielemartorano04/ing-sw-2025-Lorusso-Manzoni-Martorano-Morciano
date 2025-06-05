@@ -54,18 +54,13 @@ public class BuildingScene {
         this.viewFlow = viewFlow;
         this.isLinkEnabled = false;
 
-        this.validCells = new boolean[][]{
-                {false, false, false, false, false, false, false, false, false, false, false},
-                {false, false, false, false, false, false, false, false, false, false, false},
-                {false, false, false, false, false, false, false, false, false, false, false},
-                {false, false, false, false, false, false, false, false, false, false, false},
-                {false, false, false, false, false, false, false, false, false, false, false},
-                {false, false, false, false, false, false, true, false, true, false, false},
-                {false, false, false, false, false, true, true, true, true, true, false},
-                {false, false, false, false, true, true, true, true, true, true, true},
-                {false, false, false, false, true, true, true, true, true, true, true},
-                {false, false, false, false, true, true, true, false, true, true, true}
-        };
+        this.validCells = new boolean[11][12];
+        for (int i = 0; i < layout.length; i++) {
+            for (int j = 0; j < layout[0].length; j++) {
+                Component c = layout[i][j];
+                validCells[i][j] = c == null || !c.getType().equals("Empty Space");
+            }
+        }
     }
 
     //TODO aggiungere per ogni componente un bottone in modo che premendo parla la link con la posizione x,y
