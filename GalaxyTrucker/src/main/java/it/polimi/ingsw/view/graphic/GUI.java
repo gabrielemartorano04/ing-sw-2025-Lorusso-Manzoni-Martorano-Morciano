@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
+import it.polimi.ingsw.net.events.serverevents.cardevents.BooleanDecision;
 import it.polimi.ingsw.net.events.serverevents.cardevents.CurrentCondition;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
@@ -337,6 +338,11 @@ public class GUI implements UI {
 
     @Override
     public void showCurrCondition(CurrentCondition event) {
+        //todo
+    }
+
+    @Override
+    public void takeDecision(BooleanDecision event) {
         //todo
     }
 
