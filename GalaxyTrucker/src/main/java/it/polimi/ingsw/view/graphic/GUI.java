@@ -10,6 +10,8 @@ import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
+import it.polimi.ingsw.net.events.serverevents.cardevents.BooleanDecision;
+import it.polimi.ingsw.net.events.serverevents.cardevents.CurrentCondition;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
 import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
@@ -325,13 +327,24 @@ public class GUI implements UI {
 
     // fine building scene
 
+
+
+    // flight scene
+
     @Override
     public void flightScene(FlightStartEvent event){
         //TODO:
     }
 
-    // flight scene
+    @Override
+    public void showCurrCondition(CurrentCondition event) {
+        //todo
+    }
 
+    @Override
+    public void takeDecision(BooleanDecision event) {
+        //todo
+    }
 
     // fine flight scene
 
@@ -815,42 +828,9 @@ public class GUI implements UI {
         AvailableComponents availableComponents = new AvailableComponents();
         selectComponentBtn.setOnAction(e -> showAvailableComponent(availableComponents.getComponents()));
 
-        // Pulsante Hourglass (solo timer, no overlay)
-        Button hourglassBtn = new Button("⏳");
-        hourglassBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
-        hourglassBtn.setTextFill(Color.BLACK);
-        hourglassBtn.setCursor(javafx.scene.Cursor.HAND);
-        hourglassBtn.setPrefWidth(70);
-        hourglassBtn.setPrefHeight(30);
-        hourglassBtn.setBackground(new Background(new BackgroundFill(
-                Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-
-        hourglassBtn.setOnAction(e -> {
-            hourglassBtn.setDisable(true);
-
-            ColorAdjust grayOverlay = new ColorAdjust();
-            grayOverlay.setBrightness(-0.5);
-            hourglassBtn.setEffect(grayOverlay);
-
-            final int[] secondsLeft = {90};
-            hourglassBtn.setText(secondsLeft[0] + "s");
-
-            Timeline countdown = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-                secondsLeft[0]--;
-                if (secondsLeft[0] > 0) {
-                    hourglassBtn.setText(secondsLeft[0] + "s");
-                } else {
-                    hourglassBtn.setText("⏳");
-                    hourglassBtn.setDisable(false);
-                    hourglassBtn.setEffect(null); // remove overlay
-                }
-            }));
-            countdown.setCycleCount(90);
-            countdown.play();
-        });
 
 
-        optionsBox.getChildren().addAll(selectComponentBtn, hourglassBtn);
+        optionsBox.getChildren().addAll(selectComponentBtn);
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) stage.getScene().getRoot();
@@ -1803,10 +1783,6 @@ public class GUI implements UI {
                 System.out.println("ComponentBox already present");
             }
         });
-    }
-    @Override
-    public void showCurrCondition(Condition cond) {
-
     }
 
     @Override

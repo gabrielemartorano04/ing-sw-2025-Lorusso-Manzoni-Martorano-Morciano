@@ -9,7 +9,7 @@ public class CreateShipTest {
 
     public SpaceShip createShip1(SpaceShip ship) throws InvalidCoordinates {
         ship = new SpaceShip();
-        ship.setSpaceship(2,PlayerColors.RED);
+        ship.initSpaceShip(2,PlayerColors.RED);
         Component c1 = new BatteryStorage(3, 2, 0, 0, "Battery Storage", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web2.jpg", 2);
         Component c2 = new Cannon(0, 3, 2, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web133.jpg", true);
         Component c3 = new Cabin(0, 2, 0, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web47.jpg", null, false);
@@ -67,7 +67,7 @@ public class CreateShipTest {
 
     public SpaceShip createShip2(SpaceShip ship) throws InvalidCoordinates {
         ship = new SpaceShip();
-        ship.setSpaceship(2,PlayerColors.BLUE);
+        ship.initSpaceShip(2,PlayerColors.BLUE);
         Component c1 = new Cannon(0, 2, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web104.jpg", false);
         Component c2 = new Cannon(0, 1, 3, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web136.jpg", true);
         Component c3 = new Cannon(0, 3, 2, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web133.jpg", true);
@@ -141,7 +141,7 @@ public class CreateShipTest {
 
     public SpaceShip createShip3(SpaceShip ship) throws InvalidCoordinates {
         ship = new SpaceShip();
-        ship.setSpaceship(0,PlayerColors.YELLOW);
+        ship.initSpaceShip(0,PlayerColors.YELLOW);
         Component c1 = new Cannon(0, 2, 3, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web124.jpg", false);
         Component c2 = new Shield(2, 1, 2, 1, "Shield", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web151.jpg");
         Component c3 = new Pipes(1, 3, 2, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web56.jpg");

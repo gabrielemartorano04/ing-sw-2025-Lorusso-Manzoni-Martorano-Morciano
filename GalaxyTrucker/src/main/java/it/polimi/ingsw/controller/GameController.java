@@ -3,8 +3,6 @@ import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.net.Client;
-import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -88,7 +86,7 @@ public class GameController {
         }
 
         TruckerController truckerController = new TruckerController(nickname, color);
-        truckerController.getSpaceShip().setSpaceship(game.getGameLevel(), color);
+        truckerController.initSpaceShip(game.getGameLevel());
         game.addTrucker(truckerController.getTrucker());
 
         count++;
