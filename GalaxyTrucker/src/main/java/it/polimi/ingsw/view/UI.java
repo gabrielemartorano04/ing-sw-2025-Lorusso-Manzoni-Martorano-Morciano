@@ -141,17 +141,7 @@ public interface UI {
 
     void showCardDrawn(StartCardEvent event);
     void showCardEffectStart(Card card);
-    void showCardEffectEnd(Card card);
-
-    void showTruckerMoved(String nickname, int newPosition);
-    void showTruckerLostAllCrew(String nickname);
-
     void showGoodsGained(Goods goods);
-
-
-    //ERRORS/SYSTEM
-    void showConnectionLost();
-    void showInvalidCommand(String expectedFormat);
 
     //INPUT
     void askIndex();
@@ -168,10 +158,6 @@ public interface UI {
 
     void showMessage(String message);
     void showTrack(Map<String, Integer> truckers, int level);
-
-    void showBooleanOption(String message);
-
-    void updateHourglass(int secondsLeft);
 
     void showComponentSelected(Component component);
 

@@ -588,24 +588,10 @@ public class TUI implements UI {
         System.out.println("Card effect: " + card.getDescription());
     }
 
-    @Override
-    public void showCardEffectEnd(Card card) {
-        System.out.println("Card " + card.getName() + " Completed.");
-    }
-
-    @Override
-    public void showTruckerMoved(String nickname, int newPosition) {
-        System.out.println(nickname + " moved to " + newPosition);
-    }
 
     @Override
     public void showTruckerWithdrawn(String nickname) {
         System.out.println(nickname + " withdraw.");
-    }
-
-    @Override
-    public void showTruckerLostAllCrew(String nickname) {
-        System.out.println(nickname + " lost all crew members.");
     }
 
     @Override
@@ -627,16 +613,6 @@ public class TUI implements UI {
     @Override
     public void showError(String message) {
         System.out.println("ERROR: " + message);
-    }
-
-    @Override
-    public void showConnectionLost() {
-        System.out.println("Lost connection.");
-    }
-
-    @Override
-    public void showInvalidCommand(String expectedFormat) {
-        System.out.println("Invalid command. Expected: " + expectedFormat);
     }
 
     @Override
@@ -943,18 +919,8 @@ public class TUI implements UI {
     }
 
     @Override
-    public void showBooleanOption(String message) {
-        System.out.println(message + " (s/n)");
-    }
-
-    @Override
     public void showInsertNumPlayers() {
         System.out.println("\nInsert the number of players and the game level:");
-    }
-
-    @Override
-    public void updateHourglass(int secondsLeft) {
-
     }
 
     @Override

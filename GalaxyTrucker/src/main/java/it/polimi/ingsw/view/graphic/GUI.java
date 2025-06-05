@@ -1109,48 +1109,6 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showCardEffectEnd(Card card) {
-        double width = stage.getScene().getWidth();
-        double height = stage.getScene().getHeight();
-
-        // Sfondo grigio trasparente
-        Rectangle overlay = new Rectangle(width, height);
-        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
-        overlay.setMouseTransparent(true);
-
-        // Etichetta centrale
-        Label message = new Label("Effect ended");
-        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 36));
-        message.setTextFill(Color.web("#FFDE69"));
-        message.setEffect(new DropShadow(3, Color.BLACK));
-
-        StackPane container = new StackPane(overlay, message);
-        container.setAlignment(Pos.CENTER);
-
-        // Rimozione automatica dopo 2 secondi
-        PauseTransition pause = new PauseTransition(Duration.seconds(3));
-        pause.setOnFinished(e -> {
-            Node rootNode = stage.getScene().getRoot();
-            if (rootNode.getClass().equals(StackPane.class)) {
-                ((StackPane) rootNode).getChildren().remove(container);
-            }
-        });
-
-        Platform.runLater(() -> {
-            Node rootNode = stage.getScene().getRoot();
-            if (rootNode.getClass().equals(StackPane.class)) {
-                ((StackPane) rootNode).getChildren().add(container);
-                pause.play();
-            }
-        });
-    }
-
-    @Override
-    public void showTruckerMoved(String nickname, int newPosition) {
-
-    }
-
-    @Override
     public void showTruckerWithdrawn(String nickname) {
         Label message = new Label(nickname + " has withdrawn");
         message.setStyle(
@@ -1160,43 +1118,6 @@ public class GUI implements UI {
                         "-fx-background-radius: 10px;"
         );
         message.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-
-        StackPane overlay = new StackPane(message);
-        overlay.setMouseTransparent(true);
-        StackPane.setAlignment(message, Pos.TOP_RIGHT);
-        StackPane.setMargin(message, new Insets(15, 15, 0, 0));
-
-        Platform.runLater(() -> {
-            Scene scene = stage.getScene();
-            Node currentRoot = scene.getRoot();
-
-            StackPane newRoot;
-            if (!currentRoot.getClass().getName().equals("javafx.scene.layout.StackPane")) {
-                newRoot = new StackPane(currentRoot);
-                scene.setRoot(newRoot);
-            } else {
-                newRoot = (StackPane) currentRoot;
-            }
-
-            newRoot.getChildren().add(overlay);
-
-            PauseTransition delay = new PauseTransition(Duration.seconds(5));
-            delay.setOnFinished(e -> newRoot.getChildren().remove(overlay));
-            delay.play();
-        });
-    }
-
-    @Override
-    public void showTruckerLostAllCrew(String nickname) {
-        Label message = new Label(nickname + " has lost all crew\nand is out");
-        message.setStyle(
-                "-fx-background-color: rgba(0, 0, 0, 0.8); " +
-                        "-fx-text-fill: white; " +
-                        "-fx-padding: 10px 15px; " +
-                        "-fx-background-radius: 10px;"
-        );
-        message.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        message.setTextAlignment(TextAlignment.RIGHT);
 
         StackPane overlay = new StackPane(message);
         overlay.setMouseTransparent(true);
@@ -1240,81 +1161,6 @@ public class GUI implements UI {
 
     @Override
     public void showError(String message) {
-
-    }
-
-    @Override
-    public void showConnectionLost() {
-        double width = stage.getScene().getWidth();
-        double height = stage.getScene().getHeight();
-
-        // Sfondo con immagine EmptyWallpaper
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
-
-        // Scritta "Connection Lost"
-        Label title = new Label("CONNECTION LOST!");
-        title.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 48));
-        title.setTextFill(Color.web("#FFDE69"));
-        title.setEffect(new DropShadow(5, Color.BLACK));
-
-        // Barrette Wi-Fi orizzontali con angoli smussati
-        Rectangle bar1 = new Rectangle(10, 10, Color.web("#FFDE69"));
-        Rectangle bar2 = new Rectangle(10, 20, Color.web("#FFDE69"));
-        Rectangle bar3 = new Rectangle(10, 30, Color.web("#FFDE69"));
-        Rectangle bar4 = new Rectangle(10, 40, Color.web("#FFDE69"));
-
-        List<Rectangle> barsList = Arrays.asList(bar1, bar2, bar3, bar4);
-        for (Rectangle bar : barsList) {
-            bar.setArcWidth(4);
-            bar.setArcHeight(4);
-        }
-
-        HBox bars = new HBox(8, bar1, bar2, bar3, bar4);
-        bars.setAlignment(Pos.BOTTOM_CENTER);
-
-        // Animazione barrette
-        Timeline animation = new Timeline(
-                new KeyFrame(Duration.seconds(0), e -> {
-                    bar1.setOpacity(1); bar2.setOpacity(0.3); bar3.setOpacity(0.3); bar4.setOpacity(0.3);
-                }),
-                new KeyFrame(Duration.seconds(0.5), e -> {
-                    bar1.setOpacity(1); bar2.setOpacity(1); bar3.setOpacity(0.3); bar4.setOpacity(0.3);
-                }),
-                new KeyFrame(Duration.seconds(1), e -> {
-                    bar1.setOpacity(1); bar2.setOpacity(1); bar3.setOpacity(1); bar4.setOpacity(0.3);
-                }),
-                new KeyFrame(Duration.seconds(1.5), e -> {
-                    bar1.setOpacity(1); bar2.setOpacity(1); bar3.setOpacity(1); bar4.setOpacity(1);
-                }),
-                new KeyFrame(Duration.seconds(2), e -> {
-                    bar1.setOpacity(1); bar2.setOpacity(1); bar3.setOpacity(1); bar4.setOpacity(1);
-                })
-        );
-        animation.setCycleCount(Animation.INDEFINITE);
-        animation.play();
-
-        VBox popup = new VBox(25, title, bars);
-        popup.setAlignment(Pos.CENTER);
-
-        StackPane container = new StackPane(backgroundView, popup);
-        container.setMouseTransparent(false);
-
-        // Mostra sopra ogni cosa
-        Platform.runLater(() -> {
-            Node rootNode = stage.getScene().getRoot();
-            if (rootNode.getClass().equals(StackPane.class)) {
-                ((StackPane) rootNode).getChildren().add(container);
-            }
-        });
-    }
-
-    @Override
-    public void showInvalidCommand(String expectedFormat) {
 
     }
 
@@ -1612,60 +1458,6 @@ public class GUI implements UI {
         Scene scene = new Scene(root, width, height);
         stage.setScene(scene);
         stage.centerOnScreen();
-    }
-
-    @Override
-    public void showBooleanOption(String message) {
-        // Contenitore dell'overlay completo
-        BorderPane overlay = new BorderPane();
-        overlay.setPickOnBounds(false);
-        overlay.setMouseTransparent(false);
-        overlay.setPadding(new Insets(20));
-
-        // Titolo in alto
-        Label label = new Label(message);
-        label.setFont(Font.font("Bangers", FontWeight.BOLD, 30));
-        label.setTextFill(Color.web("#FFDE69"));
-        BorderPane.setAlignment(label, Pos.TOP_CENTER);
-        overlay.setTop(label);
-
-        // Pulsanti
-        Button acceptButton = new Button("ACCEPT");
-        Button declineButton = new Button("DECLINE");
-
-        acceptButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;"); // Verde
-        declineButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;"); // Rosso
-
-        for (Button btn : List.of(acceptButton, declineButton)) {
-            btn.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-            btn.setPrefWidth(120);
-            btn.setPrefHeight(40);
-        }
-
-        HBox buttonBox = new HBox(30, acceptButton, declineButton);
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setPadding(new Insets(20, 0, 0, 0));
-        overlay.setBottom(buttonBox);
-
-        // Recupera il root corrente (StackPane)
-        StackPane root = (StackPane) stage.getScene().getRoot();
-        root.getChildren().add(overlay);
-
-        // Callback alla tua logica (da definire tu)
-        acceptButton.setOnAction(e -> {
-            root.getChildren().remove(overlay);
-            setCurrentEvent(null);//TODO: SISTEMA IL NULL è PER ESEGUIRE
-        });
-
-        declineButton.setOnAction(e -> {
-            root.getChildren().remove(overlay);
-            setCurrentEvent(null);//TODO: SISTEMA IL NULL è PER ESEGUIRE
-        });
-    }
-
-    @Override
-    public void updateHourglass(int secondsLeft) {
-
     }
 
     @Override
