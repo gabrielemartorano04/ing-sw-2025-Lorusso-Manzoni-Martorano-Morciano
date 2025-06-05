@@ -104,6 +104,10 @@ public class GUIApplication extends Application {
         LoginScene loginScene = new LoginScene(EnumSet.allOf(PlayerColors.class), viewFlow);
 
         primaryStage.setScene(loginScene.createScene());
+
+        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow);
+        primaryStage.setScene(buildingScene.createScene());
+
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
