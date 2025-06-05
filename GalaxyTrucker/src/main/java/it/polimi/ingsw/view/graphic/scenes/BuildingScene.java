@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,13 +23,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.util.List;
+import java.util.ArrayList;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.function.Consumer;
 import javafx.scene.control.ScrollPane;
 
@@ -52,6 +54,8 @@ public class BuildingScene {
     private Button otherBtn;
     private Button hourglassBtn;
     private Button selectBtn;
+
+    private List<Node> shipScreenContentSnapshot;
 
     private final StackPane root;
 
@@ -396,14 +400,17 @@ public class BuildingScene {
         styleButton.accept(selectComponentBtn);
 
         selectComponentBtn.setOnAction(e -> {
+            shipScreenContentSnapshot = new ArrayList<>(root.getChildren());
+
             ArrayList<Component> components = new AvailableComponents().getComponents();
-            showAvailableComponent(components);
+            //TODO: ora tieni components per vedere ma poi sarà showAvailableComponent(viewFlow.getAvailableComponents());
+            loadComponentsView(components);
         });
 
         this.selectBtn = selectComponentBtn;
     }
 
-    public void showAvailableComponent(ArrayList<Component> components) {
+    public void loadComponentsView(ArrayList<Component> components) {
         double width = 1600;
         double height = 900;
 
@@ -462,7 +469,9 @@ public class BuildingScene {
         backBtn.setPadding(new Insets(10, 12, 10, 12));
 
         backBtn.setOnAction(e -> {
-            root.getChildren().setAll(grid, keptSlots);  // Torna alla schermata principale
+            if (shipScreenContentSnapshot != null) {
+                root.getChildren().setAll(shipScreenContentSnapshot);
+            }
         });
 
         StackPane componentView = new StackPane(backgroundView, scrollPane, backBtn);
