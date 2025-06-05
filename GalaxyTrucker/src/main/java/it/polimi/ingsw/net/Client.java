@@ -12,6 +12,7 @@ public class Client {
     private final RemoteClientHandler remoteClientHandler;
     private TruckerController truckerController;
     private int id;
+    private long lastPongTime;
 
     public Client(ClientHandler clientHandler, RemoteClientHandler remoteClientHandler) {
         this.clientHandler = clientHandler;
@@ -60,7 +61,7 @@ public class Client {
 
     public void notifyPing(){
         if(clientHandler != null){
-            clientHandler.sendPing();
+            sendPing();
         }else {
             try {
                 remoteClientHandler.respondToPing();
@@ -82,6 +83,27 @@ public class Client {
         }
         else{
             System.out.println("Both remoteClientHandler and clientHandler are null!");
+        }
+    }
+
+    public void updateLastPong() {
+        this.lastPongTime = System.currentTimeMillis();
+    }
+
+    public boolean isTimedOut(long now) {
+        return now - lastPongTime > 10000; // 10 secondi
+    }
+
+    public void sendPing() {
+        try {
+            if(clientHandler != null){
+                clientHandler.sendEvent(new PingEvent());
+            } else if (remoteClientHandler!=null) {
+                remoteClientHandler.respondToPing();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Errore durante l'invio del ping: " + e.getMessage());
         }
     }
 }

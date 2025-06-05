@@ -9,12 +9,6 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 public interface ClientHandler {
     void sendEvent(ServerEvent event);
 
-    void updateLastPong();
-
-    boolean isTimedOut(long now);
-
-    void sendPing();
-
     void setId(int id);
     int getId();
 

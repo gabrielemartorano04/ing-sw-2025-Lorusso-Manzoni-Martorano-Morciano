@@ -18,25 +18,6 @@ public class ClientHandlerSocket implements ClientHandler {
     private int id;
     private long lastPongTime = System.currentTimeMillis();
 
-    @Override
-    public void updateLastPong() {
-        this.lastPongTime = System.currentTimeMillis();
-    }
-
-    @Override
-    public boolean isTimedOut(long now) {
-        return now - lastPongTime > 10000; // 10 secondi
-    }
-
-    @Override
-    public void sendPing() {
-        try {
-            sendEvent(new PingEvent());
-        } catch (Exception e) {
-            System.err.println("Errore durante l'invio del ping: " + e.getMessage());
-        }
-    }
-
     public ClientHandlerSocket(NetworkServer network, ServerController controller) {
         this.network = network;
         this.controller = controller;
