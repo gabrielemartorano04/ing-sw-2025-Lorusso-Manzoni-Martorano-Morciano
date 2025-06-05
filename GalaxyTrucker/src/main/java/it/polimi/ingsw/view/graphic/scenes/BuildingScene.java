@@ -131,6 +131,15 @@ public class BuildingScene {
 
                 grid.add(cell, col - 4, row - 5);
                 cellMatrix[row][col] = cell;
+                int rowIndex = row;
+                int colIndex = col;
+                if(isLinkEnabled){
+                    cell.setOnMouseClicked(e -> {
+                        viewFlow.handleInput("Link " + rowIndex + " " + colIndex);
+                        isLinkEnabled = false;
+                    });
+                }
+
             }
         }
 
@@ -155,6 +164,11 @@ public class BuildingScene {
                 border.setStrokeWidth(2);
 
                 slot.getChildren().add(border);
+                int index = i;
+                slot.setOnMouseClicked(e -> {
+                    viewFlow.handleInput("selectKept " + index);
+                    isLinkEnabled = true;
+                });
                 keptSlots.getChildren().add(slot);
                 keptSlotsRef.add(slot);
                 keptImages.add(null);  // Nessuna immagine inizialmente
@@ -288,6 +302,7 @@ public class BuildingScene {
                 final int index = i;
                 pile.setOnAction(ev -> {
                     viewFlow.handleInput("stack " + index);
+                    //TODO aggiungere che una volta scelto lo stack si mostrino le carte
                     root.getChildren().remove(root.lookup("#popupOverlay"));
                 });
                 stackChoices.getChildren().add(pile);
@@ -350,6 +365,7 @@ public class BuildingScene {
 
                 nickBtn.setOnAction(ev -> {
                     viewFlow.handleInput("ship " + nickname);
+                    //TODO aggiungere che una volta premuto si mostrino le navi degli altri
                     ((StackPane) scene.getRoot()).getChildren().remove(nicknameChoices.getParent());
                 });
 
@@ -457,6 +473,7 @@ public class BuildingScene {
 
             button.setOnAction(e -> {
                 viewFlow.handleInput("select " + index);
+                //TODO aggiungere la giusta schermata per il posizionamento del componente
                 // Rimane su questa schermata, o torna se vuoi
             });
 
