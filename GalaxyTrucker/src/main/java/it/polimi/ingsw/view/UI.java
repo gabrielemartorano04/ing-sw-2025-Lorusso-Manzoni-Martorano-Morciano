@@ -84,6 +84,9 @@ public interface UI {
 
     void showTruckerWithdrawn(String nickname);
 
+    void showResult(String result);
+
+    void showDead();
     //END GAME
 
     void showGameEnded();

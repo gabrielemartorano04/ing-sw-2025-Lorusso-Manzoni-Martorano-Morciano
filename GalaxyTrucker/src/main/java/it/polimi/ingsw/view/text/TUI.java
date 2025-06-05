@@ -249,6 +249,7 @@ public class TUI implements UI {
     @Override
     public void showInputFormat(ParserState parserState) {
         switch (parserState){
+            case STATE-> System.out.println("Type 'state' to see your spaceship status");
             case ACTIVATE_ENGINES -> System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
             case ACTIVATE_CANNONS -> System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
             case ACTIVATE_SHIELD -> System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x> <y>, <x> <y>' or 'n': ");
@@ -268,6 +269,14 @@ public class TUI implements UI {
 
         }
         System.out.print("> ");
+    }
+
+    public void showResult(String result){
+        System.out.println(result);
+    }
+
+    public void showDead(){
+        System.out.println("You died");
     }
 
 

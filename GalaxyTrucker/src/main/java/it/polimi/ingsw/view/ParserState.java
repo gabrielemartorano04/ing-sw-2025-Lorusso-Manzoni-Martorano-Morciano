@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 public enum ParserState {
+    STATE,
     HUMAN_COORD,
     PLOT_GOOD,
     ROLL_DICE,

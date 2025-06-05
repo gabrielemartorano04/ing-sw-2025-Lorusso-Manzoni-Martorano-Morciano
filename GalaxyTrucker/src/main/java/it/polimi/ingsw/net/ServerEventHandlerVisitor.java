@@ -201,9 +201,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         viewFlow.setStartFlightForAll();
         ui.showFlightPhaseStart();
-        ui.showMessage("Please type 'state' to see your spaceship state\n");
         viewFlow.setTrack(event.getTrack());
-        System.out.print("> ");
+        viewFlow.setParserFlightState(ParserState.STATE);
+        ui.showInputFormat(viewFlow.getParserFlightState());
     }
 
     @Override
@@ -324,16 +324,15 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             switch (event.getHitType()) {
                 case "bigmeteor" -> {
-                    //todo show resul
-                    ui.showMessage("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
+                    ui.showResult("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
                     viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
                 }
                 case "smallmeteor" -> {
-                    ui.showMessage("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
+                    ui.showResult("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
                     viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
                 }
                 case "smallshot"-> {
-                    ui.showMessage("The dices result for the shot # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
+                    ui.showResult("The dices result for the shot # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
                     viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
                 }
             }
@@ -356,7 +355,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
         for(String nicknames: event.getTruckersRemoved()){
             if(nicknames.equalsIgnoreCase(viewFlow.getNickname())) {
-                //todo inserisci dead
+                ui.showDead();
                 viewFlow.setOut();
                 viewFlow.setParserFlightState(ParserState.DEAD);
             }
