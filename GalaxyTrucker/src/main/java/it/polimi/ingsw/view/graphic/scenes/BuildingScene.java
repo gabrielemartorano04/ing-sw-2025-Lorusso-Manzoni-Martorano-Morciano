@@ -487,7 +487,7 @@ public class BuildingScene {
 
         StackPane componentView = new StackPane(backgroundView, scrollPane, backBtn);
         StackPane.setAlignment(backBtn, Pos.TOP_LEFT);
-        StackPane.setMargin(backBtn, new Insets(20, 0, 0, 20));
+        StackPane.setMargin(backBtn, new Insets(20, 0, 0, 120));
 
         root.getChildren().setAll(componentView);
     }
