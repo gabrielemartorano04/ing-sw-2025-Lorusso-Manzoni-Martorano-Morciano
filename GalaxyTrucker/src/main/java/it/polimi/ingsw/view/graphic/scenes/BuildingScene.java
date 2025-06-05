@@ -8,7 +8,6 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -22,7 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.util.List;
@@ -84,11 +82,10 @@ public class BuildingScene {
 
     //TODO aggiungere per ogni componente un bottone in modo che premendo parla la link con la posizione x,y
     public Scene createScene(ArrayList<String> playersNames, int level) {
-        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        double width = screenBounds.getWidth();
-        double height = screenBounds.getHeight();
+        double width = 1600;
+        double height = 900;
 
-
+        // Sfondo
         Image backgroundImage;
         if(level == 0){
             backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1.jpeg").toExternalForm());
@@ -425,9 +422,8 @@ public class BuildingScene {
     }
 
     public void loadComponentsView(ArrayList<Component> components) {
-        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        double width = screenBounds.getWidth();
-        double height = screenBounds.getHeight();
+        double width = 1600;
+        double height = 900;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
@@ -477,11 +473,11 @@ public class BuildingScene {
         scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 
         Button backBtn = new Button("←");
-        backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
+        backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 14));
         backBtn.setTextFill(Color.BLACK);
         backBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
         backBtn.setCursor(Cursor.HAND);
-        backBtn.setPadding(new Insets(15, 20, 15, 20));
+        backBtn.setPadding(new Insets(10, 12, 10, 12));
 
         backBtn.setOnAction(e -> {
             if (shipScreenContentSnapshot != null) {
@@ -491,7 +487,7 @@ public class BuildingScene {
 
         StackPane componentView = new StackPane(backgroundView, scrollPane, backBtn);
         StackPane.setAlignment(backBtn, Pos.TOP_LEFT);
-        StackPane.setMargin(backBtn, new Insets(30, 0, 0, 120));
+        StackPane.setMargin(backBtn, new Insets(20, 0, 0, 120));
 
         root.getChildren().setAll(componentView);
     }
