@@ -27,7 +27,6 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
 
     public static void bind(ServerController serverController, String hostname) {
         try {
-            // Imposta dinamicamente l'IP del server RMI
             System.setProperty("java.rmi.server.hostname", hostname);
 
             RmiServer server = new RmiServer(serverController);
