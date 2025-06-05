@@ -10,6 +10,7 @@ import it.polimi.ingsw.net.socket.client.ClientEventSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.view.ViewFlow;
 import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
+import it.polimi.ingsw.view.graphic.scenes.FlightScene;
 import it.polimi.ingsw.view.graphic.scenes.LoginScene;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -112,9 +113,18 @@ public class GUIApplication extends Application {
 //
 //        primaryStage.setScene(loginScene.createScene());
 
+//        StackPane stackPane = new StackPane();
+//        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
+//        primaryStage.setScene(buildingScene.createScene(playersNames, 2));
+//
+//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+//        primaryStage.show();
+
+
         StackPane stackPane = new StackPane();
-        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
-        primaryStage.setScene(buildingScene.createScene(playersNames, 2));
+        FlightScene flightScene = new FlightScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
+        primaryStage.setScene(flightScene.createScene(playersNames, 2));
 
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
