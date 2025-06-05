@@ -172,4 +172,8 @@ public class TruckerController  {
         return trucker;
     }
 
+    public void initSpaceShip(int level) {
+        this.trucker.initSpaceShip(level);
+    }
+
 }

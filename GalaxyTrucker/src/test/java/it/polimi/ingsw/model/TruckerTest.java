@@ -17,7 +17,7 @@ class TruckerTest {
     @BeforeEach
     public void setup(){
         this.trucker =new Trucker("frenk", PlayerColors.BLUE);
-        this.trucker.getSpaceShip().setSpaceship(2,PlayerColors.BLUE);
+        this.trucker.getSpaceShip().initSpaceShip(2,PlayerColors.BLUE);
     }
 
     @Test

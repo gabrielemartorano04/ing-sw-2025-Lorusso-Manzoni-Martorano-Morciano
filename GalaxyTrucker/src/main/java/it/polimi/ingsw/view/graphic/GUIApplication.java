@@ -53,6 +53,7 @@ public class GUIApplication extends Application {
 //        stack.add(card2);
 //        stack.add(card3);
         spaceship = new SpaceShip();
+
         //spaceship.setSpaceship(level, color); AGGIUNGIIIII
 //        Cabin cabin = new Cabin(3, 3, 3, 3, "Main Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
 //        trucker.getSpaceShip().addComponent(cabin, 7,7);
@@ -106,9 +107,9 @@ public class GUIApplication extends Application {
 //        primaryStage.setTitle("Test Building Scene");
 //        primaryStage.show();
 
-        LoginScene loginScene = new LoginScene(EnumSet.allOf(PlayerColors.class), viewFlow);
-
-        primaryStage.setScene(loginScene.createScene());
+//        LoginScene loginScene = new LoginScene(EnumSet.allOf(PlayerColors.class), viewFlow);
+//
+//        primaryStage.setScene(loginScene.createScene());
 
         BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow);
         primaryStage.setScene(buildingScene.createScene(playersNames));

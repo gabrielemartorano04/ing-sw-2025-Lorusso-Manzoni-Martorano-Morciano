@@ -149,5 +149,9 @@ public class Trucker implements Serializable {
     public void setSpaceShip(SpaceShip spaceShip) {
         this.spaceShip = spaceShip;
     }
+
+    public void initSpaceShip(int level) {
+        this.spaceShip.initSpaceShip(level, color);
+    }
 }
 
