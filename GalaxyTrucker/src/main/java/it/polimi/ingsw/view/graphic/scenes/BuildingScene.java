@@ -2,6 +2,8 @@ package it.polimi.ingsw.view.graphic.scenes;
 
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,6 +11,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -17,6 +20,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.io.File;
@@ -43,6 +47,7 @@ public class BuildingScene {
     private Button stackBtn;
     private Button rulesBtn;
     private Button otherBtn;
+    private Button hourglassBtn;
 
 
     public BuildingScene(String nickname, Component[][] layout, ViewFlow viewFlow) {
@@ -153,6 +158,7 @@ public class BuildingScene {
         addStackButtonToScene(optionsBox, viewFlow, styleButton);
         addRulesButtonToScene(optionsBox, styleButton);
         addShowOtherButtonToScene(optionsBox, viewFlow, styleButton, playersNames);
+        addHourglassButtonToScene(optionsBox, viewFlow);
         attachOptionsBoxToScene(scene);
 
         return scene;
@@ -163,7 +169,7 @@ public class BuildingScene {
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
-        optionsBox.getChildren().addAll(stackBtn, finishBtn, rulesBtn, otherBtn);
+        optionsBox.getChildren().addAll(stackBtn, otherBtn, finishBtn, rulesBtn, hourglassBtn);
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) scene.getRoot();
@@ -355,6 +361,44 @@ public class BuildingScene {
         optionsBox.getChildren().add(otherBtn);
     }
 
+    private void addHourglassButtonToScene(VBox optionsBox, ViewFlow viewFlow) {
+        Button hourglassBtn = new Button("⏳");
+        hourglassBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+        hourglassBtn.setTextFill(Color.BLACK);
+        hourglassBtn.setCursor(Cursor.HAND);
+        hourglassBtn.setPrefWidth(70);
+        hourglassBtn.setPrefHeight(30);
+        hourglassBtn.setBackground(new Background(new BackgroundFill(
+                Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+
+        hourglassBtn.setOnAction(e -> {
+            viewFlow.handleInput("hourglass");
+            hourglassBtn.setDisable(true);
+
+            ColorAdjust grayOverlay = new ColorAdjust();
+            grayOverlay.setBrightness(-0.5);
+            hourglassBtn.setEffect(grayOverlay);
+
+            final int[] secondsLeft = {90};
+            hourglassBtn.setText(secondsLeft[0] + "s");
+
+            Timeline countdown = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+                secondsLeft[0]--;
+                if (secondsLeft[0] > 0) {
+                    hourglassBtn.setText(secondsLeft[0] + "s");
+                } else {
+                    hourglassBtn.setText("⏳");
+                    hourglassBtn.setDisable(false);
+                    hourglassBtn.setEffect(null); // remove overlay
+                }
+            }));
+            countdown.setCycleCount(90);
+            countdown.play();
+        });
+
+        this.hourglassBtn = hourglassBtn;
+        optionsBox.getChildren().add(hourglassBtn);
+    }
 
 
     public Scene getScene() {

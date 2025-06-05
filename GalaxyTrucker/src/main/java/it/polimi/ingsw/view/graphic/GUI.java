@@ -849,44 +849,8 @@ public class GUI implements UI {
             countdown.play();
         });
 
-        //Pulsante Show Other
-        Button otherBtn = new Button("Show others ship");
-        styleButton.accept(otherBtn);
-        otherBtn.setOnAction(e -> {
-            VBox nicknameChoices = new VBox(15);
-            nicknameChoices.setAlignment(Pos.CENTER);
 
-            List<String> truckerNicknames = new ArrayList<>(){
-                {
-                    add("Player1");
-                    add("Player2");
-                    add("Player3");
-                    add("Player4");
-                }
-            }; //TODO Recupera i nickname
-
-            for (String nickname : truckerNicknames) {
-                Button nickBtn = new Button(nickname);
-                styleButton.accept(nickBtn);
-                nickBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
-
-                nickBtn.setOnAction(ev -> {
-                    viewFlow.handleInput("ship " + nickname);
-                    ((StackPane) stage.getScene().getRoot()).getChildren().remove(nicknameChoices.getParent());
-                });
-
-                nicknameChoices.getChildren().add(nickBtn);
-            }
-
-            StackPane popup = new StackPane(
-                    new Rectangle(850, 550, Color.rgb(0, 0, 0, 0.4)),
-                    nicknameChoices
-            );
-            popup.setOnMouseClicked(ev -> ((StackPane) stage.getScene().getRoot()).getChildren().remove(popup));
-            ((StackPane) stage.getScene().getRoot()).getChildren().add(popup);
-        });
-
-        optionsBox.getChildren().addAll(selectComponentBtn, otherBtn, hourglassBtn);
+        optionsBox.getChildren().addAll(selectComponentBtn, hourglassBtn);
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) stage.getScene().getRoot();
