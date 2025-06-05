@@ -30,7 +30,6 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
     public static void bind(ServerController serverController, String ip) {
         try {
             System.setProperty("java.rmi.server.hostname", ip);
-            RmiServer server = new RmiServer(serverController);
 
             try {
                 LocateRegistry.createRegistry(1099);
@@ -39,6 +38,7 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
                 System.out.println("RMI registry already exists.");
             }
 
+            RmiServer server = new RmiServer(serverController);
             Naming.rebind("rmi://" + ip + ":1099/MyService", server);
             System.out.println("RMI Server bound under name 'MyService' at " + ip);
         } catch (Exception e) {
@@ -46,6 +46,7 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
             e.printStackTrace();
         }
     }
+
 
 
 
