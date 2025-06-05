@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.graphic.scenes;
 
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
 import javafx.application.Platform;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class FlightScene {
     private final String nickname;
