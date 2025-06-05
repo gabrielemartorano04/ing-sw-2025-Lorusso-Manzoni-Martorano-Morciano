@@ -540,6 +540,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(EndGameEvent event) {
         ui.showScores(event.getScores());
         ui.showGameEnded();
+        viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+        viewFlow.setViewState(ViewFlow.ViewState.END);
     }
 
     @Override
@@ -595,7 +597,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(AvailableComponentsEvent event) {
         ui.showAvailableComponent(event.getComponents());
         ui.showSelectComponent();
-        System.out.print("> ");
     }
 
     @Deprecated
