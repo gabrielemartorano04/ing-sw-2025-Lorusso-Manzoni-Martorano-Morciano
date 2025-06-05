@@ -65,6 +65,7 @@ public class MainClient {
         else {
             try {
                 Registry registry = LocateRegistry.getRegistry(serverAddress, 1099);
+                System.out.println(serverAddress);
                 RmiServerInterface rmiServer = (RmiServerInterface) registry.lookup("MyService");
 
                 ViewFlow view = new ViewFlow(null);
