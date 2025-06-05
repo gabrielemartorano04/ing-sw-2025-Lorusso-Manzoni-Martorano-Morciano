@@ -473,11 +473,11 @@ public class BuildingScene {
         scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 
         Button backBtn = new Button("←");
-        backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 14));
+        backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
         backBtn.setTextFill(Color.BLACK);
         backBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
         backBtn.setCursor(Cursor.HAND);
-        backBtn.setPadding(new Insets(10, 12, 10, 12));
+        backBtn.setPadding(new Insets(12, 18, 12, 18));
 
         backBtn.setOnAction(e -> {
             if (shipScreenContentSnapshot != null) {
@@ -487,7 +487,7 @@ public class BuildingScene {
 
         StackPane componentView = new StackPane(backgroundView, scrollPane, backBtn);
         StackPane.setAlignment(backBtn, Pos.TOP_LEFT);
-        StackPane.setMargin(backBtn, new Insets(20, 0, 0, 120));
+        StackPane.setMargin(backBtn, new Insets(35, 0, 0, 125));
 
         root.getChildren().setAll(componentView);
     }
