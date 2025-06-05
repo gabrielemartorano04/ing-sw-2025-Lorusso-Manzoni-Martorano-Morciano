@@ -8,6 +8,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -21,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.util.List;
@@ -82,10 +84,11 @@ public class BuildingScene {
 
     //TODO aggiungere per ogni componente un bottone in modo che premendo parla la link con la posizione x,y
     public Scene createScene(ArrayList<String> playersNames, int level) {
-        double width = 1600;
-        double height = 900;
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        double width = screenBounds.getWidth();
+        double height = screenBounds.getHeight();
 
-        // Sfondo
+
         Image backgroundImage;
         if(level == 0){
             backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1.jpeg").toExternalForm());
@@ -422,8 +425,9 @@ public class BuildingScene {
     }
 
     public void loadComponentsView(ArrayList<Component> components) {
-        double width = 1600;
-        double height = 900;
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        double width = screenBounds.getWidth();
+        double height = screenBounds.getHeight();
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
