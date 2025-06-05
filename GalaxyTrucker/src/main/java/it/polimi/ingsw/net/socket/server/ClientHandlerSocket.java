@@ -1,19 +1,14 @@
 package it.polimi.ingsw.net.socket.server;
 
-import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.ServerController;
-import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.EndGameEvent;
+import it.polimi.ingsw.net.events.serverevents.PingEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
-import it.polimi.ingsw.net.events.serverevents.cardevents.CardEvent;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +16,26 @@ public class ClientHandlerSocket implements ClientHandler {
     private final NetworkServer network;
     private final ServerController controller;
     private int id;
+    private long lastPongTime = System.currentTimeMillis();
+
+    @Override
+    public void updateLastPong() {
+        this.lastPongTime = System.currentTimeMillis();
+    }
+
+    @Override
+    public boolean isTimedOut(long now) {
+        return now - lastPongTime > 10000; // 10 secondi
+    }
+
+    @Override
+    public void sendPing() {
+        try {
+            sendEvent(new PingEvent());
+        } catch (Exception e) {
+            System.err.println("Errore durante l'invio del ping: " + e.getMessage());
+        }
+    }
 
     public ClientHandlerSocket(NetworkServer network, ServerController controller) {
         this.network = network;
@@ -85,6 +100,7 @@ public class ClientHandlerSocket implements ClientHandler {
     }
 
 
+    @Override
     public void close() {
         try {
             network.close();
@@ -92,5 +108,7 @@ public class ClientHandlerSocket implements ClientHandler {
             System.err.println("Error while closing connection: " + e.getMessage());
         }
     }
+
+
 }
 
