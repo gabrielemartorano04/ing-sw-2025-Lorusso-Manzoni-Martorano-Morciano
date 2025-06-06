@@ -618,7 +618,7 @@ public class BuildingScene {
             isLinkEnabled = true;
 
             linkOverlay.setVisible(true);
-
+            linkOverlay.toFront();
             grid.toFront();
 
             Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
@@ -639,6 +639,13 @@ public class BuildingScene {
 
     public void insertSelectedComponent(Component selected) {
         this.componentSelectedExists = true;
+
+        turnBtn.setDisable(false);
+        keepBtn.setDisable(false);
+        discardBtn.setDisable(false);
+        linkBtn.setDisable(false);
+
+        Stream.of(turnBtn, keepBtn, discardBtn, linkBtn).forEach(btn -> btn.setOpacity(1.0));
 
         ImageView componentView = new ImageView(selected.getFrontImage());
         componentView.setFitWidth(116);
