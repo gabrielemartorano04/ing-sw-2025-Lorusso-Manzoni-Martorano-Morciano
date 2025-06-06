@@ -70,7 +70,7 @@ public class BuildingScene {
     private List<Node> shipScreenContent;
 
     private VBox componentSelectedBox;
-    private boolean componentSelectedExists = false;
+    private boolean componentSelectedExists;
 
     public BuildingScene(String nickname, Component[][] layout, ViewFlow viewFlow, StackPane root) {
         this.nickname = nickname;
@@ -215,6 +215,7 @@ public class BuildingScene {
         linkOverlay.setPrefSize(width, height);
         linkOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
         linkOverlay.setVisible(false);
+        linkOverlay.setMouseTransparent(true);
         root.getChildren().add(linkOverlay);
 
         return scene;
@@ -554,14 +555,13 @@ public class BuildingScene {
         buttonsBox.setAlignment(Pos.CENTER);
 
         componentSelectedBox = new VBox(10, imageContainer, buttonsBox);
-        componentSelectedBox.setPadding(new Insets(0, 0, -400, -1243));
+        componentSelectedBox.setPadding(new Insets(0, 0, -480, -1243));
         componentSelectedBox.setAlignment(Pos.CENTER);
 
         StackPane.setAlignment(componentSelectedBox, Pos.CENTER);
         StackPane.setMargin(componentSelectedBox, new Insets(0, 0, 25, 15));
         root.getChildren().add(componentSelectedBox);
     }
-
 
     private VBox createSelectComponentButtons() {
         Consumer<Button> styleYellowButton = btn -> {
@@ -570,6 +570,8 @@ public class BuildingScene {
             btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
             btn.setCursor(Cursor.HAND);
             btn.setPrefWidth(180);
+            btn.setDisable(true);      // Disabilitati all'inizio
+            btn.setOpacity(0.5);       // Invisibili all'inizio
         };
 
         Consumer<Button> styleRedButton = btn -> {
@@ -578,49 +580,40 @@ public class BuildingScene {
             btn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
             btn.setCursor(Cursor.HAND);
             btn.setPrefWidth(180);
+            btn.setDisable(true);
+            btn.setOpacity(0.5);
         };
 
+        // Crea bottoni
         Button turnBtn = new Button("Turn");
         Button keepBtn = new Button("Keep");
         Button discardBtn = new Button("Discard");
         Button linkBtn = new Button("Link");
 
+        // Applica stili
         styleYellowButton.accept(turnBtn);
         styleYellowButton.accept(keepBtn);
         styleRedButton.accept(discardBtn);
         styleYellowButton.accept(linkBtn);
 
-        boolean disable = !componentSelectedExists;
-        for (Button btn : List.of(turnBtn, keepBtn, discardBtn, linkBtn)) {
-            btn.setDisable(disable);
-            btn.setOpacity(disable ? 0.5 : 1.0);
-        }
+        // Salva riferimenti
+        this.turnBtn = turnBtn;
+        this.keepBtn = keepBtn;
+        this.discardBtn = discardBtn;
+        this.linkBtn = linkBtn;
 
-        turnBtn.setOnAction(e -> {
-            if (!turnBtn.isDisabled()) {
-                viewFlow.handleInput("Turn");
-            }
-        });
-
-        keepBtn.setOnAction(e -> {
-            if (!keepBtn.isDisabled()) {
-                viewFlow.handleInput("Keep");
-            }
-        });
-
+        // Assegna azioni
+        turnBtn.setOnAction(e -> viewFlow.handleInput("Turn"));
+        keepBtn.setOnAction(e -> viewFlow.handleInput("Keep"));
         discardBtn.setOnAction(e -> {
-            if (!discardBtn.isDisabled()) {
-                viewFlow.handleInput("Discard");
-            }
+            componentSelectedExists = false;
+            viewFlow.handleInput("Discard");
         });
 
         linkBtn.setOnAction(e -> {
             isLinkEnabled = true;
-
             linkOverlay.setVisible(true);
-
             grid.toFront();
-
             Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
                 btn.setDisable(true);
                 btn.setOpacity(0.5);
@@ -629,11 +622,6 @@ public class BuildingScene {
 
         VBox buttonsBox = new VBox(8, turnBtn, linkBtn, keepBtn, discardBtn);
         buttonsBox.setAlignment(Pos.CENTER);
-        this.turnBtn = turnBtn;
-        this.keepBtn = keepBtn;
-        this.discardBtn = discardBtn;
-        this.linkBtn = linkBtn;
-
         return buttonsBox;
     }
 
@@ -650,14 +638,15 @@ public class BuildingScene {
         clip.setArcHeight(18);
         componentView.setClip(clip);
 
-        // Inserisce l'immagine nel contenitore esistente
         StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
         imageContainer.getChildren().add(componentView);
 
-        // Rimuove la vecchia box dei bottoni e la sostituisce con una abilitata
-        componentSelectedBox.getChildren().remove(1);
-        componentSelectedBox.getChildren().add(createSelectComponentButtons());
+        Stream.of(turnBtn, keepBtn, discardBtn, linkBtn).forEach(btn -> {
+            btn.setDisable(false);
+            btn.setOpacity(1.0);
+        });
     }
+
 
 
     public void loadShipView(){
