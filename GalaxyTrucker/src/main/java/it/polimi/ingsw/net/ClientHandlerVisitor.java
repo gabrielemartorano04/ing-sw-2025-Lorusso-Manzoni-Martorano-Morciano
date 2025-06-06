@@ -508,7 +508,8 @@ public class ClientHandlerVisitor implements VirtualServer {
     }
 
     @Override
-    public void visit(PongEvent event) {
+    //DA RIVEDERE
+    public synchronized void visit(PongEvent event) {
         serverEvent = null;
         currentClient.updateLastPong();
     }
