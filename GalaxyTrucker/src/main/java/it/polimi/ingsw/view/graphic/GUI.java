@@ -1066,50 +1066,61 @@ public class GUI implements UI {
 
     @Override
     public void showCardDrawn(StartCardEvent event) {
+
+    }
+
+
+    public void showCardDrawn(String photo) {
         double width = stage.getScene().getWidth();
         double height = stage.getScene().getHeight();
 
-        // Sfondo grigio trasparente
-        Rectangle overlay = new Rectangle(width, height);
-        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
-        overlay.setMouseTransparent(true);
-
-        // Titolo sopra
-        Label title = new Label("Card Drawn");
-        title.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 36));
-        title.setTextFill(Color.web("#FFDE69"));
-        title.setEffect(new DropShadow(3, Color.BLACK));
-
         // Immagine della carta
-        ImageView cardView = new ImageView("");//TODO: PRIMA C'ERA event.getFrontImage()
-        cardView.setFitWidth(250);
-        cardView.setFitHeight(400);
+        ImageView cardView = new ImageView(photo);
+        cardView.setFitWidth(180);
         cardView.setPreserveRatio(true);
-        cardView.setEffect(new DropShadow(10, Color.BLACK));
+        cardView.setMouseTransparent(true);
 
-        VBox popup = new VBox(20, title, cardView);
-        popup.setAlignment(Pos.CENTER);
+        // Contorno bianco con angoli smussati
+        Rectangle border = new Rectangle(180, 280); // altezza proporzionale alla larghezza
+        border.setArcWidth(15);
+        border.setArcHeight(15);
+        border.setFill(Color.WHITE);
+        border.setStroke(Color.WHITE);
+        border.setStrokeWidth(2);
 
-        StackPane container = new StackPane(overlay, popup);
+        StackPane cardWithBorder = new StackPane(border, cardView);
+        cardWithBorder.setAlignment(Pos.BOTTOM_LEFT);
+
+        VBox cardBox = new VBox(10, cardWithBorder);
+        cardBox.setAlignment(Pos.BOTTOM_LEFT);
+        cardBox.setPadding(new Insets(0, 0, 0, 20)); // margine sinistro
+
+        // Pulsante "Drawn"
+        Button continueBtn = new Button("Drawn");
+        continueBtn.setFont(Font.font("Bangers", 18));
+        continueBtn.setTextFill(Color.BLACK);
+        continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        continueBtn.setCursor(Cursor.HAND);
+        continueBtn.setPrefWidth(180);
+
+        continueBtn.setOnAction(e -> {
+
+        });
+
+        VBox buttonBox = new VBox(continueBtn);
+        buttonBox.setAlignment(Pos.BOTTOM_LEFT);
+        buttonBox.setPadding(new Insets(10, 0, 20, 20)); // spaziatura sopra e sinistra
+
+        StackPane container = new StackPane(cardBox, buttonBox);
         container.setMouseTransparent(false);
 
         Platform.runLater(() -> {
             Node rootNode = stage.getScene().getRoot();
-            if (rootNode.getClass().equals(StackPane.class)) {
-                StackPane root = (StackPane) rootNode;
+            if (rootNode instanceof StackPane root) {
                 root.getChildren().add(container);
-
-                // Dopo 5 secondi, rimuove il popup e mostra l'effetto
-                PauseTransition delay = new PauseTransition(Duration.seconds(5));
-                delay.setOnFinished(e -> {
-                    root.getChildren().remove(container);
-                    showCardEffectStart(null);//TODO: VUOLE LA CARTA IN TEORIA
-                });
-                delay.play();
             }
         });
     }
-
     @Override
     public void showCardEffectStart(Card card) {
         double width = stage.getScene().getWidth();
