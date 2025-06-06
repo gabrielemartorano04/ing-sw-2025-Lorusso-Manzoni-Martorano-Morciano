@@ -548,16 +548,16 @@ public class BuildingScene {
 
         StackPane imageContainer = new StackPane(border);
         imageContainer.setPrefSize(borderSize, borderSize);
-        imageContainer.setAlignment(Pos.BOTTOM_LEFT);
+        imageContainer.setAlignment(Pos.CENTER);
 
         VBox buttonsBox = createSelectComponentButtons();
-        buttonsBox.setAlignment(Pos.CENTER_LEFT);
+        buttonsBox.setAlignment(Pos.CENTER);
 
         componentSelectedBox = new VBox(10, imageContainer, buttonsBox);
-        componentSelectedBox.setPadding(new Insets(0, 0, 0, 0));
-        componentSelectedBox.setAlignment(Pos.BOTTOM_LEFT);
+        componentSelectedBox.setPadding(new Insets(0, 0, -400, -1243));
+        componentSelectedBox.setAlignment(Pos.CENTER);
 
-        StackPane.setAlignment(componentSelectedBox, Pos.BOTTOM_LEFT);
+        StackPane.setAlignment(componentSelectedBox, Pos.CENTER);
         StackPane.setMargin(componentSelectedBox, new Insets(0, 0, 25, 15));
         root.getChildren().add(componentSelectedBox);
     }
@@ -618,7 +618,7 @@ public class BuildingScene {
             isLinkEnabled = true;
 
             linkOverlay.setVisible(true);
-            linkOverlay.toFront();
+
             grid.toFront();
 
             Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
@@ -640,19 +640,12 @@ public class BuildingScene {
     public void insertSelectedComponent(Component selected) {
         this.componentSelectedExists = true;
 
-        turnBtn.setDisable(false);
-        keepBtn.setDisable(false);
-        discardBtn.setDisable(false);
-        linkBtn.setDisable(false);
-
-        Stream.of(turnBtn, keepBtn, discardBtn, linkBtn).forEach(btn -> btn.setOpacity(1.0));
-
         ImageView componentView = new ImageView(selected.getFrontImage());
-        componentView.setFitWidth(116);
+        componentView.setFitWidth(178);
         componentView.setPreserveRatio(true);
         componentView.setMouseTransparent(true);
 
-        Rectangle clip = new Rectangle(116, 116);
+        Rectangle clip = new Rectangle(178, 178);
         clip.setArcWidth(18);
         clip.setArcHeight(18);
         componentView.setClip(clip);
