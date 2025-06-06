@@ -1206,13 +1206,18 @@ public class GUI implements UI {
     @Override
     public void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor) {
         // Carica le icone (temporaneamente tutte uguali)
-        Image icon = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
+        Image engine = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
+        Image cannon = new Image(getClass().getResource("/it/polimi/ingsw/view/cannon.png").toExternalForm());
+        Image human = new Image(getClass().getResource("/it/polimi/ingsw/view/human.png").toExternalForm());
+        Image battery = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
+        Image pos = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
 
-        ImageView posIcon = new ImageView(icon);
-        ImageView batteryIcon = new ImageView(icon);
-        ImageView humanIcon = new ImageView(icon);
-        ImageView cannonIcon = new ImageView(icon);
-        ImageView engineIcon = new ImageView(icon);
+
+        ImageView posIcon = new ImageView(pos);
+        ImageView batteryIcon = new ImageView(battery);
+        ImageView humanIcon = new ImageView(human);
+        ImageView cannonIcon = new ImageView(cannon);
+        ImageView engineIcon = new ImageView(engine);
 
         List<ImageView> mainIcons = List.of(posIcon, batteryIcon, humanIcon, cannonIcon, engineIcon);
         for (ImageView iv : mainIcons) {
@@ -1245,8 +1250,21 @@ public class GUI implements UI {
         // Goods box
         HBox goodsBox = new HBox(10);
         goodsBox.setAlignment(Pos.CENTER_RIGHT);
+        Image redgood = new Image(getClass().getResource("/it/polimi/ingsw/view/redgood.png").toExternalForm());
+        Image yellowgood = new Image(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png").toExternalForm());
+        Image greengood = new Image(getClass().getResource("/it/polimi/ingsw/view/greengood.png").toExternalForm());
+        Image bluegood = new Image(getClass().getResource("/it/polimi/ingsw/view/bluegood.png").toExternalForm());
+        ImageView goodIcon;
         for (Map.Entry<String, Integer> entry : goodsByColor.entrySet()) {
-            ImageView goodIcon = new ImageView(icon); // Sostituisci con getResource("/goods_" + color + ".png")
+            switch (entry.getKey().toLowerCase()) {
+                case "red" -> goodIcon = new ImageView(redgood);
+                case "yellow" -> goodIcon = new ImageView(yellowgood);
+                case "green" -> goodIcon = new ImageView(greengood);
+                case "blue" -> goodIcon = new ImageView(bluegood);
+                default -> {
+                    continue;
+                }
+            }
             goodIcon.setFitWidth(16);
             goodIcon.setPreserveRatio(true);
 
