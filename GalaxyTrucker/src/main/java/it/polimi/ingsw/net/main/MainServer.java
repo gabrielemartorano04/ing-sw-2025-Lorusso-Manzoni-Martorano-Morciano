@@ -21,7 +21,7 @@ public class MainServer {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server listening on port " + PORT + "...");
 
-            while (true) {
+            while (ServerController.getIstance().isGameRunning()) {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("New client connected: " + clientSocket.getInetAddress());
 
