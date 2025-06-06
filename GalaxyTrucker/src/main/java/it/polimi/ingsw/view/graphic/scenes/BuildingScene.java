@@ -215,6 +215,7 @@ public class BuildingScene {
         linkOverlay.setPrefSize(width, height);
         linkOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
         linkOverlay.setVisible(false);
+        linkOverlay.setMouseTransparent(true);
         root.getChildren().add(linkOverlay);
 
         return scene;
@@ -561,7 +562,6 @@ public class BuildingScene {
         StackPane.setMargin(componentSelectedBox, new Insets(0, 0, 25, 15));
         root.getChildren().add(componentSelectedBox);
     }
-
 
     private VBox createSelectComponentButtons() {
         Consumer<Button> styleYellowButton = btn -> {
