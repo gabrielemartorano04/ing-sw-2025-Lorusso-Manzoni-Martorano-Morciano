@@ -21,6 +21,7 @@ import it.polimi.ingsw.view.ParserState;
 import it.polimi.ingsw.view.UI;
 
 import it.polimi.ingsw.view.ViewFlow;
+import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
 import it.polimi.ingsw.view.graphic.scenes.LoginScene;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -68,6 +69,7 @@ public class GUI implements UI {
 
     private Stage stage;
     private LoginScene loginScene;
+    private BuildingScene buildingScene;
     private ClientEvent currentEvent;
     private Component selectedComponent;
     private final ViewFlow viewFlow;
@@ -252,6 +254,8 @@ public class GUI implements UI {
     public void startBuildingScene(StartBuildingEvent event){
         //TODO:crea la scena di Building iniziale riempendola con le informazioni dall'evento
         //setta la scena corrente a quella appena creata dopo aver eliminato la scena precedente
+//        buildingScene=new BuildingScene()
+//        this.buildingScene.showStartBuilding;,
     }
 
 
