@@ -74,6 +74,7 @@ public class BuildingScene {
         this.keptImages = new ArrayList<>();
         this.viewFlow = viewFlow;
         this.isLinkEnabled = false;
+        this.componentSelectedExists = false;
         this.root = root;
 
         this.validCells = new boolean[11][12];
@@ -197,7 +198,6 @@ public class BuildingScene {
             addHourglassButtonToScene(viewFlow);
         }
         addSelectComponentButton(styleButton);
-
         addComponentSelectedSlot();
 
         attachOptionsBoxToScene(scene, level);
@@ -482,6 +482,7 @@ public class BuildingScene {
 
             button.setOnAction(e -> {
                 viewFlow.handleInput("select " + index);
+
                 //TODO aggiungere la giusta schermata per il posizionamento del componente
                 // Rimane su questa schermata, o torna se vuoi
             });
@@ -518,8 +519,8 @@ public class BuildingScene {
     }
 
     private void addComponentSelectedSlot() {
-        double borderSize = 116;
-        double imageSize = 116;
+        double borderSize = 180;
+        double imageSize = 180;
 
         // Slot vuoto (solo contorno bianco)
         Rectangle border = new Rectangle(borderSize, borderSize);
@@ -532,38 +533,36 @@ public class BuildingScene {
 
         StackPane imageContainer = new StackPane(border);
         imageContainer.setPrefSize(borderSize, borderSize);
-        imageContainer.setAlignment(Pos.CENTER);
-        imageContainer.setTranslateX(-353);
-        imageContainer.setTranslateY(0);
+        imageContainer.setAlignment(Pos.BOTTOM_LEFT);
 
         VBox buttonsBox = createComponentButtons();
         buttonsBox.setAlignment(Pos.CENTER_LEFT);
 
         componentSelectedBox = new VBox(10, imageContainer, buttonsBox);
-        componentSelectedBox.setPadding(new Insets(10));
+        componentSelectedBox.setPadding(new Insets(0, 0, 0, 0));
         componentSelectedBox.setAlignment(Pos.BOTTOM_LEFT);
 
         StackPane.setAlignment(componentSelectedBox, Pos.BOTTOM_LEFT);
-        StackPane.setMargin(componentSelectedBox, new Insets(0, 0, 20, 5));
+        StackPane.setMargin(componentSelectedBox, new Insets(0, 0, 25, 15));
         root.getChildren().add(componentSelectedBox);
     }
 
 
     private VBox createComponentButtons() {
         Consumer<Button> styleYellowButton = btn -> {
-            btn.setFont(Font.font("Bangers", 12));
+            btn.setFont(Font.font("Bangers", 18));
             btn.setTextFill(Color.BLACK);
             btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
             btn.setCursor(Cursor.HAND);
-            btn.setPrefWidth(120);
+            btn.setPrefWidth(180);
         };
 
         Consumer<Button> styleRedButton = btn -> {
-            btn.setFont(Font.font("Bangers", 12));
+            btn.setFont(Font.font("Bangers", 18));
             btn.setTextFill(Color.WHITE);
             btn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
             btn.setCursor(Cursor.HAND);
-            btn.setPrefWidth(120);
+            btn.setPrefWidth(180);
         };
 
         Button turnBtn = new Button("Turn");
@@ -615,7 +614,7 @@ public class BuildingScene {
         });
 
         VBox buttonsBox = new VBox(8, turnBtn, linkBtn, keepBtn, discardBtn);
-        buttonsBox.setAlignment(Pos.CENTER_LEFT);
+        buttonsBox.setAlignment(Pos.CENTER);
         return buttonsBox;
     }
 
