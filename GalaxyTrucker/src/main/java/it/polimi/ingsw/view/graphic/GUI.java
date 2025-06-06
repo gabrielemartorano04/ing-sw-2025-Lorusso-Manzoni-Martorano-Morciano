@@ -22,6 +22,7 @@ import it.polimi.ingsw.view.UI;
 
 import it.polimi.ingsw.view.ViewFlow;
 import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
+import it.polimi.ingsw.view.graphic.scenes.FillScene;
 import it.polimi.ingsw.view.graphic.scenes.LoginScene;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -70,6 +71,7 @@ public class GUI implements UI {
     private Stage stage;
     private LoginScene loginScene;
     private BuildingScene buildingScene;
+    private FillScene fillScene;
     private ClientEvent currentEvent;
     private Component selectedComponent;
     private final ViewFlow viewFlow;
@@ -254,14 +256,16 @@ public class GUI implements UI {
     public void startBuildingScene(StartBuildingEvent event){
         //TODO:crea la scena di Building iniziale riempendola con le informazioni dall'evento
         //setta la scena corrente a quella appena creata dopo aver eliminato la scena precedente
-//        buildingScene=new BuildingScene()
-//        this.buildingScene.showStartBuilding;,
+        //setStackPane non so come si fa
+        //buildingScene=new BuildingScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow, new StackPane());
     }
 
 
     @Override
     public void componentLinked(ComponentLinkedEvent event){
         //TODO: componente è stato linkato correttamente quindi modifichiamo la scena attaccandolo alla nave
+
+        //this.buildingScene.updateComponentLinked(event.getComponent(),event.getX(),event.getY());
     }
 
     @Override
@@ -270,41 +274,53 @@ public class GUI implements UI {
         // vogliamo farti restare nella parte dove vedi le componenti disponibili e farti selezionare un altra componente
         // vogliamo che venga aggiornata la lista dei componenti cioè non devono essere plottati tutti quelli che hanno il selected a true
 
+        //this.buildingScene.showComponentNotAvailable();
     }
 
     @Override
     public void componentSelected(ComponentSelectedEvent event){
         //TODO: ti riporta nella schermata dove vedi la nave con visualizzato il componente che hai selezionato e le posibili azioni
+
+        //this.buildingScene.updateSelectedComponent(event.getComponent);
     }
 
     @Override
     public void invalidCoordinates(InvalidCoordinatesError event) {
         //TODO: notifica errore di questo tipo
+
+        //this.buildingScene.showInvalidCoordinates();
     }
 
     @Override
     public void invalidPosition(InvalidPositionError event){
         //TODO: notifica errore di questo tipo
+        //this.buildingScene.showInvalidPosition();
+
     }
 
     @Override
     public void turnHourGlassError(TurnHourglassError event) {
         //TODO:
+        //this.buildingScene.showTurnHourGlassError();
     }
 
     @Override
     public void turnHourGlass(HourglassTurnEvent event){
         //TODO:
+        //this.buildingScene.updateHourglassTurned();
     }
 
     @Override
     public void  buildingComplete(BuildCompleteEvent event){
         //TODO:
+        //stack pane non sistemato
+        //this.fillScene=new FillScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow,new StackPane());
     }
 
     @Override
     public void keptComponent(KeptComponentEvent event){
         //TODO:
+
     }
 
     @Override
