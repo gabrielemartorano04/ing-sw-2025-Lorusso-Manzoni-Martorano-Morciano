@@ -1,10 +1,12 @@
 package it.polimi.ingsw.controller;
 
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.events.serverevents.EndGameEvent;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.FirstConnectionEvent;
@@ -13,6 +15,7 @@ import it.polimi.ingsw.net.ClientHandlerVisitor;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -24,6 +27,7 @@ public class ServerController {
     private GameController gameController;
     private static ServerController istance;
     private int idToSet;
+    private boolean gameRunning;
 
 
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
@@ -32,6 +36,7 @@ public class ServerController {
 
 
     public ServerController() {
+        this.gameRunning = false;
         startDispatcher();
         this.visitor = new ClientHandlerVisitor();
         this.clients = new ArrayList<>();
@@ -49,6 +54,9 @@ public class ServerController {
         ServerController.istance = istance;
     }
 
+    public boolean isGameRunning() {
+        return gameRunning;
+    }
 
     public synchronized void addClient(Client client) {
         if (clients.isEmpty()) {
@@ -73,8 +81,9 @@ public class ServerController {
         }
     }
 
-    public synchronized void removeClient(ClientHandler client) {
-        clients.remove(client);
+    public synchronized void removeClient(ArrayList<Client> toRemove) {
+        clients.removeAll(toRemove);
+        //TODO: da verificare se rimuove bene cosi
         System.out.println("Client disconnected and removed from the game.");
     }
 
@@ -179,15 +188,6 @@ public class ServerController {
         }
     }
 
-    public void broadcastEventExceptSome(ServerEvent event, int clientId) {
-        for(Client c: clients){
-            if(c.getId()!=clientId){
-                c.updateClient(event);
-            }
-        }
-    }
-
-
     public void startThreadHourglass(){
         BuildTimerManager.getInstance().start(this, 90);
         if(!BuildTimerManager.getInstance().isRunning()){
@@ -239,16 +239,31 @@ public class ServerController {
             for (Client client : new ArrayList<>(clients)) {
                 if (client.isTimedOut(now)) {
                     System.out.println("Client " + client.getId() + " timed out. Removing...");
-                    client.getSocketClient().close();
+                    client.closeConnection();
                     toRemove.add(client);
                 } else {
                     client.notifyPing();
                 }
 
             }
-
-            for (Client c : toRemove) {
-                removeClient((ClientHandler) c);
+            if(!toRemove.isEmpty()){
+                this.gameRunning = true; // -- fare la chiusura del mainServer, ad ora non è il massimo
+                this.removeClient(toRemove);
+                int[] scores;
+                Map<String, Integer> playersScores = new HashMap<>();
+                scores = Game.getIstance().computeScores();
+                for (int i = 0; i < Game.getIstance().getTruckerList().size() - 1; i++) {
+                    if (Game.getIstance().getTrucker(i).getNickname() != null) {
+                        playersScores.put(Game.getIstance().getTrucker(i).getNickname(), scores[i]);
+                    } else {
+                        playersScores.put("giocatore " + i, scores[i]);
+                    }
+                }
+                for (int i = 0; i < Game.getIstance().getTruckerOut().size() - 1; i++) {
+                    playersScores.put(Game.getIstance().getTruckerOut().get(i).getNickname(), scores[i]);
+                }
+                playersScores.forEach((name, score) -> System.out.println("- " + name + ": " + score));
+                this.broadcastEvent(new EndGameEvent(playersScores));
             }
         }, 10, 5, TimeUnit.SECONDS);
     }
