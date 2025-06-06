@@ -58,7 +58,7 @@ public class GUIApplication extends Application {
 //        stack.add(card3);
         spaceship = new SpaceShip();
         //spaceship.setSpaceship(level, color); AGGIUNGIIIII
-        Cabin cabin = new Cabin(3, 3, 3, 3, "Main Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
+        Cannon cannon = new Cannon(3, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web129.jpg", true);
 //        trucker.getSpaceShip().addComponent(cabin, 7,7);
         kept.add(availableComponents.getComponents().get(15));
         kept.add(availableComponents.getComponents().get(130));
@@ -118,7 +118,7 @@ public class GUIApplication extends Application {
         StackPane stackPane = new StackPane();
         BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
         Scene scene = buildingScene.createScene(playersNames, 2);
-        buildingScene.insertSelectedComponent(cabin);
+        buildingScene.insertSelectedComponent(cannon);
         primaryStage.setScene(scene);
 
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
