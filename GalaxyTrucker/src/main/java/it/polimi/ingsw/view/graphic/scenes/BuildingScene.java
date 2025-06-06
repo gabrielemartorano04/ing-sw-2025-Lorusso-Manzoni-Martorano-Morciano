@@ -554,7 +554,7 @@ public class BuildingScene {
         buttonsBox.setAlignment(Pos.CENTER);
 
         componentSelectedBox = new VBox(10, imageContainer, buttonsBox);
-        componentSelectedBox.setPadding(new Insets(0, 0, -400, -1243));
+        componentSelectedBox.setPadding(new Insets(0, 0, -480, -1243));
         componentSelectedBox.setAlignment(Pos.CENTER);
 
         StackPane.setAlignment(componentSelectedBox, Pos.CENTER);
