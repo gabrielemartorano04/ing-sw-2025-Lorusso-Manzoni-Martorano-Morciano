@@ -48,7 +48,6 @@ public class BuildingScene {
     private final boolean[][] validCells;
     private final StackPane[][] cellMatrix;
     private GridPane grid;
-    private boolean isLinkEnabled;
 
     private final ArrayList<StackPane> keptSlotsRef;
     private final ArrayList<ImageView> keptImages;
@@ -60,6 +59,13 @@ public class BuildingScene {
     private Button otherBtn;
     private Button hourglassBtn;
     private Button selectBtn;
+
+    private Pane linkOverlay;
+    private boolean isLinkEnabled;
+    Button turnBtn;
+    Button keepBtn;
+    Button discardBtn;
+    Button linkBtn;
 
     private List<Node> shipScreenContent;
 
@@ -142,9 +148,12 @@ public class BuildingScene {
                 int colIndex = col;
                 if(isLinkEnabled){
                     cell.setOnMouseClicked(e -> {
-                        viewFlow.handleInput("Link " + rowIndex + " " + colIndex);
-                        isLinkEnabled = false;
+                        if (isLinkEnabled && validCells[rowIndex][colIndex]) {
+                            viewFlow.handleInput("Link " + rowIndex + " " + colIndex);
+                            exitLinkMode();
+                        }
                     });
+
                 }
 
             }
@@ -201,6 +210,12 @@ public class BuildingScene {
         addComponentSelectedSlot();
 
         attachOptionsBoxToScene(scene, level);
+
+        linkOverlay = new Pane();
+        linkOverlay.setPrefSize(width, height);
+        linkOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
+        linkOverlay.setVisible(false);
+        root.getChildren().add(linkOverlay);
 
         return scene;
     }
@@ -575,46 +590,50 @@ public class BuildingScene {
         styleRedButton.accept(discardBtn);
         styleYellowButton.accept(linkBtn);
 
-        // Se il componente non è stato selezionato, disattiva i pulsanti
         boolean disable = !componentSelectedExists;
         for (Button btn : List.of(turnBtn, keepBtn, discardBtn, linkBtn)) {
             btn.setDisable(disable);
             btn.setOpacity(disable ? 0.5 : 1.0);
         }
 
-        // Set handler come TODO (da impostare quando abilitati)
         turnBtn.setOnAction(e -> {
             if (!turnBtn.isDisabled()) {
-                // TODO: handle "turn"
+                viewFlow.handleInput("Turn");
             }
         });
 
         keepBtn.setOnAction(e -> {
             if (!keepBtn.isDisabled()) {
-                // TODO: handle "keep"
+                viewFlow.handleInput("Keep");
             }
         });
 
         discardBtn.setOnAction(e -> {
             if (!discardBtn.isDisabled()) {
-                // TODO: handle "discard"
+                viewFlow.handleInput("Discard");
             }
         });
 
         linkBtn.setOnAction(e -> {
-            if (!linkBtn.isDisabled()) {
-                isLinkEnabled = true;
-                System.out.println("Link premuto");
-                Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
-                    btn.setDisable(true);
-                    btn.setOpacity(0.5);
-                });
-                // TODO: handle "link"
-            }
+            isLinkEnabled = true;
+
+            linkOverlay.setVisible(true);
+
+            grid.toFront();
+
+            Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
+                btn.setDisable(true);
+                btn.setOpacity(0.5);
+            });
         });
 
         VBox buttonsBox = new VBox(8, turnBtn, linkBtn, keepBtn, discardBtn);
         buttonsBox.setAlignment(Pos.CENTER);
+        this.turnBtn = turnBtn;
+        this.keepBtn = keepBtn;
+        this.discardBtn = discardBtn;
+        this.linkBtn = linkBtn;
+
         return buttonsBox;
     }
 
@@ -643,6 +662,17 @@ public class BuildingScene {
 
     public void loadShipView(){
         root.getChildren().setAll(shipScreenContent);
+    }
+
+
+    private void exitLinkMode() {
+        isLinkEnabled = false;
+        linkOverlay.setVisible(false);
+
+        Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
+            btn.setDisable(false);
+            btn.setOpacity(1.0);
+        });
     }
 
 
