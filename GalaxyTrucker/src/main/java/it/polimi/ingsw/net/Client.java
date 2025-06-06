@@ -95,6 +95,15 @@ public class Client {
         return now - lastPongTime > 10000; // 10 secondi
     }
 
+    public void closeConnection(){
+        if(clientHandler != null){
+            clientHandler.close();
+        }else if(remoteClientHandler != null){
+
+        }
+    }
+
+
     public void sendPing() {
         try {
             if(clientHandler != null){

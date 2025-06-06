@@ -41,10 +41,8 @@ public class RmiClient extends UnicastRemoteObject implements RemoteClientHandle
 
     @Override
     public void setId(int id) throws RemoteException {
-        System.out.println("Entrato nel setId rmiClient");
         if (this.id == -1){
             this.id = id;
-            System.out.println(this.id + "RmiClient local id");
         }
     }
 

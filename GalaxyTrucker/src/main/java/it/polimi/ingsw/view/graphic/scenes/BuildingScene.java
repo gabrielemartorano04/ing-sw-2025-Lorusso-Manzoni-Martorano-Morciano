@@ -31,22 +31,29 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
+
 import javafx.scene.control.ScrollPane;
 
 
 
 public class BuildingScene {
+    private final ViewFlow viewFlow;
+    private Scene scene;
+    private final StackPane root;
+
+
     private final String nickname;
     private final Component[][] layout;
     private final boolean[][] validCells;
     private final StackPane[][] cellMatrix;
+    private GridPane grid;
+    private boolean isLinkEnabled;
+
     private final ArrayList<StackPane> keptSlotsRef;
     private final ArrayList<ImageView> keptImages;
-    private GridPane grid;
-    private Scene scene;
     private HBox keptSlots;
-    private final ViewFlow viewFlow;
-    private boolean isLinkEnabled;
+
     private Button finishBtn;
     private Button stackBtn;
     private Button rulesBtn;
@@ -56,9 +63,8 @@ public class BuildingScene {
 
     private List<Node> shipScreenContent;
 
-    private final StackPane root;
-
-
+    private VBox componentSelectedBox;
+    private boolean componentSelectedExists = false;
 
     public BuildingScene(String nickname, Component[][] layout, ViewFlow viewFlow, StackPane root) {
         this.nickname = nickname;
@@ -191,6 +197,9 @@ public class BuildingScene {
             addHourglassButtonToScene(viewFlow);
         }
         addSelectComponentButton(styleButton);
+
+        addComponentSelectedSlot();
+
         attachOptionsBoxToScene(scene, level);
 
         return scene;
@@ -508,6 +517,130 @@ public class BuildingScene {
         root.getChildren().setAll(componentView);
     }
 
+    private void addComponentSelectedSlot() {
+        double borderSize = 116;
+        double imageSize = 116;
+
+        // Slot vuoto (solo contorno bianco)
+        Rectangle border = new Rectangle(borderSize, borderSize);
+        border.setArcWidth(16);
+        border.setArcHeight(16);
+        border.setFill(Color.TRANSPARENT);
+        border.setStroke(Color.WHITE);
+        border.setStrokeWidth(2);
+        border.setMouseTransparent(true);
+
+        StackPane imageContainer = new StackPane(border);
+        imageContainer.setPrefSize(borderSize, borderSize);
+        imageContainer.setAlignment(Pos.CENTER);
+        imageContainer.setTranslateX(-353);
+        imageContainer.setTranslateY(0);
+
+        VBox buttonsBox = createComponentButtons();
+        buttonsBox.setAlignment(Pos.CENTER_LEFT);
+
+        componentSelectedBox = new VBox(10, imageContainer, buttonsBox);
+        componentSelectedBox.setPadding(new Insets(10));
+        componentSelectedBox.setAlignment(Pos.BOTTOM_LEFT);
+
+        StackPane.setAlignment(componentSelectedBox, Pos.BOTTOM_LEFT);
+        StackPane.setMargin(componentSelectedBox, new Insets(0, 0, 20, 5));
+        root.getChildren().add(componentSelectedBox);
+    }
+
+
+    private VBox createComponentButtons() {
+        Consumer<Button> styleYellowButton = btn -> {
+            btn.setFont(Font.font("Bangers", 12));
+            btn.setTextFill(Color.BLACK);
+            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            btn.setCursor(Cursor.HAND);
+            btn.setPrefWidth(120);
+        };
+
+        Consumer<Button> styleRedButton = btn -> {
+            btn.setFont(Font.font("Bangers", 12));
+            btn.setTextFill(Color.WHITE);
+            btn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+            btn.setCursor(Cursor.HAND);
+            btn.setPrefWidth(120);
+        };
+
+        Button turnBtn = new Button("Turn");
+        Button keepBtn = new Button("Keep");
+        Button discardBtn = new Button("Discard");
+        Button linkBtn = new Button("Link");
+
+        styleYellowButton.accept(turnBtn);
+        styleYellowButton.accept(keepBtn);
+        styleRedButton.accept(discardBtn);
+        styleYellowButton.accept(linkBtn);
+
+        // Se il componente non è stato selezionato, disattiva i pulsanti
+        boolean disable = !componentSelectedExists;
+        for (Button btn : List.of(turnBtn, keepBtn, discardBtn, linkBtn)) {
+            btn.setDisable(disable);
+            btn.setOpacity(disable ? 0.5 : 1.0);
+        }
+
+        // Set handler come TODO (da impostare quando abilitati)
+        turnBtn.setOnAction(e -> {
+            if (!turnBtn.isDisabled()) {
+                // TODO: handle "turn"
+            }
+        });
+
+        keepBtn.setOnAction(e -> {
+            if (!keepBtn.isDisabled()) {
+                // TODO: handle "keep"
+            }
+        });
+
+        discardBtn.setOnAction(e -> {
+            if (!discardBtn.isDisabled()) {
+                // TODO: handle "discard"
+            }
+        });
+
+        linkBtn.setOnAction(e -> {
+            if (!linkBtn.isDisabled()) {
+                isLinkEnabled = true;
+                System.out.println("Link premuto");
+                Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
+                    btn.setDisable(true);
+                    btn.setOpacity(0.5);
+                });
+                // TODO: handle "link"
+            }
+        });
+
+        VBox buttonsBox = new VBox(8, turnBtn, linkBtn, keepBtn, discardBtn);
+        buttonsBox.setAlignment(Pos.CENTER_LEFT);
+        return buttonsBox;
+    }
+
+    public void insertSelectedComponent(Component selected) {
+        this.componentSelectedExists = true;
+
+        ImageView componentView = new ImageView(selected.getFrontImage());
+        componentView.setFitWidth(116);
+        componentView.setPreserveRatio(true);
+        componentView.setMouseTransparent(true);
+
+        Rectangle clip = new Rectangle(116, 116);
+        clip.setArcWidth(18);
+        clip.setArcHeight(18);
+        componentView.setClip(clip);
+
+        // Inserisce l'immagine nel contenitore esistente
+        StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
+        imageContainer.getChildren().add(componentView);
+
+        // Rimuove la vecchia box dei bottoni e la sostituisce con una abilitata
+        componentSelectedBox.getChildren().remove(1);
+        componentSelectedBox.getChildren().add(createComponentButtons());
+    }
+
 
     public void loadShipView(){
         root.getChildren().setAll(shipScreenContent);
@@ -521,7 +654,7 @@ public class BuildingScene {
     /**
      * Inserisce un'immagine (es. componente) nella cella specificata
      */
-    public void insertComponentImage(int row, int col, ImageView imageView) {
+    public void insertComponentImageToShip(int row, int col, ImageView imageView) {
         if (!validCells[row][col]) return;
         StackPane cell = cellMatrix[row][col];
         if (cell != null) {
