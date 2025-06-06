@@ -291,11 +291,12 @@ public ClientEvent parseFirstConnection(String input) {
                             return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
 
                         case "selectkept":
-                            int ind = Integer.parseInt(tokens[1].trim());
+
                             if (tokens.length != 2) {
                                 System.out.println("Error: illegal command. Type 'selectkept <index>'.");
                                 return null;
                             }
+                            int ind = Integer.parseInt(tokens[1].trim());
                             if (ind < 0 || ind > kept.size() - 1) {
                                 System.out.println("Please type a valid index. Type 'selectkept <index>'.");
                                 return null;
@@ -534,11 +535,12 @@ public ClientEvent parseFirstConnection(String input) {
                         return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
 
                     case "selectkept":
-                        int ind = Integer.parseInt(tokens[1].trim());
                         if (tokens.length != 2) {
                             System.out.println("Error: illegal command. Type 'selectkept <index>'.");
                             return null;
                         }
+                        int ind = Integer.parseInt(tokens[1].trim());
+
                         if (ind < 0 || ind > kept.size() - 1) {
                             System.out.println("Please type a valid index. Type 'selectkept <index>'.");
                             return null;

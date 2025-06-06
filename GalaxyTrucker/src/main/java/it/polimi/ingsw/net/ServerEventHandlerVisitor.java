@@ -74,10 +74,24 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.deleteSelectedComponent();
 
         ui.componentLinked(event);
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        }
+        if (viewFlow.getSelectedKeptComponent() == null) {
+            ui.showBuildOptions();
+        }
     }
 
     @Override
     public void visit(ComponentNotAvailableError event) {
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        }
+        if (viewFlow.getSelectedKeptComponent() == null) {
+            ui.showBuildOptions();
+        }
         ui.componentNotAvailable(event);
     }
 
@@ -89,6 +103,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if(viewFlow.getNickname().equals(event.getNickname())) {
             viewFlow.setSelectedComponent(event.getIndex(), false);
 
+            ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+            if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
+                ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+            }
             ui.componentSelected(event);
         }
     }
@@ -96,33 +114,67 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(DiscardSuccessEvent event) {
         if(viewFlow.getNickname().equals(event.getNickname())){
+            ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+            if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
+                ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+            }
+            if (viewFlow.getSelectedKeptComponent() == null) {
+                ui.showBuildOptions();
+            }
             ui.showDiscardComponent(viewFlow.getSelectedComponent());
             viewFlow.deleteSelectedComponent();
+            ui.showAvailableComponent(viewFlow.getAvailableComponents());
         }
         viewFlow.componentAsUnselected(event.getIndex());
 
-        ui.showAvailableComponent(viewFlow.getAvailableComponents());
     }
 
     @Override
     public void visit(InvalidCoordinatesError event) {
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        }
+        if (viewFlow.getSelectedKeptComponent() == null) {
+            ui.showBuildOptions();
+        }
         ui.invalidCoordinates(event);
     }
 
     @Override
     public void visit(InvalidPositionError event) {
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        }
+        if (viewFlow.getSelectedKeptComponent() == null) {
+            ui.showBuildOptions();
+        }
         ui.invalidPosition(event);
     }
 
     @Override
     public void visit(TurnHourglassError event) {
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        }
+        if (viewFlow.getSelectedKeptComponent() == null) {
+            ui.showBuildOptions();
+        }
         ui.turnHourGlassError(event);
     }
 
     @Override
     public void visit(HourglassTurnEvent event) {
         viewFlow.getTimerDisplay().start(event.getSeconds());
-
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        }
+        if (viewFlow.getSelectedKeptComponent() == null) {
+            ui.showBuildOptions();
+        }
         ui.turnHourGlass(event);
     }
 
@@ -130,7 +182,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(BuildCompleteEvent event){
         viewFlow.getTimerDisplay().stop();
         viewFlow.setViewState(ViewFlow.ViewState.FILL);
-
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         ui.buildingComplete(event);
     }
 
@@ -138,22 +190,42 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(KeptComponentEvent event){
         viewFlow.addKeptComponent(event.getKept());
         viewFlow.deleteSelectedComponent();
-
         ui.keptComponent(event);
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        }
+        if (viewFlow.getSelectedKeptComponent() == null) {
+            ui.showBuildOptions();
+        }
     }
 
     @Override
     public void visit(TurnedComponentSuccessEvent event) {
         viewFlow.setSelectedComponent(event.getComponent());
-
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        }
+        if (viewFlow.getSelectedKeptComponent() == null) {
+            ui.showBuildOptions();
+        }
         ui.componentTurned(event);
     }
 
     @Override
     public void visit(SuccessSelectKept event){
         viewFlow.setSelectedComponent(event.getComponent(), true);
-        viewFlow.getSelectedKeptComponent().remove(event.getComponent());
+        viewFlow.getSelectedKeptComponent().remove(event.getIndex());
+        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        }
+        if (viewFlow.getSelectedKeptComponent() == null) {
+            ui.showBuildOptions();
+        }
         ui.keptSelected(event);
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+
     }
 
     @Override

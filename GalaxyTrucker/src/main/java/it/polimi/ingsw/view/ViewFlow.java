@@ -124,16 +124,18 @@ public class ViewFlow implements EventReceiver {
                         done = true;
                     }
                     case BULDING -> {
-                        ui.showShipLayout(nickname, ship);
-                        if (!keptComponent.isEmpty()) {
-                            ui.showKeptComponents(keptComponent);
-                        }
-                        if (getSelectedComponent() == null) {
-                            ui.showBuildOptions();
-                        }
+//                        ui.showShipLayout(nickname, ship);
+//                        if (!keptComponent.isEmpty()) {
+//                            ui.showKeptComponents(keptComponent);
+//                        }
+//                        if (getSelectedComponent() == null) {
+//                            ui.showBuildOptions();
+//                        }
 
                     }
-                    case FILL -> ui.showShipLayout(nickname, ship);
+                    case FILL -> {
+                        //ui.showShipLayout(nickname, ship);
+                    }
                     case FLIGTH -> {
                         ui.showShipLayout(nickname, ship);
                         ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);

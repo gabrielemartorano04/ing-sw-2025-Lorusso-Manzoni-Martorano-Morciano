@@ -8,15 +8,20 @@ import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 public class SuccessSelectKept extends ServerEvent {
 
     private Component component;
-    public SuccessSelectKept(Component component) {
+    private int index;
+    public SuccessSelectKept(Component component,int index) {
         super(ServerEventType.SUCCESS_KEPT, false);
         this.component = component;
+        this.index = index;
     }
 
     public Component getComponent() {
         return component;
     }
 
+    public int getIndex() {
+        return index;
+    }
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
