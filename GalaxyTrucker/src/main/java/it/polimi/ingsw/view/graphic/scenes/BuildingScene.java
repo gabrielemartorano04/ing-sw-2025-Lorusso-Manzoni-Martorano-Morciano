@@ -157,33 +157,33 @@ public class BuildingScene {
         keptSlotsRef.clear();
         keptImages.clear();
 
-        if(!keptSlotsRef.isEmpty()) {
-            for (int i = 0; i < 2; i++) {
-                StackPane slot = new StackPane();
-                slot.setPrefSize(110, 110);
-                slot.setStyle("-fx-background-color: transparent;");
 
-                Rectangle border = new Rectangle(110, 110);
-                border.setArcWidth(6);
-                border.setArcHeight(6);
-                border.setFill(Color.TRANSPARENT);
-                border.setStroke(Color.WHITE);
-                border.setStrokeWidth(2);
+        for (int i = 0; i < 2; i++) {
+            StackPane slot = new StackPane();
+            slot.setPrefSize(110, 110);
+            slot.setStyle("-fx-background-color: transparent;");
 
-                slot.getChildren().add(border);
-                int index = i;
-                slot.setOnMouseClicked(e -> {
-                    viewFlow.handleInput("selectKept " + index);
-                    isLinkEnabled = true;
-                });
-                keptSlots.getChildren().add(slot);
-                keptSlotsRef.add(slot);
-                keptImages.add(null);  // Nessuna immagine inizialmente
-            }
+            Rectangle border = new Rectangle(110, 110);
+            border.setArcWidth(6);
+            border.setArcHeight(6);
+            border.setFill(Color.TRANSPARENT);
+            border.setStroke(Color.WHITE);
+            border.setStrokeWidth(2);
 
-            StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
-            StackPane.setMargin(keptSlots, new Insets(0, 235, 590, 0));
+            slot.getChildren().add(border);
+            int index = i;
+            slot.setOnMouseClicked(e -> {
+                viewFlow.handleInput("selectKept " + index);
+                isLinkEnabled = true;
+            });
+            keptSlots.getChildren().add(slot);
+            keptSlotsRef.add(slot);
+            keptImages.add(null);
         }
+
+        StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
+        StackPane.setMargin(keptSlots, new Insets(0, 235, 590, 0));
+
 
         root.getChildren().setAll(backgroundView, grid, keptSlots);
         scene = new Scene(root, width, height);
@@ -535,7 +535,7 @@ public class BuildingScene {
         imageContainer.setPrefSize(borderSize, borderSize);
         imageContainer.setAlignment(Pos.BOTTOM_LEFT);
 
-        VBox buttonsBox = createComponentButtons();
+        VBox buttonsBox = createSelectComponentButtons();
         buttonsBox.setAlignment(Pos.CENTER_LEFT);
 
         componentSelectedBox = new VBox(10, imageContainer, buttonsBox);
@@ -548,7 +548,7 @@ public class BuildingScene {
     }
 
 
-    private VBox createComponentButtons() {
+    private VBox createSelectComponentButtons() {
         Consumer<Button> styleYellowButton = btn -> {
             btn.setFont(Font.font("Bangers", 18));
             btn.setTextFill(Color.BLACK);
@@ -637,7 +637,7 @@ public class BuildingScene {
 
         // Rimuove la vecchia box dei bottoni e la sostituisce con una abilitata
         componentSelectedBox.getChildren().remove(1);
-        componentSelectedBox.getChildren().add(createComponentButtons());
+        componentSelectedBox.getChildren().add(createSelectComponentButtons());
     }
 
 
