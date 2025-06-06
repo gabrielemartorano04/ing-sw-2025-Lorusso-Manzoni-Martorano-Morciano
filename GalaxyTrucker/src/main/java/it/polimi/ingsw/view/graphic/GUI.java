@@ -23,6 +23,7 @@ import it.polimi.ingsw.view.UI;
 import it.polimi.ingsw.view.ViewFlow;
 import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
 import it.polimi.ingsw.view.graphic.scenes.FillScene;
+import it.polimi.ingsw.view.graphic.scenes.FlightScene;
 import it.polimi.ingsw.view.graphic.scenes.LoginScene;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -72,6 +73,7 @@ public class GUI implements UI {
     private LoginScene loginScene;
     private BuildingScene buildingScene;
     private FillScene fillScene;
+    private FlightScene flightScene;
     private ClientEvent currentEvent;
     private Component selectedComponent;
     private final ViewFlow viewFlow;
@@ -333,23 +335,26 @@ public class GUI implements UI {
     @Override
     public void componentTurned(TurnedComponentSuccessEvent event){
         //TODO:
-        //this.buildingScene.updateTurnedComponent(event.getComponent());
+        //this.buildingScene.updateSelectedComponent(event.getComponent());
     }
 
     @Override
     public void keptSelected(SuccessSelectKept event){
         //TODO:
-
+        //this.buildingScene.updateSelectedComponent(event.getComponent());
     }
 
     @Override
     public void askAlienCabin(AlienCabinCoord event){
         //TODO:
+        //this.buildingScene.showAlienCabin();
     }
 
     @Override
     public void dropStack(StackDropOk event){
         //TODO:
+        //torna alla schermata base del buildind
+        //this.buildingScene.updateDropStack();
     }
 
 
@@ -362,21 +367,32 @@ public class GUI implements UI {
     @Override
     public void flightScene(FlightStartEvent event){
         //TODO:
+        //stack pane sistema
+        //this.flightScene=new FlightScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow,new StackPane());
     }
 
     @Override
     public void showCurrCondition(CurrentCondition event) {
         //todo
+        //mostra la condizione e il tasto 'continue'
+        //this.flightScene.showCurrentCondition(event.getCondition());
     }
 
     @Override
     public void cardFinished(CardFinished event){
         //todo
+//        if(viewFlow.getOut())
+//            this.flightScene.showDeadTrucker();
+//        else this.flightScene.showCardFinished();
+
     }
 
     @Override
     public  void epidemic(EpidemicEvent event){
         //todo
+//        if(viewFlow.getOut())
+//            this.flightScene.showDeadTrucker();
+//        else this.flightScene.showDrawCard();
     }
 
     @Override
