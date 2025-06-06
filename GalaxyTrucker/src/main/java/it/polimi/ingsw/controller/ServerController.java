@@ -247,7 +247,7 @@ public class ServerController {
 
             }
             if(!toRemove.isEmpty()){
-                this.gameRunning = true; // -- fare la chiusura del mainServer
+                this.gameRunning = true; // -- fare la chiusura del mainServer, ad ora non è il massimo
                 this.removeClient(toRemove);
                 int[] scores;
                 Map<String, Integer> playersScores = new HashMap<>();
