@@ -258,6 +258,7 @@ public class GUI implements UI {
         //setta la scena corrente a quella appena creata dopo aver eliminato la scena precedente
         //setStackPane non so come si fa
         //buildingScene=new BuildingScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow, new StackPane());
+        //la building scene deve avere i giocatori, la spaceship e i button in base a quello che si può fare
     }
 
 
@@ -266,6 +267,8 @@ public class GUI implements UI {
         //TODO: componente è stato linkato correttamente quindi modifichiamo la scena attaccandolo alla nave
 
         //this.buildingScene.updateComponentLinked(event.getComponent(),event.getX(),event.getY());
+        //dai di nuovo la possibilità di vedere gli available components
+        //e abilita button giusti
     }
 
     @Override
@@ -274,7 +277,7 @@ public class GUI implements UI {
         // vogliamo farti restare nella parte dove vedi le componenti disponibili e farti selezionare un altra componente
         // vogliamo che venga aggiornata la lista dei componenti cioè non devono essere plottati tutti quelli che hanno il selected a true
 
-        //this.buildingScene.showComponentNotAvailable();
+        //this.buildingScene.showComponentNotAvailablePopup();
     }
 
     @Override
@@ -282,26 +285,27 @@ public class GUI implements UI {
         //TODO: ti riporta nella schermata dove vedi la nave con visualizzato il componente che hai selezionato e le posibili azioni
 
         //this.buildingScene.updateSelectedComponent(event.getComponent);
+        //abilita button
     }
 
     @Override
     public void invalidCoordinates(InvalidCoordinatesError event) {
         //TODO: notifica errore di questo tipo
 
-        //this.buildingScene.showInvalidCoordinates();
+        //this.buildingScene.showInvalidCoordinatesPopup();
     }
 
     @Override
     public void invalidPosition(InvalidPositionError event){
         //TODO: notifica errore di questo tipo
-        //this.buildingScene.showInvalidPosition();
+        //this.buildingScene.showInvalidPositionPopup();
 
     }
 
     @Override
     public void turnHourGlassError(TurnHourglassError event) {
         //TODO:
-        //this.buildingScene.showTurnHourGlassError();
+        //this.buildingScene.showTurnHourGlassErrorPopup();
     }
 
     @Override
@@ -315,22 +319,27 @@ public class GUI implements UI {
         //TODO:
         //stack pane non sistemato
         //this.fillScene=new FillScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow,new StackPane());
+        //button azione 'coord'
     }
 
     @Override
     public void keptComponent(KeptComponentEvent event){
-        //TODO:
+        //TODo:
+        //il metodo ha il nuovo component kept
+        //this.buildingScene.updateKeptComponents(event.getKept());
 
     }
 
     @Override
     public void componentTurned(TurnedComponentSuccessEvent event){
         //TODO:
+        //this.buildingScene.updateTurnedComponent(event.getComponent());
     }
 
     @Override
     public void keptSelected(SuccessSelectKept event){
         //TODO:
+
     }
 
     @Override
