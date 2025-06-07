@@ -1,15 +1,12 @@
 package it.polimi.ingsw.net;
 
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.net.events.clientevents.PongEvent;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.flightevents.*;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
-
-import java.io.IOException;
 
 
 public class ServerEventHandlerVisitor implements VirtualView {
@@ -789,5 +786,13 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Deprecated
     public void visit(PingEvent event){
 
+    }
+
+    @Override
+    public void visit(ResumeGameEvent resumeGameEvent) {
+    }
+
+    @Override
+    public void visit(ChooseResumeEvent chooseResumeEvent) {
     }
 }
