@@ -965,23 +965,7 @@ public class GUI implements UI {
         cardBox.setAlignment(Pos.BOTTOM_LEFT);
         cardBox.setPadding(new Insets(0, 0, 0, 20)); // margine sinistro
 
-        // Pulsante "Drawn"
-        Button continueBtn = new Button("Drawn");
-        continueBtn.setFont(Font.font("Bangers", 18));
-        continueBtn.setTextFill(Color.BLACK);
-        continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-        continueBtn.setCursor(Cursor.HAND);
-        continueBtn.setPrefWidth(180);
-
-        continueBtn.setOnAction(e -> {
-
-        });
-
-        VBox buttonBox = new VBox(continueBtn);
-        buttonBox.setAlignment(Pos.BOTTOM_LEFT);
-        buttonBox.setPadding(new Insets(10, 0, 20, 20)); // spaziatura sopra e sinistra
-
-        StackPane container = new StackPane(cardBox, buttonBox);
+        StackPane container = new StackPane(cardBox);
         container.setMouseTransparent(false);
 
         Platform.runLater(() -> {
