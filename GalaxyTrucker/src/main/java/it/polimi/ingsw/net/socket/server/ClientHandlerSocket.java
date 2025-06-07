@@ -1,16 +1,11 @@
 package it.polimi.ingsw.net.socket.server;
 
 import it.polimi.ingsw.controller.ServerController;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.events.serverevents.EndGameEvent;
-import it.polimi.ingsw.net.events.serverevents.PingEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ClientHandlerSocket implements ClientHandler {
     private final NetworkServer network;
