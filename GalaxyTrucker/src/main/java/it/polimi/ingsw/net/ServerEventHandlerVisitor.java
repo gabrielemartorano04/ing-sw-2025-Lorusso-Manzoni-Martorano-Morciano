@@ -654,6 +654,16 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     }
 
+    @Override
+    public void visit(ResumeGameEvent resumeGameEvent) {
+
+    }
+
+    @Override
+    public void visit(ChooseResumeEvent chooseResumeEvent) {
+
+    }
+
 //    @Override
 //    public void visit(ResumeGameEvent resumeGameEvent) {
 //    }
