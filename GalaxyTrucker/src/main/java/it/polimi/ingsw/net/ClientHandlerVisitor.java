@@ -58,6 +58,14 @@ public class ClientHandlerVisitor implements VirtualServer {
     }
     public int getGameLevel(){return gameLevel;}
 
+
+    //@Override
+    //public void visit(EVENTO CON RISPOSTA SE VUOI CARICARE PARTITA VECCHIA O NO)
+    // se la risposta è si allora manda l'evento con la partita vecchia e setta una variabile nel serverController che dica che si è scelto di ricaricare partita vecchia
+    // se la risposta è no manda FirstConnection
+    // A QUESTO PUNTO LA PARTITA NON ESISTE ANCORA CORRETTAMENTE
+
+
     @Override
     public void visit(CreateGameEvent event) {
         int numPlayers= event.getNumberOfPlayers();
@@ -523,7 +531,7 @@ public class ClientHandlerVisitor implements VirtualServer {
 
     @Override
     public void visit(ChoseToResume event){
-        ServerController.getIstance().setNewGame(event.getChoseToResume());
+        // ServerController.getIstance().setNewGame(event.getChoseToResume());
     }
 
 }
