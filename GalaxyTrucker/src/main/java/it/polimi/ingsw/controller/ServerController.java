@@ -235,8 +235,9 @@ public class ServerController {
         scheduler.scheduleAtFixedRate(() -> {
             long now = System.currentTimeMillis();
             ArrayList<Client> toRemove = new ArrayList<>();
-
             for (Client client : new ArrayList<>(clients)) {
+                System.out.println("controllo");
+                System.out.println(client.getLastPongTime() + " " + now + " " + (now - client.getLastPongTime()));
                 if (client.isTimedOut(now)) {
                     System.out.println("Client " + client.getId() + " timed out. Removing...");
                     client.closeConnection();
@@ -246,26 +247,30 @@ public class ServerController {
                 }
 
             }
-            if(!toRemove.isEmpty()){
-                this.gameRunning = true; // -- fare la chiusura del mainServer, ad ora non è il massimo
-                this.removeClient(toRemove);
-                int[] scores;
-                Map<String, Integer> playersScores = new HashMap<>();
-                scores = Game.getIstance().computeScores();
-                for (int i = 0; i < Game.getIstance().getTruckerList().size() - 1; i++) {
-                    if (Game.getIstance().getTrucker(i).getNickname() != null) {
-                        playersScores.put(Game.getIstance().getTrucker(i).getNickname(), scores[i]);
-                    } else {
-                        playersScores.put("giocatore " + i, scores[i]);
-                    }
-                }
-                for (int i = 0; i < Game.getIstance().getTruckerOut().size() - 1; i++) {
-                    playersScores.put(Game.getIstance().getTruckerOut().get(i).getNickname(), scores[i]);
-                }
-                playersScores.forEach((name, score) -> System.out.println("- " + name + ": " + score));
-                this.broadcastEvent(new EndGameEvent(playersScores));
-            }
+            finishGame(toRemove);
         }, 10, 5, TimeUnit.SECONDS);
+    }
+
+    public void finishGame(ArrayList<Client> toRemove) {
+        if(!toRemove.isEmpty()){
+            this.gameRunning = true; // -- fare la chiusura del mainServer, ad ora non è il massimo
+            this.removeClient(toRemove);
+            int[] scores;
+            Map<String, Integer> playersScores = new HashMap<>();
+            scores = Game.getIstance().computeScores();
+            for (int i = 0; i < Game.getIstance().getTruckerList().size() - 1; i++) {
+                if (Game.getIstance().getTrucker(i).getNickname() != null) {
+                    playersScores.put(Game.getIstance().getTrucker(i).getNickname(), scores[i]);
+                } else {
+                    playersScores.put("giocatore " + i, scores[i]);
+                }
+            }
+            for (int i = 0; i < Game.getIstance().getTruckerOut().size() - 1; i++) {
+                playersScores.put(Game.getIstance().getTruckerOut().get(i).getNickname(), scores[i]);
+            }
+            playersScores.forEach((name, score) -> System.out.println("- " + name + ": " + score));
+            this.broadcastEvent(new EndGameEvent(playersScores));
+        }
     }
 }
 

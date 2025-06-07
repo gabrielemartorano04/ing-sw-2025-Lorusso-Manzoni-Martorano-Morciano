@@ -1,11 +1,13 @@
 package it.polimi.ingsw.net;
 
+import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.net.events.serverevents.PingEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class Client {
     private final ClientHandler clientHandler;
@@ -13,6 +15,10 @@ public class Client {
     private TruckerController truckerController;
     private int id;
     private long lastPongTime;
+
+    public long getLastPongTime() {
+        return lastPongTime;
+    }
 
     public Client(ClientHandler clientHandler, RemoteClientHandler remoteClientHandler) {
         this.clientHandler = clientHandler;
@@ -67,6 +73,9 @@ public class Client {
             try {
                 remoteClientHandler.respondToPing();
             } catch (RemoteException e) {
+                ArrayList<Client> toRemove = new ArrayList<>();
+                toRemove.add(this);
+                ServerController.getIstance().finishGame(toRemove);
                 throw new RuntimeException(e);
             }
         }
