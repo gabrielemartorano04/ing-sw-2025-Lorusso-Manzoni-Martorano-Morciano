@@ -234,9 +234,11 @@ public class GUI implements UI {
     public void welcomeScene(AvailableColorsEvent event){
         // TODO: crea la schermata di welcome con le informazioni dall'evento
         // sostituisce la schermata corrente se prima avevo chiamato insertNumPlayer altrimenti crea la prima scena del gioco
-        this.showWelcome(event.getColors());
+        //this.loginScene.showWelcome(event.getColors());
 
     }
+
+
 
     @Override
     public void nickNameAlreadyTaken(NicknameAlreadyInError event){
@@ -293,7 +295,6 @@ public class GUI implements UI {
     @Override
     public void invalidCoordinates(InvalidCoordinatesError event) {
         //TODO: notifica errore di questo tipo
-
         //this.buildingScene.showInvalidCoordinatesPopup();
     }
 
@@ -306,7 +307,6 @@ public class GUI implements UI {
 
     @Override
     public void turnHourGlassError(TurnHourglassError event) {
-        //TODO:
         //this.buildingScene.showTurnHourGlassErrorPopup();
     }
 
@@ -318,15 +318,13 @@ public class GUI implements UI {
 
     @Override
     public void  buildingComplete(BuildCompleteEvent event){
-        //TODO:
         //stack pane non sistemato
-        //this.fillScene=new FillScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow,new StackPane());
+        this.fillScene=new FillScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow,new StackPane());
         //button azione 'coord'
     }
 
     @Override
     public void keptComponent(KeptComponentEvent event){
-        //TODo:
         //il metodo ha il nuovo component kept
         //this.buildingScene.updateKeptComponents(event.getKept());
 
@@ -334,25 +332,21 @@ public class GUI implements UI {
 
     @Override
     public void componentTurned(TurnedComponentSuccessEvent event){
-        //TODO:
         //this.buildingScene.updateSelectedComponent(event.getComponent());
     }
 
     @Override
     public void keptSelected(SuccessSelectKept event){
-        //TODO:
         //this.buildingScene.updateSelectedComponent(event.getComponent());
     }
 
     @Override
     public void askAlienCabin(AlienCabinCoord event){
-        //TODO:
         //this.buildingScene.showAlienCabin();
     }
 
     @Override
     public void dropStack(StackDropOk event){
-        //TODO:
         //torna alla schermata base del buildind
         //this.buildingScene.updateDropStack();
     }
@@ -374,65 +368,65 @@ public class GUI implements UI {
     @Override
     public void showCurrCondition(CurrentCondition event) {
 
-        // this.flightScene.showUpdateSpaceship();
-        // this.flightScene.showUpdateTrack();
+//        this.flightScene.showUpdateSpaceship();
+//        this.flightScene.showUpdateTrack();
 
     }
 
     @Override
     public void cardFinished(CardFinished event){
 
-        // this.flightScene.showUpdateSpaceship();
-        // this.flightScene.showUpdateTrack();
+//        this.flightScene.showUpdateSpaceship();
+//        this.flightScene.showUpdateTrack();
     }
 
     @Override
     public  void epidemic(EpidemicEvent event){
 
-        // this.flightScene.showUpdateSpaceship();
-        // this.flightScene.showUpdateTrack();
+//        this.flightScene.showUpdateSpaceship();
+//        this.flightScene.showUpdateTrack();
 
     }
 
     @Override
     public void stardust(StarDustEvent event){
 
-        // this.flightScene.showUpdateSpaceship();
-        // this.flightScene.showUpdateTrack();
+//        this.flightScene.showUpdateSpaceship();
+//        this.flightScene.showUpdateTrack();
 
     }
 
     @Override
     public void showInputFormat(ParserState parserState) {
-//        switch (parserState){
-//            case STATE-> this.flightScene.showStateInput();
-//            case ACTIVATE_ENGINES ->  this.flightScene.showActivateEngineInput();
-//            case ACTIVATE_CANNONS -> this.flightScene.showActivateCannonsInput();
-//            case ACTIVATE_SHIELD -> this.flightScene.showActivateShieldInput();
-//            case LAND -> this.flightScene.showLandInput();
-//            case HUMAN_COORD -> this.flightScene.showHumanCoordInput();
-//            case PLOT_GOOD -> this.flightScene.showPlotGoodInput();
-//            case ROLL_DICE -> this.flightScene.showRollDiceInput();
-//            case PLANET_DECISION-> this.flightScene.showPlanetDecisionInput();
-//            case DRAW_CARD -> this.flightScene.showDrawCardInput();
-//            case REMOTION_CONFIRMED -> this.flightScene.showRemotionConfirmedInput();
-//            case REMOVE_BATTERIES -> this.flightScene.showRemoveBatteriesInput();
-//            case REMOVE_GOODS -> this.flightScene.showRemoveGoodsInput();
-//            case REARRANGE -> this.flightScene.showRearrangeInput();
-//            case COSMIC_CREDITS -> this.flightScene.showCosmicCreditsInput();
-//            case WARZONE -> this.flightScene.showWarzoneInput();
-//
-//        }
+        switch (parserState){
+            case STATE-> this.flightScene.showStateInput();
+            case ACTIVATE_ENGINES ->  this.flightScene.showActivateEngineInput();
+            case ACTIVATE_CANNONS -> this.flightScene.showActivateCannonsInput();
+            case ACTIVATE_SHIELD -> this.flightScene.showActivateShieldInput();
+            case LAND -> this.flightScene.showLandInput();
+            case HUMAN_COORD -> this.flightScene.showHumanCoordInput();
+            case PLOT_GOOD -> this.flightScene.showPlotGoodInput();
+            case ROLL_DICE -> this.flightScene.showRollDiceInput();
+            case PLANET_DECISION-> this.flightScene.showPlanetDecisionInput();
+            case DRAW_CARD -> this.flightScene.showDrawCardInput();
+            case REMOTION_CONFIRMED -> this.flightScene.showRemotionConfirmedInput();
+            case REMOVE_BATTERIES -> this.flightScene.showRemoveBatteriesInput();
+            case REMOVE_GOODS -> this.flightScene.showRemoveGoodsInput();
+            case REARRANGE -> this.flightScene.showRearrangeInput();
+            case COSMIC_CREDITS -> this.flightScene.showCosmicCreditsInput();
+            case WARZONE -> this.flightScene.showWarzoneInput();
+
+        }
     }
 
     @Override
     public void showResult(String result){
-        // this.flightScene.showResult(result);
+//        this.flightScene.showResult(result);
     }
 
     @Override
     public void showDead(){
-        // this.flightScene.showDeadTrucker();
+//        this.flightScene.showDeadTrucker();
     }
 
     // fine flight scene
@@ -441,62 +435,6 @@ public class GUI implements UI {
 
     // fine gioco
 
-
-    @Override
-    public void showWelcome(EnumSet<PlayerColors> availableColors) {
-        double width = 850;
-        double height = 550;
-
-        // Immagine di sfondo
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/WelcomeImage.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
-
-        // Bottone START (interattivo)
-        Button continueButton = new Button("START");
-        continueButton.setFont(Font.font("Bangers", 20));
-        continueButton.setTextFill(Color.WHITE);
-        continueButton.setStyle("-fx-background-color: rgba(255,222,105,0.7);");
-
-        // Azione quando si clicca il pulsante
-        continueButton.setOnAction(e -> {
-            showChooseColor(availableColors);
-        });
-
-        // Layout
-        StackPane root = new StackPane(backgroundView, continueButton);
-        StackPane.setAlignment(continueButton, Pos.BOTTOM_CENTER);
-        StackPane.setMargin(continueButton, new Insets(0, 0, 25, 0));
-
-        if (stage.getScene() == null) {
-            Scene scene = new Scene(root, width, height);
-            stage.setScene(scene);
-        } else {
-            stage.getScene().setRoot(root);
-        }
-        stage.setWidth(width);
-        stage.setHeight(height);
-        stage.centerOnScreen();
-        stage.show();
-    }
-
-
-    @Deprecated
-    public void showWelcome() {
-        //NON servira piu probabilmente
-    }
-
-
-    @Override
-    public void showChooseColor(EnumSet<PlayerColors> availableColors) {
-        this.loginScene = new LoginScene(availableColors, this.viewFlow);
-        Scene scene = loginScene.createScene();
-        stage.setScene(scene);
-        stage.centerOnScreen();
-    }
 
     @Deprecated
     public void showColorTaken() {
@@ -586,65 +524,6 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showStartCountdown(int secondsLeft) {
-        double width = 850;
-        double height = 550;
-
-        // Sfondo
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
-
-        // Testo statico
-        Label message = new Label("The flight will start in...");
-        message.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
-        message.setTextFill(Color.web("#FFDE69"));
-
-        // Etichetta countdown
-        Label countdownLabel = new Label();
-        countdownLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 80));
-        countdownLabel.setTextFill(Color.WHITE);
-
-        VBox content = new VBox(30, message, countdownLabel);
-        content.setAlignment(Pos.CENTER);
-
-        StackPane root = new StackPane(backgroundView, content);
-        Scene scene = new Scene(root, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-
-        // Timeline per il countdown
-        Timeline timeline = new Timeline();
-        for (int i = secondsLeft; i > 0; i--) {
-            int current = i;
-            timeline.getKeyFrames().add(
-                    new KeyFrame(Duration.seconds(secondsLeft - i), e -> {
-                        countdownLabel.setText(String.valueOf(current));
-                        countdownLabel.setTextFill(Color.web("#FFDE69"));
-                    })
-            );
-        }
-
-        // Mostra GO!
-        timeline.getKeyFrames().add(
-                new KeyFrame(Duration.seconds(secondsLeft), e -> {
-                    countdownLabel.setText("GO!");
-                    countdownLabel.setTextFill(Color.web("#FFDE69"));
-                })
-        );
-
-        // Mantiene visibile "GO!" per un altro secondo
-        timeline.getKeyFrames().add(
-                new KeyFrame(Duration.seconds(secondsLeft + 1))
-        );
-
-        timeline.play();
-    }
-
-    @Override
     public void showSetupComplete() {
         double width = 850;
         double height = 550;
@@ -670,46 +549,6 @@ public class GUI implements UI {
         stage.centerOnScreen();
     }
 
-    @Override
-    public void showPlayers(ArrayList<String> players) {
-
-    }
-
-    @Override
-    public void showBuildPhaseStart(ArrayList<Component> availableComponents) {
-        double width = 850;
-        double height = 550;
-
-        // Sfondo
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
-
-        // Testo centrale
-        Label message = new Label("Start building your spaceship");
-        message.setFont(Font.font("Bangers", FontWeight.BOLD, 40));
-        message.setTextFill(Color.web("#FFDE69"));
-
-        StackPane root = new StackPane(backgroundView, message);
-        StackPane.setAlignment(message, Pos.CENTER);
-
-        // Mostra la scena (solo se non esiste già)
-        if (stage.getScene() == null) {
-            Scene scene = new Scene(root, width, height);
-            stage.setScene(scene);
-        } else {
-            stage.getScene().setRoot(root);
-        }
-        stage.centerOnScreen();
-
-        // Dopo 3 secondi, mostra i componenti disponibili
-        PauseTransition delay = new PauseTransition(Duration.seconds(3));
-        delay.setOnFinished(e -> showAvailableComponent(availableComponents));
-        delay.play();
-    }
 
     @Override
     public void showAvailableComponent(ArrayList<Component> components) {
@@ -960,11 +799,6 @@ public class GUI implements UI {
                 ((Pane) root).getChildren().add(buttonBox);
             }
         });
-    }
-
-    @Override
-    public void showComponentOptions() {
-
     }
 
     @Override

@@ -36,6 +36,8 @@ public interface UI {
 
     // BUILDING
 
+    void showSetupComplete();
+
     void startBuildingScene(StartBuildingEvent event);
 
     void componentLinked(ComponentLinkedEvent event);
@@ -102,33 +104,17 @@ public interface UI {
     // e non dover essere ereditati da questa interface)
 
 
-
-    void showWelcome(EnumSet<PlayerColors> availableColors);
-
     //SETUP
-    void showWelcome();
-
-    void showChooseColor(EnumSet<PlayerColors> availableColors);
-    void showColorTaken();
-    void showNicknameTaken();
     void showPlayerJoined(String nickname);
 
     void showWaitingForPlayers(int currentPlayers);
-    void showStartCountdown(int secondsLeft);
-
-    void showSetupComplete();
 
     //BUILDING
-    void showPlayers(ArrayList<String> players);
-    void showBuildPhaseStart(ArrayList<Component> availableComponents);
-
     void showAvailableComponent(ArrayList<Component> components);
     void showKeptComponents(ArrayList<Component> kept);
     void showSelectComponent();
     void showBuildOptions(); // (link / keep / discard)
     void showDiscardComponent(Component component);
-
-    void showComponentOptions();
 
     void showComponentPlaced(Component component, int x, int y);
     void showInvalidPlacement(String reason);
