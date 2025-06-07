@@ -3,6 +3,9 @@ package it.polimi.ingsw.view.graphic.scenes;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,6 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.io.File;
@@ -26,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -558,15 +563,186 @@ public class FlightScene {
     }
 
     public void showHumanCoordInput() {
+        StackPane root = (StackPane) scene.getRoot();
 
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
+
+        AnchorPane anchorPane = new AnchorPane(box);
+        anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
+        AnchorPane.setBottomAnchor(box, 20.0);
+        AnchorPane.setLeftAnchor(box, 20.0);
+
+        box.getChildren().clear();
+
+        Label insertLabel = new Label("Insert the coordinates of the cabin from which to remove the crew members");
+        insertLabel.setTextFill(Color.web("#FFDE69"));
+        insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+
+        Label hintLabel = new Label("Type '<x> <y>, <x> <y>'");
+        hintLabel.setTextFill(Color.LIGHTGRAY);
+        hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+
+        TextField inputField = new TextField();
+        inputField.setPromptText("Ex. 2 3, 4 5");
+        inputField.setPrefWidth(250);
+
+        Button confirmBtn = new Button("Confirm");
+        confirmBtn.setFont(Font.font("Bangers", 14));
+        confirmBtn.setTextFill(Color.BLACK);
+        confirmBtn.setCursor(Cursor.HAND);
+        confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+
+        // Azione comune per invio
+        Runnable sendInput = () -> {
+            String text = inputField.getText().trim();
+            if (!text.isEmpty()) {
+                viewFlow.handleInput("y, " + text);
+                root.getChildren().remove(anchorPane);
+            }
+        };
+
+        // ENTER sulla TextField
+        inputField.setOnAction(e -> sendInput.run());
+
+        // Clic su Confirm
+        confirmBtn.setOnAction(e -> sendInput.run());
+
+        HBox inputBox = new HBox(10, inputField, confirmBtn);
+        inputBox.setAlignment(Pos.CENTER);
+
+        box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+
+        root.getChildren().add(anchorPane);
     }
 
     public void showPlotGoodInput() {
+        StackPane root = (StackPane) scene.getRoot();
 
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
+
+        Label confirm = new Label("Would you like to gain the goods?");
+        confirm.setTextFill(Color.web("#FFDE69"));
+        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+
+        Button yes = new Button("YES");
+        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        yes.setTextFill(Color.WHITE);
+        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
+        yes.setCursor(Cursor.HAND);
+        yes.setPrefWidth(100);
+
+        Button no = new Button("NO");
+        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        no.setTextFill(Color.WHITE);
+        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+        no.setCursor(Cursor.HAND);
+        no.setPrefWidth(100);
+
+        HBox buttons = new HBox(10, yes, no);
+        buttons.setAlignment(Pos.CENTER);
+
+        box.getChildren().addAll(confirm, buttons);
+
+        AnchorPane anchorPane = new AnchorPane(box);
+        anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
+        AnchorPane.setBottomAnchor(box, 20.0);
+        AnchorPane.setLeftAnchor(box, 20.0);
+
+        // Comportamento "NO"
+        no.setOnAction(ev -> {
+            viewFlow.handleInput("n");
+            root.getChildren().remove(anchorPane);
+        });
+
+        // Comportamento "YES"
+        yes.setOnAction(ev -> {
+            box.getChildren().clear();
+
+            Label insertLabel = new Label("Insert the coordinates of the loads and the position inside");
+            insertLabel.setTextFill(Color.web("#FFDE69"));
+            insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+
+            Label hintLabel = new Label("Type '<x> <y>, <position>'");
+            hintLabel.setTextFill(Color.LIGHTGRAY);
+            hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+
+            TextField inputField = new TextField();
+            inputField.setPromptText("Ex. 2 3, 3");
+            inputField.setPrefWidth(250);
+
+            Button confirmBtn = new Button("Confirm");
+            confirmBtn.setFont(Font.font("Bangers", 14));
+            confirmBtn.setTextFill(Color.BLACK);
+            confirmBtn.setCursor(Cursor.HAND);
+            confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+
+            // Azione comune per invio
+            Runnable sendInput = () -> {
+                String text = inputField.getText().trim();
+                if (!text.isEmpty()) {
+                    viewFlow.handleInput("y, " + text);
+                    root.getChildren().remove(anchorPane);
+                }
+            };
+
+            // ENTER sulla TextField
+            inputField.setOnAction(e -> sendInput.run());
+
+            // Clic su Confirm
+            confirmBtn.setOnAction(e -> sendInput.run());
+
+            HBox inputBox = new HBox(10, inputField, confirmBtn);
+            inputBox.setAlignment(Pos.CENTER);
+
+            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+        });
+
+        root.getChildren().add(anchorPane);
     }
 
     public void showRollDiceInput() {
+        StackPane root = (StackPane) scene.getRoot();
 
+        // === Overlay grigio trasparente ===
+        Rectangle overlay = new Rectangle();
+        overlay.widthProperty().bind(scene.widthProperty());
+        overlay.heightProperty().bind(scene.heightProperty());
+        overlay.setFill(Color.rgb(0, 0, 0, 0.5));
+        overlay.setMouseTransparent(false); // blocca interazioni sotto
+
+        // === Contenitore centrale ===
+        VBox box = new VBox(20);
+        box.setAlignment(Pos.CENTER);
+
+        Label diceLabel = new Label("🎲 Roll the dice!");
+        diceLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 35));
+        diceLabel.setTextFill(Color.web("#FFDE69"));
+
+        Button rollButton = new Button("Roll Dice");
+        rollButton.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+        rollButton.setTextFill(Color.BLACK);
+        rollButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        rollButton.setCursor(Cursor.HAND);
+
+        Label resultLabel = new Label("");
+        resultLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 60));
+        resultLabel.setTextFill(Color.WHITE);
+        resultLabel.setVisible(false); // nascosto finché il pulsante non sparisce
+
+        box.getChildren().addAll(diceLabel, rollButton);
+
+        StackPane overlayPane = new StackPane(overlay, box);
+
+        root.getChildren().add(overlayPane);
+
+        // === Azione pulsante ===
+        rollButton.setOnAction(ev -> {
+            viewFlow.handleInput("roll");
+        });
     }
 
     public void showPlanetDecisionInput() {
