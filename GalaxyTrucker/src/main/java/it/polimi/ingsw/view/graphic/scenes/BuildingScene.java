@@ -231,6 +231,8 @@ public class BuildingScene {
                 StackPane.setMargin(optionsBox, new Insets(20, 0, 0, 5));
                 root.getChildren().add(optionsBox);
             }
+            optionsBox.setPickOnBounds(false);
+
         });
     }
 
@@ -601,11 +603,14 @@ public class BuildingScene {
         Platform.runLater(() -> {
             StackPane root = (StackPane) scene.getRoot();
             if (!root.getChildren().contains(componentBox)) {
-                StackPane.setAlignment(componentBox, Pos.CENTER);
+                StackPane.setAlignment(componentBox, Pos.BOTTOM_LEFT);
                 StackPane.setMargin(componentBox, new Insets(0, 0, 0, 0));
                 root.getChildren().add(componentBox);
             }
+            componentBox.setPickOnBounds(false);
+
         });
+
     }
 
     public void insertSelectedComponent(Component selected) {
@@ -642,7 +647,9 @@ public class BuildingScene {
         Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
             btn.setDisable(false);
             btn.setOpacity(1.0);
+            //
         });
+        loadShipView();
     }
 
 
