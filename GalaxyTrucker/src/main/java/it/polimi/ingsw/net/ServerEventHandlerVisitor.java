@@ -644,147 +644,23 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showShipLayout(event.getNickname(), event.getSpaceship());
     }
 
-
-
-
-    // DEPRECATED
-
-    @Deprecated
-    public void visit(BuildingStateError event){
-        ui.showError(event.getMessage());
-        System.out.print("> ");
-    }
-
-    @Deprecated
-    public void visit(LobbyEvent event) {
-        ui.showWaitingForPlayers(event.getTruckers().size());
-    }
-
-    @Deprecated
-    public void visit(CoordRequest event) {
-        ui.askCoordinates();
-    }
-
-    @Deprecated
-    public void visit(AvailableComponentsEvent event) {
-        ui.showAvailableComponent(event.getComponents());
-        ui.showSelectComponent();
-    }
-
-    @Deprecated
-    public void visit(TruckerLostCrewEvent event) {
-    }
-
-    @Deprecated
-    public void visit(GameCreatedEvent event) {
-
-    }
-
-    @Deprecated
+    @Override
     public void visit(FirstConnectionEvent event) {
 
     }
 
-    @Deprecated
-    public void visit(CoordListRequest event) {
+    @Override
+    public void visit(PingEvent event){
 
-    }
-
-    @Deprecated
-    public void visit(AvailableComponentToSelectRequest event) {
-
-    }
-
-    @Deprecated
-    public void visit(TimeExpiredEvent event){
-        ui.showTimeExpired();
-    }
-
-    @Deprecated
-    public void visit(ShowCardEvent event) {
-
-    }
-
-    @Deprecated
-    public void visit(UpdateCardStateEvent event) {
-        ui.showMessage(event.getMessage());
-        System.out.print("> ");
-    }
-
-    @Deprecated
-    public void visit(UpdateTrackEvent event) {
-        viewFlow.setTrack(event.getTrack());
-        System.out.print("> ");
-    }
-
-    @Deprecated
-    public void visit(ShipUpdateEvent event) {
-        viewFlow.setBatteryCount(event.numBatteries());
-        viewFlow.setCannonPower(event.cannonPower());
-        viewFlow.setShip(event.getShip());
-        viewFlow.setEnginePower(event.enginePower());
-        viewFlow.setPosition(event.truckerPosition());
-        viewFlow.setGoodsByColor(event.getGoods());
-        viewFlow.setHumanCount(event.numCrew());
-        System.out.print("> ");
-    }
-
-    @Deprecated
-    public void visit(IndexesRequest event) {
-        ui.showGoodsToRemove(event.getGoodsToRemove());
-        ui.askGoodsIndexesToRemove();
-        System.out.print("> ");
-    }
-
-    @Deprecated
-    public void visit(GoodsGainedEvent event){
-        ui.showGoodsGained(event.getGoodGained());
-        ui.askIndex();
-        System.out.print("> ");
-    }
-
-    @Deprecated
-    public void visit(OkEvent event){
-        ui.showMessage(event.getMessage());
-        System.out.print("> ");
-    }
-
-    @Deprecated
-    public void visit(IntRequest event) {
-        ui.askIndex();
-        System.out.print("> ");
-    }
-
-    @Deprecated
-    public void visit(BuildOptionsEvent event){
-        ui.showBuildOptions();
-    }
-
-    @Deprecated
-    public void visit(ReconnectedUserEvent event) {
-        ui.showMessage(event.getMessage());
-    }
-
-    @Deprecated
-    public void visit(DisconnectedUserEvent event) {
-        ui.showMessage(event.getMessage());
-    }
-
-    @Deprecated
-    public void visit(SetupCompleteEvent event) {
-        ui.showSetupComplete();
-
-        viewFlow.setViewState(ViewFlow.ViewState.BULDING);
-    }
-
-    @Deprecated
-    public void visit(SelectComponentEvent event){
-        ui.askPlacedComponent();
-        System.out.print("> ");
     }
 
     @Override
-    public void visit(PingEvent event){
+    public void visit(ResumeGameEvent resumeGameEvent) {
+
+    }
+
+    @Override
+    public void visit(ChooseResumeEvent chooseResumeEvent) {
 
     }
 
