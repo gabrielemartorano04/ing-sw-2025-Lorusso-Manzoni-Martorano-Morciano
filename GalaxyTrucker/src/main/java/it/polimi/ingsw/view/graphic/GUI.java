@@ -374,31 +374,31 @@ public class GUI implements UI {
     @Override
     public void showCurrCondition(CurrentCondition event) {
 
-        this.flightScene.showUpdateSpaceship();
-        this.flightScene.showUpdateTrack();
+        // this.flightScene.showUpdateSpaceship();
+        // this.flightScene.showUpdateTrack();
 
     }
 
     @Override
     public void cardFinished(CardFinished event){
 
-        this.flightScene.showUpdateSpaceship();
-        this.flightScene.showUpdateTrack();
+        // this.flightScene.showUpdateSpaceship();
+        // this.flightScene.showUpdateTrack();
     }
 
     @Override
     public  void epidemic(EpidemicEvent event){
 
-        this.flightScene.showUpdateSpaceship();
-        this.flightScene.showUpdateTrack();
+        // this.flightScene.showUpdateSpaceship();
+        // this.flightScene.showUpdateTrack();
 
     }
 
     @Override
     public void stardust(StarDustEvent event){
 
-        this.flightScene.showUpdateSpaceship();
-        this.flightScene.showUpdateTrack();
+        // this.flightScene.showUpdateSpaceship();
+        // this.flightScene.showUpdateTrack();
 
     }
 
@@ -427,12 +427,12 @@ public class GUI implements UI {
 
     @Override
     public void showResult(String result){
-        this.flightScene.showResult(result);
+        // this.flightScene.showResult(result);
     }
 
     @Override
     public void showDead(){
-        this.flightScene.showDeadTrucker();
+        // this.flightScene.showDeadTrucker();
     }
 
     // fine flight scene
