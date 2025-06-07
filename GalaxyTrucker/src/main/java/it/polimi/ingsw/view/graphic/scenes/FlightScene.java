@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -236,5 +237,112 @@ public class FlightScene {
         if (cell != null) {
             cell.getChildren().clear();
         }
+    }
+
+    public void showStateInput() {
+
+    }
+
+    public void showActivateEngineInput() {
+
+    }
+
+    public void showActivateCannonsInput() {
+
+    }
+
+    public void showActivateShieldInput() {
+
+    }
+
+    public void showLandInput() {
+        StackPane root = (StackPane) scene.getRoot();
+
+        // VBox per contenere il messaggio e i pulsanti
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.CENTER_LEFT);
+        box.setPadding(new Insets(10));
+        box.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.6), new CornerRadii(10), Insets.EMPTY)));
+
+        Label confirm = new Label("Would you like to land?");
+        confirm.setTextFill(Color.web("#FFDE69"));
+        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 24));
+
+        Button yes = new Button("YES");
+        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        yes.setTextFill(Color.WHITE);
+        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
+        yes.setCursor(Cursor.HAND);
+        yes.setPrefWidth(80);
+
+        Button no = new Button("NO");
+        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        no.setTextFill(Color.WHITE);
+        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+        no.setCursor(Cursor.HAND);
+        no.setPrefWidth(80);
+
+        HBox buttons = new HBox(10, yes, no);
+        buttons.setAlignment(Pos.CENTER_LEFT);
+
+        box.getChildren().addAll(confirm, buttons);
+
+        // Posiziona VBox in basso a sinistra usando un AnchorPane
+        AnchorPane anchorPane = new AnchorPane(box);
+        AnchorPane.setBottomAnchor(box, 20.0);
+        AnchorPane.setLeftAnchor(box, 20.0);
+
+        yes.setOnAction(ev -> {
+            viewFlow.handleInput("end");
+            root.getChildren().remove(anchorPane);
+        });
+
+        no.setOnAction(ev -> root.getChildren().remove(anchorPane));
+
+        root.getChildren().add(anchorPane);
+    }
+
+    public void showHumanCoordInput() {
+
+    }
+
+    public void showPlotGoodInput() {
+
+    }
+
+    public void showRollDiceInput() {
+
+    }
+
+    public void showPlanetDecisionInput() {
+
+    }
+
+    public void showDrawCardInput() {
+
+    }
+
+    public void showRemotionConfirmedInput() {
+
+    }
+
+    public void showRemoveBatteriesInput() {
+
+    }
+
+    public void showRemoveGoodsInput() {
+
+    }
+
+    public void showRearrangeInput() {
+
+    }
+
+    public void showCosmicCreditsInput() {
+
+    }
+
+    public void showWarzoneInput() {
+
     }
 }

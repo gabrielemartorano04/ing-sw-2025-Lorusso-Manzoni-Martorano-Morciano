@@ -528,7 +528,7 @@ public class BuildingScene {
 
 
     private void addComponentSelectedSlot() {
-        double borderSize = 180;
+        double borderSize = 178;
 
         Rectangle border = new Rectangle(borderSize, borderSize);
         border.setArcWidth(16);
@@ -543,12 +543,12 @@ public class BuildingScene {
         imageContainer.setAlignment(Pos.CENTER);
 
         componentSelectedBox = new VBox(10);
-        componentSelectedBox.setPadding(new Insets(0, 0, -480, -1243));
+        componentSelectedBox.setPadding(new Insets(0, 0, -195, -1229));
         componentSelectedBox.setAlignment(Pos.CENTER);
         componentSelectedBox.getChildren().add(imageContainer);
 
         StackPane.setAlignment(componentSelectedBox, Pos.CENTER);
-        StackPane.setMargin(componentSelectedBox, new Insets(0, 0, 25, 15));
+        StackPane.setMargin(componentSelectedBox, new Insets(0, 0, 0, 0));
         root.getChildren().add(componentSelectedBox);
     }
 
@@ -593,7 +593,7 @@ public class BuildingScene {
 
     private void attackselectComponentButtons(Scene scene) {
         VBox componentBox = new VBox(10);
-        componentBox.setPadding(new Insets(10));
+        componentBox.setPadding(new Insets(0, 0, 25, 15));
         componentBox.setAlignment(Pos.BOTTOM_LEFT);
 
         componentBox.getChildren().addAll(turnBtn, linkBtn, keepBtn, discardBtn);
@@ -601,25 +601,22 @@ public class BuildingScene {
         Platform.runLater(() -> {
             StackPane root = (StackPane) scene.getRoot();
             if (!root.getChildren().contains(componentBox)) {
-                StackPane.setAlignment(componentBox, Pos.BOTTOM_LEFT);
-                StackPane.setMargin(componentBox, new Insets(0, 0, 20, 20));
+                StackPane.setAlignment(componentBox, Pos.CENTER);
+                StackPane.setMargin(componentBox, new Insets(0, 0, 0, 0));
                 root.getChildren().add(componentBox);
             }
         });
     }
 
-
-
-
     public void insertSelectedComponent(Component selected) {
         this.componentSelectedExists = true;
 
         ImageView componentView = new ImageView(selected.getFrontImage());
-        componentView.setFitWidth(178);
+        componentView.setFitWidth(176);
         componentView.setPreserveRatio(true);
         componentView.setMouseTransparent(true);
 
-        Rectangle clip = new Rectangle(178, 178);
+        Rectangle clip = new Rectangle(176, 176);
         clip.setArcWidth(18);
         clip.setArcHeight(18);
         componentView.setClip(clip);
