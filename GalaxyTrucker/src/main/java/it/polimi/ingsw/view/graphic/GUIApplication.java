@@ -118,7 +118,7 @@ public class GUIApplication extends Application {
         StackPane stackPane = new StackPane();
         BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
         Scene scene = buildingScene.createScene(playersNames, 2);
-        buildingScene.insertSelectedComponent(cannon);
+        buildingScene.insertSelectedComponent(cannon, false);
         primaryStage.setScene(scene);
 
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
