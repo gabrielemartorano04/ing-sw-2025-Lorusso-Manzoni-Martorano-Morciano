@@ -60,7 +60,6 @@ public class BuildingScene {
     private Button hourglassBtn;
     private Button selectBtn;
 
-    private Pane linkOverlay;
     private boolean isLinkEnabled;
     Button turnBtn;
     Button keepBtn;
@@ -68,6 +67,7 @@ public class BuildingScene {
     Button linkBtn;
 
     private List<Node> shipScreenContent;
+
 
     private VBox componentSelectedBox;
     private boolean componentSelectedExists;
@@ -146,15 +146,12 @@ public class BuildingScene {
                 cellMatrix[row][col] = cell;
                 int rowIndex = row;
                 int colIndex = col;
-                if(isLinkEnabled){
-                    cell.setOnMouseClicked(e -> {
-                        if (isLinkEnabled && validCells[rowIndex][colIndex]) {
-                            viewFlow.handleInput("Link " + rowIndex + " " + colIndex);
-                            exitLinkMode();
-                        }
-                    });
-
-                }
+                cell.setOnMouseClicked(e -> {
+                    if (isLinkEnabled && validCells[rowIndex][colIndex]) {
+                        viewFlow.handleInput("Link " + rowIndex + " " + colIndex);
+                        exitLinkMode();
+                    }
+                });
 
             }
         }
@@ -207,16 +204,11 @@ public class BuildingScene {
             addHourglassButtonToScene(viewFlow);
         }
         addSelectComponentButton(styleButton);
-        addComponentSelectedSlot();
-
         attachOptionsBoxToScene(scene, level);
 
-        linkOverlay = new Pane();
-        linkOverlay.setPrefSize(width, height);
-        linkOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
-        linkOverlay.setVisible(false);
-        linkOverlay.setMouseTransparent(true);
-        root.getChildren().add(linkOverlay);
+        addComponentSelectedSlot();
+        createComponentSelectedButtons(styleButton);
+        attackselectComponentButtons(scene);
 
         return scene;
     }
@@ -534,11 +526,10 @@ public class BuildingScene {
         root.getChildren().setAll(componentView);
     }
 
-    private void addComponentSelectedSlot() {
-        double borderSize = 180;
-        double imageSize = 180;
 
-        // Slot vuoto (solo contorno bianco)
+    private void addComponentSelectedSlot() {
+        double borderSize = 178;
+
         Rectangle border = new Rectangle(borderSize, borderSize);
         border.setArcWidth(16);
         border.setArcHeight(16);
@@ -551,89 +542,81 @@ public class BuildingScene {
         imageContainer.setPrefSize(borderSize, borderSize);
         imageContainer.setAlignment(Pos.CENTER);
 
-        VBox buttonsBox = createSelectComponentButtons();
-        buttonsBox.setAlignment(Pos.CENTER);
-
-        componentSelectedBox = new VBox(10, imageContainer, buttonsBox);
-        componentSelectedBox.setPadding(new Insets(0, 0, -480, -1243));
+        componentSelectedBox = new VBox(10);
+        componentSelectedBox.setPadding(new Insets(0, 0, -195, -1229));
         componentSelectedBox.setAlignment(Pos.CENTER);
+        componentSelectedBox.getChildren().add(imageContainer);
 
         StackPane.setAlignment(componentSelectedBox, Pos.CENTER);
-        StackPane.setMargin(componentSelectedBox, new Insets(0, 0, 25, 15));
+        StackPane.setMargin(componentSelectedBox, new Insets(0, 0, 0, 0));
         root.getChildren().add(componentSelectedBox);
     }
 
-    private VBox createSelectComponentButtons() {
-        Consumer<Button> styleYellowButton = btn -> {
-            btn.setFont(Font.font("Bangers", 18));
-            btn.setTextFill(Color.BLACK);
-            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-            btn.setCursor(Cursor.HAND);
-            btn.setPrefWidth(180);
-            btn.setDisable(true);      // Disabilitati all'inizio
-            btn.setOpacity(0.5);       // Invisibili all'inizio
-        };
 
-        Consumer<Button> styleRedButton = btn -> {
-            btn.setFont(Font.font("Bangers", 18));
-            btn.setTextFill(Color.WHITE);
-            btn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
-            btn.setCursor(Cursor.HAND);
-            btn.setPrefWidth(180);
-            btn.setDisable(true);
-            btn.setOpacity(0.5);
-        };
-
+    private void createComponentSelectedButtons(Consumer<Button> styleButton) {
         // Crea bottoni
-        Button turnBtn = new Button("Turn");
-        Button keepBtn = new Button("Keep");
-        Button discardBtn = new Button("Discard");
-        Button linkBtn = new Button("Link");
+        this.turnBtn = new Button("Turn");
+        this.keepBtn = new Button("Keep");
+        this.discardBtn = new Button("Discard");
+        this.linkBtn = new Button("Link");
 
-        // Applica stili
-        styleYellowButton.accept(turnBtn);
-        styleYellowButton.accept(keepBtn);
-        styleRedButton.accept(discardBtn);
-        styleYellowButton.accept(linkBtn);
+        styleButton.accept(turnBtn);
+        styleButton.accept(keepBtn);
+        styleButton.accept(linkBtn);
 
-        // Salva riferimenti
-        this.turnBtn = turnBtn;
-        this.keepBtn = keepBtn;
-        this.discardBtn = discardBtn;
-        this.linkBtn = linkBtn;
+        discardBtn.setFont(Font.font("Bangers", 18));
+        discardBtn.setTextFill(Color.WHITE);
+        discardBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+        discardBtn.setCursor(Cursor.HAND);
+        discardBtn.setPrefWidth(180);
+        discardBtn.setDisable(true);
+        discardBtn.setOpacity(0.5);
 
-        // Assegna azioni
         turnBtn.setOnAction(e -> viewFlow.handleInput("Turn"));
         keepBtn.setOnAction(e -> viewFlow.handleInput("Keep"));
         discardBtn.setOnAction(e -> {
             componentSelectedExists = false;
             viewFlow.handleInput("Discard");
         });
-
         linkBtn.setOnAction(e -> {
             isLinkEnabled = true;
-            linkOverlay.setVisible(true);
-            grid.toFront();
+            grid.toFront(); // Porta la griglia in primo piano sopra il layer scuro
+
             Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
                 btn.setDisable(true);
                 btn.setOpacity(0.5);
             });
-        });
 
-        VBox buttonsBox = new VBox(8, turnBtn, linkBtn, keepBtn, discardBtn);
-        buttonsBox.setAlignment(Pos.CENTER);
-        return buttonsBox;
+        });
+    }
+
+
+    private void attackselectComponentButtons(Scene scene) {
+        VBox componentBox = new VBox(10);
+        componentBox.setPadding(new Insets(0, 0, 25, 15));
+        componentBox.setAlignment(Pos.BOTTOM_LEFT);
+
+        componentBox.getChildren().addAll(turnBtn, linkBtn, keepBtn, discardBtn);
+
+        Platform.runLater(() -> {
+            StackPane root = (StackPane) scene.getRoot();
+            if (!root.getChildren().contains(componentBox)) {
+                StackPane.setAlignment(componentBox, Pos.CENTER);
+                StackPane.setMargin(componentBox, new Insets(0, 0, 0, 0));
+                root.getChildren().add(componentBox);
+            }
+        });
     }
 
     public void insertSelectedComponent(Component selected) {
         this.componentSelectedExists = true;
 
         ImageView componentView = new ImageView(selected.getFrontImage());
-        componentView.setFitWidth(178);
+        componentView.setFitWidth(176);
         componentView.setPreserveRatio(true);
         componentView.setMouseTransparent(true);
 
-        Rectangle clip = new Rectangle(178, 178);
+        Rectangle clip = new Rectangle(176, 176);
         clip.setArcWidth(18);
         clip.setArcHeight(18);
         componentView.setClip(clip);
@@ -656,8 +639,6 @@ public class BuildingScene {
 
     private void exitLinkMode() {
         isLinkEnabled = false;
-        linkOverlay.setVisible(false);
-
         Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
             btn.setDisable(false);
             btn.setOpacity(1.0);
