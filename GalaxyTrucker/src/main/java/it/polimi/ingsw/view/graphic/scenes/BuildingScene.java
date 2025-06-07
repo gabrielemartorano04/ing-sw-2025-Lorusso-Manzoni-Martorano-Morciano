@@ -68,6 +68,7 @@ public class BuildingScene {
 
     private List<Node> shipScreenContent;
 
+
     private VBox componentSelectedBox;
     private boolean componentSelectedExists;
 
@@ -145,15 +146,12 @@ public class BuildingScene {
                 cellMatrix[row][col] = cell;
                 int rowIndex = row;
                 int colIndex = col;
-                if(isLinkEnabled){
-                    cell.setOnMouseClicked(e -> {
-                        if (isLinkEnabled && validCells[rowIndex][colIndex]) {
-                            viewFlow.handleInput("Link " + rowIndex + " " + colIndex);
-                            exitLinkMode();
-                        }
-                    });
-
-                }
+                cell.setOnMouseClicked(e -> {
+                    if (isLinkEnabled && validCells[rowIndex][colIndex]) {
+                        viewFlow.handleInput("Link " + rowIndex + " " + colIndex);
+                        exitLinkMode();
+                    }
+                });
 
             }
         }
@@ -209,7 +207,7 @@ public class BuildingScene {
         attachOptionsBoxToScene(scene, level);
 
         addComponentSelectedSlot();
-        createSelectComponentButtons(styleButton);
+        createComponentSelectedButtons(styleButton);
         attackselectComponentButtons(scene);
 
         return scene;
@@ -555,19 +553,17 @@ public class BuildingScene {
     }
 
 
-    private void createSelectComponentButtons(Consumer<Button> styleButton) {
+    private void createComponentSelectedButtons(Consumer<Button> styleButton) {
         // Crea bottoni
         this.turnBtn = new Button("Turn");
         this.keepBtn = new Button("Keep");
         this.discardBtn = new Button("Discard");
         this.linkBtn = new Button("Link");
 
-        // Applica stile
         styleButton.accept(turnBtn);
         styleButton.accept(keepBtn);
         styleButton.accept(linkBtn);
 
-        // discard ha stile diverso
         discardBtn.setFont(Font.font("Bangers", 18));
         discardBtn.setTextFill(Color.WHITE);
         discardBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
@@ -576,7 +572,6 @@ public class BuildingScene {
         discardBtn.setDisable(true);
         discardBtn.setOpacity(0.5);
 
-        // Azioni
         turnBtn.setOnAction(e -> viewFlow.handleInput("Turn"));
         keepBtn.setOnAction(e -> viewFlow.handleInput("Keep"));
         discardBtn.setOnAction(e -> {
@@ -585,12 +580,13 @@ public class BuildingScene {
         });
         linkBtn.setOnAction(e -> {
             isLinkEnabled = true;
-            // TODO: linkOverlay.setVisible(true);
-            grid.toFront();
+            grid.toFront(); // Porta la griglia in primo piano sopra il layer scuro
+
             Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
                 btn.setDisable(true);
                 btn.setOpacity(0.5);
             });
+
         });
     }
 
@@ -646,8 +642,6 @@ public class BuildingScene {
 
     private void exitLinkMode() {
         isLinkEnabled = false;
-        // TODO: linkOverlay.setVisible(false);
-
         Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
             btn.setDisable(false);
             btn.setOpacity(1.0);
