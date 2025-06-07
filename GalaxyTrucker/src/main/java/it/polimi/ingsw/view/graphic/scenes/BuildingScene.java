@@ -711,7 +711,7 @@ public class BuildingScene {
         return validCells[row][col] ? cellMatrix[row][col] : null;
     }
 
-    public void insertSelectedComponent(Component selected) {
+    public void insertSelectedComponent(Component selected, boolean toTurn) {
         this.componentSelectedExists = true;
 
         ImageView componentView = new ImageView(selected.getFrontImage());
@@ -719,10 +719,16 @@ public class BuildingScene {
         componentView.setPreserveRatio(true);
         componentView.setMouseTransparent(true);
 
+        if (toTurn) {
+            componentView.setRotate(90);
+        }
+
+
         Rectangle clip = new Rectangle(176, 176);
         clip.setArcWidth(18);
         clip.setArcHeight(18);
         componentView.setClip(clip);
+
 
         StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
         imageContainer.getChildren().add(componentView);
