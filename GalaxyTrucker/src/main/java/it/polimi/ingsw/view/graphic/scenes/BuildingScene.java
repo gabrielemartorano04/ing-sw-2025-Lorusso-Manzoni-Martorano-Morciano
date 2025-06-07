@@ -642,6 +642,7 @@ public class BuildingScene {
         Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
             btn.setDisable(false);
             btn.setOpacity(1.0);
+            //
         });
     }
 
