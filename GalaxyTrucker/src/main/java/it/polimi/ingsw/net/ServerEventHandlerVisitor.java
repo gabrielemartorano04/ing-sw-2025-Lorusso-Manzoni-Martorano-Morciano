@@ -307,6 +307,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
         for(String nicknames: event.getTruckersRemoved()){
             if(nicknames.equalsIgnoreCase(viewFlow.getNickname())) {
+                ui.showDead();
                 viewFlow.setOut();
                 viewFlow.setParserFlightState(ParserState.DEAD);
             }
@@ -338,6 +339,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
         for(String nicknames: event.getTruckersRemoved()){
             if(nicknames.equalsIgnoreCase(viewFlow.getNickname())) {
+                ui.showDead();
                 viewFlow.setOut();
                 viewFlow.setParserFlightState(ParserState.DEAD);
             }

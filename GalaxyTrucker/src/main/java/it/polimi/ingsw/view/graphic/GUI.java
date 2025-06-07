@@ -368,36 +368,38 @@ public class GUI implements UI {
     public void flightScene(FlightStartEvent event){
         //TODO:
         //stack pane sistema
-        //this.flightScene=new FlightScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow,new StackPane());
+        this.flightScene=new FlightScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow,new StackPane());
     }
 
     @Override
     public void showCurrCondition(CurrentCondition event) {
-        //todo
-        //mostra la condizione e il tasto 'continue'
-        //this.flightScene.showCurrentCondition(event.getCondition());
+
+        this.flightScene.showUpdateSpaceship();
+        this.flightScene.showUpdateTrack();
+
     }
 
     @Override
     public void cardFinished(CardFinished event){
-        //todo
-//        if(viewFlow.getOut())
-//            this.flightScene.showDeadTrucker();
-//        else this.flightScene.showCardFinished();
 
+        this.flightScene.showUpdateSpaceship();
+        this.flightScene.showUpdateTrack();
     }
 
     @Override
     public  void epidemic(EpidemicEvent event){
-        //todo
-//        if(viewFlow.getOut())
-//            this.flightScene.showDeadTrucker();
-//        else this.flightScene.showDrawCard();
+
+        this.flightScene.showUpdateSpaceship();
+        this.flightScene.showUpdateTrack();
+
     }
 
     @Override
     public void stardust(StarDustEvent event){
-        //todo
+
+        this.flightScene.showUpdateSpaceship();
+        this.flightScene.showUpdateTrack();
+
     }
 
     @Override
@@ -425,12 +427,12 @@ public class GUI implements UI {
 
     @Override
     public void showResult(String result){
-
+        this.flightScene.showResult(result);
     }
 
     @Override
     public void showDead(){
-
+        this.flightScene.showDeadTrucker();
     }
 
     // fine flight scene
