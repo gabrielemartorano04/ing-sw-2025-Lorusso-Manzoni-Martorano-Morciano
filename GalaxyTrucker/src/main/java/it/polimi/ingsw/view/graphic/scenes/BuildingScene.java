@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -556,7 +557,6 @@ public class BuildingScene {
 
 
     private void createComponentSelectedButtons(Consumer<Button> styleButton) {
-        // Crea bottoni
         this.turnBtn = new Button("Turn");
         this.keepBtn = new Button("Keep");
         this.discardBtn = new Button("Discard");
@@ -581,13 +581,12 @@ public class BuildingScene {
             viewFlow.handleInput("Discard");
         });
         linkBtn.setOnAction(e -> {
-            isLinkEnabled = true;
-            grid.toFront(); // Porta la griglia in primo piano sopra il layer scuro
-
-            Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
-                btn.setDisable(true);
-                btn.setOpacity(0.5);
-            });
+            if (isLinkEnabled) {
+                // Se già attivo, disattiva
+                exitLinkMode();
+            } else {
+                enterLinkMode();
+            }
 
         });
     }
@@ -613,30 +612,6 @@ public class BuildingScene {
 
     }
 
-    public void insertSelectedComponent(Component selected) {
-        this.componentSelectedExists = true;
-
-        ImageView componentView = new ImageView(selected.getFrontImage());
-        componentView.setFitWidth(176);
-        componentView.setPreserveRatio(true);
-        componentView.setMouseTransparent(true);
-
-        Rectangle clip = new Rectangle(176, 176);
-        clip.setArcWidth(18);
-        clip.setArcHeight(18);
-        componentView.setClip(clip);
-
-        StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
-        imageContainer.getChildren().add(componentView);
-
-        Stream.of(turnBtn, keepBtn, discardBtn, linkBtn).forEach(btn -> {
-            btn.setDisable(false);
-            btn.setOpacity(1.0);
-        });
-    }
-
-
-
     public void loadShipView(){
         root.getChildren().setAll(shipScreenContent);
     }
@@ -644,12 +619,53 @@ public class BuildingScene {
 
     private void exitLinkMode() {
         isLinkEnabled = false;
+
         Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
             btn.setDisable(false);
             btn.setOpacity(1.0);
-            //
         });
-        loadShipView();
+
+        scene.removeEventFilter(MouseEvent.MOUSE_PRESSED, this::handleClickOutsideGrid);
+    }
+
+    private void enterLinkMode() {
+        isLinkEnabled = true;
+
+        Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
+            btn.setDisable(true);
+            btn.setOpacity(0.5);
+        });
+
+        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, this::handleClickOutsideGrid);
+    }
+
+    private void handleClickOutsideGrid(MouseEvent event) {
+        Node clickedNode = event.getPickResult().getIntersectedNode();
+
+        if (isDescendantOfGrid(clickedNode)) {
+            return;
+        }
+
+        if (isDescendantOfNode(clickedNode, linkBtn)) {
+            return;
+        }
+
+        exitLinkMode();
+        event.consume();
+    }
+
+    private boolean isDescendantOfGrid(Node node) {
+        return isDescendantOfNode(node, grid);
+    }
+
+    private boolean isDescendantOfNode(Node node, Node potentialParent) {
+        while (node != null) {
+            if (node == potentialParent) {
+                return true;
+            }
+            node = node.getParent();
+        }
+        return false;
     }
 
 
@@ -693,6 +709,28 @@ public class BuildingScene {
      */
     public StackPane getCell(int row, int col) {
         return validCells[row][col] ? cellMatrix[row][col] : null;
+    }
+
+    public void insertSelectedComponent(Component selected) {
+        this.componentSelectedExists = true;
+
+        ImageView componentView = new ImageView(selected.getFrontImage());
+        componentView.setFitWidth(176);
+        componentView.setPreserveRatio(true);
+        componentView.setMouseTransparent(true);
+
+        Rectangle clip = new Rectangle(176, 176);
+        clip.setArcWidth(18);
+        clip.setArcHeight(18);
+        componentView.setClip(clip);
+
+        StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
+        imageContainer.getChildren().add(componentView);
+
+        Stream.of(turnBtn, keepBtn, discardBtn, linkBtn).forEach(btn -> {
+            btn.setDisable(false);
+            btn.setOpacity(1.0);
+        });
     }
 
     public void addKeptComponent(int index, Component component, ViewFlow viewFlow) {
