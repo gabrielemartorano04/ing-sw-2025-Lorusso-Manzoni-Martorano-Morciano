@@ -783,7 +783,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         System.out.print("> ");
     }
 
-    @Deprecated
+    @Override
     public void visit(PingEvent event){
 
     }

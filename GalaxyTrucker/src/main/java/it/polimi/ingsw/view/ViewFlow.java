@@ -106,24 +106,28 @@ public class ViewFlow implements EventReceiver {
                 System.out.println("[SERVER] Message received: " + event.getMessage() + ". || EventType ||: " + event.getEventType() + " per " + nickname);
             }
         //!!questa deve gestire gli eventi dal server!!
-
-            if (event.getEventType() == ServerEventType.FIRST_CONNECTION) {
-                ui.showInsertNumPlayers();
-            } else {
-                if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS || event.getEventType() == ServerEventType.COMPONENT_LINKED
-                        || event.getEventType() == ServerEventType.COMPONENT_SELECTED || event.getEventType() == ServerEventType.DISCART_SUCCESS || event.getEventType() == ServerEventType.CARD_FINISHED) {
-                    event.call(serverEventVisitor);
-                    done = true;
+            switch (event.getEventType()) {
+                case CHOOSE_RESUME ->{
                 }
-                if (event.getEventType() == ServerEventType.CHOOSE_COLOURS) {
-                    viewState = ViewState.START;
+                case RESUME_GAME -> {}
+                case FIRST_CONNECTION-> {
+                    ui.showInsertNumPlayers();
                 }
-                switch (viewState) {
-                    case START -> {
+                default -> {
+                    if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS || event.getEventType() == ServerEventType.COMPONENT_LINKED
+                            || event.getEventType() == ServerEventType.COMPONENT_SELECTED || event.getEventType() == ServerEventType.DISCART_SUCCESS || event.getEventType() == ServerEventType.CARD_FINISHED) {
                         event.call(serverEventVisitor);
                         done = true;
                     }
-                    case BULDING -> {
+                    if (event.getEventType() == ServerEventType.CHOOSE_COLOURS) {
+                        viewState = ViewState.START;
+                    }
+                    switch (viewState) {
+                        case START -> {
+                            event.call(serverEventVisitor);
+                            done = true;
+                        }
+                        case BULDING -> {
 //                        ui.showShipLayout(nickname, ship);
 //                        if (!keptComponent.isEmpty()) {
 //                            ui.showKeptComponents(keptComponent);
@@ -132,22 +136,23 @@ public class ViewFlow implements EventReceiver {
 //                            ui.showBuildOptions();
 //                        }
 
+                        }
+                        case FILL -> {
+                            //ui.showShipLayout(nickname, ship);
+                        }
+                        case FLIGTH -> {
+                            ui.showShipLayout(nickname, ship);
+                            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
+                            ui.showTrack(track, level);
+                            System.out.println("you are out?" + out);
+                        }
+                        case END -> event.call(serverEventVisitor);
                     }
-                    case FILL -> {
-                        //ui.showShipLayout(nickname, ship);
+                    if (!done) {
+                        event.call(serverEventVisitor);
                     }
-                    case FLIGTH -> {
-                        ui.showShipLayout(nickname, ship);
-                        ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
-                        ui.showTrack(track, level);
-                        System.out.println("you are out?" + out);
-                    }
-                    case END -> event.call(serverEventVisitor);
+                    done = false;
                 }
-                if (!done) {
-                    event.call(serverEventVisitor);
-                }
-                done = false;
             }
         }
     }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
@@ -299,6 +300,7 @@ public class Pirates extends Card implements Serializable {
             for (Trucker t : Game.getIstance().getTruckerList()) {
                 track.put(t.getNickname(), t.getPosition());
             }
+            GamePersistence.saveGame(Game.getIstance());
             return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
         }else {
             this.cardState = CardState.ROLL_DICE;

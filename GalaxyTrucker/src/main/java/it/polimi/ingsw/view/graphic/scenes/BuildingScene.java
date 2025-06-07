@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -148,7 +149,8 @@ public class BuildingScene {
                 int colIndex = col;
                 cell.setOnMouseClicked(e -> {
                     if (isLinkEnabled && validCells[rowIndex][colIndex]) {
-                        viewFlow.handleInput("Link " + rowIndex + " " + colIndex);
+                        System.out.println("Dentro");
+                        //viewFlow.handleInput("Link " + rowIndex + " " + colIndex);
                         exitLinkMode();
                     }
                 });
@@ -180,7 +182,6 @@ public class BuildingScene {
             int index = i;
             slot.setOnMouseClicked(e -> {
                 viewFlow.handleInput("selectKept " + index);
-                isLinkEnabled = true;
             });
             keptSlots.getChildren().add(slot);
             keptSlotsRef.add(slot);
@@ -212,6 +213,119 @@ public class BuildingScene {
 
         return scene;
     }
+
+
+    public Scene getScene() {
+        return scene;
+    }
+
+    /**
+     * Inserisce un'immagine (es. componente) nella cella specificata
+     */
+    public void insertComponentImageToShip(int row, int col, ImageView imageView) {
+        if (!validCells[row][col]) return;
+        StackPane cell = cellMatrix[row][col];
+        if (cell != null) {
+            cell.getChildren().clear();
+
+            imageView.setFitWidth(136);
+            imageView.setFitHeight(136);
+            Rectangle clip = new Rectangle(136, 136);
+            clip.setArcWidth(6);
+            clip.setArcHeight(6);
+            imageView.setClip(clip);
+
+            cell.getChildren().add(imageView);
+        }
+    }
+
+    /**
+     * Rimuove qualsiasi componente grafico dalla cella specificata
+     */
+    public void clearCell(int row, int col) {
+        if (!validCells[row][col]) return;
+        StackPane cell = cellMatrix[row][col];
+        if (cell != null) {
+            cell.getChildren().clear();
+        }
+    }
+
+    /**
+     * Restituisce la `StackPane` di una cella, utile se devi settare eventi
+     */
+    public StackPane getCell(int row, int col) {
+        return validCells[row][col] ? cellMatrix[row][col] : null;
+    }
+
+    public void insertSelectedComponent(Component selected, boolean toTurn) {
+        this.componentSelectedExists = true;
+
+        ImageView componentView = new ImageView(selected.getFrontImage());
+        componentView.setFitWidth(176);
+        componentView.setPreserveRatio(true);
+        componentView.setMouseTransparent(true);
+
+        if (toTurn) {
+            componentView.setRotate(90);
+        }
+
+
+        Rectangle clip = new Rectangle(176, 176);
+        clip.setArcWidth(18);
+        clip.setArcHeight(18);
+        componentView.setClip(clip);
+
+
+        StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
+        imageContainer.getChildren().add(componentView);
+
+        Stream.of(turnBtn, keepBtn, discardBtn, linkBtn).forEach(btn -> {
+            btn.setDisable(false);
+            btn.setOpacity(1.0);
+        });
+    }
+
+    public void addKeptComponent(int index, Component component, ViewFlow viewFlow) {
+        if (index < 0 || index >= keptSlotsRef.size()) return;
+
+        StackPane slot = keptSlotsRef.get(index);
+        slot.getChildren().removeIf(n -> n instanceof ImageView);  // Rimuove l'immagine esistente
+
+        ImageView imageView = new ImageView(component.getFrontImage());
+        imageView.setFitWidth(110);
+        imageView.setFitHeight(110);
+        Rectangle clip = new Rectangle(110, 110);
+        clip.setArcWidth(6);
+        clip.setArcHeight(6);
+        imageView.setClip(clip);
+
+        final int finalIndex = index;
+        imageView.setOnMouseClicked(event -> {
+            viewFlow.handleInput("selectkept " + finalIndex);
+            event.consume();
+        });
+
+        slot.getChildren().add(imageView);
+        keptImages.set(index, imageView);
+    }
+
+    public void removeKeptComponent(int index) {
+        if (index < 0 || index >= keptSlotsRef.size()) return;
+
+        StackPane slot = keptSlotsRef.get(index);
+        slot.getChildren().removeIf(n -> n.getClass() == ImageView.class);
+        keptImages.set(index, null);
+    }
+
+    public ArrayList<StackPane> getKeptSlotsRef() {
+        return keptSlotsRef;
+    }
+
+
+
+
+
+
 
     private void attachOptionsBoxToScene(Scene scene, int level) {
         VBox optionsBox = new VBox(10);
@@ -528,7 +642,6 @@ public class BuildingScene {
         root.getChildren().setAll(componentView);
     }
 
-
     private void addComponentSelectedSlot() {
         double borderSize = 178;
 
@@ -554,9 +667,7 @@ public class BuildingScene {
         root.getChildren().add(componentSelectedBox);
     }
 
-
     private void createComponentSelectedButtons(Consumer<Button> styleButton) {
-        // Crea bottoni
         this.turnBtn = new Button("Turn");
         this.keepBtn = new Button("Keep");
         this.discardBtn = new Button("Discard");
@@ -581,17 +692,15 @@ public class BuildingScene {
             viewFlow.handleInput("Discard");
         });
         linkBtn.setOnAction(e -> {
-            isLinkEnabled = true;
-            grid.toFront(); // Porta la griglia in primo piano sopra il layer scuro
-
-            Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
-                btn.setDisable(true);
-                btn.setOpacity(0.5);
-            });
+            if (isLinkEnabled) {
+                // Se già attivo, disattiva
+                exitLinkMode();
+            } else {
+                enterLinkMode();
+            }
 
         });
     }
-
 
     private void attackselectComponentButtons(Scene scene) {
         VBox componentBox = new VBox(10);
@@ -613,123 +722,69 @@ public class BuildingScene {
 
     }
 
-    public void insertSelectedComponent(Component selected) {
-        this.componentSelectedExists = true;
-
-        ImageView componentView = new ImageView(selected.getFrontImage());
-        componentView.setFitWidth(176);
-        componentView.setPreserveRatio(true);
-        componentView.setMouseTransparent(true);
-
-        Rectangle clip = new Rectangle(176, 176);
-        clip.setArcWidth(18);
-        clip.setArcHeight(18);
-        componentView.setClip(clip);
-
-        StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
-        imageContainer.getChildren().add(componentView);
-
-        Stream.of(turnBtn, keepBtn, discardBtn, linkBtn).forEach(btn -> {
-            btn.setDisable(false);
-            btn.setOpacity(1.0);
-        });
-    }
-
-
-
     public void loadShipView(){
         root.getChildren().setAll(shipScreenContent);
     }
 
-
     private void exitLinkMode() {
         isLinkEnabled = false;
+
         Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
             btn.setDisable(false);
             btn.setOpacity(1.0);
-            //
-        });
-        loadShipView();
-    }
-
-
-    public Scene getScene() {
-        return scene;
-    }
-
-    /**
-     * Inserisce un'immagine (es. componente) nella cella specificata
-     */
-    public void insertComponentImageToShip(int row, int col, ImageView imageView) {
-        if (!validCells[row][col]) return;
-        StackPane cell = cellMatrix[row][col];
-        if (cell != null) {
-            cell.getChildren().clear();
-
-            imageView.setFitWidth(136);
-            imageView.setFitHeight(136);
-            Rectangle clip = new Rectangle(136, 136);
-            clip.setArcWidth(6);
-            clip.setArcHeight(6);
-            imageView.setClip(clip);
-
-            cell.getChildren().add(imageView);
-        }
-    }
-
-    /**
-     * Rimuove qualsiasi componente grafico dalla cella specificata
-     */
-    public void clearCell(int row, int col) {
-        if (!validCells[row][col]) return;
-        StackPane cell = cellMatrix[row][col];
-        if (cell != null) {
-            cell.getChildren().clear();
-        }
-    }
-
-    /**
-     * Restituisce la `StackPane` di una cella, utile se devi settare eventi
-     */
-    public StackPane getCell(int row, int col) {
-        return validCells[row][col] ? cellMatrix[row][col] : null;
-    }
-
-    public void addKeptComponent(int index, Component component, ViewFlow viewFlow) {
-        if (index < 0 || index >= keptSlotsRef.size()) return;
-
-        StackPane slot = keptSlotsRef.get(index);
-        slot.getChildren().removeIf(n -> n instanceof ImageView);  // Rimuove l'immagine esistente
-
-        ImageView imageView = new ImageView(component.getFrontImage());
-        imageView.setFitWidth(110);
-        imageView.setFitHeight(110);
-        Rectangle clip = new Rectangle(110, 110);
-        clip.setArcWidth(6);
-        clip.setArcHeight(6);
-        imageView.setClip(clip);
-
-        final int finalIndex = index;
-        imageView.setOnMouseClicked(event -> {
-            viewFlow.handleInput("selectkept " + finalIndex);
-            isLinkEnabled = true;
-            event.consume();
         });
 
-        slot.getChildren().add(imageView);
-        keptImages.set(index, imageView);
+        scene.removeEventFilter(MouseEvent.MOUSE_PRESSED, this::handleClickOutsideGrid);
     }
 
-    public void removeKeptComponent(int index) {
-        if (index < 0 || index >= keptSlotsRef.size()) return;
+    private void enterLinkMode() {
+        isLinkEnabled = true;
 
-        StackPane slot = keptSlotsRef.get(index);
-        slot.getChildren().removeIf(n -> n.getClass() == ImageView.class);
-        keptImages.set(index, null);
+        Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
+            btn.setDisable(true);
+            btn.setOpacity(0.5);
+        });
+
+        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, this::handleClickOutsideGrid);
     }
 
-    public ArrayList<StackPane> getKeptSlotsRef() {
-        return keptSlotsRef;
+    private boolean isDescendantOfAnyValidCell(Node node) {
+        for (int row = 5; row < 10; row++) {
+            for (int col = 4; col < 11; col++) {
+                if (validCells[row][col]) {
+                    if (isDescendantOfNode(node, cellMatrix[row][col])) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+    private void handleClickOutsideGrid(MouseEvent event) {
+        Node clickedNode = event.getPickResult().getIntersectedNode();
+        if (isDescendantOfAnyValidCell(clickedNode)) {
+            System.out.println("Dentro");
+            return;
+        }
+
+        if (isDescendantOfNode(clickedNode, linkBtn)) {
+            return;
+        }
+
+        exitLinkMode();
+        event.consume();
+    }
+
+    private boolean isDescendantOfNode(Node node, Node potentialParent) {
+        while (node != null) {
+            if (node == potentialParent) {
+                return true;
+            }
+            node = node.getParent();
+        }
+        return false;
     }
 }
 

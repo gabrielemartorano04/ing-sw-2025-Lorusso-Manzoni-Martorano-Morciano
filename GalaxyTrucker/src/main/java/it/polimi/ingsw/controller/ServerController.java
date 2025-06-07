@@ -63,21 +63,29 @@ public class ServerController {
             client.setId(idToSet);
             idToSet++;
             clients.add(client);
-
-            FirstConnectionEvent event = new FirstConnectionEvent(
-                    "First player in the game, choose the total number of players of the Game"
-            );
-            client.updateClient(event);
+            //se esiste una partita vecchia
+            if(false){
+                //TODO: return evento che chiede SOLO se vuoi la partita vecchia o ne vuoi una nuova (facciamo decidere solo al primo ceh si connette)
+            }else {
+                FirstConnectionEvent event = new FirstConnectionEvent(
+                        "First player in the game, choose the total number of players of the Game"
+                );
+                client.updateClient(event);
+            }
 
         }else{
             System.out.println(idToSet);
             client.setId(idToSet);
             idToSet++;
             clients.add(client);
-
-            AvailableColorsEvent event = new AvailableColorsEvent(gameController.getAvailablePlayerColors(),
-                    "Login");
-            client.updateClient(event);
+            // se il primo ha scelto di caricare la partita vecchia (può essere deciso con una variabiale settata dal visitor e salvata nel ServerController con getIstance)
+            if(false){
+                //TODO: manda l'evento che mostra i nickname e i colori della partita vecchia invece che availableColor
+            }else {
+                AvailableColorsEvent event = new AvailableColorsEvent(gameController.getAvailablePlayerColors(),
+                        "Login");
+                client.updateClient(event);
+            }
         }
     }
 

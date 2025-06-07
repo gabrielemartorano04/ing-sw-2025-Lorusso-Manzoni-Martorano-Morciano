@@ -45,6 +45,11 @@ public class TUI implements UI {
     }
 
     @Override
+    public void showWaitingForPlayers(int currentPlayers) {
+        System.out.println("Waiting for other truckers... (" + currentPlayers + ")");
+    }
+
+    @Override
     public void nickNameAlreadyTaken(NicknameAlreadyInError event){
         this.showNicknameTaken();
         this.showChooseColor(event.getColors());
@@ -60,299 +65,20 @@ public class TUI implements UI {
     }
 
     @Override
-    public void startBuildingScene(StartBuildingEvent event){
-        this.showPlayers(event.getPlayers());
-        this.showBuildPhaseStart(event.getComponents());
-        this.showBuildOptions();
-        System.out.print("> ");
-    }
-
-    @Override
-    public void componentLinked(ComponentLinkedEvent event){
-        this.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
-        this.showAvailableComponent(event.getAvComponents());
-        System.out.print("> ");
-    }
-
-    @Override
-    public void componentNotAvailable(ComponentNotAvailableError event){
-        this.showError(event.getMessage());
-        this.showAvailableComponent(this.viewFlow.getAvailableComponents());
-        this.showMessage("Please select a component between 0 and " + (this.viewFlow.getAvailableComponents().size()-1)+"\n");
-        System.out.print("> ");
-    }
-
-    @Override
-    public void componentSelected (ComponentSelectedEvent event){
-        this.showComponentSelected(this.viewFlow.getSelectedComponent());
-        this.showComponentOptions();
-        System.out.print("> ");
-    }
-
-    @Override
-    public void invalidCoordinates(InvalidCoordinatesError event){
-        this.showError(event.getMessage());
-        this.askCoordinates();
-        System.out.print("> ");
-    }
-
-    @Override
-    public void invalidPosition(InvalidPositionError event){
-        this.showInvalidPlacement(event.getMessage());
-        this.askCoordinates();
-        System.out.print("> ");
-    }
-
-    @Override
-    public void turnHourGlassError(TurnHourglassError event){
-        this.showError(event.getMessage());
-        System.out.print("> ");
-    }
-
-    @Override
-    public void turnHourGlass(HourglassTurnEvent event){
-        System.out.print("> ");
-    }
-
-    @Override
-    public void buildingComplete(BuildCompleteEvent event){
-        this.showMessage("Your updated ship\n");
-        this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
-        this.showBuildComplete();
-
-        if(viewFlow.getLevel()==2){
-            this.showMessage("Type 'alien' to see where you can place aliens\n" +
-                    "> ");
-
-        }
-        else{
-            this.showMessage("Type 'continue' to start flight phase\n" +
-                    "> ");
-        }
-    }
-
-    @Override
-    public void keptComponent(KeptComponentEvent event){
-        this.showAvailableComponent(event.getAvComponents());
-        System.out.print("> ");
-    }
-
-    @Override
-    public void componentTurned(TurnedComponentSuccessEvent event){
-        this.showComponentSelected(event.getComponent());
-        System.out.print("> ");
-    }
-
-
-    @Override
-    public void keptSelected(SuccessSelectKept event){
-        this.showComponentSelected(viewFlow.getSelectedComponent());
-        System.out.print("> ");
-    }
-
-    @Override
-    public void askAlienCabin(AlienCabinCoord event){
-        ArrayList<int[]> coord=event.getAlienCabinCoord();
-
-        if(event.getAlienCabinCoord().isEmpty()){
-            this.showMessage("you can't place any alien. Please type 'coord' to go on\n");
-        }
-        else {
-            StringBuilder message= new StringBuilder();
-            for(int[] c:coord){
-                message.append("in ( ").append(c[0]).append(" , ").append(c[1]).append(" ): ");
-                if(c[1]==0){
-                    message.append(" purple alien\n");
-                }
-                else{
-                    message.append(" brown alien\n");
-                }
-            }
-            this.showMessage("\nList of cabin available for aliens:\n" + message);
-            this.showMessage("Insert coordinates (coord <x1> <y1> <color> <x2> <y2> <color>...):\n");
-        }
-        System.out.print("> ");
-    }
-
-    @Override
-    public void dropStack(StackDropOk event){
-        this.showMessage(event.getMessage());
-        System.out.print("> ");
-    }
-
-    @Override
-    public void flightScene(FlightStartEvent event){
-        this.showShipLayout(viewFlow.getNickname(), event.getSpaceShip());
-        this.showFlightPhaseStart();
-        this.showMessage("Please type 'state' to see your spaceship state\n");
-        System.out.print("> ");
-    }
-
-    @Override
-    public void showCurrCondition(CurrentCondition event){
-        System.out.println("Current condition:" + event.getCondition());
-        System.out.print("> ");
-    }
-
-    @Override
-    public void cardFinished(CardFinished event){
-        for(String nicknames: event.getTruckersRemoved()){
-            System.out.println(nicknames + " died");
-        }
-        String message = "Truckers' positions order:\n";
-        int i = 1;
-        for (Trucker t : event.getTruckersList()) {
-            message += i + ") " + t.getNickname() + "\n";
-            i++;
-        }
-        System.out.println(message);
-    }
-
-    @Override
-    public  void epidemic(EpidemicEvent event){
-        System.out.println("Card drawn: "+event.getCardName()+"\n Card description: "+event.getCardDescription()+"\n");
-        for (Trucker t: event.getTruckers()) {
-            System.out.println(t.getNickname() + " has lost ");
-        }
-        for(String nicknames: event.getTruckersRemoved()){
-            System.out.println(nicknames + " died");
-        }
-
-        String message = "Truckers' positions order:\n";
-        int i = 1;
-        for (Trucker t : event.getTruckers()) {
-            message += i + ") " + t.getNickname() + "\n";
-            i++;
-        }
-        System.out.println(message);
-    }
-
-    @Override
-    public void stardust(StarDustEvent event){
-        System.out.println("Card drawn: "+event.getCardName().toUpperCase()+"\n Card description: "+event.getCardDescription()+"\n");
-        for (Trucker t: event.getTruckers()) {
-            System.out.println(t.getNickname() + " has lost " + t.getSpaceShip().countExposedConnectors() + String.format(t.getSpaceShip().countExposedConnectors() == 1 ? " day\n" : " days\n"));
-        }
-        for(String nicknames: event.getTruckersRemoved()){
-            System.out.println(nicknames + " died");
-        }
-
-        String message = "Truckers' positions order:\n";
-        int i = 1;
-        for (Trucker t : event.getTruckers()) {
-            message += i + ") " + t.getNickname() + "\n";
-            i++;
-        }
-        System.out.println(message);
-    }
-
-    @Override
-    public void showInputFormat(ParserState parserState) {
-        switch (parserState){
-            case STATE-> System.out.println("Type 'state' to see your spaceship status");
-            case ACTIVATE_ENGINES -> System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
-            case ACTIVATE_CANNONS -> System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
-            case ACTIVATE_SHIELD -> System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x> <y>, <x> <y>' or 'n': ");
-            case LAND -> System.out.println("Type 'y' if you want to land, else 'n'.");
-            case HUMAN_COORD -> System.out.println("Insert the coordinates of the cabins to remove the number of human indicated in the card description. Type '<x1> <y1> - <number of crew>, <x2> <y2> - <number of crew>,...' : ");
-            case PLOT_GOOD -> System.out.println("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <x> <y>, <position>' or 'n': ");
-            case ROLL_DICE -> System.out.println("Type 'roll' to roll the dices when yu're ready.");
-            case PLANET_DECISION->System.out.println("Choose the planet you want to fly to. Type '<index>': ");
-            case DRAW_CARD ->System.out.println("Type <draw> when you're ready to draw the next card.");
-            case REMOTION_CONFIRMED -> System.out.println("Remotion confirmet. Type 'continue' when you're ready to go on.");
-            case REMOVE_BATTERIES -> System.out.println("Choose from where you  want to remove batteries. Type '<x1> <y1> - <quantity>,<x2> <y2> - <quantity>...");
-            case REMOVE_GOODS -> System.out.println("Choose goods you want to remove. Type '<index1>,<index2>...'.");
-            case REARRANGE -> System.out.println("Choose if you want to rearrange your goods. If yes, insert coordinates.\n" +
-                    "Type '<n/y>, (<x1> <y1> - <value1>,<x2> <y2> - <value2>...)'");
-            case COSMIC_CREDITS -> System.out.println("Do you want to gain that cosmic credits? Type <y/n>.");
-            case WARZONE -> System.out.println("Type 'warzone' to start warzone card");
-
-        }
-        System.out.print("> ");
-    }
-
-    public void showResult(String result){
-        System.out.println(result);
-    }
-
-    public void showDead(){
-        System.out.println("You died");
-    }
-
-
-    // fine metodi omologati tra GUI e TUI
-
-
-    @Override
-    public void showWelcome(EnumSet<PlayerColors> availableColors) {
-
-    }
-
-    @Override
-    public void showWelcome() {
-        System.out.println("""
-                         __        __   _                            _       \s
-                         \\ \\      / /__| | ___ ___  _ __ ___   ___  | |_ ___ \s
-                          \\ \\ /\\ / / _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\ | __/ _ \\\s
-                           \\ V  V /  __/ | (_| (_) | | | | | |  __/ | || (_) |
-                            \\_/\\_/ \\___|_|\\___\\___/|_| |_| |_|\\___|  \\__\\___/\s        
-          ____    _    _        _    __  ____   __    _____ ____  _   _  ____ _  _______ ____ \s
-         / ___|  / \\  | |      / \\   \\ \\/ /\\ \\ / /   |_   _|  _ \\| | | |/ ___| |/ / ____|  _ \\\s
-        | |  _  / _ \\ | |     / _ \\   \\  /  \\ V /      | | | |_) | | | | |   | ' /|  _| | |_) |
-        | |_| |/ ___ \\| |___ / ___ \\  /  \\   | |       | | |  _ <| |_| | |___| . \\| |___|  _ <\s
-         \\____/_/   \\_\\_____/_/   \\_\\/_/\\_\\  |_|       |_| |_| \\_\\\\___/ \\____|_|\\_\\_____|_| \\_\\ 
-                                          by Cranio Creation            
-        """);
-    }
-
-    @Override
-    public void showChooseColor(EnumSet<PlayerColors> availableColors) {
-        System.out.println("Colours available: " + String.join(", ", availableColors.toString()));
-        System.out.print("Insert nickname and choose a colour: ");
-    }
-
-    @Override
-    public void showColorTaken() {
-        System.out.println("Colour already chosen, choose another one.");
-    }
-
-    @Override
-    public void showNicknameTaken() {
-        System.out.println("Nickname already taken, choose another one.");
-    }
-
-    @Override
     public void showPlayerJoined(String nickname) {
         System.out.println("Congratulation " + nickname + "! You've joined the game!.");
     }
 
     @Override
-    public void showWaitingForPlayers(int currentPlayers) {
-        System.out.println("Waiting for other truckers... (" + currentPlayers + ")");
+    public void showSetupComplete(){
+        System.out.println("SETUP complete. It's time to start building");
     }
-
     @Override
-    public void showStartCountdown(int secondsLeft) {
-        System.out.println("The game will start in " + secondsLeft + " seconds.");
-    }
-
-    @Override
-    public void showSetupComplete() {
-        System.out.println("SETUP completed. Start building your spaceship.");
-    }
-
-    @Override
-    public void showPlayers(ArrayList<String> players) {
-        System.out.println("Players in the game:");
-        for(String player : players) {
-            System.out.println(player);
-        }
-    }
-
-    @Override
-    public void showBuildPhaseStart(ArrayList<Component> availableComponents) {
-        System.out.println("\nStart BUILDING phase. Build your spaceship!");
-        showAvailableComponent(availableComponents);
+    public void startBuildingScene(StartBuildingEvent event){
+        this.showPlayers(event.getPlayers());
+        this.showBuildPhaseStart(event.getComponents());
+        this.showBuildOptions();
+        System.out.print("> ");
     }
 
     @Override
@@ -445,6 +171,43 @@ public class TUI implements UI {
         System.out.print("> ");
     }
 
+
+    @Override
+    public void componentLinked(ComponentLinkedEvent event){
+        this.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
+        this.showAvailableComponent(event.getAvComponents());
+        System.out.print("> ");
+    }
+
+    @Override
+    public void componentNotAvailable(ComponentNotAvailableError event){
+        this.showError(event.getMessage());
+        this.showAvailableComponent(this.viewFlow.getAvailableComponents());
+        this.showMessage("Please select a component between 0 and " + (this.viewFlow.getAvailableComponents().size()-1)+"\n");
+        System.out.print("> ");
+    }
+
+    @Override
+    public void componentSelected (ComponentSelectedEvent event){
+        this.showComponentSelected(this.viewFlow.getSelectedComponent());
+        this.showComponentOptions();
+        System.out.print("> ");
+    }
+
+    @Override
+    public void invalidCoordinates(InvalidCoordinatesError event){
+        this.showError(event.getMessage());
+        this.askCoordinates();
+        System.out.print("> ");
+    }
+
+    @Override
+    public void invalidPosition(InvalidPositionError event){
+        this.showInvalidPlacement(event.getMessage());
+        this.askCoordinates();
+        System.out.print("> ");
+    }
+
     @Override
     public void showKeptComponents(ArrayList<Component> kept) {
         if (!kept.isEmpty()) {
@@ -456,12 +219,236 @@ public class TUI implements UI {
     }
 
     @Override
+    public void turnHourGlassError(TurnHourglassError event){
+        this.showError(event.getMessage());
+        System.out.print("> ");
+    }
+
+    @Override
+    public void turnHourGlass(HourglassTurnEvent event){
+        System.out.print("> ");
+    }
+
+    @Override
+    public void buildingComplete(BuildCompleteEvent event){
+        this.showMessage("Your updated ship\n");
+        this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+        this.showBuildComplete();
+
+        if(viewFlow.getLevel()==2){
+            this.showMessage("Type 'alien' to see where you can place aliens\n" +
+                    "> ");
+
+        }
+        else{
+            this.showMessage("Type 'continue' to start flight phase\n" +
+                    "> ");
+        }
+    }
+
+    @Override
+    public void keptComponent(KeptComponentEvent event){
+        this.showAvailableComponent(event.getAvComponents());
+        System.out.print("> ");
+    }
+
+    @Override
+    public void componentTurned(TurnedComponentSuccessEvent event){
+        this.showComponentSelected(event.getComponent());
+        System.out.print("> ");
+    }
+
+
+    @Override
+    public void keptSelected(SuccessSelectKept event){
+        this.showComponentSelected(viewFlow.getSelectedComponent());
+        System.out.print("> ");
+    }
+
+    @Override
+    public void askAlienCabin(AlienCabinCoord event){
+        ArrayList<int[]> coord=event.getAlienCabinCoord();
+
+        if(event.getAlienCabinCoord().isEmpty()){
+            this.showMessage("you can't place any alien. Please type 'coord' to go on\n");
+        }
+        else {
+            StringBuilder message= new StringBuilder();
+            for(int[] c:coord){
+                message.append("in ( ").append(c[0]).append(" , ").append(c[1]).append(" ): ");
+                if(c[1]==0){
+                    message.append(" purple alien\n");
+                }
+                else{
+                    message.append(" brown alien\n");
+                }
+            }
+            this.showMessage("\nList of cabin available for aliens:\n" + message);
+            this.showMessage("Insert coordinates (coord <x1> <y1> <color> <x2> <y2> <color>...):\n");
+        }
+        System.out.print("> ");
+    }
+
+    @Override
+    public void dropStack(StackDropOk event){
+        this.showMessage(event.getMessage());
+        System.out.print("> ");
+    }
+
+    //TODO NON USATO SISTEMA
+    @Override
+    public void flightScene(FlightStartEvent event){
+        this.showShipLayout(viewFlow.getNickname(), event.getSpaceShip());
+        this.showFlightPhaseStart();
+        this.showMessage("Please type 'state' to see your spaceship state\n");
+        System.out.print("> ");
+    }
+
+
+    @Override
+    public void showCurrCondition(CurrentCondition event){
+        System.out.println("Current condition:" + event.getCondition());
+        System.out.print("> ");
+    }
+
+    @Override
+    public void cardFinished(CardFinished event){
+        for(String nicknames: event.getTruckersRemoved()){
+            System.out.println(nicknames + " died");
+        }
+        String message = "Truckers' positions order:\n";
+        int i = 1;
+        for (Trucker t : event.getTruckersList()) {
+            message += i + ") " + t.getNickname() + "\n";
+            i++;
+        }
+        System.out.println(message);
+    }
+
+    @Override
+    public  void epidemic(EpidemicEvent event){
+        System.out.println("Card drawn: "+event.getCardName()+"\n Card description: "+event.getCardDescription()+"\n");
+        for (Trucker t: event.getTruckers()) {
+            System.out.println(t.getNickname() + " has lost ");
+        }
+        for(String nicknames: event.getTruckersRemoved()){
+            System.out.println(nicknames + " died");
+        }
+
+        String message = "Truckers' positions order:\n";
+        int i = 1;
+        for (Trucker t : event.getTruckers()) {
+            message += i + ") " + t.getNickname() + "\n";
+            i++;
+        }
+        System.out.println(message);
+    }
+
+    @Override
+    public void stardust(StarDustEvent event){
+        System.out.println("Card drawn: "+event.getCardName().toUpperCase()+"\n Card description: "+event.getCardDescription()+"\n");
+        for (Trucker t: event.getTruckers()) {
+            System.out.println(t.getNickname() + " has lost " + t.getSpaceShip().countExposedConnectors() + String.format(t.getSpaceShip().countExposedConnectors() == 1 ? " day\n" : " days\n"));
+        }
+        for(String nicknames: event.getTruckersRemoved()){
+            System.out.println(nicknames + " died");
+        }
+
+        String message = "Truckers' positions order:\n";
+        int i = 1;
+        for (Trucker t : event.getTruckers()) {
+            message += i + ") " + t.getNickname() + "\n";
+            i++;
+        }
+        System.out.println(message);
+    }
+
+    @Override
+    public void showInputFormat(ParserState parserState) {
+        switch (parserState){
+            case STATE-> System.out.println("Type 'state' to see your spaceship status");
+            case ACTIVATE_ENGINES -> System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
+            case ACTIVATE_CANNONS -> System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
+            case ACTIVATE_SHIELD -> System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x> <y>, <x> <y>' or 'n': ");
+            case LAND -> System.out.println("Type 'y' if you want to land, else 'n'.");
+            case HUMAN_COORD -> System.out.println("Insert the coordinates of the cabins to remove the number of human indicated in the card description. Type '<x1> <y1> - <number of crew>, <x2> <y2> - <number of crew>,...' : ");
+            case PLOT_GOOD -> System.out.println("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <x> <y>, <position>' or 'n': ");
+            case ROLL_DICE -> System.out.println("Type 'roll' to roll the dices when yu're ready.");
+            case PLANET_DECISION->System.out.println("Choose the planet you want to fly to. Type '<index>': ");
+            case DRAW_CARD ->System.out.println("Type <draw> when you're ready to draw the next card.");
+            case REMOTION_CONFIRMED -> System.out.println("Remotion confirmet. Type 'continue' when you're ready to go on.");
+            case REMOVE_BATTERIES -> System.out.println("Choose from where you  want to remove batteries. Type '<x1> <y1> - <quantity>,<x2> <y2> - <quantity>...");
+            case REMOVE_GOODS -> System.out.println("Choose goods you want to remove. Type '<index1>,<index2>...'.");
+            case REARRANGE -> System.out.println("Choose if you want to rearrange your goods. If yes, insert coordinates.\n" +
+                    "Type '<n/y>, (<x1> <y1> - <value1>,<x2> <y2> - <value2>...)'");
+            case COSMIC_CREDITS -> System.out.println("Do you want to gain that cosmic credits? Type <y/n>.");
+            case WARZONE -> System.out.println("Type 'warzone' to start warzone card");
+
+        }
+        System.out.print("> ");
+    }
+
+    @Override
+    public void showResult(String result){
+        System.out.println(result);
+    }
+
+    @Override
+    public void showDead(){
+        System.out.println("You died");
+    }
+
+
+    // fine metodi omologati tra GUI e TUI
+
+    private void showWelcome() {
+        System.out.println("""
+                         __        __   _                            _       \s
+                         \\ \\      / /__| | ___ ___  _ __ ___   ___  | |_ ___ \s
+                          \\ \\ /\\ / / _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\ | __/ _ \\\s
+                           \\ V  V /  __/ | (_| (_) | | | | | |  __/ | || (_) |
+                            \\_/\\_/ \\___|_|\\___\\___/|_| |_| |_|\\___|  \\__\\___/\s        
+          ____    _    _        _    __  ____   __    _____ ____  _   _  ____ _  _______ ____ \s
+         / ___|  / \\  | |      / \\   \\ \\/ /\\ \\ / /   |_   _|  _ \\| | | |/ ___| |/ / ____|  _ \\\s
+        | |  _  / _ \\ | |     / _ \\   \\  /  \\ V /      | | | |_) | | | | |   | ' /|  _| | |_) |
+        | |_| |/ ___ \\| |___ / ___ \\  /  \\   | |       | | |  _ <| |_| | |___| . \\| |___|  _ <\s
+         \\____/_/   \\_\\_____/_/   \\_\\/_/\\_\\  |_|       |_| |_| \\_\\\\___/ \\____|_|\\_\\_____|_| \\_\\ 
+                                          by Cranio Creation            
+        """);
+    }
+
+    private void showChooseColor(EnumSet<PlayerColors> availableColors) {
+        System.out.println("Colours available: " + String.join(", ", availableColors.toString()));
+        System.out.print("Insert nickname and choose a colour: ");
+    }
+
+    private void showColorTaken() {
+        System.out.println("Colour already chosen, choose another one.");
+    }
+
+    private void showNicknameTaken() {
+        System.out.println("Nickname already taken, choose another one.");
+    }
+
+    private void showPlayers(ArrayList<String> players) {
+        System.out.println("Players in the game:");
+        for(String player : players) {
+            System.out.println(player);
+        }
+    }
+
+    private void showBuildPhaseStart(ArrayList<Component> availableComponents) {
+        System.out.println("\nStart BUILDING phase. Build your spaceship!");
+        showAvailableComponent(availableComponents);
+    }
+
+    //todo:verrà eliminato quando eliminiamo l'evento availablecomponentsevent
+    @Override
     public void showSelectComponent() {
         System.out.print("Select the index of the component you want to link: ");
     }
 
-    @Override
-    public void showComponentOptions() {
+    private void showComponentOptions() {
         System.out.println("Options: [Link <row> <column> (to link the component in the position x,y of your spaceship)] [Keep] [Discard]");
         System.out.print("Choose your action: ");
     }
