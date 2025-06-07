@@ -10,8 +10,6 @@ import java.rmi.RemoteException;
 
 public interface VirtualView {
 
-    void visit(LobbyEvent event) throws RemoteException;
-
     void visit(PlayerJoinedEvent event) throws RemoteException;
 
     void visit(NicknameAlreadyInError event) throws RemoteException;
@@ -19,12 +17,6 @@ public interface VirtualView {
     void visit(AvailableColorsEvent event) throws RemoteException;
 
     void visit(ColorAlreadyInError event) throws RemoteException;
-
-    void visit(ReconnectedUserEvent event) throws RemoteException;
-
-    void visit(DisconnectedUserEvent event) throws RemoteException;
-
-    void visit(SetupCompleteEvent event) throws RemoteException;
 
     void visit(StartBuildingEvent event) throws RemoteException;
 
@@ -36,29 +28,15 @@ public interface VirtualView {
 
     void visit(DiscardSuccessEvent event) throws RemoteException;
 
-    void visit(CoordRequest event) throws RemoteException; //TODO: lo usiamo mai?
-
     void visit(InvalidCoordinatesError event) throws RemoteException;
 
     void visit(InvalidPositionError event) throws RemoteException;
 
     void visit(TurnHourglassError event) throws RemoteException;
 
-    void visit(AvailableComponentsEvent event);
-
-    void visit(TruckerLostCrewEvent event) throws RemoteException;
-
     void visit(HourglassTurnEvent event) throws RemoteException;
 
-    void visit(GameCreatedEvent event) throws RemoteException;
-
     void visit(FirstConnectionEvent event) throws RemoteException;
-
-    void visit(CoordListRequest event) throws RemoteException;
-
-    void visit(AvailableComponentToSelectRequest event) throws RemoteException;
-
-    void visit(TimeExpiredEvent event) throws RemoteException;
 
     void visit(BuildCompleteEvent event) throws RemoteException;
 
@@ -68,8 +46,6 @@ public interface VirtualView {
 
     void visit(CurrentCondition currentCondition) throws RemoteException;
 
-    void visit(BuildOptionsEvent event) throws RemoteException;
-
     void visit(SuccessSelectKept event) throws RemoteException;
 
     void visit(ShowOtherShipResponse event) throws RemoteException;
@@ -78,25 +54,7 @@ public interface VirtualView {
 
     void visit(AlienCabinCoord event) throws RemoteException;
 
-    void visit(SelectComponentEvent event) throws RemoteException;
-
-    void visit(ShowCardEvent event);
-
-    void visit(UpdateCardStateEvent event);
-
-    void visit(UpdateTrackEvent event);
-
-    void visit(ShipUpdateEvent event) throws RemoteException;
-
-    void visit(IndexesRequest event);
-
-    void visit(GoodsGainedEvent event);
-
-    void visit(OkEvent event);
-
     void visit(FlightStartEvent event) throws RemoteException;
-
-    void visit(IntRequest event);
 
     void visit(EndGameEvent event) throws RemoteException;
 
@@ -107,8 +65,6 @@ public interface VirtualView {
     void visit(NoAvailableSpaceError event) throws RemoteException;
 
     void visit(ReturnStackEvent event) throws RemoteException;
-
-    void visit(BuildingStateError event);
 
     void visit(GenericErrorEvent event) throws RemoteException;
 
