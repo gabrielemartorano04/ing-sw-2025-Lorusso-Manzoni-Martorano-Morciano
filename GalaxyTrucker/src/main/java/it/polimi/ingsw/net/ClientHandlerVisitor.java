@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.events.clientevents.*;
 import it.polimi.ingsw.net.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.events.clientevents.cardevents.*;
+import it.polimi.ingsw.net.events.clientevents.setupevents.ChoseToResume;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
@@ -34,6 +35,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     private int startFlight;
     private final CardController cardController;
     private ServerEvent serverEvent;
+
 
     public ClientHandlerVisitor() {
         numLog = 0;
@@ -149,6 +151,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         try {
             currentClient.getTruckerController().keep(component);
             serverEvent= new KeptComponentEvent(component,gameController.getGame().getComponents().getComponents());
+            GamePersistence.saveGame(gameController.getGame());
         } catch (InvalidComponentsException e) {
             serverEvent= new GenericErrorEvent(e.getMessage(), false);
         }
@@ -162,6 +165,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         try {
             currentClient.getTruckerController().link(component,x,y);
             serverEvent= new ComponentLinkedEvent(event.getComponent(), x, y, gameController.getGame().getComponents().getComponents());
+            GamePersistence.saveGame(gameController.getGame());
         }  catch (InvalidCoordinates e) {
             serverEvent= new InvalidCoordinatesError(currentClient.getTruckerController().getNickname());
         }
@@ -370,6 +374,7 @@ public class ClientHandlerVisitor implements VirtualServer {
             for(int i=0; i<gameController.getGame().getTruckerOut().size()-1; i++){
                 playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
             }
+            GamePersistence.deleteSave();
             serverEvent= new EndGameEvent(playersScores);
         }
 
@@ -495,6 +500,7 @@ public class ClientHandlerVisitor implements VirtualServer {
             card = cardController.getCurrCard();
             if (card != null) {
                 serverEvent = cardController.startCard();
+                GamePersistence.saveGame(gameController.getGame());
                 return;
             }
         }
@@ -504,6 +510,8 @@ public class ClientHandlerVisitor implements VirtualServer {
         for(int i=0; i<numOfPlayers; i++){
             playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
         }
+        GamePersistence.saveGame(gameController.getGame());
+        GamePersistence.deleteSave();
         serverEvent= new EndGameEvent(playersScores);
     }
 
@@ -511,6 +519,11 @@ public class ClientHandlerVisitor implements VirtualServer {
     public void visit(PongEvent event) {
         serverEvent = null;
         currentClient.updateLastPong();
+    }
+
+    @Override
+    public void visit(ChoseToResume event){
+        ServerController.getIstance().setNewGame(event.getChoseToResume());
     }
 
 }

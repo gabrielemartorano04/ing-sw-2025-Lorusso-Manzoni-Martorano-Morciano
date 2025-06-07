@@ -160,4 +160,7 @@ public interface VirtualView {
 
     public void visit(StackDropOk event) throws RemoteException;
 
+    void visit(ResumeGameEvent resumeGameEvent);
+
+    void visit(ChooseResumeEvent chooseResumeEvent);
 }

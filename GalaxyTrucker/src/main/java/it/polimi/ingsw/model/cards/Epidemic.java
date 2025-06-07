@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.net.events.serverevents.GenericErrorEvent;
@@ -67,6 +68,7 @@ public class Epidemic extends Card implements Serializable {
         for (Trucker t : Game.getIstance().getTruckerList()) {
             track.put(t.getNickname(), t.getPosition());
         }
+        GamePersistence.saveGame(Game.getIstance());
         return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved, track);
     }
 
