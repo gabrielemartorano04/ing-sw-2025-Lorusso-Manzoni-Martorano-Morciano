@@ -161,7 +161,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         try {
             currentClient.getTruckerController().keep(component);
             serverEvent= new KeptComponentEvent(component,gameController.getGame().getComponents().getComponents());
-            GamePersistence.saveGame(gameController.getGame());
+            GamePersistence.saveGame(gameController);
         } catch (InvalidComponentsException e) {
             serverEvent= new GenericErrorEvent(e.getMessage(), false);
         }
@@ -175,7 +175,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         try {
             currentClient.getTruckerController().link(component,x,y);
             serverEvent= new ComponentLinkedEvent(event.getComponent(), x, y, gameController.getGame().getComponents().getComponents());
-            GamePersistence.saveGame(gameController.getGame());
+            GamePersistence.saveGame(gameController);
         }  catch (InvalidCoordinates e) {
             serverEvent= new InvalidCoordinatesError(currentClient.getTruckerController().getNickname());
         }
@@ -543,7 +543,7 @@ public class ClientHandlerVisitor implements VirtualServer {
             card = cardController.getCurrCard();
             if (card != null) {
                 serverEvent = cardController.startCard();
-                GamePersistence.saveGame(gameController.getGame());
+                GamePersistence.saveGame(gameController);
                 return;
             }
         }
@@ -553,7 +553,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         for(int i=0; i<numOfPlayers; i++){
             playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
         }
-        GamePersistence.saveGame(gameController.getGame());
+        GamePersistence.saveGame(gameController);
         GamePersistence.deleteSave();
         serverEvent= new EndGameEvent(playersScores);
     }
@@ -568,8 +568,13 @@ public class ClientHandlerVisitor implements VirtualServer {
     public void visit(ChoseToResume event){
         ServerController.setOldGame(event.getChoseToResume());
         if(event.getChoseToResume()){
-            GamePersistence.loadGame();
+            gameController = GamePersistence.loadGame();
+            serverEvent = new AvailablePlayersEvent(gameController.getGame().getOldColors(), gameController.getGame().getOldNicknames());
+        }else{
+            GamePersistence.deleteSave();
+            serverEvent = new AvailableColorsEvent(EnumSet.allOf(PlayerColors.class), "First Player in the game, start login");
         }
+
     }
 
 }

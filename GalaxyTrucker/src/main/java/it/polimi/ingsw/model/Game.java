@@ -7,6 +7,8 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.WaitOthersBuildingEvent;
 import it.polimi.ingsw.exceptions.CannotTurnHourglassException;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 
 //gestisce la partita
@@ -17,8 +19,11 @@ import java.util.*;
  * and the overall game state.
  */
 
-public class Game {
+public class Game implements Serializable {
     //attributi
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private final ArrayList<Trucker> truckers;
     private final ArrayList<Trucker> truckersOut;
     private final Stack[] cardStacks;

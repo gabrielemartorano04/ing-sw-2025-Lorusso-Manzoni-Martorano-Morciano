@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,14 +22,19 @@ import java.util.concurrent.TimeUnit;
  * - scheduler: ScheduledExecutorService, threads scheduler
  * - currentCard: card, current card during flight phase
  */
-public class GameController {
+public class GameController implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    private static GameController istance;
+
     private final Game game;
     private int count=0;
-    private final Timer startTimer = new Timer();//serve??
+    private final transient Timer startTimer = new Timer();//serve??
     private boolean timerStarted = false;
     private boolean gameStarted = false;
     private final int numOfPlayers;
-    private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private transient ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private Card currentCard;
 
     /**
@@ -173,6 +180,10 @@ public class GameController {
             throw new GeneralError(e.getMessage());
         }
 
+    }
+
+    public static GameController getIstance() {
+        return istance;
     }
 
 }

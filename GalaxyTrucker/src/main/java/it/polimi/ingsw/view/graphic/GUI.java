@@ -1513,5 +1513,10 @@ public class GUI implements UI {
         });
     }
 
+    @Override
+    public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames){
+
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Goods;
@@ -517,7 +518,7 @@ public class WarZone extends Card implements Serializable {
                         for (Trucker t : Game.getIstance().getTruckerList()) {
                             track.put(t.getNickname(), t.getPosition());
                         }
-                        GamePersistence.saveGame(Game.getIstance());
+                        GamePersistence.saveGame(GameController.getIstance());
                         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
                     }else{
                         state = CardState.WARZONE;
@@ -536,7 +537,7 @@ public class WarZone extends Card implements Serializable {
                         for (Trucker t : Game.getIstance().getTruckerList()) {
                             track.put(t.getNickname(), t.getPosition());
                         }
-                        GamePersistence.saveGame(Game.getIstance());
+                        GamePersistence.saveGame(GameController.getIstance());
                         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
                     }else{
                         state = CardState.WARZONE;
@@ -555,7 +556,7 @@ public class WarZone extends Card implements Serializable {
                         for (Trucker t : Game.getIstance().getTruckerList()) {
                             track.put(t.getNickname(), t.getPosition());
                         }
-                        GamePersistence.saveGame(Game.getIstance());
+                        GamePersistence.saveGame(GameController.getIstance());
                         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
                     }else{
                         state = CardState.WARZONE;
@@ -587,7 +588,7 @@ public class WarZone extends Card implements Serializable {
                             for (Trucker t : Game.getIstance().getTruckerList()) {
                                 track.put(t.getNickname(), t.getPosition());
                             }
-                            GamePersistence.saveGame(Game.getIstance());
+                            GamePersistence.saveGame(GameController.getIstance());
                             return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
                         }else{
                             state = CardState.WARZONE;

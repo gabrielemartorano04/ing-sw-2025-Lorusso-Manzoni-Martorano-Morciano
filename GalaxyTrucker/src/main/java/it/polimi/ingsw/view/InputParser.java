@@ -7,6 +7,7 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.clientevents.SendAlienCoord;
 import it.polimi.ingsw.net.events.clientevents.ShowOtherShipEvent;
 import it.polimi.ingsw.net.events.clientevents.buildingevents.*;
+import it.polimi.ingsw.net.events.clientevents.setupevents.ChoseToResume;
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 
@@ -627,6 +628,27 @@ public ClientEvent parseFirstConnection(String input) {
                 return null;
         }
 
+    }
+
+    public ClientEvent parseOld(String input){
+        if(input == null || input.isEmpty()) {
+            return null;
+        }
+        input = input.trim();
+        String[] tokens = input.split("\\s+");
+        if (tokens.length != 1) {
+            System.out.println("please write y or n");
+            return null;
+        }
+        if (tokens[0].equalsIgnoreCase("y") && tokens[0].equalsIgnoreCase( "n")){
+            System.out.println("please write y or n");
+            return null;
+        }
+        if(tokens[0].equalsIgnoreCase("y")) {
+            return new ChoseToResume(true);
+        } else if (tokens[0].equalsIgnoreCase("n")) {
+            return new ChoseToResume(false);
+        }else return null;
     }
 }
 

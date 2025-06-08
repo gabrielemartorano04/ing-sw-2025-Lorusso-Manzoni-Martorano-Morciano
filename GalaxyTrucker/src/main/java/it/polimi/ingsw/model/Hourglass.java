@@ -10,7 +10,7 @@ import java.util.TimerTask;
 
 public class Hourglass implements Serializable {
 
-    private Timer timer;
+    private transient Timer timer;
     private boolean timeUp;
     private int secondiRimanenti;
     private int timeTurns;

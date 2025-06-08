@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Trucker;
@@ -215,7 +216,7 @@ public class MeteorShower extends Card implements Serializable {
             for (Trucker t : Game.getIstance().getTruckerList()) {
                 track.put(t.getNickname(), t.getPosition());
             }
-            GamePersistence.saveGame(Game.getIstance());
+            GamePersistence.saveGame(GameController.getIstance());
             return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
         }else {
             this.state = CardState.ROLL_DICE;

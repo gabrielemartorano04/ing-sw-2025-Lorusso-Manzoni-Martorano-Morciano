@@ -55,6 +55,7 @@ public class ViewFlow implements EventReceiver {
 
     public enum ViewState {
         FIRST,
+        CHOOSE_OLD,
         START,
         BULDING,
         FILL,
@@ -108,10 +109,7 @@ public class ViewFlow implements EventReceiver {
         //!!questa deve gestire gli eventi dal server!!
             switch (event.getEventType()) {
                 case CHOOSE_RESUME ->{
-
-                }
-                case RESUME_GAME -> {
-
+                    viewState = ViewState.CHOOSE_OLD;
                 }
                 case FIRST_CONNECTION-> {
                     ui.showInsertNumPlayers();
@@ -190,6 +188,7 @@ public class ViewFlow implements EventReceiver {
         //TODO: gestire il caso in cui input è exit per la GUI
         ClientEvent event=null;
         switch (viewState) {
+            case CHOOSE_OLD -> event=inputParser.parseOld(input);
             case FIRST -> event = inputParser.parseFirstConnection(input);
             case START-> event = inputParser.parseLogin(input);
             case BULDING-> {
