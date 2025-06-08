@@ -216,6 +216,7 @@ public class BuildingScene {
     }
 
     public void insertKeptComponent(Component component, int index) {
+        discardBtn.setDisable(true);
         ImageView componentView = new ImageView(component.getFrontImage());
         componentView.setFitWidth(110);
         componentView.setPreserveRatio(true);
@@ -242,7 +243,6 @@ public class BuildingScene {
 
     public void selectKeptComponent(int index) {
         if (index < 0 || index >= keptImages.size()) return;
-
         ImageView keptView = keptImages.get(index);
 
         // Solo se c'è un kept valido e lo slot di selezione è vuoto
@@ -251,6 +251,8 @@ public class BuildingScene {
             // TODO: QUESTA E LA VERSIONE FINALE this.insertSelectedComponent(viewFlow.getSelectedKeptComponent().get(index),false);
             this.insertSelectedComponent(new Cannon(3, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web129.jpg", true),false);
             // Rimuovi dallo slot kept
+            discardBtn.setDisable(false);
+            discardBtn.setOpacity(0.5);
             keptImages.set(index, null);
             keptSlotsRef.get(index).getChildren().clear();
             Rectangle border = new Rectangle(110, 110);
@@ -302,6 +304,8 @@ public class BuildingScene {
 
     public void insertComponentInGrid(Component component, int row, int col) {
         this.componentSelectedExists = false;
+        discardBtn.setDisable(true);
+        discardBtn.setOpacity(0.5);
         if (component == null || !validCells[row][col]) return;
         resetComponentSelectedBox();
 
@@ -338,38 +342,6 @@ public class BuildingScene {
      */
     public StackPane getCell(int row, int col) {
         return validCells[row][col] ? cellMatrix[row][col] : null;
-    }
-
-    public void addKeptComponent(int index, Component component, ViewFlow viewFlow) {
-        if (index < 0 || index >= keptSlotsRef.size()) return;
-
-        StackPane slot = keptSlotsRef.get(index);
-        slot.getChildren().removeIf(n -> n instanceof ImageView);  // Rimuove l'immagine esistente
-
-        ImageView imageView = new ImageView(component.getFrontImage());
-        imageView.setFitWidth(110);
-        imageView.setFitHeight(110);
-        Rectangle clip = new Rectangle(110, 110);
-        clip.setArcWidth(6);
-        clip.setArcHeight(6);
-        imageView.setClip(clip);
-
-        final int finalIndex = index;
-        imageView.setOnMouseClicked(event -> {
-            viewFlow.handleInput("selectkept " + finalIndex);
-            event.consume();
-        });
-
-        slot.getChildren().add(imageView);
-        keptImages.set(index, imageView);
-    }
-
-    public void removeKeptComponent(int index) {
-        if (index < 0 || index >= keptSlotsRef.size()) return;
-
-        StackPane slot = keptSlotsRef.get(index);
-        slot.getChildren().removeIf(n -> n.getClass() == ImageView.class);
-        keptImages.set(index, null);
     }
 
     public ArrayList<StackPane> getKeptSlotsRef() {
