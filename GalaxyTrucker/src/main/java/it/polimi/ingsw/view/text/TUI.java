@@ -828,6 +828,20 @@ public class TUI implements UI {
     }
 
     @Override
+    public void showPlanetsOccupied(PlanetDecision event) {
+        int index=0;
+        for(Trucker planets: event.getPlanetsOccupied()){
+            if(planets==null){
+                System.out.println("Planets "+index+" is free");
+            }
+            else{
+                System.out.println("Planets "+index+" is occupied by: "+planets.getNickname());
+            }
+            index++;
+        }
+    }
+
+    @Override
     public void askPlacedComponent() {
         System.out.println("\nSelect a component from your spaceship (format: x y):");
         System.out.print("Insert conrdinates (x y): ");

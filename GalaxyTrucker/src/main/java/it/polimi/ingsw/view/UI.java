@@ -131,7 +131,7 @@ public interface UI {
     void showCardDrawn(StartCardEvent event);
     void showCardEffectStart(Card card);
     void showGoodsGained(Goods goods);
-
+    void showPlanetsOccupied(PlanetDecision event);
     //INPUT
     void askIndex();
 
@@ -152,4 +152,6 @@ public interface UI {
 
 
     void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames);
+
+
 }

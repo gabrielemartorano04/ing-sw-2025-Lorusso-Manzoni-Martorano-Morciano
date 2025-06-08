@@ -1054,6 +1054,11 @@ public class GUI implements UI {
     }
 
     @Override
+    public void showPlanetsOccupied(PlanetDecision event) {
+
+    }
+
+    @Override
     public void showGameEnded() {
 
     }
