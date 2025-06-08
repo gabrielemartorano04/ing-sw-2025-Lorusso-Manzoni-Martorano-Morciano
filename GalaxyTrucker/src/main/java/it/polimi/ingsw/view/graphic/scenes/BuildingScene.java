@@ -287,8 +287,10 @@ public class BuildingScene {
 
 
     public void insertSelectedComponent(Component selected, boolean toTurn) {
-        //TODO: voglio che se non sono già nella schermata della ship mi riporti li
-
+        if (!inShipView && shipScreenContent != null) {
+            root.getChildren().setAll(shipScreenContent);
+            inShipView = true;
+        }
         this.componentSelectedExists = true;
 
         ImageView componentView = new ImageView(selected.getFrontImage());
