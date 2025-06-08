@@ -21,10 +21,14 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import java.util.List;
 import java.util.ArrayList;
+import javafx.scene.control.TextField;
+
 
 import java.awt.*;
 import java.io.File;
@@ -61,7 +65,6 @@ public class BuildingScene {
     private Button hourglassBtn;
     private Button selectBtn;
 
-    private boolean isLinkEnabled;
     Button turnBtn;
     Button keepBtn;
     Button discardBtn;
@@ -80,7 +83,6 @@ public class BuildingScene {
         this.keptSlotsRef = new ArrayList<>();
         this.keptImages = new ArrayList<>();
         this.viewFlow = viewFlow;
-        this.isLinkEnabled = false;
         this.componentSelectedExists = false;
         this.root = root;
 
@@ -111,7 +113,6 @@ public class BuildingScene {
         backgroundView.setPreserveRatio(true);
         backgroundView.setMouseTransparent(true);
 
-        // Griglia nave
         grid = new GridPane();
         grid.setHgap(3.5);
         grid.setVgap(3.5);
@@ -145,16 +146,6 @@ public class BuildingScene {
 
                 grid.add(cell, col - 4, row - 5);
                 cellMatrix[row][col] = cell;
-                int rowIndex = row;
-                int colIndex = col;
-                cell.setOnMouseClicked(e -> {
-                    if (isLinkEnabled && validCells[rowIndex][colIndex]) {
-                        System.out.println("Dentro");
-                        //viewFlow.handleInput("Link " + rowIndex + " " + colIndex);
-                        exitLinkMode();
-                    }
-                });
-
             }
         }
 
@@ -210,6 +201,10 @@ public class BuildingScene {
         addComponentSelectedSlot();
         createComponentSelectedButtons(styleButton);
         attackselectComponentButtons(scene);
+        for (Node n : root.getChildren()) {
+            System.out.println(n.getClass().getSimpleName());
+        }
+
 
         return scene;
     }
@@ -321,7 +316,25 @@ public class BuildingScene {
         return keptSlotsRef;
     }
 
+    public void insertComponentInGrid(Component component, int row, int col) {
+        if (component == null || !validCells[row][col]) return;
 
+        StackPane cell = cellMatrix[row][col];
+        cell.getChildren().clear(); // rimuove eventualmente immagini precedenti
+
+        ImageView imageView = new ImageView(component.getFrontImage());
+        imageView.setFitWidth(136);
+        imageView.setFitHeight(136);
+
+        Rectangle clip = new Rectangle(136, 136);
+        clip.setArcWidth(12);
+        clip.setArcHeight(12);
+        imageView.setClip(clip);
+
+        cell.getChildren().add(imageView);
+
+        layout[row][col] = component; // aggiorna anche il model
+    }
 
 
 
@@ -346,6 +359,10 @@ public class BuildingScene {
                 root.getChildren().add(optionsBox);
             }
             optionsBox.setPickOnBounds(false);
+            System.out.println("----- Children of root (inside runLater) -----");
+            for (Node n : root.getChildren()) {
+                System.out.println(n.getClass().getSimpleName());
+            }
 
         });
     }
@@ -691,15 +708,98 @@ public class BuildingScene {
             componentSelectedExists = false;
             viewFlow.handleInput("Discard");
         });
-        linkBtn.setOnAction(e -> {
-            if (isLinkEnabled) {
-                // Se già attivo, disattiva
-                exitLinkMode();
-            } else {
-                enterLinkMode();
-            }
+        linkBtn.setOnAction(ev -> {
+            AnchorPane overlay = new AnchorPane();
+            overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
+            overlay.setPickOnBounds(true);
 
+            VBox popup = new VBox(12);
+            popup.setAlignment(Pos.CENTER);
+            popup.setPadding(new Insets(20));
+            popup.setPrefSize(250, 250); // quadrato e più piccolo
+            popup.setBackground(new Background(new BackgroundFill(Color.web("#333333"), new CornerRadii(15), Insets.EMPTY)));
+
+            Label insertLabel = new Label("Scegli dove attaccare il componente");
+            insertLabel.setTextFill(Color.web("#FFDE69"));
+            insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+            insertLabel.setWrapText(true);
+            insertLabel.setTextAlignment(TextAlignment.CENTER);
+
+            // Due campi affiancati per x e y
+            TextField xField = new TextField();
+            xField.setPromptText("x");
+            xField.setPrefWidth(50);
+            xField.textProperty().addListener((obs, oldVal, newVal) -> {
+                if (!newVal.matches("\\d*")) xField.setText(newVal.replaceAll("[^\\d]", ""));
+            });
+
+            TextField yField = new TextField();
+            yField.setPromptText("y");
+            yField.setPrefWidth(50);
+            yField.textProperty().addListener((obs, oldVal, newVal) -> {
+                if (!newVal.matches("\\d*")) yField.setText(newVal.replaceAll("[^\\d]", ""));
+            });
+
+            HBox coordBox = new HBox(10, xField, yField);
+            coordBox.setAlignment(Pos.CENTER);
+
+            Label errorLabel = new Label("Coordinate non valide");
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setVisible(false);
+
+            Button cancelBtn = new Button("Annulla");
+            cancelBtn.setFont(Font.font("Bangers", 14));
+            cancelBtn.setCursor(Cursor.HAND);
+            cancelBtn.setTextFill(Color.WHITE);
+            cancelBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(8), Insets.EMPTY)));
+
+            Button sendBtn = new Button("Invia");
+            sendBtn.setFont(Font.font("Bangers", 14));
+            sendBtn.setCursor(Cursor.HAND);
+            sendBtn.setTextFill(Color.WHITE);
+            sendBtn.setBackground(new Background(new BackgroundFill(Color.web("#00A676"), new CornerRadii(8), Insets.EMPTY))); // verde
+
+            HBox buttons = new HBox(15, cancelBtn, sendBtn);
+            buttons.setAlignment(Pos.CENTER);
+
+            popup.getChildren().addAll(insertLabel, coordBox, errorLabel, buttons);
+
+            // Allinea il popup: verticale centro, orizzontale destra
+            AnchorPane.setTopAnchor(popup, (root.getHeight() - 250) / 2);
+            AnchorPane.setRightAnchor(popup, 40.0); // più vicino al bordo destro
+
+            overlay.getChildren().add(popup);
+            root.getChildren().add(overlay);
+
+            Runnable removePopup = () -> root.getChildren().remove(overlay);
+
+            cancelBtn.setOnAction(e -> removePopup.run());
+
+            sendBtn.setOnAction(e -> {
+                String xText = xField.getText().trim();
+                String yText = yField.getText().trim();
+
+                try {
+                    int x = Integer.parseInt(xText);
+                    int y = Integer.parseInt(yText);
+
+                    if (x < 5 || x > 10 || y < 6 || y > 9) {
+                        errorLabel.setVisible(true);
+                        return;
+                    }
+
+                    errorLabel.setVisible(false);
+                    viewFlow.handleInput("link, " + x + " " + y);
+                    removePopup.run();
+                } catch (NumberFormatException ex) {
+                    errorLabel.setVisible(true);
+                }
+            });
+
+            // ENTER = invia (se focus su yField)
+            yField.setOnAction(e -> sendBtn.fire());
         });
+
     }
 
     private void attackselectComponentButtons(Scene scene) {
@@ -717,74 +817,20 @@ public class BuildingScene {
                 root.getChildren().add(componentBox);
             }
             componentBox.setPickOnBounds(false);
+            System.out.println("----- Children of root (inside runLater) -----");
+            for (Node n : root.getChildren()) {
+                System.out.println(n.getClass().getSimpleName());
+            }
 
         });
 
     }
 
-    public void loadShipView(){
+    public void loadShipView() {
         root.getChildren().setAll(shipScreenContent);
     }
 
-    private void exitLinkMode() {
-        isLinkEnabled = false;
-
-        Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
-            btn.setDisable(false);
-            btn.setOpacity(1.0);
-        });
-
-        scene.removeEventFilter(MouseEvent.MOUSE_PRESSED, this::handleClickOutsideGrid);
-    }
-
-    private void enterLinkMode() {
-        isLinkEnabled = true;
-
-        Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
-            btn.setDisable(true);
-            btn.setOpacity(0.5);
-        });
-
-        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, this::handleClickOutsideGrid);
-    }
-
-    private boolean isDescendantOfAnyValidCell(Node node) {
-        for (int row = 5; row < 10; row++) {
-            for (int col = 4; col < 11; col++) {
-                if (validCells[row][col]) {
-                    if (isDescendantOfNode(node, cellMatrix[row][col])) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
 
 
-    private void handleClickOutsideGrid(MouseEvent event) {
-        Node clickedNode = event.getPickResult().getIntersectedNode();
-        if (isDescendantOfAnyValidCell(clickedNode)) {
-            System.out.println("Dentro");
-            return;
-        }
-
-        if (isDescendantOfNode(clickedNode, linkBtn)) {
-            return;
-        }
-
-        exitLinkMode();
-        event.consume();
-    }
-
-    private boolean isDescendantOfNode(Node node, Node potentialParent) {
-        while (node != null) {
-            if (node == potentialParent) {
-                return true;
-            }
-            node = node.getParent();
-        }
-        return false;
-    }
 }
 
