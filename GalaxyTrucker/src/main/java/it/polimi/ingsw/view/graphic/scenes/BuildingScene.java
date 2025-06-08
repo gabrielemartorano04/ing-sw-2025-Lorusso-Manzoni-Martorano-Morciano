@@ -56,7 +56,6 @@ public class BuildingScene {
     private final ArrayList<StackPane> keptSlotsRef;
     private final ArrayList<ImageView> keptImages;
     private HBox keptSlots;
-    private int numOfKept;
 
     private Button finishBtn;
     private Button stackBtn;
@@ -72,6 +71,7 @@ public class BuildingScene {
     Button linkBtn;
 
     private List<Node> shipScreenContent;
+    private boolean inShipView;
 
     private VBox componentSelectedBox;
     private boolean componentSelectedExists;
@@ -85,7 +85,7 @@ public class BuildingScene {
         this.viewFlow = viewFlow;
         this.componentSelectedExists = false;
         this.root = root;
-        this.numOfKept = 0;
+        this.inShipView = true;
 
         this.validCells = new boolean[11][12];
         for (int i = 0; i < layout.length; i++) {
@@ -321,6 +321,10 @@ public class BuildingScene {
 
 
     public void insertSelectedComponent(Component selected, boolean toTurn) {
+        if (!inShipView && shipScreenContent != null) {
+            root.getChildren().setAll(shipScreenContent);
+            inShipView = true;
+        }
         this.componentSelectedExists = true;
 
         ImageView componentView = new ImageView(selected.getFrontImage());
@@ -613,31 +617,35 @@ public class BuildingScene {
 
         hourglassBtn.setOnAction(e -> {
             viewFlow.handleInput("hourglass");
-            hourglassBtn.setDisable(true);
-
-            ColorAdjust grayOverlay = new ColorAdjust();
-            grayOverlay.setBrightness(-0.5);
-            hourglassBtn.setEffect(grayOverlay);
-
-            final int[] secondsLeft = {90};
-            hourglassBtn.setText(secondsLeft[0] + "s");
-
-            Timeline countdown = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-                secondsLeft[0]--;
-                if (secondsLeft[0] > 0) {
-                    hourglassBtn.setText(secondsLeft[0] + "s");
-                } else {
-                    hourglassBtn.setText("⏳");
-                    hourglassBtn.setDisable(false);
-                    hourglassBtn.setEffect(null); // remove overlay
-                }
-            }));
-            countdown.setCycleCount(90);
-            countdown.play();
         });
 
         this.hourglassBtn = hourglassBtn;
     }
+
+    public void startHourglassTimer() {
+        hourglassBtn.setDisable(true);
+
+        ColorAdjust grayOverlay = new ColorAdjust();
+        grayOverlay.setBrightness(-0.5);
+        hourglassBtn.setEffect(grayOverlay);
+
+        final int[] secondsLeft = {90};
+        hourglassBtn.setText(secondsLeft[0] + "s");
+
+        Timeline countdown = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+            secondsLeft[0]--;
+            if (secondsLeft[0] > 0) {
+                hourglassBtn.setText(secondsLeft[0] + "s");
+            } else {
+                hourglassBtn.setText("⏳");
+                hourglassBtn.setDisable(false);
+                hourglassBtn.setEffect(null); // remove overlay
+            }
+        }));
+        countdown.setCycleCount(90);
+        countdown.play();
+    }
+
 
     private void addSelectComponentButton(Consumer<Button> styleButton) {
         Button selectComponentBtn = new Button("Select component");
@@ -645,7 +653,7 @@ public class BuildingScene {
 
         selectComponentBtn.setOnAction(e -> {
             shipScreenContent = new ArrayList<>(root.getChildren());
-
+            this.inShipView = false;
             ArrayList<Component> components = new AvailableComponents().getComponents();
             //TODO: ora tieni components per vedere ma poi sarà showAvailableComponent(viewFlow.getAvailableComponents());
             loadComponentsView(components);
@@ -848,13 +856,13 @@ public class BuildingScene {
                 undoBtn.setTextFill(Color.WHITE);
                 undoBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(8), Insets.EMPTY)));
 
-                Button selectBtn = new Button("Select");
-                selectBtn.setFont(Font.font("Bangers", 14));
-                selectBtn.setCursor(Cursor.HAND);
-                selectBtn.setTextFill(Color.WHITE);
-                selectBtn.setBackground(new Background(new BackgroundFill(Color.web("#00A676"), new CornerRadii(8), Insets.EMPTY))); // verde
+                Button selectBtnComponentsView = new Button("Select");
+                selectBtnComponentsView.setFont(Font.font("Bangers", 14));
+                selectBtnComponentsView.setCursor(Cursor.HAND);
+                selectBtnComponentsView.setTextFill(Color.WHITE);
+                selectBtnComponentsView.setBackground(new Background(new BackgroundFill(Color.web("#00A676"), new CornerRadii(8), Insets.EMPTY))); // verde
 
-                HBox buttons = new HBox(15, undoBtn, selectBtn);
+                HBox buttons = new HBox(15, undoBtn, selectBtnComponentsView);
                 buttons.setAlignment(Pos.CENTER);
 
                 popup.getChildren().addAll(confirmLabel, buttons);
@@ -869,7 +877,7 @@ public class BuildingScene {
 
                 undoBtn.setOnAction(ev -> removePopup.run());
 
-                selectBtn.setOnAction(ev -> {
+                selectBtnComponentsView.setOnAction(ev -> {
                     viewFlow.handleInput("select " + index);
                     removePopup.run();
                 });
@@ -895,6 +903,7 @@ public class BuildingScene {
 
         backBtn.setOnAction(e -> {
             if (shipScreenContent != null) {
+                this.inShipView = true;
                 root.getChildren().setAll(shipScreenContent);
             }
         });

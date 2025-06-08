@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.ClientHandler;
@@ -9,6 +10,8 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.EndGameEvent;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
+import it.polimi.ingsw.net.events.serverevents.setupevents.AvailablePlayersEvent;
+import it.polimi.ingsw.net.events.serverevents.setupevents.ChooseResumeEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.ClientHandlerVisitor;
@@ -28,6 +31,7 @@ public class ServerController {
     private static ServerController istance;
     private int idToSet;
     private boolean gameRunning;
+    private static boolean oldGame;
 
 
     private final BlockingQueue<EventWithSource> eventQueue = new LinkedBlockingQueue<>();
@@ -54,6 +58,10 @@ public class ServerController {
         ServerController.istance = istance;
     }
 
+    public static void setOldGame(Boolean oldGame) {
+        ServerController.oldGame = oldGame;
+    }
+
     public boolean isGameRunning() {
         return gameRunning;
     }
@@ -63,9 +71,9 @@ public class ServerController {
             client.setId(idToSet);
             idToSet++;
             clients.add(client);
-            //se esiste una partita vecchia
-            if(false){
-                //TODO: return evento che chiede SOLO se vuoi la partita vecchia o ne vuoi una nuova (facciamo decidere solo al primo ceh si connette)
+            if(GamePersistence.hasSaveFile()){
+                ChooseResumeEvent chooseResumeEvent = new ChooseResumeEvent();
+                client.updateClient(chooseResumeEvent);
             }else {
                 FirstConnectionEvent event = new FirstConnectionEvent(
                         "First player in the game, choose the total number of players of the Game"
@@ -78,9 +86,11 @@ public class ServerController {
             client.setId(idToSet);
             idToSet++;
             clients.add(client);
-            // se il primo ha scelto di caricare la partita vecchia (può essere deciso con una variabiale settata dal visitor e salvata nel ServerController con getIstance)
-            if(false){
-                //TODO: manda l'evento che mostra i nickname e i colori della partita vecchia invece che availableColor
+            if(oldGame){
+                Game.getIstance().createOldColors();
+                Game.getIstance().createOldNicknames();
+                AvailablePlayersEvent event = new AvailablePlayersEvent(Game.getIstance().getOldColors(), Game.getIstance().getOldNicknames());
+                client.updateClient(event);
             }else {
                 AvailableColorsEvent event = new AvailableColorsEvent(gameController.getAvailablePlayerColors(),
                         "Login");
@@ -279,6 +289,10 @@ public class ServerController {
             playersScores.forEach((name, score) -> System.out.println("- " + name + ": " + score));
             this.broadcastEvent(new EndGameEvent(playersScores));
         }
+    }
+
+    public boolean getOldGame(){
+        return oldGame;
     }
 }
 

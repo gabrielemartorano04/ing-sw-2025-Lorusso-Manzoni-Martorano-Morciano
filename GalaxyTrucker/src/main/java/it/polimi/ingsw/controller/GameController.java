@@ -99,6 +99,14 @@ public class GameController {
         return truckerController;
     }
 
+    public synchronized TruckerController addOldPlayer(String nickname, PlayerColors color) {
+        if (gameStarted) {
+            throw new GameAlreadyStartedException("game already started");
+        }
+        return new TruckerController(nickname, color);
+
+    }
+
     /**
      * This method sets the current card just drawn from the deck
      * @return the current card

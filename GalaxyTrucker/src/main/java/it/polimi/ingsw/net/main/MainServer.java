@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.main;
 
 
+import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.rmi.server.RmiServer;
