@@ -579,31 +579,35 @@ public class BuildingScene {
 
         hourglassBtn.setOnAction(e -> {
             viewFlow.handleInput("hourglass");
-            hourglassBtn.setDisable(true);
-
-            ColorAdjust grayOverlay = new ColorAdjust();
-            grayOverlay.setBrightness(-0.5);
-            hourglassBtn.setEffect(grayOverlay);
-
-            final int[] secondsLeft = {90};
-            hourglassBtn.setText(secondsLeft[0] + "s");
-
-            Timeline countdown = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-                secondsLeft[0]--;
-                if (secondsLeft[0] > 0) {
-                    hourglassBtn.setText(secondsLeft[0] + "s");
-                } else {
-                    hourglassBtn.setText("⏳");
-                    hourglassBtn.setDisable(false);
-                    hourglassBtn.setEffect(null); // remove overlay
-                }
-            }));
-            countdown.setCycleCount(90);
-            countdown.play();
         });
 
         this.hourglassBtn = hourglassBtn;
     }
+
+    public void startHourglassTimer() {
+        hourglassBtn.setDisable(true);
+
+        ColorAdjust grayOverlay = new ColorAdjust();
+        grayOverlay.setBrightness(-0.5);
+        hourglassBtn.setEffect(grayOverlay);
+
+        final int[] secondsLeft = {90};
+        hourglassBtn.setText(secondsLeft[0] + "s");
+
+        Timeline countdown = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+            secondsLeft[0]--;
+            if (secondsLeft[0] > 0) {
+                hourglassBtn.setText(secondsLeft[0] + "s");
+            } else {
+                hourglassBtn.setText("⏳");
+                hourglassBtn.setDisable(false);
+                hourglassBtn.setEffect(null); // remove overlay
+            }
+        }));
+        countdown.setCycleCount(90);
+        countdown.play();
+    }
+
 
     private void addSelectComponentButton(Consumer<Button> styleButton) {
         Button selectComponentBtn = new Button("Select component");
