@@ -170,7 +170,7 @@ public class BuildingScene {
             border.setArcWidth(6);
             border.setArcHeight(6);
             border.setFill(Color.TRANSPARENT);
-            border.setStroke(Color.WHITE);
+            border.setStroke(Color.TRANSPARENT);
             border.setStrokeWidth(1);
 
             slot.getChildren().add(border);
@@ -862,7 +862,7 @@ public class BuildingScene {
         imageContainer.setAlignment(Pos.CENTER);
 
         componentSelectedBox = new VBox(10);
-        componentSelectedBox.setPadding(new Insets(0, 0, -195, -1229));
+        componentSelectedBox.setPadding(new Insets(0, 0, -250, -1229));
         componentSelectedBox.setAlignment(Pos.CENTER);
         componentSelectedBox.getChildren().add(imageContainer);
 
@@ -991,7 +991,7 @@ public class BuildingScene {
 
     private void attackselectComponentButtons(Scene scene) {
         VBox componentBox = new VBox(10);
-        componentBox.setPadding(new Insets(0, 0, 25, 15));
+        componentBox.setPadding(new Insets(0, 0, 50, 15));
         componentBox.setAlignment(Pos.BOTTOM_LEFT);
 
         componentBox.getChildren().addAll(turnBtn, linkBtn, keepBtn, discardBtn);
