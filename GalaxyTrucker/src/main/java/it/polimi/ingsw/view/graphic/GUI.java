@@ -88,7 +88,7 @@ public class GUI implements UI {
         this.isLinkingEnabled = false;
         this.previousPositions = new HashMap<>();
 
-        new Thread(() -> Application.launch(GUIApplication.class)).start();
+        //new Thread(() -> Application.launch(GUIApplication.class)).start();
 
     }
 
@@ -232,23 +232,30 @@ public class GUI implements UI {
 
     @Override
     public void welcomeScene(AvailableColorsEvent event){
-        // TODO: crea la schermata di welcome con le informazioni dall'evento
-        // sostituisce la schermata corrente se prima avevo chiamato insertNumPlayer altrimenti crea la prima scena del gioco
-        //this.loginScene.showWelcome(event.getColors());
+        Platform.runLater(() -> {
+            this.loginScene = new LoginScene(event.getColors(), viewFlow);
+            stage.setScene(this.loginScene.createScene());
+            stage.setTitle("Galaxy Trucker");
+            stage.setResizable(false);
+            stage.show();
+        });
 
     }
-
 
 
     @Override
     public void nickNameAlreadyTaken(NicknameAlreadyInError event){
-        this.loginScene.showNicknameTakenPopup();
+        Platform.runLater(() -> {
+            this.loginScene.showNicknameTakenPopup();
+        });
     }
 
     @Override
     public void colorAlreadyTaken(ColorAlreadyInError event){
-        loginScene.showColorTakenPopup();
-        loginScene.markColorAsUnavailable(event.getColor());
+        Platform.runLater(() -> {
+            loginScene.showColorTakenPopup();
+            loginScene.markColorAsUnavailable(event.getColor());
+        });
     }
 
     // fine welcome scene
@@ -258,11 +265,13 @@ public class GUI implements UI {
 
     @Override
     public void startBuildingScene(StartBuildingEvent event){
-        //TODO:crea la scena di Building iniziale riempendola con le informazioni dall'evento
-        //setta la scena corrente a quella appena creata dopo aver eliminato la scena precedente
-        //setStackPane non so come si fa
-        //buildingScene=new BuildingScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow, new StackPane());
-        //la building scene deve avere i giocatori, la spaceship e i button in base a quello che si può fare
+        Platform.runLater(() -> {
+            buildingScene=new BuildingScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow, new StackPane());
+            stage.setScene(this.buildingScene.createScene(event.getPlayers(), viewFlow.getLevel()));
+            stage.setTitle("Galaxy Trucker");
+            stage.setResizable(false);
+            stage.show();
+        });
     }
 
 
