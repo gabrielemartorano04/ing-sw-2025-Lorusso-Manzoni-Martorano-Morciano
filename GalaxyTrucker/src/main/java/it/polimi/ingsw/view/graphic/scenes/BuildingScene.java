@@ -45,7 +45,7 @@ public class BuildingScene {
     private final ViewFlow viewFlow;
     private Scene scene;
     private final StackPane root;
-
+    private int level;
 
     private final String nickname;
     private final Component[][] layout;
@@ -102,6 +102,7 @@ public class BuildingScene {
         double height = 900;
 
         // Sfondo
+        this.level = level;
         Image backgroundImage;
         if(level == 0){
             backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1.jpeg").toExternalForm());
@@ -223,6 +224,30 @@ public class BuildingScene {
         keepBtn.setOpacity(opacity);
     }
 
+    private void disableOptionButtons(boolean disable) {
+        double opacity = disable ? 0.5 : 1;
+
+        finishBtn.setDisable(disable);
+        finishBtn.setOpacity(opacity);
+
+        stackBtn.setDisable(disable);
+        stackBtn.setOpacity(opacity);
+
+        rulesBtn.setDisable(disable);
+        rulesBtn.setOpacity(opacity);
+
+        otherBtn.setDisable(disable);
+        otherBtn.setOpacity(opacity);
+
+        hourglassBtn.setDisable(disable);
+        hourglassBtn.setOpacity(opacity);
+
+        selectBtn.setDisable(disable);
+        selectBtn.setOpacity(opacity);
+
+        selectKeptBtn.setDisable(disable);
+        selectKeptBtn.setOpacity(opacity);
+    }
 
     public Scene getScene() {
         return scene;
@@ -245,6 +270,15 @@ public class BuildingScene {
         StackPane slot = keptSlotsRef.get(index);
         slot.getChildren().clear();
         slot.getChildren().add(componentView);
+
+        Rectangle border = new Rectangle(110, 110);
+        border.setArcWidth(6);
+        border.setArcHeight(6);
+        border.setFill(Color.TRANSPARENT);
+        border.setStroke(Color.WHITE);
+        border.setStrokeWidth(1);
+
+        slot.getChildren().add(border);
 
         // Aggiorna la lista logica delle immagini
         keptImages.set(index, componentView);
@@ -271,7 +305,7 @@ public class BuildingScene {
             border.setArcWidth(6);
             border.setArcHeight(6);
             border.setFill(Color.TRANSPARENT);
-            border.setStroke(Color.WHITE);
+            border.setStroke(Color.TRANSPARENT);
             border.setStrokeWidth(1);
 
             keptSlotsRef.get(index).getChildren().add(border);
@@ -1043,7 +1077,106 @@ public class BuildingScene {
         root.getChildren().setAll(shipScreenContent);
     }
 
+    public void showOtherShip(Component[][] layout) {
+        // === Immagine della nave ===
+        ImageView backgroundView;
+        if (level == 0) {
+            backgroundView = new ImageView(new Image(Objects.requireNonNull(
+                    getClass().getResource("/it/polimi/ingsw/view/cardboard-3.jpeg")).toExternalForm()));
+        } else {
+            backgroundView = new ImageView(new Image(Objects.requireNonNull(
+                    getClass().getResource("/it/polimi/ingsw/view/cardboard-3b.jpeg")).toExternalForm()));
+        }
 
+        backgroundView.setFitWidth(679);
+        backgroundView.setFitHeight(492);
+        backgroundView.setPreserveRatio(true); // per angoli simmetrici
+        backgroundView.setMouseTransparent(true);
+
+        Rectangle clip = new Rectangle(679, 492);
+        clip.setArcWidth(20);
+        clip.setArcHeight(20);
+        backgroundView.setClip(clip);
+
+        // === Griglia componenti ===
+        GridPane grid = new GridPane();
+        grid.setHgap(1.5);
+        grid.setVgap(1.5);
+        grid.setAlignment(Pos.CENTER);
+        grid.setTranslateY(-1);
+
+        for (int row = 5; row < 10; row++) {
+            for (int col = 4; col < 11; col++) {
+                StackPane cell = new StackPane();
+                cell.setPrefSize(87.5, 87.5);
+
+                if (validCells[row][col]) {
+                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 4px; -fx-background-radius: 4px;");
+                    Component c = layout[row][col];
+                    if (c != null) {
+                        ImageView iv = new ImageView(c.getFrontImage());
+                        iv.setFitWidth(87.5);
+                        iv.setFitHeight(87.5);
+                        Rectangle r = new Rectangle(87.5, 87.5);
+                        r.setArcWidth(8);
+                        r.setArcHeight(8);
+                        iv.setClip(r);
+                        cell.getChildren().add(iv);
+                    }
+                } else {
+                    cell.setStyle("-fx-background-color: transparent;");
+                }
+
+                grid.add(cell, col - 4, row - 5);
+            }
+        }
+
+        // === Contenitore nave + griglia ===
+        StackPane shipPopup = new StackPane(backgroundView, grid);
+        shipPopup.setAlignment(Pos.CENTER);
+        shipPopup.setMaxSize(679, 500);
+        shipPopup.setMouseTransparent(false);
+
+        // === Posizionamento sopra la UI attuale ===
+        root.getChildren().add(shipPopup);
+    }
+
+    public void showOverlayWithBackButton() {
+        disableSelectButtons(true);
+        disableOptionButtons(true);
+        // === Overlay grigio ===
+        AnchorPane overlay = new AnchorPane();
+        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
+        overlay.setPickOnBounds(true); // intercetta i clic
+
+        // === Pulsante "←" in alto a sinistra ===
+        Button backBtn = new Button("←");
+        backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
+        backBtn.setTextFill(Color.BLACK);
+        backBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        backBtn.setCursor(Cursor.HAND);
+        backBtn.setPadding(new Insets(12, 18, 12, 18));
+
+        // Posiziona il pulsante in alto a sinistra con margine
+        AnchorPane.setTopAnchor(backBtn, 35.0);
+        AnchorPane.setLeftAnchor(backBtn, 125.0);
+
+        // Aggiungi il pulsante all'overlay
+        overlay.getChildren().add(backBtn);
+
+        // Aggiungi l'overlay sopra tutto il resto
+        root.getChildren().add(overlay);
+
+        // Azione al click: rimuove overlay e mostra la nave
+        backBtn.setOnAction(e -> {
+            root.getChildren().remove(overlay);
+            disableSelectButtons(false);
+            disableOptionButtons(false);
+            if(shipScreenContent != null) {
+                root.getChildren().setAll(shipScreenContent);
+            }
+        });
+    }
 
 }
 
