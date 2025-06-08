@@ -56,6 +56,7 @@ public class BuildingScene {
     private final ArrayList<StackPane> keptSlotsRef;
     private final ArrayList<ImageView> keptImages;
     private HBox keptSlots;
+    private int indexToInsertKept;
 
     private Button finishBtn;
     private Button stackBtn;
@@ -86,6 +87,7 @@ public class BuildingScene {
         this.componentSelectedExists = false;
         this.root = root;
         this.inShipView = true;
+        this.indexToInsertKept = -1;
 
         this.validCells = new boolean[11][12];
         for (int i = 0; i < layout.length; i++) {
@@ -253,7 +255,7 @@ public class BuildingScene {
         return scene;
     }
 
-    public void insertComponentToKepts(Component component, int index) {
+    public void insertComponentToKepts(Component component) {
         this.disableSelectButtons(true);
         ImageView componentView = new ImageView(component.getFrontImage());
         componentView.setFitWidth(110);
@@ -267,7 +269,7 @@ public class BuildingScene {
         componentView.setClip(clip);
 
         // Ottieni lo slot visivo e inserisci l'immagine
-        StackPane slot = keptSlotsRef.get(index);
+        StackPane slot = keptSlotsRef.get(indexToInsertKept);
         slot.getChildren().clear();
         slot.getChildren().add(componentView);
 
@@ -281,7 +283,7 @@ public class BuildingScene {
         slot.getChildren().add(border);
 
         // Aggiorna la lista logica delle immagini
-        keptImages.set(index, componentView);
+        keptImages.set(indexToInsertKept, componentView);
 
         boolean anyKept = keptImages.stream().anyMatch(Objects::nonNull);
         selectKeptBtn.setDisable(!anyKept);
@@ -787,7 +789,8 @@ public class BuildingScene {
                         errorLabel.setVisible(true);
                         return;
                     }
-                    viewFlow.handleInput("selectkept " + idx);
+                    this.indexToInsertKept = idx;
+                    viewFlow.handleInput("selectkept ");
                     removePopup.run();
                 });
             }
