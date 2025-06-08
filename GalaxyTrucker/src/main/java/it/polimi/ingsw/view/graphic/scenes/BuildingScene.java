@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -620,9 +621,34 @@ public class BuildingScene {
         styleButton.accept(selectKeptBtn);
         selectKeptBtn.setOnAction(e -> {
             if (!componentSelectedBox.getChildren().isEmpty()) {
-                // Mostra un messaggio o notifica
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Hai già un componente selezionato!");
-                alert.showAndWait();
+                // Overlay grigio trasparente a tutto schermo
+                Rectangle fullOverlay = new Rectangle();
+                fullOverlay.widthProperty().bind(root.widthProperty());
+                fullOverlay.heightProperty().bind(root.heightProperty());
+                fullOverlay.setFill(Color.rgb(0, 0, 0, 0.5));
+                fullOverlay.setMouseTransparent(false); // blocca interazione
+
+                // Messaggio di avviso
+                Label warningLabel = new Label("You have already selected a component!");
+                warningLabel.setTextFill(Color.RED);
+                warningLabel.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 35));
+                warningLabel.setMouseTransparent(true);
+                warningLabel.setWrapText(true);
+                warningLabel.setTextAlignment(TextAlignment.CENTER);
+
+                // Contenitore overlay + messaggio
+                StackPane overlayLayer = new StackPane(fullOverlay, warningLabel);
+                overlayLayer.setAlignment(Pos.CENTER);
+                overlayLayer.setPickOnBounds(true); // riceve eventi sullo sfondo
+
+                // Aggiungi overlay al root principale
+                root.getChildren().add(overlayLayer);
+
+                // Rimuovi overlay dopo 3 secondi
+                PauseTransition delay = new PauseTransition(Duration.seconds(3));
+                delay.setOnFinished(event -> root.getChildren().remove(overlayLayer));
+                delay.play();
+
                 return;
             }
             AnchorPane overlay = new AnchorPane();
