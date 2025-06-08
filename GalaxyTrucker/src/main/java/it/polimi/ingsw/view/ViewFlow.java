@@ -108,8 +108,11 @@ public class ViewFlow implements EventReceiver {
         //!!questa deve gestire gli eventi dal server!!
             switch (event.getEventType()) {
                 case CHOOSE_RESUME ->{
+
                 }
-                case RESUME_GAME -> {}
+                case RESUME_GAME -> {
+
+                }
                 case FIRST_CONNECTION-> {
                     ui.showInsertNumPlayers();
                 }

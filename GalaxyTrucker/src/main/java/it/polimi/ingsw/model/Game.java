@@ -29,6 +29,8 @@ public class Game {
     private final Deck deck;
     private final Bank bank;
     private static Game istance;
+    private ArrayList<String> oldNicknames;
+    private ArrayList<PlayerColors> oldColors;
 
     //private AskController askController;
     private GameState gameState;
@@ -513,5 +515,50 @@ public class Game {
     public void setNumPlayers(int i) {
         numPlayers = i;
     }
+
+    public boolean checkOldPlayers(String nickname, PlayerColors color) {
+        for(int i=0; i<numPlayers; i++){
+            if(oldColors.get(i).equals(color) && oldNicknames.get(i).equals(nickname)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void createOldNicknames() {
+        ArrayList<Trucker> truckers;
+        truckers= Game.getIstance().getTruckerList();
+        truckers.addAll(Game.getIstance().getTruckerOut());
+        for(Trucker trucker : truckers){
+            oldNicknames.add(trucker.getNickname());
+        }
+    }
+
+    public ArrayList<String> getOldNicknames() {
+        return oldNicknames;
+    }
+
+    public ArrayList<PlayerColors> getOldColors() {
+        return oldColors;
+    }
+
+    public void createOldColors() {
+        ArrayList<Trucker> truckers;
+        truckers= Game.getIstance().getTruckerList();
+        truckers.addAll(Game.getIstance().getTruckerOut());
+        ArrayList<String> nicknames = new ArrayList<>();
+        for(Trucker trucker : truckers){
+            oldColors.add(trucker.getColor());
+        }
+    }
+
+    public void removeOldColors(PlayerColors color) {
+        oldColors.remove(color);
+    }
+
+    public void removeOldNicknames(String nickname) {
+        oldNicknames.remove(nickname);
+    }
+
 }
 

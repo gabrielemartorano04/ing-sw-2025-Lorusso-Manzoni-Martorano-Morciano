@@ -121,4 +121,6 @@ public interface VirtualView {
     void visit(ResumeGameEvent resumeGameEvent);
 
     void visit(ChooseResumeEvent chooseResumeEvent);
+
+    void visit(AvailablePlayersEvent availablePlayersEvent);
 }
