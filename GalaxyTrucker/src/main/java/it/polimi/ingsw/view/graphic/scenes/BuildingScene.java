@@ -171,7 +171,7 @@ public class BuildingScene {
             border.setArcHeight(6);
             border.setFill(Color.TRANSPARENT);
             border.setStroke(Color.WHITE);
-            border.setStrokeWidth(2);
+            border.setStrokeWidth(1);
 
             slot.getChildren().add(border);
             int index = i;
@@ -241,12 +241,15 @@ public class BuildingScene {
     }
 
     public void selectKeptComponent(int index) {
+        System.out.println("Dentro");
         if (index < 0 || index >= keptImages.size()) return;
 
         ImageView keptView = keptImages.get(index);
 
         // Solo se c'è un kept valido e lo slot di selezione è vuoto
-        if (keptView != null && componentSelectedBox.getChildren().isEmpty()) {
+        if (keptView != null) {
+            System.out.println("Dentro");
+
             System.out.println("Dentro");
             // Clona l'immagine per sicurezza (opzionale, dipende dal comportamento desiderato)
             ImageView selectedView = new ImageView(keptView.getImage());
