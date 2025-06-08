@@ -13,4 +13,9 @@ public class ChooseResumeEvent extends ServerEvent {
     public void call(ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public String getMessage() {
+        return "an old game isn't finished yet, do you want to continue? (y/n)";
+    }
 }

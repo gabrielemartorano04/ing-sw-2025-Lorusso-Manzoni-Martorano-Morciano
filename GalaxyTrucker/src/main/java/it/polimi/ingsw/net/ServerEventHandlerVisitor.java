@@ -1,5 +1,6 @@
 package it.polimi.ingsw.net;
 
+import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
@@ -655,12 +656,58 @@ public class ServerEventHandlerVisitor implements VirtualView {
     }
 
     @Override
-    public void visit(ResumeGameEvent resumeGameEvent) {
+    public void visit(ResumeGameEvent event) {
+        Trucker trucker=null;
+        for(Trucker t: event.getTrucker()){
+            if(t.getNickname().equals(viewFlow.getNickname())){
+                trucker=t;
+            }
+        }
+        if(trucker!=null) {
+            viewFlow.setParserFlightState(ParserState.STATE);
+            switch (event.getGameState()) {
+                case FLIGHT -> viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
+                case ENDED -> viewFlow.setViewState(ViewFlow.ViewState.END);
+                case BUILDING -> viewFlow.setViewState(ViewFlow.ViewState.BULDING);
 
+            }
+            viewFlow.setLevel(event.getLevel());
+            if(event.getTrack()!=null) {
+                viewFlow.setTrack(event.getTrack());
+            }
+            viewFlow.setOut();
+            viewFlow.setEnd();
+            viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
+            viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
+            //viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsList());
+            try {
+                if (trucker.getKeptComponent(0) != null) {
+                    viewFlow.addKeptComponent(trucker.getKeptComponent(0));
+                }
+            }catch (GeneralError e){
+                ui.showError(e.getMessage());
+            }
+            try {
+                if(trucker.getKeptComponent(1)!=null) {
+                    viewFlow.addKeptComponent(trucker.getKeptComponent(1));
+                }
+            }catch (GeneralError e){
+                ui.showError(e.getMessage());
+            }
+
+            viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
+            viewFlow.setPosition(trucker.getPosition());
+            viewFlow.setShip(trucker.getSpaceShip().getComponents());
+        }
     }
 
     @Override
     public void visit(ChooseResumeEvent chooseResumeEvent) {
+        ui.showMessage(chooseResumeEvent.getMessage());
+    }
 
+    @Override
+    public void visit(AvailablePlayersEvent availablePlayersEvent) {
+        //ui.welcomeOldScene(availablePlayersEvent.getColors(), availablePlayersEvent.getNicknames());
     }
 }

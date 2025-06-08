@@ -120,11 +120,13 @@ public class GUIApplication extends Application {
         StackPane stackPane = new StackPane();
         BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
         Scene scene = buildingScene.createScene(playersNames, 2);
-        // buildingScene.insertSelectedComponent(cannon, false);
-        // buildingScene.insertComponentInGrid(cannon,6,7);
-        buildingScene.insertKeptComponent(cannon,0);
-        buildingScene.selectKeptComponent(0);
+        buildingScene.insertSelectedComponent(cannon, false);
+        buildingScene.insertComponentInGrid(cannon,6,7);
+//        buildingScene.insertComponentToKepts(cannon,0);
+//        buildingScene.selectKeptComponent(0);
         primaryStage.setScene(scene);
+        buildingScene.showOtherShip(trucker.getSpaceShip().getComponents(), trucker.getNickname());
+
 
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen

@@ -8,16 +8,30 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ResumeGameEvent extends ServerEvent {
 
     private ArrayList<Trucker> trucker;
     private GameState gameState;
+    private int level;
+    private Map<String, Integer> track;
 
-    public ResumeGameEvent(ArrayList<Trucker> trucker, GameState gameState) {
+    public ResumeGameEvent(ArrayList<Trucker> trucker, GameState gameState, int level, Map<String, Integer> track) {
         super(ServerEventType.RESUME_GAME, true);
         this.trucker = trucker;
         this.gameState = gameState;
+        this.level = level;
+        this.track = track;
+
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public Map<String, Integer> getTrack() {
+        return track;
     }
 
     public GameState getGameState() {
