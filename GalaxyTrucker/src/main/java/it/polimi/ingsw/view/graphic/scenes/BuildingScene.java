@@ -65,10 +65,10 @@ public class BuildingScene {
     private Button selectBtn;
     private Button selectKeptBtn;
 
-    Button turnBtn;
-    Button keepBtn;
-    Button discardBtn;
-    Button linkBtn;
+    private Button turnBtn;
+    private Button keepBtn;
+    private Button discardBtn;
+    private Button linkBtn;
 
     private List<Node> shipScreenContent;
     private boolean inShipView;
