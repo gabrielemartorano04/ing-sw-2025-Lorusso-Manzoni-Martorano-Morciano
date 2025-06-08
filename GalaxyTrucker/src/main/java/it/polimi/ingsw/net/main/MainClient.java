@@ -30,7 +30,7 @@ public class MainClient {
                 "- Type (3) if you want to use RMI and TUI;\n" +
                 "- Type (4) if you want to use RMI and GUI;\n");
         do{
-            System.out.println("> ");
+            System.out.print("> ");
             choice = scanner.nextLine().trim();
         }while(!(choice.equals("1") || choice.equals("2") || choice.equals("3") || choice.equals("4")));
 

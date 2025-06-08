@@ -176,6 +176,7 @@ public class ViewFlow implements EventReceiver {
             while (running) {
                 String input;
                 try {
+
                     input = inputReader.nextLineBlocking();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
