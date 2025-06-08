@@ -5,6 +5,7 @@ import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.view.ViewFlow;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -26,6 +27,10 @@ public class GUIApplication extends Application {
             ClientEventSender sender = new ClientEventSender(networkClient);
             ViewFlow view = new ViewFlow(sender, useGui);
             view.getGUI().initGui(primaryStage);
+            primaryStage.setOnCloseRequest(e -> {
+                Platform.exit();
+                System.exit(0);
+            });
 
             NetworkListenerClient listenerClient = new NetworkListenerClient(networkClient.getSocket(), view);
 
