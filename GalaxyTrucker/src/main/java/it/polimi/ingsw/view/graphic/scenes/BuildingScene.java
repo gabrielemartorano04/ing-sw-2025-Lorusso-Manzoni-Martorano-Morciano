@@ -75,7 +75,6 @@ public class BuildingScene {
 
     private List<Node> shipScreenContent;
 
-
     private VBox componentSelectedBox;
     private boolean componentSelectedExists;
 
@@ -301,10 +300,12 @@ public class BuildingScene {
     }
 
     public void insertComponentInGrid(Component component, int row, int col) {
+        this.componentSelectedExists = false;
         if (component == null || !validCells[row][col]) return;
+        resetComponentSelectedBox();
 
         StackPane cell = cellMatrix[row][col];
-        cell.getChildren().clear(); // rimuove eventualmente immagini precedenti
+        cell.getChildren().clear();
 
         ImageView imageView = new ImageView(component.getFrontImage());
         imageView.setFitWidth(136);
@@ -374,7 +375,23 @@ public class BuildingScene {
         return keptSlotsRef;
     }
 
+    private void resetComponentSelectedBox() {
+        componentSelectedBox.getChildren().clear();
 
+        Rectangle border = new Rectangle(178, 178);
+        border.setArcWidth(16);
+        border.setArcHeight(16);
+        border.setFill(Color.TRANSPARENT);
+        border.setStroke(Color.WHITE);
+        border.setStrokeWidth(2);
+        border.setMouseTransparent(true);
+
+        StackPane imageContainer = new StackPane(border);
+        imageContainer.setPrefSize(178, 178);
+        imageContainer.setAlignment(Pos.CENTER);
+
+        componentSelectedBox.getChildren().add(imageContainer);
+    }
 
 
 
