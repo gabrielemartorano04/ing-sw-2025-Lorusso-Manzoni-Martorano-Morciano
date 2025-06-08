@@ -11,8 +11,10 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.clientevents.cardevents.OkStartFlight;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEventType;
+import it.polimi.ingsw.view.graphic.GUI;
 import it.polimi.ingsw.view.text.TUI;
 import it.polimi.ingsw.view.text.TimerDisplay;
+import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -63,17 +65,16 @@ public class ViewFlow implements EventReceiver {
         END
     }
 
-    public ViewFlow(ClientEventSender sender) {
+    public ViewFlow(ClientEventSender sender, boolean useGui) {
         this.sender = sender;
         this.inputReader = new InputReader();
         this.inputParser = new InputParser();
         this.inputParserFlight = new InputParserFlight();
         this.nickname = null;
         this.running = true;
-        ui = new TUI(this);
         this.viewState = ViewState.FIRST;
         this.timerDisplay = new TimerDisplay();
-        this.serverEventVisitor = new ServerEventHandlerVisitor(this, ui);
+
         this.availableComponents= new ArrayList<>();
         new Thread(inputReader, "InputReaderThread").start();
         this.selectedComponentIndex = -1;
@@ -95,7 +96,15 @@ public class ViewFlow implements EventReceiver {
         this.selectedComponent=null;
         this.out=false;
         this.level=0;
+        if(useGui){
+            this.ui=new GUI(this);
+        }else{
+            this.ui = new TUI(this);
+        }
+        this.serverEventVisitor = new ServerEventHandlerVisitor(this, ui);
+
     }
+
 
     @Override
     public void onEventReceived(ServerEvent event) {
@@ -458,6 +467,10 @@ public class ViewFlow implements EventReceiver {
                     System.out.println("RemoteException: " + e);
                 }
             }
+    }
+
+    public GUI getGUI(){
+        return (GUI)ui;
     }
 }
 

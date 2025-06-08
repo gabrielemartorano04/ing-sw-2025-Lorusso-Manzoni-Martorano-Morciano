@@ -708,6 +708,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(AvailablePlayersEvent availablePlayersEvent) {
-        ui.welcomeOldScene(availablePlayersEvent.getColors(), availablePlayersEvent.getNicknames());
+        //ui.welcomeOldScene(availablePlayersEvent.getColors(), availablePlayersEvent.getNicknames());
     }
 }
