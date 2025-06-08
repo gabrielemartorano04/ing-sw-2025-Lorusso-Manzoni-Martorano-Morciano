@@ -7,6 +7,7 @@ import it.polimi.ingsw.net.socket.client.ClientEventSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.view.ViewFlow;
+import it.polimi.ingsw.view.graphic.GUIApplication;
 
 import java.io.IOException;
 import java.rmi.Naming;
@@ -24,10 +25,10 @@ public class MainClient {
         Scanner scanner = new Scanner(System.in);
         String choice;
         System.out.print("Choose connection:\n" +
-                "- Type () if you want to use SOCKET and TUI;\n" +
-                "- Type () if you want to use SOCKET and GUI;\n" +
-                "- Type () if you want to use RMI and TUI;\n" +
-                "- Type () if you want to use RMI and GUI;\n");
+                "- Type (1) if you want to use SOCKET and TUI;\n" +
+                "- Type (2) if you want to use SOCKET and GUI;\n" +
+                "- Type (3) if you want to use RMI and TUI;\n" +
+                "- Type (4) if you want to use RMI and GUI;\n");
         do{
             System.out.println("> ");
             choice = scanner.nextLine().trim();
@@ -68,20 +69,10 @@ public class MainClient {
         }
         else if(choice.equals("2")) {
             final int SERVER_PORT = 12346;
-            NetworkClient networkClient = new NetworkClient(serverAddress, SERVER_PORT);
-            try {
-                networkClient.connect();
-                ClientEventSender sender = new ClientEventSender(networkClient);
-                ViewFlow view = new ViewFlow(sender,true);
-
-                NetworkListenerClient listenerClient = new NetworkListenerClient(networkClient.getSocket(), view);
-
-                listenerClient.start();
-                view.start();
-
-            } catch (IOException e) {
-                System.err.println("Error in server connection: " + e.getMessage());
-            }
+            GUIApplication.SERVER_PORT = SERVER_PORT;
+            GUIApplication.serverAddress = serverAddress;
+            GUIApplication.useGui = true;
+            GUIApplication.launch(GUIApplication.class);
         }
         else if(choice.equals("3")){
             try {
