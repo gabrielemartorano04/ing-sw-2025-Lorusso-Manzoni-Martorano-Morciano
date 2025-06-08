@@ -808,10 +808,53 @@ public class BuildingScene {
             button.setStyle("-fx-background-color: transparent; -fx-border-color: #cccccc; -fx-border-radius: 8px; -fx-cursor: hand; -fx-padding: 0px;");
 
             button.setOnAction(e -> {
-                viewFlow.handleInput("select " + index);
+                AnchorPane overlay = new AnchorPane();
+                overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
+                overlay.setPickOnBounds(true);
 
-                //TODO aggiungere la giusta schermata per il posizionamento del componente
-                // Rimane su questa schermata, o torna se vuoi
+                VBox popup = new VBox(12);
+                popup.setAlignment(Pos.CENTER);
+                popup.setPadding(new Insets(15));
+                popup.setPrefSize(200, 150);
+                popup.setBackground(new Background(new BackgroundFill(Color.web("#333333"), new CornerRadii(15), Insets.EMPTY)));
+
+                Label confirmLabel = new Label("Select this component?");
+                confirmLabel.setTextFill(Color.web("#FFDE69"));
+                confirmLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+                confirmLabel.setWrapText(true);
+                confirmLabel.setTextAlignment(TextAlignment.CENTER);
+
+                Button undoBtn = new Button("Undo");
+                undoBtn.setFont(Font.font("Bangers", 14));
+                undoBtn.setCursor(Cursor.HAND);
+                undoBtn.setTextFill(Color.WHITE);
+                undoBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(8), Insets.EMPTY)));
+
+                Button selectBtn = new Button("Select");
+                selectBtn.setFont(Font.font("Bangers", 14));
+                selectBtn.setCursor(Cursor.HAND);
+                selectBtn.setTextFill(Color.WHITE);
+                selectBtn.setBackground(new Background(new BackgroundFill(Color.web("#00A676"), new CornerRadii(8), Insets.EMPTY))); // verde
+
+                HBox buttons = new HBox(15, undoBtn, selectBtn);
+                buttons.setAlignment(Pos.CENTER);
+
+                popup.getChildren().addAll(confirmLabel, buttons);
+
+                AnchorPane.setTopAnchor(popup, (root.getHeight() - 150) / 2);
+                AnchorPane.setRightAnchor(popup, 20.0);
+
+                overlay.getChildren().add(popup);
+                root.getChildren().add(overlay);
+
+                Runnable removePopup = () -> root.getChildren().remove(overlay);
+
+                undoBtn.setOnAction(ev -> removePopup.run());
+
+                selectBtn.setOnAction(ev -> {
+                    viewFlow.handleInput("select " + index);
+                    removePopup.run();
+                });
             });
 
             grid.add(button, col, row);
