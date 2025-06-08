@@ -20,6 +20,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.swing.text.View;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -35,10 +36,11 @@ public class GUIApplication extends Application {
     private ArrayList<Component> kept, kept2;
     private Component c;
 
-
     @Override
     public void start(Stage primaryStage) throws InvalidCoordinates {
-        ViewFlow viewFlow = new ViewFlow(new ClientEventSender(new NetworkClient("localhost", 12346)));
+        ViewFlow viewFlow=GUI.viewFlow;
+        GUI gui=viewFlow.getGUI();
+        gui.initGui(primaryStage);
         availableComponents = new AvailableComponents();
         ArrayList<String> playersNames = new ArrayList<>();
         playersNames.add("Luca");
@@ -71,7 +73,7 @@ public class GUIApplication extends Application {
 
 
         // DA SISTEMARE la creazione della gui e il collegamento a viewFlow
-        GUI gui = new GUI(primaryStage, null);
+        //GUI gui = new GUI(primaryStage, null);
 
         //gui.showTrack(mockTrack, 2);
         //gui.showShipLayout("Luca", spaceship.getComponents());
