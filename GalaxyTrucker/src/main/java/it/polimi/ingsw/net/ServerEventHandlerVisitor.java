@@ -679,7 +679,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setEnd();
             viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
             viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
-            viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsList());
+            //viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsList());
             try {
                 if (trucker.getKeptComponent(0) != null) {
                     viewFlow.addKeptComponent(trucker.getKeptComponent(0));

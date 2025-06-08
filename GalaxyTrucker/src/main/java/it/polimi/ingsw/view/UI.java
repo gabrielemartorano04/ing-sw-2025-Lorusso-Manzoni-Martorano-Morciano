@@ -151,5 +151,5 @@ public interface UI {
     void showComponentSelected(Component component);
 
 
-
+    void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames);
 }

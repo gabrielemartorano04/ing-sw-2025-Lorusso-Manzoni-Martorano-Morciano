@@ -981,4 +981,11 @@ public class TUI implements UI {
 
     }
 
+    @Override
+    public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames) {
+        System.out.println("vecchi players:\n");
+        for(int i = 0; i < colors.size(); i++) {
+            System.out.println("nickname: " + nicknames.get(i) + "color: " + colors.get(i));
+        }
+    }
 }
