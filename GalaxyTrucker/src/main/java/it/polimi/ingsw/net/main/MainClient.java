@@ -38,7 +38,7 @@ public class MainClient {
         String answer;
         System.out.print("Do you want to connect to the localhost? (y/n): ");
         do{
-            System.out.println("Type y or n, everything else is not accepted: ");
+            System.out.print("> ");
             answer = scanner.nextLine().trim().toLowerCase();
         }while(!(answer.equals("y") || answer.equals("n")));
 
