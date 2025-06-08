@@ -881,11 +881,11 @@ public class BuildingScene {
 
             VBox popup = new VBox(12);
             popup.setAlignment(Pos.CENTER);
-            popup.setPadding(new Insets(20));
-            popup.setPrefSize(250, 250); // quadrato e più piccolo
-            popup.setBackground(new Background(new BackgroundFill(Color.web("#333333"), new CornerRadii(15), Insets.EMPTY)));
+            popup.setPadding(new Insets(15));
+            popup.setPrefSize(200, 250); // quadrato e più piccolo
+            //popup.setBackground(new Background(new BackgroundFill(Color.web("#333333"), new CornerRadii(15), Insets.EMPTY)));
 
-            Label insertLabel = new Label("Scegli dove attaccare il componente");
+            Label insertLabel = new Label("Choose the coordinates to link the component");
             insertLabel.setTextFill(Color.web("#FFDE69"));
             insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
             insertLabel.setWrapText(true);
@@ -893,14 +893,14 @@ public class BuildingScene {
 
             // Due campi affiancati per x e y
             TextField xField = new TextField();
-            xField.setPromptText("x");
+            xField.setPromptText("X");
             xField.setPrefWidth(50);
             xField.textProperty().addListener((obs, oldVal, newVal) -> {
                 if (!newVal.matches("\\d*")) xField.setText(newVal.replaceAll("[^\\d]", ""));
             });
 
             TextField yField = new TextField();
-            yField.setPromptText("y");
+            yField.setPromptText("Y");
             yField.setPrefWidth(50);
             yField.textProperty().addListener((obs, oldVal, newVal) -> {
                 if (!newVal.matches("\\d*")) yField.setText(newVal.replaceAll("[^\\d]", ""));
@@ -909,17 +909,17 @@ public class BuildingScene {
             HBox coordBox = new HBox(10, xField, yField);
             coordBox.setAlignment(Pos.CENTER);
 
-            Label errorLabel = new Label("Coordinate non valide");
+            Label errorLabel = new Label("Invalid coordinates");
             errorLabel.setTextFill(Color.RED);
             errorLabel.setVisible(false);
 
-            Button cancelBtn = new Button("Annulla");
+            Button cancelBtn = new Button("Undo");
             cancelBtn.setFont(Font.font("Bangers", 14));
             cancelBtn.setCursor(Cursor.HAND);
             cancelBtn.setTextFill(Color.WHITE);
             cancelBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(8), Insets.EMPTY)));
 
-            Button sendBtn = new Button("Invia");
+            Button sendBtn = new Button("Link");
             sendBtn.setFont(Font.font("Bangers", 14));
             sendBtn.setCursor(Cursor.HAND);
             sendBtn.setTextFill(Color.WHITE);
@@ -932,7 +932,7 @@ public class BuildingScene {
 
             // Allinea il popup: verticale centro, orizzontale destra
             AnchorPane.setTopAnchor(popup, (root.getHeight() - 250) / 2);
-            AnchorPane.setRightAnchor(popup, 40.0); // più vicino al bordo destro
+            AnchorPane.setRightAnchor(popup, 10.0); // più vicino al bordo destro
 
             overlay.getChildren().add(popup);
             root.getChildren().add(overlay);
