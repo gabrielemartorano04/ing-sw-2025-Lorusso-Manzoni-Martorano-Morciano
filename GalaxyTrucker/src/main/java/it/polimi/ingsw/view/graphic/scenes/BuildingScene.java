@@ -13,7 +13,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -21,12 +20,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
@@ -210,13 +207,29 @@ public class BuildingScene {
         return scene;
     }
 
+    private void disableSelectButtons(boolean disable) {
+        double opacity = disable ? 0.5 : 1.0;
+
+        discardBtn.setDisable(disable);
+        discardBtn.setOpacity(opacity);
+
+        linkBtn.setDisable(disable);
+        linkBtn.setOpacity(opacity);
+
+        turnBtn.setDisable(disable);
+        turnBtn.setOpacity(opacity);
+
+        keepBtn.setDisable(disable);
+        keepBtn.setOpacity(opacity);
+    }
+
 
     public Scene getScene() {
         return scene;
     }
 
-    public void insertKeptComponent(Component component, int index) {
-        discardBtn.setDisable(true);
+    public void insertComponentToKepts(Component component, int index) {
+        this.disableSelectButtons(true);
         ImageView componentView = new ImageView(component.getFrontImage());
         componentView.setFitWidth(110);
         componentView.setPreserveRatio(true);
@@ -251,8 +264,7 @@ public class BuildingScene {
             // TODO: QUESTA E LA VERSIONE FINALE this.insertSelectedComponent(viewFlow.getSelectedKeptComponent().get(index),false);
             this.insertSelectedComponent(new Cannon(3, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web129.jpg", true),false);
             // Rimuovi dallo slot kept
-            discardBtn.setDisable(false);
-            discardBtn.setOpacity(0.5);
+            this.disableSelectButtons(false);
             keptImages.set(index, null);
             keptSlotsRef.get(index).getChildren().clear();
             Rectangle border = new Rectangle(110, 110);
@@ -304,8 +316,7 @@ public class BuildingScene {
 
     public void insertComponentInGrid(Component component, int row, int col) {
         this.componentSelectedExists = false;
-        discardBtn.setDisable(true);
-        discardBtn.setOpacity(0.5);
+        this.disableSelectButtons(true);
         if (component == null || !validCells[row][col]) return;
         resetComponentSelectedBox();
 
@@ -901,8 +912,8 @@ public class BuildingScene {
         discardBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
         discardBtn.setCursor(Cursor.HAND);
         discardBtn.setPrefWidth(180);
-        discardBtn.setDisable(true);
-        discardBtn.setOpacity(0.5);
+
+        this.disableSelectButtons(true);
 
         turnBtn.setOnAction(e -> viewFlow.handleInput("Turn"));
         keepBtn.setOnAction(e -> viewFlow.handleInput("Keep"));
