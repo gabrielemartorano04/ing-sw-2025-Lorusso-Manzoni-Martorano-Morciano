@@ -123,6 +123,8 @@ public class GUIApplication extends Application {
 //        buildingScene.insertComponentToKepts(cannon,0);
 //        buildingScene.selectKeptComponent(0);
         primaryStage.setScene(scene);
+        buildingScene.showOtherShip(trucker.getSpaceShip().getComponents(), trucker.getNickname());
+
 
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen

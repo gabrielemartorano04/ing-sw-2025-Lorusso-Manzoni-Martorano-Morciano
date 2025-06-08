@@ -120,12 +120,12 @@ public class BuildingScene {
         grid.setVgap(3.5);
         grid.setAlignment(Pos.CENTER);
         grid.setTranslateX(1);
-        grid.setTranslateY(-10);
+        grid.setTranslateY(-9);
 
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {
                 StackPane cell = new StackPane();
-                cell.setPrefSize(136, 136);
+                cell.setPrefSize(135, 136);
 
                 if (validCells[row][col]) {
                     cell.setStyle("-fx-border-color: white; -fx-border-radius: 6px; -fx-background-radius: 6px;");
@@ -133,9 +133,9 @@ public class BuildingScene {
                     Component c = layout[row][col];
                     if (c != null) {
                         ImageView imageView = new ImageView(c.getFrontImage());
-                        imageView.setFitWidth(136);
-                        imageView.setFitHeight(136);
-                        Rectangle clip = new Rectangle(136, 136);
+                        imageView.setFitWidth(135);
+                        imageView.setFitHeight(135);
+                        Rectangle clip = new Rectangle(135, 135);
                         clip.setArcWidth(12);
                         clip.setArcHeight(12);
                         imageView.setClip(clip);
@@ -714,7 +714,7 @@ public class BuildingScene {
             messageLabel.setTextAlignment(TextAlignment.CENTER);
 
             TextField indexField = new TextField();
-            indexField.setPromptText("Indice (0 o 1)");
+            indexField.setPromptText("Index (0 or 1)");
             indexField.setPrefWidth(100);
             indexField.setVisible(false);  // Mostrato solo se ci sono due kept
             indexField.textProperty().addListener((obs, oldVal, newVal) -> {
@@ -723,17 +723,17 @@ public class BuildingScene {
                 }
             });
 
-            Label errorLabel = new Label("Indice non valido");
+            Label errorLabel = new Label("Invalid index!");
             errorLabel.setTextFill(Color.RED);
             errorLabel.setVisible(false);
 
-            Button cancelBtn = new Button("Annulla");
+            Button cancelBtn = new Button("Undo");
             cancelBtn.setFont(Font.font("Bangers", 14));
             cancelBtn.setCursor(Cursor.HAND);
             cancelBtn.setTextFill(Color.WHITE);
             cancelBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(8), Insets.EMPTY)));
 
-            Button sendBtn = new Button("Invia");
+            Button sendBtn = new Button("Select");
             sendBtn.setFont(Font.font("Bangers", 14));
             sendBtn.setCursor(Cursor.HAND);
             sendBtn.setTextFill(Color.WHITE);
@@ -762,18 +762,18 @@ public class BuildingScene {
             }
 
             if (countKept == 0) {
-                messageLabel.setText("Non hai nessun kept!");
+                messageLabel.setText("No kept found!");
                 sendBtn.setDisable(true);
             } else if (countKept == 1) {
                 int onlyIndex = availableIndices.get(0);
-                messageLabel.setText("Hai solo un kept, verrà selezionato automaticamente (indice " + onlyIndex + ")");
+                messageLabel.setText("You have only 1 kept, it will be automatically selected (index " + onlyIndex + ")");
                 indexField.setVisible(false);
                 sendBtn.setOnAction(ev -> {
                     viewFlow.handleInput("selectkept " + onlyIndex);
                     removePopup.run();
                 });
             } else {
-                messageLabel.setText("Seleziona il componente kept (0 o 1)");
+                messageLabel.setText("Select the kept component (0 or 1)");
                 indexField.setVisible(true);
                 sendBtn.setOnAction(ev -> {
                     String input = indexField.getText().trim();
@@ -783,7 +783,7 @@ public class BuildingScene {
                     }
                     int idx = Integer.parseInt(input);
                     if (keptImages.get(idx) == null) {
-                        errorLabel.setText("Nessun componente presente in quello slot");
+                        errorLabel.setText("No component in that slot");
                         errorLabel.setVisible(true);
                         return;
                     }
@@ -838,41 +838,68 @@ public class BuildingScene {
                 overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
                 overlay.setPickOnBounds(true);
 
-                VBox popup = new VBox(12);
+                // === Contenitore popup (senza sfondo) ===
+                VBox popup = new VBox(18); // più spaziatura
                 popup.setAlignment(Pos.CENTER);
                 popup.setPadding(new Insets(15));
-                popup.setPrefSize(200, 150);
-                popup.setBackground(new Background(new BackgroundFill(Color.web("#333333"), new CornerRadii(15), Insets.EMPTY)));
+                popup.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE); // altezza dinamica
+                // Niente background: niente riquadro colorato
 
+                // === Testo centrale ===
                 Label confirmLabel = new Label("Select this component?");
                 confirmLabel.setTextFill(Color.web("#FFDE69"));
-                confirmLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+                confirmLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 28)); // ingrandito
                 confirmLabel.setWrapText(true);
                 confirmLabel.setTextAlignment(TextAlignment.CENTER);
+                confirmLabel.setAlignment(Pos.CENTER);
 
+                // === Immagine del componente ===
+                ImageView componentImage = new ImageView(component.getFrontImage());
+                componentImage.setFitWidth(200);
+                componentImage.setFitHeight(200);
+                componentImage.setPreserveRatio(true);
+                componentImage.setMouseTransparent(true);
+
+                // Bordo bianco attorno all'immagine
+                Rectangle border = new Rectangle(200, 200);
+                border.setArcWidth(20);
+                border.setArcHeight(20);
+                border.setFill(Color.TRANSPARENT);
+                border.setStroke(Color.WHITE);
+                border.setStrokeWidth(1);
+                border.setMouseTransparent(true);
+
+                // Contenitore immagine + bordo
+                StackPane imageWithBorder = new StackPane(componentImage, border);
+                imageWithBorder.setAlignment(Pos.CENTER);
+
+                // === Pulsanti ===
                 Button undoBtn = new Button("Undo");
-                undoBtn.setFont(Font.font("Bangers", 14));
+                undoBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18)); // ingrandito
                 undoBtn.setCursor(Cursor.HAND);
                 undoBtn.setTextFill(Color.WHITE);
                 undoBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(8), Insets.EMPTY)));
 
                 Button selectBtnComponentsView = new Button("Select");
-                selectBtnComponentsView.setFont(Font.font("Bangers", 14));
+                selectBtnComponentsView.setFont(Font.font("Bangers", FontWeight.BOLD, 18)); // ingrandito
                 selectBtnComponentsView.setCursor(Cursor.HAND);
                 selectBtnComponentsView.setTextFill(Color.WHITE);
-                selectBtnComponentsView.setBackground(new Background(new BackgroundFill(Color.web("#00A676"), new CornerRadii(8), Insets.EMPTY))); // verde
+                selectBtnComponentsView.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(8), Insets.EMPTY))); // verde
 
-                HBox buttons = new HBox(15, undoBtn, selectBtnComponentsView);
+                HBox buttons = new HBox(20, undoBtn, selectBtnComponentsView); // più spazio
                 buttons.setAlignment(Pos.CENTER);
 
-                popup.getChildren().addAll(confirmLabel, buttons);
+                // === Composizione finale ===
+                popup.getChildren().addAll(confirmLabel, imageWithBorder, buttons);
 
-                AnchorPane.setTopAnchor(popup, (root.getHeight() - 150) / 2);
-                AnchorPane.setRightAnchor(popup, 20.0);
+                // === Posizionamento centrato sullo schermo ===
+                AnchorPane.setTopAnchor(popup, (root.getHeight() - 300) / 2); // più altezza ora
+                AnchorPane.setLeftAnchor(popup, (root.getWidth() - 250) / 2);
 
                 overlay.getChildren().add(popup);
                 root.getChildren().add(overlay);
 
+                // === Gestione click ===
                 Runnable removePopup = () -> root.getChildren().remove(overlay);
 
                 undoBtn.setOnAction(ev -> removePopup.run());
@@ -1086,8 +1113,17 @@ public class BuildingScene {
         root.getChildren().setAll(shipScreenContent);
     }
 
-    public void showOtherShip(Component[][] layout) {
+    public void showOtherShip(Component[][] layout, String nickname) {
+        disableOptionButtons(true);
+        disableSelectButtons(true);
+
         // === Immagine della nave ===
+        AnchorPane overlay = new AnchorPane();
+        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
+        overlay.setPickOnBounds(true);
+
+        root.getChildren().add(overlay);
+
         ImageView backgroundView;
         if (level == 0) {
             backgroundView = new ImageView(new Image(Objects.requireNonNull(
@@ -1099,7 +1135,7 @@ public class BuildingScene {
 
         backgroundView.setFitWidth(679);
         backgroundView.setFitHeight(492);
-        backgroundView.setPreserveRatio(true); // per angoli simmetrici
+        backgroundView.setPreserveRatio(true);
         backgroundView.setMouseTransparent(true);
 
         Rectangle clip = new Rectangle(679, 492);
@@ -1146,45 +1182,28 @@ public class BuildingScene {
         shipPopup.setMaxSize(679, 500);
         shipPopup.setMouseTransparent(false);
 
-        // === Posizionamento sopra la UI attuale ===
-        root.getChildren().add(shipPopup);
-    }
+        // === Label con nickname ===
+        Label nameLabel = new Label(nickname + "'s Ship");
+        nameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
+        nameLabel.setTextFill(Color.web("#FFDE69"));
+        nameLabel.setAlignment(Pos.CENTER);
 
-    public void showOverlayWithBackButton() {
-        disableSelectButtons(true);
-        disableOptionButtons(true);
-        // === Overlay grigio ===
-        AnchorPane overlay = new AnchorPane();
-        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
-        overlay.setPickOnBounds(true); // intercetta i clic
+        // === Contenitore verticale: label sopra + nave sotto ===
+        VBox popupWithLabel = new VBox(10, nameLabel, shipPopup);
+        popupWithLabel.setAlignment(Pos.CENTER);
 
-        // === Pulsante "←" in alto a sinistra ===
-        Button backBtn = new Button("←");
-        backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
-        backBtn.setTextFill(Color.BLACK);
-        backBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-        backBtn.setCursor(Cursor.HAND);
-        backBtn.setPadding(new Insets(12, 18, 12, 18));
-
-        // Posiziona il pulsante in alto a sinistra con margine
-        AnchorPane.setTopAnchor(backBtn, 35.0);
-        AnchorPane.setLeftAnchor(backBtn, 125.0);
-
-        // Aggiungi il pulsante all'overlay
-        overlay.getChildren().add(backBtn);
-
-        // Aggiungi l'overlay sopra tutto il resto
-        root.getChildren().add(overlay);
-
-        // Azione al click: rimuove overlay e mostra la nave
-        backBtn.setOnAction(e -> {
+        root.setOnMouseClicked(e -> {
             root.getChildren().remove(overlay);
+            root.getChildren().remove(popupWithLabel);
             disableSelectButtons(false);
             disableOptionButtons(false);
             if(shipScreenContent != null) {
                 root.getChildren().setAll(shipScreenContent);
             }
         });
+
+        // === Aggiunta sopra la UI ===
+        root.getChildren().add(popupWithLabel);
     }
 
 }
