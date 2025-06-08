@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.graphic.scenes;
 
 import it.polimi.ingsw.model.AvailableComponents;
+import it.polimi.ingsw.model.components.Cannon;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
 import javafx.animation.KeyFrame;
@@ -240,32 +241,32 @@ public class BuildingScene {
     }
 
     public void selectKeptComponent(int index) {
-        System.out.println("Dentro");
         if (index < 0 || index >= keptImages.size()) return;
 
         ImageView keptView = keptImages.get(index);
 
         // Solo se c'è un kept valido e lo slot di selezione è vuoto
         if (keptView != null) {
-            System.out.println("Dentro");
 
-            System.out.println("Dentro");
-            // Clona l'immagine per sicurezza (opzionale, dipende dal comportamento desiderato)
-            ImageView selectedView = new ImageView(keptView.getImage());
-            selectedView.setFitWidth(100); // o altra dimensione per il selected
-            selectedView.setPreserveRatio(true);
-
-            // Inserisci nel box della selezione
-            componentSelectedBox.getChildren().add(selectedView);
-
+            // TODO: QUESTA E LA VERSIONE FINALE this.insertSelectedComponent(viewFlow.getSelectedKeptComponent().get(index),false);
+            this.insertSelectedComponent(new Cannon(3, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web129.jpg", true),false);
             // Rimuovi dallo slot kept
             keptImages.set(index, null);
             keptSlotsRef.get(index).getChildren().clear();
+            Rectangle border = new Rectangle(110, 110);
+            border.setArcWidth(6);
+            border.setArcHeight(6);
+            border.setFill(Color.TRANSPARENT);
+            border.setStroke(Color.WHITE);
+            border.setStrokeWidth(1);
+
+            keptSlotsRef.get(index).getChildren().add(border);
 
             // Aggiorna lo stato del pulsante
             boolean anyKept = keptImages.stream().anyMatch(Objects::nonNull);
             selectKeptBtn.setDisable(!anyKept);
         }
+
     }
 
 
