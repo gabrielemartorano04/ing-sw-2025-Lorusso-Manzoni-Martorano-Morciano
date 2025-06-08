@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.graphic.scenes;
 
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
@@ -19,9 +20,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.*;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 import java.awt.*;
@@ -202,6 +202,7 @@ public class FlightScene {
 
                 nickBtn.setOnAction(ev -> {
                     viewFlow.handleInput("ship " + nickname);
+                    //TODO aggiungere che una volta premuto si mostrino le navi degli altri
                     ((StackPane) scene.getRoot()).getChildren().remove(nicknameChoices.getParent());
                 });
 
@@ -718,11 +719,11 @@ public class FlightScene {
         VBox box = new VBox(20);
         box.setAlignment(Pos.CENTER);
 
-        Label diceLabel = new Label("🎲 Roll the dice!");
+        Label diceLabel = new Label("🎲 Roll the dices!");
         diceLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 35));
         diceLabel.setTextFill(Color.web("#FFDE69"));
 
-        Button rollButton = new Button("Roll Dice");
+        Button rollButton = new Button("Roll Dices");
         rollButton.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
         rollButton.setTextFill(Color.BLACK);
         rollButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
@@ -731,7 +732,7 @@ public class FlightScene {
         Label resultLabel = new Label("");
         resultLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 60));
         resultLabel.setTextFill(Color.WHITE);
-        resultLabel.setVisible(false); // nascosto finché il pulsante non sparisce
+        resultLabel.setVisible(false);
 
         box.getChildren().addAll(diceLabel, rollButton);
 
@@ -741,12 +742,95 @@ public class FlightScene {
 
         // === Azione pulsante ===
         rollButton.setOnAction(ev -> {
+            root.getChildren().remove(overlayPane);
             viewFlow.handleInput("roll");
         });
     }
 
     public void showPlanetDecisionInput() {
+        StackPane root = (StackPane) scene.getRoot();
 
+        // VBox per contenere il messaggio e i pulsanti
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
+
+        Label confirm = new Label("Would you like to land on a planet?");
+        confirm.setTextFill(Color.web("#FFDE69"));
+        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+
+        Button yes = new Button("YES");
+        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        yes.setTextFill(Color.WHITE);
+        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
+        yes.setCursor(Cursor.HAND);
+        yes.setPrefWidth(100);
+
+        Button no = new Button("NO");
+        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        no.setTextFill(Color.WHITE);
+        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+        no.setCursor(Cursor.HAND);
+        no.setPrefWidth(100);
+
+        HBox buttons = new HBox(10, yes, no);
+        buttons.setAlignment(Pos.CENTER);
+
+        box.getChildren().addAll(confirm, buttons);
+
+        // Posiziona VBox in basso a sinistra usando un AnchorPane
+        AnchorPane anchorPane = new AnchorPane(box);
+        AnchorPane.setBottomAnchor(box, 20.0);
+        AnchorPane.setLeftAnchor(box, 20.0);
+
+        yes.setOnAction(ev -> {
+            box.getChildren().clear();
+
+            Label insertLabel = new Label("Insert the index of the planet you want to land on");
+            insertLabel.setTextFill(Color.web("#FFDE69"));
+            insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+
+            Label hintLabel = new Label("Type '<index>'");
+            hintLabel.setTextFill(Color.LIGHTGRAY);
+            hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+
+            TextField inputField = new TextField();
+            inputField.setPromptText("Ex. 2");
+            inputField.setPrefWidth(250);
+
+            Button confirmBtn = new Button("Confirm");
+            confirmBtn.setFont(Font.font("Bangers", 14));
+            confirmBtn.setTextFill(Color.BLACK);
+            confirmBtn.setCursor(Cursor.HAND);
+            confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+
+            // Azione comune per invio
+            Runnable sendInput = () -> {
+                String text = inputField.getText().trim();
+                if (!text.isEmpty()) {
+                    viewFlow.handleInput(text);
+                    root.getChildren().remove(anchorPane);
+                }
+            };
+
+            // ENTER sulla TextField
+            inputField.setOnAction(e -> sendInput.run());
+
+            // Clic su Confirm
+            confirmBtn.setOnAction(e -> sendInput.run());
+
+            HBox inputBox = new HBox(10, inputField, confirmBtn);
+            inputBox.setAlignment(Pos.CENTER);
+
+            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+        });
+
+        no.setOnAction(ev -> {
+            viewFlow.handleInput("-1");
+            root.getChildren().remove(anchorPane);
+        });
+
+        root.getChildren().add(anchorPane);
     }
 
     public void showDrawCardInput() {
@@ -775,5 +859,112 @@ public class FlightScene {
 
     public void showWarzoneInput() {
 
+    }
+
+    public void showRollDiceResult(int result) {
+        StackPane root = (StackPane) scene.getRoot();
+
+        // === Overlay grigio trasparente ===
+        Rectangle overlay = new Rectangle();
+        overlay.widthProperty().bind(scene.widthProperty());
+        overlay.heightProperty().bind(scene.heightProperty());
+        overlay.setFill(Color.rgb(0, 0, 0, 0.5));
+        overlay.setMouseTransparent(false); // blocca interazioni sotto
+
+        // === Testo "🎲 Roll the dice!" ===
+        Label diceLabel = new Label("🎲 Rolling...");
+        diceLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 35));
+        diceLabel.setTextFill(Color.web("#FFDE69"));
+
+        // === Numero che cambia rapidamente ===
+        Label resultLabel = new Label("");
+        resultLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 60));
+        resultLabel.setTextFill(Color.WHITE);
+
+        VBox box = new VBox(20, diceLabel, resultLabel);
+        box.setAlignment(Pos.CENTER);
+
+        StackPane overlayPane = new StackPane(overlay, box);
+        root.getChildren().add(overlayPane);
+
+        // === Animazione: mostra numeri casuali per 1.5s ===
+        Timeline rollAnimation = new Timeline();
+        Random rand = new Random();
+
+        for (int i = 0; i < 15; i++) {
+            int delay = i * 100;
+            rollAnimation.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> {
+                resultLabel.setText(String.valueOf(rand.nextInt(6) + 1));
+            }));
+        }
+
+        // === Mostra il risultato effettivo alla fine ===
+        rollAnimation.getKeyFrames().add(new KeyFrame(Duration.millis(1500), e -> {
+            resultLabel.setText(String.valueOf(result));
+        }));
+
+        // === Dopo altri 3s: rimuovi overlay e mostra risultato fisso ===
+        rollAnimation.getKeyFrames().add(new KeyFrame(Duration.millis(4500), e -> {
+            root.getChildren().remove(overlayPane);
+
+            // === Box fisso in basso a sinistra ===
+            Label title = new Label("🎲 Dices result");
+            title.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+            title.setTextFill(Color.web("#FFDE69"));
+
+            Label finalValue = new Label(String.valueOf(result));
+            finalValue.setFont(Font.font("Bangers", FontWeight.BOLD, 36));
+            finalValue.setTextFill(Color.WHITE);
+
+            VBox resultBox = new VBox(5, title, finalValue);
+            resultBox.setAlignment(Pos.CENTER_LEFT);
+            resultBox.setPadding(new Insets(15));
+
+            StackPane.setAlignment(resultBox, Pos.CENTER_LEFT);
+            StackPane.setMargin(resultBox, new Insets(20));
+
+            root.getChildren().add(resultBox);
+        }));
+
+        rollAnimation.play();
+    }
+
+    //TODO aggiungere che deve sparire quando si chiude l'insert index di planet decision
+    public void showPlanets(ArrayList<Trucker> planets) {
+        // === Contenitore verticale per la lista ===
+        VBox planetBox = new VBox(8);
+        planetBox.setAlignment(Pos.BOTTOM_CENTER);
+        planetBox.setPadding(new Insets(12));
+
+        // === Titolo ===
+        Label title = new Label("List of available planets");
+        title.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+        title.setTextFill(Color.web("#FFDE69"));
+        planetBox.getChildren().add(title);
+
+        // === Riga per ogni pianeta ===
+        for (int i = 0; i < planets.size(); i++) {
+            Trucker t = planets.get(i);
+            String status = (t == null) ? "free" : t.getNickname();
+
+            Text planetLabel = new Text("Planet " + i + ": ");
+            planetLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+            planetLabel.setFill(Color.WHITE);
+
+            Text statusText = new Text(status);
+            statusText.setFont(Font.font("Bangers", FontWeight.NORMAL, 16));
+            statusText.setFill(Color.WHITE);
+
+            TextFlow line = new TextFlow(planetLabel, statusText);
+            line.setTextAlignment(TextAlignment.CENTER);
+            planetBox.getChildren().add(line);
+        }
+
+        // === Posizionamento in basso al centro ===
+        StackPane.setAlignment(planetBox, Pos.BOTTOM_CENTER);
+        StackPane.setMargin(planetBox, new Insets(0, 0, 30, 0));
+
+        // === Aggiungi al root ===
+        root.getChildren().add(planetBox);
     }
 }
