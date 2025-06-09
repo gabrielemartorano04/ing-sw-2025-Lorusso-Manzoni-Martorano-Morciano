@@ -600,7 +600,7 @@ public ClientEvent parseFirstConnection(String input) {
                 }
                 return new AlienCoordinatesRequest();
             case "coord":
-                if((tokens.length-1)%3 !=0){
+                if(tokens.length%3 ==1){
                     ArrayList<int[]> coord=new ArrayList<>();
                     for(int i=1;i<tokens.length-2;i+=3){
                         if(tokens[i]!=null && tokens[i+1]!=null){
