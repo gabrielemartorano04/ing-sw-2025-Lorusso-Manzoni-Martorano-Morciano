@@ -299,6 +299,8 @@ public class BuildingScene {
 
         keptImages.set(indexToInsert, componentView);
         keptFillLevel++;
+        this.selectKeptBtn.setDisable(false);
+        this.selectKeptBtn.setOpacity(1.0);
     }
 
     public void selectKeptComponent(int index) {
@@ -321,10 +323,10 @@ public class BuildingScene {
             border.setStrokeWidth(1);
 
             keptSlotsRef.get(index).getChildren().add(border);
-
-            // Aggiorna lo stato del pulsante
-            boolean anyKept = keptImages.stream().anyMatch(Objects::nonNull);
-            selectKeptBtn.setDisable(!anyKept);
+            if(keptFillLevel== 0){
+                this.selectKeptBtn.setDisable(true);
+                this.selectKeptBtn.setOpacity(0.5);
+            }
         }
 
     }

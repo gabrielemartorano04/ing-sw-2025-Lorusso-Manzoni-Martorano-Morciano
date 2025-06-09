@@ -121,8 +121,7 @@ public class AppPerTest extends Application {
 //        buildingScene.insertSelectedComponent(cannon, false);
 //        buildingScene.insertComponentInGrid(cannon,6,7);
         buildingScene.insertComponentToKepts(cannon);
-        buildingScene.insertComponentToKepts(cannon);
-        //buildingScene.selectKeptComponent(0);
+        buildingScene.selectKeptComponent(0);
 
 
 //        buildingScene.selectKeptComponent(0);
