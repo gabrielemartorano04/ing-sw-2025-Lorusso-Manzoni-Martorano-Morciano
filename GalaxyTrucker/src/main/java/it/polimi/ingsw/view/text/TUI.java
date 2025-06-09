@@ -353,13 +353,13 @@ public class TUI implements UI {
             case PLOT_GOOD -> System.out.println("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <x> <y>, <position>' or 'n': ");
             case ROLL_DICE -> System.out.println("Type 'roll' to roll the dices when yu're ready.");
             case PLANET_DECISION->System.out.println("Choose the planet you want to fly to. Type '<index>': ");
-            case DRAW_CARD ->System.out.println("Type <draw> when you're ready to draw the next card.");
+            case DRAW_CARD ->System.out.println("Type 'draw' when you're ready to draw the next card.");
             case REMOTION_CONFIRMED -> System.out.println("Remotion confirmet. Type 'continue' when you're ready to go on.");
             case REMOVE_BATTERIES -> System.out.println("Choose from where you  want to remove batteries. Type '<x1> <y1> - <quantity>,<x2> <y2> - <quantity>...");
             case REMOVE_GOODS -> System.out.println("Choose goods you want to remove. Type '<index1>,<index2>...'.");
             case REARRANGE -> System.out.println("Choose if you want to rearrange your goods. If yes, insert coordinates.\n" +
-                    "Type '<n/y>, (<x1> <y1> - <value1>,<x2> <y2> - <value2>...)'");
-            case COSMIC_CREDITS -> System.out.println("Do you want to gain that cosmic credits? Type <y/n>.");
+                    "Type 'y, <x1> <y1> - <value1>, <x2> <y2> - <value2>' or 'n'");
+            case COSMIC_CREDITS -> System.out.println("Do you want to gain that cosmic credits? Type '<y/n>'.");
             case WARZONE -> System.out.println("Type 'warzone' to start warzone card");
 
         }

@@ -250,7 +250,30 @@ public class FlightScene {
     }
 
     public void showStateInput() {
+        VBox container = new VBox(10);
+        container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
+        container.setPadding(new Insets(0, 0, 35, 0)); // margine dal basso
 
+        Label title = new Label("Start flight");
+        title.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
+        title.setTextFill(Color.web("#FFDE69"));
+
+        Button continueBtn = new Button("START");
+        continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+        continueBtn.setTextFill(Color.BLACK);
+        continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        continueBtn.setCursor(Cursor.HAND);
+        continueBtn.setPadding(new Insets(10, 20, 10, 20));
+
+        continueBtn.setOnAction(e -> {
+            viewFlow.handleInput("state");
+            root.getChildren().remove(container);
+        });
+
+        container.getChildren().addAll(title, continueBtn);
+
+        StackPane.setAlignment(container, Pos.CENTER); // posizionato in basso, ma centrato
+        root.getChildren().add(container);
     }
 
     public void showActivateEngineInput() {
@@ -834,31 +857,312 @@ public class FlightScene {
     }
 
     public void showDrawCardInput() {
+        VBox container = new VBox(10);
+        container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
+        container.setPadding(new Insets(0, 0, 35, 0)); // margine dal basso
 
+        Label title = new Label("Draw next card");
+        title.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
+        title.setTextFill(Color.web("#FFDE69"));
+
+        Button continueBtn = new Button("DRAW");
+        continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+        continueBtn.setTextFill(Color.BLACK);
+        continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        continueBtn.setCursor(Cursor.HAND);
+        continueBtn.setPadding(new Insets(10, 20, 10, 20));
+
+        continueBtn.setOnAction(e -> {
+            viewFlow.handleInput("draw");
+            root.getChildren().remove(container);
+        });
+
+        container.getChildren().addAll(title, continueBtn);
+
+        StackPane.setAlignment(container, Pos.CENTER); // posizionato in basso, ma centrato
+        root.getChildren().add(container);
     }
 
     public void showRemotionConfirmedInput() {
+        VBox container = new VBox(10);
+        container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
+        container.setPadding(new Insets(0, 0, 35, 0)); // margine dal basso
 
+        Label title = new Label("Remotion confirmed");
+        title.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
+        title.setTextFill(Color.web("#FFDE69"));
+
+        Button continueBtn = new Button("Continue");
+        continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+        continueBtn.setTextFill(Color.BLACK);
+        continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        continueBtn.setCursor(Cursor.HAND);
+        continueBtn.setPadding(new Insets(10, 20, 10, 20));
+
+        continueBtn.setOnAction(e -> {
+            viewFlow.handleInput("continue");
+            root.getChildren().remove(container);
+        });
+
+        container.getChildren().addAll(title, continueBtn);
+
+        StackPane.setAlignment(container, Pos.CENTER); // posizionato in basso, ma centrato
+        root.getChildren().add(container);
     }
 
     public void showRemoveBatteriesInput() {
+        StackPane root = (StackPane) scene.getRoot();
 
+        // VBox per contenere il messaggio e i pulsanti
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.BOTTOM_CENTER);
+        box.setPadding(new Insets(10));
+
+        Label insertLabel = new Label("Insert the index of the batteries you want to remove");
+        insertLabel.setTextFill(Color.web("#FFDE69"));
+        insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+
+        Label hintLabel = new Label("Type '<x1> <y1> - <quantity>'");
+        hintLabel.setTextFill(Color.LIGHTGRAY);
+        hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+
+        TextField inputField = new TextField();
+        inputField.setPromptText("Ex. 4 3 - 2");
+        inputField.setPrefWidth(250);
+
+        Button confirmBtn = new Button("Confirm");
+        confirmBtn.setFont(Font.font("Bangers", 14));
+        confirmBtn.setTextFill(Color.BLACK);
+        confirmBtn.setCursor(Cursor.HAND);
+        confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+
+        // Azione comune per invio
+        Runnable sendInput = () -> {
+            String text = inputField.getText().trim();
+            if (!text.isEmpty()) {
+                viewFlow.handleInput(text);
+                root.getChildren().remove(box);
+            }
+        };
+
+        // ENTER sulla TextField
+        inputField.setOnAction(e -> sendInput.run());
+
+        // Clic su Confirm
+        confirmBtn.setOnAction(e -> sendInput.run());
+
+        HBox inputBox = new HBox(10, inputField, confirmBtn);
+        inputBox.setAlignment(Pos.CENTER);
+
+        box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+
+        root.getChildren().add(box);
     }
 
     public void showRemoveGoodsInput() {
+        StackPane root = (StackPane) scene.getRoot();
 
+        // VBox per contenere il messaggio e i pulsanti
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.BOTTOM_CENTER);
+        box.setPadding(new Insets(10));
+
+        Label insertLabel = new Label("Insert the index of the goods you want to remove");
+        insertLabel.setTextFill(Color.web("#FFDE69"));
+        insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+
+        Label hintLabel = new Label("Type '<index1>'");
+        hintLabel.setTextFill(Color.LIGHTGRAY);
+        hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+
+        TextField inputField = new TextField();
+        inputField.setPromptText("Ex. 2");
+        inputField.setPrefWidth(250);
+
+        Button confirmBtn = new Button("Confirm");
+        confirmBtn.setFont(Font.font("Bangers", 14));
+        confirmBtn.setTextFill(Color.BLACK);
+        confirmBtn.setCursor(Cursor.HAND);
+        confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+
+        // Azione comune per invio
+        Runnable sendInput = () -> {
+            String text = inputField.getText().trim();
+            if (!text.isEmpty()) {
+                viewFlow.handleInput(text);
+                root.getChildren().remove(box);
+            }
+        };
+
+        // ENTER sulla TextField
+        inputField.setOnAction(e -> sendInput.run());
+
+        // Clic su Confirm
+        confirmBtn.setOnAction(e -> sendInput.run());
+
+        HBox inputBox = new HBox(10, inputField, confirmBtn);
+        inputBox.setAlignment(Pos.CENTER);
+
+        box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+
+        root.getChildren().add(box);
     }
 
     public void showRearrangeInput() {
+        StackPane root = (StackPane) scene.getRoot();
 
+        // VBox per contenere il messaggio e i pulsanti
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
+
+        Label confirm = new Label("Would you like to rearrange a good?");
+        confirm.setTextFill(Color.web("#FFDE69"));
+        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+
+        Button yes = new Button("YES");
+        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        yes.setTextFill(Color.WHITE);
+        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
+        yes.setCursor(Cursor.HAND);
+        yes.setPrefWidth(100);
+
+        Button no = new Button("NO");
+        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        no.setTextFill(Color.WHITE);
+        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+        no.setCursor(Cursor.HAND);
+        no.setPrefWidth(100);
+
+        HBox buttons = new HBox(10, yes, no);
+        buttons.setAlignment(Pos.CENTER);
+
+        box.getChildren().addAll(confirm, buttons);
+
+        // Posiziona VBox in basso a sinistra usando un AnchorPane
+        AnchorPane anchorPane = new AnchorPane(box);
+        AnchorPane.setBottomAnchor(box, 20.0);
+        AnchorPane.setLeftAnchor(box, 20.0);
+
+        yes.setOnAction(ev -> {
+            box.getChildren().clear();
+
+            Label insertLabel = new Label("Insert the old index, the new index and the position of the good you want to rearrange");
+            insertLabel.setTextFill(Color.web("#FFDE69"));
+            insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+
+            Label hintLabel = new Label("Type '<x1> <y1> - <value1>, <x2> <y2> - <value2>'");
+            hintLabel.setTextFill(Color.LIGHTGRAY);
+            hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+
+            TextField inputField = new TextField();
+            inputField.setPromptText("Ex. 1 2 - 3, 5 6 - 1");
+            inputField.setPrefWidth(250);
+
+            Button confirmBtn = new Button("Confirm");
+            confirmBtn.setFont(Font.font("Bangers", 14));
+            confirmBtn.setTextFill(Color.BLACK);
+            confirmBtn.setCursor(Cursor.HAND);
+            confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+
+            // Azione comune per invio
+            Runnable sendInput = () -> {
+                String text = inputField.getText().trim();
+                if (!text.isEmpty()) {
+                    viewFlow.handleInput("y, " + text);
+                    root.getChildren().remove(anchorPane);
+                }
+            };
+
+            // ENTER sulla TextField
+            inputField.setOnAction(e -> sendInput.run());
+
+            // Clic su Confirm
+            confirmBtn.setOnAction(e -> sendInput.run());
+
+            HBox inputBox = new HBox(10, inputField, confirmBtn);
+            inputBox.setAlignment(Pos.CENTER);
+
+            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+        });
+
+        no.setOnAction(ev -> {
+            viewFlow.handleInput("n");
+            root.getChildren().remove(anchorPane);
+        });
+
+        root.getChildren().add(anchorPane);
     }
 
     public void showCosmicCreditsInput() {
+        StackPane root = (StackPane) scene.getRoot();
 
+        // VBox per contenere il messaggio e i pulsanti
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
+
+        Label confirm = new Label("Would you like to land on a planet?");
+        confirm.setTextFill(Color.web("#FFDE69"));
+        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+
+        Button yes = new Button("YES");
+        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        yes.setTextFill(Color.WHITE);
+        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
+        yes.setCursor(Cursor.HAND);
+        yes.setPrefWidth(100);
+
+        Button no = new Button("NO");
+        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        no.setTextFill(Color.WHITE);
+        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+        no.setCursor(Cursor.HAND);
+        no.setPrefWidth(100);
+
+        HBox buttons = new HBox(10, yes, no);
+        buttons.setAlignment(Pos.CENTER);
+
+        box.getChildren().addAll(confirm, buttons);
+
+        yes.setOnAction(ev -> {
+            viewFlow.handleInput("y");
+            root.getChildren().remove(box);
+        });
+
+        no.setOnAction(ev -> {
+            viewFlow.handleInput("n");
+            root.getChildren().remove(box);
+        });
+
+        root.getChildren().add(box);
     }
 
     public void showWarzoneInput() {
+        VBox container = new VBox(10);
+        container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
+        container.setPadding(new Insets(0, 0, 35, 0)); // margine dal basso
 
+        Label title = new Label("Start warzone");
+        title.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
+        title.setTextFill(Color.web("#FFDE69"));
+
+        Button continueBtn = new Button("START");
+        continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+        continueBtn.setTextFill(Color.BLACK);
+        continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        continueBtn.setCursor(Cursor.HAND);
+        continueBtn.setPadding(new Insets(10, 20, 10, 20));
+
+        continueBtn.setOnAction(e -> {
+            viewFlow.handleInput("warzone");
+            root.getChildren().remove(container);
+        });
+
+        container.getChildren().addAll(title, continueBtn);
+
+        StackPane.setAlignment(container, Pos.CENTER); // posizionato in basso, ma centrato
+        root.getChildren().add(container);
     }
 
     public void showRollDiceResult(int result) {
