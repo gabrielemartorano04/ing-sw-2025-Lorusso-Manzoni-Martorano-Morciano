@@ -172,9 +172,8 @@ public class ServerController {
         ClientEvent event = source.getEvent();
         Client client = source.getClient();
 
-        visitor.setCurrentClient(client);
-        event.call(visitor);
-        ServerEvent response =visitor.getServerEvent();
+        ServerEvent response = event.call(visitor, client);
+
 
 
         if (!gameCreated && visitor.getNumOfPlayers() > 0) {
@@ -199,11 +198,13 @@ public class ServerController {
     }
 
 
-    public void broadcastEvent(ServerEvent event) {
-        for(Client c: clients){
-            c.updateClient(event);
+    public synchronized void broadcastEvent(ServerEvent e) {
+        for(Client c : clients) {
+            c.updateClient(e);
         }
     }
+
+
 
     public void startThreadHourglass(){
         BuildTimerManager.getInstance().start(this, 90);

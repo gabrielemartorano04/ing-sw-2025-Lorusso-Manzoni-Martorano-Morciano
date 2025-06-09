@@ -1,6 +1,8 @@
 package it.polimi.ingsw.net.events.clientevents;
 
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.VirtualServer;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 import java.io.Serializable;
 
@@ -22,5 +24,5 @@ public abstract class ClientEvent implements Serializable {
     }
 
 
-    public abstract void call(VirtualServer visitor);
+    public abstract ServerEvent call(VirtualServer visitor, Client client);
 }

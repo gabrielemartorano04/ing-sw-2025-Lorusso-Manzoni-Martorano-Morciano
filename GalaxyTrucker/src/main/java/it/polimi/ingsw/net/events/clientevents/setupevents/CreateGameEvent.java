@@ -1,7 +1,9 @@
 package it.polimi.ingsw.net.events.clientevents.setupevents;
 
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.VirtualServer;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
  * Event client to server. The first player chooses the players number
@@ -28,8 +30,8 @@ public class CreateGameEvent extends ClientEvent {
     }
 
     @Override
-    public void call(VirtualServer visitor){
-        visitor.visit(this);
+    public ServerEvent call(VirtualServer visitor, Client client) {
+        return visitor.visit(this, client);
     };
 
 }

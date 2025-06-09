@@ -323,12 +323,6 @@ public class GUI implements UI {
         });
     }
 
-    @Override
-    public void  buildingComplete(BuildCompleteEvent event){
-        //TODO: sistemare la building complete perché non usiamo piu la fillScene
-        // this.buildingScene.showCoordPopUp
-        //button azione 'coord'
-    }
 
     @Override
     public void keptComponent(KeptComponentEvent event){
@@ -361,6 +355,13 @@ public class GUI implements UI {
     public void dropStack(StackDropOk event){
         //torna alla schermata base del buildind
         //this.buildingScene.updateDropStack();
+    }
+
+    @Override
+    public void  buildingComplete(BuildCompleteEvent event){
+        //TODO: sistemare la building complete perché non usiamo piu la fillScene
+        // this.buildingScene.showCoordPopUp
+        //button azione 'coord'
     }
 
 
@@ -566,6 +567,8 @@ public class GUI implements UI {
 
     @Override
     public void showAvailableComponent(ArrayList<Component> components) {
+        //TODO: la gui non deve mostrare gli available ma deve solo aggiornarli cioè aggiungere quello discard a quelli che ci sono
+
         double width = 1600;
         double height = 900;
 

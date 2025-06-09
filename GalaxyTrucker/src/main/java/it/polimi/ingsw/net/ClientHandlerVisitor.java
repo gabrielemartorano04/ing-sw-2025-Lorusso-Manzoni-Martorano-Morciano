@@ -28,12 +28,10 @@ public class ClientHandlerVisitor implements VirtualServer {
     private int numOfPlayers;
     private GameController gameController;
     private int numLog;
-    private Client currentClient;
     private int gameLevel;
     private int endBuilding;
     private int startFlight;
     private final CardController cardController;
-    private ServerEvent serverEvent;
     private GameState oldGameState;
 
 
@@ -41,17 +39,17 @@ public class ClientHandlerVisitor implements VirtualServer {
         numLog = 0;
         endBuilding = 0;
         startFlight = 0;
-        currentClient = null;
         numOfPlayers = 0;
         gameLevel=0;
         cardController = new CardController();
-        serverEvent=null;
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
 
-    public void setCurrentClient(Client currentClient) {
-        this.currentClient = currentClient;
+    @Override
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
     }
+
 
     public int getNumOfPlayers() {
         return numOfPlayers;
@@ -67,43 +65,43 @@ public class ClientHandlerVisitor implements VirtualServer {
 
 
     @Override
-    public void visit(CreateGameEvent event) {
+    public ServerEvent visit(CreateGameEvent event, Client client) {
         int numPlayers= event.getNumberOfPlayers();
         this.gameLevel=event.getGameLevel();
         this.numOfPlayers = numPlayers;
-        serverEvent=new AvailableColorsEvent(EnumSet.allOf(PlayerColors.class), "First Player in the game, start login");
+        return new AvailableColorsEvent(EnumSet.allOf(PlayerColors.class), "First Player in the game, start login");
     }
 
     @Override
-    public void visit(DiscardTileEvent event) {
+    public ServerEvent visit(DiscardTileEvent event, Client client) {
         // The component is already set as uncovered by the select handle, because we can't have a discard before a select
         gameController.getGame().getComponents().setComponentAsUnselected(event.getIndex());
-        serverEvent=new DiscardSuccessEvent(event.getIndex(), currentClient.getTruckerController().getNickname());
+        return new DiscardSuccessEvent(event.getIndex(), client.getTruckerController().getNickname());
     }
 
     @Override
-    public void visit(EndBuildingEvent event) {
+    public ServerEvent visit(EndBuildingEvent event, Client client) {
         endBuilding++;
-        System.out.println(currentClient.getTruckerController().getNickname() + " è in posizione: " + currentClient.getTruckerController().getPosition());
+        System.out.println(client.getTruckerController().getNickname() + " è in posizione: " + client.getTruckerController().getPosition());
         //inserire condizione hourglass
         if(gameController.getGame().getGameLevel()==2){
             switch(endBuilding) {
                 case 1-> {
-                    currentClient.getTruckerController().setPosition(6);
-                    System.out.println("sono in caso 1 e sto gestendo " + currentClient.getTruckerController().getNickname());
+                    client.getTruckerController().setPosition(6);
+                    System.out.println("sono in caso 1 e sto gestendo " + client.getTruckerController().getNickname());
                 }
                 case 2-> {
-                    currentClient.getTruckerController().setPosition(3);
-                    System.out.println("sono in caso 2 e sto gestendo " + currentClient.getTruckerController().getNickname());
+                    client.getTruckerController().setPosition(3);
+                    System.out.println("sono in caso 2 e sto gestendo " + client.getTruckerController().getNickname());
 
                 }
                 case 3-> {
-                    currentClient.getTruckerController().setPosition(1);
-                    System.out.println("sono in caso 3 e sto gestendo " + currentClient.getTruckerController().getNickname());
+                    client.getTruckerController().setPosition(1);
+                    System.out.println("sono in caso 3 e sto gestendo " + client.getTruckerController().getNickname());
                 }
                 case 4-> {
-                    currentClient.getTruckerController().setPosition(0);
-                    System.out.println("sono in caso 4 e sto gestendo " + currentClient.getTruckerController().getNickname());
+                    client.getTruckerController().setPosition(0);
+                    System.out.println("sono in caso 4 e sto gestendo " + client.getTruckerController().getNickname());
 
                 }
             }
@@ -111,30 +109,30 @@ public class ClientHandlerVisitor implements VirtualServer {
         else{
             switch(endBuilding) {
                 case 1-> {
-                    currentClient.getTruckerController().setPosition(4);
-                    System.out.println("sono in caso 1 e sto gestendo " + currentClient.getTruckerController().getNickname());
+                    client.getTruckerController().setPosition(4);
+                    System.out.println("sono in caso 1 e sto gestendo " + client.getTruckerController().getNickname());
                 }
                 case 2-> {
-                    currentClient.getTruckerController().setPosition(2);
-                    System.out.println("sono in caso 2 e sto gestendo " + currentClient.getTruckerController().getNickname());
+                    client.getTruckerController().setPosition(2);
+                    System.out.println("sono in caso 2 e sto gestendo " + client.getTruckerController().getNickname());
 
                 }
                 case 3-> {
-                    currentClient.getTruckerController().setPosition(1);
-                    System.out.println("sono in caso 3 e sto gestendo " + currentClient.getTruckerController().getNickname());
+                    client.getTruckerController().setPosition(1);
+                    System.out.println("sono in caso 3 e sto gestendo " + client.getTruckerController().getNickname());
                 }
                 case 4-> {
-                    currentClient.getTruckerController().setPosition(0);
-                    System.out.println("sono in caso 4 e sto gestendo " + currentClient.getTruckerController().getNickname());
+                    client.getTruckerController().setPosition(0);
+                    System.out.println("sono in caso 4 e sto gestendo " + client.getTruckerController().getNickname());
 
                 }
             }
         }
 
-            System.out.println(currentClient.getTruckerController().getNickname() + " è in posizione: " + currentClient.getTruckerController().getPosition());
+            System.out.println(client.getTruckerController().getNickname() + " è in posizione: " + client.getTruckerController().getPosition());
         if(endBuilding< gameController.getGame().getNumPlayers()) {
             System.out.println("You're not the last one to end");
-            serverEvent= new WaitOthersBuildingEvent();
+            return new WaitOthersBuildingEvent();
         }else{
             BuildTimerManager.getInstance().stop();
             if(gameLevel==2){
@@ -148,40 +146,41 @@ public class ClientHandlerVisitor implements VirtualServer {
                 }
             }
 
-            serverEvent= new BuildCompleteEvent(gameController.getGame().getTruckerList());
+            return new BuildCompleteEvent(gameController.getGame().getTruckerList());
 
         }
     }
 
     @Override
-    public void visit(KeepTileEvent event) {
+    public ServerEvent visit(KeepTileEvent event, Client client) {
         Component component = event.getComponent();
         try {
-            currentClient.getTruckerController().keep(component);
-            serverEvent= new KeptComponentEvent(component,gameController.getGame().getComponents().getComponents());
+            client.getTruckerController().keep(component);
             GamePersistence.saveGame(gameController);
+            return new KeptComponentEvent(component,gameController.getGame().getComponents().getComponents());
         } catch (InvalidComponentsException e) {
-            serverEvent= new GenericErrorEvent(e.getMessage(), false);
+            return new GenericErrorEvent(e.getMessage(), false);
         }
     }
 
     @Override
-    public void visit(LinkTileEvent event) {
+    public ServerEvent visit(LinkTileEvent event, Client client) {
         int x=event.getX();
         int y=event.getY();
         Component component=event.getComponent();
         try {
-            currentClient.getTruckerController().link(component,x,y);
-            serverEvent= new ComponentLinkedEvent(event.getComponent(), x, y, gameController.getGame().getComponents().getComponents());
+            client.getTruckerController().link(component,x,y);
             GamePersistence.saveGame(gameController);
+
+            return new ComponentLinkedEvent(event.getComponent(), x, y, gameController.getGame().getComponents().getComponents());
         }  catch (InvalidCoordinates e) {
-            serverEvent= new InvalidCoordinatesError(currentClient.getTruckerController().getNickname());
+            return new InvalidCoordinatesError(client.getTruckerController().getNickname());
         }
     }
 
 
     @Override
-    public void visit(LoginEvent event) {
+    public ServerEvent visit(LoginEvent event, Client client) {
         String nickname;
         numLog++;
         if(numLog< gameController.getGame().getNumPlayers()){
@@ -189,29 +188,25 @@ public class ClientHandlerVisitor implements VirtualServer {
             PlayerColors color = event.getColor();
             if(!ServerController.getIstance().getOldGame()) {
                 try {
-                    currentClient.setTruckerController(gameController.tryAddPlayer(nickname, color));
+                    client.setTruckerController(gameController.tryAddPlayer(nickname, color));
                 } catch (NicknameUsedException e) {
                     numLog--;
-                    serverEvent = new NicknameAlreadyInError(nickname, gameController.getAvailablePlayerColors());
-                    return;
+                    return new NicknameAlreadyInError(nickname, gameController.getAvailablePlayerColors());
                 } catch (ColorNotAvailable e) {
                     numLog--;
-                    serverEvent = new ColorAlreadyInError(color, gameController.getAvailablePlayerColors());
-                    return;
+                    return new ColorAlreadyInError(color, gameController.getAvailablePlayerColors());
                 }
 
-                serverEvent = new PlayerJoinedEvent(nickname);
-                return;
+                return new PlayerJoinedEvent(nickname);
             }else{
                 if(gameController.getGame().checkOldPlayers(event.getUsername(), event.getColor())) {
-                    currentClient.setTruckerController(gameController.addOldPlayer(nickname, color));
+                    client.setTruckerController(gameController.addOldPlayer(nickname, color));
                     gameController.getGame().removeOldColors(event.getColor());
                     gameController.getGame().removeOldNicknames(event.getUsername());
-                    serverEvent = new PlayerJoinedEvent(nickname);
-                    return;
+                    return new PlayerJoinedEvent(nickname);
                 }
                 else{
-                    serverEvent = new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
+                    return new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
                 }
             }
         }
@@ -220,15 +215,13 @@ public class ClientHandlerVisitor implements VirtualServer {
             PlayerColors color=event.getColor();
             if(!ServerController.getIstance().getOldGame()) {
                 try {
-                    currentClient.setTruckerController(gameController.tryAddPlayer(nickname, color));
+                    client.setTruckerController(gameController.tryAddPlayer(nickname, color));
                 } catch (NicknameUsedException e) {
                     numLog--;
-                    serverEvent = new NicknameAlreadyInError(nickname, gameController.getAvailablePlayerColors());
-                    return;
+                    return new NicknameAlreadyInError(nickname, gameController.getAvailablePlayerColors());
                 } catch (ColorNotAvailable e) {
                     numLog--;
-                    serverEvent = new ColorAlreadyInError(color, gameController.getAvailablePlayerColors());
-                    return;
+                    return new ColorAlreadyInError(color, gameController.getAvailablePlayerColors());
                 }
                 ArrayList<String> players = new ArrayList<>();
                 for (Trucker t : gameController.getGame().getTruckerList()) {
@@ -236,14 +229,13 @@ public class ClientHandlerVisitor implements VirtualServer {
                 }
                 gameController.getGame().startHourglass();
                 if (gameController.getGame().getGameLevel() == 2) {
-                    serverEvent = new StartBuildingEvent(nickname, currentClient.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondiRimanenti(), players, gameController.getGame().getGameLevel());
+                    return new StartBuildingEvent(nickname, client.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondiRimanenti(), players, gameController.getGame().getGameLevel());
                 } else {
-                    serverEvent = new StartBuildingEvent(nickname, currentClient.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), 0, players, gameController.getGame().getGameLevel());
+                    return new StartBuildingEvent(nickname, client.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), 0, players, gameController.getGame().getGameLevel());
                 }
-                return;
             }else{
                 if(gameController.getGame().checkOldPlayers(event.getUsername(), event.getColor())) {
-                    currentClient.setTruckerController(gameController.addOldPlayer(nickname, color));
+                    client.setTruckerController(gameController.addOldPlayer(nickname, color));
                     gameController.getGame().removeOldColors(event.getColor());
                     gameController.getGame().removeOldNicknames(event.getUsername());
                     ArrayList<Trucker> allTruckers=gameController.getGame().getTruckerList();
@@ -258,156 +250,139 @@ public class ClientHandlerVisitor implements VirtualServer {
                     gameController.getGame().setGameState(oldGameState);
                     gameController.setGameStarted(true);
 
-                    serverEvent = new ResumeGameEvent(allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), track);
-                    return;
+                    return new ResumeGameEvent(allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), track);
                 }else{
-                    serverEvent = new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
+                    return new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
                 }
             }
         }
-        serverEvent= new NoAvailableSpaceError();
+        return new NoAvailableSpaceError();
     }
 
     @Override
-    public void visit(SelectTileEvent event) {
+    public ServerEvent visit(SelectTileEvent event, Client client) {
         int index=event.getIndex();
         System.out.println("\n" + index + "\n");
         if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
-            serverEvent= new ComponentNotAvailableError();
-            return;
+            return new ComponentNotAvailableError();
         }
         try {
-            currentClient.getTruckerController().selectComponent(index,gameController.getGame().getComponents());
+            client.getTruckerController().selectComponent(index,gameController.getGame().getComponents());
             gameController.getGame().getComponents().setComponentAsSelected(index);
             // probabilmente evitabile considerando che il fatto di essere covered o meno basta salvarlo lato view
             // ma meglio tenere view e server completamente sincronizzati per ora
             gameController.getGame().getComponents().setComponentAsUncovered(index);
-            serverEvent= new ComponentSelectedEvent(index, currentClient.getTruckerController().getNickname());
+            return new ComponentSelectedEvent(index, client.getTruckerController().getNickname());
         } catch (GeneralError e) {
-            serverEvent= new GenericErrorEvent(e.getMessage(), false);
+            return new GenericErrorEvent(e.getMessage(), false);
         }
     }
 
 
     @Override
-    public void visit(SelectKeptTileEvent event){
+    public ServerEvent visit(SelectKeptTileEvent event, Client client) {
         int index=event.getIndex();
         try {
             System.out.println("\nEntered inside try of KeptTileEvent\n");
-            Component component=currentClient.getTruckerController().getKeptComponent(index);
-            currentClient.getTruckerController().getTrucker().removeKeptComponent(index);
-            serverEvent= new SuccessSelectKept(component,index);
+            Component component=client.getTruckerController().getKeptComponent(index);
+            client.getTruckerController().getTrucker().removeKeptComponent(index);
+            return new SuccessSelectKept(component,index);
         } catch (GeneralError e) {
             System.out.println("\nEntered inside catch of KeptTileEvent\n");
-            serverEvent= new GenericErrorEvent(e.getMessage(), false);
+            return new GenericErrorEvent(e.getMessage(), false);
         }
     }
 
     @Override
-    public void visit(ShowStackEvent event) {
+    public ServerEvent visit(ShowStackEvent event, Client client) {
         int index=event.getIndex();
-        TruckerController trucker=currentClient.getTruckerController();
+        TruckerController trucker=client.getTruckerController();
         Stack stack;
         try {
             stack = trucker.showStack(index,gameController.getGame());
             gameController.getGame().viewStacks()[event.getIndex()].setSelected();
         } catch (GeneralError e) {
-            serverEvent= new GenericErrorEvent(e.getMessage(), false);
-            return;
+            return new GenericErrorEvent(e.getMessage(), false);
         }
-        serverEvent= new ReturnStackEvent(stack);
+        return new ReturnStackEvent(stack);
     }
 
     @Override
-    public void visit(TurnHourglassEvent event) {
+    public ServerEvent visit(TurnHourglassEvent event, Client client) {
         ServerEvent tmp;
         try {
             tmp =gameController.getGame().turnHourglass();
         } catch (CannotTurnHourglassException e) {
-            serverEvent= new TurnHourglassError();
-            return;
+            return new TurnHourglassError();
         }
         if (tmp != null) {
             ServerController.getIstance().startThreadHourglass();
-            serverEvent= tmp;
-            return;
+            return tmp;
         }
-        serverEvent= new HourglassTurnEvent(gameController.getGame().getHourglass().getSecondiRimanenti());
+        return new HourglassTurnEvent(gameController.getGame().getHourglass().getSecondiRimanenti());
     }
 
     @Override
-    public void setGameController(GameController gameController) {
-        this.gameController = gameController;
-    }
-
-    @Override
-    public void visit(ShowOtherShipEvent event) {
+    public ServerEvent visit(ShowOtherShipEvent event) {
         for(Trucker t:gameController.getGame().getTruckerList()){
             if(t.getNickname().equals(event.getNicknameRequested())){
-                serverEvent= new ShowOtherShipResponse(t.getSpaceShip().getComponents(),event.getNicknameRequested());
-                return;
+                return new ShowOtherShipResponse(t.getSpaceShip().getComponents(),event.getNicknameRequested());
             }
         }
-        serverEvent= new GenericErrorEvent("No such trucker with that nickname",false);
+        return new GenericErrorEvent("No such trucker with that nickname",false);
+    }
+
+
+    @Override
+    public ServerEvent visit(AlienCoordinatesRequest event, Client client) {
+        ArrayList<int[]> alienCoord=client.getTruckerController().getSpaceShip().getAlienCabin();
+        return new AlienCabinCoord(alienCoord);
     }
 
     @Override
-    public void visit(GeneriErrorFromClient event){
-        serverEvent= new GenericErrorEvent("error \n>",false);
-    }
-
-    @Override
-    public void visit(AlienCoordinatesRequest event) {
-        ArrayList<int[]> alienCoord=currentClient.getTruckerController().getSpaceShip().getAlienCabin();
-        serverEvent= new AlienCabinCoord(alienCoord);
-    }
-
-    @Override
-    public void visit(SendAlienCoord event) {
+    public ServerEvent visit(SendAlienCoord event, Client client) {
         if(event.getCoord()!=null){
-            currentClient.getTruckerController().getSpaceShip().setNumAlien(event.getCoord());
+            client.getTruckerController().getSpaceShip().setNumAlien(event.getCoord());
         }
-        currentClient.getTruckerController().getSpaceShip().setNumHuman();
-        currentClient.getTruckerController().getSpaceShip().setBattery();
-        Component[][] spaceship= currentClient.getTruckerController().getSpaceShip().getComponents();
-        currentClient.getTruckerController().getSpaceShip().increaseLost(currentClient.getTruckerController().getTrucker().getKeptComponents().size());
-        currentClient.getTruckerController().getSpaceShip().countExposedConnectors();
-        float cannonPower=currentClient.getTruckerController().getSpaceShip().getSingleCannonPower();
-        int enginePower=currentClient.getTruckerController().getSpaceShip().getSingleEnginePower();
-        int position=currentClient.getTruckerController().getPosition();
-        int batteryCount=currentClient.getTruckerController().getSpaceShip().getNumBatteries();
-        int humanCount=currentClient.getTruckerController().getSpaceShip().getNumCrew();
+        client.getTruckerController().getSpaceShip().setNumHuman();
+        client.getTruckerController().getSpaceShip().setBattery();
+        Component[][] spaceship= client.getTruckerController().getSpaceShip().getComponents();
+        client.getTruckerController().getSpaceShip().increaseLost(client.getTruckerController().getTrucker().getKeptComponents().size());
+        client.getTruckerController().getSpaceShip().countExposedConnectors();
+        float cannonPower=client.getTruckerController().getSpaceShip().getSingleCannonPower();
+        int enginePower=client.getTruckerController().getSpaceShip().getSingleEnginePower();
+        int position=client.getTruckerController().getPosition();
+        int batteryCount=client.getTruckerController().getSpaceShip().getNumBatteries();
+        int humanCount=client.getTruckerController().getSpaceShip().getNumCrew();
         Map<String, Integer> track = new HashMap<>();
         gameController.getGame().sortTruckers();
         for (Trucker t : gameController.getGame().getTruckerList()) {
             track.put(t.getNickname(), t.getPosition());
         }
-        serverEvent= new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,track, spaceship);
+        return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,track, spaceship);
     }
 
 
     @Override
-    public void visit(OkStartFlight event) {
+    public ServerEvent visit(OkStartFlight event) {
         startFlight++;
         if(startFlight<gameController.getGame().getNumPlayers()){
-            serverEvent= new WaitOthersStartFlightEvent();
-            return;
+            return new WaitOthersStartFlightEvent();
         }
         cardController.setCurrCard(gameController.pickCardFromDeck());
-        serverEvent= cardController.startCard();
+        return cardController.startCard();
     }
 
     @Override
-    public void visit(DrawCardEvent event){
+    public ServerEvent visit(DrawCardEvent event) {
         Card card;
         cardController.setCurrCard(gameController.pickCardFromDeck());
         card = cardController.getCurrCard();
         if(!gameController.getGame().getTrucker(0).getNickname().equals(event.getCurrNickname())){
-            serverEvent= new GenericErrorEvent("You cannot draw a card while you are not the first player",false);
-            return;
+            return new GenericErrorEvent("You cannot draw a card while you are not the first player",false);
         }
         if(card!=null){
-            serverEvent= cardController.startCard();
+            return cardController.startCard();
         }else{
             int[] scores;
             Map<String, Integer> playersScores = new HashMap<>();
@@ -419,133 +394,131 @@ public class ClientHandlerVisitor implements VirtualServer {
                 playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
             }
             GamePersistence.deleteSave();
-            serverEvent= new EndGameEvent(playersScores);
+            return new EndGameEvent(playersScores);
         }
 
     }
 
     @Override
-    public void visit(HumanCoordEvent event) {
-        serverEvent= cardController.setHumansCoordinates(event);
+    public ServerEvent visit(HumanCoordEvent event) {
+        return cardController.setHumansCoordinates(event);
     }
 
     @Override
-    public void visit(PlotGoodEvent event) {
-        serverEvent= cardController.setGoodsCoordinates(event);
+    public ServerEvent visit(PlotGoodEvent event) {
+        return cardController.setGoodsCoordinates(event);
     }
 
     @Override
-    public void visit(PlanetDecisionEvent event) {
-        serverEvent= cardController.playerLandingPlanets(event);
+    public ServerEvent visit(PlanetDecisionEvent event) {
+        return cardController.playerLandingPlanets(event);
     }
 
     @Override
-    public void visit(RollDiceEvent event) {
-        serverEvent= cardController.rollDice();
+    public ServerEvent visit(RollDiceEvent event) {
+        return cardController.rollDice();
     }
 
     @Override
-    public void visit(ActivateShieldEvent event) {
-        serverEvent= cardController.activateShield(event);
+    public ServerEvent visit(ActivateShieldEvent event) {
+        return cardController.activateShield(event);
     }
 
     @Override
-    public void visit(ActivateCannonsEvent event) {
-        serverEvent= cardController.activateCannons(event);
+    public ServerEvent visit(ActivateCannonsEvent event) {
+        return cardController.activateCannons(event);
     }
 
     @Override
-    public void visit(ActivateEnginesEvent event) {
-        serverEvent= cardController.activateEngines(event);
+    public ServerEvent visit(ActivateEnginesEvent event) {
+        return cardController.activateEngines(event);
     }
 
     @Override
-    public void visit(TruckerLandingEvent event) {
-        serverEvent= cardController.truckerLanding(event);
+    public ServerEvent visit(TruckerLandingEvent event) {
+        return cardController.truckerLanding(event);
     }
 
     @Override
-    public void visit(RearrangeEvent event) {
-        serverEvent= cardController.rearrange(event);
+    public ServerEvent visit(RearrangeEvent event) {
+        return cardController.rearrange(event);
     }
 
     @Override
-    public void visit(SetWinDecision event) {
-        serverEvent= cardController.setWinDecision(event);
+    public ServerEvent visit(SetWinDecision event) {
+        return cardController.setWinDecision(event);
     }
 
     @Override
-    public void visit(RemoveGoodsEvent event) {
-        serverEvent= cardController.removeGoods(event);
+    public ServerEvent visit(RemoveGoodsEvent event) {
+        return cardController.removeGoods(event);
     }
 
     @Override
-    public void visit(RemoveAskingEvent event) {
-        serverEvent= cardController.removeAsking(event);
+    public ServerEvent visit(RemoveAskingEvent event) {
+        return cardController.removeAsking(event);
     }
 
     @Override
-    public void visit(RemoveBatteriesEvent event) {
-        serverEvent= cardController.removeBatteries(event);
+    public ServerEvent visit(RemoveBatteriesEvent event) {
+        return cardController.removeBatteries(event);
     }
 
     @Override
-    public void visit(TurnComponentEvent turnComponentEvent) {
+    public ServerEvent visit(TurnComponentEvent turnComponentEvent) {
         Component component = turnComponentEvent.getComponent();
         component.turn();
-        serverEvent= new TurnedComponentSuccessEvent(component);
+        return new TurnedComponentSuccessEvent(component);
     }
 
     @Override
-    public void visit(StackDroppedEvent event){
+    public ServerEvent visit(StackDroppedEvent event){
         System.out.println("sto per mandare StackDroppedOK");
         gameController.getGame().viewStacks()[event.getCurr()].dropStack();
-        serverEvent= new StackDropOk("Stack numero " + event.getCurr() + "disponibile", false);
+        return new StackDropOk("Stack numero " + event.getCurr() + "disponibile", false);
     }
 
     //TODO GESTIRE QUESTI EVENTI
     //adesso questi metodi sono void, quindi quando vuoi ritornare un ServerEvent fai serverEvent= new EventoCheVuoi(dati); e poi return;
     @Override
-    public void visit(GainCosmicCreditsResponseEvent event) {
+    public ServerEvent visit(GainCosmicCreditsResponseEvent event) {
         System.out.println("Evento non ancora gestito ");
+        // return ?????? manca ;
+        return null;
     }
 
     @Override
-    public void visit(WarzoneStartEvent event) {
+    public ServerEvent visit(WarzoneStartEvent event) {
         try {
-            serverEvent= cardController.getCurrCard().handleCurrentCondition();
+            return cardController.getCurrCard().handleCurrentCondition();
         } catch (WrongCallerException | GeneralError e) {
-            serverEvent= new GenericErrorEvent(e.getMessage(), false);
+            return new GenericErrorEvent(e.getMessage(), false);
         }
     }
 
     @Override
-    public void visit(RemotionSeenEvent event) {
+    public ServerEvent visit(RemotionSeenEvent event, Client client) {
         if (cardController.getCurrCard().getName().equalsIgnoreCase("Slavers")) {
-            serverEvent= new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, currentClient.getTruckerController().getNickname());
+            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, client.getTruckerController().getNickname());
         }else{
             try {
-                serverEvent= cardController.getCurrCard().removeGoods();
+                return cardController.getCurrCard().removeGoods();
             } catch (WrongCallerException | GeneralError e) {
-                serverEvent= new GenericErrorEvent(e.getMessage(), true);
+                return new GenericErrorEvent(e.getMessage(), true);
             }
         }
     }
 
-    public ServerEvent getServerEvent(){
-        return serverEvent;
-    }
 
     @Override
-    public void visit(DeadTrucker event){
+    public ServerEvent visit(DeadTrucker event){
         Card card;
         if (!gameController.getGame().getTruckerList().isEmpty()) {
             cardController.setCurrCard(gameController.pickCardFromDeck());
             card = cardController.getCurrCard();
             if (card != null) {
-                serverEvent = cardController.startCard();
                 GamePersistence.saveGame(gameController);
-                return;
+                return cardController.startCard();
             }
         }
         int[] scores;
@@ -556,17 +529,17 @@ public class ClientHandlerVisitor implements VirtualServer {
         }
         GamePersistence.saveGame(gameController);
         GamePersistence.deleteSave();
-        serverEvent= new EndGameEvent(playersScores);
+        return new EndGameEvent(playersScores);
     }
 
     @Override
-    public void visit(PongEvent event) {
-        serverEvent = null;
-        currentClient.updateLastPong();
+    public ServerEvent visit(PongEvent event, Client client) {
+        client.updateLastPong();
+        return null;
     }
 
     @Override
-    public void visit(ChoseToResume event){
+    public ServerEvent visit(ChoseToResume event){
         ServerController.setOldGame(event.getChoseToResume());
         if(event.getChoseToResume()){
             gameController = GamePersistence.loadGame();
@@ -578,10 +551,10 @@ public class ClientHandlerVisitor implements VirtualServer {
             for(int i = 0; i < gameController.getGame().getOldColors().size(); i++) {
                 System.out.println("nickname: " + gameController.getGame().getOldNicknames().get(i) + " color: " + gameController.getGame().getOldColors().get(i));
             }
-            serverEvent = new AvailablePlayersEvent(gameController.getGame().getOldColors(), gameController.getGame().getOldNicknames());
+            return new AvailablePlayersEvent(gameController.getGame().getOldColors(), gameController.getGame().getOldNicknames());
         }else{
             GamePersistence.deleteSave();
-            serverEvent = new AvailableColorsEvent(EnumSet.allOf(PlayerColors.class), "First Player in the game, start login");
+            return new AvailableColorsEvent(EnumSet.allOf(PlayerColors.class), "First Player in the game, start login");
         }
 
     }
