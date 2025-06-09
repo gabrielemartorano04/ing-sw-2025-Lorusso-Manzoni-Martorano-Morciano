@@ -15,7 +15,8 @@ public class AvailablePlayersEvent extends ServerEvent {
 
     public AvailablePlayersEvent(ArrayList<PlayerColors> colors, ArrayList<String> nicknames) {
         super(ServerEventType.AVAILABLE_PLAYERS, true);
-
+        this.colors = colors;
+        this.nicknames = nicknames;
     }
 
     public ArrayList<PlayerColors> getColors() {

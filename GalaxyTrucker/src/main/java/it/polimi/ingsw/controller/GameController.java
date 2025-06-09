@@ -186,4 +186,8 @@ public class GameController implements Serializable {
         return istance;
     }
 
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
+
 }
