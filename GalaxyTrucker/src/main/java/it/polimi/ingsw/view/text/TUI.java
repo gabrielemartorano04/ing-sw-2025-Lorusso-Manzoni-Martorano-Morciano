@@ -745,6 +745,9 @@ public class TUI implements UI {
                     }
                     case Cabin cabin -> {
                         details.append("[").append(i).append(",").append(j).append("] CABIN");
+                        if(cabin.getIsMain()){
+                            System.out.println(cabin.getColor());
+                        }
                         if(cabin.getQuantity() != 0){
                             if (cabin.getAlien() != null) {
                                 details.append(cabin.getQuantity()).append(" contains 1 " + cabin.getAlien().getColor() + " alien");

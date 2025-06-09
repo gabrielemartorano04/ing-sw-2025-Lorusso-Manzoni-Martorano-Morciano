@@ -23,7 +23,7 @@ public class GUIApplication extends Application {
     public static String serverAddress;
     public static boolean useGui;
     public static int SERVER_PORT;
-
+    private ViewFlow viewFlow;
 
     @Override
     public void start(Stage primaryStage) {
@@ -33,17 +33,17 @@ public class GUIApplication extends Application {
             try {
                 networkClient.connect();
                 ClientEventSender sender = new ClientEventSender(networkClient);
-                ViewFlow view = new ViewFlow(sender, useGui);
-                view.getGUI().initGui(primaryStage);
+                this.viewFlow = new ViewFlow(sender, useGui);
+                viewFlow.getGUI().initGui(primaryStage);
                 primaryStage.setOnCloseRequest(e -> {
                     Platform.exit();
                     System.exit(0);
                 });
 
-                NetworkListenerClient listenerClient = new NetworkListenerClient(networkClient.getSocket(), view);
+                NetworkListenerClient listenerClient = new NetworkListenerClient(networkClient.getSocket(), viewFlow);
 
                 listenerClient.start();
-                view.start();
+                viewFlow.start();
 
 
             } catch (IOException e) {
