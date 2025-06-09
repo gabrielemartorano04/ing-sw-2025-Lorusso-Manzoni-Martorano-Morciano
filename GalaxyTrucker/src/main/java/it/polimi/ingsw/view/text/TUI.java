@@ -43,8 +43,8 @@ public class TUI implements UI {
     }
 
     @Override
-    public void showWaitingForPlayers(int currentPlayers) {
-        System.out.println("Waiting for other truckers... (" + currentPlayers + ")");
+    public void showWaitingForPlayers() {
+        System.out.println("Waiting for other truckers..");
     }
 
     @Override

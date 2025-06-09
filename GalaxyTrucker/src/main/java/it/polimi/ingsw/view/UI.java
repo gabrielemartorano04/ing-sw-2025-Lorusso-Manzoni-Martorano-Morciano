@@ -107,7 +107,7 @@ public interface UI {
     //SETUP
     void showPlayerJoined(String nickname);
 
-    void showWaitingForPlayers(int currentPlayers);
+    void showWaitingForPlayers();
 
     //BUILDING
     void showAvailableComponent(ArrayList<Component> components);
@@ -152,6 +152,7 @@ public interface UI {
 
 
     void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames);
+
 
 
 }
