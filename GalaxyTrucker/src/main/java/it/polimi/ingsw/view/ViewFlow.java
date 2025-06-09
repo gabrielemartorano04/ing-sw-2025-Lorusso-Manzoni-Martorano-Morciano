@@ -107,6 +107,10 @@ public class ViewFlow implements EventReceiver {
         this.alreadyLogged=false;
     }
 
+    public ViewState getViewState() {
+        return viewState;
+    }
+
 
     @Override
     public void onEventReceived(ServerEvent event) {
