@@ -74,7 +74,7 @@ public class LoginScene {
         doneButton.setStyle("-fx-background-color: gray; -fx-text-fill: white;");
         doneButton.setCursor(Cursor.HAND);
 
-        for (PlayerColors color : availableColors) {
+        for (PlayerColors color : EnumSet.allOf(PlayerColors.class)) {
             Rectangle rect = new Rectangle(80, 80, getColorForEnum(color));
             rect.setArcWidth(20);
             rect.setArcHeight(20);

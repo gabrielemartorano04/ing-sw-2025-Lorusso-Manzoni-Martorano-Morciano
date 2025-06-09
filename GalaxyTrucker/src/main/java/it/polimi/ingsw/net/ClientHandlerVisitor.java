@@ -3,10 +3,7 @@ package it.polimi.ingsw.net;
 
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.model.Stack;
-import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.events.clientevents.*;
@@ -37,6 +34,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     private int startFlight;
     private final CardController cardController;
     private ServerEvent serverEvent;
+    private GameState oldGameState;
 
 
     public ClientHandlerVisitor() {
@@ -257,6 +255,9 @@ public class ClientHandlerVisitor implements VirtualServer {
                             track.put(t.getNickname(), t.getPosition());
                         }
                     }
+                    gameController.getGame().setGameState(oldGameState);
+                    gameController.setGameStarted(true);
+
                     serverEvent = new ResumeGameEvent(allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), track);
                     return;
                 }else{
@@ -569,6 +570,14 @@ public class ClientHandlerVisitor implements VirtualServer {
         ServerController.setOldGame(event.getChoseToResume());
         if(event.getChoseToResume()){
             gameController = GamePersistence.loadGame();
+            oldGameState=gameController.getGame().getGameState();
+            gameController.getGame().setGameState(GameState.SETUP);
+            gameController.setGameStarted(false);
+            gameController.getGame().createOldColors();
+            gameController.getGame().createOldNicknames();
+            for(int i = 0; i < gameController.getGame().getOldColors().size(); i++) {
+                System.out.println("nickname: " + gameController.getGame().getOldNicknames().get(i) + " color: " + gameController.getGame().getOldColors().get(i));
+            }
             serverEvent = new AvailablePlayersEvent(gameController.getGame().getOldColors(), gameController.getGame().getOldNicknames());
         }else{
             GamePersistence.deleteSave();

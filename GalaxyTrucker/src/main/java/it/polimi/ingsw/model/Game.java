@@ -61,7 +61,8 @@ public class Game implements Serializable {
         this.bank = new Bank();
         this.gameState = GameState.SETUP;
         this.availableColors = EnumSet.allOf(PlayerColors.class);
-
+        this.oldNicknames = new ArrayList<>();
+        this.oldColors = new ArrayList<>();
         setIstance(this);
     }
 
@@ -532,8 +533,8 @@ public class Game implements Serializable {
 
     public void createOldNicknames() {
         ArrayList<Trucker> truckers;
-        truckers= Game.getIstance().getTruckerList();
-        truckers.addAll(Game.getIstance().getTruckerOut());
+        truckers= this.truckers;
+        truckers.addAll(this.truckersOut);
         for(Trucker trucker : truckers){
             oldNicknames.add(trucker.getNickname());
         }
@@ -549,9 +550,8 @@ public class Game implements Serializable {
 
     public void createOldColors() {
         ArrayList<Trucker> truckers;
-        truckers= Game.getIstance().getTruckerList();
-        truckers.addAll(Game.getIstance().getTruckerOut());
-        ArrayList<String> nicknames = new ArrayList<>();
+        truckers= this.truckers;
+        truckers.addAll(this.truckersOut);
         for(Trucker trucker : truckers){
             oldColors.add(trucker.getColor());
         }

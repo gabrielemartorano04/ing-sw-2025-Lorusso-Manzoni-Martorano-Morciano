@@ -87,8 +87,6 @@ public class ServerController {
             idToSet++;
             clients.add(client);
             if(oldGame){
-                Game.getIstance().createOldColors();
-                Game.getIstance().createOldNicknames();
                 AvailablePlayersEvent event = new AvailablePlayersEvent(Game.getIstance().getOldColors(), Game.getIstance().getOldNicknames());
                 client.updateClient(event);
             }else {

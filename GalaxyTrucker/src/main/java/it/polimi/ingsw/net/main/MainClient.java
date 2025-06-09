@@ -38,7 +38,7 @@ public class MainClient {
         String answer;
         System.out.print("Do you want to connect to the localhost? (y/n): ");
         do{
-            System.out.println("Type y or n, everything else is not accepted: ");
+            System.out.print("> ");
             answer = scanner.nextLine().trim().toLowerCase();
         }while(!(answer.equals("y") || answer.equals("n")));
 
@@ -94,15 +94,19 @@ public class MainClient {
         }
         else {
             try {
-                Registry registry = LocateRegistry.getRegistry(serverAddress, 4321);
-                System.out.println(serverAddress);
-                RmiServerInterface rmiServer = (RmiServerInterface) registry.lookup("GalaxyTrucker");
-
-                ViewFlow view = new ViewFlow(null,true);
-                RemoteClientHandler client = new RmiClient(rmiServer, view);
-                rmiServer.connect(client);
-                view.setRmiClient(client);
-                view.start();
+                GUIApplication.SERVER_PORT = 4321;
+                GUIApplication.serverAddress = serverAddress;
+                GUIApplication.useGui = true;
+                GUIApplication.launch(GUIApplication.class);
+//                Registry registry = LocateRegistry.getRegistry(serverAddress, 4321);
+//                System.out.println(serverAddress);
+//                RmiServerInterface rmiServer = (RmiServerInterface) registry.lookup("GalaxyTrucker");
+//
+//                ViewFlow view = new ViewFlow(null,true);
+//                RemoteClientHandler client = new RmiClient(rmiServer, view);
+//                rmiServer.connect(client);
+//                view.setRmiClient(client);
+//                view.start();
 
             } catch (Exception e) {
                 System.err.println("Error connecting to RMI server: " + e.getMessage());

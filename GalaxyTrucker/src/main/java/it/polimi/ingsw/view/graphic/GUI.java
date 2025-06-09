@@ -94,10 +94,12 @@ public class GUI implements UI {
 
     public void initGui(Stage primaryStage){
         this.stage=primaryStage;
-        Scene loadingScene = new Scene(new StackPane(), 850, 550);
+        Scene loadingScene = new Scene(new StackPane(), 1600, 900);
         stage.setScene(loadingScene);
         stage.setTitle("Galaxy Trucker");
         stage.setResizable(false);
+        stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
         stage.show();
     }
 
@@ -115,14 +117,14 @@ public class GUI implements UI {
     @Override
     public void showInsertNumPlayers() {
         Platform.runLater(() -> {
-            double width = 850;
-            double height = 550;
+            double width = 1600;
+            double height = 900;
 
             Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
             ImageView backgroundView = new ImageView(backgroundImage);
             backgroundView.setFitWidth(width);
             backgroundView.setFitHeight(height);
-            backgroundView.setPreserveRatio(false);
+            backgroundView.setPreserveRatio(true);
             backgroundView.setMouseTransparent(true);
 
             VBox content = new VBox(12);
@@ -220,6 +222,7 @@ public class GUI implements UI {
             }
 
             stage.centerOnScreen();
+            stage.setFullScreen(true);
         });
     }
 
@@ -237,6 +240,7 @@ public class GUI implements UI {
             stage.setScene(this.loginScene.createScene());
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
+            stage.setFullScreen(true);
             stage.show();
         });
 
@@ -270,6 +274,7 @@ public class GUI implements UI {
             stage.setScene(this.buildingScene.createScene(event.getPlayers(), viewFlow.getLevel()));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
+            stage.setFullScreen(true);
             stage.show();
         });
     }
@@ -460,7 +465,7 @@ public class GUI implements UI {
                         "-fx-padding: 10px 15px; " +
                         "-fx-background-radius: 10px;"
         );
-        message.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        message.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 
         StackPane overlay = new StackPane(message);
         overlay.setMouseTransparent(true);
@@ -489,8 +494,8 @@ public class GUI implements UI {
 
     @Override
     public void showWaitingForPlayers(int currentPlayers) {
-        double width = 850;
-        double height = 550;
+        double width = 1600;
+        double height = 900;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
@@ -515,6 +520,8 @@ public class GUI implements UI {
         Platform.runLater(() -> {
             stage.setScene(scene);
             stage.centerOnScreen();
+            stage.setFullScreen(true);
+            stage.show();
         });
 
         Timeline timeline = new Timeline(
@@ -530,8 +537,8 @@ public class GUI implements UI {
 
     @Override
     public void showSetupComplete() {
-        double width = 850;
-        double height = 550;
+        double width = 1600;
+        double height = 900;
 
         // Sfondo
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
@@ -552,13 +559,14 @@ public class GUI implements UI {
         Scene scene = new Scene(root, width, height);
         stage.setScene(scene);
         stage.centerOnScreen();
+        stage.setFullScreen(true);
     }
 
 
     @Override
     public void showAvailableComponent(ArrayList<Component> components) {
-        double width = 850;
-        double height = 550;
+        double width = 1600;
+        double height = 900;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
@@ -626,6 +634,7 @@ public class GUI implements UI {
         Scene scene = new Scene(root, width, height);
         stage.setScene(scene);
         stage.centerOnScreen();
+        stage.setFullScreen(true);
 
     }
 
@@ -899,8 +908,8 @@ public class GUI implements UI {
 
     @Override
     public void showBuildComplete() {
-        double width = 850;
-        double height = 550;
+        double width = 1600;
+        double height = 900;
 
         // Sfondo
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
@@ -932,6 +941,7 @@ public class GUI implements UI {
         Scene scene = new Scene(root, width, height);
         stage.setScene(scene);
         stage.centerOnScreen();
+        stage.setFullScreen(true);
     }
 
     @Override
@@ -1201,8 +1211,8 @@ public class GUI implements UI {
 
     @Override
     public void showShipLayout(String nickname, Component[][] layout) {
-        double width = 850;
-        double height = 550;
+        double width = 1600;
+        double height = 900;
 
         Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpeg").toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
@@ -1275,6 +1285,7 @@ public class GUI implements UI {
         Scene scene = new Scene(root, width, height);
         stage.setScene(scene);
         stage.centerOnScreen();
+        stage.setFullScreen(true);
     }
 
     @Override
@@ -1323,8 +1334,8 @@ public class GUI implements UI {
 
     @Override
     public void showTrack(Map<String, Integer> truckers, int level) {
-        double width = 850;
-        double height = 550;
+        double width = 1600;
+        double height = 900;
 
         // 1. Board di sfondo
         Image boardImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-5.png").toExternalForm());
@@ -1390,6 +1401,7 @@ public class GUI implements UI {
         Scene scene = new Scene(root, width, height);
         stage.setScene(scene);
         stage.centerOnScreen();
+        stage.setFullScreen(true);
     }
 
     @Override
