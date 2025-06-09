@@ -77,7 +77,7 @@ public class GUI implements UI {
     private FlightScene flightScene;
     private ClientEvent currentEvent;
     private Component selectedComponent;
-    public static ViewFlow viewFlow;
+    public final ViewFlow viewFlow;
     private boolean isLinkingEnabled;
     private final Map<String, Integer> previousPositions;
 
@@ -282,11 +282,9 @@ public class GUI implements UI {
 
     @Override
     public void componentLinked(ComponentLinkedEvent event){
-        //TODO: componente è stato linkato correttamente quindi modifichiamo la scena attaccandolo alla nave
-
-        //this.buildingScene.updateComponentLinked(event.getComponent(),event.getX(),event.getY());
-        //dai di nuovo la possibilità di vedere gli available components
-        //e abilita button giusti
+        Platform.runLater(() -> {
+            this.buildingScene.insertComponentInGrid(event.getComponent(),event.getX(),event.getY());
+        });
     }
 
     @Override
@@ -301,9 +299,9 @@ public class GUI implements UI {
     @Override
     public void componentSelected(ComponentSelectedEvent event){
         //TODO: ti riporta nella schermata dove vedi la nave con visualizzato il componente che hai selezionato e le posibili azioni
-
-        //this.buildingScene.updateSelectedComponent(event.getComponent);
-        //abilita button
+        Platform.runLater(() -> {
+            this.buildingScene.insertSelectedComponent(this.viewFlow.getSelectedComponent(), false);
+        });
     }
 
     @Override
@@ -312,12 +310,6 @@ public class GUI implements UI {
         //this.buildingScene.showInvalidCoordinatesPopup();
     }
 
-    @Override
-    public void invalidPosition(InvalidPositionError event){
-        //TODO: notifica errore di questo tipo
-        //this.buildingScene.showInvalidPositionPopup();
-
-    }
 
     @Override
     public void turnHourGlassError(TurnHourglassError event) {
@@ -326,32 +318,38 @@ public class GUI implements UI {
 
     @Override
     public void turnHourGlass(HourglassTurnEvent event){
-        //TODO:
-        //this.buildingScene.updateHourglassTurned();
+        Platform.runLater(() -> {
+            this.buildingScene.startHourglassTimer();
+        });
     }
 
     @Override
     public void  buildingComplete(BuildCompleteEvent event){
-        //stack pane non sistemato
-        this.fillScene=new FillScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow,new StackPane());
+        //TODO: sistemare la building complete perché non usiamo piu la fillScene
+        // this.buildingScene.showCoordPopUp
         //button azione 'coord'
     }
 
     @Override
     public void keptComponent(KeptComponentEvent event){
         //il metodo ha il nuovo component kept
-        //this.buildingScene.updateKeptComponents(event.getKept());
-
+        Platform.runLater(() -> {
+            this.buildingScene.insertComponentToKepts(event.getKept());
+        });
     }
 
     @Override
     public void componentTurned(TurnedComponentSuccessEvent event){
-        //this.buildingScene.updateSelectedComponent(event.getComponent());
+        Platform.runLater(() -> {
+            this.buildingScene.insertSelectedComponent(event.getComponent(), true);
+        });
     }
 
     @Override
     public void keptSelected(SuccessSelectKept event){
-        //this.buildingScene.updateSelectedComponent(event.getComponent());
+        Platform.runLater(() -> {
+            this.buildingScene.insertComponentToKepts(event.getComponent());
+        });
     }
 
     @Override
@@ -371,6 +369,13 @@ public class GUI implements UI {
 
 
     // flight scene
+
+    @Override
+    public void invalidPosition(InvalidPositionError event){
+        //TODO: notifica errore di questo tipo
+        //this.buildingScene.showInvalidPositionPopup();
+
+    }
 
     @Override
     public void flightScene(FlightStartEvent event){
@@ -450,15 +455,6 @@ public class GUI implements UI {
     // fine gioco
 
 
-    @Deprecated
-    public void showColorTaken() {
-        //
-    }
-
-    @Deprecated
-    public void showNicknameTaken() {
-        //
-    }
 
     @Override
     public void showPlayerJoined(String nickname) {
@@ -1542,8 +1538,7 @@ public class GUI implements UI {
 
     @Override
     public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames){
-
+        // TODO: per funzionalità aggiuntiva ci pensiamo piu avanti
     }
-
 
 }

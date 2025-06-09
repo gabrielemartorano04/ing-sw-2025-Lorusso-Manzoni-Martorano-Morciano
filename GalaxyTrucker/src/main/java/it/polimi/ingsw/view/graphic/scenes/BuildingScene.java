@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.graphic.scenes;
 
 import it.polimi.ingsw.model.AvailableComponents;
+import it.polimi.ingsw.model.Stack;
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Cannon;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
@@ -27,8 +29,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
-import java.util.List;
-import java.util.ArrayList;
+
+import java.util.*;
 
 
 import java.awt.*;
@@ -36,7 +38,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -56,6 +58,7 @@ public class BuildingScene {
     private final ArrayList<StackPane> keptSlotsRef;
     private final ArrayList<ImageView> keptImages;
     private HBox keptSlots;
+    private int keptFillLevel;
 
     private Button finishBtn;
     private Button stackBtn;
@@ -73,6 +76,9 @@ public class BuildingScene {
     private List<Node> shipScreenContent;
     private boolean inShipView;
 
+    private Map<Button, Boolean> previousButtonStates = new HashMap<>();
+
+
     private VBox componentSelectedBox;
     private boolean componentSelectedExists;
 
@@ -86,6 +92,8 @@ public class BuildingScene {
         this.componentSelectedExists = false;
         this.root = root;
         this.inShipView = true;
+        this.keptFillLevel = 0;
+        this.previousButtonStates = new HashMap<>();
 
         this.validCells = new boolean[11][12];
         for (int i = 0; i < layout.length; i++) {
@@ -224,50 +232,41 @@ public class BuildingScene {
         keepBtn.setOpacity(opacity);
     }
 
-    private void disableOptionButtons(boolean disable) {
-        double opacity = disable ? 0.5 : 1;
 
-        finishBtn.setDisable(disable);
-        finishBtn.setOpacity(opacity);
-
-        stackBtn.setDisable(disable);
-        stackBtn.setOpacity(opacity);
-
-        rulesBtn.setDisable(disable);
-        rulesBtn.setOpacity(opacity);
-
-        otherBtn.setDisable(disable);
-        otherBtn.setOpacity(opacity);
-
-        hourglassBtn.setDisable(disable);
-        hourglassBtn.setOpacity(opacity);
-
-        selectBtn.setDisable(disable);
-        selectBtn.setOpacity(opacity);
-
-        selectKeptBtn.setDisable(disable);
-        selectKeptBtn.setOpacity(opacity);
-    }
 
     public Scene getScene() {
         return scene;
     }
 
-    public void insertComponentToKepts(Component component, int index) {
+    public void insertComponentToKepts(Component component) {
+        if (keptFillLevel >= keptImages.size()) {
+            return; // tutti gli slot sono pieni, non dovrebbe succedere
+        }
         this.disableSelectButtons(true);
         ImageView componentView = new ImageView(component.getFrontImage());
         componentView.setFitWidth(110);
         componentView.setPreserveRatio(true);
         componentView.setMouseTransparent(true);
 
-        // Clip con angoli arrotondati
         Rectangle clip = new Rectangle(110, 110);
         clip.setArcWidth(12);
         clip.setArcHeight(12);
         componentView.setClip(clip);
 
-        // Ottieni lo slot visivo e inserisci l'immagine
-        StackPane slot = keptSlotsRef.get(index);
+        // Trova il primo slot libero
+        int indexToInsert = -1;
+        for (int i = 0; i < keptImages.size(); i++) {
+            if (keptImages.get(i) == null) {
+                indexToInsert = i;
+                break;
+            }
+        }
+
+        if (indexToInsert == -1) {
+            return; // nessuno slot libero, dovrebbe essere evitato a monte
+        }
+
+        StackPane slot = keptSlotsRef.get(indexToInsert);
         slot.getChildren().clear();
         slot.getChildren().add(componentView);
 
@@ -277,15 +276,12 @@ public class BuildingScene {
         border.setFill(Color.TRANSPARENT);
         border.setStroke(Color.WHITE);
         border.setStrokeWidth(1);
-
         slot.getChildren().add(border);
 
-        // Aggiorna la lista logica delle immagini
-        keptImages.set(index, componentView);
-
-        boolean anyKept = keptImages.stream().anyMatch(Objects::nonNull);
-        selectKeptBtn.setDisable(!anyKept);
-
+        keptImages.set(indexToInsert, componentView);
+        keptFillLevel++;
+        this.selectKeptBtn.setDisable(false);
+        this.selectKeptBtn.setOpacity(1.0);
     }
 
     public void selectKeptComponent(int index) {
@@ -294,8 +290,7 @@ public class BuildingScene {
 
         // Solo se c'è un kept valido e lo slot di selezione è vuoto
         if (keptView != null) {
-
-            // TODO: QUESTA E LA VERSIONE FINALE this.insertSelectedComponent(viewFlow.getSelectedKeptComponent().get(index),false);
+            keptFillLevel--;
             this.insertSelectedComponent(new Cannon(3, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web129.jpg", true),false);
             // Rimuovi dallo slot kept
             this.disableSelectButtons(false);
@@ -309,13 +304,14 @@ public class BuildingScene {
             border.setStrokeWidth(1);
 
             keptSlotsRef.get(index).getChildren().add(border);
-
-            // Aggiorna lo stato del pulsante
-            boolean anyKept = keptImages.stream().anyMatch(Objects::nonNull);
-            selectKeptBtn.setDisable(!anyKept);
+            if(keptFillLevel== 0){
+                this.selectKeptBtn.setDisable(true);
+                this.selectKeptBtn.setOpacity(0.5);
+            }
         }
 
     }
+
 
 
 
@@ -326,7 +322,11 @@ public class BuildingScene {
             inShipView = true;
         }
         this.componentSelectedExists = true;
-
+        disableSelectButtons(false);
+        if(keptFillLevel==2){
+            this.keepBtn.setDisable(true);
+            this.keepBtn.setOpacity(0.5);
+        }
         ImageView componentView = new ImageView(selected.getFrontImage());
         componentView.setFitWidth(176);
         componentView.setPreserveRatio(true);
@@ -1114,8 +1114,7 @@ public class BuildingScene {
     }
 
     public void showOtherShip(Component[][] layout, String nickname) {
-        disableOptionButtons(true);
-        disableSelectButtons(true);
+        disableAndSaveAllButtonStates();
 
         // === Immagine della nave ===
         AnchorPane overlay = new AnchorPane();
@@ -1195,8 +1194,7 @@ public class BuildingScene {
         root.setOnMouseClicked(e -> {
             root.getChildren().remove(overlay);
             root.getChildren().remove(popupWithLabel);
-            disableSelectButtons(false);
-            disableOptionButtons(false);
+            restoreAllButtonStates();
             if(shipScreenContent != null) {
                 root.getChildren().setAll(shipScreenContent);
             }
@@ -1205,6 +1203,35 @@ public class BuildingScene {
         // === Aggiunta sopra la UI ===
         root.getChildren().add(popupWithLabel);
     }
+
+
+    private void restoreAllButtonStates() {
+        for (Map.Entry<Button, Boolean> entry : previousButtonStates.entrySet()) {
+            Button btn = entry.getKey();
+            boolean wasEnabled = entry.getValue();
+            btn.setDisable(!wasEnabled);
+            btn.setOpacity(wasEnabled ? 1.0 : 0.5);
+        }
+        previousButtonStates.clear(); // reset per evitare conflitti futuri
+    }
+
+
+    private void disableAndSaveAllButtonStates() {
+        List<Button> buttons = Arrays.asList(
+                finishBtn, stackBtn, rulesBtn, otherBtn, hourglassBtn,
+                selectBtn, selectKeptBtn, turnBtn, keepBtn, discardBtn, linkBtn
+        );
+
+        previousButtonStates.clear();
+
+        for (Button btn : buttons) {
+            previousButtonStates.put(btn, !btn.isDisabled()); // true se era abilitato
+            btn.setDisable(true);
+            btn.setOpacity(0.5);
+        }
+    }
+
+
 
 }
 

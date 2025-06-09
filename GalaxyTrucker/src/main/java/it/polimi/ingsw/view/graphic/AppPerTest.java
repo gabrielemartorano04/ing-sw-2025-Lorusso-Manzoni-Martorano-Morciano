@@ -115,40 +115,40 @@ public class AppPerTest extends Application {
 //
 //        primaryStage.setScene(loginScene.createScene());
 
-//        StackPane stackPane = new StackPane();
-//        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
-//        Scene scene = buildingScene.createScene(playersNames, 2);
+        StackPane stackPane = new StackPane();
+        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
+        Scene scene = buildingScene.createScene(playersNames, 2);
 //        buildingScene.insertSelectedComponent(cannon, false);
 //        buildingScene.insertComponentInGrid(cannon,6,7);
-//        buildingScene.insertComponentToKepts(cannon,0);
-//        //buildingScene.selectKeptComponent(0);
-//
-//
-////        buildingScene.selectKeptComponent(0);
-//        primaryStage.setScene(scene);
-//        buildingScene.showOtherShip(trucker.getSpaceShip().getComponents(), trucker.getNickname());
-//
-//
-//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-//        primaryStage.show();
-
-        ArrayList<Trucker> planets = new ArrayList<>(){
-            {
-                add(trucker);
-                add(null);
-            }
-        };
+        buildingScene.insertComponentToKepts(cannon);
+        //buildingScene.selectKeptComponent(0);
 
 
-        StackPane stackPane = new StackPane();
-        FlightScene flightScene = new FlightScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
-        primaryStage.setScene(flightScene.createScene(playersNames, 2));
+//        buildingScene.selectKeptComponent(0);
+        primaryStage.setScene(scene);
+        buildingScene.showOtherShip(trucker.getSpaceShip().getComponents(), trucker.getNickname());
+
 
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
-        flightScene.showPlanets(planets);
+
+//        ArrayList<Trucker> planets = new ArrayList<>(){
+//            {
+//                add(trucker);
+//                add(null);
+//            }
+//        };
+//
+//
+//        StackPane stackPane = new StackPane();
+//        FlightScene flightScene = new FlightScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
+//        primaryStage.setScene(flightScene.createScene(playersNames, 2));
+
+//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+//        primaryStage.show();
+//        flightScene.showPlanets(planets);
     }
 
     public static void main(String[] args) {
