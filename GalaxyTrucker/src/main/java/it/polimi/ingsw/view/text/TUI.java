@@ -40,8 +40,6 @@ public class TUI implements UI {
     public void welcomeScene(AvailableColorsEvent event){
         this.showWelcome();
         this.showChooseColor(event.getColors());
-        System.out.print("> ");
-
     }
 
     @Override
@@ -53,7 +51,6 @@ public class TUI implements UI {
     public void nickNameAlreadyTaken(NicknameAlreadyInError event){
         this.showNicknameTaken();
         this.showChooseColor(event.getColors());
-        System.out.print("> ");
     }
 
     @Override
@@ -61,7 +58,6 @@ public class TUI implements UI {
         this.showError(event.getMessage());
         this.showColorTaken();
         this.showChooseColor(event.getAvailableColors());
-        System.out.print("> ");
     }
 
     @Override
@@ -78,7 +74,6 @@ public class TUI implements UI {
         this.showPlayers(event.getPlayers());
         this.showBuildPhaseStart(event.getComponents());
         this.showBuildOptions();
-        System.out.print("> ");
     }
 
     @Override
@@ -167,8 +162,6 @@ public class TUI implements UI {
                 i++;
             }
         }
-
-        System.out.print("> ");
     }
 
 
@@ -176,7 +169,6 @@ public class TUI implements UI {
     public void componentLinked(ComponentLinkedEvent event){
         this.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
         this.showAvailableComponent(event.getAvComponents());
-        System.out.print("> ");
     }
 
     @Override
@@ -184,28 +176,24 @@ public class TUI implements UI {
         this.showError(event.getMessage());
         this.showAvailableComponent(this.viewFlow.getAvailableComponents());
         this.showMessage("Please select a component between 0 and " + (this.viewFlow.getAvailableComponents().size()-1)+"\n");
-        System.out.print("> ");
     }
 
     @Override
     public void componentSelected (ComponentSelectedEvent event){
         this.showComponentSelected(this.viewFlow.getSelectedComponent());
         this.showComponentOptions();
-        System.out.print("> ");
     }
 
     @Override
     public void invalidCoordinates(InvalidCoordinatesError event){
         this.showError(event.getMessage());
         this.askCoordinates();
-        System.out.print("> ");
     }
 
     @Override
     public void invalidPosition(InvalidPositionError event){
         this.showInvalidPlacement(event.getMessage());
         this.askCoordinates();
-        System.out.print("> ");
     }
 
     @Override
@@ -221,13 +209,10 @@ public class TUI implements UI {
     @Override
     public void turnHourGlassError(TurnHourglassError event){
         this.showError(event.getMessage());
-        System.out.print("> ");
     }
 
     @Override
-    public void turnHourGlass(HourglassTurnEvent event){
-        System.out.print("> ");
-    }
+    public void turnHourGlass(HourglassTurnEvent event){}
 
     @Override
     public void buildingComplete(BuildCompleteEvent event){
@@ -249,20 +234,17 @@ public class TUI implements UI {
     @Override
     public void keptComponent(KeptComponentEvent event){
         this.showAvailableComponent(event.getAvComponents());
-        System.out.print("> ");
     }
 
     @Override
     public void componentTurned(TurnedComponentSuccessEvent event){
         this.showComponentSelected(event.getComponent());
-        System.out.print("> ");
     }
 
 
     @Override
     public void keptSelected(SuccessSelectKept event){
         this.showComponentSelected(viewFlow.getSelectedComponent());
-        System.out.print("> ");
     }
 
     @Override
@@ -286,13 +268,11 @@ public class TUI implements UI {
             this.showMessage("\nList of cabin available for aliens:\n" + message);
             this.showMessage("Insert coordinates (coord <x1> <y1> <color> <x2> <y2> <color>...):\n");
         }
-        System.out.print("> ");
     }
 
     @Override
     public void dropStack(StackDropOk event){
         this.showMessage(event.getMessage());
-        System.out.print("> ");
     }
 
     //TODO NON USATO SISTEMA
@@ -301,14 +281,12 @@ public class TUI implements UI {
         this.showShipLayout(viewFlow.getNickname(), event.getSpaceShip());
         this.showFlightPhaseStart();
         this.showMessage("Please type 'state' to see your spaceship state\n");
-        System.out.print("> ");
     }
 
 
     @Override
     public void showCurrCondition(CurrentCondition event){
         System.out.println("Current condition:" + event.getCondition());
-        System.out.print("> ");
     }
 
     @Override
@@ -385,7 +363,6 @@ public class TUI implements UI {
             case WARZONE -> System.out.println("Type 'warzone' to start warzone card");
 
         }
-        System.out.print("> ");
     }
 
     @Override
@@ -481,7 +458,6 @@ public class TUI implements UI {
     @Override
     public void showTimeExpired() {
         System.out.println("Time expired, end of turn.!");
-        System.out.print("> ");
     }
 
     @Override
@@ -805,7 +781,6 @@ public class TUI implements UI {
     @Override
     public void askCoordinates() {
         System.out.print("Insert coordinates (x y): ");
-        System.out.print("> ");
     }
 
     @Override
@@ -825,6 +800,20 @@ public class TUI implements UI {
     public void showGoodsGained(Goods good) {
         System.out.println("Goods gained:");
         System.out.println("- " + good.getColor() + " (" + good.getValue() + ")");
+    }
+
+    @Override
+    public void showPlanetsOccupied(PlanetDecision event) {
+        int index=0;
+        for(Trucker planets: event.getPlanetsOccupied()){
+            if(planets==null){
+                System.out.println("Planets "+index+" is free");
+            }
+            else{
+                System.out.println("Planets "+index+" is occupied by: "+planets.getNickname());
+            }
+            index++;
+        }
     }
 
     @Override
@@ -933,7 +922,6 @@ public class TUI implements UI {
             System.out.printf(" [%02d] %-15s (Level %d)%n",
                     i, card.getName(), card.getLevel());
         }
-        System.out.print("> ");
     }
 
     @Override
