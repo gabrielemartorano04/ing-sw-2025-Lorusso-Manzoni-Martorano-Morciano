@@ -29,8 +29,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
-import java.util.List;
-import java.util.ArrayList;
+
+import java.util.*;
 
 
 import java.awt.*;
@@ -38,7 +38,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -76,6 +76,9 @@ public class BuildingScene {
     private List<Node> shipScreenContent;
     private boolean inShipView;
 
+    private Map<Button, Boolean> previousButtonStates = new HashMap<>();
+
+
     private VBox componentSelectedBox;
     private boolean componentSelectedExists;
 
@@ -90,6 +93,7 @@ public class BuildingScene {
         this.root = root;
         this.inShipView = true;
         this.keptFillLevel = 0;
+        this.previousButtonStates = new HashMap<>();
 
         this.validCells = new boolean[11][12];
         for (int i = 0; i < layout.length; i++) {
@@ -228,30 +232,7 @@ public class BuildingScene {
         keepBtn.setOpacity(opacity);
     }
 
-    private void disableOptionButtons(boolean disable) {
-        double opacity = disable ? 0.5 : 1;
 
-        finishBtn.setDisable(disable);
-        finishBtn.setOpacity(opacity);
-
-        stackBtn.setDisable(disable);
-        stackBtn.setOpacity(opacity);
-
-        rulesBtn.setDisable(disable);
-        rulesBtn.setOpacity(opacity);
-
-        otherBtn.setDisable(disable);
-        otherBtn.setOpacity(opacity);
-
-        hourglassBtn.setDisable(disable);
-        hourglassBtn.setOpacity(opacity);
-
-        selectBtn.setDisable(disable);
-        selectBtn.setOpacity(opacity);
-
-        selectKeptBtn.setDisable(disable);
-        selectKeptBtn.setOpacity(opacity);
-    }
 
     public Scene getScene() {
         return scene;
@@ -1133,9 +1114,7 @@ public class BuildingScene {
     }
 
     public void showOtherShip(Component[][] layout, String nickname) {
-        //TODO: sostituire salvando i valori di enable vecchi dei pulsanti e sostituendo
-//        disableOptionButtons(true);
-//        disableSelectButtons(true);
+        disableAndSaveAllButtonStates();
 
         // === Immagine della nave ===
         AnchorPane overlay = new AnchorPane();
@@ -1215,9 +1194,7 @@ public class BuildingScene {
         root.setOnMouseClicked(e -> {
             root.getChildren().remove(overlay);
             root.getChildren().remove(popupWithLabel);
-            //TODO: sostituire con il salvataggio dei valori di enable dei vecchi pulsanti
-//            disableSelectButtons(false);
-//            disableOptionButtons(false);
+            restoreAllButtonStates();
             if(shipScreenContent != null) {
                 root.getChildren().setAll(shipScreenContent);
             }
@@ -1226,6 +1203,35 @@ public class BuildingScene {
         // === Aggiunta sopra la UI ===
         root.getChildren().add(popupWithLabel);
     }
+
+
+    private void restoreAllButtonStates() {
+        for (Map.Entry<Button, Boolean> entry : previousButtonStates.entrySet()) {
+            Button btn = entry.getKey();
+            boolean wasEnabled = entry.getValue();
+            btn.setDisable(!wasEnabled);
+            btn.setOpacity(wasEnabled ? 1.0 : 0.5);
+        }
+        previousButtonStates.clear(); // reset per evitare conflitti futuri
+    }
+
+
+    private void disableAndSaveAllButtonStates() {
+        List<Button> buttons = Arrays.asList(
+                finishBtn, stackBtn, rulesBtn, otherBtn, hourglassBtn,
+                selectBtn, selectKeptBtn, turnBtn, keepBtn, discardBtn, linkBtn
+        );
+
+        previousButtonStates.clear();
+
+        for (Button btn : buttons) {
+            previousButtonStates.put(btn, !btn.isDisabled()); // true se era abilitato
+            btn.setDisable(true);
+            btn.setOpacity(0.5);
+        }
+    }
+
+
 
 }
 
