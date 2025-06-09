@@ -115,12 +115,12 @@ public class ViewFlow implements EventReceiver {
     @Override
     public void onEventReceived(ServerEvent event) {
         if (event.getEventType() != ServerEventType.PING) {
-            if (nickname == null) {
-                System.out.println("[SERVER] Message received: " + event.getMessage() + ". || EventType ||: " + event.getEventType());
-
-            } else {
-                System.out.println("[SERVER] Message received: " + event.getMessage() + ". || EventType ||: " + event.getEventType() + " per " + nickname);
-            }
+//            if (nickname == null) {
+//                System.out.println("[SERVER] Message received: " + event.getMessage() + ". || EventType ||: " + event.getEventType());
+//
+//            } else {
+//                System.out.println("[SERVER] Message received: " + event.getMessage() + ". || EventType ||: " + event.getEventType() + " per " + nickname);
+//            }
         //!!questa deve gestire gli eventi dal server!!
             switch (event.getEventType()) {
                 case CHOOSE_RESUME ->{
