@@ -206,7 +206,7 @@ public class ViewFlow implements EventReceiver {
                 if(!alreadyLogged)
                     event = inputParser.parseLogin(input);
                 else {
-                    System.out.println("You can only wait for others to log");
+                    ui.showWaitingForPlayers();
                     event = null;
                 }
             }
@@ -215,7 +215,7 @@ public class ViewFlow implements EventReceiver {
                     event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected);
                 }
                 else {
-                    System.out.println("You can only wait for others to finish buildin");
+                    ui.showWaitForOthers();
                     event = null;
                 }
 
@@ -235,7 +235,7 @@ public class ViewFlow implements EventReceiver {
                     } else if (startFlightForAll) {
                         event = inputParserFlight.parseFlight(input, nickname);
                     } else {
-                        System.out.println("You can only wait for others to start flight");
+                        ui.showWaitForOthers();
                         event = null;
                     }
                 }else{

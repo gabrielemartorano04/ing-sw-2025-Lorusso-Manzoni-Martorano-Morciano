@@ -492,8 +492,9 @@ public class GUI implements UI {
         });
     }
 
+
     @Override
-    public void showWaitingForPlayers(int currentPlayers) {
+    public void showWaitingForPlayers() {
         double width = 1600;
         double height = 900;
 
