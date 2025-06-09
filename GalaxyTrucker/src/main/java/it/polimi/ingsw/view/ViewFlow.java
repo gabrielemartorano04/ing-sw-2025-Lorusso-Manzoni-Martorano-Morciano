@@ -54,6 +54,8 @@ public class ViewFlow implements EventReceiver {
     private int stackSelected;
     private boolean out;
     private int level;
+    private boolean alreadyLogged;
+
 
     public enum ViewState {
         FIRST,
@@ -102,7 +104,7 @@ public class ViewFlow implements EventReceiver {
             this.ui = new TUI(this);
         }
         this.serverEventVisitor = new ServerEventHandlerVisitor(this, ui);
-
+        this.alreadyLogged=false;
     }
 
 
@@ -200,7 +202,14 @@ public class ViewFlow implements EventReceiver {
         switch (viewState) {
             case CHOOSE_OLD -> event=inputParser.parseOld(input);
             case FIRST -> event = inputParser.parseFirstConnection(input);
-            case START-> event = inputParser.parseLogin(input);
+            case START-> {
+                if(!alreadyLogged)
+                    event = inputParser.parseLogin(input);
+                else {
+                    System.out.println("You can only wait for others to log");
+                    event = null;
+                }
+            }
             case BULDING-> {
                 if (!this.end) {
                     event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected);
@@ -472,6 +481,10 @@ public class ViewFlow implements EventReceiver {
 
     public GUI getGUI(){
         return (GUI)ui;
+    }
+
+    public void setAlreadyLogged(){
+        this.alreadyLogged = true;
     }
 }
 
