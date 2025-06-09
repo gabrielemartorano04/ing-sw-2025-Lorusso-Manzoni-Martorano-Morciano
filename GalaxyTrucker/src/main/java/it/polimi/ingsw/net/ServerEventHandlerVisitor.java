@@ -38,6 +38,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(PlayerJoinedEvent event) {
+        viewFlow.setAlreadyLogged();
         ui.showPlayerJoined(event.getUsername());
 
         if(!viewFlow.getNameAlreadySet()){
