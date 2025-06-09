@@ -955,6 +955,21 @@ public class GUI implements UI {
 
     }
 
+    @Override
+    public void showShipLayout(String nickname, Component[][] layout){
+        if (viewFlow.getViewState() == ViewFlow.ViewState.BULDING) {
+            Platform.runLater(() -> {
+                this.buildingScene.showOtherShip(layout, nickname);
+            });
+        } else if (viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH) {
+            Platform.runLater(() -> {
+                //TODO: mettere showOthership dentro la fligth scene
+                // this.flightScene.showOtherShip(layout, nickname);
+            });
+        }
+
+    }
+
 
     public void showCardDrawn(String photo) {
         double width = stage.getScene().getWidth();
@@ -1210,8 +1225,8 @@ public class GUI implements UI {
         });
     }
 
-    @Override
-    public void showShipLayout(String nickname, Component[][] layout) {
+    @Deprecated
+    public void showShipLayoutOld(String nickname, Component[][] layout) {
         double width = 1600;
         double height = 900;
 
