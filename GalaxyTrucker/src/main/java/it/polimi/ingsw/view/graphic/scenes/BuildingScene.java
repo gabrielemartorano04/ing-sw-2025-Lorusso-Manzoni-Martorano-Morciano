@@ -570,8 +570,6 @@ public class BuildingScene {
                 pile.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
                 final int index = i;
                 pile.setOnAction(ev -> {
-                    String command = "stack " + index;
-                    System.out.println("DEBUG: Sending command -> " + command);
                     viewFlow.handleInput("stack " + index);
                     root.getChildren().remove(root.lookup("#popupOverlay"));
                 });
