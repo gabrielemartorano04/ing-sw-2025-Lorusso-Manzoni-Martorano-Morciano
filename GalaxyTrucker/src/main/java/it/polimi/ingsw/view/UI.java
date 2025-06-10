@@ -144,7 +144,6 @@ public interface UI {
     void showFlightPhaseStart();
 
     void showCardDrawn(StartCardEvent event);
-    void showCardEffectStart(Card card);
     void showGoodsGained(Goods goods);
     //INPUT
 

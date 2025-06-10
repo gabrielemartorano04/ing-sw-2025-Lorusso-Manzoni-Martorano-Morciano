@@ -565,10 +565,6 @@ public class TUI implements UI {
 
     }
 
-    @Override
-    public void showCardEffectStart(Card card) {
-        System.out.println("Card effect: " + card.getDescription());
-    }
 
 
     @Override

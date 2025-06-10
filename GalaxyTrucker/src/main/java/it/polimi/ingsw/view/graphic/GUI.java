@@ -284,6 +284,12 @@ public class GUI implements UI {
         });
     }
 
+    @Override
+    public void showDiscardComponent(Component component) {
+        Platform.runLater(() -> {
+            this.buildingScene.resetComponentSelectedBox();
+        });
+    }
 
     @Override
     public void componentLinked(ComponentLinkedEvent event){
@@ -387,6 +393,18 @@ public class GUI implements UI {
         Platform.runLater(() -> {
             this.buildingScene.refreshComponentsViewIfVisible();
         });
+    }
+
+    @Override
+    public void showAvailableComponent(ArrayList<Component> components) {
+        Platform.runLater(() -> {
+            this.buildingScene.refreshComponentsViewIfVisible();
+        });
+    }
+
+    @Override
+    public void showKeptComponents(ArrayList<Component> kept) {
+        // nella gui non deve fare nulla forse c'è un modo migliore di unificare ma per ora tengo cosi
     }
 
     // fine building scene
@@ -501,6 +519,20 @@ public class GUI implements UI {
         }
     }
 
+    @Override
+    public void showotherShipLayout(String nickname, Component[][] layout) {
+        if (viewFlow.getViewState() == ViewFlow.ViewState.BULDING) {
+            Platform.runLater(() -> {
+                this.buildingScene.showOtherShip(layout, nickname);
+            });
+        } else if (viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH) {
+            Platform.runLater(() -> {
+                //TODO: mettere showOthership dentro la fligth scene
+                // this.flightScene.showOtherShip(layout, nickname);
+            });
+        }
+    }
+
     // fine eventi validi in piu scene
 
 
@@ -509,146 +541,6 @@ public class GUI implements UI {
     // fine gioco
 
 
-
-
-    @Override
-    public void showAvailableComponent(ArrayList<Component> components) {
-        //TODO: la gui non deve mostrare gli available ma deve solo aggiornarli cioè aggiungere quello discard a quelli che ci sono
-
-        double width = 1600;
-        double height = 900;
-
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(20));
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setAlignment(Pos.CENTER);
-
-        int col = 0;
-        int row = 0;
-        int i = 0;
-        for (Component component : components) {
-            final int index = i;
-            ImageView imgView = new ImageView(component.getCovered() ? component.getBackImage() : component.getFrontImage());
-            imgView.setFitWidth(70);
-            imgView.setFitHeight(70);
-
-            Rectangle clip = new Rectangle(75, 75);
-            clip.setArcWidth(16);
-            clip.setArcHeight(16);
-            imgView.setClip(clip);
-
-            Button button = new Button();
-            button.setGraphic(imgView);
-            button.setPrefSize(75, 75);
-            button.setStyle("-fx-background-color: transparent; -fx-border-color: #cccccc; -fx-border-radius: 8px; -fx-cursor: hand; -fx-padding: 0px;");
-
-            button.setOnAction(e -> {
-                viewFlow.handleInput("select " + index);
-                //TODO inserire ritorno alla schermata precedente con la spaceship e il resto
-            });
-
-            grid.add(button, col, row);
-            col++;
-            if (col == 8) {
-                col = 0;
-                row++;
-            }
-            i++;
-        }
-
-        ScrollPane scrollPane = new ScrollPane(new StackPane(grid));
-        scrollPane.setFitToWidth(true);
-        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
-
-        // Pulsante "Back"
-        Button backBtn = new Button("←");
-        backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 14));
-        backBtn.setTextFill(Color.BLACK);
-        backBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-        backBtn.setCursor(Cursor.HAND);
-        backBtn.setPadding(new Insets(10, 12, 10, 12));
-        backBtn.setOnAction(e -> viewFlow.handleInput("back")); //TODO inserire il ritorno corretto alla schermata precedente
-
-        // Contenitore principale
-        StackPane root = new StackPane(backgroundView, scrollPane, backBtn);
-        StackPane.setAlignment(backBtn, Pos.TOP_LEFT);
-        StackPane.setMargin(backBtn, new Insets(20, 0, 0, 20));
-
-        Scene scene = new Scene(root, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.setFullScreen(true);
-
-    }
-
-    @Override
-    public void showKeptComponents(ArrayList<Component> kept) {
-        if (kept == null || kept.isEmpty()) return;  // Non mostra nulla se vuota
-
-        HBox keptSlots = new HBox(10);
-        keptSlots.setMaxWidth(200);
-        keptSlots.setAlignment(Pos.TOP_RIGHT);
-
-        int maxSlots = Math.min(kept.size(), 2);  // massimo 2, ma solo se esistono
-
-        for (int i = 0; i < maxSlots; i++) {
-            final int index = i;
-
-            StackPane slot = new StackPane();
-            slot.setPrefSize(70, 70);
-            slot.setMinSize(70, 70);
-            slot.setMaxSize(70, 70);
-            slot.setStyle("-fx-background-color: transparent;");
-
-            Rectangle border = new Rectangle(70, 70);
-            border.setArcWidth(3);
-            border.setArcHeight(3);
-            border.setFill(Color.TRANSPARENT);
-            border.setStroke(Color.WHITE);
-            border.setStrokeWidth(2);
-
-            Component comp = kept.get(i);
-            if (comp != null) {
-                ImageView imageView = new ImageView(comp.getFrontImage());
-                imageView.setFitWidth(70);
-                imageView.setFitHeight(70);
-
-                Rectangle clip = new Rectangle(70, 70);
-                clip.setArcWidth(6);
-                clip.setArcHeight(6);
-                imageView.setClip(clip);
-
-                imageView.setOnMouseClicked(event -> {
-                    viewFlow.handleInput("selectkept " + index);
-                    isLinkingEnabled = true;
-                    event.consume();
-                });
-
-                slot.getChildren().addAll(border, imageView);
-            } else {
-                slot.getChildren().add(border);
-            }
-
-            keptSlots.getChildren().add(slot);
-        }
-
-        StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
-        StackPane.setMargin(keptSlots, new Insets(30, 50, 0, 0));
-
-        Platform.runLater(() -> {
-            StackPane stackRoot = (StackPane) stage.getScene().getRoot();
-            if (!stackRoot.getChildren().contains(keptSlots)) {
-                stackRoot.getChildren().add(keptSlots);
-            }
-        });
-    }
 
 
     @Override
@@ -685,36 +577,6 @@ public class GUI implements UI {
         });
     }
 
-    @Override
-    public void showDiscardComponent(Component component) {
-        selectedComponent = component;
-
-        Button discardButton = new Button("Discard");
-        discardButton.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-        discardButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-        discardButton.setId("discardBtn");
-
-        discardButton.setOnAction(e -> {
-            viewFlow.handleInput("discard");
-            selectedComponent = null;
-            Node root = stage.getScene().getRoot();
-            Node toRemove = root.lookup("#discardBtn");
-            if (toRemove != null) {
-                ((Pane) root).getChildren().remove(toRemove);
-            }
-        });
-
-        VBox buttonBox = new VBox(discardButton);
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setPadding(new Insets(250, 0, 0, 0));
-
-        Platform.runLater(() -> {
-            Node root = stage.getScene().getRoot();
-            if (root.lookup("#discardBtn") == null) {
-                ((Pane) root).getChildren().add(buttonBox);
-            }
-        });
-    }
 
 
 
@@ -809,19 +671,7 @@ public class GUI implements UI {
 
     }
 
-    @Override
-    public void showotherShipLayout(String nickname, Component[][] layout) {
-        if (viewFlow.getViewState() == ViewFlow.ViewState.BULDING) {
-            Platform.runLater(() -> {
-                this.buildingScene.showOtherShip(layout, nickname);
-            });
-        } else if (viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH) {
-            Platform.runLater(() -> {
-                //TODO: mettere showOthership dentro la fligth scene
-                // this.flightScene.showOtherShip(layout, nickname);
-            });
-        }
-    }
+
 
 
     @Override
@@ -867,42 +717,7 @@ public class GUI implements UI {
         });
     }
 
-    @Override
-    public void showCardEffectStart(Card card) {
-        double width = stage.getScene().getWidth();
-        double height = stage.getScene().getHeight();
 
-        // Sfondo grigio trasparente
-        Rectangle overlay = new Rectangle(width, height);
-        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
-        overlay.setMouseTransparent(true);
-
-        // Etichetta centrale
-        Label message = new Label("Effect incoming...");
-        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 36));
-        message.setTextFill(Color.web("#FFDE69"));
-        message.setEffect(new DropShadow(3, Color.BLACK));
-
-        StackPane container = new StackPane(overlay, message);
-        container.setAlignment(Pos.CENTER);
-
-        // Rimozione automatica dopo 2 secondi
-        PauseTransition pause = new PauseTransition(Duration.seconds(3));
-        pause.setOnFinished(e -> {
-            Node rootNode = stage.getScene().getRoot();
-            if (rootNode.getClass().equals(StackPane.class)) {
-                ((StackPane) rootNode).getChildren().remove(container);
-            }
-        });
-
-        Platform.runLater(() -> {
-            Node rootNode = stage.getScene().getRoot();
-            if (rootNode.getClass().equals(StackPane.class)) {
-                ((StackPane) rootNode).getChildren().add(container);
-                pause.play();
-            }
-        });
-    }
 
     @Override
     public void showTruckerWithdrawn(String nickname) {
@@ -1217,6 +1032,145 @@ public class GUI implements UI {
     }
 
 
+    @Deprecated
+    public void showAvailableComponentOld(ArrayList<Component> components) {
+        //TODO: la gui non deve mostrare gli available ma deve solo aggiornarli cioè aggiungere quello discard a quelli che ci sono
+
+        double width = 1600;
+        double height = 900;
+
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(20));
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
+
+        int col = 0;
+        int row = 0;
+        int i = 0;
+        for (Component component : components) {
+            final int index = i;
+            ImageView imgView = new ImageView(component.getCovered() ? component.getBackImage() : component.getFrontImage());
+            imgView.setFitWidth(70);
+            imgView.setFitHeight(70);
+
+            Rectangle clip = new Rectangle(75, 75);
+            clip.setArcWidth(16);
+            clip.setArcHeight(16);
+            imgView.setClip(clip);
+
+            Button button = new Button();
+            button.setGraphic(imgView);
+            button.setPrefSize(75, 75);
+            button.setStyle("-fx-background-color: transparent; -fx-border-color: #cccccc; -fx-border-radius: 8px; -fx-cursor: hand; -fx-padding: 0px;");
+
+            button.setOnAction(e -> {
+                viewFlow.handleInput("select " + index);
+                //TODO inserire ritorno alla schermata precedente con la spaceship e il resto
+            });
+
+            grid.add(button, col, row);
+            col++;
+            if (col == 8) {
+                col = 0;
+                row++;
+            }
+            i++;
+        }
+
+        ScrollPane scrollPane = new ScrollPane(new StackPane(grid));
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+
+        // Pulsante "Back"
+        Button backBtn = new Button("←");
+        backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 14));
+        backBtn.setTextFill(Color.BLACK);
+        backBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        backBtn.setCursor(Cursor.HAND);
+        backBtn.setPadding(new Insets(10, 12, 10, 12));
+        backBtn.setOnAction(e -> viewFlow.handleInput("back")); //TODO inserire il ritorno corretto alla schermata precedente
+
+        // Contenitore principale
+        StackPane root = new StackPane(backgroundView, scrollPane, backBtn);
+        StackPane.setAlignment(backBtn, Pos.TOP_LEFT);
+        StackPane.setMargin(backBtn, new Insets(20, 0, 0, 20));
+
+        Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setFullScreen(true);
+
+    }
+
+
+    @Deprecated
+    public void showKeptComponentsOld(ArrayList<Component> kept) {
+        if (kept == null || kept.isEmpty()) return;  // Non mostra nulla se vuota
+
+        HBox keptSlots = new HBox(10);
+        keptSlots.setMaxWidth(200);
+        keptSlots.setAlignment(Pos.TOP_RIGHT);
+
+        int maxSlots = Math.min(kept.size(), 2);  // massimo 2, ma solo se esistono
+
+        for (int i = 0; i < maxSlots; i++) {
+            final int index = i;
+
+            StackPane slot = new StackPane();
+            slot.setPrefSize(70, 70);
+            slot.setMinSize(70, 70);
+            slot.setMaxSize(70, 70);
+            slot.setStyle("-fx-background-color: transparent;");
+
+            Rectangle border = new Rectangle(70, 70);
+            border.setArcWidth(3);
+            border.setArcHeight(3);
+            border.setFill(Color.TRANSPARENT);
+            border.setStroke(Color.WHITE);
+            border.setStrokeWidth(2);
+
+            Component comp = kept.get(i);
+            if (comp != null) {
+                ImageView imageView = new ImageView(comp.getFrontImage());
+                imageView.setFitWidth(70);
+                imageView.setFitHeight(70);
+
+                Rectangle clip = new Rectangle(70, 70);
+                clip.setArcWidth(6);
+                clip.setArcHeight(6);
+                imageView.setClip(clip);
+
+                imageView.setOnMouseClicked(event -> {
+                    viewFlow.handleInput("selectkept " + index);
+                    isLinkingEnabled = true;
+                    event.consume();
+                });
+
+                slot.getChildren().addAll(border, imageView);
+            } else {
+                slot.getChildren().add(border);
+            }
+
+            keptSlots.getChildren().add(slot);
+        }
+
+        StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
+        StackPane.setMargin(keptSlots, new Insets(30, 50, 0, 0));
+
+        Platform.runLater(() -> {
+            StackPane stackRoot = (StackPane) stage.getScene().getRoot();
+            if (!stackRoot.getChildren().contains(keptSlots)) {
+                stackRoot.getChildren().add(keptSlots);
+            }
+        });
+    }
 
 
     @Override

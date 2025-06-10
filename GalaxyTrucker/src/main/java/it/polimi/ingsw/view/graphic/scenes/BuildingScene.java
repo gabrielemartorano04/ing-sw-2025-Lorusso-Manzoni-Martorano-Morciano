@@ -320,10 +320,6 @@ public class BuildingScene {
 
     }
 
-
-
-
-
     public void insertSelectedComponent(Component selected, boolean toTurn) {
         if (!inShipView && shipScreenContent != null) {
             root.getChildren().setAll(shipScreenContent);
@@ -405,7 +401,7 @@ public class BuildingScene {
         return keptSlotsRef;
     }
 
-    private void resetComponentSelectedBox() {
+    public void resetComponentSelectedBox() {
         componentSelectedBox.getChildren().clear();
 
         Rectangle border = new Rectangle(178, 178);
