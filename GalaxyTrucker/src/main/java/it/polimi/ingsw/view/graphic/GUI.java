@@ -384,7 +384,9 @@ public class GUI implements UI {
 
     @Override
     public void refreshAvailableComponents(){
-        this.buildingScene.refreshComponentsViewIfVisible();
+        Platform.runLater(() -> {
+            this.buildingScene.refreshComponentsViewIfVisible();
+        });
     }
 
     // fine building scene
