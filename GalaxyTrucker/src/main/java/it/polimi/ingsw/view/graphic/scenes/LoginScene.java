@@ -37,7 +37,9 @@ public class LoginScene {
     private StackPane root;
     private final Set<PlayerColors> unavailableColors;
 
+
     private StackPane waitOverlay;
+    private Timeline waitAnimation;
 
 
     public LoginScene(EnumSet<PlayerColors> availableColors, ViewFlow viewFlow) {
@@ -260,15 +262,15 @@ public class LoginScene {
         waitOverlay.setMouseTransparent(true);
         waitOverlay.setAlignment(Pos.CENTER);
 
-        Timeline animation = new Timeline(
+        waitAnimation = new Timeline(
                 new KeyFrame(Duration.seconds(0), e -> dots.setText("")),
                 new KeyFrame(Duration.seconds(0.5), e -> dots.setText(".")),
                 new KeyFrame(Duration.seconds(1.0), e -> dots.setText("..")),
                 new KeyFrame(Duration.seconds(1.5), e -> dots.setText("...")),
                 new KeyFrame(Duration.seconds(2.0), e -> dots.setText(""))
         );
-        animation.setCycleCount(Animation.INDEFINITE);
-        animation.play();
+        waitAnimation.setCycleCount(Animation.INDEFINITE);
+        waitAnimation.play();
 
         Platform.runLater(() -> {
             if (!root.getChildren().contains(waitOverlay)) {
@@ -277,15 +279,17 @@ public class LoginScene {
         });
     }
 
-
     public void hideWaitForOthers() {
         Platform.runLater(() -> {
             if (waitOverlay != null) {
                 root.getChildren().remove(waitOverlay);
                 waitOverlay = null;
             }
+            if (waitAnimation != null) {
+                waitAnimation.stop();
+                waitAnimation = null;
+            }
         });
     }
-
 
 }
