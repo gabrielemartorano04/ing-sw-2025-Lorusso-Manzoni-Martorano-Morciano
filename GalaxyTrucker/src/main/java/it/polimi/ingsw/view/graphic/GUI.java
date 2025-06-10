@@ -857,7 +857,7 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showShipLayout(String nickname, Component[][] layout){
+    public void showotherShipLayout(String nickname, Component[][] layout) {
         if (viewFlow.getViewState() == ViewFlow.ViewState.BULDING) {
             Platform.runLater(() -> {
                 this.buildingScene.showOtherShip(layout, nickname);
@@ -868,7 +868,13 @@ public class GUI implements UI {
                 // this.flightScene.showOtherShip(layout, nickname);
             });
         }
+    }
 
+
+    @Override
+    public void showShipLayout(String nickname, Component[][] layout){
+        //serve per la TUI forse c'è modo di unificare meglio intanto non rimuovere
+        return;
     }
 
 
