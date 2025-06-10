@@ -570,7 +570,7 @@ public class BuildingScene {
                 pile.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
                 final int index = i;
                 pile.setOnAction(ev -> {
-                    viewFlow.handleInput("stack " + index);
+                    viewFlow.handleInput("stack " + (index+1));
                     root.getChildren().remove(root.lookup("#popupOverlay"));
                 });
                 stackChoices.getChildren().add(pile);
@@ -1380,11 +1380,11 @@ public class BuildingScene {
     public void showStack(Stack stack) {
         StackPane overlay = new StackPane();
         overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6);");
-        overlay.setPickOnBounds(true); // Consente di intercettare click ovunque
-        overlay.setMouseTransparent(false); // Blocca interazioni con sotto-livelli
+        overlay.setPickOnBounds(true);
+        overlay.setMouseTransparent(false);
 
         HBox cardBox = new HBox(20);
-        cardBox.setAlignment(Pos.CENTER);
+        cardBox.setAlignment(Pos.CENTER_LEFT); // allineamento a sinistra per lo scroll
 
         for (Card card : stack.getStack()) {
             ImageView cardView = new ImageView(card.getFrontImage());
@@ -1394,6 +1394,15 @@ public class BuildingScene {
             cardBox.getChildren().add(cardView);
         }
 
+        // ScrollPane che contiene le carte
+        ScrollPane scrollPane = new ScrollPane(cardBox);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
+        scrollPane.setPadding(new Insets(100, 50, 50, 50)); // spazio intorno alle carte
+
+        // Pulsante "←" sempre visibile in alto a sinistra
         Button backBtn = new Button("←");
         backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
         backBtn.setTextFill(Color.BLACK);
@@ -1408,13 +1417,14 @@ public class BuildingScene {
             viewFlow.handleInput("dropStack");
         });
 
-        overlay.getChildren().addAll(cardBox, backBtn);
+        overlay.getChildren().addAll(scrollPane, backBtn);
 
         Platform.runLater(() -> {
             root.getChildren().add(overlay);
             this.currentStackOverlay = overlay;
         });
     }
+
 
     public void hideStackOverlay() {
         if (currentStackOverlay != null) {
