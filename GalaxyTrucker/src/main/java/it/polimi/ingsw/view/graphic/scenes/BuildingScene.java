@@ -76,6 +76,7 @@ public class BuildingScene {
 
     private List<Node> shipScreenContent;
     private boolean inShipView;
+    private boolean isComponentViewVisible;
 
     private Map<Button, Boolean> previousButtonStates = new HashMap<>();
 
@@ -98,6 +99,7 @@ public class BuildingScene {
         this.componentSelectedExists = false;
         this.root = root;
         this.inShipView = true;
+        this.isComponentViewVisible = false;
         this.keptFillLevel = 0;
         this.previousButtonStates = new HashMap<>();
 
@@ -452,6 +454,12 @@ public class BuildingScene {
     }
 
 
+    public void refreshComponentsViewIfVisible() {
+        if (isComponentViewVisible) {
+            loadComponentsView(viewFlow.getAvailableComponents());
+        }
+    }
+
 
 
 
@@ -693,9 +701,7 @@ public class BuildingScene {
         selectComponentBtn.setOnAction(e -> {
             shipScreenContent = new ArrayList<>(root.getChildren());
             this.inShipView = false;
-            ArrayList<Component> components = new AvailableComponents().getComponents();
-            //TODO: ora tieni components per vedere ma poi sarà showAvailableComponent(viewFlow.getAvailableComponents());
-            loadComponentsView(components);
+            loadComponentsView(viewFlow.getAvailableComponents());
         });
 
         this.selectBtn = selectComponentBtn;
@@ -838,6 +844,7 @@ public class BuildingScene {
 
 
     public void loadComponentsView(ArrayList<Component> components) {
+        this.isComponentViewVisible = true;
         double width = 1600;
         double height = 900;
 
@@ -949,6 +956,11 @@ public class BuildingScene {
                 });
             });
 
+            if (component.getSelected()) {
+                button.setDisable(true);
+                button.setOpacity(0.4);
+            }
+
             grid.add(button, col, row);
             if (++col == 8) {
                 col = 0;
@@ -968,6 +980,7 @@ public class BuildingScene {
         backBtn.setPadding(new Insets(12, 18, 12, 18));
 
         backBtn.setOnAction(e -> {
+            this.isComponentViewVisible = false;
             if (shipScreenContent != null) {
                 this.inShipView = true;
                 root.getChildren().setAll(shipScreenContent);
