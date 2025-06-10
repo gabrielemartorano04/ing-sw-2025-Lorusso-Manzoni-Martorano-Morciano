@@ -358,7 +358,6 @@ public class BuildingScene {
 
     public void insertComponentInGrid(Component component, int row, int col) {
         this.componentSelectedExists = false;
-        this.disableSelectButtons(true);
         if (component == null || !validCells[row][col]) return;
         resetComponentSelectedBox();
 
@@ -403,6 +402,8 @@ public class BuildingScene {
 
     public void resetComponentSelectedBox() {
         componentSelectedBox.getChildren().clear();
+
+        this.disableSelectButtons(true); // non hai piu un componente in mano
 
         Rectangle border = new Rectangle(178, 178);
         border.setArcWidth(16);
