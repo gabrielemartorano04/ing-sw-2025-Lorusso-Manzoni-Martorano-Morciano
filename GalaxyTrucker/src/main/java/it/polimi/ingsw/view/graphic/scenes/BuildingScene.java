@@ -1321,6 +1321,48 @@ public class BuildingScene {
         });
     }
 
+    public void showMessage(String message) {
+        // Titolo (bold)
+        Label title = new Label("New message:");
+        title.setTextFill(Color.WHITE);
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+
+        // Messaggio (normale)
+        Label content = new Label(message);
+        content.setTextFill(Color.WHITE);
+        content.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        content.setTextAlignment(TextAlignment.RIGHT);
+
+        VBox messageBox = new VBox(2, title, content);
+        messageBox.setAlignment(Pos.CENTER_RIGHT);
+
+        messageBox.setStyle(
+                "-fx-background-color: rgba(0, 0, 0, 0.85); " +
+                        "-fx-padding: 10px 15px; " +
+                        "-fx-background-radius: 10px;"
+        );
+
+        // Assicura dimensione del VBox
+        messageBox.setMaxWidth(Region.USE_PREF_SIZE);
+        messageBox.setMaxHeight(Region.USE_PREF_SIZE);
+
+        Platform.runLater(() -> {
+            Node rootNode = scene.getRoot();
+
+            if (rootNode instanceof StackPane root) {
+                // Posiziona il messaggio in alto a destra
+                StackPane.setAlignment(messageBox, Pos.TOP_RIGHT);
+                StackPane.setMargin(messageBox, new Insets(20, 20, 0, 0));
+                root.getChildren().add(messageBox);
+
+                // Rimozione automatica dopo 10 secondi
+                PauseTransition delay = new PauseTransition(Duration.seconds(10));
+                delay.setOnFinished(e -> root.getChildren().remove(messageBox));
+                delay.play();
+            }
+        });
+    }
+
 
 
 

@@ -91,6 +91,12 @@ public interface UI {
     void showPlanetsOccupied(PlanetDecision event);
 
 
+    // Usati in piu scene
+
+    void showMessage(String message);
+
+    // fine metodi usati in piu scene
+
     //END GAME
 
     void showGameEnded();
@@ -137,7 +143,6 @@ public interface UI {
     void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor);
     void showShipLayout(String nickname, Component[][] layout);
 
-    void showMessage(String message);
     void showTrack(Map<String, Integer> truckers, int level);
 
 
