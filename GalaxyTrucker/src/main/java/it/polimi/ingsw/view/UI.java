@@ -128,13 +128,9 @@ public interface UI {
     void showGoodsGained(Goods goods);
     void showPlanetsOccupied(PlanetDecision event);
     //INPUT
-    void askIndex();
 
 
     void askCoordinates();
-    void showGoodsToRemove(List<Goods> goods);
-    void askGoodsIndexesToRemove();
-    void askPlacedComponent();
 
     //PLAYER DATA
     void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor);

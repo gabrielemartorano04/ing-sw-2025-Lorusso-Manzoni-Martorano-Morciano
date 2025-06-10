@@ -764,27 +764,11 @@ public class TUI implements UI {
     }
 
     @Override
-    public void askIndex() {
-        System.out.print("Choose an index: ");
-    }
-
-    @Override
     public void askCoordinates() {
         System.out.print("Insert coordinates (x y): ");
     }
 
-    @Override
-    public void showGoodsToRemove(List<Goods> goods) {
-        System.out.println("\nGoods to remove:");
-        for (int i = 0; i < goods.size(); i++) {
-            System.out.println("[" + i + "] " + goods.get(i).getColor() + " (" + goods.get(i).getValue() + " crediti)");
-        }
-    }
 
-    @Override
-    public void askGoodsIndexesToRemove() {
-        System.out.println("Select goods to remove (ex. 0 1):");
-    }
 
     @Override
     public void showGoodsGained(Goods good) {
@@ -806,11 +790,6 @@ public class TUI implements UI {
         }
     }
 
-    @Override
-    public void askPlacedComponent() {
-        System.out.println("\nSelect a component from your spaceship (format: x y):");
-        System.out.print("Insert conrdinates (x y): ");
-    }
 
     @Override
     public void showTrack(Map<String, Integer> truckers, int level) {

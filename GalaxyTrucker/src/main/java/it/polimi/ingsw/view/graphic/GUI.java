@@ -978,30 +978,13 @@ public class GUI implements UI {
 
     }
 
-    @Override
-    public void askIndex() {
-
-    }
 
     @Override
     public void askCoordinates() {
 
     }
 
-    @Override
-    public void showGoodsToRemove(List<Goods> goods) {
 
-    }
-
-    @Override
-    public void askGoodsIndexesToRemove() {
-
-    }
-
-    @Override
-    public void askPlacedComponent() {
-
-    }
 
     @Override
     public void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor) {
