@@ -1,13 +1,21 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
+import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.ParserState;
 
 public class HumanCoordinates extends CardEvent {
 
-    public HumanCoordinates(ServerEventType eventType, boolean forAll, String nickname) {
+    private SpaceShip spaceShip;
+
+    public HumanCoordinates(ServerEventType eventType, boolean forAll, String nickname,SpaceShip spaceShip) {
         super(eventType, forAll, ParserState.HUMAN_COORD, nickname);
+        this.spaceShip=spaceShip;
+    }
+
+    public SpaceShip getShip(){
+        return spaceShip;
     }
 
     @Override

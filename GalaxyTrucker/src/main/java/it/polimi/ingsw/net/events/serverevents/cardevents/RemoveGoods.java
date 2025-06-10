@@ -1,22 +1,30 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
+import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.ParserState;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class RemoveGoods extends CardEvent{
     private final ArrayList<Goods> goodsList;
+    private SpaceShip spaceShip;
 
-    public RemoveGoods(boolean forAll, String nickname, ArrayList<Goods> goodsList) {
+    public RemoveGoods(boolean forAll, String nickname,SpaceShip spaceShip, ArrayList<Goods> goodsList) {
         super(ServerEventType.REMOVE_GOODS, forAll, ParserState.REMOVE_GOODS, nickname);
         this.goodsList = goodsList;
+        this.spaceShip=spaceShip;
     }
 
     public ArrayList<Goods> getGoodsList() {
         return goodsList;
+    }
+
+    public SpaceShip getShip(){
+        return spaceShip;
     }
 
     @Override

@@ -500,7 +500,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     @Override
     public ServerEvent visit(RemotionSeenEvent event, Client client) {
         if (cardController.getCurrCard().getName().equalsIgnoreCase("Slavers")) {
-            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, client.getTruckerController().getNickname());
+            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, client.getTruckerController().getNickname(),client.getTruckerController().getSpaceShip());
         }else{
             try {
                 return cardController.getCurrCard().removeGoods();

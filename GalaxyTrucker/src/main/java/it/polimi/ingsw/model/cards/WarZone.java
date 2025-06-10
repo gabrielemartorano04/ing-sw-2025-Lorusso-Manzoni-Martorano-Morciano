@@ -266,7 +266,7 @@ public class WarZone extends Card implements Serializable {
                 for (int i = 0; i < numGoodCurrType; i++) {
                     goodsToRemove.add(listOfGoods.getFirst());
                 }
-                return new RemoveGoods(true, weakestTrucker.getNickname(), goodsToRemove);
+                return new RemoveGoods(true, weakestTrucker.getNickname(), weakestTrucker.getSpaceShip(),goodsToRemove);
             }
         }
 
@@ -278,7 +278,7 @@ public class WarZone extends Card implements Serializable {
 
             }else{
                 this.state = CardState.REMOVE_BATTERIES;
-                return new RemoveBatteries(true, weakestTrucker.getNickname(), goodsLostCurrTrucker);
+                return new RemoveBatteries(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(), goodsLostCurrTrucker);
             }
         }else{
             throw new GeneralError("RemoveGoods not working correctly");
@@ -307,7 +307,7 @@ public class WarZone extends Card implements Serializable {
             return cardEffect();
         } else { // il trucker corrente deve perdere batterie
             state = CardState.REMOVE_BATTERIES;
-            return new RemoveBatteries(true, weakestTrucker.getNickname(), goodsLostCurrTrucker);
+            return new RemoveBatteries(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(), goodsLostCurrTrucker);
         }
     }
 
@@ -457,7 +457,7 @@ public class WarZone extends Card implements Serializable {
             case LOSE_HUMANS:
                 state = CardState.HUMANSTOREMOVE;
                 numOfHumanToRemove = penalties.get(currCondition).getValue();
-                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, weakestTrucker.getNickname());
+                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip());
             default:
                 throw new GeneralError("Unknown TypeOfEffect");
         }

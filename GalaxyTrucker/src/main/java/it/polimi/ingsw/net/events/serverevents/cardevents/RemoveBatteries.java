@@ -1,19 +1,26 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
+import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.ParserState;
 
 public class RemoveBatteries extends CardEvent{
     private final int batteriesToRemove;
+    private SpaceShip spaceShip;
 
-    public RemoveBatteries(boolean forAll, String nickname, int batteriesToRemove) {
+    public RemoveBatteries(boolean forAll, String nickname, SpaceShip spaceShip,int batteriesToRemove) {
         super(ServerEventType.REMOVE_BATTERIES, forAll, ParserState.REMOVE_BATTERIES, nickname);
         this.batteriesToRemove = batteriesToRemove;
+        this.spaceShip=spaceShip;
     }
 
     public int getBatteriesToRemove() {
         return batteriesToRemove;
+    }
+
+    public SpaceShip getShip() {
+        return spaceShip;
     }
 
     @Override

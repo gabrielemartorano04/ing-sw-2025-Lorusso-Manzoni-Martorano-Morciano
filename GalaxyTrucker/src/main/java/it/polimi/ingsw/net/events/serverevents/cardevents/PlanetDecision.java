@@ -1,19 +1,27 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
+import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
+import javax.xml.parsers.SAXParser;
 import java.util.ArrayList;
 
 public class PlanetDecision extends ServerEvent {
     private ArrayList<Trucker> planetsOccupied;
     private String nickname;
-    public PlanetDecision(boolean forAll, ArrayList<Trucker> planetsOccupied, String nickname) {
+    private SpaceShip spaceShip;
+    public PlanetDecision(boolean forAll, ArrayList<Trucker> planetsOccupied, String nickname,SpaceShip spaceShip) {
         super(ServerEventType.PLOT_PLANETS, forAll);
         this.planetsOccupied = planetsOccupied;
         this.nickname = nickname;
+        this.spaceShip=spaceShip;
+    }
+
+    public SpaceShip getShip(){
+        return spaceShip;
     }
 
     public ArrayList<Trucker> getPlanetsOccupied() {
