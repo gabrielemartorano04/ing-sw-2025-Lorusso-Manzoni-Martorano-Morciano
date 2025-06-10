@@ -382,6 +382,10 @@ public class GUI implements UI {
         //button azione 'coord'
     }
 
+    @Override
+    public void refreshAvailableComponents(){
+        this.buildingScene.refreshComponentsViewIfVisible();
+    }
 
     // fine building scene
 

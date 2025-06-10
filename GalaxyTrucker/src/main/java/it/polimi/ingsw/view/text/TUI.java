@@ -267,6 +267,15 @@ public class TUI implements UI {
         this.showMessage(event.getMessage());
     }
 
+
+    @Override
+    public void refreshAvailableComponents(){
+        // serve per la GUI, non so se si riesce a integrare anche nella tui al massimo lo lasciamo vuoto
+        return;
+    }
+
+
+
     //TODO NON USATO SISTEMA
     @Override
     public void flightScene(FlightStartEvent event){

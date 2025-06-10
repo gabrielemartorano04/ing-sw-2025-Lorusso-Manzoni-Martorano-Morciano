@@ -66,6 +66,8 @@ public interface UI {
 
     void dropStack(StackDropOk event);
 
+    void refreshAvailableComponents();
+
     // FLIGHT
 
     void flightScene(FlightStartEvent event);
