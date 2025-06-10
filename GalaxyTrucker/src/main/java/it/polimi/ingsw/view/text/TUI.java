@@ -270,7 +270,9 @@ public class TUI implements UI {
     //TODO NON USATO SISTEMA
     @Override
     public void flightScene(FlightStartEvent event){
-        this.showShipLayout(viewFlow.getNickname(), event.getSpaceShip());
+        this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+        this.showPlayerShipStatus(viewFlow.getPosition(),viewFlow.getBatteryCount(), viewFlow.getHumanCount(), viewFlow.getCannonPower(), viewFlow.getEnginePower(), viewFlow.getGoodsByColor());
+        this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         this.showFlightPhaseStart();
         this.showMessage("Please type 'state' to see your spaceship state\n");
     }
@@ -522,7 +524,7 @@ public class TUI implements UI {
                 message += condition.toString() + " → " + effect.toString() + "\n";
             }
         }
-        if(event.getDays() != -1) System.out.println(event.getDays() + event.getDays() == 1 ? " day to lose" : " days to lose");
+        if(event.getDays() != -1) System.out.println(event.getDays() + " days to lose");
         if(event.getAstronautsLost() != -1) System.out.println(event.getAstronautsLost() + " crew members to lose");
         if(event.getGoodsLost() != -1) System.out.println(event.getGoodsLost() + " goods to lose");
         if(event.getCredits() != -1) System.out.println(event.getCredits() + " credits to gain");
