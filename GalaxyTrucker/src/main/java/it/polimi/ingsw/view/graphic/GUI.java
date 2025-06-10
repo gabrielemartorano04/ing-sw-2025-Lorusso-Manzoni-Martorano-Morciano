@@ -261,6 +261,11 @@ public class GUI implements UI {
         });
     }
 
+    @Override
+    public void showPlayerJoined(String nickname) {
+        this.loginScene.showPlayerJoined(nickname);
+    }
+
     // fine welcome scene
 
 
@@ -451,48 +456,8 @@ public class GUI implements UI {
 
     // fine flight scene
 
-    // end scene
 
-    // fine gioco
-
-
-
-    @Override
-    public void showPlayerJoined(String nickname) {
-        Label message = new Label(nickname + " has joined");
-        message.setStyle(
-                "-fx-background-color: rgba(0, 0, 0, 0.8); " +
-                        "-fx-text-fill: white; " +
-                        "-fx-padding: 10px 15px; " +
-                        "-fx-background-radius: 10px;"
-        );
-        message.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-
-        StackPane overlay = new StackPane(message);
-        overlay.setMouseTransparent(true);
-        StackPane.setAlignment(message, Pos.TOP_RIGHT);
-        StackPane.setMargin(message, new Insets(15, 15, 0, 0));
-
-        Platform.runLater(() -> {
-            Scene scene = stage.getScene();
-            Node currentRoot = scene.getRoot();
-
-            StackPane newRoot;
-            if (!currentRoot.getClass().getName().equals("javafx.scene.layout.StackPane")) {
-                newRoot = new StackPane(currentRoot);
-                scene.setRoot(newRoot);
-            } else {
-                newRoot = (StackPane) currentRoot;
-            }
-
-            newRoot.getChildren().add(overlay);
-
-            PauseTransition delay = new PauseTransition(Duration.seconds(5));
-            delay.setOnFinished(e -> newRoot.getChildren().remove(overlay));
-            delay.play();
-        });
-    }
-
+    // eventi validi in piu scene
 
     @Override
     public void showWaitForOthers() {
@@ -506,6 +471,18 @@ public class GUI implements UI {
             this.flightScene.showWaitForOthers();
         }
     }
+
+    // fine eventi validi in piu scene
+
+
+    // end scene
+
+    // fine gioco
+
+
+
+
+
 
     @Override
     public void showSetupComplete() {
