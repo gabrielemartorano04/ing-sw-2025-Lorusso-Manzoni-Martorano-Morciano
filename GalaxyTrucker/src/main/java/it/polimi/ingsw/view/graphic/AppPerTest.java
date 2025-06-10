@@ -53,9 +53,10 @@ public class AppPerTest extends Application {
         Card card1 = new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "");
         Card card2 = new Epidemic(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_015.jpg", "");
         Card card3 = new AbandonedShip(false, 2, 4, 6, 1, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0117.jpg", "");
-//        stack.add(card1);
-//        stack.add(card2);
-//        stack.add(card3);
+        stack = new Stack(0);
+        stack.addCardInStack(card1);
+        stack.addCardInStack(card2);
+        stack.addCardInStack(card3);
         spaceship = new SpaceShip();
         //spaceship.setSpaceship(level, color); AGGIUNGIIIII
         Cannon cannon = new Cannon(3, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web129.jpg", true);
@@ -100,8 +101,8 @@ public class AppPerTest extends Application {
         //gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
         //gui.colorAlreadyTaken(new ColorAlreadyInError(PlayerColors.RED, EnumSet.of(PlayerColors.GREEN, PlayerColors.BLUE, PlayerColors.YELLOW)));ù
 
-//        trucker.initSpaceShip(2);
-//
+        trucker.initSpaceShip(2);
+
 //        LoginScene loginScene = new LoginScene(EnumSet.allOf(PlayerColors.class), viewFlow);
 //        primaryStage.setScene(loginScene.createScene());
 //        loginScene.showWaitForOthers();
@@ -115,6 +116,8 @@ public class AppPerTest extends Application {
         StackPane stackPane = new StackPane();
         BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
         Scene scene = buildingScene.createScene(playersNames, 2);
+        buildingScene.showStack(stack);
+        buildingScene.hideStackOverlay();
 
 //        buildingScene.insertSelectedComponent(cannon, false);
 //        buildingScene.insertComponentInGrid(cannon,6,7);

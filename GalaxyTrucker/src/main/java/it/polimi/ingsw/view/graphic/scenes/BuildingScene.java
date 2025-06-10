@@ -86,6 +86,7 @@ public class BuildingScene {
     private StackPane waitOverlay;
     private Timeline waitAnimation;
 
+    private StackPane currentStackOverlay;
 
     public BuildingScene(String nickname, Component[][] layout, ViewFlow viewFlow, StackPane root) {
         this.nickname = nickname;
@@ -1367,8 +1368,8 @@ public class BuildingScene {
     public void showStack(Stack stack) {
         StackPane overlay = new StackPane();
         overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6);");
-        overlay.setPickOnBounds(true);
-        overlay.setMouseTransparent(false);
+        overlay.setPickOnBounds(true); // Consente di intercettare click ovunque
+        overlay.setMouseTransparent(false); // Blocca interazioni con sotto-livelli
 
         HBox cardBox = new HBox(20);
         cardBox.setAlignment(Pos.CENTER);
@@ -1381,16 +1382,40 @@ public class BuildingScene {
             cardBox.getChildren().add(cardView);
         }
 
-        overlay.getChildren().add(cardBox);
-        StackPane.setAlignment(cardBox, Pos.CENTER);
+        Button backBtn = new Button("←");
+        backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
+        backBtn.setTextFill(Color.BLACK);
+        backBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        backBtn.setCursor(Cursor.HAND);
+        backBtn.setPadding(new Insets(12, 18, 12, 18));
 
-        overlay.setOnMouseClicked(e -> {
-            root.getChildren().remove(overlay);
+        StackPane.setAlignment(backBtn, Pos.TOP_LEFT);
+        StackPane.setMargin(backBtn, new Insets(30));
+
+        backBtn.setOnAction(e -> {
+            viewFlow.handleInput("dropStack");
         });
+
+        overlay.getChildren().addAll(cardBox, backBtn);
 
         Platform.runLater(() -> {
             root.getChildren().add(overlay);
+            this.currentStackOverlay = overlay;
         });
+    }
+
+    public void hideStackOverlay() {
+        if (currentStackOverlay != null) {
+            Platform.runLater(() -> {
+                root.getChildren().remove(currentStackOverlay);
+                currentStackOverlay = null;
+
+                if (shipScreenContent != null) {
+                    this.inShipView = true;
+                    root.getChildren().setAll(shipScreenContent);
+                }
+            });
+        }
     }
 
 

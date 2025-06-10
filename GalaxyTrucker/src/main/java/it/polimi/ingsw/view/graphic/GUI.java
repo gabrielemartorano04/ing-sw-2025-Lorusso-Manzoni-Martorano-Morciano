@@ -293,6 +293,13 @@ public class GUI implements UI {
     }
 
     @Override
+    public void showStack(Stack stack) {
+        Platform.runLater(() -> {
+            this.buildingScene.showStack(stack);
+        });
+    }
+
+    @Override
     public void componentNotAvailable(ComponentNotAvailableError event){
         //TODO: notifica che il componente che hai provato a selezionare non è disponibile
         // vogliamo farti restare nella parte dove vedi le componenti disponibili e farti selezionare un altra componente
@@ -311,13 +318,18 @@ public class GUI implements UI {
 
     @Override
     public void invalidCoordinates(InvalidCoordinatesError event) {
-        this.buildingScene.showPopUpError(event.getMessage());
+        Platform.runLater(() -> {
+            this.buildingScene.showPopUpError(event.getMessage());
+        });
     }
 
 
     @Override
     public void turnHourGlassError(TurnHourglassError event) {
-        this.buildingScene.showPopUpError(event.getMessage());
+        Platform.runLater(() -> {
+            this.buildingScene.showPopUpError(event.getMessage());
+
+        });
     }
 
     @Override
@@ -358,7 +370,9 @@ public class GUI implements UI {
     @Override
     public void dropStack(StackDropOk event){
         //torna alla schermata base del buildind
-        //this.buildingScene.updateDropStack();
+        Platform.runLater(() -> {
+            this.buildingScene.hideStackOverlay();
+        });
     }
 
     @Override
@@ -1238,38 +1252,6 @@ public class GUI implements UI {
         stage.setFullScreen(true);
     }
 
-    @Override
-    public void showStack(Stack stack) {
-        StackPane overlay = new StackPane();
-        overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6);");
-        overlay.setPickOnBounds(true);
-        overlay.setMouseTransparent(false);
-
-        HBox cardBox = new HBox(20);
-        cardBox.setAlignment(Pos.CENTER);
-
-        for (Card card : stack.getStack()) {
-            ImageView cardView = new ImageView(card.getFrontImage());
-            cardView.setFitWidth(200);
-            cardView.setFitHeight(320);
-            cardView.setStyle("-fx-effect: dropshadow(one-pass-box, white, 6, 0, 0, 0);");
-            cardBox.getChildren().add(cardView);
-        }
-
-        overlay.getChildren().add(cardBox);
-        StackPane.setAlignment(cardBox, Pos.CENTER);
-
-        overlay.setOnMouseClicked(e -> {
-            Pane root = (Pane) stage.getScene().getRoot();
-            root.getChildren().remove(overlay);
-        });
-
-        // Aggiungi l'overlay sopra al root corrente
-        Platform.runLater(() -> {
-            Pane root = (Pane) stage.getScene().getRoot();
-            root.getChildren().add(overlay);
-        });
-    }
 
 
 
