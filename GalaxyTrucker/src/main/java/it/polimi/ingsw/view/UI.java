@@ -36,8 +36,6 @@ public interface UI {
 
     // BUILDING
 
-    void showSetupComplete();
-
     void startBuildingScene(StartBuildingEvent event);
 
     void componentLinked(ComponentLinkedEvent event);
@@ -89,6 +87,16 @@ public interface UI {
     void showResult(String result);
 
     void showDead();
+
+    void showPlanetsOccupied(PlanetDecision event);
+
+
+    // Usati in piu scene
+
+    void showMessage(String message);
+
+    // fine metodi usati in piu scene
+
     //END GAME
 
     void showGameEnded();
@@ -115,10 +123,8 @@ public interface UI {
     void showBuildOptions(); // (link / keep / discard)
     void showDiscardComponent(Component component);
 
-    void showComponentPlaced(Component component, int x, int y);
     void showInvalidPlacement(String reason);
 
-    void showHourglassTurned();
     void showTimeExpired();
     void showWaitForOthers();
 
@@ -130,24 +136,14 @@ public interface UI {
     void showCardDrawn(StartCardEvent event);
     void showCardEffectStart(Card card);
     void showGoodsGained(Goods goods);
-    void showPlanetsOccupied(PlanetDecision event);
     //INPUT
-    void askIndex();
 
-
-    void askCoordinates();
-    void showGoodsToRemove(List<Goods> goods);
-    void askGoodsIndexesToRemove();
-    void askPlacedComponent();
 
     //PLAYER DATA
     void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor);
     void showShipLayout(String nickname, Component[][] layout);
 
-    void showMessage(String message);
     void showTrack(Map<String, Integer> truckers, int level);
-
-    void showComponentSelected(Component component);
 
 
     void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames);

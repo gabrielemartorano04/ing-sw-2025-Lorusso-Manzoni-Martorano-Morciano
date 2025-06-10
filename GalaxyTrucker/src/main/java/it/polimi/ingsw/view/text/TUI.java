@@ -62,10 +62,6 @@ public class TUI implements UI {
     }
 
     @Override
-    public void showSetupComplete(){
-        System.out.println("SETUP complete. It's time to start building");
-    }
-    @Override
     public void startBuildingScene(StartBuildingEvent event){
         this.showPlayers(event.getPlayers());
         this.showBuildPhaseStart(event.getComponents());
@@ -438,7 +434,6 @@ public class TUI implements UI {
         System.out.println("Discard component " + component.getType());
     }
 
-    @Override
     public void showComponentPlaced(Component component, int x, int y) {
         System.out.println("Component " + component.getType() + " linked in [" + x + "," + y + "]");
     }
@@ -448,10 +443,6 @@ public class TUI implements UI {
         System.out.println("Place not correct: " + reason);
     }
 
-    @Override
-    public void showHourglassTurned() {
-        System.out.println("Hourglass Turned.");
-    }
 
     @Override
     public void showTimeExpired() {
@@ -774,28 +765,12 @@ public class TUI implements UI {
         return name.length() >= 3 ? name.substring(0, 3).toUpperCase() : name.toUpperCase();
     }
 
-    @Override
-    public void askIndex() {
-        System.out.print("Choose an index: ");
-    }
 
-    @Override
     public void askCoordinates() {
         System.out.print("Insert coordinates (x y): ");
     }
 
-    @Override
-    public void showGoodsToRemove(List<Goods> goods) {
-        System.out.println("\nGoods to remove:");
-        for (int i = 0; i < goods.size(); i++) {
-            System.out.println("[" + i + "] " + goods.get(i).getColor() + " (" + goods.get(i).getValue() + " crediti)");
-        }
-    }
 
-    @Override
-    public void askGoodsIndexesToRemove() {
-        System.out.println("Select goods to remove (ex. 0 1):");
-    }
 
     @Override
     public void showGoodsGained(Goods good) {
@@ -817,11 +792,6 @@ public class TUI implements UI {
         }
     }
 
-    @Override
-    public void askPlacedComponent() {
-        System.out.println("\nSelect a component from your spaceship (format: x y):");
-        System.out.print("Insert conrdinates (x y): ");
-    }
 
     @Override
     public void showTrack(Map<String, Integer> truckers, int level) {
@@ -925,7 +895,6 @@ public class TUI implements UI {
         }
     }
 
-    @Override
     public void showComponentSelected(Component c) {
         StringBuilder info = new StringBuilder();
 
