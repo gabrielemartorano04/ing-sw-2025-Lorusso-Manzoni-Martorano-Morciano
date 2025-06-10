@@ -175,7 +175,6 @@ public class ServerController {
         ServerEvent response = event.call(visitor, client);
 
 
-
         if (!gameCreated && visitor.getNumOfPlayers() > 0) {
             try {
                 this.gameController = new GameController(visitor.getNumOfPlayers(), visitor.getGameLevel());
