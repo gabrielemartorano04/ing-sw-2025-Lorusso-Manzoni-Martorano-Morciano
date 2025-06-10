@@ -462,7 +462,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(StartCardEvent event) {
         ui.showCardDrawn(event);
         if (event.getFirstPlayerNickname().equals(viewFlow.getNickname())) {
-            ui.showMessage(event.getQuestion());
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         } else {
