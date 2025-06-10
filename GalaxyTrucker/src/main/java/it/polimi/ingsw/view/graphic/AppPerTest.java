@@ -87,7 +87,7 @@ public class AppPerTest extends Application {
 //        gui.showKeptComponents(kept);
         //gui.showShipLayout(trucker.getNickname(), trucker.getSpaceShip().getComponents());
         //gui.showComponentSelected(c);
-        gui.showWaitForOthers();
+        // gui.showWaitForOthers();
         //gui.showBuildComplete();
         //gui.showSelectComponent();
         //gui.showAvailableComponent(availableComponents.getComponents());
@@ -102,18 +102,16 @@ public class AppPerTest extends Application {
 
         trucker.initSpaceShip(2);
 
-//        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(),trucker.getSpaceShip().getComponents(), viewFlow); // assicurati che esista questa classe
-//        Scene scene = buildingScene.createScene();
-//
-//        primaryStage.setScene(scene);
-//        primaryStage.setResizable(true);
-//        primaryStage.setFullScreenExitHint("");
-//        primaryStage.setTitle("Test Building Scene");
-//        primaryStage.show();
+        LoginScene loginScene = new LoginScene(EnumSet.allOf(PlayerColors.class), viewFlow);
+        primaryStage.setScene(loginScene.createScene());
+        loginScene.showWaitForOthers();
 
-//        LoginScene loginScene = new LoginScene(EnumSet.allOf(PlayerColors.class), viewFlow);
-//
-//        primaryStage.setScene(loginScene.createScene());
+
+        primaryStage.setResizable(true);
+        primaryStage.setFullScreenExitHint("");
+        primaryStage.setTitle("Test Building Scene");
+        primaryStage.show();
+
 
 //        StackPane stackPane = new StackPane();
 //        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
@@ -121,12 +119,13 @@ public class AppPerTest extends Application {
 //        buildingScene.insertSelectedComponent(cannon, false);
 //        buildingScene.insertComponentInGrid(cannon,6,7);
 //        buildingScene.insertComponentToKepts(cannon);
-        //buildingScene.selectKeptComponent(0);
-
-
 //        buildingScene.selectKeptComponent(0);
-//        primaryStage.setScene(scene);
+//        buildingScene.showPopUpError("Errore");
+//        buildingScene.selectKeptComponent(0);
 //        buildingScene.showOtherShip(trucker.getSpaceShip().getComponents(), trucker.getNickname());
+
+
+//        primaryStage.setScene(scene);
 //
 //
 //        primaryStage.setResizable(true);        // ← abilita ridimensionamento

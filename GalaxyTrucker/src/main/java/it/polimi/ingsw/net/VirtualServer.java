@@ -8,78 +8,79 @@ import it.polimi.ingsw.net.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.ChoseToResume;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
  * Interface of the visitor used to handle the events coming from the Client with the data used in the cards
  */
 
 public interface VirtualServer {
-    public void visit(CreateGameEvent event);
-    public void visit(DiscardTileEvent event);
-    public void visit(EndBuildingEvent event);
-    public void visit(KeepTileEvent event);
-    public void visit(LinkTileEvent event);
-    public void visit(LoginEvent event);
-    public void visit(SelectTileEvent event);
-
-    public void visit(SelectKeptTileEvent event);
-
-    public void visit(ShowStackEvent event);
-    public void visit(TurnHourglassEvent event);
-
     void setGameController(GameController event);
 
-    void visit(ShowOtherShipEvent event);
 
-    void visit(GeneriErrorFromClient event);
 
-    void visit(AlienCoordinatesRequest event);
+    ServerEvent visit(CreateGameEvent event, Client client);
+    ServerEvent visit(DiscardTileEvent event, Client client);
+    ServerEvent visit(EndBuildingEvent event, Client client);
+    ServerEvent visit(KeepTileEvent event, Client client);
+    ServerEvent visit(LinkTileEvent event, Client client);
+    ServerEvent visit(LoginEvent event, Client client);
+    ServerEvent visit(SelectTileEvent event, Client client);
 
-    void visit(SendAlienCoord event);
+    ServerEvent visit(SelectKeptTileEvent event, Client client);
 
-    void visit(OkStartFlight event);
+    ServerEvent visit(ShowStackEvent event, Client client);
+    ServerEvent visit(TurnHourglassEvent event, Client client);
 
-    void visit(HumanCoordEvent event);
+    ServerEvent visit(ShowOtherShipEvent event);
 
-    void visit(PlotGoodEvent event);
+    ServerEvent visit(AlienCoordinatesRequest event,Client client);
 
-    void visit(PlanetDecisionEvent event);
+    ServerEvent visit(SendAlienCoord event, Client client);
 
-    void visit(RollDiceEvent event);
+    ServerEvent visit(OkStartFlight event);
 
-    void visit(ActivateShieldEvent event);
+    ServerEvent visit(HumanCoordEvent event);
 
-    void visit(ActivateCannonsEvent event);
+    ServerEvent visit(PlotGoodEvent event);
 
-    void visit(ActivateEnginesEvent event);
+    ServerEvent visit(PlanetDecisionEvent event);
 
-    void visit(DrawCardEvent event);
+    ServerEvent visit(RollDiceEvent event);
 
-    void visit(TruckerLandingEvent event);
+    ServerEvent visit(ActivateShieldEvent event);
 
-    void visit(RearrangeEvent event);
+    ServerEvent visit(ActivateCannonsEvent event);
 
-    void visit(SetWinDecision event);
+    ServerEvent visit(ActivateEnginesEvent event);
 
-    void visit(RemoveGoodsEvent event);
+    ServerEvent visit(DrawCardEvent event);
 
-    void visit(RemoveAskingEvent event);
+    ServerEvent visit(TruckerLandingEvent event);
 
-    void visit(RemoveBatteriesEvent event);
+    ServerEvent visit(RearrangeEvent event);
 
-    void visit(TurnComponentEvent event);
+    ServerEvent visit(SetWinDecision event);
 
-    void visit(StackDroppedEvent event);
+    ServerEvent visit(RemoveGoodsEvent event);
 
-    void visit(GainCosmicCreditsResponseEvent event);
+    ServerEvent visit(RemoveAskingEvent event);
 
-    void visit(WarzoneStartEvent event);
+    ServerEvent visit(RemoveBatteriesEvent event);
 
-    void visit(RemotionSeenEvent event);
+    ServerEvent visit(TurnComponentEvent event);
 
-    void visit(DeadTrucker event);
+    ServerEvent visit(StackDroppedEvent event);
 
-    void visit(PongEvent pongEvent);
+    ServerEvent visit(GainCosmicCreditsResponseEvent event);
 
-    void visit(ChoseToResume event);
+    ServerEvent visit(WarzoneStartEvent event);
+
+    ServerEvent visit(RemotionSeenEvent event, Client client);
+
+    ServerEvent visit(DeadTrucker event);
+
+    ServerEvent visit(PongEvent pongEvent, Client client);
+
+    ServerEvent visit(ChoseToResume event);
 }

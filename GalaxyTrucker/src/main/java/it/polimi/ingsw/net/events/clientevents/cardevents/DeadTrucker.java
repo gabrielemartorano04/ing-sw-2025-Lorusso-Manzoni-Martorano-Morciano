@@ -1,7 +1,9 @@
 package it.polimi.ingsw.net.events.clientevents.cardevents;
 
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 
 public class DeadTrucker extends ClientEvent {
@@ -15,7 +17,7 @@ public class DeadTrucker extends ClientEvent {
     }
 
     @Override
-    public void call(VirtualServer visitor) {
-        visitor.visit(this);
+    public ServerEvent call(VirtualServer visitor, Client client) {
+        return visitor.visit(this);
     }
 }

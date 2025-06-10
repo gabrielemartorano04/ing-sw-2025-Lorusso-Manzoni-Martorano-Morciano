@@ -1,6 +1,8 @@
 package it.polimi.ingsw.net.events.clientevents;
 
+import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.VirtualServer;
+import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 public class AlienCoordinatesRequest extends ClientEvent {
 
@@ -12,7 +14,7 @@ public class AlienCoordinatesRequest extends ClientEvent {
     }
 
     @Override
-    public void call(VirtualServer visitor) {
-         visitor.visit(this);
+    public ServerEvent call(VirtualServer visitor, Client client) {
+         return visitor.visit(this, client);
     }
 }

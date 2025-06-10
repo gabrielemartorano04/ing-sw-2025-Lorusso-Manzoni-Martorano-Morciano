@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Cannon;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
@@ -81,6 +82,9 @@ public class BuildingScene {
 
     private VBox componentSelectedBox;
     private boolean componentSelectedExists;
+
+    private StackPane waitOverlay;
+
 
     public BuildingScene(String nickname, Component[][] layout, ViewFlow viewFlow, StackPane root) {
         this.nickname = nickname;
@@ -414,6 +418,39 @@ public class BuildingScene {
 
         componentSelectedBox.getChildren().add(imageContainer);
     }
+
+    public void showPopUpError(String message) {
+        double width = root.getWidth();
+        double height = root.getHeight();
+
+        // Overlay grigio trasparente
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlay.setMouseTransparent(true);
+
+        // Etichetta con il messaggio
+        Label messageLabel = new Label(message);
+        messageLabel.setTextFill(Color.RED);
+        messageLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
+        messageLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
+
+        // Contenitore del popup
+        StackPane popup = new StackPane(overlay, messageLabel);
+        popup.setMouseTransparent(true);
+        StackPane.setAlignment(messageLabel, Pos.CENTER);
+
+        Platform.runLater(() -> {
+            if (!root.getChildren().contains(popup)) {
+                root.getChildren().add(popup);
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                delay.setOnFinished(e -> root.getChildren().remove(popup));
+                delay.play();
+            }
+        });
+    }
+
+
+
 
 
 
@@ -1230,6 +1267,55 @@ public class BuildingScene {
             btn.setOpacity(0.5);
         }
     }
+
+
+    public void showWaitForOthers() {
+        Label message = new Label("Waiting for other truckers to finish");
+        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
+        message.setTextFill(Color.web("#FFDE69"));
+
+        Label dots = new Label(".");
+        dots.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
+        dots.setTextFill(Color.web("#FFDE69"));
+
+        HBox textBox = new HBox(5, message, dots);
+        textBox.setAlignment(Pos.CENTER);
+
+        Rectangle overlayBg = new Rectangle(root.getWidth(), root.getHeight());
+        overlayBg.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlayBg.widthProperty().bind(root.widthProperty());
+        overlayBg.heightProperty().bind(root.heightProperty());
+
+        waitOverlay = new StackPane(overlayBg, textBox);
+        waitOverlay.setMouseTransparent(true);
+        waitOverlay.setAlignment(Pos.CENTER);
+
+        Timeline animation = new Timeline(
+                new KeyFrame(Duration.seconds(0), e -> dots.setText("")),
+                new KeyFrame(Duration.seconds(0.5), e -> dots.setText(".")),
+                new KeyFrame(Duration.seconds(1.0), e -> dots.setText("..")),
+                new KeyFrame(Duration.seconds(1.5), e -> dots.setText("...")),
+                new KeyFrame(Duration.seconds(2.0), e -> dots.setText(""))
+        );
+        animation.setCycleCount(Animation.INDEFINITE);
+        animation.play();
+
+        Platform.runLater(() -> {
+            if (!root.getChildren().contains(waitOverlay)) {
+                root.getChildren().add(waitOverlay);
+            }
+        });
+    }
+
+    public void hideWaitForOthers() {
+        Platform.runLater(() -> {
+            if (waitOverlay != null) {
+                root.getChildren().remove(waitOverlay);
+                waitOverlay = null;
+            }
+        });
+    }
+
 
 
 
