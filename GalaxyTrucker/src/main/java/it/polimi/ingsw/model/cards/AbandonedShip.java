@@ -139,7 +139,7 @@ public class AbandonedShip extends Card implements Serializable {
         if(landing) {
             truckerThatHasDecided = Game.getIstance().getTrucker(indexOfCurrTrucker);
             state = CardState.HUMANSTOREMOVE;
-            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, false, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(),Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip());
         }else{
             if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()-1){
                 state = CardState.ESECUZIONE;

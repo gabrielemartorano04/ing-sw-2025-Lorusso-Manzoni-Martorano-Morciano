@@ -143,7 +143,7 @@ public class Smugglers extends Card implements Serializable {
             winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
             cardState = CardState.GOODSTOADD;
             System.out.println("11");
-            return new PlotGood(true, winnerTrucker.getNickname(), goodsGained[currGoodIndex]);
+            return new PlotGood(true, winnerTrucker.getNickname(),winnerTrucker.getSpaceShip(),goodsGained[currGoodIndex]);
         }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() == smugglersPower){
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
                 if(defeatedTruckers.isEmpty()){
@@ -236,7 +236,7 @@ public class Smugglers extends Card implements Serializable {
                 do {
                     if (Game.getIstance().getBank().getGoodsInBank(goodsGained[currGoodIndex].getValue()) >= 1) {
                         cardState = CardState.CHOOSE_TO_GAIN;
-                        return new PlotGood(true, winnerTrucker.getNickname(), goodsGained[currGoodIndex]);
+                        return new PlotGood(true, winnerTrucker.getNickname(),winnerTrucker.getSpaceShip(), goodsGained[currGoodIndex]);
                     } else {
                         currGoodIndex++;
                         if (currGoodIndex == goodsGained.length) {
@@ -320,7 +320,7 @@ public class Smugglers extends Card implements Serializable {
                 for (int i = 0; i < numGoodCurrType; i++) {
                     goodsToRemove.add(listOfGoods.getFirst());
                 }
-                return new RemoveGoods(true, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsToRemove);
+                return new RemoveGoods(true, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip(),goodsToRemove);
             }
         }
 
@@ -336,7 +336,7 @@ public class Smugglers extends Card implements Serializable {
                 }
             }else{
                 this.cardState = CardState.REMOVE_BATTERIES;
-                return new RemoveBatteries(true, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsLostCurrTrucker);
+                return new RemoveBatteries(true, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(),defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip(), goodsLostCurrTrucker);
             }
         }else{
             System.out.println(colorOfCurrGoodToRemove);
@@ -369,7 +369,7 @@ public class Smugglers extends Card implements Serializable {
             return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(),defeatedTruckers.get(indexOfCurrentTrucker - 1).getSpaceShip(), "Goods removed, press continue!");
         } else { // il trucker corrente deve perdere batterie
             cardState = CardState.REMOVE_BATTERIES;
-            return new RemoveBatteries(true, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsLostCurrTrucker);
+            return new RemoveBatteries(true, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(),defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip(), goodsLostCurrTrucker);
         }
     }
 
