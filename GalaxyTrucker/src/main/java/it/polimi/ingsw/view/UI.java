@@ -143,7 +143,6 @@ public interface UI {
     void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor);
     void showShipLayout(String nickname, Component[][] layout);
 
-    void showTrack(Map<String, Integer> truckers, int level);
 
 
     void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames);

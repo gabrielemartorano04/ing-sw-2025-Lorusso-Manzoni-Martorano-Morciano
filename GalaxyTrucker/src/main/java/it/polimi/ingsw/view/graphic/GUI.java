@@ -471,7 +471,7 @@ public class GUI implements UI {
     // fine flight scene
 
 
-    // eventi validi in piu scene
+    // metodi validi in piu scene
 
     @Override
     public void showWaitForOthers() {
@@ -483,6 +483,15 @@ public class GUI implements UI {
         else if (viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
             //TODO: ricordati di inserire l'hide del showWaitForOthers per flight quando finisce lo showWaitForOthers
             this.flightScene.showWaitForOthers();
+        }
+    }
+
+    @Override
+    public void showMessage(String message) {
+        if(viewFlow.getViewState() == ViewFlow.ViewState.BULDING){
+            this.buildingScene.showMessage(message);
+        }else{
+            this.flightScene.showMessage(message);
         }
     }
 
@@ -1171,16 +1180,8 @@ public class GUI implements UI {
         stage.setFullScreen(true);
     }
 
-    @Override
-    public void showMessage(String message) {
-        if(viewFlow.getViewState() == ViewFlow.ViewState.BULDING){
-            this.buildingScene.showMessage(message);
-        }else{
-            this.flightScene.showMessage(message);
-        }
-    }
 
-    @Override
+
     public void showTrack(Map<String, Integer> truckers, int level) {
         double width = 1600;
         double height = 900;
