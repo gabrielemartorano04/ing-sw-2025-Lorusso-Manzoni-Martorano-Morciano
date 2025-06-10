@@ -43,6 +43,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
         if(!viewFlow.getNameAlreadySet()){
             viewFlow.setNickname(event.getUsername());
+            viewFlow.setShip(event.getSpaceShip().getComponents());
         }
 
     }
@@ -54,10 +55,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(StartBuildingEvent event) {
         if(!viewFlow.getNameAlreadySet()){
             viewFlow.setNickname(event.getNickname());
+            viewFlow.setShip(event.getSpaceShip().getComponents());
         }
         viewFlow.setLevel(event.getLevel());
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
-        viewFlow.setShip(event.getSpaceShip().getComponents());
         viewFlow.fillAvailableComponents(event.getComponents());
 
         ui.startBuildingScene(event);

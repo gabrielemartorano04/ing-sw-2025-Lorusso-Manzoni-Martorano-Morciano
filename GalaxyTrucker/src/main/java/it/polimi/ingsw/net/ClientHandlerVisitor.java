@@ -197,13 +197,13 @@ public class ClientHandlerVisitor implements VirtualServer {
                     return new ColorAlreadyInError(color, gameController.getAvailablePlayerColors());
                 }
 
-                return new PlayerJoinedEvent(nickname);
+                return new PlayerJoinedEvent(nickname, client.getTruckerController().getSpaceShip());
             }else{
                 if(gameController.getGame().checkOldPlayers(event.getUsername(), event.getColor())) {
                     client.setTruckerController(gameController.addOldPlayer(nickname, color));
                     gameController.getGame().removeOldColors(event.getColor());
                     gameController.getGame().removeOldNicknames(event.getUsername());
-                    return new PlayerJoinedEvent(nickname);
+                    return new PlayerJoinedEvent(nickname, client.getTruckerController().getSpaceShip());
                 }
                 else{
                     return new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
@@ -213,7 +213,8 @@ public class ClientHandlerVisitor implements VirtualServer {
         if(numLog== gameController.getGame().getNumPlayers()){
             nickname = event.getUsername();
             PlayerColors color=event.getColor();
-            if(!ServerController.getIstance().getOldGame()) {
+            //TODO: rimettere questo quando finito di integrare con il resto !ServerController.getIstance().getOldGame()
+            if(true) {
                 try {
                     client.setTruckerController(gameController.tryAddPlayer(nickname, color));
                 } catch (NicknameUsedException e) {
