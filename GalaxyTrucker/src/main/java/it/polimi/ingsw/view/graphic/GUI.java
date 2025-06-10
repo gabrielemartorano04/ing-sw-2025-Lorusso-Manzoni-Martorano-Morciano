@@ -495,7 +495,7 @@ public class GUI implements UI {
 
 
     @Override
-    public void showWaitingForPlayers() {
+    public void showWaitForOthers() {
         if(viewFlow.getViewState() == ViewFlow.ViewState.START){
             this.loginScene.showWaitForOthers();
         }else if (viewFlow.getViewState() == ViewFlow.ViewState.BULDING){
@@ -839,45 +839,6 @@ public class GUI implements UI {
         wait.play();
     }
 
-    @Override
-    public void showWaitForOthers() {
-        Label message = new Label("Waiting for other truckers to finish");
-        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
-        message.setTextFill(Color.web("#FFDE69"));
-
-        Label dots = new Label(".");
-        dots.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
-        dots.setTextFill(Color.web("#FFDE69"));
-
-        HBox textBox = new HBox(5, message, dots);
-        textBox.setAlignment(Pos.CENTER);
-
-        Rectangle overlayBg = new Rectangle(stage.getScene().getWidth(), stage.getScene().getHeight());
-        overlayBg.setFill(Color.rgb(0, 0, 0, 0.4));
-        overlayBg.widthProperty().bind(stage.getScene().widthProperty());
-        overlayBg.heightProperty().bind(stage.getScene().heightProperty());
-
-        StackPane overlay = new StackPane(overlayBg, textBox);
-        overlay.setMouseTransparent(true);
-        overlay.setAlignment(Pos.CENTER);
-
-        Timeline animation = new Timeline(
-                new KeyFrame(Duration.seconds(0), e -> dots.setText("")),
-                new KeyFrame(Duration.seconds(0.5), e -> dots.setText(".")),
-                new KeyFrame(Duration.seconds(1.0), e -> dots.setText("..")),
-                new KeyFrame(Duration.seconds(1.5), e -> dots.setText("...")),
-                new KeyFrame(Duration.seconds(2.0), e -> dots.setText(""))
-        );
-        animation.setCycleCount(Animation.INDEFINITE);
-        animation.play();
-
-        Platform.runLater(() -> {
-            Pane parent = (Pane) stage.getScene().getRoot();
-            if (!parent.getChildren().contains(overlay)) {
-                parent.getChildren().add(overlay);
-            }
-        });
-    }
 
     @Override
     public void showBuildComplete() {

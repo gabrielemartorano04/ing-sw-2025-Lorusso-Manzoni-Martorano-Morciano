@@ -107,7 +107,6 @@ public interface UI {
     //SETUP
     void showPlayerJoined(String nickname);
 
-    void showWaitingForPlayers();
 
     //BUILDING
     void showAvailableComponent(ArrayList<Component> components);

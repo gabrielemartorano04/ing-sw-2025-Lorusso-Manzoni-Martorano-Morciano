@@ -42,10 +42,6 @@ public class TUI implements UI {
         this.showChooseColor(event.getColors());
     }
 
-    @Override
-    public void showWaitingForPlayers() {
-        System.out.println("Waiting for other truckers..");
-    }
 
     @Override
     public void nickNameAlreadyTaken(NicknameAlreadyInError event){
