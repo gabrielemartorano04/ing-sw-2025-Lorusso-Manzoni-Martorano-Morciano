@@ -332,7 +332,7 @@ public class Smugglers extends Card implements Serializable {
                     cardState = CardState.ESECUZIONE;
                     return cardEffect();
                 }else{
-                    return new RemotionConfirmed(ServerEventType.GOODS_REMOVED, defeatedTruckers.get(indexOfCurrentTrucker-1).getNickname(), "You didn't have batteries or goods to be removed. Press continue!");
+                    return new RemotionConfirmed(ServerEventType.GOODS_REMOVED, defeatedTruckers.get(indexOfCurrentTrucker-1).getNickname(), defeatedTruckers.get(indexOfCurrentTrucker-1).getSpaceShip(), "You didn't have batteries or goods to be removed. Press continue!");
                 }
             }else{
                 this.cardState = CardState.REMOVE_BATTERIES;
@@ -366,7 +366,7 @@ public class Smugglers extends Card implements Serializable {
             // per passare al prossimo obbligo il corrente a mandarmi un ok/continue
             indexOfCurrentTrucker++;
             cardState = CardState.REMOVE_GOODS;
-            return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(), "Goods removed, press continue!");
+            return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(),defeatedTruckers.get(indexOfCurrentTrucker - 1).getSpaceShip(), "Goods removed, press continue!");
         } else { // il trucker corrente deve perdere batterie
             cardState = CardState.REMOVE_BATTERIES;
             return new RemoveBatteries(true, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), goodsLostCurrTrucker);
@@ -429,7 +429,7 @@ public class Smugglers extends Card implements Serializable {
 
         indexOfCurrentTrucker++;
         cardState = CardState.REMOVE_GOODS;
-        return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(), "Batteries removed, press continue!");
+        return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(),defeatedTruckers.get(indexOfCurrentTrucker - 1).getSpaceShip(), "Batteries removed, press continue!");
     }
 
 

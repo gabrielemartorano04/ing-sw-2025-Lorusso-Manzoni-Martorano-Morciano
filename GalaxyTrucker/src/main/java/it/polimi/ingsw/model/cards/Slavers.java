@@ -221,7 +221,7 @@ public class Slavers extends Card implements Serializable {
                 return cardEffect();
             }
             indexOfCurrentTrucker++;
-            return new RemotionConfirmed(ServerEventType.HUMAN_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(), "Batteries removed, press continue!");
+            return new RemotionConfirmed(ServerEventType.HUMAN_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(), defeatedTruckers.get(indexOfCurrentTrucker - 1).getSpaceShip(),"Batteries removed, press continue!");
         }
         try {
             defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().checkCabin(coordinates, astronautsLost);
