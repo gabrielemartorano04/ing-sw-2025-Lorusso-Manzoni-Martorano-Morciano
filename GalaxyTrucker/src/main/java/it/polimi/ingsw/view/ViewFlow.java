@@ -158,9 +158,9 @@ public class ViewFlow implements EventReceiver {
                             //ui.showShipLayout(nickname, ship);
                         }
                         case FLIGTH -> {
-                            ui.showShipLayout(nickname, ship);
-                            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
-                            ui.showTrack(track, level);
+//                            ui.showShipLayout(nickname, ship);
+//                            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
+//                            ui.showTrack(track, level);
                             System.out.println("you are out?" + out);
                         }
                         case END -> event.call(serverEventVisitor);
@@ -383,6 +383,10 @@ public class ViewFlow implements EventReceiver {
 
     }
 
+    public Map<String, Integer> getGoodsByColor() {
+        return goodsByColor;
+    }
+
     public void addKeptComponent(Component keptComponent) throws IllegalArgumentException{
         if(this.keptComponent.size()<2) {
             this.keptComponent.add(keptComponent);
@@ -469,6 +473,19 @@ public class ViewFlow implements EventReceiver {
     }
     public int getLevel() {
         return level;
+    }
+
+    public int getBatteryCount(){
+        return batteryCount;
+    }
+    public int getEnginePower(){
+        return enginePower;
+    }
+    public float getCannonPower(){
+        return cannonPower;
+    }
+    public int getHumanCount(){
+        return humanCount;
     }
 
     public void respondToPing() {
