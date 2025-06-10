@@ -470,6 +470,7 @@ public class ViewFlow implements EventReceiver {
 
     public void setLevel(int level) {
         this.level = level;
+        this.inputParser.setLevel(level);
     }
     public int getLevel() {
         return level;
