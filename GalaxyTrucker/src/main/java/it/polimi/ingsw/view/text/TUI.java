@@ -422,11 +422,6 @@ public class TUI implements UI {
         showAvailableComponent(availableComponents);
     }
 
-    //todo:verrà eliminato quando eliminiamo l'evento availablecomponentsevent
-    @Override
-    public void showSelectComponent() {
-        System.out.print("Select the index of the component you want to link: ");
-    }
 
     private void showComponentOptions() {
         System.out.println("Options: [Link <row> <column> (to link the component in the position x,y of your spaceship)] [Keep] [Discard]");

@@ -649,56 +649,7 @@ public class GUI implements UI {
             }
         });
     }
-    @Override
-    public void showSelectComponent() {
-//        if (selectedComponent == null) return;
-//
-//        double width = 850;
-//        double height = 550;
-//
-//        // Overlay trasparente grigio
-//        Rectangle overlay = new Rectangle(width, height);
-//        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
-//        overlay.setMouseTransparent(true);
-//
-//        // Immagine componente selezionato
-//        ImageView imgView = new ImageView(selectedComponent.getFrontImage());
-//        imgView.setFitWidth(150);
-//        imgView.setFitHeight(150);
-//
-//        Rectangle clip = new Rectangle(150, 150);
-//        clip.setArcWidth(20);
-//        clip.setArcHeight(20);
-//        imgView.setClip(clip);
-//
-//        StackPane popup = new StackPane(imgView);
-//        popup.setAlignment(Pos.CENTER);
-//
-//        imgView.setOnDragDetected(e -> {
-//            Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
-//            ClipboardContent content = new ClipboardContent();
-//            content.putString("component");
-//            db.setContent(content);
-//            db.setDragView(imgView.snapshot(null, null));
-//
-//            // Rimuove overlay e popup
-//            Parent rootNode = stage.getScene().getRoot();
-//            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
-//                ((StackPane) rootNode).getChildren().removeAll(overlay, popup);
-//            }
-//
-//            e.consume();
-//        });
-//
-//        Platform.runLater(() -> {
-//            Parent rootNode = stage.getScene().getRoot();
-//            if (rootNode != null && rootNode.getClass().equals(StackPane.class)) {
-//                ((StackPane) rootNode).getChildren().addAll(overlay, popup);
-//            } else {
-//                System.err.println("Root non è uno StackPane");
-//            }
-//        });
-    }
+
 
     @Override
     public void showBuildOptions() {

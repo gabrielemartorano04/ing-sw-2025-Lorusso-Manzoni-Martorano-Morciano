@@ -24,6 +24,9 @@ public interface UI {
 
     // omologazione GUI TUI
 
+    void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames);
+
+
     // WELCOME + CREATION
 
     void showInsertNumPlayers();
@@ -121,16 +124,21 @@ public interface UI {
     //BUILDING
     void showAvailableComponent(ArrayList<Component> components);
     void showKeptComponents(ArrayList<Component> kept);
-    void showSelectComponent();
     void showBuildOptions(); // (link / keep / discard)
     void showDiscardComponent(Component component);
 
     void showInvalidPlacement(String reason);
 
+    // strano che non venga usato time expired
     void showTimeExpired();
+
     void showWaitForOthers();
 
     void showBuildComplete();
+
+    void showShipLayout(String nickname, Component[][] layout);
+
+
 
     //FLIGTH
     void showFlightPhaseStart();
@@ -143,12 +151,9 @@ public interface UI {
 
     //PLAYER DATA
     void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor);
-    void showShipLayout(String nickname, Component[][] layout);
 
+    //NON ELIMINARE
     void showotherShipLayout(String nickname, Component[][] layout);
-
-    void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames);
-
 
 
 }

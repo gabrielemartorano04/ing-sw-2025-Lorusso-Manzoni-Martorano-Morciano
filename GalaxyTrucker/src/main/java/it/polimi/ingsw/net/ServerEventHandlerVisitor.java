@@ -653,7 +653,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(ShowOtherShipResponse event) {
-        ui.showShipLayout(event.getNickname(), event.getSpaceship());
+        ui.showotherShipLayout(event.getNickname(), event.getSpaceship());
     }
 
     @Override
