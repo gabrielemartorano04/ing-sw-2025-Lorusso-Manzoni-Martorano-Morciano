@@ -210,7 +210,7 @@ public class ViewFlow implements EventReceiver {
                 if(!alreadyLogged)
                     event = inputParser.parseLogin(input);
                 else {
-                    ui.showWaitingForPlayers();
+                    // ui.showWaitingForPlayers();
                     event = null;
                 }
             }
