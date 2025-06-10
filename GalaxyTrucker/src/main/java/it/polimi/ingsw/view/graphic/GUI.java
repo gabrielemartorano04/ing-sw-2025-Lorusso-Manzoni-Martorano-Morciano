@@ -880,6 +880,7 @@ public class GUI implements UI {
             }
         });
     }
+
     @Override
     public void showCardEffectStart(Card card) {
         double width = stage.getScene().getWidth();
@@ -978,11 +979,6 @@ public class GUI implements UI {
 
     }
 
-
-    @Override
-    public void askCoordinates() {
-
-    }
 
 
 

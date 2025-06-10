@@ -763,7 +763,7 @@ public class TUI implements UI {
         return name.length() >= 3 ? name.substring(0, 3).toUpperCase() : name.toUpperCase();
     }
 
-    @Override
+
     public void askCoordinates() {
         System.out.print("Insert coordinates (x y): ");
     }

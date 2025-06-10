@@ -87,6 +87,10 @@ public interface UI {
     void showResult(String result);
 
     void showDead();
+
+    void showPlanetsOccupied(PlanetDecision event);
+
+
     //END GAME
 
     void showGameEnded();
@@ -126,11 +130,8 @@ public interface UI {
     void showCardDrawn(StartCardEvent event);
     void showCardEffectStart(Card card);
     void showGoodsGained(Goods goods);
-    void showPlanetsOccupied(PlanetDecision event);
     //INPUT
 
-
-    void askCoordinates();
 
     //PLAYER DATA
     void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor);
