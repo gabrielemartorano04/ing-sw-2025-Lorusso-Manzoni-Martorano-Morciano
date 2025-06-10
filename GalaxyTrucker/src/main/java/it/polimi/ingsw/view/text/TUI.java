@@ -473,7 +473,9 @@ public class TUI implements UI {
     public void showCardDrawn(StartCardEvent event) {
         System.out.println("Card drawn: " + event.getCardName().toUpperCase());
         System.out.println("Card description: " + event.getCardDescription());
-        if(event.getPower() != -1) System.out.println(event.getPower() + " enemy cannon power");
+        if(event.getPower() != -1){
+            System.out.println( "Enemy cannon power: "+event.getPower());
+        }
         if(event.getMeteorites() != null) {
             String message = "Meteorites arriving:\n";
             int j = 0;
@@ -486,6 +488,7 @@ public class TUI implements UI {
                 }
                 j++;
             }
+            System.out.println(message);
         }
         if(event.getShoots() != null) {
             String message = "Shoots arriving:\n";
@@ -499,6 +502,7 @@ public class TUI implements UI {
                 }
                 j++;
             }
+            System.out.println(message);
         }
         if(event.getPlanets() != null) {
             String message = "Planets to visit:\n";
@@ -515,6 +519,7 @@ public class TUI implements UI {
                 }
                 message += red + " red goods, " + yellow + " yellow goods, " + green + " green goods, " + blue + " blue goods";
             }
+            System.out.println(message);
         }
         if(event.getPenalties() != null && event.getConditionsOrder() != null) {
             System.out.println("writing penalties to the client");
@@ -523,12 +528,23 @@ public class TUI implements UI {
                 Effect effect = event.getPenalties().get(condition);
                 message += condition.toString() + " → " + effect.toString() + "\n";
             }
+            System.out.println(message);
         }
-        if(event.getDays() != -1) System.out.println(event.getDays() + " days to lose");
-        if(event.getAstronautsLost() != -1) System.out.println(event.getAstronautsLost() + " crew members to lose");
-        if(event.getGoodsLost() != -1) System.out.println(event.getGoodsLost() + " goods to lose");
-        if(event.getCredits() != -1) System.out.println(event.getCredits() + " credits to gain");
-        if(event.getNumHumans() != -1) System.out.println(event.getNumHumans() + " humans required");
+        if(event.getDays() != -1) {
+            System.out.println("Days to lose: "+event.getDays());
+        }
+        if(event.getAstronautsLost() != -1) {
+            System.out.println("Crew members to lose: "+event.getAstronautsLost());
+        }
+        if(event.getGoodsLost() != -1){
+            System.out.println("Goods to lose: "+event.getGoodsLost() );
+        }
+        if(event.getCredits() != -1){
+            System.out.println("Credits to gain: "+event.getCredits());
+        }
+        if(event.getNumHumans() != -1) {
+            System.out.println( "Humans required: "+event.getNumHumans() );
+        }
         if(event.getGoods() != null) {
             int red = 0, yellow = 0, green = 0, blue = 0;
             for (Goods g : event.getGoods()) {
@@ -539,8 +555,9 @@ public class TUI implements UI {
             }
             System.out.println("Goods to gain: " + red + " 🟥, " + yellow + " 🟨, " + green + " 🟩, " + blue + " 🟦");
         }
-        if(event.getBank() != null) System.out.println("Bank deposit: " + event.getBank().getGoodsInBank(1) + " red goods, " + event.getBank().getGoodsInBank(2) + " yellow goods, " + event.getBank().getGoodsInBank(3) + " green goods, " + event.getBank().getGoodsInBank(4) + " blue goods");
-        //TODO AGGIUNGI QUESTION sse nickname uguale
+        if(event.getBank() != null) {
+            System.out.println("Bank deposit: " + event.getBank().getGoodsInBank(1) + " red goods, " + event.getBank().getGoodsInBank(2) + " yellow goods, " + event.getBank().getGoodsInBank(3) + " green goods, " + event.getBank().getGoodsInBank(4) + " blue goods");
+        }
 
     }
 
