@@ -243,7 +243,6 @@ public class GUI implements UI {
             stage.setFullScreen(true);
             stage.show();
         });
-
     }
 
 
@@ -269,6 +268,7 @@ public class GUI implements UI {
 
     @Override
     public void startBuildingScene(StartBuildingEvent event){
+        this.loginScene.hideWaitForOthers();
         Platform.runLater(() -> {
             buildingScene=new BuildingScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow, new StackPane());
             stage.setScene(this.buildingScene.createScene(event.getPlayers(), viewFlow.getLevel()));
@@ -298,7 +298,7 @@ public class GUI implements UI {
 
     @Override
     public void componentSelected(ComponentSelectedEvent event){
-        //TODO: ti riporta nella schermata dove vedi la nave con visualizzato il componente che hai selezionato e le posibili azioni
+        // ti riporta nella schermata dove vedi la nave con visualizzato il componente che hai selezionato e le posibili azioni
         Platform.runLater(() -> {
             this.buildingScene.insertSelectedComponent(this.viewFlow.getSelectedComponent(), false);
         });
@@ -306,14 +306,13 @@ public class GUI implements UI {
 
     @Override
     public void invalidCoordinates(InvalidCoordinatesError event) {
-        //TODO: notifica errore di questo tipo
-        //this.buildingScene.showInvalidCoordinatesPopup();
+        this.buildingScene.showPopUpError(event.getMessage());
     }
 
 
     @Override
     public void turnHourGlassError(TurnHourglassError event) {
-        //this.buildingScene.showTurnHourGlassErrorPopup();
+        this.buildingScene.showPopUpError(event.getMessage());
     }
 
     @Override
@@ -382,6 +381,7 @@ public class GUI implements UI {
     public void flightScene(FlightStartEvent event){
         //TODO:
         //stack pane sistema
+        this.buildingScene.hideWaitForOthers();
         this.flightScene=new FlightScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow,new StackPane());
     }
 
@@ -496,45 +496,14 @@ public class GUI implements UI {
 
     @Override
     public void showWaitingForPlayers() {
-        double width = 1600;
-        double height = 900;
-
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
-
-        Label loadingLabel = new Label("Waiting for truckers to join");
-        loadingLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 26));
-        loadingLabel.setTextFill(Color.web("#FFDE69"));
-        loadingLabel.setAlignment(Pos.CENTER);
-
-        // VBox per centratura verticale
-        VBox content = new VBox(loadingLabel);
-        content.setAlignment(Pos.CENTER);
-
-        StackPane root = new StackPane(backgroundView, content);
-        StackPane.setAlignment(content, Pos.CENTER);
-
-        Scene scene = new Scene(root, width, height);
-        Platform.runLater(() -> {
-            stage.setScene(scene);
-            stage.centerOnScreen();
-            stage.setFullScreen(true);
-            stage.show();
-        });
-
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(0), e -> loadingLabel.setText("Waiting for truckers to join")),
-                new KeyFrame(Duration.seconds(0.5), e -> loadingLabel.setText("Waiting for truckers to join.")),
-                new KeyFrame(Duration.seconds(1), e -> loadingLabel.setText("Waiting for truckers to join..")),
-                new KeyFrame(Duration.seconds(1.5), e -> loadingLabel.setText("Waiting for truckers to join...")),
-                new KeyFrame(Duration.seconds(2.0),   e -> {})
-        );
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        if(viewFlow.getViewState() == ViewFlow.ViewState.START){
+            this.loginScene.showWaitForOthers();
+        }else if (viewFlow.getViewState() == ViewFlow.ViewState.BULDING){
+            this.buildingScene.showWaitForOthers();
+        }
+//        else if (viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
+//            this.flightScene.showWaitForOthers();
+//        }
     }
 
     @Override
