@@ -62,10 +62,6 @@ public class TUI implements UI {
     }
 
     @Override
-    public void showSetupComplete(){
-        System.out.println("SETUP complete. It's time to start building");
-    }
-    @Override
     public void startBuildingScene(StartBuildingEvent event){
         this.showPlayers(event.getPlayers());
         this.showBuildPhaseStart(event.getComponents());
@@ -436,7 +432,6 @@ public class TUI implements UI {
         System.out.println("Discard component " + component.getType());
     }
 
-    @Override
     public void showComponentPlaced(Component component, int x, int y) {
         System.out.println("Component " + component.getType() + " linked in [" + x + "," + y + "]");
     }
@@ -446,10 +441,6 @@ public class TUI implements UI {
         System.out.println("Place not correct: " + reason);
     }
 
-    @Override
-    public void showHourglassTurned() {
-        System.out.println("Hourglass Turned.");
-    }
 
     @Override
     public void showTimeExpired() {
@@ -923,7 +914,6 @@ public class TUI implements UI {
         }
     }
 
-    @Override
     public void showComponentSelected(Component c) {
         StringBuilder info = new StringBuilder();
 

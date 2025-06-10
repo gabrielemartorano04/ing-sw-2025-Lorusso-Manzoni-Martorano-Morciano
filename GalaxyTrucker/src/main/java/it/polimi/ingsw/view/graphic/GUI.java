@@ -482,36 +482,6 @@ public class GUI implements UI {
 
 
 
-
-
-    @Override
-    public void showSetupComplete() {
-        double width = 1600;
-        double height = 900;
-
-        // Sfondo
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
-
-        // Testo centrale
-        Label message = new Label("Everything is ready to play");
-        message.setFont(Font.font("Bangers", FontWeight.BOLD, 40));
-        message.setTextFill(Color.web("#FFDE69"));
-
-        StackPane root = new StackPane(backgroundView, message);
-        StackPane.setAlignment(message, Pos.CENTER);
-
-        Scene scene = new Scene(root, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.setFullScreen(true);
-    }
-
-
     @Override
     public void showAvailableComponent(ArrayList<Component> components) {
         //TODO: la gui non deve mostrare gli available ma deve solo aggiornarli cioè aggiungere quello discard a quelli che ci sono
@@ -766,20 +736,13 @@ public class GUI implements UI {
         });
     }
 
-    @Override
-    public void showComponentPlaced(Component component, int x, int y) {
 
-    }
 
     @Override
     public void showInvalidPlacement(String reason) {
 
     }
 
-    @Override
-    public void showHourglassTurned() {
-
-    }
 
     @Override
     public void showTimeExpired() {
@@ -1364,103 +1327,7 @@ public class GUI implements UI {
         });
     }
 
-    @Override
-    public void showComponentSelected(Component selected) {
-        VBox componentBox = new VBox(10);
-        componentBox.setPadding(new Insets(10));
-        componentBox.setAlignment(Pos.BOTTOM_LEFT);
 
-        // 1. Immagine con bordo bianco smussato
-        double borderSize = 116;
-        double imageSize = 116;
-
-        ImageView componentView = new ImageView(selected.getFrontImage());
-        componentView.setFitWidth(imageSize);
-        componentView.setPreserveRatio(true);
-        componentView.setMouseTransparent(true);
-
-        Rectangle clip = new Rectangle(imageSize, imageSize);
-        clip.setArcWidth(18);
-        clip.setArcHeight(18);
-        componentView.setClip(clip);
-
-        Rectangle border = new Rectangle(borderSize, borderSize);
-        border.setArcWidth(16);
-        border.setArcHeight(16);
-        border.setFill(Color.TRANSPARENT);
-        border.setStroke(Color.WHITE);
-        border.setStrokeWidth(2);
-        border.setMouseTransparent(true);
-
-        StackPane imageContainer = new StackPane(border, componentView);
-        imageContainer.setPrefSize(borderSize, borderSize);
-        imageContainer.setAlignment(Pos.CENTER);
-        imageContainer.setTranslateX(-353);
-        imageContainer.setTranslateY(0);
-
-        // 2. Stile pulsanti
-        Consumer<Button> styleYellowButton = (btn) -> {
-            btn.setFont(Font.font("Bangers", 12));
-            btn.setTextFill(Color.BLACK);
-            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-            btn.setCursor(Cursor.HAND);
-            btn.setPrefWidth(120);
-        };
-
-        Consumer<Button> styleRedButton = (btn) -> {
-            btn.setFont(Font.font("Bangers", 12));
-            btn.setTextFill(Color.WHITE);
-            btn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
-            btn.setCursor(Cursor.HAND);
-            btn.setPrefWidth(120);
-        };
-
-        // 3. Pulsanti con handler
-        Button turnBtn = new Button("Turn");
-        styleYellowButton.accept(turnBtn);
-        turnBtn.setOnAction(e -> viewFlow.handleInput("turn"));
-
-        Button keepBtn = new Button("Keep");
-        styleYellowButton.accept(keepBtn);
-        keepBtn.setOnAction(e -> viewFlow.handleInput("keep"));
-
-        Button discardBtn = new Button("Discard");
-        styleRedButton.accept(discardBtn);
-        discardBtn.setOnAction(e -> viewFlow.handleInput("discard"));
-
-        Button linkBtn = new Button("Link");
-        styleYellowButton.accept(linkBtn);
-        linkBtn.setOnAction(e -> {
-            isLinkingEnabled = true;
-            System.out.println("Link premuto");
-            // Disattiva altri pulsanti
-            Stream.of(turnBtn, keepBtn, discardBtn).forEach(btn -> {
-                btn.setDisable(true);
-                btn.setOpacity(0.5); // uso opacity vera, non via CSS
-            });
-            viewFlow.handleInput("link");
-        });
-
-        // 4. Raggruppamento in VBox
-        VBox buttonsBox = new VBox(8, turnBtn, linkBtn, keepBtn, discardBtn);
-        buttonsBox.setAlignment(Pos.CENTER_LEFT);
-
-        // 5. Aggiunta al componente
-        componentBox.getChildren().addAll(imageContainer, buttonsBox);
-
-        // 6. Mostra nella scena
-        Platform.runLater(() -> {
-            StackPane root = (StackPane) stage.getScene().getRoot();
-            if (!root.getChildren().contains(componentBox)) {
-                StackPane.setAlignment(componentBox, Pos.BOTTOM_LEFT);
-                StackPane.setMargin(componentBox, new Insets(0, 0, 20, 5));
-                root.getChildren().add(componentBox);
-                componentBox.toFront(); // assicura che sia in primo piano
-            } else {
-                System.out.println("ComponentBox already present");
-            }
-        });
-    }
 
     @Override
     public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames){

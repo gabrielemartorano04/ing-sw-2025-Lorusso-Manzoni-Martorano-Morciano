@@ -100,22 +100,22 @@ public class AppPerTest extends Application {
         //gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
         //gui.colorAlreadyTaken(new ColorAlreadyInError(PlayerColors.RED, EnumSet.of(PlayerColors.GREEN, PlayerColors.BLUE, PlayerColors.YELLOW)));ù
 
-        trucker.initSpaceShip(2);
-
-        LoginScene loginScene = new LoginScene(EnumSet.allOf(PlayerColors.class), viewFlow);
-        primaryStage.setScene(loginScene.createScene());
-        loginScene.showWaitForOthers();
-
-
-        primaryStage.setResizable(true);
-        primaryStage.setFullScreenExitHint("");
-        primaryStage.setTitle("Test Building Scene");
-        primaryStage.show();
+//        trucker.initSpaceShip(2);
+//
+//        LoginScene loginScene = new LoginScene(EnumSet.allOf(PlayerColors.class), viewFlow);
+//        primaryStage.setScene(loginScene.createScene());
+//        loginScene.showWaitForOthers();
+//        primaryStage.setResizable(true);
+//        primaryStage.setFullScreenExitHint("");
+//        primaryStage.setTitle("Test Building Scene");
+//        primaryStage.show();
 
 
-//        StackPane stackPane = new StackPane();
-//        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
-//        Scene scene = buildingScene.createScene(playersNames, 2);
+
+        StackPane stackPane = new StackPane();
+        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
+        Scene scene = buildingScene.createScene(playersNames, 2);
+
 //        buildingScene.insertSelectedComponent(cannon, false);
 //        buildingScene.insertComponentInGrid(cannon,6,7);
 //        buildingScene.insertComponentToKepts(cannon);
@@ -125,12 +125,12 @@ public class AppPerTest extends Application {
 //        buildingScene.showOtherShip(trucker.getSpaceShip().getComponents(), trucker.getNickname());
 
 
-//        primaryStage.setScene(scene);
-//
-//
-//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-//        primaryStage.show();
+        primaryStage.setScene(scene);
+
+
+        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+        primaryStage.show();
 
 //        ArrayList<Trucker> planets = new ArrayList<>(){
 //            {

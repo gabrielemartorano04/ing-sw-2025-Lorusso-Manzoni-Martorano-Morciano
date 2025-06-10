@@ -36,8 +36,6 @@ public interface UI {
 
     // BUILDING
 
-    void showSetupComplete();
-
     void startBuildingScene(StartBuildingEvent event);
 
     void componentLinked(ComponentLinkedEvent event);
@@ -115,10 +113,8 @@ public interface UI {
     void showBuildOptions(); // (link / keep / discard)
     void showDiscardComponent(Component component);
 
-    void showComponentPlaced(Component component, int x, int y);
     void showInvalidPlacement(String reason);
 
-    void showHourglassTurned();
     void showTimeExpired();
     void showWaitForOthers();
 
@@ -146,8 +142,6 @@ public interface UI {
 
     void showMessage(String message);
     void showTrack(Map<String, Integer> truckers, int level);
-
-    void showComponentSelected(Component component);
 
 
     void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames);
