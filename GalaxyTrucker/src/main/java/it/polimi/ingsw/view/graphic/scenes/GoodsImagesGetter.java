@@ -12,10 +12,10 @@ public class GoodsImagesGetter {
     private final String blueFrontImagePath;
 
     public GoodsImagesGetter() {
-        this.redFrontImagePath = "it/polimi/ingsw/view/redgood.png";
-        this.yellowFrontImagePath = "it/polimi/ingsw/view/yellowgood.png";
-        this.greenFrontImagePath = "it/polimi/ingsw/view/greengood.png";
-        this.blueFrontImagePath = "it/polimi/ingsw/view/bluegood.png";
+        this.redFrontImagePath = "/it/polimi/ingsw/view/redgood.png";
+        this.yellowFrontImagePath = "/it/polimi/ingsw/view/yellowgood.png";
+        this.greenFrontImagePath = "/it/polimi/ingsw/view/greengood.png";
+        this.blueFrontImagePath = "/it/polimi/ingsw/view/bluegood.png";
     }
 
     /**

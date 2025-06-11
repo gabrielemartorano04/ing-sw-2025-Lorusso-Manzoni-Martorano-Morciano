@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.components.Cabin;
 import it.polimi.ingsw.model.components.Cannon;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
 import it.polimi.ingsw.net.socket.client.ClientEventSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
@@ -150,7 +151,8 @@ public class AppPerTest extends Application {
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
-        flightScene.showPlotGoodInput();
+        flightScene.showPlotGoodInput(new Goods(2));
+        flightScene.showRollDiceInput();
     }
 
     public static void main(String[] args) {
