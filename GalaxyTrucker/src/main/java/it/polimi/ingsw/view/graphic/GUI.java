@@ -245,7 +245,6 @@ public class GUI implements UI {
         });
     }
 
-
     @Override
     public void nickNameAlreadyTaken(NicknameAlreadyInError event){
         Platform.runLater(() -> {
@@ -415,34 +414,35 @@ public class GUI implements UI {
 
     // flight scene
 
-    @Override
+    // ERRORE MAI USATO
+    @Deprecated
     public void invalidPosition(InvalidPositionError event){
-        //TODO: notifica errore di questo tipo
         //this.buildingScene.showInvalidPositionPopup();
 
     }
 
     @Override
     public void flightScene(FlightStartEvent event){
-        //TODO:
-        //stack pane sistema
         this.buildingScene.hideWaitForOthers();
         this.flightScene=new FlightScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow,new StackPane());
     }
 
     @Override
     public void showCurrCondition(CurrentCondition event) {
-
-//        this.flightScene.showUpdateSpaceship();
-//        this.flightScene.showUpdateTrack();
+        //TODO:
+        Platform.runLater(() -> {
+            // this.fligthScene.showCurrCondition(event.getCondition());
+        });
 
     }
 
     @Override
     public void cardFinished(CardFinished event){
-
+        //TODO:
+        Platform.runLater(() -> {
 //        this.flightScene.showUpdateSpaceship();
 //        this.flightScene.showUpdateTrack();
+        });
     }
 
     @Override
@@ -470,7 +470,7 @@ public class GUI implements UI {
             case ACTIVATE_SHIELD -> this.flightScene.showActivateShieldInput();
             case LAND -> this.flightScene.showLandInput();
             case HUMAN_COORD -> this.flightScene.showHumanCoordInput();
-            case PLOT_GOOD -> this.flightScene.showPlotGoodInput(new Goods(2));
+            case PLOT_GOOD -> this.flightScene.showPlotGoodInput();
             case ROLL_DICE -> this.flightScene.showRollDiceInput();
             case PLANET_DECISION-> this.flightScene.showPlanetDecisionInput();
             case DRAW_CARD -> this.flightScene.showDrawCardInput();
@@ -742,7 +742,7 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showPlanetsOccupied(PlanetDecision event) {
+    public void updatePlanetsOccupied(PlanetDecision event) {
 
     }
 
