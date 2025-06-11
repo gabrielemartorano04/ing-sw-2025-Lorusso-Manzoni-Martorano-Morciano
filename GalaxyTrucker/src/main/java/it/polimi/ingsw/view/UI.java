@@ -144,6 +144,10 @@ public interface UI {
     void showFlightPhaseStart();
 
     void showCardDrawn(StartCardEvent event);
+
+    void showStardustCard(StarDustEvent event);
+
+    void showEpidemicCard(EpidemicEvent event);
     void showGoodsGained(Goods goods);
     //INPUT
 
@@ -153,6 +157,7 @@ public interface UI {
 
     //NON ELIMINARE
     void showotherShipLayout(String nickname, Component[][] layout);
+
 
 
 }

@@ -308,7 +308,7 @@ public class TUI implements UI {
 
     @Override
     public  void epidemic(EpidemicEvent event){
-        System.out.println("Card drawn: "+event.getCardName()+"\n Card description: "+event.getCardDescription()+"\n");
+        System.out.println("Card effect:");
         for (Trucker t: event.getTruckers()) {
             System.out.println(t.getNickname() + " has lost ");
         }
@@ -327,7 +327,7 @@ public class TUI implements UI {
 
     @Override
     public void stardust(StarDustEvent event){
-        System.out.println("Card drawn: "+event.getCardName().toUpperCase()+"\n Card description: "+event.getCardDescription()+"\n");
+        System.out.println("Card effect:");
         for (Trucker t: event.getTruckers()) {
             System.out.println(t.getNickname() + " has lost " + t.getSpaceShip().countExposedConnectors() + String.format(t.getSpaceShip().countExposedConnectors() == 1 ? " day\n" : " days\n"));
         }
@@ -565,6 +565,17 @@ public class TUI implements UI {
 
     }
 
+    @Override
+    public void showStardustCard(StarDustEvent event) {
+        System.out.println("Card drawn: " + event.getCardName().toUpperCase());
+        System.out.println("Card description: " + event.getCardDescription());
+    }
+
+    @Override
+    public void showEpidemicCard(EpidemicEvent event) {
+        System.out.println("Card drawn: " + event.getCardName().toUpperCase());
+        System.out.println("Card description: " + event.getCardDescription());
+    }
 
 
     @Override

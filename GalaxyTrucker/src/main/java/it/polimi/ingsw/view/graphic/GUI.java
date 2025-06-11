@@ -644,7 +644,15 @@ public class GUI implements UI {
 
     }
 
+    @Override
+    public void showStardustCard(StarDustEvent event) {
 
+    }
+
+    @Override
+    public void showEpidemicCard(EpidemicEvent event) {
+
+    }
 
 
     @Override
