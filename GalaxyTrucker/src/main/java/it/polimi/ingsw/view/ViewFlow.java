@@ -55,6 +55,7 @@ public class ViewFlow implements EventReceiver {
     private boolean out;
     private int level;
     private boolean alreadyLogged;
+    private int credits;
 
 
     public enum ViewState {
@@ -76,6 +77,7 @@ public class ViewFlow implements EventReceiver {
         this.running = true;
         this.viewState = ViewState.FIRST;
         this.timerDisplay = new TimerDisplay();
+        this.credits=0;
 
         this.availableComponents= new ArrayList<>();
         new Thread(inputReader, "InputReaderThread").start();
@@ -159,7 +161,7 @@ public class ViewFlow implements EventReceiver {
                         }
                         case FLIGTH -> {
 //                            ui.showShipLayout(nickname, ship);
-//                            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
+//                            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor, credits);
 //                            ui.showTrack(track, level);
                             //System.out.println("you are out?" + out);
                         }
@@ -507,6 +509,14 @@ public class ViewFlow implements EventReceiver {
 
     public void setAlreadyLogged(){
         this.alreadyLogged = true;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
+
+    public int getCredits() {
+        return credits;
     }
 }
 

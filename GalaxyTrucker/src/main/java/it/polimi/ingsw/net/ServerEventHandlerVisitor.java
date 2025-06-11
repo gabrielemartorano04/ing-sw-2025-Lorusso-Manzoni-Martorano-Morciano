@@ -314,6 +314,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             }
         }
         if(!viewFlow.getOut()){
+            viewFlow.setCredits(trucker.getCosmicCredit());
             viewFlow.setPosition(trucker.getPosition());
             viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
             viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());

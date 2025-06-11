@@ -149,7 +149,7 @@ public interface UI {
 
 
     //PLAYER DATA
-    void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor);
+    void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor, int credits);
 
     //NON ELIMINARE
     void showotherShipLayout(String nickname, Component[][] layout);
