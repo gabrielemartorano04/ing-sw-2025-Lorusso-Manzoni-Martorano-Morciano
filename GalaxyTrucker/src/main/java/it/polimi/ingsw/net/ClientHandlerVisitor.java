@@ -284,12 +284,10 @@ public class ClientHandlerVisitor implements VirtualServer {
     public ServerEvent visit(SelectKeptTileEvent event, Client client) {
         int index=event.getIndex();
         try {
-            System.out.println("\nEntered inside try of KeptTileEvent\n");
             Component component=client.getTruckerController().getKeptComponent(index);
             client.getTruckerController().getTrucker().removeKeptComponent(index);
             return new SuccessSelectKept(component,index);
         } catch (GeneralError e) {
-            System.out.println("\nEntered inside catch of KeptTileEvent\n");
             return new GenericErrorEvent(e.getMessage(), false);
         }
     }

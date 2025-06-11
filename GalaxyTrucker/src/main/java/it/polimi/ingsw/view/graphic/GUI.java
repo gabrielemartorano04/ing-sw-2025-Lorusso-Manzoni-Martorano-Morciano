@@ -318,7 +318,8 @@ public class GUI implements UI {
     public void componentSelected(ComponentSelectedEvent event){
         // ti riporta nella schermata dove vedi la nave con visualizzato il componente che hai selezionato e le posibili azioni
         Platform.runLater(() -> {
-            this.buildingScene.insertSelectedComponent(this.viewFlow.getSelectedComponent(), false);
+            ImageView component = new ImageView(this.viewFlow.getSelectedComponent().getFrontImage());
+            this.buildingScene.insertSelectedComponent(component, false);
         });
     }
 
@@ -357,14 +358,15 @@ public class GUI implements UI {
     @Override
     public void componentTurned(TurnedComponentSuccessEvent event){
         Platform.runLater(() -> {
-            this.buildingScene.insertSelectedComponent(event.getComponent(), true);
+            ImageView component = new ImageView(this.viewFlow.getSelectedComponent().getFrontImage());
+            this.buildingScene.insertSelectedComponent(component, true);
         });
     }
 
     @Override
     public void keptSelected(SuccessSelectKept event){
         Platform.runLater(() -> {
-            this.buildingScene.insertComponentToKepts(event.getComponent());
+            this.buildingScene.selectKeptComponent(event.getIndex());
         });
     }
 
@@ -545,36 +547,7 @@ public class GUI implements UI {
 
     @Override
     public void showBuildOptions() {
-        VBox optionsBox = new VBox(8);
-        optionsBox.setPadding(new Insets(10));
-        optionsBox.setAlignment(Pos.TOP_LEFT);
-
-        Consumer<Button> styleButton = (btn) -> {
-            btn.setFont(Font.font("Bangers", 12));
-            btn.setTextFill(Color.BLACK);
-            btn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-            btn.setCursor(Cursor.HAND);
-            btn.setPrefWidth(120);
-        };
-
-        // Pulsante Select Component
-        Button selectComponentBtn = new Button("Select component");
-        styleButton.accept(selectComponentBtn);
-        AvailableComponents availableComponents = new AvailableComponents();
-        selectComponentBtn.setOnAction(e -> showAvailableComponent(availableComponents.getComponents()));
-
-
-
-        optionsBox.getChildren().addAll(selectComponentBtn);
-
-        Platform.runLater(() -> {
-            StackPane root = (StackPane) stage.getScene().getRoot();
-            if (!root.getChildren().contains(optionsBox)) {
-                StackPane.setAlignment(optionsBox, Pos.TOP_RIGHT);
-                StackPane.setMargin(optionsBox, new Insets(20, 0, 0, 5));
-                root.getChildren().add(optionsBox);
-            }
-        });
+        // Nella gui non deve fare nulla serve per la tui sarebbe da unificare meglio
     }
 
 

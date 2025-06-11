@@ -297,11 +297,10 @@ public class BuildingScene {
     public void selectKeptComponent(int index) {
         if (index < 0 || index >= keptImages.size()) return;
         ImageView keptView = keptImages.get(index);
-
         // Solo se c'è un kept valido e lo slot di selezione è vuoto
         if (keptView != null) {
             keptFillLevel--;
-            this.insertSelectedComponent(new Cannon(3, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web129.jpg", true),false);
+            this.insertSelectedComponent(keptView,false);
             // Rimuovi dallo slot kept
             this.disableSelectButtons(false);
             keptImages.set(index, null);
@@ -322,7 +321,7 @@ public class BuildingScene {
 
     }
 
-    public void insertSelectedComponent(Component selected, boolean toTurn) {
+    public void insertSelectedComponent(ImageView componentView, boolean toTurn) {
         if (!inShipView && shipScreenContent != null) {
             root.getChildren().setAll(shipScreenContent);
             inShipView = true;
@@ -333,7 +332,7 @@ public class BuildingScene {
             this.keepBtn.setDisable(true);
             this.keepBtn.setOpacity(0.5);
         }
-        ImageView componentView = new ImageView(selected.getFrontImage());
+
         componentView.setFitWidth(176);
         componentView.setPreserveRatio(true);
         componentView.setMouseTransparent(true);

@@ -73,7 +73,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(ComponentLinkedEvent event) {
         viewFlow.getShip()[event.getX()][event.getY()]=event.getComponent();
         viewFlow.deleteSelectedComponent();
-        System.out.println("Entrato");
         ui.componentLinked(event);
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
@@ -217,6 +216,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(SuccessSelectKept event){
         viewFlow.setSelectedComponent(event.getComponent(), true);
+        ui.keptSelected(event);
+
         viewFlow.getSelectedKeptComponent().remove(event.getIndex());
         if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
             ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
@@ -224,7 +225,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if (viewFlow.getSelectedKeptComponent() == null) {
             ui.showBuildOptions();
         }
-        ui.keptSelected(event);
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
 
     }
