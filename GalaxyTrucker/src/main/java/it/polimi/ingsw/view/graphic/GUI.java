@@ -644,7 +644,15 @@ public class GUI implements UI {
 
     }
 
+    @Override
+    public void showStardustCard(StarDustEvent event) {
 
+    }
+
+    @Override
+    public void showEpidemicCard(EpidemicEvent event) {
+
+    }
 
 
     @Override
@@ -757,7 +765,7 @@ public class GUI implements UI {
 
 
     @Override
-    public void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor) {
+    public void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor, int credits) {
         // Carica le icone (temporaneamente tutte uguali)
         Image engine = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
         Image cannon = new Image(getClass().getResource("/it/polimi/ingsw/view/cannon.png").toExternalForm());

@@ -280,7 +280,7 @@ public class TUI implements UI {
     @Override
     public void flightScene(FlightStartEvent event){
         this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
-        this.showPlayerShipStatus(viewFlow.getPosition(),viewFlow.getBatteryCount(), viewFlow.getHumanCount(), viewFlow.getCannonPower(), viewFlow.getEnginePower(), viewFlow.getGoodsByColor());
+        this.showPlayerShipStatus(viewFlow.getPosition(),viewFlow.getBatteryCount(), viewFlow.getHumanCount(), viewFlow.getCannonPower(), viewFlow.getEnginePower(), viewFlow.getGoodsByColor(), viewFlow.getCredits());
         this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         this.showFlightPhaseStart();
         this.showMessage("Please type 'state' to see your spaceship state\n");
@@ -308,7 +308,7 @@ public class TUI implements UI {
 
     @Override
     public  void epidemic(EpidemicEvent event){
-        System.out.println("Card drawn: "+event.getCardName()+"\n Card description: "+event.getCardDescription()+"\n");
+        System.out.println("Card effect:");
         for (Trucker t: event.getTruckers()) {
             System.out.println(t.getNickname() + " has lost ");
         }
@@ -327,7 +327,7 @@ public class TUI implements UI {
 
     @Override
     public void stardust(StarDustEvent event){
-        System.out.println("Card drawn: "+event.getCardName().toUpperCase()+"\n Card description: "+event.getCardDescription()+"\n");
+        System.out.println("Card effect:");
         for (Trucker t: event.getTruckers()) {
             System.out.println(t.getNickname() + " has lost " + t.getSpaceShip().countExposedConnectors() + String.format(t.getSpaceShip().countExposedConnectors() == 1 ? " day\n" : " days\n"));
         }
@@ -565,6 +565,17 @@ public class TUI implements UI {
 
     }
 
+    @Override
+    public void showStardustCard(StarDustEvent event) {
+        System.out.println("Card drawn: " + event.getCardName().toUpperCase());
+        System.out.println("Card description: " + event.getCardDescription());
+    }
+
+    @Override
+    public void showEpidemicCard(EpidemicEvent event) {
+        System.out.println("Card drawn: " + event.getCardName().toUpperCase());
+        System.out.println("Card description: " + event.getCardDescription());
+    }
 
 
     @Override
@@ -595,12 +606,13 @@ public class TUI implements UI {
 
     @Override
     public void showPlayerShipStatus(int position, int batteryCount, int humanCount,
-                                     float cannonPower, int enginePower, Map<String, Integer> goods) {
+                                     float cannonPower, int enginePower, Map<String, Integer> goods, int credits) {
         System.out.println("Position: " + position);
         System.out.println("Total batteries: " + batteryCount);
         System.out.println("Total crew members: " + humanCount);
         System.out.println("Total cannon power (only single): " + cannonPower);
         System.out.println("Total engine power (only single): " + enginePower);
+        System.out.println("Cosmic credits: " + credits);
 
         System.out.println("Goods on the ship:");
         if (goods != null) {
