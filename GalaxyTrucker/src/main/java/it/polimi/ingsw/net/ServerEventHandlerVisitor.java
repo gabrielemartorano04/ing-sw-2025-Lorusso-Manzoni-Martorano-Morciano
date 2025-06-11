@@ -73,7 +73,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(ComponentLinkedEvent event) {
         viewFlow.getShip()[event.getX()][event.getY()]=event.getComponent();
         viewFlow.deleteSelectedComponent();
-
+        System.out.println("Entrato");
         ui.componentLinked(event);
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         if (!viewFlow.getSelectedKeptComponent().isEmpty()) {

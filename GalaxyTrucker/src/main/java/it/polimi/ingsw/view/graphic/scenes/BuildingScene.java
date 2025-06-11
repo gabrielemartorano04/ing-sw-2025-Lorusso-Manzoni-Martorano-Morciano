@@ -250,7 +250,9 @@ public class BuildingScene {
         if (keptFillLevel >= keptImages.size()) {
             return; // tutti gli slot sono pieni, non dovrebbe succedere
         }
-        this.disableSelectButtons(true);
+
+        this.resetComponentSelectedBox();
+
         ImageView componentView = new ImageView(component.getFrontImage());
         componentView.setFitWidth(110);
         componentView.setPreserveRatio(true);
@@ -402,7 +404,7 @@ public class BuildingScene {
 
     public void resetComponentSelectedBox() {
         componentSelectedBox.getChildren().clear();
-
+        this.componentSelectedExists = false;
         this.disableSelectButtons(true); // non hai piu un componente in mano
 
         Rectangle border = new Rectangle(178, 178);
@@ -707,7 +709,7 @@ public class BuildingScene {
         this.selectKeptBtn = new Button("SelectKept");
         styleButton.accept(selectKeptBtn);
         selectKeptBtn.setOnAction(e -> {
-            if (!componentSelectedBox.getChildren().isEmpty()) {
+            if (componentSelectedExists) {
                 // Overlay grigio trasparente a tutto schermo
                 Rectangle fullOverlay = new Rectangle();
                 fullOverlay.widthProperty().bind(root.widthProperty());
@@ -1120,7 +1122,7 @@ public class BuildingScene {
                     }
 
                     errorLabel.setVisible(false);
-                    viewFlow.handleInput("link, " + x + " " + y);
+                    viewFlow.handleInput("link " + x + " " + y);
                     removePopup.run();
                 } catch (NumberFormatException ex) {
                     errorLabel.setVisible(true);
