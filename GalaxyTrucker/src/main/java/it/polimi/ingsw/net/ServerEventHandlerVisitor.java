@@ -143,7 +143,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.invalidCoordinates(event);
     }
 
-    @Override
+    // SBAGLIO O NON VIENE MAI USATO QUESTO ERRORE?
+    @Deprecated
     public void visit(InvalidPositionError event) {
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         if (!viewFlow.getSelectedKeptComponent().isEmpty()) {

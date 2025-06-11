@@ -414,34 +414,35 @@ public class GUI implements UI {
 
     // flight scene
 
-    @Override
+    // ERRORE MAI USATO
+    @Deprecated
     public void invalidPosition(InvalidPositionError event){
-        //TODO: notifica errore di questo tipo
         //this.buildingScene.showInvalidPositionPopup();
 
     }
 
     @Override
     public void flightScene(FlightStartEvent event){
-        //TODO:
-        //stack pane sistema
         this.buildingScene.hideWaitForOthers();
         this.flightScene=new FlightScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow,new StackPane());
     }
 
     @Override
     public void showCurrCondition(CurrentCondition event) {
-
-//        this.flightScene.showUpdateSpaceship();
-//        this.flightScene.showUpdateTrack();
+        //TODO:
+        Platform.runLater(() -> {
+            // this.fligthScene.showCurrCondition(event.getCondition());
+        });
 
     }
 
     @Override
     public void cardFinished(CardFinished event){
-
+        //TODO:
+        Platform.runLater(() -> {
 //        this.flightScene.showUpdateSpaceship();
 //        this.flightScene.showUpdateTrack();
+        });
     }
 
     @Override
