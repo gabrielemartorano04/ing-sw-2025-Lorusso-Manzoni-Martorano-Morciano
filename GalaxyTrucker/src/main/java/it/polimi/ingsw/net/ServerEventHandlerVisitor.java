@@ -386,7 +386,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setParserFlightState(ParserState.PLANET_DECISION);
             viewFlow.setShip(event.getShip().getComponents());
             ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
-            ui.showPlanetsOccupied(event);
+            ui.updatePlanetsOccupied(event);
             ui.showInputFormat(ParserState.PLANET_DECISION);
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
