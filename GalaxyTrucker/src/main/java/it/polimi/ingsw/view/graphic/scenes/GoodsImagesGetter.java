@@ -11,14 +11,11 @@ public class GoodsImagesGetter {
     private final String greenFrontImagePath;
     private final String blueFrontImagePath;
 
-    public GoodsImagesGetter(String redFrontImagePath, String redBackImagePath,
-                             String yellowFrontImagePath, String yellowBackImagePath,
-                             String greenFrontImagePath, String greenBackImagePath,
-                             String blueFrontImagePath, String blueBackImagePath) {
-        this.redFrontImagePath = redFrontImagePath;
-        this.yellowFrontImagePath = yellowFrontImagePath;
-        this.greenFrontImagePath = greenFrontImagePath;
-        this.blueFrontImagePath = blueFrontImagePath;
+    public GoodsImagesGetter() {
+        this.redFrontImagePath = "it/polimi/ingsw/view/redgood.png";
+        this.yellowFrontImagePath = "it/polimi/ingsw/view/yellowgood.png";
+        this.greenFrontImagePath = "it/polimi/ingsw/view/greengood.png";
+        this.blueFrontImagePath = "it/polimi/ingsw/view/bluegood.png";
     }
 
     /**
