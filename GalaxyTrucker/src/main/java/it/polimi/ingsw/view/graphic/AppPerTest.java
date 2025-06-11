@@ -2,8 +2,7 @@ package it.polimi.ingsw.view.graphic;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.*;
-import it.polimi.ingsw.model.components.Cannon;
-import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.net.socket.client.ClientEventSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
@@ -57,10 +56,10 @@ public class AppPerTest extends Application {
         kept.add(availableComponents.getComponents().get(130));
 
         mockTrack = new HashMap<>();
-        mockTrack.put("RED", 0);
-        mockTrack.put("GREEN", 5);
-        mockTrack.put("BLUE", 12);
-        mockTrack.put("YELLOW", 20);
+        mockTrack.put("luca", 0);
+        mockTrack.put("frenk", 5);
+        mockTrack.put("gabri", 12);
+        mockTrack.put("manzo", 20);
 
 
         // DA SISTEMARE la creazione della gui e il collegamento a viewFlow
@@ -135,8 +134,9 @@ public class AppPerTest extends Application {
 ////        };
 //
 //
+
         StackPane stackPane = new StackPane();
-        FlightScene flightScene = new FlightScene(trucker.getNickname(), trucker.getSpaceShip().getComponents(), viewFlow, stackPane);
+        FlightScene flightScene = new FlightScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
         primaryStage.setScene(flightScene.createScene(playersNames, 2));
 
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
@@ -149,7 +149,65 @@ public class AppPerTest extends Application {
                 add(null);
             }
         });
-        flightScene.showPlanetDecisionInput();
+        flightScene.updateTrack(mockTrack);
+    }
+
+    public SpaceShip createShip1(SpaceShip ship) throws InvalidCoordinates {
+        ship = new SpaceShip();
+        ship.initSpaceShip(2,PlayerColors.RED);
+        Component c1 = new BatteryStorage(3, 2, 0, 0, "Battery Storage", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web2.jpg", 2);
+        Component c2 = new Cannon(0, 3, 2, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web133.jpg", true);
+        Component c3 = new Cabin(0, 2, 0, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web47.jpg", null, false);
+        Component c4 = new LifeSupport(1, 1, 0, 1, "Life Support", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web137.jpg", AlienColor.BROWN);
+        Component c5 = new Cannon(1, 1, 1, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web115.jpg", false);
+        Component c6 = new Pipes(1, 3, 2, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web56.jpg");
+        Component c7 = new BatteryStorage(0, 0, 0, 1, "Battery Storage", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web17.jpg", 3);
+        Component c8 = new Pipes(3, 2, 0, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web59.jpg");
+        Component c9 = new Cabin(1, 0, 2, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web49.jpg", null, false);
+        Component c10 = new Load(2, 2, 2, 3, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web66.jpg", 1, true);
+        Component c11 = new Cabin(0, 1, 3, 2, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web41.jpg", null, false);
+        Component c12 = new Cannon(2, 1, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web109.jpg", false);
+        Component c13 = new Pipes(3, 2, 2, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web60.jpg");
+        Component c14 = new Engine(3, 1, 0, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web95.jpg", true);
+        Component c15 = new Shield(1, 2, 1, 2, "Shield", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web154.jpg");
+        Component c16 = new Load(2, 0, 1, 2, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web32.jpg", 3, false);
+        Component c17 = new Engine(2, 0, 3, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web100.jpg", true);
+        Component c18 = new Cannon(1, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web105.jpg", false);
+        Component c19 = new Engine(2, 1, 1, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web81.jpg", false);
+        Component c20 = new Engine(0, 0, 3, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web89.jpg", false);
+        Component c21 = new Load(0, 0, 0, 2, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web70.jpg", 2, true);
+        ship.addComponent(c10, 7, 8);
+        c9.turn();
+        ship.addComponent(c9, 7, 6);
+        c8.turn();
+        ship.addComponent(c8, 7, 5);
+        ship.addComponent(c11, 7, 9);
+        ship.addComponent(c5, 6, 7);
+        c4.turn();
+        ship.addComponent(c4, 6, 6);
+        c3.turn();
+        ship.addComponent(c3, 6, 5);
+        ship.addComponent(c6, 6, 8);
+        ship.addComponent(c7, 6, 9);
+        c1.turn();
+        c1.turn();
+        ship.addComponent(c1, 5, 6);
+        ship.addComponent(c2, 5, 8);
+        c12.turn();
+        ship.addComponent(c12, 7, 10);
+        ship.addComponent(c14, 8, 7);
+        ship.addComponent(c13, 8, 5);
+        c15.turn();
+        ship.addComponent(c15, 8, 8);
+        c16.turn();
+        ship.addComponent(c16, 8, 9);
+        ship.addComponent(c17, 8, 10);
+        ship.addComponent(c19, 9, 5);
+        ship.addComponent(c18, 9, 4);
+        ship.addComponent(c20, 9, 6);
+        c21.turn();
+        ship.addComponent(c21, 9, 8);
+        return ship;
     }
 
     public static void main(String[] args) {

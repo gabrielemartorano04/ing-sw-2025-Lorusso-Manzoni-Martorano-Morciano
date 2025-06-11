@@ -34,8 +34,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
+import java.util.List;
 
 public class FlightScene {
     private final String nickname;
@@ -122,7 +125,7 @@ public class FlightScene {
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {
                 StackPane cell = new StackPane();
-                cell.setPrefSize(109, 109);
+                cell.setPrefSize(107, 107);
 
                 if (validCells[row][col]) {
                     cell.setStyle("-fx-border-color: white; -fx-border-radius: 6px; -fx-background-radius: 6px;");
@@ -130,9 +133,9 @@ public class FlightScene {
                     Component c = layout[row][col];
                     if (c != null) {
                         ImageView imageView = new ImageView(c.getFrontImage());
-                        imageView.setFitWidth(109);
-                        imageView.setFitHeight(109);
-                        Rectangle clip = new Rectangle(109, 109);
+                        imageView.setFitWidth(107);
+                        imageView.setFitHeight(107);
+                        Rectangle clip = new Rectangle(107, 107);
                         clip.setArcWidth(12);
                         clip.setArcHeight(12);
                         imageView.setClip(clip);
@@ -214,7 +217,7 @@ public class FlightScene {
         StackPane imageContainer = new StackPane(border, cardView);
         imageContainer.setPrefSize(imageWidth, imageHeight);
         imageContainer.setAlignment(Pos.CENTER);
-        imageContainer.setTranslateX(-430);
+        imageContainer.setTranslateX(-420);
 
         root.getChildren().add(imageContainer);
         StackPane.setAlignment(imageContainer, Pos.CENTER);
@@ -1461,5 +1464,65 @@ public class FlightScene {
 
     public void updateCurrGood(Goods good) {
         this.goodImage = goodsImagesGetter.getGoodImage(good.getValue());
+    }
+
+    public void updateTrack(Map<String, Integer> truckers) {
+        if (scene == null || scene.getRoot() == null) return;
+
+        StackPane root = (StackPane) scene.getRoot();
+
+        // Rimuove eventuale trackBox precedente
+        root.getChildren().removeIf(node -> node.getId() != null && node.getId().equals("trackBox"));
+
+        // Ordina per posizione decrescente
+        List<Map.Entry<String, Integer>> sorted = new ArrayList<>(truckers.entrySet());
+        sorted.sort((a, b) -> b.getValue().compareTo(a.getValue())); // ordine decrescente
+
+        // Salva la posizione massima (del primo)
+        int maxPosition = sorted.get(0).getValue();
+
+        // Contenitore verticale
+        VBox trackBox = new VBox(10);
+        trackBox.setId("trackBox");
+        trackBox.setAlignment(Pos.CENTER_LEFT);
+        trackBox.setPadding(new Insets(10));
+
+        // Titolo
+        Label title = new Label("Track Position");
+        title.setFont(Font.font("Bangers", FontWeight.BOLD, 24));
+        title.setTextFill(Color.web("#FFDE69"));
+        trackBox.getChildren().add(title);
+
+        // Aggiungi righe in ordine
+        for (int i = 0; i < sorted.size(); i++) {
+            int pos = i + 1;
+            String name = sorted.get(i).getKey();
+            int current = sorted.get(i).getValue();
+
+            Text posText = new Text(pos + "°  ");
+            posText.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+            posText.setFill(Color.WHITE);
+
+            Text nameText = new Text(name);
+            nameText.setFont(Font.font("Bangers", FontWeight.NORMAL, 20));
+            nameText.setFill(Color.WHITE);
+
+            Text daysText = new Text();
+            if (i > 0) {
+                int diff = maxPosition - current;
+                daysText.setText("  (+" + diff + " days)");
+                daysText.setFont(Font.font("Bangers", FontWeight.NORMAL, 15));
+                daysText.setFill(Color.WHITE);
+            }
+
+            TextFlow line = new TextFlow(posText, nameText, daysText);
+            trackBox.getChildren().add(line);
+        }
+
+        // Posiziona a sinistra al centro
+        StackPane.setAlignment(trackBox, Pos.CENTER_LEFT);
+        StackPane.setMargin(trackBox, new Insets(0, 0, 0, 20));
+
+        root.getChildren().add(trackBox);
     }
 }
