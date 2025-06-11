@@ -78,7 +78,6 @@ public class FlightScene {
         double width = 1600;
         double height = 900;
 
-        // Sfondo
         Image backgroundImage;
         if (level == 0) {
             backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-2.jpeg").toExternalForm());
