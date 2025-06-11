@@ -1149,10 +1149,6 @@ public class BuildingScene {
                 root.getChildren().add(componentBox);
             }
             componentBox.setPickOnBounds(false);
-            System.out.println("----- Children of root (inside runLater) -----");
-            for (Node n : root.getChildren()) {
-                System.out.println(n.getClass().getSimpleName());
-            }
 
         });
 

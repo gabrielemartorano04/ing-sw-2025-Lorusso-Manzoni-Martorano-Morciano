@@ -370,7 +370,6 @@ public class InputParser {
                     System.out.println("Please type a valid index. Type 'selectkept <index>'.");
                     return null;
                 }
-                System.out.println(ind);
                 return new SelectKeptTileEvent(ind);
 
             case "stack":
