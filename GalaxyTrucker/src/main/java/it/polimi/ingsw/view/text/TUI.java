@@ -308,7 +308,7 @@ public class TUI implements UI {
 
     @Override
     public  void epidemic(EpidemicEvent event){
-        System.out.println("Card drawn: "+event.getCardName()+"\n Card description: "+event.getCardDescription()+"\n");
+        System.out.println("Card effect:");
         for (Trucker t: event.getTruckers()) {
             System.out.println(t.getNickname() + " has lost ");
         }
@@ -327,7 +327,7 @@ public class TUI implements UI {
 
     @Override
     public void stardust(StarDustEvent event){
-        System.out.println("Card drawn: "+event.getCardName().toUpperCase()+"\n Card description: "+event.getCardDescription()+"\n");
+        System.out.println("Card effect:");
         for (Trucker t: event.getTruckers()) {
             System.out.println(t.getNickname() + " has lost " + t.getSpaceShip().countExposedConnectors() + String.format(t.getSpaceShip().countExposedConnectors() == 1 ? " day\n" : " days\n"));
         }
@@ -369,8 +369,21 @@ public class TUI implements UI {
     }
 
     @Override
-    public void showResult(String result){
-        System.out.println(result);
+    public void showResult(RollDiceResult event){
+        switch (event.getHitType()) {
+            case "bigmeteor" -> {
+                System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
+                viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
+            }
+            case "smallmeteor" -> {
+                System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
+                viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
+            }
+            case "smallshot"-> {
+                System.out.println("The dices result for the shot # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
+                viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
+            }
+        }
     }
 
     @Override
@@ -565,6 +578,17 @@ public class TUI implements UI {
 
     }
 
+    @Override
+    public void showStardustCard(StarDustEvent event) {
+        System.out.println("Card drawn: " + event.getCardName().toUpperCase());
+        System.out.println("Card description: " + event.getCardDescription());
+    }
+
+    @Override
+    public void showEpidemicCard(EpidemicEvent event) {
+        System.out.println("Card drawn: " + event.getCardName().toUpperCase());
+        System.out.println("Card description: " + event.getCardDescription());
+    }
 
 
     @Override
@@ -960,7 +984,7 @@ public class TUI implements UI {
     }
 
     @Override
-    public void showPlanetsOccupied(PlanetDecision event) {
+    public void updatePlanetsOccupied(PlanetDecision event) {
         int index=0;
         for(Trucker planets: event.getPlanetsOccupied()){
             if(planets==null){
@@ -1128,5 +1152,9 @@ public class TUI implements UI {
             System.out.println("nickname: " + nicknames.get(i) + " color: " + colors.get(i));
         }
         System.out.println("choose a player");
+    }
+
+    public void setGoodImage(Goods good) {
+
     }
 }

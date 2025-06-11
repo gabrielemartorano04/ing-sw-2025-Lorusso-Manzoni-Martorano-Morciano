@@ -56,7 +56,7 @@ public class ViewFlow implements EventReceiver {
     private int level;
     private boolean alreadyLogged;
     private int credits;
-
+    private boolean firstLinked;
 
     public enum ViewState {
         FIRST,
@@ -107,6 +107,15 @@ public class ViewFlow implements EventReceiver {
         }
         this.serverEventVisitor = new ServerEventHandlerVisitor(this, ui);
         this.alreadyLogged=false;
+        this.firstLinked=false;
+    }
+
+    public void setFirstLinked(){
+        this.firstLinked=true;
+    }
+
+    public boolean getFirstLinked(){
+        return this.firstLinked;
     }
 
     public ViewState getViewState() {
@@ -218,7 +227,7 @@ public class ViewFlow implements EventReceiver {
             }
             case BULDING-> {
                 if (!this.end) {
-                    event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected);
+                    event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected,firstLinked);
                 }
                 else {
                     ui.showWaitForOthers();

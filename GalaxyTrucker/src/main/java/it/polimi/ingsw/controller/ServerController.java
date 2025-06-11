@@ -253,10 +253,7 @@ public class ServerController {
             long now = System.currentTimeMillis();
             ArrayList<Client> toRemove = new ArrayList<>();
             for (Client client : new ArrayList<>(clients)) {
-                System.out.println("controllo");
-                System.out.println(client.getLastPongTime() + " " + now + " " + (now - client.getLastPongTime()));
                 if (client.isTimedOut(now)) {
-                    System.out.println("Client " + client.getId() + " timed out. Removing...");
                     client.closeConnection();
                     toRemove.add(client);
                 } else {

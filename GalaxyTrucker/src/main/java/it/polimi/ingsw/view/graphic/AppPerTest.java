@@ -2,26 +2,18 @@ package it.polimi.ingsw.view.graphic;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.*;
-import it.polimi.ingsw.model.components.Cabin;
 import it.polimi.ingsw.model.components.Cannon;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
 import it.polimi.ingsw.net.socket.client.ClientEventSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.view.ViewFlow;
-import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
 import it.polimi.ingsw.view.graphic.scenes.FlightScene;
-import it.polimi.ingsw.view.graphic.scenes.LoginScene;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -150,6 +142,14 @@ public class AppPerTest extends Application {
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
+        flightScene.updatePlanetsOccupied(new ArrayList<>(){
+            {
+                add(trucker);
+                add(null);
+                add(null);
+            }
+        });
+        flightScene.showPlanetDecisionInput();
     }
 
     public static void main(String[] args) {

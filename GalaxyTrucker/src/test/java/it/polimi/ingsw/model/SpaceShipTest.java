@@ -525,6 +525,9 @@ class SpaceShipTest {
                 assertNotNull(load.getGoods().get(0));
                 assertEquals(load.getGoods().get(0),good1);
                 assertEquals(load.getGoods().get(0).getValue(),3);
+                assertNotNull(load.getGoods().get(2));
+                assertEquals(load.getGoods().get(2),good1);
+                assertEquals(load.getGoods().get(0).getValue(),3);
             }
             default -> {}
         }

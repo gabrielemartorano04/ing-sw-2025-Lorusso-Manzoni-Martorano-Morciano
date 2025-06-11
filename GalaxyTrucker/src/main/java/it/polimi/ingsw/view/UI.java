@@ -89,11 +89,11 @@ public interface UI {
 
     void showTruckerWithdrawn(String nickname);
 
-    void showResult(String result);
+    void showResult(RollDiceResult event);
 
     void showDead();
 
-    void showPlanetsOccupied(PlanetDecision event);
+    void updatePlanetsOccupied(PlanetDecision event);
 
 
     // Usati in piu scene
@@ -144,6 +144,10 @@ public interface UI {
     void showFlightPhaseStart();
 
     void showCardDrawn(StartCardEvent event);
+
+    void showStardustCard(StarDustEvent event);
+
+    void showEpidemicCard(EpidemicEvent event);
     void showGoodsGained(Goods goods);
     //INPUT
 
@@ -153,6 +157,7 @@ public interface UI {
 
     //NON ELIMINARE
     void showotherShipLayout(String nickname, Component[][] layout);
+
 
 
 }
