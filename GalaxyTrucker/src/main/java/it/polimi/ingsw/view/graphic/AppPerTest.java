@@ -150,6 +150,7 @@ public class AppPerTest extends Application {
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
+        flightScene.showPlotGoodInput();
     }
 
     public static void main(String[] args) {

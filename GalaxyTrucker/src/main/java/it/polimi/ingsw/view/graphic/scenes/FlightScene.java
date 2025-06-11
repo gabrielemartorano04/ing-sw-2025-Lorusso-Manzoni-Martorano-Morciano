@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.StarDust;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.view.ViewFlow;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -33,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -708,9 +710,16 @@ public class FlightScene {
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
 
-        Label confirm = new Label("Would you like to gain the goods?");
+        Label confirm = new Label("Would you like to gain this good?");
         confirm.setTextFill(Color.web("#FFDE69"));
         confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+
+        // === IMMAGINE DEL GOOD ===
+        Image goodImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/bluegood.png")).toExternalForm());
+        ImageView goodView = new ImageView(goodImage);
+        goodView.setFitWidth(50);
+        goodView.setPreserveRatio(true);
+        goodView.setMouseTransparent(true);
 
         Button yes = new Button("YES");
         yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
@@ -729,60 +738,116 @@ public class FlightScene {
         HBox buttons = new HBox(10, yes, no);
         buttons.setAlignment(Pos.CENTER);
 
-        box.getChildren().addAll(confirm, buttons);
+        box.getChildren().addAll(confirm, goodView, buttons);
 
         AnchorPane anchorPane = new AnchorPane(box);
-        anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
+        anchorPane.setPickOnBounds(false);
         AnchorPane.setBottomAnchor(box, 20.0);
         AnchorPane.setLeftAnchor(box, 20.0);
 
-        // Comportamento "NO"
+        // "NO" logic
         no.setOnAction(ev -> {
             viewFlow.handleInput("n");
             root.getChildren().remove(anchorPane);
         });
 
-        // Comportamento "YES"
+        // "YES" logic
         yes.setOnAction(ev -> {
             box.getChildren().clear();
 
-            Label insertLabel = new Label("Insert the coordinates of the loads and the position inside");
+            Label insertLabel = new Label("Insert coordinates and internal position");
             insertLabel.setTextFill(Color.web("#FFDE69"));
             insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
 
-            Label hintLabel = new Label("Type '<x> <y>, <position>'");
-            hintLabel.setTextFill(Color.LIGHTGRAY);
-            hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+            // === SECOND COPY OF GOOD IMAGE ===
+            ImageView goodView2 = new ImageView(goodImage);
+            goodView2.setFitWidth(50);
+            goodView2.setPreserveRatio(true);
+            goodView2.setMouseTransparent(true);
 
-            TextField inputField = new TextField();
-            inputField.setPromptText("Ex. 2 3, 3");
-            inputField.setPrefWidth(250);
+            Label xLabel = new Label("X:");
+            xLabel.setTextFill(Color.web("#FFDE69"));
+            xLabel.setFont(Font.font("Bangers", 15));
 
-            Button confirmBtn = new Button("Confirm");
-            confirmBtn.setFont(Font.font("Bangers", 14));
-            confirmBtn.setTextFill(Color.BLACK);
-            confirmBtn.setCursor(Cursor.HAND);
-            confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            Label yLabel = new Label("Y:");
+            yLabel.setTextFill(Color.web("#FFDE69"));
+            yLabel.setFont(Font.font("Bangers", 15));
 
-            // Azione comune per invio
-            Runnable sendInput = () -> {
-                String text = inputField.getText().trim();
-                if (!text.isEmpty()) {
-                    viewFlow.handleInput("y, " + text);
-                    root.getChildren().remove(anchorPane);
-                }
-            };
+            Label posLabel = new Label("Position:");
+            posLabel.setTextFill(Color.web("#FFDE69"));
+            posLabel.setFont(Font.font("Bangers", 15));
 
-            // ENTER sulla TextField
-            inputField.setOnAction(e -> sendInput.run());
+            TextField xField = new TextField();
+            xField.setPromptText("x");
+            xField.setPrefWidth(50);
+            xField.textProperty().addListener((obs, oldVal, newVal) -> {
+                if (!newVal.matches("\\d*")) xField.setText(newVal.replaceAll("[^\\d]", ""));
+            });
 
-            // Clic su Confirm
-            confirmBtn.setOnAction(e -> sendInput.run());
+            TextField yField = new TextField();
+            yField.setPromptText("y");
+            yField.setPrefWidth(50);
+            yField.textProperty().addListener((obs, oldVal, newVal) -> {
+                if (!newVal.matches("\\d*")) yField.setText(newVal.replaceAll("[^\\d]", ""));
+            });
 
-            HBox inputBox = new HBox(10, inputField, confirmBtn);
+            TextField posField = new TextField();
+            posField.setPromptText("pos");
+            posField.setPrefWidth(50);
+            posField.textProperty().addListener((obs, oldVal, newVal) -> {
+                if (!newVal.matches("\\d*")) posField.setText(newVal.replaceAll("[^\\d]", ""));
+            });
+
+            HBox inputBox = new HBox(10, xLabel, xField, yLabel, yField, posLabel, posField);
             inputBox.setAlignment(Pos.CENTER);
 
-            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+            Label errorLabel = new Label("Invalid coordinates or position");
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setVisible(false);
+
+            Button cancelBtn = new Button("Undo");
+            cancelBtn.setFont(Font.font("Bangers", 14));
+            cancelBtn.setCursor(Cursor.HAND);
+            cancelBtn.setTextFill(Color.WHITE);
+            cancelBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(8), Insets.EMPTY)));
+
+            Button sendBtn = new Button("Confirm");
+            sendBtn.setFont(Font.font("Bangers", 14));
+            sendBtn.setCursor(Cursor.HAND);
+            sendBtn.setTextFill(Color.WHITE);
+            sendBtn.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(8), Insets.EMPTY)));
+
+            HBox sendBox = new HBox(15, cancelBtn, sendBtn);
+            sendBox.setAlignment(Pos.CENTER);
+
+            box.getChildren().addAll(insertLabel, goodView2, inputBox, errorLabel, sendBox);
+
+            cancelBtn.setOnAction(e -> root.getChildren().remove(anchorPane));
+
+            sendBtn.setOnAction(e -> {
+                String xText = xField.getText().trim();
+                String yText = yField.getText().trim();
+                String posText = posField.getText().trim();
+
+                try {
+                    int x = Integer.parseInt(xText);
+                    int y = Integer.parseInt(yText);
+                    int pos = Integer.parseInt(posText);
+
+                    if (x < 0 || y < 0 || pos < 0) {
+                        errorLabel.setVisible(true);
+                        return;
+                    }
+
+                    errorLabel.setVisible(false);
+                    viewFlow.handleInput("y, " + x + " " + y + ", " + pos);
+                    root.getChildren().remove(anchorPane);
+                } catch (NumberFormatException ex) {
+                    errorLabel.setVisible(true);
+                }
+            });
+
+            posField.setOnAction(e -> sendBtn.fire());
         });
 
         root.getChildren().add(anchorPane);
