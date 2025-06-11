@@ -86,7 +86,28 @@ public class FlightScene {
         backgroundView.setPreserveRatio(true);
         backgroundView.setMouseTransparent(true);
 
-        // Griglia nave
+        root.getChildren().setAll(backgroundView);
+
+        createAndAddShipLayout();
+
+        scene = new Scene(root, width, height);
+
+        Consumer<Button> styleButton = createDefaultButtonStyler();
+
+        addRulesButtonToScene(styleButton);
+        addCardDrawnToScene(new StarDust(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
+        attachOptionsBoxToScene(scene);
+
+        return scene;
+    }
+
+    private void createAndAddShipLayout() {
+        // se grid esiste già, la rimuovo dal root
+        if (grid != null) {
+            root.getChildren().remove(grid);
+        }
+
         grid = new GridPane();
         grid.setHgap(2);
         grid.setVgap(2);
@@ -113,7 +134,6 @@ public class FlightScene {
                         imageView.setClip(clip);
                         cell.getChildren().add(imageView);
                     }
-
                 } else {
                     cell.setStyle("-fx-background-color: transparent;");
                 }
@@ -122,17 +142,9 @@ public class FlightScene {
                 cellMatrix[row][col] = cell;
             }
         }
-        root.getChildren().setAll(backgroundView, grid);
-        scene = new Scene(root, width, height);
-        Consumer<Button> styleButton = createDefaultButtonStyler();
-
-        addRulesButtonToScene(styleButton);
-        addCardDrawnToScene(new StarDust(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
-        addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
-        attachOptionsBoxToScene(scene);
-
-        return scene;
+        root.getChildren().add(grid);
     }
+
 
     private void attachOptionsBoxToScene(Scene scene) {
         VBox optionsBox = new VBox(10);
