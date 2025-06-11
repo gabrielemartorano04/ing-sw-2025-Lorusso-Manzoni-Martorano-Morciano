@@ -1140,4 +1140,8 @@ public class TUI implements UI {
         }
         System.out.println("choose a player");
     }
+
+    public void setGoodImage(Goods good) {
+
+    }
 }

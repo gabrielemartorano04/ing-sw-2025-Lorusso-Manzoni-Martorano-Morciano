@@ -58,6 +58,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setNickname(event.getNickname());
             viewFlow.setShip(event.getSpaceShip().getComponents());
         }
+
         viewFlow.setLevel(event.getLevel());
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
         viewFlow.fillAvailableComponents(event.getComponents());
@@ -371,6 +372,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.HUMAN_COORD);
             viewFlow.setShip(event.getShip().getComponents());
+            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
             ui.showInputFormat(ParserState.HUMAN_COORD);
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
@@ -383,6 +385,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLANET_DECISION);
             viewFlow.setShip(event.getShip().getComponents());
+            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
             ui.showPlanetsOccupied(event);
             ui.showInputFormat(ParserState.PLANET_DECISION);
         } else {
@@ -396,6 +399,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLOT_GOOD);
             viewFlow.setShip(event.getShip().getComponents());
+            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
             ui.showInputFormat(ParserState.PLOT_GOOD);
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
@@ -590,6 +594,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
             viewFlow.setShip(event.getShip().getComponents());
+            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
@@ -602,6 +607,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
             viewFlow.setShip(event.getShip().getComponents());
+            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
@@ -614,6 +620,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
             viewFlow.setShip(event.getShip().getComponents());
+            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
@@ -713,6 +720,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
             viewFlow.setPosition(trucker.getPosition());
             viewFlow.setShip(trucker.getSpaceShip().getComponents());
+            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
         }
     }
 
