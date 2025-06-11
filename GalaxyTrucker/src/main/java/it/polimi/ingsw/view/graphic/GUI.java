@@ -470,7 +470,7 @@ public class GUI implements UI {
             case ACTIVATE_SHIELD -> this.flightScene.showActivateShieldInput();
             case LAND -> this.flightScene.showLandInput();
             case HUMAN_COORD -> this.flightScene.showHumanCoordInput();
-            case PLOT_GOOD -> this.flightScene.showPlotGoodInput(new Goods(2));
+            case PLOT_GOOD -> this.flightScene.showPlotGoodInput();
             case ROLL_DICE -> this.flightScene.showRollDiceInput();
             case PLANET_DECISION-> this.flightScene.showPlanetDecisionInput();
             case DRAW_CARD -> this.flightScene.showDrawCardInput();
@@ -742,7 +742,7 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showPlanetsOccupied(PlanetDecision event) {
+    public void updatePlanetsOccupied(PlanetDecision event) {
 
     }
 

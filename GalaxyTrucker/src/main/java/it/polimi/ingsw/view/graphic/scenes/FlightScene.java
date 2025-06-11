@@ -34,10 +34,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 public class FlightScene {
     private final String nickname;
@@ -52,6 +50,8 @@ public class FlightScene {
     private Button otherBtn;
 
     private GoodsImagesGetter goodsImagesGetter;
+    private Image goodImage;
+    private ArrayList<Trucker> planets;
 
 
     private StackPane waitOverlay;
@@ -706,7 +706,7 @@ public class FlightScene {
         root.getChildren().add(anchorPane);
     }
 
-    public void showPlotGoodInput(Goods good) {
+    public void showPlotGoodInput() {
         StackPane root = (StackPane) scene.getRoot();
 
         VBox box = new VBox(10);
@@ -718,7 +718,7 @@ public class FlightScene {
         confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
 
         // === IMMAGINE DEL GOOD ===
-        ImageView goodView = new ImageView(goodsImagesGetter.getGoodImage(good.getValue()));
+        ImageView goodView = new ImageView(goodImage);
         goodView.setFitWidth(50);
         goodView.setPreserveRatio(true);
         goodView.setMouseTransparent(true);
@@ -744,8 +744,8 @@ public class FlightScene {
 
         AnchorPane anchorPane = new AnchorPane(box);
         anchorPane.setPickOnBounds(false);
-        AnchorPane.setBottomAnchor(box, 20.0);
-        AnchorPane.setLeftAnchor(box, 20.0);
+        AnchorPane.setBottomAnchor(box, 80.0);
+        AnchorPane.setLeftAnchor(box, 120.0);
 
         // "NO" logic
         no.setOnAction(ev -> {
@@ -762,7 +762,7 @@ public class FlightScene {
             insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
 
             // === SECOND COPY OF GOOD IMAGE ===
-            ImageView goodView2 = new ImageView(goodsImagesGetter.getGoodImage(good.getValue()));
+            ImageView goodView2 = new ImageView(goodImage);
             goodView2.setFitWidth(50);
             goodView2.setPreserveRatio(true);
             goodView2.setMouseTransparent(true);
@@ -879,11 +879,6 @@ public class FlightScene {
         rollButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
         rollButton.setCursor(Cursor.HAND);
 
-        Label resultLabel = new Label("");
-        resultLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 60));
-        resultLabel.setTextFill(Color.WHITE);
-        resultLabel.setVisible(false);
-
         box.getChildren().addAll(diceLabel, rollButton);
 
         StackPane overlayPane = new StackPane(overlay, box);
@@ -894,17 +889,16 @@ public class FlightScene {
         rollButton.setOnAction(ev -> {
             root.getChildren().remove(overlayPane);
             viewFlow.handleInput("roll");
-            showRollDiceResult(3);
         });
     }
 
     public void showPlanetDecisionInput() {
         StackPane root = (StackPane) scene.getRoot();
 
-        // VBox per contenere il messaggio e i pulsanti
-        VBox box = new VBox(10);
-        box.setAlignment(Pos.CENTER);
-        box.setPadding(new Insets(10));
+        // Contenitore principale
+        VBox mainBox = new VBox(15);
+        mainBox.setAlignment(Pos.CENTER);
+        mainBox.setPadding(new Insets(10));
 
         Label confirm = new Label("Would you like to land on a planet?");
         confirm.setTextFill(Color.web("#FFDE69"));
@@ -927,58 +921,62 @@ public class FlightScene {
         HBox buttons = new HBox(10, yes, no);
         buttons.setAlignment(Pos.CENTER);
 
-        box.getChildren().addAll(confirm, buttons);
+        mainBox.getChildren().addAll(confirm, buttons);
 
-        // Posiziona VBox in basso a sinistra usando un AnchorPane
-        AnchorPane anchorPane = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 20.0);
-        AnchorPane.setLeftAnchor(box, 20.0);
+        AnchorPane anchorPane = new AnchorPane(mainBox);
+        AnchorPane.setBottomAnchor(mainBox, 100.0);
+        AnchorPane.setLeftAnchor(mainBox, 100.0);
 
-        yes.setOnAction(ev -> {
-            box.getChildren().clear();
-
-            Label insertLabel = new Label("Insert the index of the planet you want to land on");
-            insertLabel.setTextFill(Color.web("#FFDE69"));
-            insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-
-            Label hintLabel = new Label("Type '<index>'");
-            hintLabel.setTextFill(Color.LIGHTGRAY);
-            hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
-
-            TextField inputField = new TextField();
-            inputField.setPromptText("Ex. 2");
-            inputField.setPrefWidth(250);
-
-            Button confirmBtn = new Button("Confirm");
-            confirmBtn.setFont(Font.font("Bangers", 14));
-            confirmBtn.setTextFill(Color.BLACK);
-            confirmBtn.setCursor(Cursor.HAND);
-            confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-
-            // Azione comune per invio
-            Runnable sendInput = () -> {
-                String text = inputField.getText().trim();
-                if (!text.isEmpty()) {
-                    viewFlow.handleInput(text);
-                    root.getChildren().remove(anchorPane);
-                }
-            };
-
-            // ENTER sulla TextField
-            inputField.setOnAction(e -> sendInput.run());
-
-            // Clic su Confirm
-            confirmBtn.setOnAction(e -> sendInput.run());
-
-            HBox inputBox = new HBox(10, inputField, confirmBtn);
-            inputBox.setAlignment(Pos.CENTER);
-
-            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
-        });
-
+        // === Azione NO ===
         no.setOnAction(ev -> {
             viewFlow.handleInput("-1");
             root.getChildren().remove(anchorPane);
+        });
+
+        // === Azione YES ===
+        yes.setOnAction(ev -> {
+            mainBox.getChildren().clear();
+
+            Label chooseLabel = new Label("Choose a planet to land on:");
+            chooseLabel.setTextFill(Color.web("#FFDE69"));
+            chooseLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
+
+            VBox planetListBox = new VBox(8);
+            planetListBox.setAlignment(Pos.CENTER);
+
+            for (int i = 0; i < planets.size(); i++) {
+                Trucker t = planets.get(i);
+                String status = (t == null) ? "free" : t.getNickname();
+
+                Text planetLabel = new Text("Planet " + i + 1 + ": ");
+                planetLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+                planetLabel.setFill(Color.WHITE);
+
+                Text statusText = new Text(status);
+                statusText.setFont(Font.font("Bangers", FontWeight.NORMAL, 16));
+                statusText.setFill(t == null ? Color.LIGHTGREEN : Color.LIGHTCORAL);
+
+                Button selectBtn = new Button("Land");
+                selectBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 13));
+                selectBtn.setTextFill(Color.BLACK);
+                selectBtn.setStyle("-fx-background-color: #FFDE69;");
+                selectBtn.setCursor(Cursor.HAND);
+                selectBtn.setPrefWidth(80);
+                selectBtn.setDisable(t != null); // disabilita se pianeta occupato
+
+                int finalI = i;
+                selectBtn.setOnAction(e -> {
+                    viewFlow.handleInput(String.valueOf(finalI));
+                    root.getChildren().remove(anchorPane);
+                });
+
+                HBox line = new HBox(10, selectBtn, planetLabel, statusText);
+                line.setAlignment(Pos.CENTER);
+                planetListBox.getChildren().add(line);
+            }
+
+            mainBox.getChildren().addAll(chooseLabel, planetListBox);
+            mainBox.setTranslateX(60);
         });
 
         root.getChildren().add(anchorPane);
@@ -1349,10 +1347,12 @@ public class FlightScene {
             finalValue.setTextFill(Color.WHITE);
 
             VBox resultBox = new VBox(5, title, finalValue);
-            resultBox.setAlignment(Pos.CENTER_LEFT);
+            resultBox.setAlignment(Pos.TOP_CENTER);
             resultBox.setPadding(new Insets(15));
+            resultBox.setTranslateX(-430);
+            resultBox.setMouseTransparent(true);
 
-            StackPane.setAlignment(resultBox, Pos.CENTER_LEFT);
+            StackPane.setAlignment(resultBox, Pos.TOP_CENTER);
             StackPane.setMargin(resultBox, new Insets(20));
 
             root.getChildren().add(resultBox);
@@ -1361,43 +1361,8 @@ public class FlightScene {
         rollAnimation.play();
     }
 
-    //TODO aggiungere che deve sparire quando si chiude l'insert index di planet decision
-    public void showPlanets(ArrayList<Trucker> planets) {
-        // === Contenitore verticale per la lista ===
-        VBox planetBox = new VBox(8);
-        planetBox.setAlignment(Pos.BOTTOM_CENTER);
-        planetBox.setPadding(new Insets(12));
-
-        // === Titolo ===
-        Label title = new Label("List of available planets");
-        title.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-        title.setTextFill(Color.web("#FFDE69"));
-        planetBox.getChildren().add(title);
-
-        // === Riga per ogni pianeta ===
-        for (int i = 0; i < planets.size(); i++) {
-            Trucker t = planets.get(i);
-            String status = (t == null) ? "free" : t.getNickname();
-
-            Text planetLabel = new Text("Planet " + i + ": ");
-            planetLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-            planetLabel.setFill(Color.WHITE);
-
-            Text statusText = new Text(status);
-            statusText.setFont(Font.font("Bangers", FontWeight.NORMAL, 16));
-            statusText.setFill(Color.WHITE);
-
-            TextFlow line = new TextFlow(planetLabel, statusText);
-            line.setTextAlignment(TextAlignment.CENTER);
-            planetBox.getChildren().add(line);
-        }
-
-        // === Posizionamento in basso al centro ===
-        StackPane.setAlignment(planetBox, Pos.BOTTOM_CENTER);
-        StackPane.setMargin(planetBox, new Insets(0, 0, 30, 0));
-
-        // === Aggiungi al root ===
-        root.getChildren().add(planetBox);
+    public void updatePlanetsOccupied(ArrayList<Trucker> planets) {
+        this.planets = planets;
     }
 
 
@@ -1494,5 +1459,7 @@ public class FlightScene {
         });
     }
 
-
+    public void updateCurrGood(Goods good) {
+        this.goodImage = goodsImagesGetter.getGoodImage(good.getValue());
+    }
 }
