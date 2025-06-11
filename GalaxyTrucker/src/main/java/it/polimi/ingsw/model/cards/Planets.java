@@ -122,7 +122,7 @@ public class Planets extends Card implements Serializable {
                                 .indexOf(truckersLanded
                                         .get(indexOfTrucker))));
                 currentGoodsList.addAll(goodsPassed);
-                if (indexOfTrucker < truckersLanded.size() - 1) {
+                if (indexOfTrucker < truckersLanded.size()) {
                     for (Goods currentGood : planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker)))) {
                         if (Game.getIstance().getBank().getGoodsInBank(currentGood.getValue()) > 0) {
                             // abbiamo la merce corrente
