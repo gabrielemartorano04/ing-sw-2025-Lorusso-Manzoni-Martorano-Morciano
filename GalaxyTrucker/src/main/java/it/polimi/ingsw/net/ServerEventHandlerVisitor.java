@@ -332,6 +332,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(EpidemicEvent event) {
+        //ui.showCardDrawn(event); show carta g
         Trucker trucker=null;
         for(Trucker t:event.getTruckers()){
             if(t.getNickname().equals(viewFlow.getNickname())){
@@ -426,7 +427,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(StarDustEvent event) {
-
+        //ui.showCardDrawn(event); fai show apposta
         Trucker trucker=null;
         for(Trucker t:event.getTruckers()){
             if(t.getNickname().equals(viewFlow.getNickname())){
