@@ -414,7 +414,7 @@ public class GUI implements UI {
 
     // flight scene
 
-    // ERRORE MAI USATO
+    // MAI USATO!!!
     @Deprecated
     public void invalidPosition(InvalidPositionError event){
         //this.buildingScene.showInvalidPositionPopup();
@@ -448,17 +448,20 @@ public class GUI implements UI {
     @Override
     public  void epidemic(EpidemicEvent event){
 
-//        this.flightScene.showUpdateSpaceship();
-//        this.flightScene.showUpdateTrack();
+        Platform.runLater(() -> {
+//          this.flightScene.showUpdateSpaceship();
+//          this.flightScene.showUpdateTrack();
+        });
 
     }
 
     @Override
     public void stardust(StarDustEvent event){
 
-//        this.flightScene.showUpdateSpaceship();
-//        this.flightScene.showUpdateTrack();
-
+        Platform.runLater(() -> {
+//          this.flightScene.showUpdateSpaceship();
+//          this.flightScene.showUpdateTrack();
+        });
     }
 
     @Override
@@ -485,8 +488,8 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showResult(String result){
-//        this.flightScene.showResult(result);
+    public void showResult(RollDiceResult event){
+        this.flightScene.showRollDiceResult(event.getDiceResult());
     }
 
     @Override
