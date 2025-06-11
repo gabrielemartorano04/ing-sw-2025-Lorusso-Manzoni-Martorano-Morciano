@@ -411,20 +411,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(RollDiceResult event) {
         if (event.getNickname().equals(viewFlow.getNickname())) {
-            switch (event.getHitType()) {
-                case "bigmeteor" -> {
-                    ui.showResult("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
-                    viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
-                }
-                case "smallmeteor" -> {
-                    ui.showResult("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
-                    viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
-                }
-                case "smallshot"-> {
-                    ui.showResult("The dices result for the shot # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
-                    viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
-                }
-            }
+            ui.showResult(event);
             ui.showInputFormat(viewFlow.getParserFlightState());
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
