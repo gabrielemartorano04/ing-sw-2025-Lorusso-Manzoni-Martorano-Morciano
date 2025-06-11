@@ -51,6 +51,8 @@ public class FlightScene {
     private Button rulesBtn;
     private Button otherBtn;
 
+    private GoodsImagesGetter goodsImagesGetter;
+
 
     private StackPane waitOverlay;
     private Timeline waitAnimation;
@@ -69,13 +71,13 @@ public class FlightScene {
                 validCells[i][j] = c == null || !c.getType().equals("Empty Space");
             }
         }
+        this.goodsImagesGetter = new GoodsImagesGetter();
     }
 
     public Scene createScene(ArrayList<String> playersNames, int level) {
         double width = 1600;
         double height = 900;
 
-        // Sfondo
         Image backgroundImage;
         if (level == 0) {
             backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-2.jpeg").toExternalForm());
@@ -88,7 +90,28 @@ public class FlightScene {
         backgroundView.setPreserveRatio(true);
         backgroundView.setMouseTransparent(true);
 
-        // Griglia nave
+        root.getChildren().setAll(backgroundView);
+
+        createAndAddShipLayout();
+
+        scene = new Scene(root, width, height);
+
+        Consumer<Button> styleButton = createDefaultButtonStyler();
+
+        addRulesButtonToScene(styleButton);
+        addCardDrawnToScene(new StarDust(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
+        attachOptionsBoxToScene(scene);
+
+        return scene;
+    }
+
+    private void createAndAddShipLayout() {
+        // se grid esiste già, la rimuovo dal root
+        if (grid != null) {
+            root.getChildren().remove(grid);
+        }
+
         grid = new GridPane();
         grid.setHgap(2);
         grid.setVgap(2);
@@ -115,7 +138,6 @@ public class FlightScene {
                         imageView.setClip(clip);
                         cell.getChildren().add(imageView);
                     }
-
                 } else {
                     cell.setStyle("-fx-background-color: transparent;");
                 }
@@ -124,17 +146,9 @@ public class FlightScene {
                 cellMatrix[row][col] = cell;
             }
         }
-        root.getChildren().setAll(backgroundView, grid);
-        scene = new Scene(root, width, height);
-        Consumer<Button> styleButton = createDefaultButtonStyler();
-
-        addRulesButtonToScene(styleButton);
-        addCardDrawnToScene(new StarDust(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
-        addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
-        attachOptionsBoxToScene(scene);
-
-        return scene;
+        root.getChildren().add(grid);
     }
+
 
     private void attachOptionsBoxToScene(Scene scene) {
         VBox optionsBox = new VBox(10);
@@ -200,6 +214,7 @@ public class FlightScene {
         StackPane imageContainer = new StackPane(border, cardView);
         imageContainer.setPrefSize(imageWidth, imageHeight);
         imageContainer.setAlignment(Pos.CENTER);
+        imageContainer.setTranslateX(-430);
 
         root.getChildren().add(imageContainer);
         StackPane.setAlignment(imageContainer, Pos.CENTER);
@@ -691,7 +706,7 @@ public class FlightScene {
         root.getChildren().add(anchorPane);
     }
 
-    public void showPlotGoodInput() {
+    public void showPlotGoodInput(Goods good) {
         StackPane root = (StackPane) scene.getRoot();
 
         VBox box = new VBox(10);
@@ -703,8 +718,7 @@ public class FlightScene {
         confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
 
         // === IMMAGINE DEL GOOD ===
-        Image goodImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/bluegood.png")).toExternalForm());
-        ImageView goodView = new ImageView(goodImage);
+        ImageView goodView = new ImageView(goodsImagesGetter.getGoodImage(good.getValue()));
         goodView.setFitWidth(50);
         goodView.setPreserveRatio(true);
         goodView.setMouseTransparent(true);
@@ -748,7 +762,7 @@ public class FlightScene {
             insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
 
             // === SECOND COPY OF GOOD IMAGE ===
-            ImageView goodView2 = new ImageView(goodImage);
+            ImageView goodView2 = new ImageView(goodsImagesGetter.getGoodImage(good.getValue()));
             goodView2.setFitWidth(50);
             goodView2.setPreserveRatio(true);
             goodView2.setMouseTransparent(true);
@@ -880,6 +894,7 @@ public class FlightScene {
         rollButton.setOnAction(ev -> {
             root.getChildren().remove(overlayPane);
             viewFlow.handleInput("roll");
+            showRollDiceResult(3);
         });
     }
 
