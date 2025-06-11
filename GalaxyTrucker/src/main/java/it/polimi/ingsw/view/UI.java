@@ -93,7 +93,7 @@ public interface UI {
 
     void showDead();
 
-    void showPlanetsOccupied(PlanetDecision event);
+    void updatePlanetsOccupied(PlanetDecision event);
 
 
     // Usati in piu scene

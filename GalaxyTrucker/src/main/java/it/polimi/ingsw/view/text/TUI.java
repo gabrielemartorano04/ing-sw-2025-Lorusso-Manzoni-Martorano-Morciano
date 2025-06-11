@@ -984,7 +984,7 @@ public class TUI implements UI {
     }
 
     @Override
-    public void showPlanetsOccupied(PlanetDecision event) {
+    public void updatePlanetsOccupied(PlanetDecision event) {
         int index=0;
         for(Trucker planets: event.getPlanetsOccupied()){
             if(planets==null){
