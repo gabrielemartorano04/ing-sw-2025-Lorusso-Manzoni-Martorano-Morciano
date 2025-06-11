@@ -51,6 +51,8 @@ public class FlightScene {
     private Button rulesBtn;
     private Button otherBtn;
 
+    private GoodsImagesGetter goodsImagesGetter;
+
 
     private StackPane waitOverlay;
     private Timeline waitAnimation;
@@ -69,6 +71,7 @@ public class FlightScene {
                 validCells[i][j] = c == null || !c.getType().equals("Empty Space");
             }
         }
+        this.goodsImagesGetter = new GoodsImagesGetter();
     }
 
     public Scene createScene(ArrayList<String> playersNames, int level) {
@@ -200,6 +203,7 @@ public class FlightScene {
         StackPane imageContainer = new StackPane(border, cardView);
         imageContainer.setPrefSize(imageWidth, imageHeight);
         imageContainer.setAlignment(Pos.CENTER);
+        imageContainer.setTranslateX(-430);
 
         root.getChildren().add(imageContainer);
         StackPane.setAlignment(imageContainer, Pos.CENTER);
@@ -691,7 +695,7 @@ public class FlightScene {
         root.getChildren().add(anchorPane);
     }
 
-    public void showPlotGoodInput() {
+    public void showPlotGoodInput(Goods good) {
         StackPane root = (StackPane) scene.getRoot();
 
         VBox box = new VBox(10);
@@ -703,8 +707,7 @@ public class FlightScene {
         confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
 
         // === IMMAGINE DEL GOOD ===
-        Image goodImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/bluegood.png")).toExternalForm());
-        ImageView goodView = new ImageView(goodImage);
+        ImageView goodView = new ImageView(goodsImagesGetter.getGoodImage(good.getValue()));
         goodView.setFitWidth(50);
         goodView.setPreserveRatio(true);
         goodView.setMouseTransparent(true);
@@ -748,7 +751,7 @@ public class FlightScene {
             insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
 
             // === SECOND COPY OF GOOD IMAGE ===
-            ImageView goodView2 = new ImageView(goodImage);
+            ImageView goodView2 = new ImageView(goodsImagesGetter.getGoodImage(good.getValue()));
             goodView2.setFitWidth(50);
             goodView2.setPreserveRatio(true);
             goodView2.setMouseTransparent(true);
@@ -880,6 +883,7 @@ public class FlightScene {
         rollButton.setOnAction(ev -> {
             root.getChildren().remove(overlayPane);
             viewFlow.handleInput("roll");
+            showRollDiceResult(3);
         });
     }
 
