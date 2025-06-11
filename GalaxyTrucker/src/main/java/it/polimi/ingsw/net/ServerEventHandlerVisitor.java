@@ -71,6 +71,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(ComponentLinkedEvent event) {
+        viewFlow.setFirstLinked();
         viewFlow.getShip()[event.getX()][event.getY()]=event.getComponent();
         viewFlow.deleteSelectedComponent();
         ui.componentLinked(event);
