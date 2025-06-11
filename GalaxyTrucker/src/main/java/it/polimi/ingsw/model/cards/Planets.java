@@ -16,6 +16,7 @@ import it.polimi.ingsw.view.ParserState;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,6 +73,7 @@ public class Planets extends Card implements Serializable {
 
     @Override
     public ServerEvent startCard() {
+        System.out.println(Arrays.toString(Game.getIstance().getBank().getGoods()));
         StartCardEvent startCardEvent =
                 new StartCardEvent(
                         this.getName(),
@@ -122,7 +124,7 @@ public class Planets extends Card implements Serializable {
                                 .indexOf(truckersLanded
                                         .get(indexOfTrucker))));
                 currentGoodsList.addAll(goodsPassed);
-                if (indexOfTrucker < truckersLanded.size() - 1) {
+                if (indexOfTrucker < truckersLanded.size()) {
                     for (Goods currentGood : planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker)))) {
                         if (Game.getIstance().getBank().getGoodsInBank(currentGood.getValue()) > 0) {
                             // abbiamo la merce corrente
@@ -156,6 +158,7 @@ public class Planets extends Card implements Serializable {
                 Goods g; // bene che mi viene passato dalla nave di trucker se nel load c'era già qualcosa
                 currentGood.setX(goodsCoordinates[0]);
                 currentGood.setY(goodsCoordinates[1]);
+                System.out.println("player " + Game.getIstance().getTrucker(indexOfTrucker).getNickname() + "sta per fare addGood");
                 g=truckersLanded.get(indexOfTrucker).getSpaceShip().addGood(currentGood, goodsCoordinates, positionInLoad, Game.getIstance().getBank());
                 if (g!=null){
                     goodsPassed.add(g);
@@ -167,7 +170,7 @@ public class Planets extends Card implements Serializable {
         }else{
             goodsPassed.add(currentGood);
         }
-        if(currGoodIndex >= currentGoodsList.size()){
+        if(currGoodIndex >= currentGoodsList.size()-1){
             cardState = CardState.REARRANGE;
             return new RearrangeEvent(true, this.truckersLanded.get(indexOfTrucker).getNickname());
         }
@@ -228,6 +231,7 @@ public class Planets extends Card implements Serializable {
         // muovo in dietro i giocatori ma partendo dal più indietro nella plancia non dal Leader
         for(int i = truckersLanded.size() - 1; i>=0; i--){
             Game.getIstance().moveBackward(truckersLanded.get(i), daysLoss);
+            System.out.println("beni di trucker " + truckersLanded.get(i).getNickname() + ": " + truckersLanded.get(i).getSpaceShip().getGoodsList());
         }
         cardState = CardState.EXIT;
         ArrayList<String> truckerRemoved;

@@ -101,10 +101,4 @@ final public class Load extends Component implements Serializable {
     public ArrayList<Goods> getGoods() {
         return goods;
     }
-
-    public static void main(String[] args) {
-        Load load =new Load(3,3,3,3,"Load","",2,false);
-        load.removeGood(1);
-        load.addGood(1,new Goods(3));
-    }
 }
