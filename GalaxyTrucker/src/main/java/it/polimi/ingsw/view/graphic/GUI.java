@@ -245,7 +245,6 @@ public class GUI implements UI {
         });
     }
 
-
     @Override
     public void nickNameAlreadyTaken(NicknameAlreadyInError event){
         Platform.runLater(() -> {
