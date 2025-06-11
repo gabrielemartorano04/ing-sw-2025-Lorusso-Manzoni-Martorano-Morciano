@@ -349,7 +349,6 @@ public class GUI implements UI {
 
     @Override
     public void keptComponent(KeptComponentEvent event){
-        //il metodo ha il nuovo component kept
         Platform.runLater(() -> {
             this.buildingScene.insertComponentToKepts(event.getKept());
         });
@@ -358,6 +357,7 @@ public class GUI implements UI {
     @Override
     public void componentTurned(TurnedComponentSuccessEvent event){
         Platform.runLater(() -> {
+            System.out.println("Turning component view");
             ImageView component = new ImageView(this.viewFlow.getSelectedComponent().getFrontImage());
             this.buildingScene.insertSelectedComponent(component, true);
         });

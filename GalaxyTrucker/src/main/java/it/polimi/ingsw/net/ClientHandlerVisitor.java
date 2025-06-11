@@ -465,6 +465,7 @@ public class ClientHandlerVisitor implements VirtualServer {
 
     @Override
     public ServerEvent visit(TurnComponentEvent turnComponentEvent) {
+        System.out.println("Turn component in server");
         Component component = turnComponentEvent.getComponent();
         component.turn();
         return new TurnedComponentSuccessEvent(component);

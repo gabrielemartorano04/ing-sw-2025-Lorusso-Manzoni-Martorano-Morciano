@@ -69,6 +69,7 @@ public class BuildingScene {
     private Button selectBtn;
     private Button selectKeptBtn;
 
+    private int turnToDo;
     private Button turnBtn;
     private Button keepBtn;
     private Button discardBtn;
@@ -102,6 +103,7 @@ public class BuildingScene {
         this.isComponentViewVisible = false;
         this.keptFillLevel = 0;
         this.previousButtonStates = new HashMap<>();
+        this.turnToDo = 0;
 
         this.validCells = new boolean[11][12];
         for (int i = 0; i < layout.length; i++) {
@@ -326,6 +328,7 @@ public class BuildingScene {
             root.getChildren().setAll(shipScreenContent);
             inShipView = true;
         }
+
         this.componentSelectedExists = true;
         disableSelectButtons(false);
         if(keptFillLevel==2){
@@ -338,7 +341,8 @@ public class BuildingScene {
         componentView.setMouseTransparent(true);
 
         if (toTurn) {
-            componentView.setRotate(90);
+            turnToDo = (turnToDo + 1) % 4;
+            componentView.setRotate(90 * turnToDo);
         }
 
 
@@ -351,13 +355,10 @@ public class BuildingScene {
         StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
         imageContainer.getChildren().add(componentView);
 
-        Stream.of(turnBtn, keepBtn, discardBtn, linkBtn).forEach(btn -> {
-            btn.setDisable(false);
-            btn.setOpacity(1.0);
-        });
     }
 
     public void insertComponentInGrid(Component component, int row, int col) {
+
         this.componentSelectedExists = false;
         if (component == null || !validCells[row][col]) return;
         resetComponentSelectedBox();
@@ -402,6 +403,8 @@ public class BuildingScene {
     }
 
     public void resetComponentSelectedBox() {
+        turnToDo = 0;
+
         componentSelectedBox.getChildren().clear();
         this.componentSelectedExists = false;
         this.disableSelectButtons(true); // non hai piu un componente in mano
@@ -1034,7 +1037,10 @@ public class BuildingScene {
 
         this.disableSelectButtons(true);
 
-        turnBtn.setOnAction(e -> viewFlow.handleInput("Turn"));
+        turnBtn.setOnAction(e -> {
+                viewFlow.handleInput("Turn");
+            }
+        );
         keepBtn.setOnAction(e -> viewFlow.handleInput("Keep"));
         discardBtn.setOnAction(e -> {
             componentSelectedExists = false;
