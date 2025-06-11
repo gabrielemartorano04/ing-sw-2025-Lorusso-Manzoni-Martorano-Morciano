@@ -16,7 +16,7 @@ public class StarDustEvent extends CardEvent {
     private ArrayList<String> truckersRemoved;
     private Map<String, Integer> track;
 
-    public StarDustEvent (String cardName, String cardDescripition, boolean forAll, ArrayList<Trucker> turckerList, String nickname, ArrayList<String> truckersRemoved, Map<String, Integer> track) {
+    public StarDustEvent (String cardName, String cardDescription, boolean forAll, ArrayList<Trucker> turckerList, String nickname, ArrayList<String> truckersRemoved, Map<String, Integer> track) {
         super(ServerEventType.CARD_FINISHED, forAll, ParserState.DRAW_CARD, nickname);
         this.truckers = turckerList;
         this.cardName = cardName;
