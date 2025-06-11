@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.graphic.scenes;
 
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.StarDust;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
 import javafx.animation.Animation;
@@ -126,6 +127,7 @@ public class FlightScene {
         Consumer<Button> styleButton = createDefaultButtonStyler();
 
         addRulesButtonToScene(styleButton);
+        addCardDrawnToScene(new StarDust(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
         addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
         attachOptionsBoxToScene(scene);
 
@@ -159,6 +161,46 @@ public class FlightScene {
             btn.setCursor(Cursor.HAND);
             btn.setPrefWidth(180);
         };
+    }
+
+    private void addCardDrawnToScene(Card card) {
+        if (scene == null || scene.getRoot() == null) return;
+
+        StackPane root = (StackPane) scene.getRoot();
+
+        // === Nuove dimensioni con proporzioni mantenute ===
+        double imageWidth = 200;
+        double imageHeight = 308;
+
+        // === Immagine della carta ===
+        ImageView cardView = new ImageView(card.getFrontImage());
+        cardView.setFitWidth(imageWidth);
+        cardView.setFitHeight(imageHeight);
+        cardView.setPreserveRatio(true); // vogliamo dimensioni esatte
+        cardView.setMouseTransparent(true);
+
+        // === Clip per angoli smussati ===
+        Rectangle clip = new Rectangle(imageWidth, imageHeight);
+        clip.setArcWidth(16);
+        clip.setArcHeight(16);
+        cardView.setClip(clip);
+
+        // === Bordo bianco ===
+        Rectangle border = new Rectangle(imageWidth, imageHeight);
+        border.setArcWidth(16);
+        border.setArcHeight(16);
+        border.setFill(Color.TRANSPARENT);
+        border.setStroke(Color.WHITE);
+        border.setStrokeWidth(2);
+        border.setMouseTransparent(true);
+
+        // === Contenitore ===
+        StackPane imageContainer = new StackPane(border, cardView);
+        imageContainer.setPrefSize(imageWidth, imageHeight);
+        imageContainer.setAlignment(Pos.CENTER);
+
+        root.getChildren().add(imageContainer);
+        StackPane.setAlignment(imageContainer, Pos.CENTER);
     }
 
     private void addRulesButtonToScene(Consumer<Button> styleButton) {

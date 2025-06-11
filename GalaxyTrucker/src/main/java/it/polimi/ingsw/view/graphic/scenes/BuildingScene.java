@@ -1255,7 +1255,6 @@ public class BuildingScene {
         root.getChildren().add(popupWithLabel);
     }
 
-
     private void restoreAllButtonStates() {
         for (Map.Entry<Button, Boolean> entry : previousButtonStates.entrySet()) {
             Button btn = entry.getKey();
@@ -1265,7 +1264,6 @@ public class BuildingScene {
         }
         previousButtonStates.clear(); // reset per evitare conflitti futuri
     }
-
 
     private void disableAndSaveAllButtonStates() {
         List<Button> buttons = Arrays.asList(
@@ -1281,7 +1279,6 @@ public class BuildingScene {
             btn.setOpacity(0.5);
         }
     }
-
 
     public void showWaitForOthers() {
         Label message = new Label("Waiting for other truckers to finish");
@@ -1376,7 +1373,6 @@ public class BuildingScene {
         });
     }
 
-
     public void showStack(Stack stack) {
         StackPane overlay = new StackPane();
         overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6);");
@@ -1424,7 +1420,6 @@ public class BuildingScene {
             this.currentStackOverlay = overlay;
         });
     }
-
 
     public void hideStackOverlay() {
         if (currentStackOverlay != null) {
