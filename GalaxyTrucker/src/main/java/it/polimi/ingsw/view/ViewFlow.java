@@ -55,7 +55,8 @@ public class ViewFlow implements EventReceiver {
     private boolean out;
     private int level;
     private boolean alreadyLogged;
-
+    private int credits;
+    private boolean firstLinked;
 
     public enum ViewState {
         FIRST,
@@ -76,6 +77,7 @@ public class ViewFlow implements EventReceiver {
         this.running = true;
         this.viewState = ViewState.FIRST;
         this.timerDisplay = new TimerDisplay();
+        this.credits=0;
 
         this.availableComponents= new ArrayList<>();
         new Thread(inputReader, "InputReaderThread").start();
@@ -105,6 +107,15 @@ public class ViewFlow implements EventReceiver {
         }
         this.serverEventVisitor = new ServerEventHandlerVisitor(this, ui);
         this.alreadyLogged=false;
+        this.firstLinked=false;
+    }
+
+    public void setFirstLinked(){
+        this.firstLinked=true;
+    }
+
+    public boolean getFirstLinked(){
+        return this.firstLinked;
     }
 
     public ViewState getViewState() {
@@ -159,7 +170,7 @@ public class ViewFlow implements EventReceiver {
                         }
                         case FLIGTH -> {
 //                            ui.showShipLayout(nickname, ship);
-//                            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor);
+//                            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor, credits);
 //                            ui.showTrack(track, level);
                             //System.out.println("you are out?" + out);
                         }
@@ -216,7 +227,7 @@ public class ViewFlow implements EventReceiver {
             }
             case BULDING-> {
                 if (!this.end) {
-                    event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected);
+                    event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected,firstLinked);
                 }
                 else {
                     ui.showWaitForOthers();
@@ -507,6 +518,14 @@ public class ViewFlow implements EventReceiver {
 
     public void setAlreadyLogged(){
         this.alreadyLogged = true;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
+
+    public int getCredits() {
+        return credits;
     }
 }
 

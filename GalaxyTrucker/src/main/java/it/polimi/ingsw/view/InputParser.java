@@ -21,6 +21,8 @@ import java.util.ArrayList;
 public class InputParser {
     private int level;
 
+    public InputParser() {}
+
     public void setLevel(int level) {
         this.level = level;
     }
@@ -175,7 +177,7 @@ public class InputParser {
         }else return null;
     }
 
-    public ClientEvent parseBuilding(String input, Component component, int index, ArrayList<Component> kept, boolean isFromKept, int stackSelected) {
+    public ClientEvent parseBuilding(String input, Component component, int index, ArrayList<Component> kept, boolean isFromKept, int stackSelected, boolean firstLinked) {
         if (input == null || input.isEmpty()) return null;
 
         String[] tokens = input.split("\\s+", 3);
@@ -188,7 +190,9 @@ public class InputParser {
                             ? handleFromKeptComponentCommand(command, tokens, component, index)
                             : handleSelectedFromListComponentCommand(command, tokens, component, index);
                 } else {
-                    return handleNoComponentSelectedCommand(command, tokens, kept);
+                    return firstLinked
+                            ? handleNoComponentSelectedCommand(command, tokens, kept)
+                            : handleNoComponentSelectedCommandFirst(command, tokens, kept);
                 }
             } else {
                 if(command.equals("help") && tokens.length == 1){
@@ -213,6 +217,63 @@ public class InputParser {
             } else {
                 return handleTrialModeNoComponentCommands(command, tokens, kept);
             }
+        }
+    }
+
+    private ClientEvent handleNoComponentSelectedCommandFirst(String command, String[] tokens, ArrayList<Component> kept) {
+        switch (command) {
+            case "help":
+                String message = "Commands:\n";
+                message+="- rules : to open pdf file with game rules\n";
+                message+="- ship <nickname> : to see the ship of another player\n";
+                message+="- hourglass : to turn the hourglass\n";
+                message+="- select <index> : to select a component\n";
+                message+="- selectkept <index> : to select one of your kept components\n";
+                System.out.println(message);
+                return null;
+            case "rules":
+                openRulesPdf();
+                return null;
+            case "ship":
+                if (tokens.length != 2) {
+                    System.out.println("Error: illegal command. Type 'ship <nickname>'.");
+                    return null;
+                }
+                return new ShowOtherShipEvent(tokens[1].trim());
+            case "hourglass":
+                if (tokens.length != 1) {
+                    System.out.println("Error: illegal command. Type 'hourglass' if you want to turn the hourglass");
+                    return null;
+                }
+                return new TurnHourglassEvent();
+            case "select":
+                if (tokens.length != 2) {
+                    System.out.println("Error: illegal command. Type 'select <index>'.");
+                    return null;
+                }
+                return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
+
+            case "selectkept":
+
+                if (tokens.length != 2) {
+                    System.out.println("Error: illegal command. Type 'selectkept <index>'.");
+                    return null;
+                }
+                int ind = Integer.parseInt(tokens[1].trim());
+                if (ind < 0 || ind > kept.size() - 1) {
+                    System.out.println("Please type a valid index. Type 'selectkept <index>'.");
+                    return null;
+                }
+                return new SelectKeptTileEvent(ind);
+            case "end":
+                if (tokens.length != 1) {
+                    System.out.println("Error: illegal command. Type 'end' if you want to end building phase.");
+                    return null;
+                }// il client finisce e aspetta o che tutti finiscono o che il timer
+                return new EndBuildingEvent();
+            default:
+                System.out.println("Error: unknown command: " + command + ". Please select a valid command");
+                return null;
         }
     }
 

@@ -71,6 +71,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(ComponentLinkedEvent event) {
+        viewFlow.setFirstLinked();
         viewFlow.getShip()[event.getX()][event.getY()]=event.getComponent();
         viewFlow.deleteSelectedComponent();
         ui.componentLinked(event);
@@ -314,6 +315,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             }
         }
         if(!viewFlow.getOut()){
+            viewFlow.setCredits(trucker.getCosmicCredit());
             viewFlow.setPosition(trucker.getPosition());
             viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
             viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
@@ -332,7 +334,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(EpidemicEvent event) {
-        //ui.showCardDrawn(event); show carta g
+        ui.showEpidemicCard(event);
         Trucker trucker=null;
         for(Trucker t:event.getTruckers()){
             if(t.getNickname().equals(viewFlow.getNickname())){
@@ -427,7 +429,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(StarDustEvent event) {
-        //ui.showCardDrawn(event); fai show apposta
+        ui.showStardustCard(event);
         Trucker trucker=null;
         for(Trucker t:event.getTruckers()){
             if(t.getNickname().equals(viewFlow.getNickname())){
