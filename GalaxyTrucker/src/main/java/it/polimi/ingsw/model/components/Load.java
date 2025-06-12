@@ -65,6 +65,10 @@ final public class Load extends Component implements Serializable {
         return true; // nessuna merce valida trovata
     }
 
+    public boolean isFull() {
+        return getQuantity() == capacity;
+    }
+
     /**
      * Sostituisce la good nella posizione data con la nuova good
      * @param index posizione nel vettore
@@ -100,6 +104,7 @@ final public class Load extends Component implements Serializable {
     public ArrayList<Goods> getGoods() {
         return new ArrayList<>(Arrays.asList(goods));
     }
+
 
     /**
      * Adds a single good in the right position in order of decreasing value

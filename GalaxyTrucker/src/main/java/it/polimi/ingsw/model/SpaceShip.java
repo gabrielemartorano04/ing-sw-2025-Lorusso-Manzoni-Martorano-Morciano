@@ -1635,7 +1635,7 @@ public class SpaceShip implements Serializable {
                     if(!load.getIsSpecial() && good.getValue() == 4){
                         throw new InvalidPositionException("Special load expected");
                     }
-                    if(load.getCapacity()-load.getQuantity()>0){
+                    if(!load.isFull()){
                         load.addGood(positionInLoad,good);
                         switch(good.getValue()){
                             case 1: blueGoods++;
@@ -1648,9 +1648,7 @@ public class SpaceShip implements Serializable {
                     }
                     else{
                         Goods g=load.getGood(positionInLoad);
-                        if(g.getValue()!=-1){
-                            bank.addGoodsInBank(g.getValue());
-                        }
+                        bank.addGoodsInBank(g.getValue()); // il valore di g non può essere -1 perché il load è pieno
                         load.addGood(positionInLoad,good);
                         switch(good.getValue()){
                             case 1: blueGoods++;
