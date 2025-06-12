@@ -1623,20 +1623,21 @@ public class SpaceShip implements Serializable {
      * If there's space in the load it just add the good, otherwise we have to remove the good that occupies the gived position
      * @param good good the user wants to add
      * @param coord coordinate of the load
-     * @param value position in the load
+     * @param positionInLoad position in the load
      * @throws InvalidPositionException if the good is special but not the choosen load
      */
-    public Goods addGood(Goods good,int[] coord,int value ,Bank bank) throws InvalidPositionException{
-        System.out.println("adding good");
+    public Goods addGood(Goods good,int[] coord,int positionInLoad ,Bank bank) throws InvalidPositionException{
+        System.out.println("adding good in position " + coord[0] + " " + coord[1] + ", position in load " + positionInLoad );
         if(components[coord[0]][coord[1]]!=null){
             switch(components[coord[0]][coord[1]]){
                 case Load load->{
+
                     if(!load.getIsSpecial() && good.getValue() == 4){
                         throw new InvalidPositionException("Special load expected");
                     }
                     if(load.getCapacity()-load.getQuantity()>0){
-                        load.getGoods().remove(value);
-                        load.addGood(value,good);
+                        load.getGoods().remove(positionInLoad);
+                        load.addGood(positionInLoad,good);
                         switch(good.getValue()){
                             case 1: blueGoods++;
                             case 2: greenGoods++;
@@ -1647,12 +1648,11 @@ public class SpaceShip implements Serializable {
                         addGoodsList(good);
                     }
                     else{
-                        Goods g=load.getGoods().get(value);
+                        Goods g=load.getGoods().get(positionInLoad);
                         if(g.getValue()!=-1){
                             bank.addGoodsInBank(g.getValue());
                         }
-                        load.removeGood(value);
-                        load.addGood(value,good);
+                        load.addGood(positionInLoad,good);
                         switch(good.getValue()){
                             case 1: blueGoods++;
                             case 2: greenGoods++;
@@ -1887,18 +1887,19 @@ public class SpaceShip implements Serializable {
         for (Goods g : list) {
             switch (components[g.getX()][g.getY()]) {
                 case Load load -> {
-                        Iterator<Goods> iterator = load.getGoods().iterator();
-                        while (iterator.hasNext()) {
-                            Goods good = iterator.next();
-                            if (good.getValue() == g.getValue()) {
-                                iterator.remove();
-                            }
+                    List<Goods> goodsList = load.getGoods();
+                    for (int i = 0; i < goodsList.size(); i++) {
+                        if (goodsList.get(i).getValue() == g.getValue()) {
+                            load.removeGood(i); // "svuota" la merce trovata
+                            break; // rimuove solo la prima occorrenza
                         }
+                    }
                 }
                 default -> {}
             }
         }
     }
+
 
     /**
      * This method checks every cabin in the spaceship. If it's next to a life support the method adds its coordinate

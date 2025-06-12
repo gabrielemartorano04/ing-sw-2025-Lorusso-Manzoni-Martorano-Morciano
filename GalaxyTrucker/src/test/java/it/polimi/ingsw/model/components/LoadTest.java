@@ -35,12 +35,6 @@ class LoadTest {
         assertEquals(1,load.getQuantity());
     }
 
-    @Test
-    void removeGoodFromHead() {
-        load.addGood(new Goods(2));
-        load.removeGoodFromHead();
-        assertEquals(0,load.getQuantity());
-    }
 
     @Test
     void removeGood() {

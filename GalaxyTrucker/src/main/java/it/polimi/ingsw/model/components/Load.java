@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.components;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Class that manages the single load
@@ -13,7 +14,7 @@ final public class Load extends Component implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final int capacity;
-    private final ArrayList<Goods> goods; //lista delle merci contenute in quel Load ordinate dalla rarità maggiore a quella minore
+    private final Goods[] goods; // vettore a dimensione fissa
 
     /**
      * Load constructor, initialise the attributes of this class
@@ -30,75 +31,79 @@ final public class Load extends Component implements Serializable {
         super(linkU, linkR, linkD, linkL, type, imagePath);
         this.isSpecial = isSpecial;
         this.capacity = capacity;
-        goods = new ArrayList<>(capacity);
-        for(int i = 0; i < capacity; i++){
-            goods.add(new Goods(-1));
-        }
+        this.goods = new Goods[capacity];
+        Arrays.fill(this.goods, new Goods(-1)); // -1 = slot vuoto
     }
 
-    /**
-     * Returns if the load is a special one, thus if can contain red goods
-     * @return if the load is special
-     */
     public boolean getIsSpecial() {
         return isSpecial;
     }
 
-    /**
-     * Returns the maximum number of goods that can be contained
-     * @return number of goods that can be contained
-     */
     public int getCapacity() {
         return capacity;
     }
 
     /**
-     * Returns the number of goods contained
-     * @return number of goods contained
+     * Ritorna il numero di Goods validi (cioè con value != -1)
      */
     public int getQuantity() {
-        return goods.size();
+        int count = 0;
+        for (Goods g : goods) {
+            if (g.getValue() != -1) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Sostituisce la good nella posizione data con la nuova good
+     * @param index posizione nel vettore
+     * @param good merce da inserire
+     */
+    public void addGood(int index, Goods good) {
+        if (index < 0 || index >= capacity) {
+            throw new IndexOutOfBoundsException("Invalid index in addGood");
+        }
+        goods[index] = good;
+    }
+
+    /**
+     * "Rimuove" una merce impostando il valore a -1
+     * @param index posizione da svuotare
+     */
+    // probabile non serve mai tanto la addGood sostituisce già
+
+    public void removeGood(int index) {
+        if (index < 0 || index >= capacity) {
+            throw new IndexOutOfBoundsException("Invalid index in removeGood");
+        }
+        goods[index] = new Goods(-1);
+    }
+
+
+    public ArrayList<Goods> getGoods() {
+        return new ArrayList<>(Arrays.asList(goods));
     }
 
     /**
      * Adds a single good in the right position in order of decreasing value
      * @param good good to add
      */
+    @Deprecated
     public void addGood(Goods good) {
-        int i = 0;
-        while (i < goods.size() && goods.get(i).getValue() > good.getValue()) {
-            i++;
-        }
-        goods.add(i, good);
+//        int i = 0;
+//        while (i < goods.size() && goods.get(i).getValue() > good.getValue()) {
+//            i++;
+//        }
+//        goods.add(i, good);
     }
 
-    public void addGood(int index, Goods good) {
-        goods.add(index, good);
+    @Deprecated
+    public void removeGood(Goods good) {
+        // never used!
     }
 
-    /**
-     * Removes a single good in order of value, from the most valuable
-     */
-    public void removeGoodFromHead() {
-        goods.removeFirst();
-    }
-
-    /**
-     * Removes a specific good
-     * @param good good to remove
-     */
-    public void removeGood(Goods good){
-        goods.remove(good);
-    }
-
-    public void removeGood(int index){
-        goods.remove(index);
-    }
-    /**
-     * Returns the list of goods contained in the load
-     * @return list of goods
-     */
-    public ArrayList<Goods> getGoods() {
-        return goods;
-    }
 }
+
+

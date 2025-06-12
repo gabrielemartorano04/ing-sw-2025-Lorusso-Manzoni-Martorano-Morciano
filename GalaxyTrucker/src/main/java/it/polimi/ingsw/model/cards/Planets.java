@@ -100,6 +100,9 @@ public class Planets extends Card implements Serializable {
 
     @Override
     public ServerEvent playerLandingPlanets(int indexOfPlanet) throws GeneralError, PlanetNotFreeException {
+
+        System.out.println("indice del trucker corrente " + indexOfTrucker + " con nickname " + Game.getIstance().getTruckerList().getFirst().getNickname() + " vuole atterrare nel pianeta " + indexOfPlanet);
+
         if(cardState != CardState.PIANETI){
             throw new GeneralError("Can't land in the state: " + this.cardState);
         }
@@ -146,11 +149,14 @@ public class Planets extends Card implements Serializable {
     }
 
     @Override
-    public ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public ServerEvent setGoodsCoordinates(Boolean loadGood, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
-        if(!stop) {
+
+        System.out.println("indice del trucker corrente " + indexOfTrucker + " con nickname " + Game.getIstance().getTruckerList().getFirst().getNickname() + " vuole la merce " + currGoodIndex + "?  " + loadGood);
+
+        if(loadGood) {
             if (goodsCoordinates == null || !truckersLanded.get(indexOfTrucker).getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
                 throw new InvalidCoordinates("Not goods deposit");
             }
