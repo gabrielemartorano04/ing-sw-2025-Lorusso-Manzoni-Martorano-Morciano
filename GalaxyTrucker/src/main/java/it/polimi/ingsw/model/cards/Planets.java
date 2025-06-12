@@ -128,11 +128,12 @@ public class Planets extends Card implements Serializable {
                                         .get(indexOfTrucker))));
                 currentGoodsList.addAll(goodsPassed);
                 if (indexOfTrucker < truckersLanded.size()) {
-                    for (Goods currentGood : planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker)))) {
-                        if (Game.getIstance().getBank().getGoodsInBank(currentGood.getValue()) > 0) {
+                    for (Goods g : planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker)))) {
+                        if (Game.getIstance().getBank().getGoodsInBank(g.getValue()) > 0) {
                             // abbiamo la merce corrente
                             this.cardState = CardState.GOODSTOADD;
-                            return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(),truckersLanded.get(indexOfTrucker).getSpaceShip(),currentGood);
+                            this.currentGood = g;
+                            return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(),truckersLanded.get(indexOfTrucker).getSpaceShip(),g);
                         }
                     }
                     indexOfTrucker++;
@@ -149,25 +150,26 @@ public class Planets extends Card implements Serializable {
     }
 
     @Override
-    public ServerEvent setGoodsCoordinates(Boolean loadGood, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public ServerEvent setGoodsCoordinates(Boolean wantsToLoadGood, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
 
-        System.out.println("indice del trucker corrente " + indexOfTrucker + " con nickname " + Game.getIstance().getTruckerList().getFirst().getNickname() + " vuole la merce " + currGoodIndex + "?  " + loadGood);
+        System.out.println("indice del trucker corrente " + indexOfTrucker + " con nickname " + Game.getIstance().getTruckerList().getFirst().getNickname() + " vuole la merce " + currGoodIndex + "?  " + wantsToLoadGood);
 
-        if(loadGood) {
+        if(wantsToLoadGood) {
             if (goodsCoordinates == null || !truckersLanded.get(indexOfTrucker).getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
                 throw new InvalidCoordinates("Not goods deposit");
             }
             try {
-                Goods g; // bene che mi viene passato dalla nave di trucker se nel load c'era già qualcosa
-                currentGood.setX(goodsCoordinates[0]);
-                currentGood.setY(goodsCoordinates[1]);
+                Goods goodInTheShip; // bene che mi viene passato dalla nave di trucker se nel load c'era già qualcosa
+                Goods goodToAdd = currentGood;
+                goodToAdd.setX(goodsCoordinates[0]);
+                goodToAdd.setY(goodsCoordinates[1]);
                 System.out.println("player " + Game.getIstance().getTrucker(indexOfTrucker).getNickname() + "sta per fare addGood");
-                g=truckersLanded.get(indexOfTrucker).getSpaceShip().addGood(currentGood, goodsCoordinates, positionInLoad, Game.getIstance().getBank());
-                if (g!=null){
-                    goodsPassed.add(g);
+                goodInTheShip=truckersLanded.get(indexOfTrucker).getSpaceShip().addGood(goodToAdd, goodsCoordinates, positionInLoad, Game.getIstance().getBank());
+                if (goodInTheShip!=null){
+                    goodsPassed.add(goodInTheShip);
                 }
             } catch (InvalidPositionException e) {
                 cardState = CardState.GOODSTOADD;
