@@ -185,6 +185,7 @@ public class Smugglers extends Card implements Serializable {
         if(!activate){
             return fightIsWin();
         }else{
+
             if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getNumDoubleCannon()==0){
                 return fightIsWin();
             }else{

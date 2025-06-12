@@ -51,7 +51,6 @@ public class OpenSpace extends Card implements Serializable {
 
     @Override
     public ServerEvent startCard() {
-        System.out.println("startPos in startCard of OpenSpace of the first trucker is " + Game.getIstance().getTruckerList().getFirst().getPosition());
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
@@ -131,7 +130,6 @@ public class OpenSpace extends Card implements Serializable {
         for (int i = 0; i < truckers.size(); i++) {
             Trucker trucker = truckers.get(i);
             if (enginePowerPerTrucker[i] > 0) {
-                System.out.println("startPos before calling moveForward of " + trucker.getNickname() + " is " + trucker.getPosition());
                 Game.getIstance().moveForward(trucker, enginePowerPerTrucker[i]);
             }
             trucker.getSpaceShip().deactivateDoubleEngines();

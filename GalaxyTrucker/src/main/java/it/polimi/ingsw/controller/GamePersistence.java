@@ -13,7 +13,6 @@ public class GamePersistence {
 
             try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(SAVE_PATH))) {
                 out.writeObject(gameController);
-                System.out.println("Partita salvata su disco.");
             }
         } catch (IOException e) {
             System.err.println("Errore durante il salvataggio: " + e.getMessage());

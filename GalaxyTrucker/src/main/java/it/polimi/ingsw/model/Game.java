@@ -474,9 +474,7 @@ public class Game implements Serializable {
     public ArrayList<String> endTurn() {
         ArrayList<Trucker> toRemove = new ArrayList<>();
         ArrayList<String> toReturn = new ArrayList<>();
-        System.out.println("sono in endTurn");
         for (Trucker t : truckers) {
-            System.out.println("num human per " + t.getNickname() + ": " + t.getSpaceShip().getNumCrew());
             if (noHumans(t) || checkOvertaken(t)) {
                 toRemove.add(t);
             }
