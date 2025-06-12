@@ -41,8 +41,8 @@ public class Effect implements Serializable {
     @Override
     public String toString() {
         return "Effect{" +
-                "type=" + type +
-                ", value=" + value +
+                type +
+                ", " + value +
                 '}';
     }
 
