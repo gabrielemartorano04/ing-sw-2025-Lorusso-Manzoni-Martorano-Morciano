@@ -56,6 +56,15 @@ final public class Load extends Component implements Serializable {
         return count;
     }
 
+    public boolean isEmpty() {
+        for (Goods g : goods) {
+            if (g.getValue() != -1) {
+                return false; // c'è almeno una merce valida
+            }
+        }
+        return true; // nessuna merce valida trovata
+    }
+
     /**
      * Sostituisce la good nella posizione data con la nuova good
      * @param index posizione nel vettore
@@ -81,6 +90,12 @@ final public class Load extends Component implements Serializable {
         goods[index] = new Goods(-1);
     }
 
+    public Goods getGood(int index) {
+        if (index < 0 || index >= capacity) {
+            throw new IndexOutOfBoundsException("Invalid index in getGood");
+        }
+        return goods[index];
+    }
 
     public ArrayList<Goods> getGoods() {
         return new ArrayList<>(Arrays.asList(goods));

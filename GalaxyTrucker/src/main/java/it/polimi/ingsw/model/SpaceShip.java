@@ -1636,7 +1636,6 @@ public class SpaceShip implements Serializable {
                         throw new InvalidPositionException("Special load expected");
                     }
                     if(load.getCapacity()-load.getQuantity()>0){
-                        load.getGoods().remove(positionInLoad);
                         load.addGood(positionInLoad,good);
                         switch(good.getValue()){
                             case 1: blueGoods++;
@@ -1648,7 +1647,7 @@ public class SpaceShip implements Serializable {
                         addGoodsList(good);
                     }
                     else{
-                        Goods g=load.getGoods().get(positionInLoad);
+                        Goods g=load.getGood(positionInLoad);
                         if(g.getValue()!=-1){
                             bank.addGoodsInBank(g.getValue());
                         }
@@ -1835,40 +1834,31 @@ public class SpaceShip implements Serializable {
     /**
      * This method swap two goods from two different loads
      * @param coord1 coordinate of the first load
-     * @param value1 position of the first load il the first load
+     * @param positionInLoad1 position of the first load il the first load
      * @param coord2 coordinate of the second load
-     * @param value2 position of the second load il the second load
+     * @param positionInLoad2 position of the second load il the second load
      * @throws InvalidPositionException if in that coordinates there is no load
      */
-    public void swapGoods(int[] coord1, int value1, int[] coord2, int value2) throws InvalidPositionException{
-        Goods g1=null;
-        Goods g2=null;
-        if(components[coord1[0]][coord1[1]] != null){
-            switch(components[coord1[0]][coord1[1]]){
-                case Load load->{
-                    g1=load.getGoods().get(value1);
-                    load.getGoods().remove(g1);
-                    if(components[coord2[0]][coord2[1]] != null){
-                        switch(components[coord2[0]][coord2[1]]){
-                            case Load load1->{
-                                g2=load1.getGoods().get(value2);
-                                load1.getGoods().remove(g2);
-                                load1.getGoods().add(value2,g1);
-                                load.getGoods().add(value1,g2);
-                            }
-                            default -> {
-                                throw new InvalidPositionException("Load expected in this position");
-                            }
-                        }
-                    }
-                }
-                default -> {
-                    throw new InvalidPositionException("Load expected in this position");
-                }
-            }
-        }
+    public void swapGoods(int[] coord1, int positionInLoad1, int[] coord2, int positionInLoad2) throws InvalidPositionException {
+        Load load1 = getLoadAt(coord1);
+        Load load2 = getLoadAt(coord2);
 
+        Goods g1 = load1.getGood(positionInLoad1);
+        Goods g2 = load2.getGood(positionInLoad2);
+
+        load1.addGood(positionInLoad1, g2);
+        load2.addGood(positionInLoad2, g1);
     }
+
+
+
+    private Load getLoadAt(int[] coord) throws InvalidPositionException {
+        switch (components[coord[0]][coord[1]]) {
+            case Load l -> { return l; }
+            default -> throw new InvalidPositionException("Load expected at position");
+        }
+    }
+
 
     public int getRedGoods(){
         return redGoods;

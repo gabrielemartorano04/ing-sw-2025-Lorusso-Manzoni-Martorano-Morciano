@@ -743,7 +743,7 @@ public class TUI implements UI {
                     case Load load -> {
                         if (load.getIsSpecial()) {
                             details.append("[").append(i).append(",").append(j).append("] SPECIAL LOAD (Capacity: ").append(load.getCapacity()).append(")");
-                            if (!load.getGoods().isEmpty()) {
+                            if (!load.isEmpty()) {
                                 details.append(" contains: ");
                                 for (Goods g : load.getGoods()) {
                                     details.append(g.getColor()).append(" ");
@@ -753,7 +753,7 @@ public class TUI implements UI {
                             }
                         } else {
                             details.append("[").append(i).append(",").append(j).append("] LOAD (Capacity: ").append(load.getCapacity()).append(")");
-                            if (!load.getGoods().isEmpty()) {
+                            if (!load.isEmpty()) {
                                 details.append(" contains: ");
                                 for (Goods g : load.getGoods()) {
                                     details.append(g.getColor()).append(" ");
@@ -905,7 +905,7 @@ public class TUI implements UI {
                     case Load load -> {
                         if (load.getIsSpecial()) {
                             details.append("[").append(i).append(",").append(j).append("] SPECIAL LOAD (Capacity: ").append(load.getCapacity()).append(")");
-                            if (!load.getGoods().isEmpty()) {
+                            if (!load.isEmpty()) {
                                 details.append(" contains: ");
                                 for (Goods g : load.getGoods()) {
                                     details.append(g.getColor()).append(" ");
@@ -915,7 +915,7 @@ public class TUI implements UI {
                             }
                         } else {
                             details.append("[").append(i).append(",").append(j).append("] LOAD (Capacity: ").append(load.getCapacity()).append(")");
-                            if (!load.getGoods().isEmpty()) {
+                            if (!load.isEmpty()) {
                                 details.append(" contains: ");
                                 for (Goods g : load.getGoods()) {
                                     details.append(g.getColor()).append(" ");
