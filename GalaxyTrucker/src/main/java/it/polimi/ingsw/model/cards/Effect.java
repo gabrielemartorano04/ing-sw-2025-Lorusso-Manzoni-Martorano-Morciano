@@ -37,6 +37,15 @@ public class Effect implements Serializable {
     public int getValue() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return "Effect{" +
+                "type=" + type +
+                ", value=" + value +
+                '}';
+    }
+
 }
 
 
