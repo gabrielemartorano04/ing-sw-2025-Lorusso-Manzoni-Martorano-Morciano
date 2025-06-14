@@ -458,30 +458,30 @@ class SpaceShipTest {
     @Test
     void blockSmallMeteor() {
         spaceShip2.setBattery();
-        assertTrue( spaceShip2.blockSmallMeteor(0,7,false));
-        assertTrue( spaceShip2.blockSmallMeteor(0,8,false));
-        assertTrue( spaceShip2.blockSmallMeteor(0,9,false));
-        assertFalse( spaceShip2.blockSmallMeteor(0,6,false));
+        assertTrue( spaceShip2.blockSmallMeteor(0,7));
+        assertTrue( spaceShip2.blockSmallMeteor(0,8));
+        assertTrue( spaceShip2.blockSmallMeteor(0,9));
+        assertFalse( spaceShip2.blockSmallMeteor(0,6));
 
-        assertTrue( spaceShip2.blockSmallMeteor(1,9,true));
-        assertTrue( spaceShip2.blockSmallMeteor(1,7,false));
+        assertTrue( spaceShip2.blockSmallMeteor(1,9));
+        assertTrue( spaceShip2.blockSmallMeteor(1,7));
 
-        assertTrue( spaceShip2.blockSmallMeteor(2,7,false));
-        assertTrue( spaceShip2.blockSmallMeteor(2,8,false));
+        assertTrue( spaceShip2.blockSmallMeteor(2,7));
+        assertTrue( spaceShip2.blockSmallMeteor(2,8));
 
-        assertFalse( spaceShip2.blockSmallMeteor(3,7,false));
-        assertTrue( spaceShip2.blockSmallMeteor(3,8,false));
+        assertFalse( spaceShip2.blockSmallMeteor(3,7));
+        assertTrue( spaceShip2.blockSmallMeteor(3,8));
 
     }
 
     @Test
     void blockLightCannonShot() {
         spaceShip2.setBattery();
-        assertTrue(spaceShip2.blockLightCannonShot(0,true));
-        assertTrue(spaceShip2.blockLightCannonShot(1,true));
-        assertTrue(spaceShip2.blockLightCannonShot(2,true));
-        assertFalse(spaceShip2.blockLightCannonShot(3,true));
-        assertFalse(spaceShip2.blockLightCannonShot(3,false));
+        assertTrue(spaceShip2.blockLightCannonShot(0));
+        assertTrue(spaceShip2.blockLightCannonShot(1));
+        assertTrue(spaceShip2.blockLightCannonShot(2));
+        assertFalse(spaceShip2.blockLightCannonShot(3));
+        assertFalse(spaceShip2.blockLightCannonShot(3));
     }
 
     @Test

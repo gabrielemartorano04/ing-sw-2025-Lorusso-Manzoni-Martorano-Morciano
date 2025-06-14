@@ -31,7 +31,6 @@ public class MeteorShower extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     public CardState state;
-    private final ArrayList<Boolean> answers;
     private int indexOfCurrTrucker;
 
     private int[] meteor;
@@ -58,7 +57,6 @@ public class MeteorShower extends Card implements Serializable {
     public MeteorShower(boolean trialFlight, ArrayList<int[]> direction, int level, String frontImage, String backImage) {
         super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImage, backImage);
         this.meteors = direction;
-        this.answers = new ArrayList<>();
         this.indexOfCurrTrucker = 0;
         this.state = CardState.ROLL_DICE;
     }
@@ -97,15 +95,33 @@ public class MeteorShower extends Card implements Serializable {
     }
 
     public ServerEvent rollDice() throws GeneralError {
+
+        System.out.println("");
+
         if(state != CardState.ROLL_DICE) {
-            throw new GeneralError("Non si può girare i dadi nello stato " + this.state);
+            throw new GeneralError("Can't roll dice in the state " + this.state);
         }
         if(currMeteorIndex <0 || currMeteorIndex >= meteors.size()){
-            throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste, la carta dovrebbe essere finita");
+            throw new GeneralError("Card shoulb be already finished");
         }
         meteor = meteors.get(currMeteorIndex);
         currMeteorIndex++;
+
+        int direction = meteor[1];
+        String sizeText = (meteor[0] == 1) ? "big" : "small";
+
+        String dirText;
+        switch (direction) {
+            case 0 -> dirText = "from the top";
+            case 1 -> dirText = "from the right side";
+            case 2 -> dirText = "from the bottom";
+            case 3 -> dirText = "from the left side";
+            default -> dirText = "from an unknown direction";
+        }
+        System.out.println("Meteorite " + currMeteorIndex + " (" + sizeText + ") arriving "  + dirText + " total number of meteors in the card " + meteors.size());
+
         this.roll = Game.getIstance().rollDice();
+        this.roll = 8;
         if (meteor[0]==1) {
             state=CardState.ACTIVATE_CANNONS;
             return new RollDiceResult("Meteorite grande, attivare Cannoni doppi?", currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "bigmeteor");
@@ -120,7 +136,8 @@ public class MeteorShower extends Card implements Serializable {
         if (state != CardState.ACTIVATE_SHIELDS) {
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
-        this.answers.addLast(answer);
+
+        System.out.println(Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname() + " has decidec to activate? " + answer);
         if(answer) {
             if (!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkShield(shieldCoord)) {
                 throw new InvalidCoordinates("Not a shield");
@@ -178,14 +195,13 @@ public class MeteorShower extends Card implements Serializable {
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {
+        System.out.println("Entrato in cardEffect");
         if (this.state != CardState.ESECUZIONE) {
             throw new GeneralError("Non è possibile eseguire card effect nello stato " + this.state);
         }
 
         List<Trucker> truckers = Game.getIstance().getTruckerList();
-        if(answers.size() != truckers.size()){
-            throw new GeneralError("Non ho una risposta per ogni trucker");
-        }
+
         boolean isBig = (meteor[0] == 1);
         int direction = meteor[1];
         int j = 0;
@@ -193,13 +209,15 @@ public class MeteorShower extends Card implements Serializable {
             SpaceShip ship = trucker.getSpaceShip();
             if (ship.isHit(roll, direction)) {
                 if (isBig) {
+                    System.out.println("Entrato");
+
                     // qui assumo che il meteorite grande possa essere distrutto da un cannone ma è da rivedere
                     if (!ship.shootMeteor(direction, roll)) {
                         ship.destroyComponent(roll, direction, Game.getIstance().getBank());
                     }
                 } else {
                     // Un meteorite piccolo può rimbalzare o essere fermato dallo scudo
-                    if (!ship.blockSmallMeteor(direction, roll, answers.get(j))){
+                    if (!ship.blockSmallMeteor(direction, roll)){
                         ship.destroyComponent(roll, direction, Game.getIstance().getBank());
                     }
                 }
@@ -208,7 +226,6 @@ public class MeteorShower extends Card implements Serializable {
             trucker.getSpaceShip().deactivateDoubleCannons();
             j++;
         }
-        answers.clear();
         if (meteors.size()==(currMeteorIndex)) {
             ArrayList<String> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();

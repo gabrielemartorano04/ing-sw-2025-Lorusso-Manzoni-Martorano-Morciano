@@ -43,7 +43,6 @@ public class WarZone extends Card implements Serializable {
 
     private int currShootIndex;
     private int[] shoot;
-    private boolean useShield;
 
     // variabili per la remove Goods
     private int colorOfCurrGoodToRemove;
@@ -416,7 +415,6 @@ public class WarZone extends Card implements Serializable {
         if (state != CardState.ACTIVATE_SHIELDS) {
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
-        useShield = answer;
         if(answer) {
             if (!weakestTrucker.getSpaceShip().checkShield(shieldCoord)) {
                 throw new InvalidCoordinates("Not a shield");
@@ -572,7 +570,7 @@ public class WarZone extends Card implements Serializable {
                         if (isHeavy) {
                             ship.destroyComponent(this.roll, direction, Game.getIstance().getBank());
                         } else {
-                            if (!ship.blockLightCannonShot(direction, this.useShield)) {
+                            if (!ship.blockLightCannonShot(direction)) {
                                 ship.destroyComponent(this.roll, direction, Game.getIstance().getBank());
                             }
                         }

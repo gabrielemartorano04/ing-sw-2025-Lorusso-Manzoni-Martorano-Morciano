@@ -28,6 +28,8 @@ public class SpaceShip implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private boolean existsAnActiveShield;
+
     /**
      * Spaceship constructor, it initializes the attributes of this class.
      * If a components[i][j] can be filled it's initialized null,
@@ -67,6 +69,7 @@ public class SpaceShip implements Serializable {
         numOfBattery = 0;
         numDoubleCannon=0;
         numDoubleEngine=0;
+        this.existsAnActiveShield = false;
     }
 
     public void initSpaceShip(int level, PlayerColors color){
@@ -812,6 +815,7 @@ public class SpaceShip implements Serializable {
         switch(components[shieldCoord[0]][shieldCoord[1]]){
             case Shield shield->{
                 shield.setIsActive(true);
+                this.existsAnActiveShield = true;
             }
             default -> {}
         }
@@ -824,6 +828,7 @@ public class SpaceShip implements Serializable {
     }
 
     public void deActivateShields(){
+        this.existsAnActiveShield = false;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null ) {
@@ -1368,7 +1373,7 @@ public class SpaceShip implements Serializable {
      * @param num number of row or colon from which the meteorite arrives
      * @return true if the spaceshio doesn't have exposed links or has a cannon where is hit by the small meteorite
      */
-    public boolean blockSmallMeteor(int direction, int num, boolean use) {
+    public boolean blockSmallMeteor(int direction, int num) {
 
 
             switch (direction) {
@@ -1383,7 +1388,7 @@ public class SpaceShip implements Serializable {
                                         return true;
                                     }
                                     else {
-                                        if(numOfBattery>0 && use){
+                                        if(numOfBattery>0 && existsAnActiveShield){
                                             for (int w = 5; w <= 9; w++) {
                                                 for (int z = 4; z <= 10; z++) {
                                                     if (components[w][z] != null) {
@@ -1417,7 +1422,7 @@ public class SpaceShip implements Serializable {
                                         return true;
                                     }
                                     else{
-                                        if(numOfBattery>0 && use){
+                                        if(numOfBattery>0 && existsAnActiveShield){
                                                 for (int w = 5; w <= 9; w++) {
                                                     for (int z = 4; z <= 10; z++) {
                                                         if (components[w][z] != null) {
@@ -1453,7 +1458,7 @@ public class SpaceShip implements Serializable {
                                         return true;
                                     }
                                     else{
-                                        if(numOfBattery>0 && use){
+                                        if(numOfBattery>0 && existsAnActiveShield){
 
                                                 for (int w = 5; w <= 9; w++) {
                                                     for (int z = 4; z <= 10; z++) {
@@ -1490,7 +1495,7 @@ public class SpaceShip implements Serializable {
                                         return true;
                                     }
                                     else{
-                                        if(numOfBattery>0 && use){
+                                        if(numOfBattery>0 && existsAnActiveShield){
                                                 for (int w = 5; w <= 9; w++) {
                                                     for (int z = 4; z <= 10; z++) {
                                                         if (components[w][z] != null) {
@@ -1523,10 +1528,9 @@ public class SpaceShip implements Serializable {
      * if the spaceship has protection in the critical direction, the player can choose to use or not the
      * shield. This is possible only if there is enough batteries to use the shield.
      * @param direction Direction 0-->N, 1-->E, 2-->S, 3-->W from which the meteorite arrives
-     * @param use true if the player wants to use the shield, false otherwise
      * @return true if the spaceship is protected
      */
-    public boolean blockLightCannonShot(int direction, boolean use){
+    public boolean blockLightCannonShot(int direction){
 
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
@@ -1539,7 +1543,7 @@ public class SpaceShip implements Serializable {
                                             || (direction == 2 && (shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)))
                                             || (direction == 3 && (shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)))
                             ){
-                                if(numOfBattery>0 && use){
+                                if(numOfBattery>0 && existsAnActiveShield){
                                     return true;
                                 }
                             }
