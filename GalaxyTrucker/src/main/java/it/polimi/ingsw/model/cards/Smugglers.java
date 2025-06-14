@@ -196,6 +196,9 @@ public class Smugglers extends Card implements Serializable {
                 }else
                 {
                     Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().activateDoubleCannons(coord, batteryCoord);
+                    System.out.println("Potenza del giocatore " + Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower());
+                    showShipLayout("io", Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getComponents());
+
                     return fightIsWin();
                 }
             }
@@ -456,4 +459,165 @@ public class Smugglers extends Card implements Serializable {
         GamePersistence.saveGame(GameController.getIstance());
         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
     }
+
+    public void showShipLayout(String nickname, Component[][] layout) {
+        System.out.println("\nShip layout of " + nickname + ":\n");
+
+        // Calcolo dinamico celle valide
+        boolean[][] validCells = new boolean[11][12];
+        for (int i = 0; i < layout.length; i++) {
+            for (int j = 0; j < layout[0].length; j++) {
+                Component c = layout[i][j];
+                if(c == null || !c.getType().equals("Empty Space")) {
+                    validCells[i][j] = true;
+                } else {
+                    validCells[i][j] = false;
+                }
+            }
+        }
+
+        // Intestazione colonne (sopra)
+        System.out.print("       ");
+        for (int col = 4; col < 11; col++) {
+            System.out.printf("   %2d    ", col);
+        }
+        System.out.println();
+
+        for (int i = 5; i < 10; i++) {
+            String rowStr = String.format("%2d", i);
+
+            // Riga superiore
+            System.out.print("       ");
+            for (int j = 4; j < 11; j++) {
+                System.out.print(validCells[i][j] ? " _______ " : "         ");
+            }
+            System.out.println();
+
+            // Riga link sopra
+            System.out.print("       ");
+            for (int j = 4; j < 11; j++) {
+                Component c = layout[i][j];
+                if (!validCells[i][j]) System.out.print("         ");
+                else System.out.printf("|   %s   |", c == null ? " " : c.getLink()[0]);
+            }
+            System.out.println();
+
+            // Riga centrale con numero riga sinistra
+            System.out.print("  " + rowStr + "   ");
+            for (int j = 4; j < 11; j++) {
+                Component c = layout[i][j];
+                if (!validCells[i][j]) System.out.print("         ");
+                else if (c == null) System.out.print("|       |");
+                else System.out.printf("| %d %c %d |", c.getLink()[3], c.getType().toUpperCase().charAt(0), c.getLink()[1]);
+            }
+            System.out.println("   " + rowStr);
+
+            // Riga link sotto
+            System.out.print("       ");
+            for (int j = 4; j < 11; j++) {
+                Component c = layout[i][j];
+                if (!validCells[i][j]) System.out.print("         ");
+                else System.out.printf("|   %s   |", c == null ? " " : c.getLink()[2]);
+            }
+            System.out.println();
+
+            // Riga inferiore
+            System.out.print("       ");
+            for (int j = 4; j < 11; j++) {
+                System.out.print(validCells[i][j] ? "|_______|" : "         ");
+            }
+            System.out.println();
+        }
+
+        // Intestazione colonne (sotto)
+        System.out.print("       ");
+        for (int col = 4; col < 11; col++) {
+            System.out.printf("   %2d    ", col);
+        }
+        System.out.println();
+
+        // Dettagli componenti
+        System.out.println("\nComponents details:");
+        for (int i = 5; i < 10; i++) {
+            for (int j = 4; j < 11; j++) {
+                if (!validCells[i][j]) continue;
+                Component c = layout[i][j];
+                if (c == null) continue;
+
+                StringBuilder details = new StringBuilder();
+                switch (c) {
+                    case Engine engine -> {
+                        if (engine.getIsDouble())
+                            details.append("[").append(i).append(",").append(j).append("] DOUBLE ENGINE");
+                        else
+                            details.append("[").append(i).append(",").append(j).append("] ENGINE");
+                    }
+                    case Cannon cannon -> {
+                        if (cannon.getIsDouble())
+                            details.append("[").append(i).append(",").append(j).append("] DOUBLE CANNON (Direction: ").append(cannon.getOrientation()).append(")");
+                        else
+                            details.append("[").append(i).append(",").append(j).append("] CANNON (Direction: ").append(cannon.getOrientation()).append(")");
+                    }
+                    case Load load -> {
+                        if (load.getIsSpecial()) {
+                            details.append("[").append(i).append(",").append(j).append("] SPECIAL LOAD (Capacity: ").append(load.getCapacity()).append(")");
+                            if (!load.isEmpty()) {
+                                details.append(" contains: ");
+                                for (Goods g : load.getGoods()) {
+                                    details.append(g.getColor()).append(" ");
+                                }
+                            } else {
+                                details.append(" is empty");
+                            }
+                        } else {
+                            details.append("[").append(i).append(",").append(j).append("] LOAD (Capacity: ").append(load.getCapacity()).append(")");
+                            if (!load.isEmpty()) {
+                                details.append(" contains: ");
+                                for (Goods g : load.getGoods()) {
+                                    details.append(g.getColor()).append(" ");
+                                }
+                            } else {
+                                details.append(" is empty");
+                            }
+                        }
+                    }
+                    case Shield shield -> {
+                        details.append("[").append(i).append(",").append(j).append("] SHIELD (direction: ").append(shield.getDirection()).append(")");
+                    }
+                    case BatteryStorage battery -> {
+                        details.append("[").append(i).append(",").append(j).append("] BATTERY STORAGE (Capacity: ").append(battery.getCapacity()).append(")");
+                        if(battery.getQuantity() != 0) {
+                            details.append(" contains ").append(battery.getQuantity()).append(battery.getQuantity() == 1 ? " battery" : " batteries");
+                        } else {
+                            details.append(" is empty");
+                        }
+                    }
+                    case Cabin cabin -> {
+                        details.append("[").append(i).append(",").append(j).append("] CABIN");
+                        if(cabin.getIsMain()){
+                            System.out.println(cabin.getColor());
+                        }
+                        if(cabin.getQuantity() != 0){
+                            if (cabin.getAlien() != null) {
+                                details.append(cabin.getQuantity()).append(" contains 1 " + cabin.getAlien().getColor() + " alien");
+                            } else {
+                                details.append(" contains ").append(cabin.getQuantity()).append(cabin.getQuantity() == 1 ? " human" : " humans");
+                            }
+                        } else {
+                            details.append(" is empty");
+                        }
+
+                    }
+                    case LifeSupport lifeSupport -> {
+                        details.append("[").append(i).append(",").append(j).append("] ").append("LIFE SUPPORT is ").append(lifeSupport.getColor());
+                    }
+                    default -> {
+                        details.append("[").append(i).append(",").append(j).append("] ").append(c.getType().toUpperCase());
+                    }
+                }
+                System.out.println(details);
+            }
+        }
+    }
+
 }

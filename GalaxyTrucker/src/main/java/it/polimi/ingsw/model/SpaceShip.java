@@ -426,7 +426,7 @@ public class SpaceShip implements Serializable {
      * @return the single cannons power
      */
     public float getSingleCannonPower() {
-        int power = 0;
+        float power = 0;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null ) {
@@ -437,7 +437,7 @@ public class SpaceShip implements Serializable {
                                     power++;
                                 }
                                 else{
-                                    power += 1/2;
+                                    power += (float) 1/2;
                                 }
                             }
                         }
@@ -453,8 +453,8 @@ public class SpaceShip implements Serializable {
      * This method is called after the method that activates the double cannon components
      * @return the power of activated double cannons
      */
-    public int getDoubleCannon() {
-        int power = 0;
+    public float getDoubleCannon() {
+        float power = 0;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null ) {
@@ -709,7 +709,7 @@ public class SpaceShip implements Serializable {
      */
     public float getTotalCannonPower() {
 
-        int power = 0;
+        float power = 0;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null) {
@@ -726,6 +726,10 @@ public class SpaceShip implements Serializable {
                 }
             }
         }
+        System.out.println("single power " + getSingleCannonPower());
+        System.out.println("double power " + getDoubleCannon());
+        System.out.println("power " + power);
+
         return getSingleCannonPower() + getDoubleCannon() + power;
     }
 
