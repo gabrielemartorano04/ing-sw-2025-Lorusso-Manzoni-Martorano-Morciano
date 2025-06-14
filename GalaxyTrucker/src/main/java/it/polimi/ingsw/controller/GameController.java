@@ -94,14 +94,22 @@ public class GameController implements Serializable {
 
         TruckerController truckerController = new TruckerController(nickname, color);
         //todo togli dopo debug da qui
-        if(nickname.equals("testuser")){
+        if(nickname.equals("testuser0")){
             CreateShipTest test=new CreateShipTest();
             try {
                 truckerController.getTrucker().setSpaceShip(test.createShip3(truckerController.getSpaceShip()));
             } catch (InvalidCoordinates e) {
                 throw new RuntimeException(e);
             }
-        } //todo a qui
+        } else
+        if(nickname.equals("testuser2")){
+            CreateShipTest test=new CreateShipTest();
+            try {
+                truckerController.getTrucker().setSpaceShip(test.createShip1(truckerController.getSpaceShip()));
+            } catch (InvalidCoordinates e) {
+                throw new RuntimeException(e);
+            }
+        }//todo a qui
         else truckerController.initSpaceShip(game.getGameLevel());
         game.addTrucker(truckerController.getTrucker());
 
