@@ -241,7 +241,7 @@ class SpaceShipTest {
     @Test
     void getSingleCannonPower() {
         assertEquals(2,spaceShip2.getSingleCannonPower());
-        float expected=(1/2)+2;
+        float expected=((float) 1 /2)+2;
         assertEquals(expected,spaceShip3.getSingleCannonPower());
     }
 
