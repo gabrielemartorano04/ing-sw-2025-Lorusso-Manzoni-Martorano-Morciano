@@ -194,11 +194,22 @@ public class Slavers extends Card implements Serializable {
         if(cardState!=CardState.COSMIC_CREDITS){
             throw new GeneralError("Card state is not COSMIC_CREDITS");
         }
-        winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
-        winDecision = answer;
-        cardState = CardState.ESECUZIONE;
-        return cardEffect();
+        if(answer){
+            winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
+            winnerTrucker.addCosmicCredit(credits);
+            Game.getIstance().moveBackward(winnerTrucker, days);
+        }
+        if(defeatedTruckers.isEmpty()){
+            cardState = CardState.ESECUZIONE;
+            return cardEffect();
+        }else{
+            cardState = CardState.HUMANSTOREMOVE;
+            indexOfCurrentTrucker = 0;
+            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip());
+        }
+
     }
+
 
     /**
      * Sets, for each trucker, the coordinates of the cabin where he/she want to remove the crew members
@@ -209,33 +220,34 @@ public class Slavers extends Card implements Serializable {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Card state in not HUMANSTOREMOVE");
         }
-        if(defeatedTruckers
-                .get(indexOfCurrentTrucker)
-                .getSpaceShip()
-                .getNumCrew()
-                <=astronautsLost){
-            defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeAllHumans();
-            defeatedTruckers.remove(indexOfCurrentTrucker);
-            if(indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
+        if(defeatedTruckers.getFirst().getSpaceShip().getNumCrew() <= astronautsLost){
+
+            defeatedTruckers.getFirst().getSpaceShip().removeAllHumans();
+
+            defeatedTruckers.removeFirst();
+
+            if(defeatedTruckers.isEmpty()) {
                 cardState = CardState.ESECUZIONE;
                 return cardEffect();
             }
-            indexOfCurrentTrucker++;
-            return new HumanRemovedConfirmed(ServerEventType.HUMAN_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(), defeatedTruckers.get(indexOfCurrentTrucker - 1).getSpaceShip(),"Batteries removed, press continue!");
+            return new HumanCoordinates(ServerEventType.HUMAN_REMOVED,true,defeatedTruckers.getFirst().getNickname(), defeatedTruckers.getFirst().getSpaceShip());
         }
-        try {
-            defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().checkCabin(coordinates, astronautsLost);
-            this.truckersCoordinatesToRemoveHumans.add(coordinates);
-            indexOfCurrentTrucker++;
-        } catch (InvalidCoordinates e) {
-            throw new InvalidCoordinates(e.getMessage());
+        else{
+            try {
+                defeatedTruckers.getFirst().getSpaceShip().checkCabin(coordinates, astronautsLost);
+                defeatedTruckers.getFirst().getSpaceShip().removeNumHuman(coordinates);
+                defeatedTruckers.removeFirst();
+            } catch (InvalidCoordinates e) {
+                throw new InvalidCoordinates(e.getMessage());
+            }
+            if (defeatedTruckers.isEmpty()) {
+                cardState = CardState.ESECUZIONE;
+                return cardEffect();
+            }
+            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip());
         }
-        if (indexOfCurrentTrucker==Game.getIstance().getTruckerList().size()-1) {
-            cardState = CardState.ESECUZIONE;
-            return cardEffect();
-        }
-        return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip());
     }
+
 
     /**
      * Applies the changes provided by the card
@@ -244,17 +256,6 @@ public class Slavers extends Card implements Serializable {
     public ServerEvent cardEffect() throws GeneralError {
         if (cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Card state is not ESECUZIONE");
-        }
-        int i = 0;
-        if(winnerTrucker !=null && winDecision){
-            winnerTrucker.addCosmicCredit(credits);
-            Game.getIstance().moveBackward(winnerTrucker, days);
-        }
-        if(!defeatedTruckers.isEmpty()) {
-            for (Trucker trucker : defeatedTruckers) {
-                trucker.getSpaceShip().removeNumHuman(truckersCoordinatesToRemoveHumans.get(i));
-                i++;
-            }
         }
         ArrayList<String> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();

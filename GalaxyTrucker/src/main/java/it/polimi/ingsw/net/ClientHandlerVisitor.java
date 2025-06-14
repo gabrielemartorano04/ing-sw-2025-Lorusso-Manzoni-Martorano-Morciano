@@ -18,7 +18,6 @@ import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.HumanCoordinates;
 import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
-import it.polimi.ingsw.net.socket.events.clientevents.cardevents.HumanRemotionSeenEvent;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -491,16 +490,14 @@ public class ClientHandlerVisitor implements VirtualServer {
 
     @Override
     public ServerEvent visit(RemotionSeenEvent event, Client client) {
-        if (cardController.getCurrCard().getName().equalsIgnoreCase("Slavers")) {
-            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, client.getTruckerController().getNickname(),client.getTruckerController().getSpaceShip());
-        }else{
-            try {
-                return cardController.getCurrCard().removeGoods();
-            } catch (WrongCallerException | GeneralError e) {
-                return new GenericErrorEvent(e.getMessage(), true);
-            }
+        try {
+            return cardController.getCurrCard().removeGoods();
+        } catch (WrongCallerException | GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), true);
         }
+
     }
+
 
 
     @Override
@@ -552,9 +549,5 @@ public class ClientHandlerVisitor implements VirtualServer {
 
     }
 
-    @Override
-    public ServerEvent visit(HumanRemotionSeenEvent humanRemotionSeenEvent) {
-        return null;
-    }
 
 }

@@ -83,5 +83,4 @@ public interface VirtualServer {
 
     ServerEvent visit(ChoseToResume event);
 
-    ServerEvent visit(HumanRemotionSeenEvent humanRemotionSeenEvent);
 }

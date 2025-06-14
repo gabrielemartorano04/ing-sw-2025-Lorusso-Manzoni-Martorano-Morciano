@@ -124,6 +124,4 @@ public interface VirtualView {
 
     void visit(AvailablePlayersEvent availablePlayersEvent);
 
-    void visit(HumanRemovedConfirmed event);
-
 }
