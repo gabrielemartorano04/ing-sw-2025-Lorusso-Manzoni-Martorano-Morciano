@@ -7,15 +7,28 @@ import it.polimi.ingsw.view.ParserState;
 
 public class HumanCoordinates extends CardEvent {
 
-    private SpaceShip spaceShip;
+    private final SpaceShip spaceShip;
 
-    public HumanCoordinates(ServerEventType eventType, boolean forAll, String nickname,SpaceShip spaceShip) {
+    private final SpaceShip previousSpaceShip;
+    private final String previousNickName;
+
+    public HumanCoordinates(ServerEventType eventType, boolean forAll, String nickname,SpaceShip spaceShip, SpaceShip previousSpaceShip, String previousNickName) {
         super(eventType, forAll, ParserState.HUMAN_COORD, nickname);
         this.spaceShip=spaceShip;
+        this.previousSpaceShip=previousSpaceShip;
+        this.previousNickName=previousNickName;
     }
 
     public SpaceShip getShip(){
         return spaceShip;
+    }
+
+    public SpaceShip getPreviousSpaceShip(){
+        return previousSpaceShip;
+    }
+
+    public String getPreviousNickName(){
+        return previousNickName;
     }
 
     @Override

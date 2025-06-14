@@ -377,6 +377,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
             ui.showInputFormat(ParserState.HUMAN_COORD);
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            if(event.getPreviousNickName().equals(viewFlow.getNickname())){
+                viewFlow.setShip(event.getPreviousSpaceShip().getComponents());
+                ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
+            }
+
             ui.showMessage(event.getInfoForOthers());
         }
     }
