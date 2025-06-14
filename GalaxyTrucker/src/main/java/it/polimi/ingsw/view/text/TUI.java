@@ -495,15 +495,23 @@ public class TUI implements UI {
         }
         if(event.getMeteorites() != null) {
             String message = "Meteorites arriving:\n";
-            int j = 0;
-            for(int[] list: event.getMeteorites()){
-                for(int i: list){
-                    if(i == 0) message += "Meteorite " + j + " arriving from the top\n";
-                    else if(i == 1) message += "Meteorite " + j + " arriving from the right side\n";
-                    else if(i == 2) message += "Meteorite " + j + " arriving from the bottom\n";
-                    else if(i == 3) message += "Meteorite " + j + " arriving from the left side\n";
+            int index = 0;
+            for (int[] meteor : event.getMeteorites()) {
+                int size = meteor[0];
+                int direction = meteor[1];
+
+                String sizeText = (size == 1) ? "big" : "small";
+                String dirText;
+                switch (direction) {
+                    case 0 -> dirText = "from the top";
+                    case 1 -> dirText = "from the right side";
+                    case 2 -> dirText = "from the bottom";
+                    case 3 -> dirText = "from the left side";
+                    default -> dirText = "from an unknown direction";
                 }
-                j++;
+
+                message += "Meteorite " + index + " (" + sizeText + ") arriving " + dirText + "\n";
+                index++;
             }
             System.out.println(message);
         }
