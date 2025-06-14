@@ -29,4 +29,8 @@ public class HumanRemovedConfirmed extends CardEvent {
     public void call(ServerEventHandlerVisitor visitor) {
 
     }
+
+    public String getInfoForOthers() {
+        return getNickname()+" received a remotion confirm";
+    }
 }

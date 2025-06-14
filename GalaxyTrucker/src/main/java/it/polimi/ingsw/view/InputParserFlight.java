@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.clientevents.cardevents.*;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.HumanRemotionSeenEvent;
 
 
 import java.awt.*;
@@ -288,6 +289,13 @@ public class InputParserFlight {
                     return null;
                 }
                 return new RemotionSeenEvent();
+            case HUMAN_REMOVED:
+                String[] remotionHuman=input.split("\\s+");
+                if(remotionHuman.length!=1 || !remotionHuman[0].trim().equals("continue")){
+                    System.out.println("Error: invalid command");
+                    return null;
+                }
+                return new HumanRemotionSeenEvent();
             case CURRENT_CONDITION:
                 String[] currCond=input.split("\\s+");
                 if(currCond.length!=1 || !currCond[0].trim().equals("continue")){
