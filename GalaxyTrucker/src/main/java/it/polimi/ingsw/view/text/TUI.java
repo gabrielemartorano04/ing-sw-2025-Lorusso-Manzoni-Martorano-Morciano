@@ -468,7 +468,7 @@ public class TUI implements UI {
 
     @Override
     public void showWaitForOthers() {
-        System.out.println("Wait for other players to finish building.");
+        System.out.println("Wait for other players...");
     }
 
     @Override
