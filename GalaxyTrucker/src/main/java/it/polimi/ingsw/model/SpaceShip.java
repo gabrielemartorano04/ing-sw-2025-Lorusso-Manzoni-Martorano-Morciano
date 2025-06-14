@@ -1099,6 +1099,7 @@ public class SpaceShip implements Serializable {
                                     throw new RuntimeException(e);
                                 }
                                 lost++;
+                                return;
                             }
                         }
 
@@ -1121,6 +1122,7 @@ public class SpaceShip implements Serializable {
                                     throw new RuntimeException(e);
                                 }
                                 lost++;
+                                return;
                             }
                         }
 
@@ -1142,6 +1144,7 @@ public class SpaceShip implements Serializable {
                                     throw new RuntimeException(e);
                                 }
                                 lost++;
+                                return;
                             }
                         }
 
@@ -1163,7 +1166,7 @@ public class SpaceShip implements Serializable {
                                     throw new RuntimeException(e);
                                 }
                                 lost++;
-
+                                return;
                             }
                         }
 
