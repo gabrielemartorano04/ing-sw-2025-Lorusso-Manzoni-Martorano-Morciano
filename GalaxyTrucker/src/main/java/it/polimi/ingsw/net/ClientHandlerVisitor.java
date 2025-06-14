@@ -444,7 +444,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     }
 
     @Override
-    public ServerEvent visit(SetWinDecision event) {
+    public ServerEvent visit(GainCosmicCreditsResponseEvent event) {
         return cardController.setWinDecision(event);
     }
 
@@ -478,14 +478,6 @@ public class ClientHandlerVisitor implements VirtualServer {
         return new StackDropOk("Stack numero " + event.getCurr() + "disponibile", false);
     }
 
-    //TODO GESTIRE QUESTI EVENTI
-    //adesso questi metodi sono void, quindi quando vuoi ritornare un ServerEvent fai serverEvent= new EventoCheVuoi(dati); e poi return;
-    @Override
-    public ServerEvent visit(GainCosmicCreditsResponseEvent event) {
-        System.out.println("Evento non ancora gestito ");
-        // return ?????? manca ;
-        return null;
-    }
 
     @Override
     public ServerEvent visit(WarzoneStartEvent event) {

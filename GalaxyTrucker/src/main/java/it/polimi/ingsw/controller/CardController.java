@@ -162,9 +162,9 @@ public class CardController {
      * @param event received Client Event
      * @return Server Event to send to client
      */
-    public ServerEvent setWinDecision(SetWinDecision event) {
+    public ServerEvent setWinDecision(GainCosmicCreditsResponseEvent event) {
         try {
-            return currCard.setWinDecision(event.getWin());
+            return currCard.setWinDecision(event.getAnswer());
         } catch (GeneralError | WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), false);
         }
