@@ -371,7 +371,8 @@ public class GUI implements UI {
 
     @Override
     public void askAlienCabin(AlienCabinCoord event){
-        //this.buildingScene.showAlienCabin();
+        //this.buildingScene.updateAlienCabinCoord(event.getAlienCabinCoord());
+//        this.buildingScene.showAlienCabin();
     }
 
     @Override
@@ -387,6 +388,11 @@ public class GUI implements UI {
         //TODO: sistemare la building complete perché non usiamo piu la fillScene
         // this.buildingScene.showCoordPopUp
         //button azione 'coord'
+        //viewFlow.handleInput("alien");
+//        Platform.runLater(() -> {
+//            this.buildingScene.updateAlienCabinCoord();
+//            this.buildingScene.showAlienCabin();
+//        });
     }
 
     @Override
