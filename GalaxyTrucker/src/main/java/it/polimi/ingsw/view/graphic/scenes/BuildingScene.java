@@ -28,6 +28,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
@@ -81,7 +82,6 @@ public class BuildingScene {
 
     private Map<Button, Boolean> previousButtonStates = new HashMap<>();
 
-
     private VBox componentSelectedBox;
     private boolean componentSelectedExists;
 
@@ -89,6 +89,7 @@ public class BuildingScene {
     private Timeline waitAnimation;
 
     private StackPane currentStackOverlay;
+    private ArrayList<int[]> alienCoords;
 
     public BuildingScene(String nickname, Component[][] layout, ViewFlow viewFlow, StackPane root) {
         this.nickname = nickname;
@@ -143,7 +144,7 @@ public class BuildingScene {
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {
                 StackPane cell = new StackPane();
-                cell.setPrefSize(135, 136);
+                cell.setPrefSize(134, 134);
 
                 if (validCells[row][col]) {
                     cell.setStyle("-fx-border-color: white; -fx-border-radius: 6px; -fx-background-radius: 6px;");
@@ -151,9 +152,9 @@ public class BuildingScene {
                     Component c = layout[row][col];
                     if (c != null) {
                         ImageView imageView = new ImageView(c.getFrontImage());
-                        imageView.setFitWidth(135);
-                        imageView.setFitHeight(135);
-                        Rectangle clip = new Rectangle(135, 135);
+                        imageView.setFitWidth(134);
+                        imageView.setFitHeight(134);
+                        Rectangle clip = new Rectangle(134, 134);
                         clip.setArcWidth(12);
                         clip.setArcHeight(12);
                         imageView.setClip(clip);
@@ -1435,7 +1436,73 @@ public class BuildingScene {
         }
     }
 
+    public void updateAlienCabinCoord(ArrayList<int[]> alienCoords) {
+        this.alienCoords = alienCoords;
+    }
 
+    public void showAlienCabin() {
+        VBox alienBox = new VBox(10);
+        alienBox.setAlignment(Pos.CENTER_RIGHT);
+        alienBox.setPadding(new Insets(0, 0, 25, 25));
+        alienBox.setMouseTransparent(false);
+
+        Label title = new Label("Place an alien:");
+        title.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
+        title.setTextFill(Color.web("#FFDE69"));
+
+        VBox alienListBox = new VBox(8);
+        alienListBox.setAlignment(Pos.CENTER_RIGHT);
+
+        StringBuilder commandBuilder = new StringBuilder("coord");
+
+        for (int[] alienCoord : alienCoords) {
+            int x = alienCoord[0];
+            int y = alienCoord[1];
+            int colorCode = alienCoord[2];
+            String colorName = (colorCode == 0) ? "purple" : "brown";
+
+            Text coordText = new Text("[" + x + "," + y + "] " + colorName);
+            coordText.setFont(Font.font("Bangers", FontWeight.NORMAL, 16));
+            coordText.setFill(Color.WHITE);
+
+            Button placeBtn = new Button("Place");
+            placeBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 13));
+            placeBtn.setTextFill(Color.BLACK);
+            placeBtn.setStyle("-fx-background-color: #FFDE69;");
+            placeBtn.setCursor(Cursor.HAND);
+            placeBtn.setPrefWidth(70);
+
+            placeBtn.setOnAction(e -> {
+                // Disabilita e oscura il bottone
+                placeBtn.setDisable(true);
+                placeBtn.setStyle("-fx-background-color: #999999;");
+                // Aggiungi le coordinate al comando
+                commandBuilder.append(" ").append(x).append(" ").append(y).append(" ").append(colorName);
+            });
+
+            HBox line = new HBox(10, coordText, placeBtn);
+            line.setAlignment(Pos.CENTER_RIGHT);
+            alienListBox.getChildren().add(line);
+        }
+
+        // Pulsante finale di conferma
+        Button confirmBtn = new Button("Confirm");
+        confirmBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 14));
+        confirmBtn.setTextFill(Color.BLACK);
+        confirmBtn.setStyle("-fx-background-color: #FFDE69;");
+        confirmBtn.setCursor(Cursor.HAND);
+        confirmBtn.setPrefWidth(120);
+
+        confirmBtn.setOnAction(e -> {
+            viewFlow.handleInput(commandBuilder.toString());
+            root.getChildren().remove(alienBox);
+        });
+
+        alienBox.getChildren().addAll(title, alienListBox, confirmBtn);
+        StackPane.setAlignment(alienBox, Pos.CENTER_RIGHT);
+        StackPane.setMargin(alienBox, new Insets(0, 15, 0, 0));
+        root.getChildren().add(alienBox);
+    }
 
 
 }

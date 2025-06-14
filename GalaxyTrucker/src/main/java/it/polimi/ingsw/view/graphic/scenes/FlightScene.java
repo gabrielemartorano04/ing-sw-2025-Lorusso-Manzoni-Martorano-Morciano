@@ -34,7 +34,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -139,6 +138,8 @@ public class FlightScene {
                         clip.setArcWidth(12);
                         clip.setArcHeight(12);
                         imageView.setClip(clip);
+                        System.out.println(c.getRotationAngle());
+                        imageView.setRotate(c.getRotationAngle());
                         cell.getChildren().add(imageView);
                     }
                 } else {

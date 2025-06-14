@@ -293,19 +293,30 @@ public class Pirates extends Card implements Serializable {
                 }
                 j++;
             }
+
+        }else {
+            ArrayList<String> truckerRemoved;
+            truckerRemoved = Game.getIstance().endTurn();
+
+            GamePersistence.saveGame(GameController.getIstance());
+            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved,Game.getIstance().getTrack());
         }
         if (shoots.size()==(currShootIndex)) {
             ArrayList<String> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
-            Map<String, Integer> track = new HashMap<>();
-            for (Trucker t : Game.getIstance().getTruckerList()) {
-                track.put(t.getNickname(), t.getPosition());
-            }
+
             GamePersistence.saveGame(GameController.getIstance());
-            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved,Game.getIstance().getTrack());
         }else {
-            this.cardState = CardState.ROLL_DICE;
-            return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
+            if (!defeatedTruckers.isEmpty()) {
+                this.cardState = CardState.ROLL_DICE;
+                return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
+            }else {
+                ArrayList<String> truckerRemoved;
+                truckerRemoved = Game.getIstance().endTurn();
+                GamePersistence.saveGame(GameController.getIstance());
+                return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved,Game.getIstance().getTrack());
+            }
         }
     }
 

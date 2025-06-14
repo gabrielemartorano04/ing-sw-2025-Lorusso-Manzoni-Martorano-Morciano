@@ -131,14 +131,10 @@ public abstract sealed class Component implements Serializable  permits BatteryS
         link[0]=tmp;
         rotationAngle = (rotationAngle + 90) % 360;
     }
-//    serve per resettare immagine view ma bisogna resettare anche i link
-//    public void setRotationAngle(int rotationAngle) {
-//        this.rotationAngle = rotationAngle;
-//    }
 
-//    public int getRotationAngle() {
-//        return rotationAngle;
-//    }
+    public int getRotationAngle() {
+        return rotationAngle;
+    }
 
     /**
      * Returns the type of component
