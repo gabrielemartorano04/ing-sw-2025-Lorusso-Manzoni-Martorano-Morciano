@@ -157,15 +157,6 @@ public class TruckerController  {
     }
 
     /**
-     * This method adds a component to the kept components list.
-     * @param component component to add
-     * @throws GeneralError if there is no available space for another kept component
-     */
-    public void addKeptComponent(Component component) throws GeneralError {
-        trucker.addKeptComponent(component);
-    }
-
-    /**
      * @return Trucker linked to this controller
      */
     public Trucker getTrucker() {
