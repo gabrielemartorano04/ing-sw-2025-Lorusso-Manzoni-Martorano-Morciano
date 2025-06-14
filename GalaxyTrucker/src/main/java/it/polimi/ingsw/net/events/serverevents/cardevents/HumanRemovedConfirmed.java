@@ -27,7 +27,7 @@ public class HumanRemovedConfirmed extends CardEvent {
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
-
+        visitor.visit(this);
     }
 
     public String getInfoForOthers() {

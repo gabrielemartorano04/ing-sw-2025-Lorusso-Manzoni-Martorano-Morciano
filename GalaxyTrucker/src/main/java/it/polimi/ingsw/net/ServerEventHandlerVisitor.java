@@ -599,7 +599,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
-            ui.showMessage(event.getInfoForOthers());
+            // ui.showMessage(event.getInfoForOthers());
         }
     }
 
