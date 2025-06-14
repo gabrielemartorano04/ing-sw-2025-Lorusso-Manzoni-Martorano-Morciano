@@ -139,6 +139,9 @@ public class FlightScene {
                         clip.setArcHeight(12);
                         imageView.setClip(clip);
                         cell.getChildren().add(imageView);
+                        if(c.getRotationAngle() != 0) {
+                            imageView.setRotate(c.getRotationAngle());
+                        }
                     }
                 } else {
                     cell.setStyle("-fx-background-color: transparent;");
