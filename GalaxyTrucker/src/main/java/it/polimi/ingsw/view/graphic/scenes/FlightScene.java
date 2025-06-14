@@ -138,9 +138,7 @@ public class FlightScene {
                         clip.setArcWidth(12);
                         clip.setArcHeight(12);
                         imageView.setClip(clip);
-                        if(c.getRotationAngle() != 0) {
-                            imageView.setRotate(c.getRotationAngle());
-                        }
+                        imageView.setRotate(c.getRotationAngle());
                         cell.getChildren().add(imageView);
                     }
                 } else {

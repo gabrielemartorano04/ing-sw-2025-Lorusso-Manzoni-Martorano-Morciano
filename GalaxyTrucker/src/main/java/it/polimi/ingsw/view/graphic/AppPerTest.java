@@ -106,12 +106,12 @@ public class AppPerTest extends Application {
 
 
 
-        StackPane stackPane = new StackPane();
-        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
-        primaryStage.setScene(buildingScene.createScene(playersNames, 2));
-        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-        primaryStage.show();
+//        StackPane stackPane = new StackPane();
+//        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
+//        primaryStage.setScene(buildingScene.createScene(playersNames, 2));
+//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+//        primaryStage.show();
 //
 ////        buildingScene.insertSelectedComponent(cannon, false);
 ////        buildingScene.insertComponentInGrid(cannon,6,7);
@@ -120,14 +120,14 @@ public class AppPerTest extends Application {
 ////        buildingScene.showPopUpError("Errore");
 ////        buildingScene.selectKeptComponent(0);
 ////        buildingScene.showOtherShip(trucker.getSpaceShip().getComponents(), trucker.getNickname());
-        buildingScene.updateAlienCabinCoord(new ArrayList<>(){
-            {
-                add(new int[]{5,6,0});
-                add(new int[]{7,8,0});
-                add(new int[]{6,9,1});
-            }
-        });
-        buildingScene.showAlienCabin();
+//        buildingScene.updateAlienCabinCoord(new ArrayList<>(){
+//            {
+//                add(new int[]{5,6,0});
+//                add(new int[]{7,8,0});
+//                add(new int[]{6,9,1});
+//            }
+//        });
+//        buildingScene.showAlienCabin();
 //
 //
 //        primaryStage.setScene(scene);
@@ -146,13 +146,13 @@ public class AppPerTest extends Application {
 //
 //
 
-//        StackPane stackPane = new StackPane();
-//        FlightScene flightScene = new FlightScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
-//        primaryStage.setScene(flightScene.createScene(playersNames, 2));
-//
-//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-//        primaryStage.show();
+        StackPane stackPane = new StackPane();
+        FlightScene flightScene = new FlightScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
+        primaryStage.setScene(flightScene.createScene(playersNames, 2));
+
+        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+        primaryStage.show();
 //        flightScene.updatePlanetsOccupied(new ArrayList<>(){
 //            {
 //                add(trucker);

@@ -389,10 +389,6 @@ public class GUI implements UI {
         // this.buildingScene.showCoordPopUp
         //button azione 'coord'
         //viewFlow.handleInput("alien");
-//        Platform.runLater(() -> {
-//            this.buildingScene.updateAlienCabinCoord();
-//            this.buildingScene.showAlienCabin();
-//        });
     }
 
     @Override
