@@ -10,29 +10,29 @@ import java.rmi.RemoteException;
 
 public interface VirtualView {
 
-    void visit(PlayerJoinedEvent event) throws RemoteException;
+    void visit(PlayerJoinedEvent event);
 
-    void visit(NicknameAlreadyInError event) throws RemoteException;
+    void visit(NicknameAlreadyInError event);
 
-    void visit(AvailableColorsEvent event) throws RemoteException;
+    void visit(AvailableColorsEvent event);
 
-    void visit(ColorAlreadyInError event) throws RemoteException;
+    void visit(ColorAlreadyInError event);
 
-    void visit(StartBuildingEvent event) throws RemoteException;
+    void visit(StartBuildingEvent event);
 
-    void visit(ComponentLinkedEvent event) throws RemoteException;
+    void visit(ComponentLinkedEvent event);
 
-    void visit(ComponentNotAvailableError event) throws RemoteException;
+    void visit(ComponentNotAvailableError event);
 
-    void visit(ComponentSelectedEvent event) throws RemoteException;
+    void visit(ComponentSelectedEvent event);
 
-    void visit(DiscardSuccessEvent event) throws RemoteException;
+    void visit(DiscardSuccessEvent event);
 
-    void visit(InvalidCoordinatesError event) throws RemoteException;
+    void visit(InvalidCoordinatesError event);
 
-    void visit(InvalidPositionError event) throws RemoteException;
+    void visit(InvalidPositionError event);
 
-    void visit(TurnHourglassError event) throws RemoteException;
+    void visit(TurnHourglassError event);
 
     void visit(HourglassTurnEvent event) throws RemoteException;
 
@@ -114,7 +114,7 @@ public interface VirtualView {
 
     void visit(RemoveGoods event) throws RemoteException;
 
-    public void visit(StackDropOk event) throws RemoteException;
+    void visit(StackDropOk event) throws RemoteException;
 
     void visit(PingEvent event);
 
@@ -123,4 +123,7 @@ public interface VirtualView {
     void visit(ChooseResumeEvent chooseResumeEvent);
 
     void visit(AvailablePlayersEvent availablePlayersEvent);
+
+    void visit(HumanRemovedConfirmed event);
+
 }

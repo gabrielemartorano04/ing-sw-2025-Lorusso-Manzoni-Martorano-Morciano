@@ -591,6 +591,19 @@ public class ServerEventHandlerVisitor implements VirtualView {
     }
 
     @Override
+    public void visit(HumanRemovedConfirmed event) {
+        if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
+            viewFlow.setShip(event.getShip().getComponents());
+            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
+            ui.showInputFormat(event.getParserState());
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.getInfoForOthers());
+        }
+    }
+
+    @Override
     public void visit(RemoveBatteries event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
