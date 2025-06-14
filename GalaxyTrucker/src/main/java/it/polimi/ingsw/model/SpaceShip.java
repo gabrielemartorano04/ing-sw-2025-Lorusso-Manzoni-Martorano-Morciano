@@ -1103,94 +1103,97 @@ public class SpaceShip implements Serializable {
     public void destroyComponent(int num, int direction, Bank bank) {
         Component c=null;
         int x=0; int y=0;
+        boolean removed=false;
         switch (direction) {
             case 0:
                 for (int i = 5; i <= 9; i++) {
                     if (components[i][num] != null) {
-
-                        switch(components[i][num]){
-                            case EmptySpace emptySpace->{}
-                            default -> {
-                                c=components[i][num];
-                                x=i;
-                                y=num;
-                                try{
-                                    removeComponent(i, num);
-                                } catch (InvalidCoordinates e) {
-                                    throw new RuntimeException(e);
+                        if(!removed){
+                            switch(components[i][num]){
+                                case EmptySpace emptySpace->{}
+                                default -> {
+                                    c=components[i][num];
+                                    x=i;
+                                    y=num;
+                                    try{
+                                        removeComponent(i, num);
+                                    } catch (InvalidCoordinates e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    lost++;
+                                    removed=true;
                                 }
-                                lost++;
-                                break;
                             }
                         }
-
-
                     }
                 }
                 break;
             case 1:
                 for (int j = 10; j > 3; j--) {
                     if (components[num][j] != null) {
-                        switch(components[num][j]){
-                            case EmptySpace emptySpace->{}
-                            default -> {
-                                c=components[num][j];
-                                x=num;
-                                y=j;
-                                try{
-                                    removeComponent(num, j);
-                                } catch (InvalidCoordinates e) {
-                                    throw new RuntimeException(e);
+                        if(!removed){
+                            switch(components[num][j]){
+                                case EmptySpace emptySpace->{}
+                                default -> {
+                                    c=components[num][j];
+                                    x=num;
+                                    y=j;
+                                    try{
+                                        removeComponent(num, j);
+                                    } catch (InvalidCoordinates e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    lost++;
+                                    removed=true;
                                 }
-                                lost++;
-                                break;
                             }
                         }
-
                     }
                 }
                 break;
             case 2:
                 for (int i = 9; i > 4; i--) {
                     if (components[i][num] != null) {
-                        switch(components[i][num]){
-                            case EmptySpace emptySpace->{}
-                            default -> {
-                                c=components[i][num];
-                                x=i;
-                                y=num;
-                                try{
-                                    removeComponent(i, num);
-                                } catch (InvalidCoordinates e) {
-                                    throw new RuntimeException(e);
+                        if(!removed){
+                            switch(components[i][num]){
+                                case EmptySpace emptySpace->{}
+                                default -> {
+                                    c=components[i][num];
+                                    x=i;
+                                    y=num;
+                                    try{
+                                        removeComponent(i, num);
+                                    } catch (InvalidCoordinates e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    lost++;
+                                    removed=true;
                                 }
-                                lost++;
-                                break;
                             }
                         }
-
                     }
                 }
                 break;
             case 3:
                 for (int j = 4; j <= 10; j++) {
                     if (components[num][j] != null) {
-                        switch(components[num][j]){
-                            case EmptySpace emptySpace->{}
-                            default -> {
-                                c=components[num][j];
-                                x=num;
-                                y=j;
-                                try{
-                                    removeComponent(num, j);
-                                } catch (InvalidCoordinates e) {
-                                    throw new RuntimeException(e);
+                        if(!removed) {
+                            switch(components[num][j]){
+                                case EmptySpace emptySpace->{}
+                                default -> {
+                                    c=components[num][j];
+                                    x=num;
+                                    y=j;
+                                    try{
+                                        removeComponent(num, j);
+                                    } catch (InvalidCoordinates e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    lost++;
+                                    removed=true;
                                 }
-                                lost++;
-                                break;
                             }
                         }
-
                     }
                 }
                 break;
