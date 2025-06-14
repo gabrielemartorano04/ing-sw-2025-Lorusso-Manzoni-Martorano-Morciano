@@ -18,6 +18,7 @@ import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.HumanCoordinates;
 import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.HumanRemotionSeenEvent;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -549,6 +550,11 @@ public class ClientHandlerVisitor implements VirtualServer {
             return new AvailableColorsEvent(EnumSet.allOf(PlayerColors.class), "First Player in the game, start login");
         }
 
+    }
+
+    @Override
+    public ServerEvent visit(HumanRemotionSeenEvent humanRemotionSeenEvent) {
+        return null;
     }
 
 }

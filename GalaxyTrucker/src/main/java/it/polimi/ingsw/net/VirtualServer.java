@@ -9,6 +9,7 @@ import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.ChoseToResume;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.socket.events.clientevents.cardevents.HumanRemotionSeenEvent;
 
 /**
  * Interface of the visitor used to handle the events coming from the Client with the data used in the cards
@@ -81,4 +82,6 @@ public interface VirtualServer {
     ServerEvent visit(PongEvent pongEvent, Client client);
 
     ServerEvent visit(ChoseToResume event);
+
+    ServerEvent visit(HumanRemotionSeenEvent humanRemotionSeenEvent);
 }
