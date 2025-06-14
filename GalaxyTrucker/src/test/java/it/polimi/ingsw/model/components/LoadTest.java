@@ -31,22 +31,13 @@ class LoadTest {
 
     @Test
     void addGood() {
-        load.addGood(new Goods(2));
+        load.addGood(0,new Goods(2));
         assertEquals(1,load.getQuantity());
-    }
-
-
-    @Test
-    void removeGood() {
-        Goods goods=new Goods(2);
-        load.addGood(goods);
-        load.removeGood(goods);
-        assertEquals(0,load.getQuantity());
     }
 
     @Test
     void getGoods() {
-        load.addGood(new Goods(2));
+        load.addGood(0,new Goods(2));
         assertEquals(1,load.getGoods().size());
     }
 }

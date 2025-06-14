@@ -258,7 +258,7 @@ public class TUI implements UI {
                 }
             }
             this.showMessage("\nList of cabin available for aliens:\n" + message);
-            this.showMessage("Insert coordinates (coord <x1> <y1> <color> <x2> <y2> <color>...):\n");
+            this.showMessage("Insert coordinates to add aliens (coord <x1> <y1> <color> <x2> <y2> <color>...), otherwise just 'coord':\n");
         }
     }
 
