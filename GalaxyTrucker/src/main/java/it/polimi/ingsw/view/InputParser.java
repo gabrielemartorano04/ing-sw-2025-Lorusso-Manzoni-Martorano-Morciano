@@ -92,7 +92,7 @@ public class InputParser {
         if (input == null || input.isEmpty()) {
             return null;
         }
-        String[] tokens = input.split("\\s+", 3);
+        String[] tokens = input.split("\\s+");
         String command = tokens[0].toLowerCase();
         switch (command){
             case "rules":
@@ -133,7 +133,7 @@ public class InputParser {
                             if(tokens[i+2].trim().equalsIgnoreCase("purple")) {
                                 coord.add(new int[]{Integer.parseInt(tokens[i]), Integer.parseInt(tokens[i + 1]),0});
                             }
-                            else{
+                            else if(tokens[i+2].trim().equalsIgnoreCase("brown")){
                                 coord.add(new int[]{Integer.parseInt(tokens[i]), Integer.parseInt(tokens[i + 1]),1});
                             }
                         }
