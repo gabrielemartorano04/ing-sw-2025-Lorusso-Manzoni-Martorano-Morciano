@@ -32,7 +32,7 @@ final public class Load extends Component implements Serializable {
         this.isSpecial = isSpecial;
         this.capacity = capacity;
         this.goods = new Goods[capacity];
-        Arrays.fill(this.goods, new Goods(-1)); // -1 = slot vuoto
+        Arrays.fill(this.goods, new Goods(-1));
     }
 
     public boolean getIsSpecial() {
@@ -103,25 +103,6 @@ final public class Load extends Component implements Serializable {
 
     public ArrayList<Goods> getGoods() {
         return new ArrayList<>(Arrays.asList(goods));
-    }
-
-
-    /**
-     * Adds a single good in the right position in order of decreasing value
-     * @param good good to add
-     */
-    @Deprecated
-    public void addGood(Goods good) {
-//        int i = 0;
-//        while (i < goods.size() && goods.get(i).getValue() > good.getValue()) {
-//            i++;
-//        }
-//        goods.add(i, good);
-    }
-
-    @Deprecated
-    public void removeGood(Goods good) {
-        // never used!
     }
 
 }

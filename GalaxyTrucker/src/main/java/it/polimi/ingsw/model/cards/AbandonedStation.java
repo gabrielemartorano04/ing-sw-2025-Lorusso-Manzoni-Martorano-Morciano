@@ -169,11 +169,11 @@ public class AbandonedStation extends Card implements Serializable {
      * @param goodsCoordinates list of coordinatest
      */
     @Override
-    public ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public ServerEvent setGoodsCoordinates(Boolean answer, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
-        if(stop){
+        if(!answer){
             cardState = CardState.REARRANGE;
             return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
         }else {
