@@ -16,7 +16,6 @@ import it.polimi.ingsw.net.events.serverevents.cardevents.ResumeGameEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
-import it.polimi.ingsw.net.events.serverevents.cardevents.HumanCoordinates;
 import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
 
 import java.util.ArrayList;
@@ -230,7 +229,7 @@ public class ClientHandlerVisitor implements VirtualServer {
                 }
                 gameController.getGame().startHourglass();
                 if (gameController.getGame().getGameLevel() == 2) {
-                    return new StartBuildingEvent(nickname, client.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondiRimanenti(), players, gameController.getGame().getGameLevel());
+                    return new StartBuildingEvent(nickname, client.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondsLeft(), players, gameController.getGame().getGameLevel());
                 } else {
                     return new StartBuildingEvent(nickname, client.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), 0, players, gameController.getGame().getGameLevel());
                 }
@@ -318,7 +317,7 @@ public class ClientHandlerVisitor implements VirtualServer {
             ServerController.getIstance().startThreadHourglass();
             return tmp;
         }
-        return new HourglassTurnEvent(gameController.getGame().getHourglass().getSecondiRimanenti());
+        return new HourglassTurnEvent(gameController.getGame().getHourglass().getSecondsLeft());
     }
 
     @Override

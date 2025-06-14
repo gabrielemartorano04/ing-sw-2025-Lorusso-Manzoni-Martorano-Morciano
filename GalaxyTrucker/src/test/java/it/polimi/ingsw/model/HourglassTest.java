@@ -84,6 +84,6 @@ class HourglassTest {
                 e.printStackTrace();
             }
         }
-        assertEquals(70, hourglass.getSecondiRimanenti());
+        assertEquals(70, hourglass.getSecondsLeft());
     }
 }
