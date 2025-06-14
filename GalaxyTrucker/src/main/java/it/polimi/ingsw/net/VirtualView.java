@@ -34,87 +34,87 @@ public interface VirtualView {
 
     void visit(TurnHourglassError event);
 
-    void visit(HourglassTurnEvent event) throws RemoteException;
+    void visit(HourglassTurnEvent event);
 
-    void visit(FirstConnectionEvent event) throws RemoteException;
+    void visit(FirstConnectionEvent event);
 
-    void visit(BuildCompleteEvent event) throws RemoteException;
+    void visit(BuildCompleteEvent event);
 
-    void visit(KeptComponentEvent event) throws RemoteException;
+    void visit(KeptComponentEvent event);
 
-    void visit(TurnedComponentSuccessEvent event) throws RemoteException;
+    void visit(TurnedComponentSuccessEvent event);
 
-    void visit(CurrentCondition currentCondition) throws RemoteException;
+    void visit(CurrentCondition currentCondition);
 
-    void visit(SuccessSelectKept event) throws RemoteException;
+    void visit(SuccessSelectKept event);
 
-    void visit(ShowOtherShipResponse event) throws RemoteException;
+    void visit(ShowOtherShipResponse event);
 
-    void visit(WaitOthersBuildingEvent event) throws RemoteException;
+    void visit(WaitOthersBuildingEvent event);
 
-    void visit(AlienCabinCoord event) throws RemoteException;
+    void visit(AlienCabinCoord event);
 
-    void visit(FlightStartEvent event) throws RemoteException;
+    void visit(FlightStartEvent event);
 
-    void visit(EndGameEvent event) throws RemoteException;
+    void visit(EndGameEvent event);
 
-    void visit(TruckerWithdrawEvent event) throws RemoteException;
+    void visit(TruckerWithdrawEvent event);
 
-    void visit(GenericErrorInsertedData event) throws RemoteException;
+    void visit(GenericErrorInsertedData event);
 
-    void visit(NoAvailableSpaceError event) throws RemoteException;
+    void visit(NoAvailableSpaceError event);
 
-    void visit(ReturnStackEvent event) throws RemoteException;
+    void visit(ReturnStackEvent event);
 
-    void visit(GenericErrorEvent event) throws RemoteException;
+    void visit(GenericErrorEvent event);
 
-    void visit(WaitOthersStartFlightEvent event) throws RemoteException;
+    void visit(WaitOthersStartFlightEvent event);
 
-    void visit(BooleanDecision event) throws RemoteException;
+    void visit(BooleanDecision event);
 
-    void visit(CardFinished event) throws RemoteException;
+    void visit(CardFinished event);
 
-    void visit(EpidemicEvent event) throws RemoteException;
+    void visit(EpidemicEvent event);
 
-    void visit(HumanCoordinates event) throws RemoteException;
+    void visit(HumanCoordinates event);
 
-    void visit(PlanetDecision event) throws RemoteException;
+    void visit(PlanetDecision event);
 
-    void visit(PlotGood event) throws RemoteException;
+    void visit(PlotGood event);
 
-    void visit(RollDiceResult event) throws RemoteException;
+    void visit(RollDiceResult event);
 
-    void visit(StarDustEvent event) throws RemoteException;
+    void visit(StarDustEvent event);
 
-    void visit(StartCardEvent event) throws RemoteException;
+    void visit(StartCardEvent event);
 
-    void visit(RearrangeEvent event) throws RemoteException;
+    void visit(RearrangeEvent event);
 
-    void visit(GainCosmicCredits event) throws RemoteException;
+    void visit(GainCosmicCredits event);
 
-    void visit(InvalidCoordinatesEvent event) throws RemoteException;
+    void visit(InvalidCoordinatesEvent event);
 
-    void visit(NotEnoughBatterieEvent event) throws RemoteException;
+    void visit(NotEnoughBatterieEvent event);
 
-    void visit(InvalidComponentsExceptionEvent event) throws RemoteException;
+    void visit(InvalidComponentsExceptionEvent event);
 
-    void visit(InvalidPositionExceptionEvent event) throws RemoteException;
+    void visit(InvalidPositionExceptionEvent event);
 
-    void visit(PlanetNotFreeExceptionEvent event) throws RemoteException;
+    void visit(PlanetNotFreeExceptionEvent event);
 
-    void visit(InvalidGoodChosenEvent event) throws RemoteException;
+    void visit(InvalidGoodChosenEvent event);
 
-    void visit(NotEnoughGoodsChosenEvent event) throws RemoteException;
+    void visit(NotEnoughGoodsChosenEvent event);
 
-    void visit(WrongNumberOfBatteriesSelectedEvent event) throws RemoteException;
+    void visit(WrongNumberOfBatteriesSelectedEvent event);
 
-    void visit(RemotionConfirmed event) throws RemoteException;
+    void visit(RemotionConfirmed event);
 
-    void visit(RemoveBatteries event) throws RemoteException;
+    void visit(RemoveBatteries event);
 
-    void visit(RemoveGoods event) throws RemoteException;
+    void visit(RemoveGoods event);
 
-    void visit(StackDropOk event) throws RemoteException;
+    void visit(StackDropOk event);
 
     void visit(PingEvent event);
 
