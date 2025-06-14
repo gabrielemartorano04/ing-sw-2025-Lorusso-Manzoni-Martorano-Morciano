@@ -301,6 +301,19 @@ public class Game implements Serializable {
         return truckers;
     }
 
+
+    /**
+     * returns the current track updated with truckers' positions
+     * @return
+     */
+    public Map<String, Integer> getTrack() {
+        Map<String, Integer> track = new HashMap<>();
+        for (Trucker p : truckers) {
+            track.put(p.getNickname(), p.getPosition());
+        }
+        return track;
+    }
+
     //muove trucker in avanti, riceve days positivo
     /**
      * Moves a trucker forward by a specified number of days.
