@@ -455,7 +455,7 @@ public class WarZone extends Card implements Serializable {
             case LOSE_HUMANS:
                 state = CardState.HUMANSTOREMOVE;
                 numOfHumanToRemove = penalties.get(currCondition).getValue();
-                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip());
+                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(),null,"");
             default:
                 throw new GeneralError("Unknown TypeOfEffect");
         }
@@ -512,15 +512,11 @@ public class WarZone extends Card implements Serializable {
                     if(currConditionIndex == conditionsOrder.size()){
                         ArrayList<String> truckerRemoved;
                         truckerRemoved = Game.getIstance().endTurn();
-                        Map<String, Integer> track = new HashMap<>();
-                        for (Trucker t : Game.getIstance().getTruckerList()) {
-                            track.put(t.getNickname(), t.getPosition());
-                        }
                         GamePersistence.saveGame(GameController.getIstance());
-                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
                     }else{
                         state = CardState.WARZONE;
-                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition);
+                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,Game.getIstance().getTrack(),weakestTrucker.getSpaceShip());
                     }
                 }
 
@@ -539,7 +535,7 @@ public class WarZone extends Card implements Serializable {
                         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
                     }else{
                         state = CardState.WARZONE;
-                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition);
+                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null,weakestTrucker.getSpaceShip());
                     }
                 }
 
@@ -558,7 +554,7 @@ public class WarZone extends Card implements Serializable {
                         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
                     }else{
                         state = CardState.WARZONE;
-                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition);
+                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null,weakestTrucker.getSpaceShip());
                     }
                 }
 
@@ -590,7 +586,7 @@ public class WarZone extends Card implements Serializable {
                             return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
                         }else{
                             state = CardState.WARZONE;
-                            return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition);
+                            return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition, null,weakestTrucker.getSpaceShip());
                         }
                     }else{
                         state = CardState.ROLL_DICE;
