@@ -169,6 +169,7 @@ public class ViewFlow implements EventReceiver {
                             //ui.showShipLayout(nickname, ship);
                         }
                         case FLIGTH -> {
+                            System.out.println("Cosmic credits: " + credits);
 //                            ui.showShipLayout(nickname, ship);
 //                            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor, credits);
 //                            ui.showTrack(track, level);
@@ -238,10 +239,10 @@ public class ViewFlow implements EventReceiver {
             case FILL-> event= inputParser.parseFillTheShip(input);
             case FLIGTH-> {
                 if(!out) {
-                    if (startFlight) {
+                    if (this.startFlight) {
                         if(input.trim().equals("state")){
                             event = new OkStartFlight();
-                            startFlight = false;
+                            this.startFlight = false;
                         }
                         else{
                             System.out.println("Error: Invalid command. Type 'state'.");
@@ -454,9 +455,9 @@ public class ViewFlow implements EventReceiver {
     }
 
 
-    public void setStartFlight() {
-        this.startFlight = true;
-    }
+//    public void setStartFlight() {
+//        this.startFlight = true;
+//    }
     public void setStartFlightForAll(){
         this.startFlightForAll = true;
     }

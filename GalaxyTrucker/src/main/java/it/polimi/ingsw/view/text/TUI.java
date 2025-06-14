@@ -258,7 +258,7 @@ public class TUI implements UI {
                 }
             }
             this.showMessage("\nList of cabin available for aliens:\n" + message);
-            this.showMessage("Insert coordinates (coord <x1> <y1> <color> <x2> <y2> <color>...):\n");
+            this.showMessage("Insert coordinates to add aliens (coord <x1> <y1> <color> <x2> <y2> <color>...), otherwise just 'coord':\n");
         }
     }
 
@@ -517,15 +517,23 @@ public class TUI implements UI {
         }
         if(event.getShoots() != null) {
             String message = "Shoots arriving:\n";
-            int j = 0;
-            for(int[] list: event.getShoots()){
-                for(int i: list){
-                    if(i == 0) message += "Shoots " + j + " arriving from the top\n";
-                    else if(i == 1) message += "Shoots " + j + " arriving from the right side\n";
-                    else if(i == 2) message += "Shoots " + j + " arriving from the bottom\n";
-                    else if(i == 3) message += "Shoots " + j + " arriving from the left side\n";
+            int index = 0;
+            for (int[] shoot : event.getShoots()) {
+                int size = shoot[0];
+                int direction = shoot[1];
+
+                String sizeText = (size == 1) ? "big" : "small";
+                String dirText;
+                switch (direction) {
+                    case 0 -> dirText = "from the top";
+                    case 1 -> dirText = "from the right side";
+                    case 2 -> dirText = "from the bottom";
+                    case 3 -> dirText = "from the left side";
+                    default -> dirText = "from an unknown direction";
                 }
-                j++;
+
+                message += "Shoot " + index + " (" + sizeText + ") arriving " + dirText + "\n";
+                index++;
             }
             System.out.println(message);
         }

@@ -355,7 +355,7 @@ class SpaceShipTest {
         } catch (NotEnoughBatteries e) {
             throw new RuntimeException(e);
         }
-        float expected=(1/2)+4;
+        float expected=((float)1/2)+4;
         assertEquals(expected,spaceShip3.getTotalCannonPower());
 
     }
@@ -708,7 +708,7 @@ class SpaceShipTest {
                 Goods good1=new Goods(4);
                 good1.setX(7);
                 good1.setY(5);
-                component.addGood(good1);
+                component.addGood(0,good1);
             }
             default -> {}
         }
