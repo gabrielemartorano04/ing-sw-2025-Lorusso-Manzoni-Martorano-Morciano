@@ -122,7 +122,6 @@ public class MeteorShower extends Card implements Serializable {
         System.out.println("Meteorite " + currMeteorIndex + " (" + sizeText + ") arriving "  + dirText + " total number of meteors in the card " + meteors.size());
 
         this.roll = Game.getIstance().rollDice();
-        this.roll = 8;
         if (meteor[0]==1) {
             state=CardState.ACTIVATE_CANNONS;
             return new RollDiceResult("Meteorite grande, attivare Cannoni doppi?", currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "bigmeteor");

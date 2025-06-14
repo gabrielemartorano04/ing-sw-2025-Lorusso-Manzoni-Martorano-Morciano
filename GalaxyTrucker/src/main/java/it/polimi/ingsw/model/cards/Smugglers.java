@@ -196,9 +196,6 @@ public class Smugglers extends Card implements Serializable {
                 }else
                 {
                     Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().activateDoubleCannons(coord, batteryCoord);
-                    System.out.println("Potenza del giocatore " + Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower());
-                    showShipLayout("io", Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getComponents());
-
                     return fightIsWin();
                 }
             }
@@ -211,17 +208,18 @@ public class Smugglers extends Card implements Serializable {
      * @param goodsCoordinates list of coordinatest
      */
     @Override
-    public ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int value) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public ServerEvent setGoodsCoordinates(Boolean answer, int[] goodsCoordinates, int value) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
-        if (!winnerTrucker.getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
-            throw new InvalidCoordinates("Not goods deposit");
-        }
-        if(stop){
+
+        if(!answer){
             cardState = CardState.REARRANGE;
             return new RearrangeEvent(true, this.winnerTrucker.getNickname());
         }else {
+            if (!winnerTrucker.getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
+                throw new InvalidCoordinates("Not goods deposit");
+            }
             try {
                 // addGood fa anche la remove dalla bank della merce corrente
                 Goods goodToAdd = goodsGained[currGoodIndex];
@@ -240,7 +238,7 @@ public class Smugglers extends Card implements Serializable {
                 //TODO: Check che non ci sia loop infinito
                 do {
                     if (Game.getIstance().getBank().getGoodsInBank(goodsGained[currGoodIndex].getValue()) >= 1) {
-                        cardState = CardState.CHOOSE_TO_GAIN;
+                        cardState = CardState.GOODSTOADD;
                         return new PlotGood(true, winnerTrucker.getNickname(),winnerTrucker.getSpaceShip(), goodsGained[currGoodIndex]);
                     } else {
                         currGoodIndex++;
