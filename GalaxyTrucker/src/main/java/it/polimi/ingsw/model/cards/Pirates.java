@@ -236,7 +236,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }else{
             cardState = CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Choose if you want to activate a shield", currShootIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "shot");
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Choose if you want to activate a shield", currShootIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot");
         }
     }
 
@@ -259,13 +259,13 @@ public class Pirates extends Card implements Serializable {
             }
             Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().activateShield(shieldCoord, batteryCoord);
         }
-        if(indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()){
+        if(indexOfCurrentTrucker == defeatedTruckers.size() - 1){
             cardState = CardState.ESECUZIONE;
             indexOfCurrentTrucker = 0;
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Do you want to activate a shield?", currShootIndex, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), false, "shot");
+        return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Do you want to activate a shield?", currShootIndex, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), false, "smallshot");
     }
 
     /**
