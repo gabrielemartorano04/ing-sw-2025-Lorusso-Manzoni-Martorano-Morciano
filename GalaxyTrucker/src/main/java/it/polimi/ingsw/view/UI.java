@@ -95,6 +95,8 @@ public interface UI {
 
     void updatePlanetsOccupied(PlanetDecision event);
 
+    void showTrack(Map<String, Integer> truckers, int level);
+
 
     // Usati in piu scene
 
