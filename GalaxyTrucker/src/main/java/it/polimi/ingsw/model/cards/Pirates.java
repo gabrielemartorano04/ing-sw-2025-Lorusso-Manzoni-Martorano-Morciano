@@ -53,8 +53,6 @@ public class Pirates extends Card implements Serializable {
     private int[] shoot;
     private int roll;
 
-    private final ArrayList<Boolean> shieldAnswers;
-
     /**
      * Pirates constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -78,7 +76,6 @@ public class Pirates extends Card implements Serializable {
         this.defeatedTruckers = new ArrayList<>();
         this.currShootIndex = 0;
         this.winDecision = false;
-        this.shieldAnswers = new ArrayList<>();
     }
 
     /**
@@ -177,6 +174,10 @@ public class Pirates extends Card implements Serializable {
         if(cardState!=CardState.ACTIVATE_CANNONS){
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
+
+        System.out.println(Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname() + " has decided to activate its cannons? " + activate);
+        System.out.println(indexOfCurrentTrucker);
+
         if(!activate){
             return fightIsWin();
         }else{
@@ -208,6 +209,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }
         else{
+            indexOfCurrentTrucker = 0;
             cardState = CardState.ROLL_DICE;
             return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
         }
@@ -218,6 +220,11 @@ public class Pirates extends Card implements Serializable {
         if(cardState != CardState.ROLL_DICE) {
             throw new GeneralError("Non si può girare i dadi nello stato " + cardState);
         }
+
+        System.out.println(Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname() + " rolling dices ");
+        System.out.println(indexOfCurrentTrucker);
+
+
         if(currShootIndex <0 || currShootIndex >= shoots.size()){
             throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste, la carta dovrebbe essere finita");
         }
@@ -238,7 +245,6 @@ public class Pirates extends Card implements Serializable {
         if(cardState != CardState.ACTIVATE_SHIELDS){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
         }
-        this.shieldAnswers.addLast(answer);
         if(answer){
             if(!Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkShield(shieldCoord)){
                 throw new InvalidCoordinates("Not a shield");
@@ -265,6 +271,8 @@ public class Pirates extends Card implements Serializable {
 
     @Override
     public ServerEvent cardEffect() throws GeneralError {
+
+        System.out.println("sono in cardEffect");
         if (cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Card state is not ESECUZIONE");
         }
@@ -310,6 +318,7 @@ public class Pirates extends Card implements Serializable {
         }else {
             if (!defeatedTruckers.isEmpty()) {
                 this.cardState = CardState.ROLL_DICE;
+                indexOfCurrentTrucker = 0;
                 return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
             }else {
                 ArrayList<String> truckerRemoved;
