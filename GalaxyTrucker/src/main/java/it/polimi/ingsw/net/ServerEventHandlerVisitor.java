@@ -286,6 +286,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(CurrentCondition event) {
         viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
         ui.showCurrCondition(event);
+        ui.showContinue();
     }
 
     @Override

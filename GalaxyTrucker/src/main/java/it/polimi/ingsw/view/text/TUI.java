@@ -1179,6 +1179,10 @@ public class TUI implements UI {
         System.out.println("choose a player");
     }
 
+    public void showContinue(){
+        System.out.println("Type Continue to proceed");
+    }
+
     public void setGoodImage(Goods good) {
 
     }
