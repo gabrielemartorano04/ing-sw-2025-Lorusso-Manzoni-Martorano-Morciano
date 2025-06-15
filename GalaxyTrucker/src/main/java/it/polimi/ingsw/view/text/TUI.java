@@ -303,6 +303,7 @@ public class TUI implements UI {
             message += i + ") " + t.getNickname() + "\n";
             i++;
         }
+        this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         System.out.println(message);
     }
 
