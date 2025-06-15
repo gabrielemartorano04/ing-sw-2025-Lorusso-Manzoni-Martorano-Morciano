@@ -53,8 +53,6 @@ public class Pirates extends Card implements Serializable {
     private int[] shoot;
     private int roll;
 
-    private final ArrayList<Boolean> shieldAnswers;
-
     /**
      * Pirates constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -78,7 +76,6 @@ public class Pirates extends Card implements Serializable {
         this.defeatedTruckers = new ArrayList<>();
         this.currShootIndex = 0;
         this.winDecision = false;
-        this.shieldAnswers = new ArrayList<>();
     }
 
     /**
@@ -177,6 +174,7 @@ public class Pirates extends Card implements Serializable {
         if(cardState!=CardState.ACTIVATE_CANNONS){
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
+
         if(!activate){
             return fightIsWin();
         }else{
@@ -208,6 +206,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }
         else{
+            indexOfCurrentTrucker = 0;
             cardState = CardState.ROLL_DICE;
             return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
         }
@@ -218,6 +217,7 @@ public class Pirates extends Card implements Serializable {
         if(cardState != CardState.ROLL_DICE) {
             throw new GeneralError("Non si può girare i dadi nello stato " + cardState);
         }
+
         if(currShootIndex <0 || currShootIndex >= shoots.size()){
             throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste, la carta dovrebbe essere finita");
         }
@@ -229,7 +229,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }else{
             cardState = CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult("Choose if you want to activate a shield", currShootIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "shot");
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Choose if you want to activate a shield", currShootIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot");
         }
     }
 
@@ -238,7 +238,7 @@ public class Pirates extends Card implements Serializable {
         if(cardState != CardState.ACTIVATE_SHIELDS){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
         }
-        this.shieldAnswers.addLast(answer);
+
         if(answer){
             if(!Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkShield(shieldCoord)){
                 throw new InvalidCoordinates("Not a shield");
@@ -250,13 +250,13 @@ public class Pirates extends Card implements Serializable {
             }
             Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().activateShield(shieldCoord, batteryCoord);
         }
-        if(indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()){
+        if(indexOfCurrentTrucker == defeatedTruckers.size() - 1){
             cardState = CardState.ESECUZIONE;
             indexOfCurrentTrucker = 0;
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new RollDiceResult("Do you want to activate a shield?", currShootIndex, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), false, "shot");
+        return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Do you want to activate a shield?", currShootIndex, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), false, "smallshot");
     }
 
     /**
@@ -265,6 +265,7 @@ public class Pirates extends Card implements Serializable {
 
     @Override
     public ServerEvent cardEffect() throws GeneralError {
+
         if (cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Card state is not ESECUZIONE");
         }
@@ -294,22 +295,28 @@ public class Pirates extends Card implements Serializable {
                 j++;
             }
 
-        }else {
+        }
+
+        else {
             ArrayList<String> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
 
             GamePersistence.saveGame(GameController.getIstance());
             return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved,Game.getIstance().getTrack());
         }
+
         if (shoots.size()==(currShootIndex)) {
             ArrayList<String> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
 
             GamePersistence.saveGame(GameController.getIstance());
             return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved,Game.getIstance().getTrack());
-        }else {
+        }
+
+        else {
             if (!defeatedTruckers.isEmpty()) {
                 this.cardState = CardState.ROLL_DICE;
+                indexOfCurrentTrucker = 0;
                 return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
             }else {
                 ArrayList<String> truckerRemoved;

@@ -406,7 +406,7 @@ public class WarZone extends Card implements Serializable {
             return cardEffect();
         }else{
             state=CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult("Meteorite piccolo, attivare Scudo?", currConditionIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "smallmeteor");
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Meteorite piccolo, attivare Scudo?", currConditionIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "smallmeteor");
         }
     }
 

@@ -726,9 +726,6 @@ public class SpaceShip implements Serializable {
                 }
             }
         }
-        System.out.println("single power " + getSingleCannonPower());
-        System.out.println("double power " + getDoubleCannon());
-        System.out.println("power " + power);
 
         return getSingleCannonPower() + getDoubleCannon() + power;
     }
@@ -1024,25 +1021,21 @@ public class SpaceShip implements Serializable {
     public boolean isHit(int direction, int num) {
             if(direction==0 || direction==2){
                 if(num<4 || num>10){
-                    System.out.println("Esco 1");
                     return false;
                 }
             }
             if(direction==1 || direction==3){
                 if(num<5 || num>9){
-                    System.out.println("Esco 2");
 
                     return false;
                 }
             }
             switch (direction) {
                 case 0:
-                    System.out.println("Entro case 0");
                     for (int i = 5; i <= 9; i++) {
                         if (components[i][num] != null){
                             switch(components[i][num]){
                                 case EmptySpace emptySpace->{
-                                    System.out.println("EmptySpace");
                                 }
                                 default -> {return true;}
                             }
@@ -1050,13 +1043,11 @@ public class SpaceShip implements Serializable {
                     }
                     break;
                 case 1:
-                    System.out.println("Entro case 1");
 
                     for (int j = 10; j > 3; j--) {
                         if (components[num][j] != null) {
                             switch(components[num][j]){
                                 case EmptySpace emptySpace->{
-                                    System.out.println("EmptySpace");
                                 }
                                 default -> {return true;}
                             }
@@ -1064,14 +1055,11 @@ public class SpaceShip implements Serializable {
                     }
                     break;
                 case 2:
-                    System.out.println("Entro case 2");
 
                     for (int i = 9; i > 4; i--) {
                         if (components[i][num] != null) {
                             switch(components[i][num]){
                                 case EmptySpace emptySpace->{
-                                    System.out.println("EmptySpace");
-
                                 }
                                 default -> {return true;}
                             }
@@ -1079,13 +1067,10 @@ public class SpaceShip implements Serializable {
                     }
                     break;
                 case 3:
-                    System.out.println("Entro case 3");
-
                     for (int j = 4; j <= 10; j++) {
                         if (components[num][j] != null) {
                             switch(components[num][j]){
                                 case EmptySpace emptySpace->{
-                                    System.out.println("EmptySpace");
                                 }
                                 default -> {return true;}
                             }
@@ -1093,7 +1078,6 @@ public class SpaceShip implements Serializable {
                     }
                     break;
             }
-        System.out.println("Esco 3");
 
         return false;
 

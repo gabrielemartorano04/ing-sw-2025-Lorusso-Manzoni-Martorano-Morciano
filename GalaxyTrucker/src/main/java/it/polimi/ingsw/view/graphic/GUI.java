@@ -1158,6 +1158,9 @@ public class GUI implements UI {
         });
     }
 
+    public void showContinue(){
+        // vorrei che mostrasse il popup che ti fa cliccare continue, serve solo per la flight
+    }
 
     @Override
     public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames){

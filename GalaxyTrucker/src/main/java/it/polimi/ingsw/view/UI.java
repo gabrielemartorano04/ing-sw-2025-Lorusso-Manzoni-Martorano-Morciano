@@ -138,7 +138,7 @@ public interface UI {
 
     void showShipLayout(String nickname, Component[][] layout);
 
-
+    void showContinue();
 
     //FLIGTH
     void showFlightPhaseStart();

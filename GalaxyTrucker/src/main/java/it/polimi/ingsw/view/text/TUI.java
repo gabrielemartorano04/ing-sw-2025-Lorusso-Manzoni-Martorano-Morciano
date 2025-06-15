@@ -372,16 +372,13 @@ public class TUI implements UI {
     public void showResult(RollDiceResult event){
         switch (event.getHitType()) {
             case "bigmeteor" -> {
-                System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
-                viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
+                System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n");
             }
             case "smallmeteor" -> {
-                System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
-                viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
+                System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n");
             }
             case "smallshot"-> {
-                System.out.println("The dices result for the shot # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
-                viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
+                System.out.println("The dices result for the shot # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n");
             }
         }
     }
@@ -497,20 +494,7 @@ public class TUI implements UI {
             String message = "Meteorites arriving:\n";
             int index = 0;
             for (int[] meteor : event.getMeteorites()) {
-                int size = meteor[0];
-                int direction = meteor[1];
-
-                String sizeText = (size == 1) ? "big" : "small";
-                String dirText;
-                switch (direction) {
-                    case 0 -> dirText = "from the top";
-                    case 1 -> dirText = "from the right side";
-                    case 2 -> dirText = "from the bottom";
-                    case 3 -> dirText = "from the left side";
-                    default -> dirText = "from an unknown direction";
-                }
-
-                message += "Meteorite " + index + " (" + sizeText + ") arriving " + dirText + "\n";
+                message += getMeteoriteDescription(meteor, index);
                 index++;
             }
             System.out.println(message);
@@ -519,20 +503,7 @@ public class TUI implements UI {
             String message = "Shoots arriving:\n";
             int index = 0;
             for (int[] shoot : event.getShoots()) {
-                int size = shoot[0];
-                int direction = shoot[1];
-
-                String sizeText = (size == 1) ? "big" : "small";
-                String dirText;
-                switch (direction) {
-                    case 0 -> dirText = "from the top";
-                    case 1 -> dirText = "from the right side";
-                    case 2 -> dirText = "from the bottom";
-                    case 3 -> dirText = "from the left side";
-                    default -> dirText = "from an unknown direction";
-                }
-
-                message += "Shoot " + index + " (" + sizeText + ") arriving " + dirText + "\n";
+                message += getShootDescription(shoot, index);
                 index++;
             }
             System.out.println(message);
@@ -593,6 +564,41 @@ public class TUI implements UI {
         }
 
     }
+
+    private String getMeteoriteDescription(int[] meteor, int index) {
+        int size = meteor[0];
+        int direction = meteor[1];
+
+        String sizeText = (size == 1) ? "big" : "small";
+        String dirText;
+        switch (direction) {
+            case 0 -> dirText = "from the top";
+            case 1 -> dirText = "from the right side";
+            case 2 -> dirText = "from the bottom";
+            case 3 -> dirText = "from the left side";
+            default -> dirText = "from an unknown direction";
+        }
+
+        return "Meteorite " + index + " (" + sizeText + ") arriving " + dirText + "\n";
+    }
+
+    private String getShootDescription(int[] shoot, int index) {
+        int size = shoot[0];
+        int direction = shoot[1];
+
+        String sizeText = (size == 1) ? "big" : "small";
+        String dirText;
+        switch (direction) {
+            case 0 -> dirText = "from the top";
+            case 1 -> dirText = "from the right side";
+            case 2 -> dirText = "from the bottom";
+            case 3 -> dirText = "from the left side";
+            default -> dirText = "from an unknown direction";
+        }
+
+        return "Shoot " + index + " (" + sizeText + ") arriving " + dirText + "\n";
+    }
+
 
     @Override
     public void showStardustCard(StarDustEvent event) {
@@ -816,6 +822,9 @@ public class TUI implements UI {
                 System.out.println(details);
             }
         }
+
+        System.out.println("Cosmic credits: " + viewFlow.getCredits());
+
     }
 
 
@@ -1168,6 +1177,10 @@ public class TUI implements UI {
             System.out.println("nickname: " + nicknames.get(i) + " color: " + colors.get(i));
         }
         System.out.println("choose a player");
+    }
+
+    public void showContinue(){
+        System.out.println("Type Continue to proceed");
     }
 
     public void setGoodImage(Goods good) {

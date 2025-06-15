@@ -286,6 +286,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(CurrentCondition event) {
         viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
         ui.showCurrCondition(event);
+        ui.showContinue();
     }
 
     @Override
@@ -416,6 +417,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(RollDiceResult event) {
         if (event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
             ui.showResult(event);
             ui.showInputFormat(viewFlow.getParserFlightState());
         } else {

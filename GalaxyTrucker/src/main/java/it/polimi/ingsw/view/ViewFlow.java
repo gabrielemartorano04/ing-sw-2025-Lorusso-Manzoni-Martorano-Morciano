@@ -169,6 +169,7 @@ public class ViewFlow implements EventReceiver {
                             //ui.showShipLayout(nickname, ship);
                         }
                         case FLIGTH -> {
+                            // TENERE PER DEBUG MA TOGLIERE, ORA LO SHOW DEI CREDITI E' DENTRO SHOWSHIPLAYOUT
                             System.out.println("Cosmic credits: " + credits);
 //                            ui.showShipLayout(nickname, ship);
 //                            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor, credits);
