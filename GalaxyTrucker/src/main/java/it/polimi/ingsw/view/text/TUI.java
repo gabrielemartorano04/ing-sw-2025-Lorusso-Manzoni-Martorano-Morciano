@@ -373,15 +373,12 @@ public class TUI implements UI {
         switch (event.getHitType()) {
             case "bigmeteor" -> {
                 System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
-                viewFlow.setParserFlightState(ParserState.ACTIVATE_CANNONS);
             }
             case "smallmeteor" -> {
                 System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
-                viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
             }
             case "smallshot"-> {
                 System.out.println("The dices result for the shot # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
-                viewFlow.setParserFlightState(ParserState.ACTIVATE_SHIELD);
             }
         }
     }

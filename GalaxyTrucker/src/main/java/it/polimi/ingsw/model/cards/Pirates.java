@@ -236,7 +236,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }else{
             cardState = CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult("Choose if you want to activate a shield", currShootIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "shot");
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Choose if you want to activate a shield", currShootIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "shot");
         }
     }
 
@@ -245,6 +245,9 @@ public class Pirates extends Card implements Serializable {
         if(cardState != CardState.ACTIVATE_SHIELDS){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
         }
+
+        System.out.println(Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname() + " activates shields? " + answer);
+        System.out.println(indexOfCurrentTrucker);
         if(answer){
             if(!Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkShield(shieldCoord)){
                 throw new InvalidCoordinates("Not a shield");
@@ -262,7 +265,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new RollDiceResult("Do you want to activate a shield?", currShootIndex, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), false, "shot");
+        return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Do you want to activate a shield?", currShootIndex, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), false, "shot");
     }
 
     /**
@@ -302,20 +305,25 @@ public class Pirates extends Card implements Serializable {
                 j++;
             }
 
-        }else {
+        }
+
+        else {
             ArrayList<String> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
 
             GamePersistence.saveGame(GameController.getIstance());
             return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved,Game.getIstance().getTrack());
         }
+
         if (shoots.size()==(currShootIndex)) {
             ArrayList<String> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
 
             GamePersistence.saveGame(GameController.getIstance());
             return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved,Game.getIstance().getTrack());
-        }else {
+        }
+
+        else {
             if (!defeatedTruckers.isEmpty()) {
                 this.cardState = CardState.ROLL_DICE;
                 indexOfCurrentTrucker = 0;

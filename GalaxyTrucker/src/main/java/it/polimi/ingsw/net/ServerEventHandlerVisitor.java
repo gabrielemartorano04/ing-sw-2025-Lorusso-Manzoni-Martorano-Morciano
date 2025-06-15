@@ -416,6 +416,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(RollDiceResult event) {
         if (event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setParserFlightState(event.getParserState());
             ui.showResult(event);
             ui.showInputFormat(viewFlow.getParserFlightState());
         } else {

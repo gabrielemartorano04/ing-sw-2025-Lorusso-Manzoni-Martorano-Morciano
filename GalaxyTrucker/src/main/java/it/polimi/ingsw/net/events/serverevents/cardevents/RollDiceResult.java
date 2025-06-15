@@ -11,8 +11,8 @@ public class RollDiceResult extends CardEvent {
     private String message;
     private String hitType;
 
-    public RollDiceResult(String message, int currIndex, int diceResult, String nickname, boolean forAll, String hitType){
-        super(ServerEventType.ROLL_DICE, forAll, ParserState.ROLL_DICE, nickname);
+    public RollDiceResult(ParserState parserState, String message, int currIndex, int diceResult, String nickname, boolean forAll, String hitType){
+        super(ServerEventType.ROLL_DICE, forAll, parserState, nickname);
         this.currIndex = currIndex;
         this.diceResult = diceResult;
         this.message = message;
