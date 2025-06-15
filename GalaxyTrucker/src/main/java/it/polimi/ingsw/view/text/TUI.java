@@ -372,13 +372,13 @@ public class TUI implements UI {
     public void showResult(RollDiceResult event){
         switch (event.getHitType()) {
             case "bigmeteor" -> {
-                System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
+                System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n");
             }
             case "smallmeteor" -> {
-                System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
+                System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n");
             }
             case "smallshot"-> {
-                System.out.println("The dices result for the shot # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n" + event.getMessage());
+                System.out.println("The dices result for the shot # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n");
             }
         }
     }
