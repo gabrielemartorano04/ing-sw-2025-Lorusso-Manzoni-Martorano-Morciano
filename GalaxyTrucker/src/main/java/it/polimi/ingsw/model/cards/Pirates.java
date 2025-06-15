@@ -175,9 +175,6 @@ public class Pirates extends Card implements Serializable {
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
 
-        System.out.println(Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname() + " has decided to activate its cannons? " + activate);
-        System.out.println(indexOfCurrentTrucker);
-
         if(!activate){
             return fightIsWin();
         }else{
@@ -221,10 +218,6 @@ public class Pirates extends Card implements Serializable {
             throw new GeneralError("Non si può girare i dadi nello stato " + cardState);
         }
 
-        System.out.println(Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname() + " rolling dices ");
-        System.out.println(indexOfCurrentTrucker);
-
-
         if(currShootIndex <0 || currShootIndex >= shoots.size()){
             throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste, la carta dovrebbe essere finita");
         }
@@ -246,8 +239,6 @@ public class Pirates extends Card implements Serializable {
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
         }
 
-        System.out.println(Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname() + " activates shields? " + answer);
-        System.out.println(indexOfCurrentTrucker);
         if(answer){
             if(!Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkShield(shieldCoord)){
                 throw new InvalidCoordinates("Not a shield");
@@ -275,7 +266,6 @@ public class Pirates extends Card implements Serializable {
     @Override
     public ServerEvent cardEffect() throws GeneralError {
 
-        System.out.println("sono in cardEffect");
         if (cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Card state is not ESECUZIONE");
         }
