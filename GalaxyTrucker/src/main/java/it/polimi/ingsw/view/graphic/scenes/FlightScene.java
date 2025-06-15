@@ -292,35 +292,18 @@ public class FlightScene {
         return scene;
     }
 
-    public void insertComponentImage(int row, int col, ImageView imageView) {
-        if (!validCells[row][col]) return;
-        StackPane cell = cellMatrix[row][col];
-        if (cell != null) {
-            cell.getChildren().clear();
-
-            imageView.setFitWidth(136);
-            imageView.setFitHeight(136);
-            Rectangle clip = new Rectangle(136, 136);
-            clip.setArcWidth(6);
-            clip.setArcHeight(6);
-            imageView.setClip(clip);
-
-            cell.getChildren().add(imageView);
-        }
-    }
-
-    public void clearCell(int row, int col) {
-        if (!validCells[row][col]) return;
-        StackPane cell = cellMatrix[row][col];
-        if (cell != null) {
-            cell.getChildren().clear();
-        }
-    }
-
     public void showStateInput() {
+        // === Overlay grigio trasparente ===
+        Rectangle overlay = new Rectangle();
+        overlay.widthProperty().bind(scene.widthProperty());
+        overlay.heightProperty().bind(scene.heightProperty());
+        overlay.setFill(Color.rgb(0, 0, 0, 0.5)); // Nero trasparente
+        overlay.setMouseTransparent(false); // Blocca interazioni sotto
+
+        // === Contenitore con scritta e bottone ===
         VBox container = new VBox(10);
-        container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
-        container.setPadding(new Insets(0, 0, 35, 0)); // margine dal basso
+        container.setAlignment(Pos.CENTER);
+        container.setPadding(new Insets(0, 0, 35, 0));
 
         Label title = new Label("Start flight");
         title.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
@@ -335,13 +318,13 @@ public class FlightScene {
 
         continueBtn.setOnAction(e -> {
             viewFlow.handleInput("state");
-            root.getChildren().remove(container);
+            root.getChildren().removeAll(overlay, container);
         });
 
         container.getChildren().addAll(title, continueBtn);
 
-        StackPane.setAlignment(container, Pos.CENTER); // posizionato in basso, ma centrato
-        root.getChildren().add(container);
+        StackPane.setAlignment(container, Pos.CENTER);
+        root.getChildren().addAll(overlay, container);
     }
 
     public void showActivateEngineInput() {
@@ -376,8 +359,8 @@ public class FlightScene {
 
         AnchorPane anchorPane = new AnchorPane(box);
         anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
-        AnchorPane.setBottomAnchor(box, 20.0);
-        AnchorPane.setLeftAnchor(box, 20.0);
+        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setLeftAnchor(box, 70.0);
 
         // Comportamento "NO"
         no.setOnAction(ev -> {
@@ -426,6 +409,7 @@ public class FlightScene {
             inputBox.setAlignment(Pos.CENTER);
 
             box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+            box.setTranslateX(-20);
         });
 
         root.getChildren().add(anchorPane);
@@ -463,8 +447,8 @@ public class FlightScene {
 
         AnchorPane anchorPane = new AnchorPane(box);
         anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
-        AnchorPane.setBottomAnchor(box, 20.0);
-        AnchorPane.setLeftAnchor(box, 20.0);
+        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setLeftAnchor(box, 70.0);
 
         // Comportamento "NO"
         no.setOnAction(ev -> {
@@ -513,6 +497,7 @@ public class FlightScene {
             inputBox.setAlignment(Pos.CENTER);
 
             box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+            box.setTranslateX(-20);
         });
 
         root.getChildren().add(anchorPane);
@@ -550,8 +535,8 @@ public class FlightScene {
 
         AnchorPane anchorPane = new AnchorPane(box);
         anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
-        AnchorPane.setBottomAnchor(box, 20.0);
-        AnchorPane.setLeftAnchor(box, 20.0);
+        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setLeftAnchor(box, 110.0);
 
         // Comportamento "NO"
         no.setOnAction(ev -> {
@@ -600,6 +585,7 @@ public class FlightScene {
             inputBox.setAlignment(Pos.CENTER);
 
             box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+            box.setTranslateX(-50);
         });
 
         root.getChildren().add(anchorPane);
@@ -638,8 +624,8 @@ public class FlightScene {
 
         // Posiziona VBox in basso a sinistra usando un AnchorPane
         AnchorPane anchorPane = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 20.0);
-        AnchorPane.setLeftAnchor(box, 20.0);
+        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setLeftAnchor(box, 170.0);
 
         yes.setOnAction(ev -> {
             viewFlow.handleInput("y");
@@ -660,17 +646,20 @@ public class FlightScene {
         VBox box = new VBox(10);
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
+        box.setMaxWidth(400);
 
         AnchorPane anchorPane = new AnchorPane(box);
         anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
-        AnchorPane.setBottomAnchor(box, 20.0);
-        AnchorPane.setLeftAnchor(box, 20.0);
+        AnchorPane.setBottomAnchor(box, 150.0);
+        AnchorPane.setLeftAnchor(box, 100.0);
 
         box.getChildren().clear();
 
         Label insertLabel = new Label("Insert the coordinates of the cabin from which to remove the crew members");
         insertLabel.setTextFill(Color.web("#FFDE69"));
         insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+        insertLabel.setTextAlignment(TextAlignment.CENTER);
+        insertLabel.setWrapText(true);
 
         Label hintLabel = new Label("Type '<x> <y>, <x> <y>'");
         hintLabel.setTextFill(Color.LIGHTGRAY);
@@ -747,7 +736,7 @@ public class FlightScene {
 
         AnchorPane anchorPane = new AnchorPane(box);
         anchorPane.setPickOnBounds(false);
-        AnchorPane.setBottomAnchor(box, 80.0);
+        AnchorPane.setBottomAnchor(box, 180.0);
         AnchorPane.setLeftAnchor(box, 120.0);
 
         // "NO" logic
@@ -826,6 +815,8 @@ public class FlightScene {
             sendBox.setAlignment(Pos.CENTER);
 
             box.getChildren().addAll(insertLabel, goodView2, inputBox, errorLabel, sendBox);
+            box.setTranslateX(15);
+            box.setTranslateY(50);
 
             cancelBtn.setOnAction(e -> root.getChildren().remove(anchorPane));
 
@@ -927,8 +918,8 @@ public class FlightScene {
         mainBox.getChildren().addAll(confirm, buttons);
 
         AnchorPane anchorPane = new AnchorPane(mainBox);
-        AnchorPane.setBottomAnchor(mainBox, 100.0);
-        AnchorPane.setLeftAnchor(mainBox, 100.0);
+        AnchorPane.setBottomAnchor(mainBox, 180.0);
+        AnchorPane.setLeftAnchor(mainBox, 110.0);
 
         // === Azione NO ===
         no.setOnAction(ev -> {
@@ -979,7 +970,8 @@ public class FlightScene {
             }
 
             mainBox.getChildren().addAll(chooseLabel, planetListBox);
-            mainBox.setTranslateX(60);
+            mainBox.setTranslateX(55);
+            mainBox.setTranslateY(50);
         });
 
         root.getChildren().add(anchorPane);
@@ -988,13 +980,9 @@ public class FlightScene {
     public void showDrawCardInput() {
         VBox container = new VBox(10);
         container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
-        container.setPadding(new Insets(0, 0, 35, 0)); // margine dal basso
+        container.setPadding(new Insets(0, 0, -420, -850)); // margine dal basso
 
-        Label title = new Label("Draw next card");
-        title.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
-        title.setTextFill(Color.web("#FFDE69"));
-
-        Button continueBtn = new Button("DRAW");
+        Button continueBtn = new Button("Draw next card");
         continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
         continueBtn.setTextFill(Color.BLACK);
         continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
@@ -1006,7 +994,7 @@ public class FlightScene {
             root.getChildren().remove(container);
         });
 
-        container.getChildren().addAll(title, continueBtn);
+        container.getChildren().addAll(continueBtn);
 
         StackPane.setAlignment(container, Pos.CENTER); // posizionato in basso, ma centrato
         root.getChildren().add(container);
@@ -1015,7 +1003,7 @@ public class FlightScene {
     public void showRemotionConfirmedInput() {
         VBox container = new VBox(10);
         container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
-        container.setPadding(new Insets(0, 0, 35, 0)); // margine dal basso
+        container.setPadding(new Insets(0, 0, -450, -840)); // margine dal basso
 
         Label title = new Label("Remotion confirmed");
         title.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
@@ -1042,21 +1030,29 @@ public class FlightScene {
     public void showRemoveBatteriesInput() {
         StackPane root = (StackPane) scene.getRoot();
 
-        // VBox per contenere il messaggio e i pulsanti
         VBox box = new VBox(10);
-        box.setAlignment(Pos.BOTTOM_CENTER);
+        box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
 
-        Label insertLabel = new Label("Insert the index of the batteries you want to remove");
+        AnchorPane anchorPane = new AnchorPane(box);
+        anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
+        AnchorPane.setBottomAnchor(box, 170.0);
+        AnchorPane.setLeftAnchor(box, 60.0);
+
+        box.getChildren().clear();
+
+        Label insertLabel = new Label("Insert the coordinates of the batteries you want to remove");
         insertLabel.setTextFill(Color.web("#FFDE69"));
         insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+        insertLabel.setTextAlignment(TextAlignment.CENTER);
+        insertLabel.setWrapText(true);
 
-        Label hintLabel = new Label("Type '<x1> <y1> - <quantity>'");
+        Label hintLabel = new Label("Type '<x> <y> - <quantity>'");
         hintLabel.setTextFill(Color.LIGHTGRAY);
         hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
         TextField inputField = new TextField();
-        inputField.setPromptText("Ex. 4 3 - 2");
+        inputField.setPromptText("Ex. 2 3, 1");
         inputField.setPrefWidth(250);
 
         Button confirmBtn = new Button("Confirm");
@@ -1070,7 +1066,7 @@ public class FlightScene {
             String text = inputField.getText().trim();
             if (!text.isEmpty()) {
                 viewFlow.handleInput(text);
-                root.getChildren().remove(box);
+                root.getChildren().remove(anchorPane);
             }
         };
 
@@ -1085,28 +1081,36 @@ public class FlightScene {
 
         box.getChildren().addAll(insertLabel, hintLabel, inputBox);
 
-        root.getChildren().add(box);
+        root.getChildren().add(anchorPane);
     }
 
     public void showRemoveGoodsInput() {
         StackPane root = (StackPane) scene.getRoot();
 
-        // VBox per contenere il messaggio e i pulsanti
         VBox box = new VBox(10);
-        box.setAlignment(Pos.BOTTOM_CENTER);
+        box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
 
-        Label insertLabel = new Label("Insert the index of the goods you want to remove");
+        AnchorPane anchorPane = new AnchorPane(box);
+        anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
+        AnchorPane.setBottomAnchor(box, 170.0);
+        AnchorPane.setLeftAnchor(box, 90.0);
+
+        box.getChildren().clear();
+
+        Label insertLabel = new Label("Insert the index of the good you want to remove");
         insertLabel.setTextFill(Color.web("#FFDE69"));
         insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+        insertLabel.setTextAlignment(TextAlignment.CENTER);
+        insertLabel.setWrapText(true);
 
-        Label hintLabel = new Label("Type '<index1>'");
+        Label hintLabel = new Label("Type '<index>'");
         hintLabel.setTextFill(Color.LIGHTGRAY);
         hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
         TextField inputField = new TextField();
         inputField.setPromptText("Ex. 2");
-        inputField.setPrefWidth(250);
+        inputField.setPrefWidth(200);
 
         Button confirmBtn = new Button("Confirm");
         confirmBtn.setFont(Font.font("Bangers", 14));
@@ -1119,7 +1123,7 @@ public class FlightScene {
             String text = inputField.getText().trim();
             if (!text.isEmpty()) {
                 viewFlow.handleInput(text);
-                root.getChildren().remove(box);
+                root.getChildren().remove(anchorPane);
             }
         };
 
@@ -1134,7 +1138,7 @@ public class FlightScene {
 
         box.getChildren().addAll(insertLabel, hintLabel, inputBox);
 
-        root.getChildren().add(box);
+        root.getChildren().add(anchorPane);
     }
 
     public void showRearrangeInput() {
@@ -1170,8 +1174,8 @@ public class FlightScene {
 
         // Posiziona VBox in basso a sinistra usando un AnchorPane
         AnchorPane anchorPane = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 20.0);
-        AnchorPane.setLeftAnchor(box, 20.0);
+        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setLeftAnchor(box, 105.0);
 
         yes.setOnAction(ev -> {
             box.getChildren().clear();
@@ -1179,6 +1183,9 @@ public class FlightScene {
             Label insertLabel = new Label("Insert the old index, the new index and the position of the good you want to rearrange");
             insertLabel.setTextFill(Color.web("#FFDE69"));
             insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+            insertLabel.setTextAlignment(TextAlignment.CENTER);
+            insertLabel.setMaxWidth(500);
+            insertLabel.setWrapText(true);
 
             Label hintLabel = new Label("Type '<x1> <y1> - <value1>, <x2> <y2> - <value2>'");
             hintLabel.setTextFill(Color.LIGHTGRAY);
@@ -1213,6 +1220,9 @@ public class FlightScene {
             inputBox.setAlignment(Pos.CENTER);
 
             box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+            box.setTranslateX(-50);
+            box.setTranslateY(40);
+
         });
 
         no.setOnAction(ev -> {
@@ -1231,9 +1241,12 @@ public class FlightScene {
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
 
-        Label confirm = new Label("Would you like to land on a planet?");
+        Label confirm = new Label("Would you like to gain cosmic credits and lose days?");
         confirm.setTextFill(Color.web("#FFDE69"));
         confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+        confirm.setTextAlignment(TextAlignment.CENTER);
+        confirm.setMaxWidth(400);
+        confirm.setWrapText(true);
 
         Button yes = new Button("YES");
         yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
@@ -1253,6 +1266,8 @@ public class FlightScene {
         buttons.setAlignment(Pos.CENTER);
 
         box.getChildren().addAll(confirm, buttons);
+        box.setTranslateX(-420);
+        box.setTranslateY(230);
 
         yes.setOnAction(ev -> {
             viewFlow.handleInput("y");
@@ -1270,13 +1285,9 @@ public class FlightScene {
     public void showWarzoneInput() {
         VBox container = new VBox(10);
         container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
-        container.setPadding(new Insets(0, 0, 35, 0)); // margine dal basso
+        container.setPadding(new Insets(0, 0, -420, -830));
 
-        Label title = new Label("Start warzone");
-        title.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
-        title.setTextFill(Color.web("#FFDE69"));
-
-        Button continueBtn = new Button("START");
+        Button continueBtn = new Button("Start warzone");
         continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
         continueBtn.setTextFill(Color.BLACK);
         continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
@@ -1288,7 +1299,7 @@ public class FlightScene {
             root.getChildren().remove(container);
         });
 
-        container.getChildren().addAll(title, continueBtn);
+        container.getChildren().addAll(continueBtn);
 
         StackPane.setAlignment(container, Pos.CENTER); // posizionato in basso, ma centrato
         root.getChildren().add(container);
@@ -1424,12 +1435,12 @@ public class FlightScene {
         // Titolo (bold)
         Label title = new Label("New message:");
         title.setTextFill(Color.WHITE);
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 
         // Messaggio (normale)
         Label content = new Label(message);
         content.setTextFill(Color.WHITE);
-        content.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        content.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
         content.setTextAlignment(TextAlignment.RIGHT);
 
         VBox messageBox = new VBox(2, title, content);
@@ -1524,5 +1535,100 @@ public class FlightScene {
         StackPane.setMargin(trackBox, new Insets(0, 0, 0, 20));
 
         root.getChildren().add(trackBox);
+    }
+
+    public void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor, int credits) {
+        // Carica le icone (temporaneamente tutte uguali)
+        Image engine = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
+        Image cannon = new Image(getClass().getResource("/it/polimi/ingsw/view/cannon.png").toExternalForm());
+        Image human = new Image(getClass().getResource("/it/polimi/ingsw/view/human.png").toExternalForm());
+        Image battery = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
+        Image pos = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
+
+
+        ImageView posIcon = new ImageView(pos);
+        ImageView batteryIcon = new ImageView(battery);
+        ImageView humanIcon = new ImageView(human);
+        ImageView cannonIcon = new ImageView(cannon);
+        ImageView engineIcon = new ImageView(engine);
+
+        List<ImageView> mainIcons = List.of(posIcon, batteryIcon, humanIcon, cannonIcon, engineIcon);
+        for (ImageView iv : mainIcons) {
+            iv.setFitWidth(16);
+            iv.setPreserveRatio(true);
+        }
+
+        Label posLabel = new Label(": " + String.valueOf(position));
+        Label battLabel = new Label(": " + String.valueOf(batteryCount));
+        Label humanLabel = new Label(": " + String.valueOf(humanCount));
+        Label cannonLabel = new Label(": " + String.valueOf(cannonPower));
+        Label engineLabel = new Label(": " + String.valueOf(enginePower));
+
+        List<Label> labels = List.of(posLabel, battLabel, humanLabel, cannonLabel, engineLabel);
+        for (Label l : labels) {
+            l.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+            l.setTextFill(Color.WHITE);
+        }
+
+        HBox posBox = new HBox(0, posIcon, posLabel);
+        HBox battBox = new HBox(0, batteryIcon, battLabel);
+        HBox humanBox = new HBox(0, humanIcon, humanLabel);
+        HBox cannonBox = new HBox(0, cannonIcon, cannonLabel);
+        HBox engineBox = new HBox(5, engineIcon, engineLabel);
+
+        for (HBox box : List.of(posBox, battBox, humanBox, cannonBox, engineBox)) {
+            box.setAlignment(Pos.CENTER_RIGHT);
+        }
+
+        // Goods box
+        HBox goodsBox = new HBox(10);
+        goodsBox.setAlignment(Pos.CENTER_RIGHT);
+        Image redgood = new Image(getClass().getResource("/it/polimi/ingsw/view/redgood.png").toExternalForm());
+        Image yellowgood = new Image(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png").toExternalForm());
+        Image greengood = new Image(getClass().getResource("/it/polimi/ingsw/view/greengood.png").toExternalForm());
+        Image bluegood = new Image(getClass().getResource("/it/polimi/ingsw/view/bluegood.png").toExternalForm());
+        ImageView goodIcon;
+        for (Map.Entry<String, Integer> entry : goodsByColor.entrySet()) {
+            switch (entry.getKey().toLowerCase()) {
+                case "red" -> goodIcon = new ImageView(redgood);
+                case "yellow" -> goodIcon = new ImageView(yellowgood);
+                case "green" -> goodIcon = new ImageView(greengood);
+                case "blue" -> goodIcon = new ImageView(bluegood);
+                default -> {
+                    continue;
+                }
+            }
+            goodIcon.setFitWidth(35);
+            goodIcon.setPreserveRatio(true);
+
+            Label qty = new Label(": " + String.valueOf(entry.getValue()));
+            qty.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+            qty.setTextFill(Color.WHITE);
+
+            HBox singleGood = new HBox(0, goodIcon, qty);
+            singleGood.setAlignment(Pos.CENTER_RIGHT);
+            goodsBox.getChildren().add(singleGood);
+        }
+
+        // Contenitore finale con sfondo
+        HBox statusBar = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox);
+        statusBar.setAlignment(Pos.CENTER_RIGHT);
+        statusBar.setPadding(new Insets(10));
+        statusBar.setStyle("");
+        statusBar.setMaxWidth(800);
+        statusBar.setMouseTransparent(true);
+
+        Platform.runLater(() -> {
+            Node rootNode = root.getScene().getRoot();
+            // Supponiamo che sia sempre uno StackPane come da tua struttura
+            StackPane root = (StackPane) rootNode;
+
+            StackPane.setAlignment(statusBar, Pos.CENTER_RIGHT);
+            StackPane.setMargin(statusBar, new Insets(0, 150, -500, 0));
+
+            if (!root.getChildren().contains(statusBar)) {
+                root.getChildren().add(statusBar);
+            }
+        });
     }
 }

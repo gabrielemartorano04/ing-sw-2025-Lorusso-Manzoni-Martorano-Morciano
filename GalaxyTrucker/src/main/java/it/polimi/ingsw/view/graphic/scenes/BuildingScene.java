@@ -1503,7 +1503,5 @@ public class BuildingScene {
         StackPane.setMargin(alienBox, new Insets(0, 15, 0, 0));
         root.getChildren().add(alienBox);
     }
-
-
 }
 

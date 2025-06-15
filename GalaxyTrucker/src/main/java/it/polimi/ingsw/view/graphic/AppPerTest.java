@@ -18,13 +18,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.awt.Color.red;
+
 public class AppPerTest extends Application {
 
 
     private AvailableComponents availableComponents;
     private SpaceShip spaceship;
     private Stack stack;
-    private Map<String, Integer> mockTrack;
+    private Map<String, Integer> mockTrack, color;
     private ArrayList<Component> kept, kept2;
     private Component c;
 
@@ -153,14 +155,21 @@ public class AppPerTest extends Application {
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
-//        flightScene.updatePlanetsOccupied(new ArrayList<>(){
-//            {
-//                add(trucker);
-//                add(null);
-//                add(null);
-//            }
-//        });
-//        flightScene.updateTrack(mockTrack);
+        flightScene.updatePlanetsOccupied(new ArrayList<>(){
+            {
+                add(trucker);
+                add(null);
+                add(null);
+            }
+        });
+        flightScene.updateTrack(mockTrack);
+        color = new HashMap<>();
+        color.put("red", 3);
+        color.put("yellow", 2);
+        color.put("green", 4);
+        color.put("blue", 1);
+        flightScene.showPlayerShipStatus(trucker.getPosition(), 5, 4, 3, 7, color, 12);
+        flightScene.showMessage("ciao");
     }
 
     public SpaceShip createShip1(SpaceShip ship) throws InvalidCoordinates {
