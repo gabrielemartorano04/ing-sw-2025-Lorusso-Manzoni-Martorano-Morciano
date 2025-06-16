@@ -116,6 +116,7 @@ public class Smugglers extends Card implements Serializable {
 
     @Override
     public ServerEvent startCard() {
+        System.out.println(Game.getIstance().getTruckerList().getFirst().getNickname());
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),

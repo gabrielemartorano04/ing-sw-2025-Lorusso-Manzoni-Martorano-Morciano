@@ -362,6 +362,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         if(startFlight<gameController.getGame().getNumPlayers()){
             return new WaitOthersStartFlightEvent();
         }
+        gameController.getGame().sortTruckers();
         cardController.setCurrCard(gameController.pickCardFromDeck());
         return cardController.startCard();
     }

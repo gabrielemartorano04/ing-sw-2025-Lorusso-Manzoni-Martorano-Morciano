@@ -10,7 +10,7 @@ public class RemotionConfirmed extends CardEvent{
     private SpaceShip spaceShip;
 
     public RemotionConfirmed(ServerEventType type, String nickname,SpaceShip spaceShip, String confirm) {
-        super(type, false, ParserState.REMOTION_CONFIRMED, nickname);
+        super(type, true, ParserState.REMOTION_CONFIRMED, nickname);
         this.confirm = confirm;
         this.spaceShip=spaceShip;
     }
