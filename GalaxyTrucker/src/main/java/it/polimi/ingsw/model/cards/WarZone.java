@@ -562,7 +562,7 @@ public class WarZone extends Card implements Serializable {
                     SpaceShip ship = weakestTrucker.getSpaceShip();
                     boolean isHeavy = (this.shoot[0] == 1);
                     int direction = this.shoot[1];
-                    if (ship.isHit(this.roll, direction)) {
+                    if (ship.isHit(direction, this.roll)) {
                         if (isHeavy) {
                             ship.destroyComponent(this.roll, direction, Game.getIstance().getBank());
                         } else {

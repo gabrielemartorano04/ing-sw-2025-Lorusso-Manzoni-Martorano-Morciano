@@ -281,7 +281,7 @@ public class Pirates extends Card implements Serializable {
             int direction = shoot[1];
             for (Trucker trucker : defeatedTruckers) {
                 SpaceShip ship = trucker.getSpaceShip();
-                if (ship.isHit(roll, direction)) {
+                if (ship.isHit(direction,roll)) {
                     if (isBig) {
                         // colpo grande non può essere stoppato quindi devo distruggere il componente
                         ship.destroyComponent(roll, direction, Game.getIstance().getBank());
