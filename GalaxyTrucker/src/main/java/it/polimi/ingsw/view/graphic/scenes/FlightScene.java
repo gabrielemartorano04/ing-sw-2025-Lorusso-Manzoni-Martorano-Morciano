@@ -1,10 +1,13 @@
 package it.polimi.ingsw.view.graphic.scenes;
 
+import it.polimi.ingsw.exceptions.InvalidCoordinates;
+import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.StarDust;
+import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.view.ViewFlow;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -1633,51 +1636,7 @@ public class FlightScene {
         moreButton.setTextFill(Color.BLACK);
         moreButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
         moreButton.setCursor(Cursor.HAND);
-        moreButton.setOnAction(e -> {
-            // Overlay a schermo intero
-            Rectangle overlay = new Rectangle();
-            overlay.widthProperty().bind(root.getScene().widthProperty());
-            overlay.heightProperty().bind(root.getScene().heightProperty());
-            overlay.setFill(Color.rgb(0, 0, 0, 0.7));
-            overlay.setOnMouseClicked(ev -> {
-                root.getChildren().removeIf(node -> node.getId() != null && node.getId().equals("moreOverlay"));
-            });
-
-            // Container dei dettagli componenti
-            VBox componentList = new VBox(10);
-            componentList.setPadding(new Insets(30));
-            componentList.setAlignment(Pos.TOP_LEFT);
-
-            // Itera sulla griglia della nave
-            Component[][] layout = viewFlow.getShip();
-            for (int i = 0; i < layout.length; i++) {
-                for (int j = 0; j < layout[i].length; j++) {
-                    Component c = layout[i][j];
-                    if (c != null && !"Empty Space".equals(c.getType())) {
-                        Label label = new Label("[" + i + "," + j + "] → " + c.getType());
-                        label.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-                        label.setTextFill(Color.WHITE);
-                        componentList.getChildren().add(label);
-                    }
-                }
-            }
-
-            // ScrollPane per elenco
-            ScrollPane scroll = new ScrollPane(componentList);
-            scroll.setFitToWidth(true);
-            scroll.setMaxWidth(400);
-            scroll.setMaxHeight(500);
-            scroll.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
-            scroll.setPadding(new Insets(30));
-
-            // StackPane contenitore dell'overlay e contenuto
-            StackPane overlayContainer = new StackPane(overlay, scroll);
-            overlayContainer.setId("moreOverlay");
-            StackPane.setAlignment(scroll, Pos.CENTER);
-
-            // Aggiungi a schermo
-            root.getChildren().add(overlayContainer);
-        });
+        moreButton.setOnAction(e -> showMore());
 
         // HBox delle risorse
         HBox resourceBox = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox, creditBox);
@@ -1703,4 +1662,201 @@ public class FlightScene {
             }
         });
     }
+
+    private void showMore() {
+        // Rimuove vecchio overlay se presente
+        root.getChildren().removeIf(n -> "moreOverlay".equals(n.getId()));
+
+        // Overlay a schermo intero cliccabile per chiudere
+        Rectangle overlay = new Rectangle();
+        overlay.widthProperty().bind(root.getScene().widthProperty());
+        overlay.heightProperty().bind(root.getScene().heightProperty());
+        overlay.setFill(Color.rgb(0, 0, 0, 0.6));
+
+        // Container principale
+        VBox descriptionBox = new VBox(10);
+        descriptionBox.setPadding(new Insets(20));
+        descriptionBox.setMaxWidth(600);
+        descriptionBox.setMaxHeight(500);
+        descriptionBox.setAlignment(Pos.TOP_LEFT);
+
+        Label title = new Label("Components details:");
+        title.setTextFill(Color.web("#FFDE69"));
+        title.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 20));
+        descriptionBox.getChildren().add(title);
+
+        // Componenti della nave
+        Trucker t = new Trucker("n", PlayerColors.BLUE);
+        t.initSpaceShip(2);
+        SpaceShip ship;
+        try {
+            ship = createShip1(t.getSpaceShip());
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        Component[][] layout = ship.getComponents();
+        for (int i = 0; i < layout.length; i++) {
+            for (int j = 0; j < layout[i].length; j++) {
+                Component c = layout[i][j];
+                if (c != null && !"Empty Space".equals(c.getType())) {
+                    String desc = "[" + i + "," + j + "] " + formatComponent(c, i, j);
+                    Label l = new Label(desc);
+                    l.setTextFill(Color.WHITE);
+                    l.setFont(Font.font("Bangers", 15));
+                    descriptionBox.getChildren().add(l);
+                }
+            }
+        }
+
+        ScrollPane scroll = new ScrollPane(descriptionBox);
+        scroll.setFitToWidth(true);
+        scroll.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+        scroll.setPadding(new Insets(20));
+        scroll.setMaxWidth(650);
+        scroll.setMaxHeight(500);
+
+        StackPane overlayContainer = new StackPane(overlay, scroll);
+        overlayContainer.setId("moreOverlay");
+        StackPane.setAlignment(scroll, Pos.CENTER);
+
+        overlay.setOnMouseClicked(e -> root.getChildren().remove(overlayContainer));
+        scroll.setOnMouseClicked(e -> e.consume()); // Blocca il click dentro al contenuto
+
+        root.getChildren().add(overlayContainer);
+    }
+
+    private String formatComponent(Component c, int i, int j) {
+        if (c == null) return "";
+
+        StringBuilder details = new StringBuilder();
+        switch (c) {
+            case Engine engine -> {
+                if (engine.getIsDouble())
+                    details.append("[").append(i).append(",").append(j).append("] DOUBLE ENGINE");
+                else
+                    details.append("[").append(i).append(",").append(j).append("] ENGINE");
+            }
+            case Cannon cannon -> {
+                if (cannon.getIsDouble())
+                    details.append("[").append(i).append(",").append(j).append("] DOUBLE CANNON (Direction: ").append(cannon.getOrientation()).append(")");
+                else
+                    details.append("[").append(i).append(",").append(j).append("] CANNON (Direction: ").append(cannon.getOrientation()).append(")");
+            }
+            case Load load -> {
+                if (load.getIsSpecial()) {
+                    details.append("[").append(i).append(",").append(j).append("] SPECIAL LOAD (Capacity: ").append(load.getCapacity()).append(")");
+                    if (!load.isEmpty()) {
+                        details.append(" contains: ");
+                        for (Goods g : load.getGoods()) {
+                            details.append(g.getColor()).append(" ");
+                        }
+                    } else {
+                        details.append(" is empty");
+                    }
+                } else {
+                    details.append("[").append(i).append(",").append(j).append("] LOAD (Capacity: ").append(load.getCapacity()).append(")");
+                    if (!load.isEmpty()) {
+                        details.append(" contains: ");
+                        for (Goods g : load.getGoods()) {
+                            details.append(g.getColor()).append(" ");
+                        }
+                    } else {
+                        details.append(" is empty");
+                    }
+                }
+            }
+            case Shield shield -> {
+                details.append("[").append(i).append(",").append(j).append("] SHIELD (direction: ").append(shield.getDirection()).append(")");
+            }
+            case BatteryStorage battery -> {
+                details.append("[").append(i).append(",").append(j).append("] BATTERY STORAGE (Capacity: ").append(battery.getCapacity()).append(")");
+                if(battery.getQuantity() != 0) {
+                    details.append(" contains ").append(battery.getQuantity()).append(battery.getQuantity() == 1 ? " battery" : " batteries");
+                } else {
+                    details.append(" is empty");
+                }
+            }
+            case Cabin cabin -> {
+                details.append("[").append(i).append(",").append(j).append("] CABIN");
+                if(cabin.getQuantity() != 0){
+                    if (cabin.getAlien() != null) {
+                        details.append(" contains 1 ").append(cabin.getAlien().getColor()).append(" alien");
+                    } else {
+                        details.append(" contains ").append(cabin.getQuantity()).append(cabin.getQuantity() == 1 ? " human" : " humans");
+                    }
+                } else {
+                    details.append(" is empty");
+                }
+            }
+            case LifeSupport lifeSupport -> {
+                details.append("[").append(i).append(",").append(j).append("] LIFE SUPPORT is ").append(lifeSupport.getColor());
+            }
+            default -> {
+                details.append("[").append(i).append(",").append(j).append("] ").append(c.getType().toUpperCase());
+            }
+        }
+
+        return details.toString();
+    }
+
+
+    public SpaceShip createShip1(SpaceShip ship) throws InvalidCoordinates {
+        ship = new SpaceShip();
+        ship.initSpaceShip(2, PlayerColors.RED);
+        Component c1 = new BatteryStorage(3, 2, 0, 0, "Battery Storage", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web2.jpg", 2);
+        Component c2 = new Cannon(0, 3, 2, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web133.jpg", true);
+        Component c3 = new Cabin(0, 2, 0, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web47.jpg", null, false);
+        Component c4 = new LifeSupport(1, 1, 0, 1, "Life Support", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web137.jpg", AlienColor.BROWN);
+        Component c5 = new Cannon(1, 1, 1, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web115.jpg", false);
+        Component c6 = new Pipes(1, 3, 2, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web56.jpg");
+        Component c7 = new BatteryStorage(0, 0, 0, 1, "Battery Storage", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web17.jpg", 3);
+        Component c8 = new Pipes(3, 2, 0, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web59.jpg");
+        Component c9 = new Cabin(1, 0, 2, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web49.jpg", null, false);
+        Component c10 = new Load(2, 2, 2, 3, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web66.jpg", 1, true);
+        Component c11 = new Cabin(0, 1, 3, 2, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web41.jpg", null, false);
+        Component c12 = new Cannon(2, 1, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web109.jpg", false);
+        Component c13 = new Pipes(3, 2, 2, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web60.jpg");
+        Component c14 = new Engine(3, 1, 0, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web95.jpg", true);
+        Component c15 = new Shield(1, 2, 1, 2, "Shield", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web154.jpg");
+        Component c16 = new Load(2, 0, 1, 2, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web32.jpg", 3, false);
+        Component c17 = new Engine(2, 0, 3, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web100.jpg", true);
+        Component c18 = new Cannon(1, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web105.jpg", false);
+        Component c19 = new Engine(2, 1, 1, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web81.jpg", false);
+        Component c20 = new Engine(0, 0, 3, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web89.jpg", false);
+        Component c21 = new Load(0, 0, 0, 2, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web70.jpg", 2, true);
+        ship.addComponent(c10, 7, 8);
+        c9.turn();
+        ship.addComponent(c9, 7, 6);
+        c8.turn();
+        ship.addComponent(c8, 7, 5);
+        ship.addComponent(c11, 7, 9);
+        ship.addComponent(c5, 6, 7);
+        c4.turn();
+        ship.addComponent(c4, 6, 6);
+        c3.turn();
+        ship.addComponent(c3, 6, 5);
+        ship.addComponent(c6, 6, 8);
+        ship.addComponent(c7, 6, 9);
+        c1.turn();
+        c1.turn();
+        ship.addComponent(c1, 5, 6);
+        ship.addComponent(c2, 5, 8);
+        c12.turn();
+        ship.addComponent(c12, 7, 10);
+        ship.addComponent(c14, 8, 7);
+        ship.addComponent(c13, 8, 5);
+        c15.turn();
+        ship.addComponent(c15, 8, 8);
+        c16.turn();
+        ship.addComponent(c16, 8, 9);
+        ship.addComponent(c17, 8, 10);
+        ship.addComponent(c19, 9, 5);
+        ship.addComponent(c18, 9, 4);
+        ship.addComponent(c20, 9, 6);
+        c21.turn();
+        ship.addComponent(c21, 9, 8);
+        return ship;
+    }
+
+
 }
