@@ -1027,79 +1027,62 @@ public class TUI implements UI {
     public void showTrack(Map<String, Integer> truckers, int level) {
         int index;
         String[] symbols = {"1️⃣", "2️⃣", "3️⃣", "4️⃣"};
-        if(level == 2){
-            Map<Integer, String> board = new HashMap<>();
-            for (int i = 0; i <= 6; i++) {
-                board.put(i, "▶️");
-            }
-            for (int i = 7; i <= 11; i++) {
-                board.put(i, "🔽");
-            }
-            for (int i = 12; i <= 18; i++) {
-                board.put(i, "◀️");
-            }
-            for (int i = 19; i <= 23; i++) {
-                board.put(i, "🔼");
-            }
+
+        // Ordina i trucker per posizione crescente
+        List<Map.Entry<String, Integer>> sortedTruckers = new ArrayList<>(truckers.entrySet());
+        sortedTruckers.sort(Comparator.comparingInt(Map.Entry::getValue));
+
+        Map<Integer, String> board = new HashMap<>();
+
+        if (level == 2) {
+            for (int i = 0; i <= 6; i++) board.put(i, "▶️");
+            for (int i = 7; i <= 11; i++) board.put(i, "🔽");
+            for (int i = 12; i <= 18; i++) board.put(i, "◀️");
+            for (int i = 19; i <= 23; i++) board.put(i, "🔼");
 
             index = 0;
-            for (Map.Entry<String, Integer> entry : truckers.entrySet()) {
+            for (Map.Entry<String, Integer> entry : sortedTruckers) {
                 int pos = entry.getValue();
                 board.put(pos, symbols[index]);
                 index++;
             }
 
             System.out.println();
-            System.out.printf("         %s %s %s %s %s %s %s\n",
-                    board.get(0), board.get(1), board.get(2), board.get(3), board.get(4), board.get(5), board.get(6));
-
+            System.out.printf("         %s %s %s %s %s %s %s\n", board.get(0), board.get(1), board.get(2), board.get(3), board.get(4), board.get(5), board.get(6));
             System.out.printf("      %s                       %s\n", board.get(23), board.get(7));
             System.out.printf("      %s                       %s\n", board.get(22), board.get(8));
             System.out.printf("      %s                       %s\n", board.get(21), board.get(9));
             System.out.printf("      %s                       %s\n", board.get(20), board.get(10));
             System.out.printf("      %s                       %s\n", board.get(19), board.get(11));
-
-            System.out.printf("         %s %s %s %s %s %s %s\n",
-                    board.get(18), board.get(17), board.get(16), board.get(15), board.get(14), board.get(13), board.get(12));
+            System.out.printf("         %s %s %s %s %s %s %s\n", board.get(18), board.get(17), board.get(16), board.get(15), board.get(14), board.get(13), board.get(12));
             System.out.println();
         } else if (level == 0) {
-            Map<Integer, String> board = new HashMap<>();
-            for (int i = 0; i <= 4; i++) {
-                board.put(i, "▶️");
-            }
-            for (int i = 5; i <= 8; i++) {
-                board.put(i, "🔽");
-            }
-            for (int i = 9; i <= 13; i++) {
-                board.put(i, "◀️");
-            }
-            for (int i = 14; i <= 17; i++) {
-                board.put(i, "🔼");
-            }
+            for (int i = 0; i <= 4; i++) board.put(i, "▶️");
+            for (int i = 5; i <= 8; i++) board.put(i, "🔽");
+            for (int i = 9; i <= 13; i++) board.put(i, "◀️");
+            for (int i = 14; i <= 17; i++) board.put(i, "🔼");
 
             index = 0;
-            for (Map.Entry<String, Integer> entry : truckers.entrySet()) {
+            for (Map.Entry<String, Integer> entry : sortedTruckers) {
                 int pos = entry.getValue();
                 board.put(pos, symbols[index]);
                 index++;
             }
 
             System.out.println();
-            System.out.printf("         %s %s %s %s %s\n",
-                    board.get(0), board.get(1), board.get(2), board.get(3), board.get(4));
-
+            System.out.printf("         %s %s %s %s %s\n", board.get(0), board.get(1), board.get(2), board.get(3), board.get(4));
             System.out.printf("      %s                       %s\n", board.get(17), board.get(5));
             System.out.printf("      %s                       %s\n", board.get(16), board.get(6));
             System.out.printf("      %s                       %s\n", board.get(15), board.get(7));
             System.out.printf("      %s                       %s\n", board.get(14), board.get(8));
-
-            System.out.printf("         %s %s %s %s %s\n",
-                    board.get(13), board.get(12), board.get(11), board.get(10), board.get(9));
+            System.out.printf("         %s %s %s %s %s\n", board.get(13), board.get(12), board.get(11), board.get(10), board.get(9));
             System.out.println();
         }
+
+        // Legenda con i simboli e i nomi, ordinata
         index = 0;
-        for (Map.Entry<String, Integer> entry : truckers.entrySet()) {
-            System.out.printf(symbols[index] + " %s\n", entry.getKey());
+        for (Map.Entry<String, Integer> entry : sortedTruckers) {
+            System.out.printf("%s %s\n", symbols[index], entry.getKey());
             index++;
         }
     }

@@ -352,12 +352,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         int position=client.getTruckerController().getPosition();
         int batteryCount=client.getTruckerController().getSpaceShip().getNumBatteries();
         int humanCount=client.getTruckerController().getSpaceShip().getNumCrew();
-        Map<String, Integer> track = new HashMap<>();
-        gameController.getGame().sortTruckers();
-        for (Trucker t : gameController.getGame().getTruckerList()) {
-            track.put(t.getNickname(), t.getPosition());
-        }
-        return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,track, spaceship);
+        return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,Game.getIstance().getTrack(), spaceship);
     }
 
 
