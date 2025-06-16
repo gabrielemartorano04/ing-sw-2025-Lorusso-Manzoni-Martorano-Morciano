@@ -222,8 +222,9 @@ public class Pirates extends Card implements Serializable {
             throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste, la carta dovrebbe essere finita");
         }
         shoot = shoots.get(currShootIndex);
-        currShootIndex++;
         this.roll = Game.getIstance().rollDice();
+        currShootIndex++;
+
         if(shoot[0] == 1){
             cardState = CardState.ESECUZIONE;
             return cardEffect();
