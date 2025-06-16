@@ -235,11 +235,11 @@ class Deck implements Serializable {
                 "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"
         );
         //TODO: riportare piratesPower a 5
+        cards.addLast(new Smugglers(true, 4, 2, 1, goodsGained1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_012.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(new Pirates( false, 1, 4, 1,2, shoots1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_013.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(new Slavers(false, 1, 5, 1, 3,6, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_01.jpg",  "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(new AbandonedShip(true, 1, 3, 4, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0118.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(new AbandonedStation(true, 1, goods1, 1,5, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0119.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
-        cards.addLast(new Smugglers(true, 4, 2, 1, goodsGained1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_012.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(new StarDust(true, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(new OpenSpace(true, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_015.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
         cards.addLast(warZone1);
