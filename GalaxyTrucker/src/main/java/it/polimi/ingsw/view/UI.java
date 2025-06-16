@@ -143,8 +143,6 @@ public interface UI {
     void showContinue();
 
     //FLIGTH
-    void showFlightPhaseStart();
-
     void showCardDrawn(StartCardEvent event);
 
     void showStardustCard(StarDustEvent event);

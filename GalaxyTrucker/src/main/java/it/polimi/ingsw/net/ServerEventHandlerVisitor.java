@@ -284,9 +284,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setStartFlightForAll();
         viewFlow.setTrack(event.getTrack());
         viewFlow.setParserFlightState(ParserState.STATE);
-        ui.showFlightPhaseStart();
+
         ui.flightScene(event);
-        ui.showInputFormat(viewFlow.getParserFlightState());
     }
 
     @Override
