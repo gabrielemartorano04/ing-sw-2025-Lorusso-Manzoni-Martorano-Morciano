@@ -290,6 +290,7 @@ public class Smugglers extends Card implements Serializable {
         }
 
         if(defeatedTruckers.isEmpty()){
+            System.out.println("Entering cause defeatedtruckers is empty");
             cardState = CardState.ESECUZIONE;
             return cardEffect();
         }
@@ -337,6 +338,8 @@ public class Smugglers extends Card implements Serializable {
                 String nickname = defeatedTruckers.getFirst().getNickname();
 
                 defeatedTruckers.removeFirst();
+                System.out.println("Removed " + nickname + " from " + spaceShip);
+
 
                 if(defeatedTruckers.isEmpty()){
                     cardState = CardState.ESECUZIONE;
@@ -371,7 +374,7 @@ public class Smugglers extends Card implements Serializable {
         }
         defeatedTruckers.getFirst().getSpaceShip().removeGoods(list);
 
-        if (goodsLostCurrTrucker == 0 || (goodsLostCurrTrucker > 0 && defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getNumBatteries() == 0)) {
+        if (goodsLostCurrTrucker == 0 || (goodsLostCurrTrucker > 0 && defeatedTruckers.getFirst().getSpaceShip().getNumBatteries() == 0)) {
             // se questo trucker ha perso tutte le merci notifico che la rimozione è stata fatta e passo al prossimo
             // per passare al prossimo obbligo il corrente a mandarmi un ok/continue
 
@@ -379,6 +382,7 @@ public class Smugglers extends Card implements Serializable {
             String nickname = defeatedTruckers.getFirst().getNickname();
 
             defeatedTruckers.removeFirst();
+            System.out.println("Removed " + nickname + " from " + spaceShip);
 
             cardState = CardState.REMOVE_GOODS;
             return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,nickname,spaceShip);
@@ -447,6 +451,8 @@ public class Smugglers extends Card implements Serializable {
         String nickname = defeatedTruckers.getFirst().getNickname();
 
         defeatedTruckers.removeFirst();
+        System.out.println("Removed " + nickname + " from " + spaceShip);
+
         cardState = CardState.REMOVE_GOODS;
         return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,nickname,spaceShip);
     }
