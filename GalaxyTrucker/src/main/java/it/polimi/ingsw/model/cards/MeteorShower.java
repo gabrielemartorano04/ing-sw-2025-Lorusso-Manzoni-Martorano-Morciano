@@ -17,10 +17,12 @@ import it.polimi.ingsw.view.ParserState;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Class that manages the single card meteor shower
@@ -97,13 +99,13 @@ public class MeteorShower extends Card implements Serializable {
 
     public ServerEvent rollDice() throws GeneralError {
 
-        System.out.println("");
+        System.out.println("è stato tirato il dado ");
 
         if(state != CardState.ROLL_DICE) {
             throw new GeneralError("Can't roll dice in the state " + this.state);
         }
         if(currMeteorIndex <0 || currMeteorIndex >= meteors.size()){
-            throw new GeneralError("Card shoulb be already finished");
+            throw new GeneralError("Card should be already finished");
         }
         meteor = meteors.get(currMeteorIndex);
         currMeteorIndex++;
@@ -242,7 +244,10 @@ public class MeteorShower extends Card implements Serializable {
             return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
         }else {
             this.state = CardState.ROLL_DICE;
-            return new BooleanDecision(ServerEventType.ROLL_DICE, false, ParserState.ROLL_DICE, "Roll the dice", Game.getIstance().getTruckerList().getFirst().getNickname());
+            System.out.println("lista di trucker: " + Game.getIstance().getTruckerList().stream()
+                    .map(Trucker::getNickname)
+                    .collect(Collectors.joining(", "))  + ", mando messaggio a " + Game.getIstance().getTruckerList().getFirst().getNickname());
+            return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", Game.getIstance().getTruckerList().getFirst().getNickname());
         }
     }
 
