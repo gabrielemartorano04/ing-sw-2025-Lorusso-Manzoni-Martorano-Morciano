@@ -57,6 +57,7 @@ public class ViewFlow implements EventReceiver {
     private boolean alreadyLogged;
     private int credits;
     private boolean firstLinked;
+    private int cardsToGo;
 
     public enum ViewState {
         FIRST,
@@ -484,6 +485,9 @@ public class ViewFlow implements EventReceiver {
     public void setLevel(int level) {
         this.level = level;
         this.inputParser.setLevel(level);
+        if(level == 2) {
+            this.cardsToGo = 12;
+        }else this.cardsToGo = 9;
     }
     public int getLevel() {
         return level;
@@ -528,6 +532,14 @@ public class ViewFlow implements EventReceiver {
 
     public int getCredits() {
         return credits;
+    }
+
+    public void decreaseCardsToGo() {
+        this.cardsToGo--;
+    }
+
+    public int getCardsToGo() {
+        return cardsToGo;
     }
 }
 

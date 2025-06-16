@@ -330,6 +330,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setTrack(event.getTrack());
             viewFlow.setShip(trucker.getSpaceShip().getComponents());
             ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+            ui.showPlayerShipStatus(viewFlow.getPosition(), viewFlow.getBatteryCount(), viewFlow.getHumanCount(), viewFlow.getCannonPower(), viewFlow.getEnginePower(), viewFlow.getGoodsByColor(), viewFlow.getCredits());
             ui.cardFinished(event);
             if (viewFlow.getNickname().equals(event.getTruckersList().get(0).getNickname())) {
                 viewFlow.setParserFlightState(ParserState.DRAW_CARD);
@@ -468,6 +469,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(StartCardEvent event) {
         ui.showCardDrawn(event);
+        viewFlow.decreaseCardsToGo();
+        System.out.println("Number of cards to draw: " + viewFlow.getCardsToGo());
         if (event.getFirstPlayerNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
@@ -475,6 +478,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
         }
+
 
     }
 
