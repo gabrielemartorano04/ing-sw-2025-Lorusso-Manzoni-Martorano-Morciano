@@ -208,8 +208,6 @@ public class TUI implements UI {
 
     @Override
     public void buildingComplete(BuildCompleteEvent event){
-        this.showMessage("Your updated ship\n");
-        this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         this.showBuildComplete();
 
         if(viewFlow.getLevel()==2){

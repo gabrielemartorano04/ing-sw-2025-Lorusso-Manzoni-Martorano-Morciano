@@ -134,41 +134,7 @@ public class BuildingScene {
         backgroundView.setPreserveRatio(true);
         backgroundView.setMouseTransparent(true);
 
-        grid = new GridPane();
-        grid.setHgap(3.5);
-        grid.setVgap(3.5);
-        grid.setAlignment(Pos.CENTER);
-        grid.setTranslateX(1);
-        grid.setTranslateY(-9);
-
-        for (int row = 5; row < 10; row++) {
-            for (int col = 4; col < 11; col++) {
-                StackPane cell = new StackPane();
-                cell.setPrefSize(134, 134);
-
-                if (validCells[row][col]) {
-                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 6px; -fx-background-radius: 6px;");
-
-                    Component c = layout[row][col];
-                    if (c != null) {
-                        ImageView imageView = new ImageView(c.getFrontImage());
-                        imageView.setFitWidth(134);
-                        imageView.setFitHeight(134);
-                        Rectangle clip = new Rectangle(134, 134);
-                        clip.setArcWidth(12);
-                        clip.setArcHeight(12);
-                        imageView.setClip(clip);
-                        cell.getChildren().add(imageView);
-                    }
-
-                } else {
-                    cell.setStyle("-fx-background-color: transparent;");
-                }
-
-                grid.add(cell, col - 4, row - 5);
-                cellMatrix[row][col] = cell;
-            }
-        }
+        buildShipGrid(true, null);
 
         // Slot vuoti per i kept
         keptSlots = new HBox(15);
@@ -226,6 +192,57 @@ public class BuildingScene {
 
         return scene;
     }
+
+    public void buildShipGrid(boolean buildNew, Component[][] ship) {
+        // Se grid esiste già, la rimuovo dal root
+        if (grid != null) {
+            root.getChildren().remove(grid);
+        }
+
+        grid = new GridPane();
+        grid.setHgap(3.5);
+        grid.setVgap(3.5);
+        grid.setAlignment(Pos.CENTER);
+        grid.setTranslateX(1);
+        grid.setTranslateY(-9);
+
+        for (int row = 5; row < 10; row++) {
+            for (int col = 4; col < 11; col++) {
+                StackPane cell = new StackPane();
+                cell.setPrefSize(134, 134);
+
+                if (validCells[row][col]) {
+                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 6px; -fx-background-radius: 6px;");
+
+                    Component c = buildNew ? layout[row][col] : ship[row][col];
+                    if (c != null) {
+                        ImageView imageView = new ImageView(c.getFrontImage());
+                        imageView.setFitWidth(134);
+                        imageView.setFitHeight(134);
+                        Rectangle clip = new Rectangle(134, 134);
+                        clip.setArcWidth(12);
+                        clip.setArcHeight(12);
+                        imageView.setClip(clip);
+                        imageView.setRotate(c.getRotationAngle()); // Per uniformità con l’altro metodo
+                        cell.getChildren().add(imageView);
+                    }
+                } else {
+                    cell.setStyle("-fx-background-color: transparent;");
+                }
+
+                grid.add(cell, col - 4, row - 5);
+                cellMatrix[row][col] = cell;
+            }
+        }
+
+        root.getChildren().add(grid);
+        if(!buildNew){
+            this.showMessage("Ship checked by the Server, invalid components may have been removed");
+        }
+    }
+
+
+
 
     private void disableSelectButtons(boolean disable) {
         double opacity = disable ? 0.5 : 1.0;

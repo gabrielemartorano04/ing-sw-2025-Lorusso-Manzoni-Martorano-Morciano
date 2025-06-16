@@ -22,7 +22,6 @@ import it.polimi.ingsw.view.UI;
 
 import it.polimi.ingsw.view.ViewFlow;
 import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
-import it.polimi.ingsw.view.graphic.scenes.FillScene;
 import it.polimi.ingsw.view.graphic.scenes.FlightScene;
 import it.polimi.ingsw.view.graphic.scenes.LoginScene;
 import javafx.animation.*;
@@ -73,7 +72,6 @@ public class GUI implements UI {
     private Stage stage;
     private LoginScene loginScene;
     private BuildingScene buildingScene;
-    private FillScene fillScene;
     private FlightScene flightScene;
     private ClientEvent currentEvent;
     private Component selectedComponent;
@@ -370,28 +368,6 @@ public class GUI implements UI {
     }
 
     @Override
-    public void askAlienCabin(AlienCabinCoord event){
-        //this.buildingScene.updateAlienCabinCoord(event.getAlienCabinCoord());
-//        this.buildingScene.showAlienCabin();
-    }
-
-    @Override
-    public void dropStack(StackDropOk event){
-        //torna alla schermata base del buildind
-        Platform.runLater(() -> {
-            this.buildingScene.hideStackOverlay();
-        });
-    }
-
-    @Override
-    public void  buildingComplete(BuildCompleteEvent event){
-        //TODO: sistemare la building complete perché non usiamo piu la fillScene
-        // this.buildingScene.showCoordPopUp
-        //button azione 'coord'
-        //viewFlow.handleInput("alien");
-    }
-
-    @Override
     public void refreshAvailableComponents(){
         Platform.runLater(() -> {
             this.buildingScene.refreshComponentsViewIfVisible();
@@ -408,6 +384,32 @@ public class GUI implements UI {
     @Override
     public void showKeptComponents(ArrayList<Component> kept) {
         // nella gui non deve fare nulla forse c'è un modo migliore di unificare ma per ora tengo cosi
+    }
+
+    @Override
+    public void dropStack(StackDropOk event){
+        //torna alla schermata base del buildind
+        Platform.runLater(() -> {
+            this.buildingScene.hideStackOverlay();
+        });
+    }
+
+
+    @Override
+    public void  buildingComplete(BuildCompleteEvent event){
+        Platform.runLater(() -> {
+            this.buildingScene.buildShipGrid(false, viewFlow.getShip());
+            viewFlow.handleInput("alien");
+        });
+    }
+
+
+    @Override
+    public void askAlienCabin(AlienCabinCoord event){
+        Platform.runLater(() -> {
+            this.buildingScene.updateAlienCabinCoord(event.getAlienCabinCoord());
+            this.buildingScene.showAlienCabin();
+        });
     }
 
     // fine building scene

@@ -185,6 +185,13 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(BuildCompleteEvent event){
         viewFlow.getTimerDisplay().stop();
         viewFlow.setViewState(ViewFlow.ViewState.FILL);
+
+        for(Trucker t: event.getTruckers()){
+            if(t.getNickname().equals(viewFlow.getNickname())){
+                viewFlow.setShip(t.getSpaceShip().getComponents());
+            }
+        }
+
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
         ui.buildingComplete(event);
     }
