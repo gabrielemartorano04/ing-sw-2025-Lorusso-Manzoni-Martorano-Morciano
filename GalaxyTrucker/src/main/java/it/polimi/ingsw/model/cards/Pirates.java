@@ -149,7 +149,7 @@ public class Pirates extends Card implements Serializable {
                 }else{
                     cardState = CardState.ROLL_DICE;
                     indexOfCurrentTrucker = 0;
-                    return new BooleanDecision(ServerEventType.ROLL_DICE, false, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
+                    return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
                 }
             }else{
                 indexOfCurrentTrucker++;
@@ -162,10 +162,7 @@ public class Pirates extends Card implements Serializable {
                 System.out.println("Entro 1");
                 cardState = CardState.ROLL_DICE;
                 indexOfCurrentTrucker = 0;
-                for (Trucker t: defeatedTruckers) {
-                    System.out.println(t.getNickname());
-                }
-                return new BooleanDecision(ServerEventType.ROLL_DICE, false, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
+                return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
             }else{
                 System.out.println("Entro 2");
                 indexOfCurrentTrucker++;
@@ -262,7 +259,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Do you want to activate a shield?", currShootIndex, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), false, "smallshot");
+        return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Do you want to activate a shield?", currShootIndex, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot");
     }
 
     /**
