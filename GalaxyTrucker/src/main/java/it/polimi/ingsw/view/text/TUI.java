@@ -608,6 +608,11 @@ public class TUI implements UI {
     }
 
     @Override
+    public void updateCurrGood(Goods good) {
+        System.out.println("Good to gain: "+ good.getColor());
+    }
+
+    @Override
     public void showEpidemicCard(EpidemicEvent event) {
         System.out.println("Card drawn: " + event.getCardName().toUpperCase());
         System.out.println("Card description: " + event.getCardDescription());
