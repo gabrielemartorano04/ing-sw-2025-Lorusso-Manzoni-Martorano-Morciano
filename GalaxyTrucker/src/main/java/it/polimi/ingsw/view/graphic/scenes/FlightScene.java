@@ -26,6 +26,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.*;
 import javafx.scene.text.Font;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 import java.awt.*;
@@ -473,7 +475,7 @@ public class FlightScene {
             inputField.setPrefWidth(250);
 
             Button confirmBtn = new Button("Confirm");
-            confirmBtn.setFont(Font.font("Bangers",  14));
+            confirmBtn.setFont(Font.font("Bangers", 14));
             confirmBtn.setTextFill(Color.BLACK);
             confirmBtn.setCursor(Cursor.HAND);
             confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
@@ -1538,35 +1540,48 @@ public class FlightScene {
     }
 
     public void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor, int credits) {
-        // Carica le icone (temporaneamente tutte uguali)
+
         Image engine = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
         Image cannon = new Image(getClass().getResource("/it/polimi/ingsw/view/cannon.png").toExternalForm());
         Image human = new Image(getClass().getResource("/it/polimi/ingsw/view/human.png").toExternalForm());
         Image battery = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
         Image pos = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
-
+        Image credit = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
 
         ImageView posIcon = new ImageView(pos);
+        posIcon.setFitWidth(20);
+        posIcon.setPreserveRatio(true);
+
         ImageView batteryIcon = new ImageView(battery);
+        batteryIcon.setFitWidth(20);
+        batteryIcon.setPreserveRatio(true);
+
         ImageView humanIcon = new ImageView(human);
+        humanIcon.setFitWidth(40);
+        humanIcon.setPreserveRatio(true);
+
         ImageView cannonIcon = new ImageView(cannon);
+        cannonIcon.setFitWidth(20);
+        cannonIcon.setPreserveRatio(true);
+
         ImageView engineIcon = new ImageView(engine);
+        engineIcon.setFitWidth(16);
+        engineIcon.setPreserveRatio(true);
 
-        List<ImageView> mainIcons = List.of(posIcon, batteryIcon, humanIcon, cannonIcon, engineIcon);
-        for (ImageView iv : mainIcons) {
-            iv.setFitWidth(16);
-            iv.setPreserveRatio(true);
-        }
+        ImageView creditIcon = new ImageView(credit);
+        creditIcon.setFitWidth(16);
+        creditIcon.setPreserveRatio(true);
 
-        Label posLabel = new Label(": " + String.valueOf(position));
-        Label battLabel = new Label(": " + String.valueOf(batteryCount));
-        Label humanLabel = new Label(": " + String.valueOf(humanCount));
-        Label cannonLabel = new Label(": " + String.valueOf(cannonPower));
-        Label engineLabel = new Label(": " + String.valueOf(enginePower));
+        Label posLabel = new Label(": " + position);
+        Label battLabel = new Label(": " + batteryCount);
+        Label humanLabel = new Label(": " + humanCount);
+        Label cannonLabel = new Label(": " + cannonPower);
+        Label engineLabel = new Label(": " + enginePower);
+        Label creditLabel = new Label(": " + credits);
 
-        List<Label> labels = List.of(posLabel, battLabel, humanLabel, cannonLabel, engineLabel);
+        List<Label> labels = List.of(posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel);
         for (Label l : labels) {
-            l.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+            l.setFont(Font.font("Arial", FontWeight.BOLD, 16));
             l.setTextFill(Color.WHITE);
         }
 
@@ -1575,20 +1590,22 @@ public class FlightScene {
         HBox humanBox = new HBox(0, humanIcon, humanLabel);
         HBox cannonBox = new HBox(0, cannonIcon, cannonLabel);
         HBox engineBox = new HBox(5, engineIcon, engineLabel);
+        HBox creditBox = new HBox(5, creditIcon, creditLabel);
 
-        for (HBox box : List.of(posBox, battBox, humanBox, cannonBox, engineBox)) {
+        for (HBox box : List.of(posBox, battBox, humanBox, cannonBox, engineBox, creditBox)) {
             box.setAlignment(Pos.CENTER_RIGHT);
         }
 
-        // Goods box
+        // Goods
         HBox goodsBox = new HBox(10);
         goodsBox.setAlignment(Pos.CENTER_RIGHT);
         Image redgood = new Image(getClass().getResource("/it/polimi/ingsw/view/redgood.png").toExternalForm());
         Image yellowgood = new Image(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png").toExternalForm());
         Image greengood = new Image(getClass().getResource("/it/polimi/ingsw/view/greengood.png").toExternalForm());
         Image bluegood = new Image(getClass().getResource("/it/polimi/ingsw/view/bluegood.png").toExternalForm());
-        ImageView goodIcon;
+
         for (Map.Entry<String, Integer> entry : goodsByColor.entrySet()) {
+            ImageView goodIcon;
             switch (entry.getKey().toLowerCase()) {
                 case "red" -> goodIcon = new ImageView(redgood);
                 case "yellow" -> goodIcon = new ImageView(yellowgood);
@@ -1601,8 +1618,8 @@ public class FlightScene {
             goodIcon.setFitWidth(35);
             goodIcon.setPreserveRatio(true);
 
-            Label qty = new Label(": " + String.valueOf(entry.getValue()));
-            qty.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+            Label qty = new Label(": " + entry.getValue());
+            qty.setFont(Font.font("Arial", FontWeight.BOLD, 16));
             qty.setTextFill(Color.WHITE);
 
             HBox singleGood = new HBox(0, goodIcon, qty);
@@ -1610,21 +1627,76 @@ public class FlightScene {
             goodsBox.getChildren().add(singleGood);
         }
 
-        // Contenitore finale con sfondo
-        HBox statusBar = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox);
-        statusBar.setAlignment(Pos.CENTER_RIGHT);
+        // Pulsante "More..." sotto
+        Button moreButton = new Button("More...");
+        moreButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        moreButton.setTextFill(Color.BLACK);
+        moreButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        moreButton.setCursor(Cursor.HAND);
+        moreButton.setOnAction(e -> {
+            // Overlay a schermo intero
+            Rectangle overlay = new Rectangle();
+            overlay.widthProperty().bind(root.getScene().widthProperty());
+            overlay.heightProperty().bind(root.getScene().heightProperty());
+            overlay.setFill(Color.rgb(0, 0, 0, 0.7));
+            overlay.setOnMouseClicked(ev -> {
+                root.getChildren().removeIf(node -> node.getId() != null && node.getId().equals("moreOverlay"));
+            });
+
+            // Container dei dettagli componenti
+            VBox componentList = new VBox(10);
+            componentList.setPadding(new Insets(30));
+            componentList.setAlignment(Pos.TOP_LEFT);
+
+            // Itera sulla griglia della nave
+            Component[][] layout = viewFlow.getShip();
+            for (int i = 0; i < layout.length; i++) {
+                for (int j = 0; j < layout[i].length; j++) {
+                    Component c = layout[i][j];
+                    if (c != null && !"Empty Space".equals(c.getType())) {
+                        Label label = new Label("[" + i + "," + j + "] → " + c.getType());
+                        label.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+                        label.setTextFill(Color.WHITE);
+                        componentList.getChildren().add(label);
+                    }
+                }
+            }
+
+            // ScrollPane per elenco
+            ScrollPane scroll = new ScrollPane(componentList);
+            scroll.setFitToWidth(true);
+            scroll.setMaxWidth(400);
+            scroll.setMaxHeight(500);
+            scroll.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+            scroll.setPadding(new Insets(30));
+
+            // StackPane contenitore dell'overlay e contenuto
+            StackPane overlayContainer = new StackPane(overlay, scroll);
+            overlayContainer.setId("moreOverlay");
+            StackPane.setAlignment(scroll, Pos.CENTER);
+
+            // Aggiungi a schermo
+            root.getChildren().add(overlayContainer);
+        });
+
+        // HBox delle risorse
+        HBox resourceBox = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox, creditBox);
+        resourceBox.setAlignment(Pos.CENTER);
+        resourceBox.setPadding(new Insets(5));
+
+        // VBox finale con risorse + pulsante sotto
+        VBox statusBar = new VBox(5, resourceBox, moreButton);
+        statusBar.setAlignment(Pos.CENTER);
         statusBar.setPadding(new Insets(10));
-        statusBar.setStyle("");
         statusBar.setMaxWidth(800);
-        statusBar.setMouseTransparent(true);
+        statusBar.setMouseTransparent(false);
 
         Platform.runLater(() -> {
             Node rootNode = root.getScene().getRoot();
-            // Supponiamo che sia sempre uno StackPane come da tua struttura
             StackPane root = (StackPane) rootNode;
 
             StackPane.setAlignment(statusBar, Pos.CENTER_RIGHT);
-            StackPane.setMargin(statusBar, new Insets(0, 150, -500, 0));
+            StackPane.setMargin(statusBar, new Insets(0, 40, -550, 0));
 
             if (!root.getChildren().contains(statusBar)) {
                 root.getChildren().add(statusBar);
