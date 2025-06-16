@@ -655,6 +655,13 @@ public class GUI implements UI {
     }
 
     @Override
+    public void updateCurrGood(Goods good) {
+        Platform.runLater(() -> {
+            this.flightScene.updateCurrGood(good);
+        });
+    }
+
+    @Override
     public void showEpidemicCard(EpidemicEvent event) {
 
     }

@@ -273,7 +273,7 @@ public class WarZone extends Card implements Serializable {
             if(weakestTrucker.getSpaceShip().getNumBatteries() == 0){
                 this.state = CardState.WARZONE;
                 currConditionIndex++;
-                return new RemotionConfirmed(ServerEventType.GOODS_REMOVED, weakestTrucker.getNickname(), weakestTrucker.getSpaceShip(),"You didn't have batteries or goods to be removed. Press continue!");
+                return new RemotionConfirmed(ServerEventType.GOODS_REMOVED, weakestTrucker.getNickname(), weakestTrucker.getSpaceShip());
 
             }else{
                 this.state = CardState.REMOVE_BATTERIES;
@@ -406,7 +406,7 @@ public class WarZone extends Card implements Serializable {
             return cardEffect();
         }else{
             state=CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Meteorite piccolo, attivare Scudo?", currConditionIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "smallmeteor");
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Small meteor, do you want to activate shield?", currConditionIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "smallmeteor");
         }
     }
 

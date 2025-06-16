@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.components.*;
@@ -288,30 +289,31 @@ public class Smugglers extends Card implements Serializable {
             throw new GeneralError("plotGoodsToRemove not callable in the state " + cardState);
         }
 
-        if(indexOfCurrentTrucker == defeatedTruckers.size()){
+        if(defeatedTruckers.isEmpty()){
+            System.out.println("Entering cause defeatedtruckers is empty");
             cardState = CardState.ESECUZIONE;
             return cardEffect();
         }
 
         ArrayList<Goods> goodsList;
-        goodsList = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getGoodsList();
+        goodsList = defeatedTruckers.getFirst().getSpaceShip().getGoodsList();
 
         while (colorOfCurrGoodToRemove > 0 && goodsLostCurrTrucker > 0) {
             switch (colorOfCurrGoodToRemove) {
                 case 4 -> {
-                    numGoodCurrType = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getRedGoods();
+                    numGoodCurrType = defeatedTruckers.getFirst().getSpaceShip().getRedGoods();
                     colorOfCurrGoodToRemove--;
                 }
                 case 3 -> {
-                    numGoodCurrType = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getYellowGoods();
+                    numGoodCurrType = defeatedTruckers.getFirst().getSpaceShip().getYellowGoods();
                     colorOfCurrGoodToRemove--;
                 }
                 case 2 -> {
-                    numGoodCurrType = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getGreenGoods();
+                    numGoodCurrType = defeatedTruckers.getFirst().getSpaceShip().getGreenGoods();
                     colorOfCurrGoodToRemove--;
                 }
                 case 1 -> {
-                    numGoodCurrType = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getBlueGoods();
+                    numGoodCurrType = defeatedTruckers.getFirst().getSpaceShip().getBlueGoods();
                     colorOfCurrGoodToRemove--;
                 }
             }
@@ -320,27 +322,34 @@ public class Smugglers extends Card implements Serializable {
                 return removeWithoutAsking(goodsList);
             }else if (numGoodCurrType > 0){
                 cardState = CardState.REMOVE_ASKING;
-                ArrayList<Goods> listOfGoods = defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getGoodsList();
+                ArrayList<Goods> listOfGoods = defeatedTruckers.getFirst().getSpaceShip().getGoodsList();
                 for (int i = 0; i < numGoodCurrType; i++) {
                     goodsToRemove.add(listOfGoods.getFirst());
                 }
-                return new RemoveGoods(true, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(), defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip(),goodsToRemove);
+                return new RemoveGoods(true, defeatedTruckers.getFirst().getNickname(), defeatedTruckers.getFirst().getSpaceShip(),goodsToRemove);
             }
         }
 
         // se sei uscito perche non avevi merci devo controllare se puoi perdere batterie
         if(colorOfCurrGoodToRemove == 0 && goodsLostCurrTrucker > 0){
-            if(defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getNumBatteries() == 0){
-                indexOfCurrentTrucker++;
-                if(indexOfCurrentTrucker == defeatedTruckers.size()){
+            if(defeatedTruckers.getFirst().getSpaceShip().getNumBatteries() == 0){
+
+                SpaceShip spaceShip = defeatedTruckers.getFirst().getSpaceShip();
+                String nickname = defeatedTruckers.getFirst().getNickname();
+
+                defeatedTruckers.removeFirst();
+                System.out.println("Removed " + nickname + " from " + spaceShip);
+
+
+                if(defeatedTruckers.isEmpty()){
                     cardState = CardState.ESECUZIONE;
                     return cardEffect();
                 }else{
-                    return new RemotionConfirmed(ServerEventType.GOODS_REMOVED, defeatedTruckers.get(indexOfCurrentTrucker-1).getNickname(), defeatedTruckers.get(indexOfCurrentTrucker-1).getSpaceShip(), "You didn't have batteries or goods to be removed. Press continue!");
+                    return new RemotionConfirmed(ServerEventType.GOODS_REMOVED, nickname, spaceShip);
                 }
             }else{
                 this.cardState = CardState.REMOVE_BATTERIES;
-                return new RemoveBatteries(true, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(),defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip(), goodsLostCurrTrucker);
+                return new RemoveBatteries(true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), goodsLostCurrTrucker);
             }
         }else{
             System.out.println(colorOfCurrGoodToRemove);
@@ -363,17 +372,24 @@ public class Smugglers extends Card implements Serializable {
             goodsList.removeFirst();
             goodsLostCurrTrucker--;
         }
-        defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeGoods(list);
+        defeatedTruckers.getFirst().getSpaceShip().removeGoods(list);
 
-        if (goodsLostCurrTrucker == 0 || (goodsLostCurrTrucker > 0 && defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().getNumBatteries() == 0)) {
+        if (goodsLostCurrTrucker == 0 || (goodsLostCurrTrucker > 0 && defeatedTruckers.getFirst().getSpaceShip().getNumBatteries() == 0)) {
             // se questo trucker ha perso tutte le merci notifico che la rimozione è stata fatta e passo al prossimo
             // per passare al prossimo obbligo il corrente a mandarmi un ok/continue
-            indexOfCurrentTrucker++;
+
+            SpaceShip spaceShip = defeatedTruckers.getFirst().getSpaceShip();
+            String nickname = defeatedTruckers.getFirst().getNickname();
+
+            defeatedTruckers.removeFirst();
+            System.out.println("Removed " + nickname + " from " + spaceShip);
+
             cardState = CardState.REMOVE_GOODS;
-            return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(),defeatedTruckers.get(indexOfCurrentTrucker - 1).getSpaceShip(), "Goods removed, press continue!");
-        } else { // il trucker corrente deve perdere batterie
+            return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,nickname,spaceShip);
+        } else {
+            // il trucker corrente deve perdere batterie
             cardState = CardState.REMOVE_BATTERIES;
-            return new RemoveBatteries(true, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(),defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip(), goodsLostCurrTrucker);
+            return new RemoveBatteries(true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), goodsLostCurrTrucker);
         }
     }
 
@@ -415,7 +431,7 @@ public class Smugglers extends Card implements Serializable {
         if(cardState!= CardState.REMOVE_BATTERIES){
             throw new GeneralError("Can't call removeBatteries in the state " + cardState);
         }
-        if(!defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().checkBatteryStorage(coordinatesToRemoveBatteries)){
+        if(!defeatedTruckers.getFirst().getSpaceShip().checkBatteryStorage(coordinatesToRemoveBatteries)){
             throw new InvalidCoordinates("Not all components selected are Battery Storages");
         }
         int counterOfBatteriesSelectedByPlayer = 0;
@@ -426,14 +442,19 @@ public class Smugglers extends Card implements Serializable {
             throw new WrongNumberOfBatteriesSelected("The total number of batteries you selected to remove is not " + goodsLostCurrTrucker);
         }
         try{
-            defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);
+            defeatedTruckers.getFirst().getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);
         }catch(NotEnoughBatteries e){
             throw new NotEnoughBatteries("There is a battery storage that has less batteries then the number of batteries you wanted to remove in that one");
         }
 
-        indexOfCurrentTrucker++;
+        SpaceShip spaceShip = defeatedTruckers.getFirst().getSpaceShip();
+        String nickname = defeatedTruckers.getFirst().getNickname();
+
+        defeatedTruckers.removeFirst();
+        System.out.println("Removed " + nickname + " from " + spaceShip);
+
         cardState = CardState.REMOVE_GOODS;
-        return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(),defeatedTruckers.get(indexOfCurrentTrucker - 1).getSpaceShip(), "Batteries removed, press continue!");
+        return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,nickname,spaceShip);
     }
 
 
