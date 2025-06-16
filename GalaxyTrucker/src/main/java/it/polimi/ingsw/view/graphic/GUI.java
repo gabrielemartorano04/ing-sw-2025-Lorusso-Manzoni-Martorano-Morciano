@@ -430,6 +430,11 @@ public class GUI implements UI {
     public void flightScene(FlightStartEvent event) {
         Platform.runLater(() -> {
             this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip(), viewFlow, new StackPane());
+            stage.setScene(this.flightScene.createScene(event.getPlayers(), viewFlow.getLevel()));
+            stage.setTitle("Galaxy Trucker");
+            stage.setResizable(false);
+            stage.setFullScreen(true);
+            stage.show();
             this.flightScene.showStateInput();
         });
     }
