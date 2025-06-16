@@ -667,6 +667,9 @@ public class TUI implements UI {
                 }
             }
         }
+
+        System.out.println("Cosmic credits: " + viewFlow.getCredits());
+
     }
 
     @Override
@@ -828,8 +831,6 @@ public class TUI implements UI {
                 System.out.println(details);
             }
         }
-
-        System.out.println("Cosmic credits: " + viewFlow.getCredits());
 
     }
 

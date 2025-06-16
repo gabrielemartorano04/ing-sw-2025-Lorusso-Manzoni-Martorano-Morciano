@@ -382,9 +382,10 @@ public class Smugglers extends Card implements Serializable {
 
             cardState = CardState.REMOVE_GOODS;
             return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,nickname,spaceShip);
-        } else { // il trucker corrente deve perdere batterie
+        } else {
+            // il trucker corrente deve perdere batterie
             cardState = CardState.REMOVE_BATTERIES;
-            return new RemoveBatteries(true, defeatedTruckers.get(indexOfCurrentTrucker).getNickname(),defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip(), goodsLostCurrTrucker);
+            return new RemoveBatteries(true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), goodsLostCurrTrucker);
         }
     }
 
