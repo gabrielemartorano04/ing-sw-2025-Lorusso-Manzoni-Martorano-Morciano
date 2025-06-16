@@ -974,7 +974,7 @@ public class SpaceShip implements Serializable {
         }
         if(!wellDone){
             componentsVisited(7,7);
-            lost+=removeUnlinkedComponents();
+            lost+=removeUnlinkedComponents(Game.getIstance().getBank());
         }
         return wellDone;
     }
@@ -1008,7 +1008,7 @@ public class SpaceShip implements Serializable {
         }
         if(!wellDone){
             componentsVisited(7,7);
-            removeUnlinkedComponents();
+            removeUnlinkedComponents(Game.getIstance().getBank());
         }
         return wellDone;
     }
@@ -1243,7 +1243,7 @@ public class SpaceShip implements Serializable {
             }
         }
         componentsVisited(7,7);
-        removeUnlinkedComponents();
+        removeUnlinkedComponents(bank);
     }
 
     /**
@@ -1284,8 +1284,10 @@ public class SpaceShip implements Serializable {
      * component as unvisited for the next check. It's usually called when a component is destroyed by a cannon shot
      * or a meteorite
      */
-    private int removeUnlinkedComponents(){
+    private int removeUnlinkedComponents(Bank bank){
         int cont=0;
+        int x=0,y=0;
+        Component c=null;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if(components[i][j] != null ) {
@@ -1294,7 +1296,9 @@ public class SpaceShip implements Serializable {
                         default -> {
                             if(!components[i][j].isVisited()) {
                                 try {
-                                    removeComponent(i, j);
+                                    c=removeComponent(i, j);
+                                    x=i;
+                                    y=j;
                                 } catch (InvalidCoordinates e) {
                                     throw new RuntimeException(e);
                                 }
@@ -1316,6 +1320,62 @@ public class SpaceShip implements Serializable {
                         }
                     }
                 }
+            }
+        }
+        if(c!=null) {
+            switch(c){
+                case Cabin cabin->{
+                    if(cabin.getAlien() != null) {
+                        numAlien--;
+                    }
+                    else if(cabin.getQuantity()>0){
+                        numHuman-= cabin.getQuantity();
+                    }
+                }
+                case Load load->{
+                    goodsCapacity-= load.getCapacity();
+                    if(load.getQuantity()>0){
+
+                        for(Goods g:goodsList){
+                            if(g.getX()==x && g.getY()==y){
+                                if(g.getValue()==4) redGoods--;
+                                else if(g.getValue()==3) yellowGoods--;
+                                else if(g.getValue()==2) greenGoods--;
+                                else if(g.getValue()==1) blueGoods--;
+                                goodsList.remove(g);
+                                bank.addGoodsInBank(g.getValue());
+                            }
+                        }
+                    }
+                }
+                case BatteryStorage batteryStorage->{
+                    if(batteryStorage.getQuantity()>0){
+                        numOfBattery-=batteryStorage.getQuantity();
+                    }
+                }
+                case LifeSupport lifeSupport->{
+                    switch(components[x+1][y]){
+                        case Cabin cabin->{
+                            if(cabin.getAlien() != null) { numAlien--;}
+                        }default -> {}
+                    }
+                    switch(components[x-1][y]){
+                        case Cabin cabin->{
+                            if(cabin.getAlien() != null) { numAlien--;}
+                        }default -> {}
+                    }
+                    switch(components[x][y+1]){
+                        case Cabin cabin->{
+                            if(cabin.getAlien() != null) { numAlien--;}
+                        }default -> {}
+                    }
+                    switch(components[x][y-1]){
+                        case Cabin cabin->{
+                            if(cabin.getAlien() != null) { numAlien--;}
+                        }default -> {}
+                    }
+
+                }default -> {}
             }
         }
         return cont;
