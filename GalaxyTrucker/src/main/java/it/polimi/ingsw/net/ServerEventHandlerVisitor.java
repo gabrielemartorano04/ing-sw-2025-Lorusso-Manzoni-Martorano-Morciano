@@ -410,6 +410,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setParserFlightState(ParserState.PLOT_GOOD);
             viewFlow.setShip(event.getShip().getComponents());
             ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
+            ui.updateCurrGood(event.getGood());
             ui.showInputFormat(ParserState.PLOT_GOOD);
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);

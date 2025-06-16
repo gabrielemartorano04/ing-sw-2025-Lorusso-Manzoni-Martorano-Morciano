@@ -148,7 +148,7 @@ public interface UI {
     void showCardDrawn(StartCardEvent event);
 
     void showStardustCard(StarDustEvent event);
-
+    void updateCurrGood(Goods good);
     void showEpidemicCard(EpidemicEvent event);
     void showGoodsGained(Goods goods);
     //INPUT
