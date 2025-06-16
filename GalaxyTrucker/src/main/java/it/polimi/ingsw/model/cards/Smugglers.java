@@ -427,7 +427,7 @@ public class Smugglers extends Card implements Serializable {
         if(cardState!= CardState.REMOVE_BATTERIES){
             throw new GeneralError("Can't call removeBatteries in the state " + cardState);
         }
-        if(!defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().checkBatteryStorage(coordinatesToRemoveBatteries)){
+        if(!defeatedTruckers.getFirst().getSpaceShip().checkBatteryStorage(coordinatesToRemoveBatteries)){
             throw new InvalidCoordinates("Not all components selected are Battery Storages");
         }
         int counterOfBatteriesSelectedByPlayer = 0;
@@ -438,14 +438,17 @@ public class Smugglers extends Card implements Serializable {
             throw new WrongNumberOfBatteriesSelected("The total number of batteries you selected to remove is not " + goodsLostCurrTrucker);
         }
         try{
-            defeatedTruckers.get(indexOfCurrentTrucker).getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);
+            defeatedTruckers.getFirst().getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);
         }catch(NotEnoughBatteries e){
             throw new NotEnoughBatteries("There is a battery storage that has less batteries then the number of batteries you wanted to remove in that one");
         }
 
-        indexOfCurrentTrucker++;
+        SpaceShip spaceShip = defeatedTruckers.getFirst().getSpaceShip();
+        String nickname = defeatedTruckers.getFirst().getNickname();
+
+        defeatedTruckers.removeFirst();
         cardState = CardState.REMOVE_GOODS;
-        return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,defeatedTruckers.get(indexOfCurrentTrucker - 1).getNickname(),defeatedTruckers.get(indexOfCurrentTrucker - 1).getSpaceShip());
+        return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,nickname,spaceShip);
     }
 
 
