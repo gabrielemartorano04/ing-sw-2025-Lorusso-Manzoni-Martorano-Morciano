@@ -169,7 +169,7 @@ public class FlightScene {
             StackPane root = (StackPane) scene.getRoot();
             if (!root.getChildren().contains(optionsBox)) {
                 StackPane.setAlignment(optionsBox, Pos.TOP_RIGHT);
-                StackPane.setMargin(optionsBox, new Insets(20, 0, 0, 5));
+                StackPane.setMargin(optionsBox, new Insets(20, 0, 0, 15));
                 root.getChildren().add(optionsBox);
             }
             optionsBox.setPickOnBounds(false);
@@ -1664,26 +1664,27 @@ public class FlightScene {
     }
 
     private void showMore() {
-        // Rimuove vecchio overlay se presente
+        // Rimuove overlay precedente
         root.getChildren().removeIf(n -> "moreOverlay".equals(n.getId()));
 
-        // Overlay a schermo intero cliccabile per chiudere
+        // Overlay scuro trasparente
         Rectangle overlay = new Rectangle();
         overlay.widthProperty().bind(root.getScene().widthProperty());
         overlay.heightProperty().bind(root.getScene().heightProperty());
-        overlay.setFill(Color.rgb(0, 0, 0, 0.6));
+        overlay.setFill(Color.rgb(0, 0, 0, 0.7));
 
-        // Container principale
-        VBox descriptionBox = new VBox(10);
-        descriptionBox.setPadding(new Insets(20));
-        descriptionBox.setMaxWidth(600);
-        descriptionBox.setMaxHeight(500);
-        descriptionBox.setAlignment(Pos.TOP_LEFT);
-
+        // === TITOLO CENTRATO ===
         Label title = new Label("Components details:");
         title.setTextFill(Color.web("#FFDE69"));
-        title.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 20));
-        descriptionBox.getChildren().add(title);
+        title.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
+        title.setTextAlignment(TextAlignment.LEFT);
+
+        VBox titleBox = new VBox(title);
+        titleBox.setAlignment(Pos.CENTER_LEFT);
+
+        // === CONTENUTO SINISTRA ===
+        VBox textBox = new VBox(10);
+        textBox.setAlignment(Pos.TOP_LEFT);
 
         // Componenti della nave
         Trucker t = new Trucker("n", PlayerColors.BLUE);
@@ -1694,33 +1695,83 @@ public class FlightScene {
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }
+
         Component[][] layout = ship.getComponents();
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[i].length; j++) {
                 Component c = layout[i][j];
-                if (c != null && !"Empty Space".equals(c.getType())) {
-                    String desc = "[" + i + "," + j + "] " + formatComponent(c, i, j);
+                if (c != null && !"Empty Space".equals(c.getType())
+                        && ("Load".equals(c.getType()) || "Battery Storage".equals(c.getType()) || "Cabin".equals(c.getType()))) {
+                    String desc = formatComponent(c, i, j);
                     Label l = new Label(desc);
                     l.setTextFill(Color.WHITE);
-                    l.setFont(Font.font("Bangers", 15));
-                    descriptionBox.getChildren().add(l);
+                    l.setFont(Font.font("Bangers", 18));
+                    l.setTextAlignment(TextAlignment.LEFT);
+                    l.setWrapText(true);
+                    textBox.getChildren().add(l);
                 }
             }
         }
 
+        // === CREA E POSIZIONA LA GRIGLIA NELLO STESSO MODO ===
+        GridPane overlayGrid = new GridPane();
+        overlayGrid.setHgap(2);
+        overlayGrid.setVgap(2);
+        overlayGrid.setAlignment(Pos.TOP_RIGHT);
+        overlayGrid.setTranslateX(-57);
+        overlayGrid.setTranslateY(74);
+
+        for (int row = 5; row < 10; row++) {
+            for (int col = 4; col < 11; col++) {
+                StackPane cell = new StackPane();
+                cell.setPrefSize(107, 107);
+
+                if (validCells[row][col]) {
+                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 6px; -fx-background-radius: 6px;");
+                    Component c = layout[row][col];
+                    if (c != null) {
+                        ImageView imageView = new ImageView(c.getFrontImage());
+                        imageView.setFitWidth(107);
+                        imageView.setFitHeight(107);
+                        Rectangle clip = new Rectangle(107, 107);
+                        clip.setArcWidth(12);
+                        clip.setArcHeight(12);
+                        imageView.setClip(clip);
+                        imageView.setRotate(c.getRotationAngle());
+                        cell.getChildren().add(imageView);
+                    }
+                } else {
+                    cell.setStyle("-fx-background-color: transparent;");
+                }
+
+                overlayGrid.add(cell, col - 4, row - 5);
+            }
+        }
+
+        // === BOX COMPLETO ===
+        VBox descriptionBox = new VBox(20, titleBox, textBox);
+        descriptionBox.setMaxWidth(600);
+        descriptionBox.setAlignment(Pos.TOP_CENTER); // centra solo verticalmente
+        descriptionBox.setPadding(new Insets(20));
+
+        // ScrollPane trasparente
         ScrollPane scroll = new ScrollPane(descriptionBox);
         scroll.setFitToWidth(true);
         scroll.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
         scroll.setPadding(new Insets(20));
-        scroll.setMaxWidth(650);
+        scroll.setMaxWidth(400);
         scroll.setMaxHeight(500);
+        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-        StackPane overlayContainer = new StackPane(overlay, scroll);
+        StackPane overlayContainer = new StackPane(overlay, overlayGrid, scroll);
         overlayContainer.setId("moreOverlay");
-        StackPane.setAlignment(scroll, Pos.CENTER);
+        StackPane.setAlignment(scroll, Pos.CENTER_LEFT);
+        StackPane.setMargin(scroll, new Insets(0, 0, 0, 180));
+        StackPane.setAlignment(overlayGrid, Pos.TOP_RIGHT);
 
-        overlay.setOnMouseClicked(e -> root.getChildren().remove(overlayContainer));
-        scroll.setOnMouseClicked(e -> e.consume()); // Blocca il click dentro al contenuto
+        root.setOnMouseClicked(e -> root.getChildren().remove(overlayContainer));
+        scroll.setOnMouseClicked(e -> e.consume());
 
         root.getChildren().add(overlayContainer);
     }
@@ -1730,21 +1781,9 @@ public class FlightScene {
 
         StringBuilder details = new StringBuilder();
         switch (c) {
-            case Engine engine -> {
-                if (engine.getIsDouble())
-                    details.append("[").append(i).append(",").append(j).append("] DOUBLE ENGINE");
-                else
-                    details.append("[").append(i).append(",").append(j).append("] ENGINE");
-            }
-            case Cannon cannon -> {
-                if (cannon.getIsDouble())
-                    details.append("[").append(i).append(",").append(j).append("] DOUBLE CANNON (Direction: ").append(cannon.getOrientation()).append(")");
-                else
-                    details.append("[").append(i).append(",").append(j).append("] CANNON (Direction: ").append(cannon.getOrientation()).append(")");
-            }
             case Load load -> {
                 if (load.getIsSpecial()) {
-                    details.append("[").append(i).append(",").append(j).append("] SPECIAL LOAD (Capacity: ").append(load.getCapacity()).append(")");
+                    details.append("[").append(i).append(",").append(j).append("] SPECIAL LOAD ");
                     if (!load.isEmpty()) {
                         details.append(" contains: ");
                         for (Goods g : load.getGoods()) {
@@ -1754,7 +1793,7 @@ public class FlightScene {
                         details.append(" is empty");
                     }
                 } else {
-                    details.append("[").append(i).append(",").append(j).append("] LOAD (Capacity: ").append(load.getCapacity()).append(")");
+                    details.append("[").append(i).append(",").append(j).append("] LOAD ");
                     if (!load.isEmpty()) {
                         details.append(" contains: ");
                         for (Goods g : load.getGoods()) {
@@ -1765,11 +1804,8 @@ public class FlightScene {
                     }
                 }
             }
-            case Shield shield -> {
-                details.append("[").append(i).append(",").append(j).append("] SHIELD (direction: ").append(shield.getDirection()).append(")");
-            }
             case BatteryStorage battery -> {
-                details.append("[").append(i).append(",").append(j).append("] BATTERY STORAGE (Capacity: ").append(battery.getCapacity()).append(")");
+                details.append("[").append(i).append(",").append(j).append("] BATTERY STORAGE ");
                 if(battery.getQuantity() != 0) {
                     details.append(" contains ").append(battery.getQuantity()).append(battery.getQuantity() == 1 ? " battery" : " batteries");
                 } else {
@@ -1788,11 +1824,7 @@ public class FlightScene {
                     details.append(" is empty");
                 }
             }
-            case LifeSupport lifeSupport -> {
-                details.append("[").append(i).append(",").append(j).append("] LIFE SUPPORT is ").append(lifeSupport.getColor());
-            }
             default -> {
-                details.append("[").append(i).append(",").append(j).append("] ").append(c.getType().toUpperCase());
             }
         }
 
