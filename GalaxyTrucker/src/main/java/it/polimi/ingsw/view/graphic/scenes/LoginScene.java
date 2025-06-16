@@ -132,15 +132,16 @@ public class LoginScene {
             doneButton.setStyle((nicknameOk && colorOk) ? "-fx-background-color: #FFDE69; -fx-text-fill: black;" : "-fx-background-color: gray; -fx-text-fill: white;");
         });
 
+        VBox content = new VBox(30, nicknameLabel, nicknameField, colorPane, doneButton);
+        content.setAlignment(Pos.CENTER);
+        content.setPadding(new Insets(40));
+
         doneButton.setOnAction(e -> {
             String nickname = nicknameField.getText().trim();
             String input = nickname + " " + selectedColor[0];
             viewFlow.handleInput(input);
+            root.getChildren().remove(content);
         });
-
-        VBox content = new VBox(30, nicknameLabel, nicknameField, colorPane, doneButton);
-        content.setAlignment(Pos.CENTER);
-        content.setPadding(new Insets(40));
 
         this.root = new StackPane(backgroundView, content);
         return new Scene(root, width, height);
@@ -242,7 +243,7 @@ public class LoginScene {
     }
 
     public void showWaitForOthers() {
-        Label message = new Label("Waiting for other truckers to finish");
+        Label message = new Label("Waiting for other truckers to join");
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
         message.setTextFill(Color.web("#FFDE69"));
 
@@ -253,12 +254,7 @@ public class LoginScene {
         HBox textBox = new HBox(5, message, dots);
         textBox.setAlignment(Pos.CENTER);
 
-        Rectangle overlayBg = new Rectangle(root.getWidth(), root.getHeight());
-        overlayBg.setFill(Color.rgb(0, 0, 0, 0.4));
-        overlayBg.widthProperty().bind(root.widthProperty());
-        overlayBg.heightProperty().bind(root.heightProperty());
-
-        waitOverlay = new StackPane(overlayBg, textBox);
+        waitOverlay = new StackPane(textBox);
         waitOverlay.setMouseTransparent(true);
         waitOverlay.setAlignment(Pos.CENTER);
 

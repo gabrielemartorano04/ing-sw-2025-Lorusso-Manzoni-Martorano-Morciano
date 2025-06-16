@@ -767,8 +767,8 @@ public class BuildingScene {
             VBox popup = new VBox(12);
             popup.setAlignment(Pos.CENTER);
             popup.setPadding(new Insets(20));
-            popup.setPrefSize(250, 200);
-            popup.setBackground(new Background(new BackgroundFill(Color.web("#333333"), new CornerRadii(15), Insets.EMPTY)));
+            popup.setPrefSize(230, 200);
+//            popup.setBackground(new Background(new BackgroundFill(Color.web("#333333"), new CornerRadii(15), Insets.EMPTY)));
 
             Label messageLabel = new Label();
             messageLabel.setTextFill(Color.web("#FFDE69"));
@@ -807,8 +807,8 @@ public class BuildingScene {
 
             popup.getChildren().addAll(messageLabel, indexField, errorLabel, buttons);
 
-            AnchorPane.setTopAnchor(popup, (root.getHeight() - 200) / 2);
-            AnchorPane.setRightAnchor(popup, 40.0);
+            AnchorPane.setTopAnchor(popup, (root.getHeight() - 250) / 2);
+            AnchorPane.setRightAnchor(popup, 10.0);
             overlay.getChildren().add(popup);
             root.getChildren().add(overlay);
 
@@ -829,7 +829,8 @@ public class BuildingScene {
                 sendBtn.setDisable(true);
             } else if (countKept == 1) {
                 int onlyIndex = availableIndices.get(0);
-                messageLabel.setText("You have only 1 kept, it will be automatically selected (index " + onlyIndex + ")");
+                messageLabel.setText("You have only 1 kept, it will be automatically selected");
+                messageLabel.setWrapText(true);
                 indexField.setVisible(false);
                 sendBtn.setOnAction(ev -> {
                     viewFlow.handleInput("selectkept " + onlyIndex);

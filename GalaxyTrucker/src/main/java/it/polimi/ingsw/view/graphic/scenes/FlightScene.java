@@ -55,6 +55,7 @@ public class FlightScene {
     private final ViewFlow viewFlow;
     private Button rulesBtn;
     private Button otherBtn;
+    private Button withdrawButton;
 
     private GoodsImagesGetter goodsImagesGetter;
     private Image goodImage;
@@ -64,7 +65,13 @@ public class FlightScene {
     private StackPane waitOverlay;
     private Timeline waitAnimation;
 
-
+    /**
+     * constructor of the flight scene
+     * @param nickname name of the trucker
+     * @param layout matrix of the ship
+     * @param viewFlow logic of the game
+     * @param root principal pane of the scene
+     */
     public FlightScene(String nickname, Component[][] layout, ViewFlow viewFlow, StackPane root) {
         this.nickname = nickname;
         this.layout = layout;
@@ -81,6 +88,12 @@ public class FlightScene {
         this.goodsImagesGetter = new GoodsImagesGetter();
     }
 
+    /**
+     * create the scene in its principal elements
+     * @param playersNames list of players' name
+     * @param level level of the game
+     * @return the actual scene to show
+     */
     public Scene createScene(ArrayList<String> playersNames, int level) {
         double width = 1600;
         double height = 900;
@@ -106,13 +119,18 @@ public class FlightScene {
         Consumer<Button> styleButton = createDefaultButtonStyler();
 
         addRulesButtonToScene(styleButton);
+        //TODO fare il giusto collegamento per la carta da mostrare
         addCardDrawnToScene(new StarDust(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
         addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
+        addWithdrawButtonToScene(viewFlow, styleButton);
         attachOptionsBoxToScene(scene);
 
         return scene;
     }
 
+    /**
+     * used to create the first ship matrix, but also to modify it based on what happened during flight
+     */
     private void createAndAddShipLayout() {
         // se grid esiste già, la rimuovo dal root
         if (grid != null) {
@@ -157,13 +175,16 @@ public class FlightScene {
         root.getChildren().add(grid);
     }
 
-
+    /**
+     * box with the options button of the game
+     * @param scene scene where to add the buttons
+     */
     private void attachOptionsBoxToScene(Scene scene) {
         VBox optionsBox = new VBox(10);
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
-        optionsBox.getChildren().addAll(otherBtn, rulesBtn);
+        optionsBox.getChildren().addAll(otherBtn, rulesBtn, withdrawButton);
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) scene.getRoot();
@@ -177,6 +198,10 @@ public class FlightScene {
         });
     }
 
+    /**
+     * style used equal for every button in the scene
+     * @return the button
+     */
     private Consumer<Button> createDefaultButtonStyler() {
         return (btn) -> {
             btn.setFont(Font.font("Bangers", 18));
@@ -187,6 +212,10 @@ public class FlightScene {
         };
     }
 
+    /**
+     * add the image of the card to the scene
+     * @param card card to add
+     */
     private void addCardDrawnToScene(Card card) {
         if (scene == null || scene.getRoot() == null) return;
 
@@ -228,6 +257,70 @@ public class FlightScene {
         StackPane.setAlignment(imageContainer, Pos.CENTER);
     }
 
+    //TODO controllare se va bene
+
+    /**
+     * specific button for the withdraw of the player
+     * @param viewFlow to call the handleInput
+     * @param styleButton the style to use to make all buttons equal
+     */
+    private void addWithdrawButtonToScene(ViewFlow viewFlow, Consumer<Button> styleButton) {
+        Button withdrawButton = new Button("Withdraw");
+        styleButton.accept(withdrawButton);
+
+        withdrawButton.setOnAction(e -> {
+            StackPane root = (StackPane) scene.getRoot();
+
+            Rectangle bg = new Rectangle();
+            bg.widthProperty().bind(scene.widthProperty());
+            bg.heightProperty().bind(scene.heightProperty());
+            bg.setFill(Color.rgb(0, 0, 0, 0.4));
+
+            VBox box = new VBox(20);
+            box.setAlignment(Pos.CENTER);
+
+            Label confirm = new Label("Confirm to withdraw the flight?");
+            confirm.setTextFill(Color.web("#FFDE69"));
+            confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
+
+            Button yes = new Button("YES");
+            yes.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+            yes.setTextFill(Color.WHITE);
+            yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
+            yes.setCursor(Cursor.HAND);
+            yes.setPrefWidth(100);
+
+            Button no = new Button("NO");
+            no.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+            no.setTextFill(Color.WHITE);
+            no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+            no.setCursor(Cursor.HAND);
+            no.setPrefWidth(100);
+
+            StackPane confirmation = new StackPane(bg, box);
+
+            yes.setOnAction(ev -> {
+                viewFlow.handleInput("withdraw");
+                root.getChildren().remove(confirmation);
+            });
+
+            no.setOnAction(ev -> root.getChildren().remove(confirmation));
+
+            HBox buttons = new HBox(20, yes, no);
+            buttons.setAlignment(Pos.CENTER);
+
+            box.getChildren().addAll(confirm, buttons);
+
+            root.getChildren().add(confirmation);
+        });
+
+        this.withdrawButton = withdrawButton;
+    }
+
+    /**
+     * button to open rules
+     * @param styleButton to make all the buttons be equal
+     */
     private void addRulesButtonToScene(Consumer<Button> styleButton) {
         Button rulesBtn = new Button("Rules");
         styleButton.accept(rulesBtn);
@@ -260,6 +353,12 @@ public class FlightScene {
         this.rulesBtn = rulesBtn;
     }
 
+    /**
+     * to see other players ship
+     * @param viewFlow to call handleInput
+     * @param styleButton to make all the buttons equal
+     * @param playersNames list of all players' name
+     */
     private void addShowOtherButtonToScene(ViewFlow viewFlow, Consumer<Button> styleButton, ArrayList<String> playersNames) {
         Button otherBtn = new Button("Show others ship");
         styleButton.accept(otherBtn);
@@ -297,6 +396,9 @@ public class FlightScene {
         return scene;
     }
 
+    /**
+     * button to start the flight, equals to 'state' in TUI
+     */
     public void showStateInput() {
         // === Overlay grigio trasparente ===
         Rectangle overlay = new Rectangle();
@@ -332,6 +434,9 @@ public class FlightScene {
         root.getChildren().addAll(overlay, container);
     }
 
+    /**
+     * ask if you want to activate engines and then ask for the coordinates
+     */
     public void showActivateEngineInput() {
         StackPane root = (StackPane) scene.getRoot();
 
@@ -420,6 +525,9 @@ public class FlightScene {
         root.getChildren().add(anchorPane);
     }
 
+    /**
+     * ask if you want to activate cannons and then ask for the coordinates
+     */
     public void showActivateCannonsInput() {
         StackPane root = (StackPane) scene.getRoot();
 
@@ -508,6 +616,9 @@ public class FlightScene {
         root.getChildren().add(anchorPane);
     }
 
+    /**
+     * ask if you want to activate shields and then ask for the coordinates
+     */
     public void showActivateShieldInput() {
         StackPane root = (StackPane) scene.getRoot();
 
@@ -596,6 +707,9 @@ public class FlightScene {
         root.getChildren().add(anchorPane);
     }
 
+    /**
+     * ask if you want to land on an abandoned card
+     */
     public void showLandInput() {
         StackPane root = (StackPane) scene.getRoot();
 
@@ -645,6 +759,9 @@ public class FlightScene {
         root.getChildren().add(anchorPane);
     }
 
+    /**
+     * ask from where to remove humans
+     */
     public void showHumanCoordInput() {
         StackPane root = (StackPane) scene.getRoot();
 
@@ -703,6 +820,9 @@ public class FlightScene {
         root.getChildren().add(anchorPane);
     }
 
+    /**
+     * show the good and ask if you want to gain it and where
+     */
     public void showPlotGoodInput() {
         StackPane root = (StackPane) scene.getRoot();
 
@@ -854,6 +974,9 @@ public class FlightScene {
         root.getChildren().add(anchorPane);
     }
 
+    /**
+     * show the button to roll the dice
+     */
     public void showRollDiceInput() {
         StackPane root = (StackPane) scene.getRoot();
 
@@ -891,6 +1014,9 @@ public class FlightScene {
         });
     }
 
+    /**
+     * make player decide on which planet to land
+     */
     public void showPlanetDecisionInput() {
         StackPane root = (StackPane) scene.getRoot();
 
@@ -982,6 +1108,9 @@ public class FlightScene {
         root.getChildren().add(anchorPane);
     }
 
+    /**
+     * button to draw next card
+     */
     public void showDrawCardInput() {
         VBox container = new VBox(10);
         container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
@@ -1005,6 +1134,9 @@ public class FlightScene {
         root.getChildren().add(container);
     }
 
+    /**
+     * confirmation of the remotion and button to continue the game
+     */
     public void showRemotionConfirmedInput() {
         VBox container = new VBox(10);
         container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
@@ -1032,6 +1164,9 @@ public class FlightScene {
         root.getChildren().add(container);
     }
 
+    /**
+     * asks for coordinates from where to remove batteries
+     */
     public void showRemoveBatteriesInput() {
         StackPane root = (StackPane) scene.getRoot();
 
@@ -1089,6 +1224,9 @@ public class FlightScene {
         root.getChildren().add(anchorPane);
     }
 
+    /**
+     * ask from where to remove the good
+     */
     public void showRemoveGoodsInput() {
         StackPane root = (StackPane) scene.getRoot();
 
@@ -1146,6 +1284,9 @@ public class FlightScene {
         root.getChildren().add(anchorPane);
     }
 
+    /**
+     * let the player the possibility to rearrange goods
+     */
     public void showRearrangeInput() {
         StackPane root = (StackPane) scene.getRoot();
 
@@ -1238,6 +1379,9 @@ public class FlightScene {
         root.getChildren().add(anchorPane);
     }
 
+    /**
+     * asks if player want to gain the cosmic credits
+     */
     public void showCosmicCreditsInput() {
         StackPane root = (StackPane) scene.getRoot();
 
@@ -1287,6 +1431,9 @@ public class FlightScene {
         root.getChildren().add(box);
     }
 
+    /**
+     * button to start warzone card
+     */
     public void showWarzoneInput() {
         VBox container = new VBox(10);
         container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
@@ -1310,6 +1457,10 @@ public class FlightScene {
         root.getChildren().add(container);
     }
 
+    /**
+     * show the roll dice result and show it
+     * @param result result of the roll
+     */
     public void showRollDiceResult(int result) {
         StackPane root = (StackPane) scene.getRoot();
 
@@ -1380,11 +1531,17 @@ public class FlightScene {
         rollAnimation.play();
     }
 
+    /**
+     * updates the planet to show in planetDecision
+     * @param planets list of planets of the card
+     */
     public void updatePlanetsOccupied(ArrayList<Trucker> planets) {
         this.planets = planets;
     }
 
-
+    /**
+     * scene for players who finished the game
+     */
     public void showWaitForOthers() {
         Label message = new Label("Waiting for other truckers to finish");
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
@@ -1436,6 +1593,10 @@ public class FlightScene {
         });
     }
 
+    /**
+     * show in the top-right corner a popup with the message
+     * @param message message to show
+     */
     public void showMessage(String message) {
         // Titolo (bold)
         Label title = new Label("New message:");
@@ -1478,10 +1639,18 @@ public class FlightScene {
         });
     }
 
+    /**
+     * updates the curr good to show in showPlotGoodInput
+     * @param good good to show
+     */
     public void updateCurrGood(Goods good) {
         this.goodImage = goodsImagesGetter.getGoodImage(good.getValue());
     }
 
+    /**
+     * show on screen the positions of the truckers and the relative days distance
+     * @param truckers map of nickname and related position
+     */
     public void updateTrack(Map<String, Integer> truckers) {
         if (scene == null || scene.getRoot() == null) return;
 
@@ -1542,6 +1711,16 @@ public class FlightScene {
         root.getChildren().add(trackBox);
     }
 
+    /**
+     * show the general status of the ship and the possibility to see the specific component status
+     * @param position of the trucker
+     * @param batteryCount of the ship
+     * @param humanCount of the ship
+     * @param cannonPower single of the ship
+     * @param enginePower single of the ship
+     * @param goodsByColor map that relate the good color to hai quantity
+     * @param credits of the trucker
+     */
     public void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor, int credits) {
 
         Image engine = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
@@ -1663,6 +1842,9 @@ public class FlightScene {
         });
     }
 
+    /**
+     * connected with shipStatus that show the specific status of the single components
+     */
     private void showMore() {
         // Rimuove overlay precedente
         root.getChildren().removeIf(n -> "moreOverlay".equals(n.getId()));
@@ -1776,6 +1958,13 @@ public class FlightScene {
         root.getChildren().add(overlayContainer);
     }
 
+    /**
+     * connected to showMore that create the string to show for every single component
+     * @param c component
+     * @param i position x
+     * @param j position y
+     * @return
+     */
     private String formatComponent(Component c, int i, int j) {
         if (c == null) return "";
 
