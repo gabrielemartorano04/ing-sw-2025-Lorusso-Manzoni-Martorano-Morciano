@@ -123,7 +123,7 @@ public class AbandonedShip extends Card implements Serializable {
                 null,
                 null,
                 ParserState.LAND,
-                this.getFrontImagePath()
+                this
         );
     }
 

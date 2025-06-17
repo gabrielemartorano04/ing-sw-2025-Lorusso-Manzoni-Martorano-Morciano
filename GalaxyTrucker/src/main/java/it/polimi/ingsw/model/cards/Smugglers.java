@@ -136,7 +136,7 @@ public class Smugglers extends Card implements Serializable {
                 null,
                 null,
                 ParserState.ACTIVATE_CANNONS,
-                getFrontImagePath()
+                this
         );
     }
 

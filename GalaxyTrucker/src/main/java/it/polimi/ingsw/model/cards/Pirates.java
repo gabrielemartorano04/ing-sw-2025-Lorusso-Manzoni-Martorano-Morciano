@@ -132,7 +132,7 @@ public class Pirates extends Card implements Serializable {
                 null,
                 null,
                 ParserState.ACTIVATE_CANNONS,
-                getFrontImagePath()
+                this
 
         );
     }

@@ -70,7 +70,7 @@ public class Epidemic extends Card implements Serializable {
             track.put(t.getNickname(), t.getPosition());
         }
         GamePersistence.saveGame(GameController.getIstance());
-        return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved, track, getFrontImagePath());
+        return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved, track, this);
     }
 
 }

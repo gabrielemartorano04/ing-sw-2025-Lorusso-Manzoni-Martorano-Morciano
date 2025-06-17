@@ -94,7 +94,7 @@ public class MeteorShower extends Card implements Serializable {
                 null,
                 null,
                 ParserState.ROLL_DICE,
-                getFrontImagePath()
+                this
         );
     }
 

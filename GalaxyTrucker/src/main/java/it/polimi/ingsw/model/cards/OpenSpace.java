@@ -69,7 +69,7 @@ public class OpenSpace extends Card implements Serializable {
                 null,
                 null,
                 ParserState.ACTIVATE_ENGINES,
-                getFrontImagePath()
+                this
         );
     }
 

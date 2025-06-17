@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
 import it.polimi.ingsw.model.Bank;
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.Goods;
@@ -21,7 +22,7 @@ public class StartCardEvent extends CardEvent {
     private final String cardDescription;
     private final String firstPlayerNickname;
     private final String question;
-    private final String cardImagePath;
+    private final Card card;
 
     private Bank bank;
 
@@ -57,7 +58,7 @@ public class StartCardEvent extends CardEvent {
             List<Condition> conditionsOrder,
             Map<Condition, Effect> penalties,
             ParserState parserState,
-            String cardImagePath
+            Card card
     ) {
         super(ServerEventType.START_CARD, true, parserState, null);
         this.cardName = cardName;
@@ -76,7 +77,7 @@ public class StartCardEvent extends CardEvent {
         this.conditionsOrder = conditionsOrder;
         this.penalties = penalties;
         this.question = question;
-        this.cardImagePath = cardImagePath;
+        this.card = card;
     }
 
     // Getters
@@ -152,8 +153,8 @@ public class StartCardEvent extends CardEvent {
         this.bank = bank;
     }
 
-    public String getCardImagePath() {
-        return cardImagePath;
+    public Card getCard() {
+        return this.card;
     }
 
     @Override

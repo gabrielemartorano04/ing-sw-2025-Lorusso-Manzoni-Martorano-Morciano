@@ -626,7 +626,8 @@ public class GUI implements UI {
 
     @Override
     public void showCardDrawn(StartCardEvent event) {
-
+        Platform.runLater(() -> {
+        });
     }
 
     @Override

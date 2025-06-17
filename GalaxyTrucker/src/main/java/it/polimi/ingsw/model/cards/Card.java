@@ -81,10 +81,6 @@ public abstract class Card implements Serializable, CardInterface{
         return new Image(Objects.requireNonNull(getClass().getResourceAsStream(backImagePath)));
     }
 
-    public String getFrontImagePath() {
-        return frontImagePath;
-    }
-
     /**
      * Returns the front image of the Card
      * @return front image
