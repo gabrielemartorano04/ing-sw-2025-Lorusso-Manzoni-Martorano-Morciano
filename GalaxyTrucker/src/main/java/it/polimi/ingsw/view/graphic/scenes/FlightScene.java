@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.StarDust;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
@@ -46,7 +47,7 @@ import java.util.List;
 
 public class FlightScene {
     private final String nickname;
-    private final Component[][] layout;
+    private Component[][] layout;
     private final boolean[][] validCells;
     private final StackPane[][] cellMatrix;
     private Scene scene;
@@ -128,10 +129,14 @@ public class FlightScene {
         return scene;
     }
 
+    public void setShip(Component[][] ship){
+        this.layout = ship;
+    }
+
     /**
      * used to create the first ship matrix, but also to modify it based on what happened during flight
      */
-    private void createAndAddShipLayout() {
+    public void createAndAddShipLayout() {
         // se grid esiste già, la rimuovo dal root
         if (grid != null) {
             root.getChildren().remove(grid);
@@ -391,6 +396,11 @@ public class FlightScene {
 
         this.otherBtn = otherBtn;
     }
+
+    public void showCurrContidion(Condition condition) {
+        //TODO
+    }
+
 
     public Scene getScene() {
         return scene;
@@ -1713,15 +1723,8 @@ public class FlightScene {
 
     /**
      * show the general status of the ship and the possibility to see the specific component status
-     * @param position of the trucker
-     * @param batteryCount of the ship
-     * @param humanCount of the ship
-     * @param cannonPower single of the ship
-     * @param enginePower single of the ship
-     * @param goodsByColor map that relate the good color to hai quantity
-     * @param credits of the trucker
      */
-    public void showPlayerShipStatus(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String, Integer> goodsByColor, int credits) {
+    public void showPlayerShipStatus() {
 
         Image engine = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
         Image cannon = new Image(getClass().getResource("/it/polimi/ingsw/view/cannon.png").toExternalForm());
@@ -1754,12 +1757,12 @@ public class FlightScene {
         creditIcon.setFitWidth(16);
         creditIcon.setPreserveRatio(true);
 
-        Label posLabel = new Label(": " + position);
-        Label battLabel = new Label(": " + batteryCount);
-        Label humanLabel = new Label(": " + humanCount);
-        Label cannonLabel = new Label(": " + cannonPower);
-        Label engineLabel = new Label(": " + enginePower);
-        Label creditLabel = new Label(": " + credits);
+        Label posLabel = new Label(": " + viewFlow.getPosition());
+        Label battLabel = new Label(": " + viewFlow.getBatteryCount());
+        Label humanLabel = new Label(": " + viewFlow.getHumanCount());
+        Label cannonLabel = new Label(": " + viewFlow.getCannonPower());
+        Label engineLabel = new Label(": " + viewFlow.getEnginePower());
+        Label creditLabel = new Label(": " + viewFlow.getCredits());
 
         List<Label> labels = List.of(posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel);
         for (Label l : labels) {
@@ -1786,7 +1789,7 @@ public class FlightScene {
         Image greengood = new Image(getClass().getResource("/it/polimi/ingsw/view/greengood.png").toExternalForm());
         Image bluegood = new Image(getClass().getResource("/it/polimi/ingsw/view/bluegood.png").toExternalForm());
 
-        for (Map.Entry<String, Integer> entry : goodsByColor.entrySet()) {
+        for (Map.Entry<String, Integer> entry : viewFlow.getGoodsByColor().entrySet()) {
             ImageView goodIcon;
             switch (entry.getKey().toLowerCase()) {
                 case "red" -> goodIcon = new ImageView(redgood);

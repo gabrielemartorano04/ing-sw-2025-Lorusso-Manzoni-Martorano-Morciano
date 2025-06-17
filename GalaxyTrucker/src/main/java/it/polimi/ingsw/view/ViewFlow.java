@@ -342,10 +342,6 @@ public class ViewFlow implements EventReceiver {
         this.humanCount = humanCount;
     }
 
-//    public Map<String, Integer> getGoodsByColor() {
-//        return goodsByColor;
-//    }
-
     public void setGoodsByColor(Map<String, Integer> goodsByColor) {
         this.goodsByColor = goodsByColor;
     }

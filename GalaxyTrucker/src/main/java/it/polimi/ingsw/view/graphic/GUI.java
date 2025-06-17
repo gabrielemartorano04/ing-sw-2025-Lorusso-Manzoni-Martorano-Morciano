@@ -415,17 +415,17 @@ public class GUI implements UI {
     public void showCurrCondition(CurrentCondition event) {
         //TODO:
         Platform.runLater(() -> {
-            // this.fligthScene.showCurrCondition(event.getCondition());
+            this.flightScene.showCurrContidion(event.getCondition());
         });
 
     }
 
     @Override
     public void cardFinished(CardFinished event){
-        //TODO:
         Platform.runLater(() -> {
-//        this.flightScene.showUpdateSpaceship();
-//        this.flightScene.showUpdateTrack();
+            this.flightScene.createAndAddShipLayout();
+            this.flightScene.showPlayerShipStatus();
+            this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         });
     }
 
@@ -752,7 +752,12 @@ public class GUI implements UI {
 
     }
 
-
+    @Override
+    public void showTrack(Map<String, Integer> truckers, int level){
+        Platform.runLater(() -> {
+            this.flightScene.updateTrack(truckers);
+        });
+    }
 
 
     @Override
@@ -931,8 +936,8 @@ public class GUI implements UI {
     }
 
 
-
-    public void showTrack(Map<String, Integer> truckers, int level) {
+    @Deprecated
+    public void showTrackOld(Map<String, Integer> truckers, int level) {
         double width = 1600;
         double height = 900;
 

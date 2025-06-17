@@ -207,6 +207,18 @@ public class SpaceShip implements Serializable {
         }
     }
 
+    public Map<String, Integer> getGoodsByColor() {
+        Map<String, Integer> goodsByColor = new HashMap<>();
+
+        for (Goods goods : goodsList) {
+            String color = goods.getColor();
+            goodsByColor.put(color, goodsByColor.getOrDefault(color, 0) + 1);
+        }
+
+        return goodsByColor;
+    }
+
+
     /**
      * This method
      * @return number of astronauts and aliens in the spaceship

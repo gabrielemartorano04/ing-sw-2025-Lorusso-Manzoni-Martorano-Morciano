@@ -314,17 +314,22 @@ public class ServerEventHandlerVisitor implements VirtualView {
             }
         }
         if(!viewFlow.getOut()){
+            viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsByColor());
             viewFlow.setCredits(trucker.getCosmicCredit());
             viewFlow.setPosition(trucker.getPosition());
             viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
             viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
             viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
             viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
+
             viewFlow.setTrack(event.getTrack());
             viewFlow.setShip(trucker.getSpaceShip().getComponents());
+
             ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
             ui.showPlayerShipStatus(viewFlow.getPosition(), viewFlow.getBatteryCount(), viewFlow.getHumanCount(), viewFlow.getCannonPower(), viewFlow.getEnginePower(), viewFlow.getGoodsByColor(), viewFlow.getCredits());
+
             ui.cardFinished(event);
+
             if (viewFlow.getNickname().equals(event.getTruckersList().get(0).getNickname())) {
                 viewFlow.setParserFlightState(ParserState.DRAW_CARD);
                 ui.showInputFormat(ParserState.DRAW_CARD);

@@ -168,7 +168,7 @@ public class AppPerTest extends Application {
         color.put("yellow", 2);
         color.put("green", 4);
         color.put("blue", 1);
-        flightScene.showPlayerShipStatus(trucker.getPosition(), 5, 4, 3, 7, color, 12);
+        flightScene.showPlayerShipStatus();
         flightScene.showMessage("ciao");
     }
 
