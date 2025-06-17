@@ -271,6 +271,10 @@ class Deck implements Serializable {
             cards.addLast(new Planets(false, 3, 1, planets3, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0114.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
             cards.addLast(new Planets(false, 1, 1, planets4, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0114.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
             cards.addLast(new AbandonedShip(false, 1, 2, 3, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0117.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
+
+
+
+
             cards.addLast(new AbandonedStation(false, 1, goods2, 1,6, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0120.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg"));
             cards.addLast(new Slavers(false, 2, 8, 2, 4,7, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_01.jpg",  "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
             cards.addLast(new Smugglers(false, 8, 3, 1, goodsGained2, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_012.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
