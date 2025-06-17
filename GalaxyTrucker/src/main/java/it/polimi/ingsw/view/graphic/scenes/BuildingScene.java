@@ -1524,7 +1524,7 @@ public class BuildingScene {
         if (scene == null || root == null) return;
 
         // Crea la scritta TIME EXPIRED + count
-        Label message = new Label("TIME EXPIRED\n(" + expirationCount + ")");
+        Label message = new Label("TIME EXPIRED\n(" + "For " + expirationCount + " times)");
         message.setTextFill(Color.RED);
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 100));
         message.setTextAlignment(TextAlignment.CENTER);
@@ -1537,21 +1537,25 @@ public class BuildingScene {
         blink.setAutoReverse(true);
         blink.play();
 
-        // Sfondo grigio semitrasparente
+        // Timeline per fermare il lampeggio dopo 3 secondi
+        Timeline stopBlink = new Timeline(new KeyFrame(Duration.seconds(2), e -> {
+            blink.stop();
+            message.setOpacity(1.0); // assicurati che resti visibile dopo il blink
+        }));
+        stopBlink.play();
+
         Rectangle dimBackground = new Rectangle();
         dimBackground.setFill(Color.rgb(50, 50, 50, 0.6));
         dimBackground.widthProperty().bind(scene.widthProperty());
         dimBackground.heightProperty().bind(scene.heightProperty());
 
-        // Overlay con messaggio e sfondo
         StackPane overlay = new StackPane(dimBackground, message);
         overlay.setAlignment(Pos.CENTER);
         overlay.setMouseTransparent(true);
 
         root.getChildren().add(overlay);
 
-        // Rimuove l'overlay dopo 5 secondi
-        PauseTransition wait = new PauseTransition(Duration.seconds(5));
+        PauseTransition wait = new PauseTransition(Duration.seconds(2.5));
         wait.setOnFinished(e -> root.getChildren().remove(overlay));
         wait.play();
     }

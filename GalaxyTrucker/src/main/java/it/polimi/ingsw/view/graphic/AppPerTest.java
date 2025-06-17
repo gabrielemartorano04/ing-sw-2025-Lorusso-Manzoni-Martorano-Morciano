@@ -108,20 +108,21 @@ public class AppPerTest extends Application {
 
 
 
-//        StackPane stackPane = new StackPane();
-//        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
-//        primaryStage.setScene(buildingScene.createScene(playersNames, 2));
-//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-//        primaryStage.show();
-//
-////        buildingScene.insertSelectedComponent(cannon, false);
-////        buildingScene.insertComponentInGrid(cannon,6,7);
-////        buildingScene.insertComponentToKepts(cannon);
-////        buildingScene.selectKeptComponent(0);
-////        buildingScene.showPopUpError("Errore");
-////        buildingScene.selectKeptComponent(0);
-////        buildingScene.showOtherShip(trucker.getSpaceShip().getComponents(), trucker.getNickname());
+        StackPane stackPane = new StackPane();
+        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
+        primaryStage.setScene(buildingScene.createScene(playersNames, 2));
+        buildingScene.showTimeExpired(2);
+        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+        primaryStage.show();
+
+//        buildingScene.insertSelectedComponent(cannon, false);
+//        buildingScene.insertComponentInGrid(cannon,6,7);
+//        buildingScene.insertComponentToKepts(cannon);
+//        buildingScene.selectKeptComponent(0);
+//        buildingScene.showPopUpError("Errore");
+//        buildingScene.selectKeptComponent(0);
+//        buildingScene.showOtherShip(trucker.getSpaceShip().getComponents(), trucker.getNickname());
 //        buildingScene.updateAlienCabinCoord(new ArrayList<>(){
 //            {
 //                add(new int[]{5,6,0});
@@ -148,27 +149,27 @@ public class AppPerTest extends Application {
 //
 //
 
-        StackPane stackPane = new StackPane();
-        FlightScene flightScene = new FlightScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
-        primaryStage.setScene(flightScene.createScene(playersNames, 2));
-
-        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-        primaryStage.show();
-        flightScene.updatePlanetsOccupied(new ArrayList<>(){
-            {
-                add(trucker);
-                add(null);
-                add(null);
-            }
-        });
-        flightScene.updateTrack(mockTrack);
-        color = new HashMap<>();
-        color.put("red", 3);
-        color.put("yellow", 2);
-        color.put("green", 4);
-        color.put("blue", 1);
-        flightScene.showMessage("ciao");
+//        StackPane stackPane = new StackPane();
+//        FlightScene flightScene = new FlightScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
+//        primaryStage.setScene(flightScene.createScene(playersNames, 2));
+//
+//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+//        primaryStage.show();
+//        flightScene.updatePlanetsOccupied(new ArrayList<>(){
+//            {
+//                add(trucker);
+//                add(null);
+//                add(null);
+//            }
+//        });
+//        flightScene.updateTrack(mockTrack);
+//        color = new HashMap<>();
+//        color.put("red", 3);
+//        color.put("yellow", 2);
+//        color.put("green", 4);
+//        color.put("blue", 1);
+//        flightScene.showMessage("ciao");
     }
 
     public SpaceShip createShip1(SpaceShip ship) throws InvalidCoordinates {
