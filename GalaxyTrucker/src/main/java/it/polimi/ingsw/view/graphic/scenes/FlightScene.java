@@ -1688,6 +1688,7 @@ public class FlightScene {
         trackBox.setId("trackBox");
         trackBox.setAlignment(Pos.CENTER_LEFT);
         trackBox.setPadding(new Insets(10));
+        trackBox.setMouseTransparent(true);
 
         // Titolo
         Label title = new Label("Track Position");
