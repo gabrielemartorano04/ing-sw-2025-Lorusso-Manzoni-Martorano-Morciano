@@ -274,7 +274,7 @@ public class TUI implements UI {
     @Override
     public void flightScene(FlightStartEvent event){
         this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
-        this.showPlayerShipStatus(viewFlow.getPosition(),viewFlow.getBatteryCount(), viewFlow.getHumanCount(), viewFlow.getCannonPower(), viewFlow.getEnginePower(), viewFlow.getGoodsByColor(), viewFlow.getCredits());
+        this.showPlayerShipStatus();
         this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         this.showFlightPhaseStart();
         viewFlow.handleInput("state");
@@ -644,18 +644,17 @@ public class TUI implements UI {
     }
 
     @Override
-    public void showPlayerShipStatus(int position, int batteryCount, int humanCount,
-                                     float cannonPower, int enginePower, Map<String, Integer> goods, int credits) {
-        System.out.println("Position: " + position);
-        System.out.println("Total batteries: " + batteryCount);
-        System.out.println("Total crew members: " + humanCount);
-        System.out.println("Total cannon power (only single): " + cannonPower);
-        System.out.println("Total engine power (only single): " + enginePower);
-        System.out.println("Cosmic credits: " + credits);
+    public void showPlayerShipStatus() {
+        System.out.println("Position: " + viewFlow.getPosition());
+        System.out.println("Total batteries: " + viewFlow.getBatteryCount());
+        System.out.println("Total crew members: " + viewFlow.getHumanCount());
+        System.out.println("Total cannon power (only single): " + viewFlow.getCannonPower());
+        System.out.println("Total engine power (only single): " + viewFlow.getEnginePower());
+        System.out.println("Cosmic credits: " + viewFlow.getCredits());
 
         System.out.println("Goods on the ship:");
-        if (goods != null) {
-            for (Map.Entry<String, Integer> entry : goods.entrySet()) {
+        if (viewFlow.getGoodsByColor() != null) {
+            for (Map.Entry<String, Integer> entry : viewFlow.getGoodsByColor().entrySet()) {
                 switch (entry.getKey()) {
                     case "RED" -> System.out.println("  - " + entry.getValue() + " 🟥");
                     case "YELLOW" -> System.out.println("  - " + entry.getValue() + " 🟨");

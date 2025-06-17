@@ -323,7 +323,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setShip(trucker.getSpaceShip().getComponents());
 
             ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
-            ui.showPlayerShipStatus(viewFlow.getPosition(), viewFlow.getBatteryCount(), viewFlow.getHumanCount(), viewFlow.getCannonPower(), viewFlow.getEnginePower(), viewFlow.getGoodsByColor(), viewFlow.getCredits());
+            ui.showPlayerShipStatus();
 
             ui.cardFinished(event);
 
