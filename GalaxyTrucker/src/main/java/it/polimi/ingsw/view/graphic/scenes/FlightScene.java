@@ -39,11 +39,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Random;
-import java.util.function.Consumer;
+import java.util.*;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class FlightScene {
     private final String nickname;
@@ -62,6 +60,9 @@ public class FlightScene {
     private Image goodImage;
     private ArrayList<Trucker> planets;
 
+    private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel;
+    private Map<String, Label> goodLabels = new HashMap<>();
+    private VBox statusBar;
 
     private StackPane waitOverlay;
     private Timeline waitAnimation;
@@ -114,6 +115,8 @@ public class FlightScene {
         root.getChildren().setAll(backgroundView);
 
         createAndAddShipLayout();
+        initializeStatusBar();
+        updateStatusBar();
 
         scene = new Scene(root, width, height);
 
@@ -1724,14 +1727,20 @@ public class FlightScene {
     /**
      * show the general status of the ship and the possibility to see the specific component status
      */
-    public void showPlayerShipStatus() {
-
+    private void initializeStatusBar() {
         Image engine = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
         Image cannon = new Image(getClass().getResource("/it/polimi/ingsw/view/cannon.png").toExternalForm());
         Image human = new Image(getClass().getResource("/it/polimi/ingsw/view/human.png").toExternalForm());
-        Image battery = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
-        Image pos = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
-        Image credit = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
+        Image battery = engine; // Usa immagine engine per battery
+        Image pos = engine;     // Usa immagine engine per position
+        Image credit = engine;  // Usa immagine engine per credits
+
+        posLabel = createStyledLabel();
+        battLabel = createStyledLabel();
+        humanLabel = createStyledLabel();
+        cannonLabel = createStyledLabel();
+        engineLabel = createStyledLabel();
+        creditLabel = createStyledLabel();
 
         ImageView posIcon = new ImageView(pos);
         posIcon.setFitWidth(20);
@@ -1757,25 +1766,13 @@ public class FlightScene {
         creditIcon.setFitWidth(16);
         creditIcon.setPreserveRatio(true);
 
-        Label posLabel = new Label(": " + viewFlow.getPosition());
-        Label battLabel = new Label(": " + viewFlow.getBatteryCount());
-        Label humanLabel = new Label(": " + viewFlow.getHumanCount());
-        Label cannonLabel = new Label(": " + viewFlow.getCannonPower());
-        Label engineLabel = new Label(": " + viewFlow.getEnginePower());
-        Label creditLabel = new Label(": " + viewFlow.getCredits());
-
-        List<Label> labels = List.of(posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel);
-        for (Label l : labels) {
-            l.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-            l.setTextFill(Color.WHITE);
-        }
-
         HBox posBox = new HBox(0, posIcon, posLabel);
         HBox battBox = new HBox(0, batteryIcon, battLabel);
         HBox humanBox = new HBox(0, humanIcon, humanLabel);
         HBox cannonBox = new HBox(0, cannonIcon, cannonLabel);
         HBox engineBox = new HBox(5, engineIcon, engineLabel);
         HBox creditBox = new HBox(5, creditIcon, creditLabel);
+
 
         for (HBox box : List.of(posBox, battBox, humanBox, cannonBox, engineBox, creditBox)) {
             box.setAlignment(Pos.CENTER_RIGHT);
@@ -1784,35 +1781,24 @@ public class FlightScene {
         // Goods
         HBox goodsBox = new HBox(10);
         goodsBox.setAlignment(Pos.CENTER_RIGHT);
-        Image redgood = new Image(getClass().getResource("/it/polimi/ingsw/view/redgood.png").toExternalForm());
-        Image yellowgood = new Image(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png").toExternalForm());
-        Image greengood = new Image(getClass().getResource("/it/polimi/ingsw/view/greengood.png").toExternalForm());
-        Image bluegood = new Image(getClass().getResource("/it/polimi/ingsw/view/bluegood.png").toExternalForm());
+        Map<String, Image> goodImages = Map.of(
+                "red", new Image(getClass().getResource("/it/polimi/ingsw/view/redgood.png").toExternalForm()),
+                "yellow", new Image(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png").toExternalForm()),
+                "green", new Image(getClass().getResource("/it/polimi/ingsw/view/greengood.png").toExternalForm()),
+                "blue", new Image(getClass().getResource("/it/polimi/ingsw/view/bluegood.png").toExternalForm())
+        );
 
-        for (Map.Entry<String, Integer> entry : viewFlow.getGoodsByColor().entrySet()) {
-            ImageView goodIcon;
-            switch (entry.getKey().toLowerCase()) {
-                case "red" -> goodIcon = new ImageView(redgood);
-                case "yellow" -> goodIcon = new ImageView(yellowgood);
-                case "green" -> goodIcon = new ImageView(greengood);
-                case "blue" -> goodIcon = new ImageView(bluegood);
-                default -> {
-                    continue;
-                }
-            }
+        for (String color : goodImages.keySet()) {
+            ImageView goodIcon = new ImageView(goodImages.get(color));
             goodIcon.setFitWidth(35);
             goodIcon.setPreserveRatio(true);
-
-            Label qty = new Label(": " + entry.getValue());
-            qty.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-            qty.setTextFill(Color.WHITE);
-
-            HBox singleGood = new HBox(0, goodIcon, qty);
+            Label qtyLabel = createStyledLabel();
+            goodLabels.put(color.toLowerCase(), qtyLabel);
+            HBox singleGood = new HBox(0, goodIcon, qtyLabel);
             singleGood.setAlignment(Pos.CENTER_RIGHT);
             goodsBox.getChildren().add(singleGood);
         }
 
-        // Pulsante "More..." sotto
         Button moreButton = new Button("More...");
         moreButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         moreButton.setTextFill(Color.BLACK);
@@ -1820,30 +1806,50 @@ public class FlightScene {
         moreButton.setCursor(Cursor.HAND);
         moreButton.setOnAction(e -> showMore());
 
-        // HBox delle risorse
         HBox resourceBox = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox, creditBox);
         resourceBox.setAlignment(Pos.CENTER);
         resourceBox.setPadding(new Insets(5));
 
-        // VBox finale con risorse + pulsante sotto
-        VBox statusBar = new VBox(5, resourceBox, moreButton);
+        statusBar = new VBox(5, resourceBox, moreButton);
         statusBar.setAlignment(Pos.CENTER);
         statusBar.setPadding(new Insets(10));
         statusBar.setMaxWidth(800);
         statusBar.setMouseTransparent(false);
 
         Platform.runLater(() -> {
-            Node rootNode = root.getScene().getRoot();
-            StackPane root = (StackPane) rootNode;
-
+            StackPane rootPane = (StackPane) root.getScene().getRoot();
             StackPane.setAlignment(statusBar, Pos.CENTER_RIGHT);
             StackPane.setMargin(statusBar, new Insets(0, 40, -550, 0));
-
-            if (!root.getChildren().contains(statusBar)) {
-                root.getChildren().add(statusBar);
+            if (!rootPane.getChildren().contains(statusBar)) {
+                rootPane.getChildren().add(statusBar);
             }
         });
     }
+
+    public void updateStatusBar() {
+        posLabel.setText(": " + viewFlow.getPosition());
+        battLabel.setText(": " + viewFlow.getBatteryCount());
+        humanLabel.setText(": " + viewFlow.getHumanCount());
+        cannonLabel.setText(": " + viewFlow.getCannonPower());
+        engineLabel.setText(": " + viewFlow.getEnginePower());
+        creditLabel.setText(": " + viewFlow.getCredits());
+
+        for (Map.Entry<String, Integer> entry : viewFlow.getGoodsByColor().entrySet()) {
+            String color = entry.getKey().toLowerCase();
+            if (goodLabels.containsKey(color)) {
+                goodLabels.get(color).setText(": " + entry.getValue());
+            }
+        }
+    }
+
+    private Label createStyledLabel() {
+        Label l = new Label();
+        l.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        l.setTextFill(Color.WHITE);
+        return l;
+    }
+
+
 
     /**
      * connected with shipStatus that show the specific status of the single components

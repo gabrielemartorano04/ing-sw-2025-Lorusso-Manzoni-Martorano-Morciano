@@ -424,7 +424,7 @@ public class GUI implements UI {
     public void cardFinished(CardFinished event){
         Platform.runLater(() -> {
             this.flightScene.createAndAddShipLayout();
-            this.flightScene.showPlayerShipStatus();
+            this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         });
     }

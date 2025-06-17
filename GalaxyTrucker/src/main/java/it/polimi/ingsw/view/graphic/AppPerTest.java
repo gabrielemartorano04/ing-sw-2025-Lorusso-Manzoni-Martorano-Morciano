@@ -168,7 +168,6 @@ public class AppPerTest extends Application {
         color.put("yellow", 2);
         color.put("green", 4);
         color.put("blue", 1);
-        flightScene.showPlayerShipStatus();
         flightScene.showMessage("ciao");
     }
 
