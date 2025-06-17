@@ -27,7 +27,7 @@ public class TimerDisplay {
             }
 
             expirationCount++;
-            System.out.println("⏰ Timer ended for the " + ordinal(expirationCount) + " time.");
+            ui.showTimeExpired(expirationCount);
         });
 
         timerThread.setDaemon(true);
@@ -44,17 +44,6 @@ public class TimerDisplay {
         return expirationCount;
     }
 
-    private String ordinal(int number) {
-        if (number % 100 >= 11 && number % 100 <= 13) {
-            return number + "th";
-        }
-        return switch (number % 10) {
-            case 1 -> number + "st";
-            case 2 -> number + "nd";
-            case 3 -> number + "rd";
-            default -> number + "th";
-        };
-    }
 
     public void stop() {
         if (timerThread != null && timerThread.isAlive()) {

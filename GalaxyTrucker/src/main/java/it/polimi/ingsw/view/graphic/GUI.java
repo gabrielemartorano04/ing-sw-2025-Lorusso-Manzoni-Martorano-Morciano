@@ -326,6 +326,13 @@ public class GUI implements UI {
         });
     }
 
+    @Override
+    public void showTimeExpired(int expirationCount) {
+        Platform.runLater(() -> {
+            this.buildingScene.showTimeExpired(expirationCount);
+        });
+    }
+
 
     @Override
     public void keptComponent(KeptComponentEvent event){
@@ -581,43 +588,6 @@ public class GUI implements UI {
         // Nella gui non deve fare nulla serve per la tui sarebbe da unificare meglio
     }
 
-
-
-    @Override
-    public void showTimeExpired() {
-        // Crea la scritta TIME EXPIRED
-        Label message = new Label("TIME EXPIRED");
-        message.setTextFill(Color.RED);
-        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 100));
-
-        // Effetto lampeggiante
-        FadeTransition blink = new FadeTransition(Duration.seconds(0.4), message);
-        blink.setFromValue(1.0);
-        blink.setToValue(0.0);
-        blink.setCycleCount(Animation.INDEFINITE);
-        blink.setAutoReverse(true);
-        blink.play();
-
-        // Crea un rettangolo grigio semitrasparente come sfondo
-        Rectangle dimBackground = new Rectangle(stage.getWidth(), stage.getHeight());
-        dimBackground.setFill(Color.rgb(50, 50, 50, 0.6)); // grigio con opacità 60%
-        dimBackground.widthProperty().bind(stage.getScene().widthProperty());
-        dimBackground.heightProperty().bind(stage.getScene().heightProperty());
-
-        // Overlay con sfondo e scritta
-        StackPane overlay = new StackPane(dimBackground, message);
-        overlay.setAlignment(Pos.CENTER);
-        overlay.setMouseTransparent(true);
-
-        // Recupera root (deve essere uno StackPane)
-        StackPane root = (StackPane) stage.getScene().getRoot();
-        root.getChildren().add(overlay);
-
-        // Rimuove l'overlay dopo 5 secondi
-        PauseTransition wait = new PauseTransition(Duration.seconds(5));
-        wait.setOnFinished(e -> root.getChildren().remove(overlay));
-        wait.play();
-    }
 
 
 

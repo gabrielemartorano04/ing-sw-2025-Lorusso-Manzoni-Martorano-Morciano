@@ -6,10 +6,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.Cannon;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.PauseTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -1521,5 +1518,43 @@ public class BuildingScene {
         StackPane.setMargin(alienBox, new Insets(0, 15, 0, 0));
         root.getChildren().add(alienBox);
     }
+
+
+    public void showTimeExpired(int expirationCount) {
+        if (scene == null || root == null) return;
+
+        // Crea la scritta TIME EXPIRED + count
+        Label message = new Label("TIME EXPIRED\n(" + expirationCount + ")");
+        message.setTextFill(Color.RED);
+        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 100));
+        message.setTextAlignment(TextAlignment.CENTER);
+
+        // Effetto lampeggiante
+        FadeTransition blink = new FadeTransition(Duration.seconds(0.4), message);
+        blink.setFromValue(1.0);
+        blink.setToValue(0.0);
+        blink.setCycleCount(Animation.INDEFINITE);
+        blink.setAutoReverse(true);
+        blink.play();
+
+        // Sfondo grigio semitrasparente
+        Rectangle dimBackground = new Rectangle();
+        dimBackground.setFill(Color.rgb(50, 50, 50, 0.6));
+        dimBackground.widthProperty().bind(scene.widthProperty());
+        dimBackground.heightProperty().bind(scene.heightProperty());
+
+        // Overlay con messaggio e sfondo
+        StackPane overlay = new StackPane(dimBackground, message);
+        overlay.setAlignment(Pos.CENTER);
+        overlay.setMouseTransparent(true);
+
+        root.getChildren().add(overlay);
+
+        // Rimuove l'overlay dopo 5 secondi
+        PauseTransition wait = new PauseTransition(Duration.seconds(5));
+        wait.setOnFinished(e -> root.getChildren().remove(overlay));
+        wait.play();
+    }
+
 }
 

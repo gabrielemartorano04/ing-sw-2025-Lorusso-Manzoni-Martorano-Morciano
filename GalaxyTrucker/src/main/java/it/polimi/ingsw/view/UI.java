@@ -125,7 +125,7 @@ public interface UI {
     void showDiscardComponent(Component component);
 
     // strano che non venga usato time expired
-    void showTimeExpired();
+    void showTimeExpired(int expirationCount);
 
     void showWaitForOthers();
 

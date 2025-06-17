@@ -448,8 +448,20 @@ public class TUI implements UI {
     }
 
     @Override
-    public void showTimeExpired() {
-        System.out.println("Time expired, end of turn.!");
+    public void showTimeExpired(int expirationCount) {
+        System.out.println("⏰ Timer ended for the " + ordinal(expirationCount) + " time.");
+    }
+
+    private String ordinal(int number) {
+        if (number % 100 >= 11 && number % 100 <= 13) {
+            return number + "th";
+        }
+        return switch (number % 10) {
+            case 1 -> number + "st";
+            case 2 -> number + "nd";
+            case 3 -> number + "rd";
+            default -> number + "th";
+        };
     }
 
     @Override
