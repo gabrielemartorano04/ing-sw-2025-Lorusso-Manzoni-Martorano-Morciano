@@ -1,19 +1,22 @@
 package it.polimi.ingsw.view.text;
 
+import it.polimi.ingsw.view.UI;
+
 public class TimerDisplay {
     private int durationSeconds;
     private long startTime;
     private int expirationCount = 0;
     private Thread timerThread;
+    private final UI ui;
 
-    public TimerDisplay() {
-
+    public TimerDisplay(UI ui) {
+        this.ui = ui;
     }
 
     public void start(int durationSeconds) {
         this.startTime = System.currentTimeMillis();
         this.durationSeconds=durationSeconds;
-        System.out.println("Timer started! Duration: " + durationSeconds + " seconds.");
+        ui.turnHourGlass(durationSeconds);
 
         timerThread = new Thread(() -> {
             try {

@@ -77,7 +77,6 @@ public class ViewFlow implements EventReceiver {
         this.nickname = null;
         this.running = true;
         this.viewState = ViewState.FIRST;
-        this.timerDisplay = new TimerDisplay();
         this.credits=0;
 
         this.availableComponents= new ArrayList<>();
@@ -106,6 +105,8 @@ public class ViewFlow implements EventReceiver {
         }else{
             this.ui = new TUI(this);
         }
+
+        this.timerDisplay = new TimerDisplay(ui);
         this.serverEventVisitor = new ServerEventHandlerVisitor(this, ui);
         this.alreadyLogged=false;
         this.firstLinked=false;

@@ -165,7 +165,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if (viewFlow.getSelectedKeptComponent() == null) {
             ui.showBuildOptions();
         }
-        ui.turnHourGlass(event);
     }
 
     @Override

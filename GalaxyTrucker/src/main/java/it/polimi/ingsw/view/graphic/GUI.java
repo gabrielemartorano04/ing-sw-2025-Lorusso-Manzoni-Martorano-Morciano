@@ -320,7 +320,7 @@ public class GUI implements UI {
     }
 
     @Override
-    public void turnHourGlass(HourglassTurnEvent event){
+    public void turnHourGlass(int seconds){
         Platform.runLater(() -> {
             this.buildingScene.startHourglassTimer();
         });

@@ -198,7 +198,9 @@ public class TUI implements UI {
     }
 
     @Override
-    public void turnHourGlass(HourglassTurnEvent event){}
+    public void turnHourGlass(int durationSeconds){
+        System.out.println("Timer started! Duration: " + durationSeconds + " seconds.");
+    }
 
     @Override
     public void buildingComplete(BuildCompleteEvent event){

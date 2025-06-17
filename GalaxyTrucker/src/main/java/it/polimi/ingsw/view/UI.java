@@ -48,7 +48,7 @@ public interface UI {
 
     void turnHourGlassError(TurnHourglassError event);
 
-    void turnHourGlass(HourglassTurnEvent event);
+    void turnHourGlass(int durationSeconds);
 
     void buildingComplete(BuildCompleteEvent event);
 
