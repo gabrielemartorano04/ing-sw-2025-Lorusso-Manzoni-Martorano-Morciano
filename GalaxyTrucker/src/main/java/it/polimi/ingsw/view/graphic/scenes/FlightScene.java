@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
-import it.polimi.ingsw.model.cards.StarDust;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
@@ -114,7 +113,7 @@ public class FlightScene {
 
         root.getChildren().setAll(backgroundView);
 
-        createAndAddShipLayout();
+        updateShipLayout();
         initializeStatusBar();
         updateStatusBar();
 
@@ -124,7 +123,7 @@ public class FlightScene {
 
         addRulesButtonToScene(styleButton);
         //TODO fare il giusto collegamento per la carta da mostrare
-        addCardDrawnToScene(new StarDust(false, 2, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg"));
+        addCardDrawnToScene(null, true);
         addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
         addWithdrawButtonToScene(viewFlow, styleButton);
         attachOptionsBoxToScene(scene);
@@ -139,7 +138,7 @@ public class FlightScene {
     /**
      * used to create the first ship matrix, but also to modify it based on what happened during flight
      */
-    public void createAndAddShipLayout() {
+    public void updateShipLayout() {
         // se grid esiste già, la rimuovo dal root
         if (grid != null) {
             root.getChildren().remove(grid);
@@ -221,30 +220,21 @@ public class FlightScene {
     }
 
     /**
-     * add the image of the card to the scene
-     * @param card card to add
+     * Add the image of the card to the scene or initialize with just the white border.
+     * @param card Card to display (ignored if initialize is true)
+     * @param initialize If true, only display the white border without a card image
      */
-    private void addCardDrawnToScene(Card card) {
+    public void addCardDrawnToScene(Card card, boolean initialize) {
         if (scene == null || scene.getRoot() == null) return;
 
         StackPane root = (StackPane) scene.getRoot();
 
-        // === Nuove dimensioni con proporzioni mantenute ===
+        // === Dimensioni della carta ===
         double imageWidth = 200;
         double imageHeight = 308;
 
-        // === Immagine della carta ===
-        ImageView cardView = new ImageView(card.getFrontImage());
-        cardView.setFitWidth(imageWidth);
-        cardView.setFitHeight(imageHeight);
-        cardView.setPreserveRatio(true); // vogliamo dimensioni esatte
-        cardView.setMouseTransparent(true);
-
-        // === Clip per angoli smussati ===
-        Rectangle clip = new Rectangle(imageWidth, imageHeight);
-        clip.setArcWidth(16);
-        clip.setArcHeight(16);
-        cardView.setClip(clip);
+        // === Rimuove eventuali elementi precedenti ===
+        root.getChildren().removeIf(node -> node.getUserData() != null && node.getUserData().equals("cardContainer"));
 
         // === Bordo bianco ===
         Rectangle border = new Rectangle(imageWidth, imageHeight);
@@ -255,15 +245,39 @@ public class FlightScene {
         border.setStrokeWidth(2);
         border.setMouseTransparent(true);
 
-        // === Contenitore ===
-        StackPane imageContainer = new StackPane(border, cardView);
+        StackPane imageContainer;
+
+        if (initialize) {
+            // Solo il bordo bianco
+            imageContainer = new StackPane(border);
+        } else {
+            // === Immagine della carta ===
+            ImageView cardView = new ImageView(card.getFrontImage());
+            cardView.setFitWidth(imageWidth);
+            cardView.setFitHeight(imageHeight);
+            cardView.setPreserveRatio(true);
+            cardView.setMouseTransparent(true);
+
+            // === Clip per angoli smussati ===
+            Rectangle clip = new Rectangle(imageWidth, imageHeight);
+            clip.setArcWidth(16);
+            clip.setArcHeight(16);
+            cardView.setClip(clip);
+
+            imageContainer = new StackPane(border, cardView);
+        }
+
         imageContainer.setPrefSize(imageWidth, imageHeight);
         imageContainer.setAlignment(Pos.CENTER);
         imageContainer.setTranslateX(-420);
 
+        // === Marcatore per poterlo rimuovere in futuro ===
+        imageContainer.setUserData("cardContainer");
+
         root.getChildren().add(imageContainer);
         StackPane.setAlignment(imageContainer, Pos.CENTER);
     }
+
 
     //TODO controllare se va bene
 

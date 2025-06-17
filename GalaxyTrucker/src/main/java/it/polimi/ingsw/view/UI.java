@@ -124,18 +124,13 @@ public interface UI {
     void showBuildOptions(); // (link / keep / discard)
     void showDiscardComponent(Component component);
 
-    void showInvalidPlacement(String reason);
-
     // strano che non venga usato time expired
     void showTimeExpired();
 
     void showWaitForOthers();
 
-    void showBuildComplete();
-
     void showShipLayout(String nickname, Component[][] layout);
 
-    void showContinue();
 
     //FLIGTH
     void showCardDrawn(StartCardEvent event);
@@ -143,7 +138,7 @@ public interface UI {
     void showStardustCard(StarDustEvent event);
     void updateCurrGood(Goods good);
     void showEpidemicCard(EpidemicEvent event);
-    void showGoodsGained(Goods goods);
+
     //INPUT
 
 

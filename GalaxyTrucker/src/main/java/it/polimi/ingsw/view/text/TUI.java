@@ -282,6 +282,7 @@ public class TUI implements UI {
     @Override
     public void showCurrCondition(CurrentCondition event){
         System.out.println("Current condition:" + event.getCondition());
+        System.out.println("Type Continue to proceed");
     }
 
     @Override
@@ -445,12 +446,6 @@ public class TUI implements UI {
     }
 
     @Override
-    public void showInvalidPlacement(String reason) {
-        System.out.println("Place not correct: " + reason);
-    }
-
-
-    @Override
     public void showTimeExpired() {
         System.out.println("Time expired, end of turn.!");
     }
@@ -465,7 +460,6 @@ public class TUI implements UI {
         System.out.println(message);
     }
 
-    @Override
     public void showBuildComplete() {
         System.out.println("Building completed!");
     }
@@ -1000,12 +994,6 @@ public class TUI implements UI {
 
 
     @Override
-    public void showGoodsGained(Goods good) {
-        System.out.println("Goods gained:");
-        System.out.println("- " + good.getColor() + " (" + good.getValue() + ")");
-    }
-
-    @Override
     public void updatePlanetsOccupied(PlanetDecision event) {
         int index=0;
         for(Trucker planets: event.getPlanetsOccupied()){
@@ -1157,10 +1145,6 @@ public class TUI implements UI {
             System.out.println("nickname: " + nicknames.get(i) + " color: " + colors.get(i));
         }
         System.out.println("choose a player");
-    }
-
-    public void showContinue(){
-        System.out.println("Type Continue to proceed");
     }
 
     public void setGoodImage(Goods good) {

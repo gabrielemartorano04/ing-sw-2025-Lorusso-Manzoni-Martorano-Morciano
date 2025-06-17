@@ -202,6 +202,11 @@ public class GUI implements UI {
         });
     }
 
+    @Override
+    public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames){
+        // TODO: per funzionalità aggiuntiva ci pensiamo piu avanti
+    }
+
 
     //fine insertNumPlayerscene
 
@@ -423,9 +428,23 @@ public class GUI implements UI {
     @Override
     public void cardFinished(CardFinished event){
         Platform.runLater(() -> {
-            this.flightScene.createAndAddShipLayout();
+            this.flightScene.updateShipLayout();
             this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
+        });
+    }
+
+    @Override
+    public void showTrack(Map<String, Integer> truckers, int level){
+        Platform.runLater(() -> {
+            this.flightScene.updateTrack(truckers);
+        });
+    }
+
+    @Override
+    public void showCardDrawn(StartCardEvent event) {
+        Platform.runLater(() -> {
+            this.flightScene.addCardDrawnToScene(event.getCard(), false);
         });
     }
 
@@ -433,19 +452,41 @@ public class GUI implements UI {
     public  void epidemic(EpidemicEvent event){
 
         Platform.runLater(() -> {
-            this.flightScene.createAndAddShipLayout();
+            this.flightScene.updateShipLayout();
             this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         });
+    }
 
+    @Override
+    public void showStardustCard(StarDustEvent event) {
+        Platform.runLater(() -> {
+            this.flightScene.addCardDrawnToScene(event.getCard(),false);
+        });
+    }
+
+    @Override
+    public void updateCurrGood(Goods good) {
+        Platform.runLater(() -> {
+            this.flightScene.updateCurrGood(good);
+        });
+    }
+
+    @Override
+    public void showEpidemicCard(EpidemicEvent event) {
+        Platform.runLater(() -> {
+            this.flightScene.addCardDrawnToScene(event.getCard(),false);
+        });
     }
 
     @Override
     public void stardust(StarDustEvent event){
 
         Platform.runLater(() -> {
-//          this.flightScene.showUpdateSpaceship();
-//          this.flightScene.showUpdateTrack();
+            this.flightScene.updateShipLayout();
+            this.flightScene.updateStatusBar();
+            this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
+            this.flightScene.addCardDrawnToScene(event.getCard(),false);
         });
     }
 
@@ -542,13 +583,6 @@ public class GUI implements UI {
 
 
 
-
-    @Override
-    public void showInvalidPlacement(String reason) {
-
-    }
-
-
     @Override
     public void showTimeExpired() {
         // Crea la scritta TIME EXPIRED
@@ -586,66 +620,6 @@ public class GUI implements UI {
     }
 
 
-    @Override
-    public void showBuildComplete() {
-        double width = 1600;
-        double height = 900;
-
-        // Sfondo
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(width);
-        backgroundView.setFitHeight(height);
-        backgroundView.setPreserveRatio(false);
-        backgroundView.setMouseTransparent(true);
-
-        // Testi
-        Label line1 = new Label("WELL DONE!");
-        line1.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 40));
-        line1.setTextFill(Color.web("#FFDE69"));
-
-        Label line2 = new Label("Spaceship built");
-        line2.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
-        line2.setTextFill(Color.web("#FFDE69"));
-
-        Label line3 = new Label("Get ready for launch!");
-        line3.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
-        line3.setTextFill(Color.web("#FFDE69"));
-
-        VBox textBox = new VBox(10, line1, line2, line3);
-        textBox.setAlignment(Pos.CENTER);
-
-        StackPane root = new StackPane(backgroundView, textBox);
-        StackPane.setAlignment(textBox, Pos.CENTER);
-
-        Scene scene = new Scene(root, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.setFullScreen(true);
-    }
-
-    @Override
-    public void showCardDrawn(StartCardEvent event) {
-        Platform.runLater(() -> {
-        });
-    }
-
-    @Override
-    public void showStardustCard(StarDustEvent event) {
-
-    }
-
-    @Override
-    public void updateCurrGood(Goods good) {
-        Platform.runLater(() -> {
-            this.flightScene.updateCurrGood(good);
-        });
-    }
-
-    @Override
-    public void showEpidemicCard(EpidemicEvent event) {
-
-    }
 
 
     @Override
@@ -654,42 +628,6 @@ public class GUI implements UI {
         return;
     }
 
-
-    public void showCardDrawn(String photo) {
-        double width = stage.getScene().getWidth();
-        double height = stage.getScene().getHeight();
-
-        // Immagine della carta
-        ImageView cardView = new ImageView(photo);
-        cardView.setFitWidth(180);
-        cardView.setPreserveRatio(true);
-        cardView.setMouseTransparent(true);
-
-        // Contorno bianco con angoli smussati
-        Rectangle border = new Rectangle(180, 280); // altezza proporzionale alla larghezza
-        border.setArcWidth(15);
-        border.setArcHeight(15);
-        border.setFill(Color.WHITE);
-        border.setStroke(Color.WHITE);
-        border.setStrokeWidth(2);
-
-        StackPane cardWithBorder = new StackPane(border, cardView);
-        cardWithBorder.setAlignment(Pos.BOTTOM_LEFT);
-
-        VBox cardBox = new VBox(10, cardWithBorder);
-        cardBox.setAlignment(Pos.BOTTOM_LEFT);
-        cardBox.setPadding(new Insets(0, 0, 0, 20)); // margine sinistro
-
-        StackPane container = new StackPane(cardBox);
-        container.setMouseTransparent(false);
-
-        Platform.runLater(() -> {
-            Node rootNode = stage.getScene().getRoot();
-            if (rootNode instanceof StackPane root) {
-                root.getChildren().add(container);
-            }
-        });
-    }
 
 
 
@@ -729,14 +667,12 @@ public class GUI implements UI {
         });
     }
 
-    @Override
-    public void showGoodsGained(Goods goods) {
-
-    }
 
     @Override
     public void updatePlanetsOccupied(PlanetDecision event) {
-
+        Platform.runLater(() -> {
+            this.flightScene.updatePlanetsOccupied(event.getPlanetsOccupied());
+        });
     }
 
     @Override
@@ -752,13 +688,6 @@ public class GUI implements UI {
     @Override
     public void showError(String message) {
 
-    }
-
-    @Override
-    public void showTrack(Map<String, Integer> truckers, int level){
-        Platform.runLater(() -> {
-            this.flightScene.updateTrack(truckers);
-        });
     }
 
 
@@ -1151,13 +1080,44 @@ public class GUI implements UI {
         });
     }
 
-    public void showContinue(){
-        // vorrei che mostrasse il popup che ti fa cliccare continue, serve solo per la flight
+    @Deprecated
+    public void showBuildComplete() {
+        double width = 1600;
+        double height = 900;
+
+        // Sfondo
+        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(false);
+        backgroundView.setMouseTransparent(true);
+
+        // Testi
+        Label line1 = new Label("WELL DONE!");
+        line1.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 40));
+        line1.setTextFill(Color.web("#FFDE69"));
+
+        Label line2 = new Label("Spaceship built");
+        line2.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
+        line2.setTextFill(Color.web("#FFDE69"));
+
+        Label line3 = new Label("Get ready for launch!");
+        line3.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
+        line3.setTextFill(Color.web("#FFDE69"));
+
+        VBox textBox = new VBox(10, line1, line2, line3);
+        textBox.setAlignment(Pos.CENTER);
+
+        StackPane root = new StackPane(backgroundView, textBox);
+        StackPane.setAlignment(textBox, Pos.CENTER);
+
+        Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setFullScreen(true);
     }
 
-    @Override
-    public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames){
-        // TODO: per funzionalità aggiuntiva ci pensiamo piu avanti
-    }
+
 
 }
