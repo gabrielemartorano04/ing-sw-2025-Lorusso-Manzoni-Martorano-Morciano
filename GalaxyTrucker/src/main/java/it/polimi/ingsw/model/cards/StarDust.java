@@ -29,8 +29,8 @@ public class StarDust extends Card implements Serializable {
      * @param frontImage front image of the card
      * @param backImage back image of the card
      */
-    public StarDust(boolean trialFlight, int level, String frontImage, String backImage) {
-        super("Star Dust", "A cloud of cosmic dust", trialFlight, level, frontImage, backImage);
+    public StarDust(boolean trialFlight, int level, String frontImage, String backImage, int id) {
+        super("Star Dust", "A cloud of cosmic dust", trialFlight, level, frontImage, backImage, id);
         this.cardState = CardState.ESECUZIONE;
     }
 

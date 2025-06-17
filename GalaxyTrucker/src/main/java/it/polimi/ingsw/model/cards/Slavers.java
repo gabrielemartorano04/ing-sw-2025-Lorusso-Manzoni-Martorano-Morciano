@@ -58,8 +58,8 @@ public class Slavers extends Card implements Serializable {
      * @param frontImage front image of the card
      * @param backImage back image of the card
      */
-    public Slavers(boolean trialFlight, int level, int credits, int days, int astronautsLost, int slaversPower, String frontImage, String backImage ) {
-        super("Slavers", "Intergalactic slave traders", trialFlight, level, frontImage, backImage);
+    public Slavers(boolean trialFlight, int level, int credits, int days, int astronautsLost, int slaversPower, String frontImage, String backImage,int id) {
+        super("Slavers", "Intergalactic slave traders", trialFlight, level, frontImage, backImage,id);
         this.credits = credits;
         this.days = days;
         this.astronautsLost = astronautsLost;

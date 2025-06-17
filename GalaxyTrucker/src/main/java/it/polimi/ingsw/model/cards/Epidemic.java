@@ -31,8 +31,8 @@ public class Epidemic extends Card implements Serializable {
      * @param frontImage front image of the card
      * @param backImage back image of the card
      */
-    public Epidemic(boolean trialFlight, int level, String frontImage, String backImage) {
-        super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage);
+    public Epidemic(boolean trialFlight, int level, String frontImage, String backImage, int id) {
+        super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage, id);
         this.state = CardState.ESECUZIONE;
     }
 

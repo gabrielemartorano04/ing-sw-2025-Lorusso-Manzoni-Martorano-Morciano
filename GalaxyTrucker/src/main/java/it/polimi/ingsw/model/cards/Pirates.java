@@ -64,8 +64,8 @@ public class Pirates extends Card implements Serializable {
      * @param frontImage front image of the card
      * @param backImage back image of the card
      */
-    public Pirates(boolean trialFlight, int level, int credits, int days, int piratesPower, ArrayList<int[]> shoots ,String frontImage, String backImage) {
-        super("Pirates", "Dangerous space raiders", trialFlight, level, frontImage, backImage);
+    public Pirates(boolean trialFlight, int level, int credits, int days, int piratesPower, ArrayList<int[]> shoots ,String frontImage, String backImage, int id) {
+        super("Pirates", "Dangerous space raiders", trialFlight, level, frontImage, backImage, id);
         this.credits = credits;
         this.days = days;
         this.piratesPower = piratesPower;

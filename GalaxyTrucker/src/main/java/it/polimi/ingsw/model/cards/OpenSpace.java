@@ -39,8 +39,8 @@ public class OpenSpace extends Card implements Serializable {
      * @param frontImage front image of the card
      * @param backImage back image of the card
      */
-    public OpenSpace(boolean trialFlight, int level, String frontImage, String backImage) {
-        super("Open Space", "Empty vastness of space", trialFlight, level, frontImage, backImage);
+    public OpenSpace(boolean trialFlight, int level, String frontImage, String backImage, int id) {
+        super("Open Space", "Empty vastness of space", trialFlight, level, frontImage, backImage, id);
         this.indexOfCurrentTrucker = 0;
         state = CardState.ACTIVATE_ENGINES;
     }

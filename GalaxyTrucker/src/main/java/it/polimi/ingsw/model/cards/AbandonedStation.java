@@ -46,8 +46,8 @@ public class AbandonedStation extends Card implements Serializable {
      * @param frontImage front image of the card
      * @param backIMage back image of the card
      */
-    public AbandonedStation(boolean trialFlight, int level, ArrayList<Goods> goods, int days, int numHuman,String frontImage, String backIMage) {
-        super("Abandoned Station", "A derelict space station", trialFlight, level, frontImage, backIMage);
+    public AbandonedStation(boolean trialFlight, int level, ArrayList<Goods> goods, int days, int numHuman,String frontImage, String backIMage, int id) {
+        super("Abandoned Station", "A derelict space station", trialFlight, level, frontImage, backIMage, id);
         this.days = days;
         this.numHuman = numHuman;
         this.goods = goods;

@@ -48,8 +48,8 @@ public class AbandonedShip extends Card implements Serializable {
      * @param frontImage front image of the card
      * @param backImage back image of the card
      */
-    public AbandonedShip(boolean trialFlight, int level, int numHuman, int credits, int days, String frontImage, String backImage) {
-        super("Abandoned Ship", "A drifting ghost ship",  trialFlight, level, frontImage, backImage);
+    public AbandonedShip(boolean trialFlight, int level, int numHuman, int credits, int days, String frontImage, String backImage, int id) {
+        super("Abandoned Ship", "A drifting ghost ship",  trialFlight, level, frontImage, backImage, id);
         this.numHuman = numHuman;
         this.credits = credits;
         this.days = days;

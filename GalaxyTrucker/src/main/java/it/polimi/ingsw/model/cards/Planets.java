@@ -47,8 +47,8 @@ public class Planets extends Card implements Serializable {
      * @param frontImage front image of the card
      * @param backImage back image of the card
      */
-    public Planets(boolean trialFlight, int daysLoss, int level, ArrayList<ArrayList<Goods>> planets, String frontImage, String backImage) {
-        super("Planets", "A new planetary system discovered", trialFlight, level, frontImage, backImage);
+    public Planets(boolean trialFlight, int daysLoss, int level, ArrayList<ArrayList<Goods>> planets, String frontImage, String backImage, int id) {
+        super("Planets", "A new planetary system discovered", trialFlight, level, frontImage, backImage, id);
         goodsPassed = new ArrayList<>();
         planetsOccupied = new ArrayList<>();
         for (int i = 0; i < planets.size(); i++) {

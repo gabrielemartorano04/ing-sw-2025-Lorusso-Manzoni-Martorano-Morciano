@@ -60,8 +60,8 @@ public class Smugglers extends Card implements Serializable {
      * @param frontImage front image of the card
      * @param backImage back image of the card
      */
-    public Smugglers(boolean trialFlight, int smugglersPower, int goodsLost, int days, Goods[] goodsGained, int level, String frontImage, String backImage) {
-        super("Smugglers", "Illegal traders of goods", trialFlight, level, frontImage, backImage);
+    public Smugglers(boolean trialFlight, int smugglersPower, int goodsLost, int days, Goods[] goodsGained, int level, String frontImage, String backImage, int id) {
+        super("Smugglers", "Illegal traders of goods", trialFlight, level, frontImage, backImage, id);
         this.smugglersPower = smugglersPower;
         this.goodsLost = goodsLost;
         this.days = days;

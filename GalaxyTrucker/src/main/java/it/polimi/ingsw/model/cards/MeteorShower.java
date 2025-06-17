@@ -57,8 +57,8 @@ public class MeteorShower extends Card implements Serializable {
      * @param frontImage front image of the card
      * @param backImage back image of the card
      */
-    public MeteorShower(boolean trialFlight, ArrayList<int[]> direction, int level, String frontImage, String backImage) {
-        super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImage, backImage);
+    public MeteorShower(boolean trialFlight, ArrayList<int[]> direction, int level, String frontImage, String backImage, int id) {
+        super("Meteor Shower", "A dangerous meteor storm", trialFlight, level, frontImage, backImage, id);
         this.meteors = direction;
         this.indexOfCurrTrucker = 0;
         this.state = CardState.ROLL_DICE;

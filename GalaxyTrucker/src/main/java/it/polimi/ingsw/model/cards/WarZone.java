@@ -57,8 +57,8 @@ public class WarZone extends Card implements Serializable {
 
 
 
-    public WarZone(boolean trialFlight, int level, ArrayList<Condition> conditionsOrder, Map<Condition, Effect> penalties, ArrayList<int[]> shoots , String frontImage, String backImage) {
-        super("War Zone", "A dangerous conflict zone", trialFlight, level, frontImage, backImage);
+    public WarZone(boolean trialFlight, int level, ArrayList<Condition> conditionsOrder, Map<Condition, Effect> penalties, ArrayList<int[]> shoots , String frontImage, String backImage, int id) {
+        super("War Zone", "A dangerous conflict zone", trialFlight, level, frontImage, backImage, id);
         this.conditionsOrder = conditionsOrder;
         this.penalties = penalties;
         this.shoots = shoots;
