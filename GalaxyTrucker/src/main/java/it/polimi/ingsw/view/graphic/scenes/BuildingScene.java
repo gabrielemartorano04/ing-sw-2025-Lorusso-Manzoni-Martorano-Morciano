@@ -486,7 +486,7 @@ public class BuildingScene {
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
         if(level ==0){
-            optionsBox.getChildren().addAll(selectBtn, selectKeptBtn, stackBtn, otherBtn, finishBtn, rulesBtn);
+            optionsBox.getChildren().addAll(selectBtn, selectKeptBtn, otherBtn, finishBtn, rulesBtn);
         }else{
             optionsBox.getChildren().addAll(selectBtn, selectKeptBtn, stackBtn, otherBtn, finishBtn, rulesBtn, hourglassBtn);
         }

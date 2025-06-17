@@ -415,11 +415,12 @@ public class GUI implements UI {
         Platform.runLater(() -> {
             this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip(), viewFlow, new StackPane());
             stage.setScene(this.flightScene.createScene(event.getPlayers(), viewFlow.getLevel()));
+            this.flightScene.showStateInput();
+
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
             stage.setFullScreen(true);
             stage.show();
-            this.flightScene.showStateInput();
         });
     }
 
@@ -501,7 +502,6 @@ public class GUI implements UI {
     public void showInputFormat(ParserState parserState) {
         Platform.runLater(() -> {
             switch (parserState){
-                case STATE-> this.flightScene.showStateInput();
                 case ACTIVATE_ENGINES ->  this.flightScene.showActivateEngineInput();
                 case ACTIVATE_CANNONS -> this.flightScene.showActivateCannonsInput();
                 case ACTIVATE_SHIELD -> this.flightScene.showActivateShieldInput();
