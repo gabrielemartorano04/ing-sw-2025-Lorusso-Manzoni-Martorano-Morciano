@@ -22,6 +22,7 @@ public abstract class Card implements Serializable, CardInterface{
     private final boolean  trialFlight;
     private final String frontImagePath;
     private final String backImagePath;
+    private final int cardId;
 
     /**
      * Card constructor, initialise the attributes of this class
@@ -32,13 +33,18 @@ public abstract class Card implements Serializable, CardInterface{
      * @param name_frontImage front image of the card
      * @param name_backImage back image of the card
      */
-    public Card(String name, String description, boolean trialFlight, Integer level, String name_frontImage, String name_backImage) {
+    public Card(String name, String description, boolean trialFlight, Integer level, String name_frontImage, String name_backImage, int cardId) {
         this.name = name;
         this.description = description;
         this.trialFlight = trialFlight;
         this.level = level;
         this.frontImagePath = name_frontImage;
         this.backImagePath = name_backImage;
+        this.cardId = cardId;
+    }
+
+    public int getCardId() {
+        return cardId;
     }
 
     /**

@@ -117,6 +117,14 @@ public class Smugglers extends Card implements Serializable {
 
     @Override
     public ServerEvent startCard() {
+        for (Goods g : goodsGained) {
+            if (g != null) {
+                System.out.println(g.getColor());
+            } else {
+                System.out.println("null");
+            }
+        }
+
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
