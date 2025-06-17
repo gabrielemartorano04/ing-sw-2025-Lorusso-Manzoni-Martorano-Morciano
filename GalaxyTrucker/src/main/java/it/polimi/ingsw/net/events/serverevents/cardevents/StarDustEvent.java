@@ -10,19 +10,21 @@ import java.util.Map;
 
 public class StarDustEvent extends CardEvent {
 
-    private ArrayList<Trucker> truckers;
-    private String cardDescription;
-    private String cardName;
-    private ArrayList<String> truckersRemoved;
-    private Map<String, Integer> track;
+    private final ArrayList<Trucker> truckers;
+    private final String cardDescription;
+    private final String cardName;
+    private final ArrayList<String> truckersRemoved;
+    private final Map<String, Integer> track;
+    private final String frontImagePath;
 
-    public StarDustEvent (String cardName, String cardDescription, boolean forAll, ArrayList<Trucker> turckerList, String nickname, ArrayList<String> truckersRemoved, Map<String, Integer> track) {
+    public StarDustEvent (String cardName, String cardDescription, boolean forAll, ArrayList<Trucker> turckerList, String nickname, ArrayList<String> truckersRemoved, Map<String, Integer> track, String frontImagePath) {
         super(ServerEventType.CARD_FINISHED, forAll, ParserState.DRAW_CARD, nickname);
         this.truckers = turckerList;
         this.cardName = cardName;
         this.cardDescription = cardDescription;
         this.truckersRemoved = truckersRemoved;
         this.track = track;
+        this.frontImagePath = frontImagePath;
     }
 
     @Override
@@ -48,5 +50,9 @@ public class StarDustEvent extends CardEvent {
 
     public Map<String, Integer> getTrack(){
         return track;
+    }
+
+    public String getFrontImagePath() {
+        return frontImagePath;
     }
 }

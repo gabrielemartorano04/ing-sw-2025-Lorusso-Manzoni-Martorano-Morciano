@@ -129,7 +129,8 @@ public class Slavers extends Card implements Serializable {
                 null,
                 null,
                 null,
-                ParserState.ACTIVATE_CANNONS
+                ParserState.ACTIVATE_CANNONS,
+                getFrontImagePath()
         );
     }
 

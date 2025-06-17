@@ -21,6 +21,7 @@ public class StartCardEvent extends CardEvent {
     private final String cardDescription;
     private final String firstPlayerNickname;
     private final String question;
+    private final String cardImagePath;
 
     private Bank bank;
 
@@ -55,7 +56,8 @@ public class StartCardEvent extends CardEvent {
             ArrayList<ArrayList<Goods>> planets,
             List<Condition> conditionsOrder,
             Map<Condition, Effect> penalties,
-            ParserState parserState
+            ParserState parserState,
+            String cardImagePath
     ) {
         super(ServerEventType.START_CARD, true, parserState, null);
         this.cardName = cardName;
@@ -74,6 +76,7 @@ public class StartCardEvent extends CardEvent {
         this.conditionsOrder = conditionsOrder;
         this.penalties = penalties;
         this.question = question;
+        this.cardImagePath = cardImagePath;
     }
 
     // Getters
@@ -147,6 +150,10 @@ public class StartCardEvent extends CardEvent {
 
     public void setBank(Bank bank) {
         this.bank = bank;
+    }
+
+    public String getCardImagePath() {
+        return cardImagePath;
     }
 
     @Override

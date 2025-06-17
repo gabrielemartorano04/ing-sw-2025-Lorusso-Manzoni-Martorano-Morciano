@@ -433,8 +433,9 @@ public class GUI implements UI {
     public  void epidemic(EpidemicEvent event){
 
         Platform.runLater(() -> {
-//          this.flightScene.showUpdateSpaceship();
-//          this.flightScene.showUpdateTrack();
+            this.flightScene.createAndAddShipLayout();
+            this.flightScene.updateStatusBar();
+            this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         });
 
     }

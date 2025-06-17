@@ -112,7 +112,8 @@ public class WarZone extends Card implements Serializable {
                 null,
                 this.conditionsOrder,
                 this.penalties,
-                ParserState.WARZONE
+                ParserState.WARZONE,
+                getFrontImagePath()
         );
     }
 

@@ -92,7 +92,8 @@ public class Planets extends Card implements Serializable {
                         planets,
                         null,
                         null,
-                        ParserState.PLANET_DECISION
+                        ParserState.PLANET_DECISION,
+                        getFrontImagePath()
                 );
         startCardEvent.setBank(Game.getIstance().getBank());
         return startCardEvent;

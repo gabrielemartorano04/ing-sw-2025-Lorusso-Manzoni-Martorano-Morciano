@@ -10,18 +10,21 @@ import java.util.Map;
 
 public class EpidemicEvent extends CardEvent {
 
-    private ArrayList<Trucker> truckers;
-    private String cardDescription;
-    private String cardName;
-    private ArrayList<String> truckersRemoved;
-    private Map<String, Integer> track;
+    private final ArrayList<Trucker> truckers;
+    private final String cardDescription;
+    private final String cardName;
+    private final ArrayList<String> truckersRemoved;
+    private final Map<String, Integer> track;
+    private final String frontImagePath;
 
-    public EpidemicEvent(String cardName, String cardDescription , boolean forAll, ArrayList<Trucker> turckerList, String nickname, ArrayList<String> truckersRemoved, Map<String, Integer> track) {
+    public EpidemicEvent(String cardName, String cardDescription , boolean forAll, ArrayList<Trucker> turckerList, String nickname, ArrayList<String> truckersRemoved, Map<String, Integer> track, String frontImagePath) {
         super(ServerEventType.CARD_FINISHED, forAll, ParserState.DRAW_CARD, nickname);
         this.truckers = turckerList;
         this.cardDescription = cardDescription;
         this.cardName = cardName;
         this.track=track;
+        this.truckersRemoved = truckersRemoved;
+        this.frontImagePath = frontImagePath;
     }
 
     @Override
@@ -47,5 +50,9 @@ public class EpidemicEvent extends CardEvent {
 
     public Map<String, Integer> getTrack(){
         return track;
+    }
+
+    public String getFrontImagePath() {
+        return frontImagePath;
     }
 }
