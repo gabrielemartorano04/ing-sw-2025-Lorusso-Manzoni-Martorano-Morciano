@@ -117,7 +117,6 @@ public class Smugglers extends Card implements Serializable {
 
     @Override
     public ServerEvent startCard() {
-        System.out.println(Game.getIstance().getTruckerList().getFirst().getNickname());
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
@@ -145,23 +144,19 @@ public class Smugglers extends Card implements Serializable {
         if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() > smugglersPower) {
             winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
             cardState = CardState.GOODSTOADD;
-            System.out.println("11");
             return new PlotGood(true, winnerTrucker.getNickname(),winnerTrucker.getSpaceShip(),goodsGained[currGoodIndex]);
         }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() == smugglersPower){
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
                 if(defeatedTruckers.isEmpty()){
                     cardState = CardState.ESECUZIONE;
-                    System.out.println("12");
                     return cardEffect();
                 }else{
                     cardState = CardState.REMOVE_GOODS;
                     indexOfCurrentTrucker = 0;
-                    System.out.println("13");
                     return removeGoods();
                 }
             }else{
                 indexOfCurrentTrucker++;
-                System.out.println("14");
                 return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
             }
 
@@ -170,11 +165,9 @@ public class Smugglers extends Card implements Serializable {
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
                 cardState = CardState.REMOVE_GOODS;
                 indexOfCurrentTrucker = 0;
-                System.out.println("15");
                 return removeGoods();
             }else{
                 indexOfCurrentTrucker++;
-                System.out.println("16");
                 return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
             }
         }
@@ -291,7 +284,6 @@ public class Smugglers extends Card implements Serializable {
         }
 
         if(defeatedTruckers.isEmpty()){
-            System.out.println("Entering cause defeatedtruckers is empty");
             cardState = CardState.ESECUZIONE;
             return cardEffect();
         }
@@ -339,8 +331,6 @@ public class Smugglers extends Card implements Serializable {
                 String nickname = defeatedTruckers.getFirst().getNickname();
 
                 defeatedTruckers.removeFirst();
-                System.out.println("Removed " + nickname + " from " + spaceShip);
-
 
                 if(defeatedTruckers.isEmpty()){
                     cardState = CardState.ESECUZIONE;
@@ -353,9 +343,6 @@ public class Smugglers extends Card implements Serializable {
                 return new RemoveBatteries(true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), goodsLostCurrTrucker);
             }
         }else{
-            System.out.println(colorOfCurrGoodToRemove);
-            System.out.println(goodsLostCurrTrucker);
-
             throw new GeneralError("RemoveGoods not working correctly");
         }
     }
@@ -383,8 +370,6 @@ public class Smugglers extends Card implements Serializable {
             String nickname = defeatedTruckers.getFirst().getNickname();
 
             defeatedTruckers.removeFirst();
-            System.out.println("Removed " + nickname + " from " + spaceShip);
-
             cardState = CardState.REMOVE_GOODS;
             return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,nickname,spaceShip);
         } else {
@@ -452,8 +437,6 @@ public class Smugglers extends Card implements Serializable {
         String nickname = defeatedTruckers.getFirst().getNickname();
 
         defeatedTruckers.removeFirst();
-        System.out.println("Removed " + nickname + " from " + spaceShip);
-
         cardState = CardState.REMOVE_GOODS;
         return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,nickname,spaceShip);
     }
@@ -481,164 +464,6 @@ public class Smugglers extends Card implements Serializable {
         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
     }
 
-    public void showShipLayout(String nickname, Component[][] layout) {
-        System.out.println("\nShip layout of " + nickname + ":\n");
 
-        // Calcolo dinamico celle valide
-        boolean[][] validCells = new boolean[11][12];
-        for (int i = 0; i < layout.length; i++) {
-            for (int j = 0; j < layout[0].length; j++) {
-                Component c = layout[i][j];
-                if(c == null || !c.getType().equals("Empty Space")) {
-                    validCells[i][j] = true;
-                } else {
-                    validCells[i][j] = false;
-                }
-            }
-        }
-
-        // Intestazione colonne (sopra)
-        System.out.print("       ");
-        for (int col = 4; col < 11; col++) {
-            System.out.printf("   %2d    ", col);
-        }
-        System.out.println();
-
-        for (int i = 5; i < 10; i++) {
-            String rowStr = String.format("%2d", i);
-
-            // Riga superiore
-            System.out.print("       ");
-            for (int j = 4; j < 11; j++) {
-                System.out.print(validCells[i][j] ? " _______ " : "         ");
-            }
-            System.out.println();
-
-            // Riga link sopra
-            System.out.print("       ");
-            for (int j = 4; j < 11; j++) {
-                Component c = layout[i][j];
-                if (!validCells[i][j]) System.out.print("         ");
-                else System.out.printf("|   %s   |", c == null ? " " : c.getLink()[0]);
-            }
-            System.out.println();
-
-            // Riga centrale con numero riga sinistra
-            System.out.print("  " + rowStr + "   ");
-            for (int j = 4; j < 11; j++) {
-                Component c = layout[i][j];
-                if (!validCells[i][j]) System.out.print("         ");
-                else if (c == null) System.out.print("|       |");
-                else System.out.printf("| %d %c %d |", c.getLink()[3], c.getType().toUpperCase().charAt(0), c.getLink()[1]);
-            }
-            System.out.println("   " + rowStr);
-
-            // Riga link sotto
-            System.out.print("       ");
-            for (int j = 4; j < 11; j++) {
-                Component c = layout[i][j];
-                if (!validCells[i][j]) System.out.print("         ");
-                else System.out.printf("|   %s   |", c == null ? " " : c.getLink()[2]);
-            }
-            System.out.println();
-
-            // Riga inferiore
-            System.out.print("       ");
-            for (int j = 4; j < 11; j++) {
-                System.out.print(validCells[i][j] ? "|_______|" : "         ");
-            }
-            System.out.println();
-        }
-
-        // Intestazione colonne (sotto)
-        System.out.print("       ");
-        for (int col = 4; col < 11; col++) {
-            System.out.printf("   %2d    ", col);
-        }
-        System.out.println();
-
-        // Dettagli componenti
-        System.out.println("\nComponents details:");
-        for (int i = 5; i < 10; i++) {
-            for (int j = 4; j < 11; j++) {
-                if (!validCells[i][j]) continue;
-                Component c = layout[i][j];
-                if (c == null) continue;
-
-                StringBuilder details = new StringBuilder();
-                switch (c) {
-                    case Engine engine -> {
-                        if (engine.getIsDouble())
-                            details.append("[").append(i).append(",").append(j).append("] DOUBLE ENGINE");
-                        else
-                            details.append("[").append(i).append(",").append(j).append("] ENGINE");
-                    }
-                    case Cannon cannon -> {
-                        if (cannon.getIsDouble())
-                            details.append("[").append(i).append(",").append(j).append("] DOUBLE CANNON (Direction: ").append(cannon.getOrientation()).append(")");
-                        else
-                            details.append("[").append(i).append(",").append(j).append("] CANNON (Direction: ").append(cannon.getOrientation()).append(")");
-                    }
-                    case Load load -> {
-                        if (load.getIsSpecial()) {
-                            details.append("[").append(i).append(",").append(j).append("] SPECIAL LOAD (Capacity: ").append(load.getCapacity()).append(")");
-                            if (!load.isEmpty()) {
-                                details.append(" contains: ");
-                                for (Goods g : load.getGoods()) {
-                                    details.append(g.getColor()).append(" ");
-                                }
-                            } else {
-                                details.append(" is empty");
-                            }
-                        } else {
-                            details.append("[").append(i).append(",").append(j).append("] LOAD (Capacity: ").append(load.getCapacity()).append(")");
-                            if (!load.isEmpty()) {
-                                details.append(" contains: ");
-                                for (Goods g : load.getGoods()) {
-                                    details.append(g.getColor()).append(" ");
-                                }
-                            } else {
-                                details.append(" is empty");
-                            }
-                        }
-                    }
-                    case Shield shield -> {
-                        details.append("[").append(i).append(",").append(j).append("] SHIELD (direction: ").append(shield.getDirection()).append(")");
-                    }
-                    case BatteryStorage battery -> {
-                        details.append("[").append(i).append(",").append(j).append("] BATTERY STORAGE (Capacity: ").append(battery.getCapacity()).append(")");
-                        if(battery.getQuantity() != 0) {
-                            details.append(" contains ").append(battery.getQuantity()).append(battery.getQuantity() == 1 ? " battery" : " batteries");
-                        } else {
-                            details.append(" is empty");
-                        }
-                    }
-                    case Cabin cabin -> {
-                        details.append("[").append(i).append(",").append(j).append("] CABIN");
-                        if(cabin.getIsMain()){
-                            System.out.println(cabin.getColor());
-                        }
-                        if(cabin.getQuantity() != 0){
-                            if (cabin.getAlien() != null) {
-                                details.append(cabin.getQuantity()).append(" contains 1 " + cabin.getAlien().getColor() + " alien");
-                            } else {
-                                details.append(" contains ").append(cabin.getQuantity()).append(cabin.getQuantity() == 1 ? " human" : " humans");
-                            }
-                        } else {
-                            details.append(" is empty");
-                        }
-
-                    }
-                    case LifeSupport lifeSupport -> {
-                        details.append("[").append(i).append(",").append(j).append("] ").append("LIFE SUPPORT is ").append(lifeSupport.getColor());
-                    }
-                    default -> {
-                        details.append("[").append(i).append(",").append(j).append("] ").append(c.getType().toUpperCase());
-                    }
-                }
-                System.out.println(details);
-            }
-        }
-    }
 
 }

@@ -158,25 +158,12 @@ public class ViewFlow implements EventReceiver {
                             done = true;
                         }
                         case BULDING -> {
-//                        ui.showShipLayout(nickname, ship);
-//                        if (!keptComponent.isEmpty()) {
-//                            ui.showKeptComponents(keptComponent);
-//                        }
-//                        if (getSelectedComponent() == null) {
-//                            ui.showBuildOptions();
-//                        }
 
                         }
                         case FILL -> {
-                            //ui.showShipLayout(nickname, ship);
+
                         }
                         case FLIGTH -> {
-                            // TENERE PER DEBUG MA TOGLIERE, ORA LO SHOW DEI CREDITI E' DENTRO SHOWSHIPLAYOUT
-                            System.out.println("Cosmic credits: " + credits);
-//                            ui.showShipLayout(nickname, ship);
-//                            ui.showPlayerShipStatus(position, batteryCount, humanCount, cannonPower, enginePower, goodsByColor, credits);
-//                            ui.showTrack(track, level);
-                            //System.out.println("you are out?" + out);
                         }
                         case END -> event.call(serverEventVisitor);
                     }
