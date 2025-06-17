@@ -18,12 +18,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -125,15 +127,29 @@ public class FlightScene {
         //TODO fare il giusto collegamento per la carta da mostrare
         addCardDrawnToScene(null, true);
         addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
+
         addWithdrawButtonToScene(viewFlow, styleButton);
         attachOptionsBoxToScene(scene);
-
         return scene;
     }
 
     public void setShip(Component[][] ship){
         this.layout = ship;
     }
+
+
+    public void printNodeTree(Node node, int level) {
+        String indent = "  ".repeat(level);
+        System.out.println(indent + "- " + node + " | id: " + node.getId() + " | class: " + node.getClass().getSimpleName());
+
+        if (node instanceof Parent) {
+            for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
+                printNodeTree(child, level + 1);
+            }
+        }
+    }
+
+
 
     /**
      * used to create the first ship matrix, but also to modify it based on what happened during flight
@@ -150,6 +166,9 @@ public class FlightScene {
         grid.setAlignment(Pos.TOP_RIGHT);
         grid.setTranslateX(-57);
         grid.setTranslateY(74);
+
+        grid.setMouseTransparent(true);
+
 
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {
@@ -427,39 +446,10 @@ public class FlightScene {
      * button to start the flight, equals to 'state' in TUI
      */
     public void showStateInput() {
-        // === Overlay grigio trasparente ===
-        Rectangle overlay = new Rectangle();
-        overlay.widthProperty().bind(scene.widthProperty());
-        overlay.heightProperty().bind(scene.heightProperty());
-        overlay.setFill(Color.rgb(0, 0, 0, 0.5)); // Nero trasparente
-        overlay.setMouseTransparent(false); // Blocca interazioni sotto
-
-        // === Contenitore con scritta e bottone ===
-        VBox container = new VBox(10);
-        container.setAlignment(Pos.CENTER);
-        container.setPadding(new Insets(0, 0, 35, 0));
-
-        Label title = new Label("Start flight");
-        title.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
-        title.setTextFill(Color.web("#FFDE69"));
-
-        Button continueBtn = new Button("START");
-        continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
-        continueBtn.setTextFill(Color.BLACK);
-        continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-        continueBtn.setCursor(Cursor.HAND);
-        continueBtn.setPadding(new Insets(10, 20, 10, 20));
-
-        continueBtn.setOnAction(e -> {
-            viewFlow.handleInput("state");
-            root.getChildren().removeAll(overlay, container);
-        });
-
-        container.getChildren().addAll(title, continueBtn);
-
-        StackPane.setAlignment(container, Pos.CENTER);
-        root.getChildren().addAll(overlay, container);
+        viewFlow.handleInput("state");
     }
+
+
 
     /**
      * ask if you want to activate engines and then ask for the coordinates

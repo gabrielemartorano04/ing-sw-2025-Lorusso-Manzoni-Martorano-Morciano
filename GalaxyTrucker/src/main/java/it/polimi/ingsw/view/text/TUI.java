@@ -277,7 +277,7 @@ public class TUI implements UI {
         this.showPlayerShipStatus(viewFlow.getPosition(),viewFlow.getBatteryCount(), viewFlow.getHumanCount(), viewFlow.getCannonPower(), viewFlow.getEnginePower(), viewFlow.getGoodsByColor(), viewFlow.getCredits());
         this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         this.showFlightPhaseStart();
-        this.showMessage("Please type 'state' to see your spaceship state\n");
+        viewFlow.handleInput("state");
     }
 
 
