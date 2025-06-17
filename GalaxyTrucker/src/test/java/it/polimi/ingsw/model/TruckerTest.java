@@ -112,19 +112,19 @@ class TruckerTest {
     }
 
     @Test
-    void addAndGetKeptComponentAndGetComponents() {
+    void keepAndGetKeptComponentAndGetComponents() {
         Load load=new Load(1,1,1,1,"Load","",2,false);
         Engine engine=new Engine(1,1,1,"Engine","",true);
         try {
-            trucker.addKeptComponent(load);
+            trucker.keep(load);
 
-        } catch (GeneralError e) {
+        } catch (InvalidComponentsException e) {
             throw new RuntimeException(e);
         }
         try {
-            trucker.addKeptComponent(engine);
+            trucker.keep(engine);
 
-        } catch (GeneralError e) {
+        } catch (InvalidComponentsException e) {
             throw new RuntimeException(e);
         }
         try {
@@ -147,15 +147,15 @@ class TruckerTest {
         Load load=new Load(1,1,1,1,"Load","",2,false);
         Engine engine=new Engine(1,1,1,"Engine","",true);
         try {
-            trucker.addKeptComponent(load);
+            trucker.keep(load);
 
-        } catch (GeneralError e) {
+        }  catch (InvalidComponentsException e) {
             throw new RuntimeException(e);
         }
         try {
-            trucker.addKeptComponent(engine);
+            trucker.keep(engine);
 
-        } catch (GeneralError e) {
+        } catch (InvalidComponentsException e) {
             throw new RuntimeException(e);
         }
 
