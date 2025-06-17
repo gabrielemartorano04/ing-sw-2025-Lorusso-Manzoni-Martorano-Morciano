@@ -156,14 +156,16 @@ public class AppPerTest extends Application {
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
-//        flightScene.updatePlanetsOccupied(new ArrayList<>(){
-//            {
-//                add(trucker);
-//                add(null);
-//                add(null);
-//            }
-//        });
-//        flightScene.updateTrack(mockTrack);
+        flightScene.showDrawCardInput();
+
+        flightScene.updatePlanetsOccupied(new ArrayList<>(){
+            {
+                add(trucker);
+                add(null);
+                add(null);
+            }
+        });
+        flightScene.updateTrack(mockTrack);
 //        color = new HashMap<>();
 //        color.put("red", 3);
 //        color.put("yellow", 2);

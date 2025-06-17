@@ -278,6 +278,7 @@ public class TUI implements UI {
         this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         this.showFlightPhaseStart();
         viewFlow.handleInput("state");
+        viewFlow.setParserFlightState(ParserState.DO_NOTHING);
     }
 
 
