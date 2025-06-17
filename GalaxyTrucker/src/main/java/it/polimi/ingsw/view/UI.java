@@ -2,15 +2,12 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
-import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
-import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
+import it.polimi.ingsw.net.events.serverevents.cardevents.FlightStartEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.NicknameAlreadyInError;
@@ -48,8 +45,6 @@ public interface UI {
     void componentSelected(ComponentSelectedEvent event);
 
     void invalidCoordinates(InvalidCoordinatesError event);
-
-    void invalidPosition(InvalidPositionError event);
 
     void turnHourGlassError(TurnHourglassError event);
 

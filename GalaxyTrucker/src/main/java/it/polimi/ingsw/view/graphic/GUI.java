@@ -1,19 +1,14 @@
 package it.polimi.ingsw.view.graphic;
 
-import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
-import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
-import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
-import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
+import it.polimi.ingsw.net.events.serverevents.cardevents.FlightStartEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.NicknameAlreadyInError;
@@ -25,10 +20,7 @@ import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
 import it.polimi.ingsw.view.graphic.scenes.FlightScene;
 import it.polimi.ingsw.view.graphic.scenes.LoginScene;
 import javafx.animation.*;
-import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -39,33 +31,19 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.awt.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 public class GUI implements UI {
 
@@ -419,12 +397,6 @@ public class GUI implements UI {
 
     // flight scene
 
-    // MAI USATO!!!
-    @Deprecated
-    public void invalidPosition(InvalidPositionError event){
-        //this.buildingScene.showInvalidPositionPopup();
-
-    }
 
     @Override
     public void flightScene(FlightStartEvent event) {

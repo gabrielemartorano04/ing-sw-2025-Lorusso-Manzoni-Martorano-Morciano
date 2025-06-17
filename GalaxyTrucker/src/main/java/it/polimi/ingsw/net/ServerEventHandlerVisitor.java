@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
-import it.polimi.ingsw.net.events.serverevents.flightevents.*;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
 
@@ -143,18 +142,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.invalidCoordinates(event);
     }
 
-    // SBAGLIO O NON VIENE MAI USATO QUESTO ERRORE?
-    @Deprecated
-    public void visit(InvalidPositionError event) {
-        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
-        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
-            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
-        }
-        if (viewFlow.getSelectedKeptComponent() == null) {
-            ui.showBuildOptions();
-        }
-        ui.invalidPosition(event);
-    }
 
     @Override
     public void visit(TurnHourglassError event) {

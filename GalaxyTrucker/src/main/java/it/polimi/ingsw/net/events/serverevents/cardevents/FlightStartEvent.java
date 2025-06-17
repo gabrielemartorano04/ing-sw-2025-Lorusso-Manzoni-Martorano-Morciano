@@ -1,4 +1,4 @@
-package it.polimi.ingsw.net.events.serverevents.flightevents;
+package it.polimi.ingsw.net.events.serverevents.cardevents;
 
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;

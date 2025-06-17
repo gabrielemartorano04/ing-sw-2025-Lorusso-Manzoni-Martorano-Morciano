@@ -11,8 +11,7 @@ import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
-import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
-import it.polimi.ingsw.net.events.serverevents.flightevents.InvalidPositionError;
+import it.polimi.ingsw.net.events.serverevents.cardevents.FlightStartEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.ColorAlreadyInError;
 import it.polimi.ingsw.net.events.serverevents.setupevents.NicknameAlreadyInError;
@@ -182,11 +181,6 @@ public class TUI implements UI {
         this.askCoordinates();
     }
 
-    @Override
-    public void invalidPosition(InvalidPositionError event){
-        this.showInvalidPlacement(event.getMessage());
-        this.askCoordinates();
-    }
 
     @Override
     public void showKeptComponents(ArrayList<Component> kept) {

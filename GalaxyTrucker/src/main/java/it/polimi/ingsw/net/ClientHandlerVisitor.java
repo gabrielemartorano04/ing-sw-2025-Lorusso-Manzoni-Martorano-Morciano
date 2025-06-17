@@ -16,7 +16,7 @@ import it.polimi.ingsw.net.events.serverevents.cardevents.ResumeGameEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
-import it.polimi.ingsw.net.events.serverevents.flightevents.FlightStartEvent;
+import it.polimi.ingsw.net.events.serverevents.cardevents.FlightStartEvent;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
