@@ -117,7 +117,6 @@ public class Smugglers extends Card implements Serializable {
 
     @Override
     public ServerEvent startCard() {
-        System.out.println(Game.getIstance().getTruckerList().getFirst().getNickname());
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
@@ -142,28 +141,22 @@ public class Smugglers extends Card implements Serializable {
 
 
     private ServerEvent fightIsWin() throws GeneralError {
-        System.out.println("smugglerspower: "+smugglersPower);
-        System.out.println("utente power: "+Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower());
         if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() > smugglersPower) {
             winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
             cardState = CardState.GOODSTOADD;
-            System.out.println("11");
             return new PlotGood(true, winnerTrucker.getNickname(),winnerTrucker.getSpaceShip(),goodsGained[currGoodIndex]);
         }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() == smugglersPower){
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
                 if(defeatedTruckers.isEmpty()){
                     cardState = CardState.ESECUZIONE;
-                    System.out.println("12");
                     return cardEffect();
                 }else{
                     cardState = CardState.REMOVE_GOODS;
                     indexOfCurrentTrucker = 0;
-                    System.out.println("13");
                     return removeGoods();
                 }
             }else{
                 indexOfCurrentTrucker++;
-                System.out.println("14");
                 return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
             }
 
@@ -172,11 +165,9 @@ public class Smugglers extends Card implements Serializable {
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
                 cardState = CardState.REMOVE_GOODS;
                 indexOfCurrentTrucker = 0;
-                System.out.println("15");
                 return removeGoods();
             }else{
                 indexOfCurrentTrucker++;
-                System.out.println("16");
                 return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
             }
         }
@@ -293,7 +284,6 @@ public class Smugglers extends Card implements Serializable {
         }
 
         if(defeatedTruckers.isEmpty()){
-            System.out.println("Entering cause defeatedtruckers is empty");
             cardState = CardState.ESECUZIONE;
             return cardEffect();
         }
@@ -353,9 +343,6 @@ public class Smugglers extends Card implements Serializable {
                 return new RemoveBatteries(true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), goodsLostCurrTrucker);
             }
         }else{
-            System.out.println(colorOfCurrGoodToRemove);
-            System.out.println(goodsLostCurrTrucker);
-
             throw new GeneralError("RemoveGoods not working correctly");
         }
     }
@@ -383,8 +370,6 @@ public class Smugglers extends Card implements Serializable {
             String nickname = defeatedTruckers.getFirst().getNickname();
 
             defeatedTruckers.removeFirst();
-            System.out.println("Removed " + nickname + " from " + spaceShip);
-
             cardState = CardState.REMOVE_GOODS;
             return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,nickname,spaceShip);
         } else {
@@ -452,8 +437,6 @@ public class Smugglers extends Card implements Serializable {
         String nickname = defeatedTruckers.getFirst().getNickname();
 
         defeatedTruckers.removeFirst();
-        System.out.println("Removed " + nickname + " from " + spaceShip);
-
         cardState = CardState.REMOVE_GOODS;
         return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,nickname,spaceShip);
     }
