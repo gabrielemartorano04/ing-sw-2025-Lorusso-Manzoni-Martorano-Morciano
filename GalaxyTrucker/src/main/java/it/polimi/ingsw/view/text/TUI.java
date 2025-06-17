@@ -834,7 +834,7 @@ public class TUI implements UI {
 
 
     @Override
-    public void showotherShipLayout(String nickname, Component[][] layout) {
+    public void showOtherShipLayout(String nickname, Component[][] layout) {
         System.out.println("\nShip layout of " + nickname + ":\n");
 
         // Calcolo dinamico celle valide

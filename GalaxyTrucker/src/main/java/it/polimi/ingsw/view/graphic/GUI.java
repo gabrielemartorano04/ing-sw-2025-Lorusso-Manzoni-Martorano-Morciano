@@ -564,7 +564,7 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showotherShipLayout(String nickname, Component[][] layout) {
+    public void showOtherShipLayout(String nickname, Component[][] layout) {
         if (viewFlow.getViewState() == ViewFlow.ViewState.BULDING) {
             Platform.runLater(() -> {
                 this.buildingScene.showOtherShip(layout, nickname);

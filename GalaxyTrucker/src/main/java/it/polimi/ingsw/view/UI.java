@@ -146,7 +146,7 @@ public interface UI {
     void showPlayerShipStatus();
 
     //NON ELIMINARE
-    void showotherShipLayout(String nickname, Component[][] layout);
+    void showOtherShipLayout(String nickname, Component[][] layout);
 
 
 

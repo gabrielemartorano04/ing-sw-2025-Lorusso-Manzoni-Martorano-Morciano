@@ -140,7 +140,7 @@ public class LoginScene {
             String nickname = nicknameField.getText().trim();
             String input = nickname + " " + selectedColor[0];
             viewFlow.handleInput(input);
-            root.getChildren().remove(content);
+//            root.getChildren().remove(content);
         });
 
         this.root = new StackPane(backgroundView, content);

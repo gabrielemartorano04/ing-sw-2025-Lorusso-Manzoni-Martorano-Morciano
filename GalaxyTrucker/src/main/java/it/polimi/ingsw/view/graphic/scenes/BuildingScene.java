@@ -206,7 +206,7 @@ public class BuildingScene {
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {
                 StackPane cell = new StackPane();
-                cell.setPrefSize(134, 134);
+                cell.setPrefSize(136, 136);
 
                 if (validCells[row][col]) {
                     cell.setStyle("-fx-border-color: white; -fx-border-radius: 6px; -fx-background-radius: 6px;");
@@ -214,9 +214,9 @@ public class BuildingScene {
                     Component c = buildNew ? layout[row][col] : ship[row][col];
                     if (c != null) {
                         ImageView imageView = new ImageView(c.getFrontImage());
-                        imageView.setFitWidth(134);
-                        imageView.setFitHeight(134);
-                        Rectangle clip = new Rectangle(134, 134);
+                        imageView.setFitWidth(136);
+                        imageView.setFitHeight(136);
+                        Rectangle clip = new Rectangle(136, 136);
                         clip.setArcWidth(12);
                         clip.setArcHeight(12);
                         imageView.setClip(clip);
@@ -384,6 +384,7 @@ public class BuildingScene {
         ImageView imageView = new ImageView(component.getFrontImage());
         imageView.setFitWidth(136);
         imageView.setFitHeight(136);
+        imageView.setRotate(component.getRotationAngle());
 
         Rectangle clip = new Rectangle(136, 136);
         clip.setArcWidth(12);
