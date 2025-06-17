@@ -436,6 +436,7 @@ public class GUI implements UI {
     @Override
     public void cardFinished(CardFinished event){
         Platform.runLater(() -> {
+            this.flightScene.setShip(viewFlow.getShip());
             this.flightScene.updateShipLayout();
             this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
@@ -460,6 +461,7 @@ public class GUI implements UI {
     public  void epidemic(EpidemicEvent event){
 
         Platform.runLater(() -> {
+            this.flightScene.setShip(viewFlow.getShip());
             this.flightScene.updateShipLayout();
             this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
@@ -491,6 +493,7 @@ public class GUI implements UI {
     public void stardust(StarDustEvent event){
 
         Platform.runLater(() -> {
+            this.flightScene.setShip(viewFlow.getShip());
             this.flightScene.updateShipLayout();
             this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());

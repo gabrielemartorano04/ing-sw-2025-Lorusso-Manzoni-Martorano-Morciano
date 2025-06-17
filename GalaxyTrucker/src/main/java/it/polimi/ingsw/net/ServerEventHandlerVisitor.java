@@ -453,6 +453,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
             viewFlow.setTrack(event.getTrack());
             viewFlow.setShip(trucker.getSpaceShip().getComponents());
+
             ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
             ui.stardust(event);
             if (viewFlow.getNickname().equals(event.getTruckers().get(0).getNickname())) {
