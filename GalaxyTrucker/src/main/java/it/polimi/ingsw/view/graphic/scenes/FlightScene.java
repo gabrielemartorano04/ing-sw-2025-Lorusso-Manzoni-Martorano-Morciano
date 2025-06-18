@@ -1560,6 +1560,33 @@ public class FlightScene {
      * scene for players who finished the game
      */
     public void showWaitForOthers() {
+        createWaitOverlayIfAbsent();
+
+        Platform.runLater(() -> {
+            if (!root.getChildren().contains(waitOverlay)) {
+                root.getChildren().add(waitOverlay);
+                if (waitAnimation != null) waitAnimation.play();
+            }
+        });
+    }
+
+
+    public void hideWaitForOthers() {
+        Platform.runLater(() -> {
+            if (waitOverlay != null) {
+                root.getChildren().remove(waitOverlay);
+                waitOverlay = null;
+            }
+            if (waitAnimation != null) {
+                waitAnimation.stop();
+                waitAnimation = null;
+            }
+        });
+    }
+
+    private void createWaitOverlayIfAbsent() {
+        if (waitOverlay != null) return;
+
         Label message = new Label("Waiting for other truckers to finish");
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
         message.setTextFill(Color.web("#FFDE69"));
@@ -1571,7 +1598,7 @@ public class FlightScene {
         HBox textBox = new HBox(5, message, dots);
         textBox.setAlignment(Pos.CENTER);
 
-        Rectangle overlayBg = new Rectangle(root.getWidth(), root.getHeight());
+        Rectangle overlayBg = new Rectangle();
         overlayBg.setFill(Color.rgb(0, 0, 0, 0.4));
         overlayBg.widthProperty().bind(root.widthProperty());
         overlayBg.heightProperty().bind(root.heightProperty());
@@ -1588,28 +1615,8 @@ public class FlightScene {
                 new KeyFrame(Duration.seconds(2.0), e -> dots.setText(""))
         );
         waitAnimation.setCycleCount(Animation.INDEFINITE);
-        waitAnimation.play();
-
-        Platform.runLater(() -> {
-            if (!root.getChildren().contains(waitOverlay)) {
-                root.getChildren().add(waitOverlay);
-            }
-        });
     }
 
-    public void hideWaitForOthers() {
-        System.out.println("Hide chiamata in fligth");
-        Platform.runLater(() -> {
-            if (waitOverlay != null) {
-                root.getChildren().remove(waitOverlay);
-                waitOverlay = null;
-            }
-            if (waitAnimation != null) {
-                waitAnimation.stop();
-                waitAnimation = null;
-            }
-        });
-    }
 
     /**
      * show in the top-right corner a popup with the message

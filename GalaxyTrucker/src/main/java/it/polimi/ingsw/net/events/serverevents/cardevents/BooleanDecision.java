@@ -19,16 +19,19 @@ public class BooleanDecision extends CardEvent{
     public String getInfoForOthers(){
         switch(getEventType()){
             case ROLL_DICE -> {
-                return getNickname() + "is rolling the dice";
+                return getNickname() + " is rolling the dice";
             }
             case ACTIVATE_CANNONS -> {
-                return getNickname() + "is deciding wich cannons to activate";
+                return getNickname() + " is deciding wich cannons to activate";
             }
             case ACTIVATE_ENGINES -> {
-                return getNickname() + "is deciding wich engines to activate";
+                return getNickname() + " is deciding wich engines to activate";
             }
             case ACTIVATE_SHIELD -> {
-                return getNickname() + "is deciding wich shield to activate";
+                return getNickname() + " is deciding wich shield to activate";
+            }
+            case LAND -> {
+                return getNickname() + " is deciding whether to land or not";
             }
         }
         return "";
