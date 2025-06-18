@@ -246,7 +246,8 @@ public class Slavers extends Card implements Serializable {
         else{
             try {
                 defeatedTruckers.getFirst().getSpaceShip().checkCabin(coordinates, astronautsLost);
-                defeatedTruckers.getFirst().getSpaceShip().removeNumHuman(coordinates);
+
+                defeatedTruckers.getFirst().getSpaceShip().removeNumHuman(coordinates,astronautsLost);
 
                 SpaceShip defeatedShipUpdated = defeatedTruckers.getFirst().getSpaceShip();
                 String defeatedTruckerName = defeatedTruckers.getFirst().getNickname();

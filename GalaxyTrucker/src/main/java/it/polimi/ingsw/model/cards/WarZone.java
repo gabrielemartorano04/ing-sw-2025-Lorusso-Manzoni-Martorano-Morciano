@@ -525,7 +525,7 @@ public class WarZone extends Card implements Serializable {
                 }
 
                 case LOSE_HUMANS -> {
-                    weakestTrucker.getSpaceShip().removeNumHuman(humanCoordinates);
+                    weakestTrucker.getSpaceShip().removeNumHuman(humanCoordinates,numOfHumanToRemove);
                     deactivateTruckersSpaceShip();
 
                     currConditionIndex++;
