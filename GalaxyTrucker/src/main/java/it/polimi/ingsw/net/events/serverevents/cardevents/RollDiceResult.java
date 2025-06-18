@@ -8,14 +8,12 @@ public class RollDiceResult extends CardEvent {
 
     private int currIndex;
     private int diceResult;
-    private String message;
     private String hitType;
 
-    public RollDiceResult(ParserState parserState, String message, int currIndex, int diceResult, String nickname, boolean forAll, String hitType){
+    public RollDiceResult(ParserState parserState, int currIndex, int diceResult, String nickname, boolean forAll, String hitType){
         super(ServerEventType.ROLL_DICE, forAll, parserState, nickname);
         this.currIndex = currIndex;
         this.diceResult = diceResult;
-        this.message = message;
         this.hitType = hitType;
     }
 
@@ -30,7 +28,7 @@ public class RollDiceResult extends CardEvent {
 
     @Override
     public String getMessage(){
-        return message;
+        return "ERRORE IN ROLLDICERESULT, hai chiamato getMessage";
     }
 
     public String getInfoForOthers(){

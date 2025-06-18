@@ -402,14 +402,13 @@ public class WarZone extends Card implements Serializable {
             throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste, la carta dovrebbe essere finita");
         }
         shoot = shoots.get(currShootIndex);
-        currShootIndex++;
         this.roll = Game.getIstance().rollDice();
         if (shoot[0]==1) {
             state = CardState.ESECUZIONE;
             return cardEffect();
         }else{
             state=CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Small meteor, do you want to activate shield?", currConditionIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "smallmeteor");
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex, roll, weakestTrucker.getNickname(), true, "smallmeteor");
         }
     }
 
@@ -438,10 +437,32 @@ public class WarZone extends Card implements Serializable {
             throw new GeneralError("FindWeakestTrucker not callable in the state " + state);
         }
         this.weakestTrucker = getWeakestTrucker(currCondition);
+        System.out.println(weakestTrucker.getNickname() + " is current weakest trucker");
         if(weakestTrucker == null){
             throw new GeneralError("FindWeakestTrucker error cause weakest trucker is null");
         }
         return handlePenaltyEffect(penalties.get(currCondition).getType());
+    }
+
+    private Trucker getWeakestTrucker(Condition currCondition) {
+        Trucker currWeakestTrucker = null;
+        float minValueCurrCondition = Integer.MAX_VALUE;
+        for (Trucker trucker : Game.getIstance().getTruckerList()) {
+            float currValue = switch (currCondition) {
+                case HUMANS -> trucker.getSpaceShip().getNumCrew();
+                case CANNONS -> trucker.getSpaceShip().getTotalCannonPower();
+                case ENGINES -> trucker.getSpaceShip().getTotalEnginePower();
+            };
+
+            // in caso di parità di criteri subisce la penitenza quello più avanti nel percorso quindi quando cerco
+            // il weakestTrucker nei confronti uso il minore stretto in modo che a parità di potenza di fuoco/motrice o
+            // numero di umani scelgo sempre il trucker più a sinistra nella lista cioè quello più avanti sulla plancia
+            if (currValue < minValueCurrCondition) {
+                minValueCurrCondition = currValue;
+                currWeakestTrucker = trucker;
+            }
+        }
+        return currWeakestTrucker;
     }
 
     private ServerEvent handlePenaltyEffect(TypeOfEffect effectType) throws GeneralError {
@@ -464,27 +485,6 @@ public class WarZone extends Card implements Serializable {
         }
     }
 
-
-    private Trucker getWeakestTrucker(Condition currCondition) {
-        Trucker currWeakestTrucker = null;
-        float minValueCurrCondition = Integer.MAX_VALUE;
-        for (Trucker trucker : Game.getIstance().getTruckerList()) {
-            float currValue = switch (currCondition) {
-                case HUMANS -> trucker.getSpaceShip().getNumCrew();
-                case CANNONS -> trucker.getSpaceShip().getTotalCannonPower();
-                case ENGINES -> trucker.getSpaceShip().getTotalEnginePower();
-            };
-
-            // in caso di parità di criteri subisce la penitenza quello più avanti nel percorso quindi quando cerco
-            // il weakestTrucker nei confronti uso il minore stretto in modo che a parità di potenza di fuoco/motrice o
-            // numero di umani scelgo sempre il trucker più a sinistra nella lista cioè quello più avanti sulla plancia
-            if (currValue < minValueCurrCondition) {
-                minValueCurrCondition = currValue;
-                currWeakestTrucker = trucker;
-            }
-        }
-        return currWeakestTrucker;
-    }
 
     private void deactivateTruckersSpaceShip(){
         for(Trucker trucker: Game.getIstance().getTruckerList()){
@@ -565,6 +565,7 @@ public class WarZone extends Card implements Serializable {
                     deactivateTruckersSpaceShip();
 
                     currShootIndex++;
+
                     if(currShootIndex == shoots.size()){
                         currConditionIndex++;
                         if(currConditionIndex == conditionsOrder.size()){

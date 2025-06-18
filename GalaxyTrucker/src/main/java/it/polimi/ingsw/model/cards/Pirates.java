@@ -233,7 +233,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }else{
             cardState = CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Choose if you want to activate a shield", currShootIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot");
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,currShootIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot");
         }
     }
 
@@ -260,7 +260,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Do you want to activate a shield?", currShootIndex, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot");
+        return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot");
     }
 
     /**
