@@ -36,8 +36,7 @@ public class Game implements Serializable {
     private static Game istance;
     private ArrayList<String> oldNicknames;
     private ArrayList<PlayerColors> oldColors;
-
-    //private AskController askController;
+    private int checkOverTaken;
     private GameState gameState;
     private final Set<String> nicknames = new HashSet<>();
     private final Set<PlayerColors> usedColors = new HashSet<>();
@@ -64,6 +63,12 @@ public class Game implements Serializable {
         this.oldNicknames = new ArrayList<>();
         this.oldColors = new ArrayList<>();
         setIstance(this);
+        if(gameLevel == 0){
+            checkOverTaken=20;
+        } else if(gameLevel == 2){
+            checkOverTaken=24;
+        }
+
     }
 
     public static void initializeForTest(SpaceShip ship1, SpaceShip ship2) {
@@ -181,7 +186,7 @@ public class Game implements Serializable {
      */
     private boolean checkOvertaken(Trucker trucker) {
         return truckers.stream()
-                .anyMatch(t -> t != trucker && t.getPosition() - trucker.getPosition() >= 24);
+                .anyMatch(t -> t != trucker && t.getPosition() - trucker.getPosition() >= checkOverTaken);
     }
 
     /**
