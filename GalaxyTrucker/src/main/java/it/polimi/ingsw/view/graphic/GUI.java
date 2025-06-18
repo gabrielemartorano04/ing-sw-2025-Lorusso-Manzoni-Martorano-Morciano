@@ -455,7 +455,6 @@ public class GUI implements UI {
     public void showCardDrawn(StartCardEvent event) {
         Platform.runLater(() -> {
             this.flightScene.hideWaitForOthers();
-            this.buildingScene.hideWaitForOthers();
             this.flightScene.addCardDrawnToScene(event.getCard(), false);
         });
     }
