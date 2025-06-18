@@ -760,7 +760,6 @@ public class FlightScene {
 
         box.getChildren().addAll(confirm, buttons);
 
-        // Posiziona VBox in basso a sinistra usando un AnchorPane
         AnchorPane anchorPane = new AnchorPane(box);
         AnchorPane.setBottomAnchor(box, 180.0);
         AnchorPane.setLeftAnchor(box, 170.0);
@@ -775,8 +774,15 @@ public class FlightScene {
             root.getChildren().remove(anchorPane);
         });
 
-        root.getChildren().add(anchorPane);
+        // Aggiungi il popup **prima** di optionsBox per far rimanere i bottoni sopra il popup
+        int optionsIndex = root.getChildren().indexOf(optionsBox);
+        if (optionsIndex == -1) {
+            root.getChildren().add(anchorPane);
+        } else {
+            root.getChildren().add(optionsIndex, anchorPane);
+        }
     }
+
 
     /**
      * ask from where to remove humans

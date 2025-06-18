@@ -163,13 +163,14 @@ public class AppPerTest extends Application {
 //                add(null);
 //            }
 //        });
-        flightScene.updateTrack(mockTrack);
+//        flightScene.updateTrack(mockTrack);
 //        color = new HashMap<>();
 //        color.put("red", 3);
 //        color.put("yellow", 2);
 //        color.put("green", 4);
 //        color.put("blue", 1);
-        flightScene.addCardDrawnToScene(card2, false);
+        flightScene.showLandInput();
+
     }
 
     public SpaceShip createShip1(SpaceShip ship) throws InvalidCoordinates {

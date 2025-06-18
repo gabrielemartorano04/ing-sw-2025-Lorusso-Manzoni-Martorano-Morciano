@@ -453,10 +453,10 @@ public class GUI implements UI {
 
     @Override
     public void showCardDrawn(StartCardEvent event) {
-        Platform.runLater(() -> {
-            this.flightScene.hideWaitForOthers();
-            this.flightScene.addCardDrawnToScene(event.getCard(), false);
-        });
+//        Platform.runLater(() -> {
+//            this.flightScene.hideWaitForOthers();
+//            this.flightScene.addCardDrawnToScene(event.getCard(), false);
+//        });
     }
 
     @Override
