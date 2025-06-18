@@ -534,7 +534,7 @@ public class WarZone extends Card implements Serializable {
                     }else{
                         currCondition = conditionsOrder.get(currConditionIndex);
                         state = CardState.WARZONE;
-                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null,weakestTrucker.getSpaceShip(), Game.getIstance().endTurn());
+                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null,weakestTrucker, Game.getIstance().endTurn());
                     }
                 }
 
@@ -547,7 +547,7 @@ public class WarZone extends Card implements Serializable {
                     }else{
                         currCondition = conditionsOrder.get(currConditionIndex);
                         state = CardState.WARZONE;
-                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null,weakestTrucker.getSpaceShip(), Game.getIstance().endTurn());
+                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null,weakestTrucker, Game.getIstance().endTurn());
                     }
                 }
 
@@ -575,7 +575,7 @@ public class WarZone extends Card implements Serializable {
                         }else{
                             currCondition = conditionsOrder.get(currConditionIndex);
                             state = CardState.WARZONE;
-                            return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition, null,weakestTrucker.getSpaceShip(), Game.getIstance().endTurn());
+                            return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition, null,weakestTrucker, Game.getIstance().endTurn());
                         }
                     }else{
                         state = CardState.ROLL_DICE;

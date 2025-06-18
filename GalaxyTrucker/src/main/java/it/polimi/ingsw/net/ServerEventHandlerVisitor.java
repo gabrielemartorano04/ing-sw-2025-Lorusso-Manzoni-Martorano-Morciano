@@ -272,7 +272,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         viewFlow.setStartFlightForAll();
         viewFlow.setTrack(event.getTrack());
-
+        viewFlow.setShip(event.getSpaceShip());
         ui.flightScene(event);
         System.out.println("flightScene");
 
@@ -282,7 +282,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(CurrentCondition event) {
         if(event.getNickname().equals(viewFlow.getNickname())){
             viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
-        }else{
+        }
+        else {
+            if(event.getWeakestTrucker().getNickname().equals(viewFlow.getNickname())){
+                viewFlow.setShip(event.getWeakestTrucker().getSpaceShip().getComponents());
+            }
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
         }
         if(event.getTrack()!=null){
