@@ -246,6 +246,7 @@ public class AbandonedStation extends Card implements Serializable {
         if(truckerThatHasDecided != null) {
             Game.getIstance().moveBackward(truckerThatHasDecided, days);
         }
+
         ArrayList<String> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
         Map<String, Integer> track = new HashMap<>();
