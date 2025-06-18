@@ -8,6 +8,8 @@ import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
 
+import java.util.ArrayList;
+
 
 public class ServerEventHandlerVisitor implements VirtualView {
     private final UI ui;
@@ -279,6 +281,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if(event.getTrack()!=null){
             ui.showTrack(event.getTrack(), viewFlow.getLevel());
         }
+
+        handleDeath(event.getTruckersRemoved());
+
         ui.showCurrCondition(event);
     }
 
@@ -303,13 +308,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 break;
             }
         }
-        for(String nicknames: event.getTruckersRemoved()){
-            if(nicknames.equalsIgnoreCase(viewFlow.getNickname())) {
-                ui.showDead();
-                viewFlow.setOut();
-                viewFlow.setParserFlightState(ParserState.DEAD);
-            }
-        }
+
+        handleDeath(event.getTruckersRemoved());
+
         if(!viewFlow.getOut()){
             viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsByColor());
             viewFlow.setCredits(trucker.getCosmicCredit());
@@ -344,13 +345,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 break;
             }
         }
-        for(String nicknames: event.getTruckersRemoved()){
-            if(nicknames.equalsIgnoreCase(viewFlow.getNickname())) {
-                ui.showDead();
-                viewFlow.setOut();
-                viewFlow.setParserFlightState(ParserState.DEAD);
-            }
-        }
+
+        handleDeath(event.getTruckersRemoved());
+
         if(!viewFlow.getOut()){
             viewFlow.setPosition(trucker.getPosition());
             viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
@@ -437,13 +434,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 break;
             }
         }
-        for(String nicknames: event.getTruckersRemoved()){
-            if(nicknames.equalsIgnoreCase(viewFlow.getNickname())) {
-                ui.showDead();
-                viewFlow.setOut();
-                viewFlow.setParserFlightState(ParserState.DEAD);
-            }
-        }
+
+        handleDeath(event.getTruckersRemoved());
+
         if(!viewFlow.getOut()){
             viewFlow.setPosition(trucker.getPosition());
             viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
@@ -735,4 +728,16 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setViewState(ViewFlow.ViewState.START);
         ui.welcomeOldScene(availablePlayersEvent.getColors(), availablePlayersEvent.getNicknames());
     }
+
+    private void handleDeath(ArrayList<String> truckersRemoved) {
+        for (String nickname : truckersRemoved) {
+            if (nickname.equalsIgnoreCase(viewFlow.getNickname())) {
+                ui.showDead();
+                viewFlow.setOut();
+                viewFlow.setParserFlightState(ParserState.DEAD);
+                break; // opzionale: esci dopo aver trovato il nickname
+            }
+        }
+    }
+
 }
