@@ -284,8 +284,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
         }
         else {
-            if(event.getWeakestTrucker().getNickname().equals(viewFlow.getNickname())){
-                viewFlow.setShip(event.getWeakestTrucker().getSpaceShip().getComponents());
+            if(event.getWeakestTrucker()!=null){
+                if(event.getWeakestTrucker().getNickname().equals(viewFlow.getNickname())){
+                    viewFlow.setShip(event.getWeakestTrucker().getSpaceShip().getComponents());
+                }
             }
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
         }
