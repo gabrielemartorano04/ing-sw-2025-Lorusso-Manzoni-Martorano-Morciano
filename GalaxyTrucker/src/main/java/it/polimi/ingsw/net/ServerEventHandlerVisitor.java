@@ -748,9 +748,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.welcomeOldScene(availablePlayersEvent.getColors(), availablePlayersEvent.getNicknames());
     }
 
-    private void handleDeath(ArrayList<String> truckersRemoved) {
-        for (String nickname : truckersRemoved) {
-            if (nickname.equalsIgnoreCase(viewFlow.getNickname())) {
+    private void handleDeath(ArrayList<Trucker> truckersRemoved) {
+        for (Trucker trucker : truckersRemoved) {
+            if (trucker.getNickname().equalsIgnoreCase(viewFlow.getNickname())) {
+                viewFlow.setShip(trucker.getSpaceShip().getComponents());
+                ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
                 ui.showDead();
                 viewFlow.setOut();
                 viewFlow.setParserFlightState(ParserState.DEAD);

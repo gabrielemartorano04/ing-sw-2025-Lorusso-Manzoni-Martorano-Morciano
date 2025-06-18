@@ -136,7 +136,7 @@ public class OpenSpace extends Card implements Serializable {
             trucker.getSpaceShip().deactivateDoubleEngines();
         }
 
-        ArrayList<String> truckerRemoved;
+        ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
         System.out.println("sono morti (open space):" + truckerRemoved);
         Map<String, Integer> track = new HashMap<>();

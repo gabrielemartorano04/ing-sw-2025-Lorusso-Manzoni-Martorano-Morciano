@@ -486,28 +486,18 @@ public class Game implements Serializable {
         return hourglass;
     }
 
-    public ArrayList<String> endTurn() {
+    public ArrayList<Trucker> endTurn() {
         ArrayList<Trucker> toRemove = new ArrayList<>();
-        ArrayList<String> toReturn = new ArrayList<>();
         for (Trucker t : truckers) {
             if (noHumans(t) || checkOvertaken(t)) {
                 toRemove.add(t);
             }
         }
-
         for (Trucker t : toRemove) {
-            System.out.println("chiamo withdraw");
             withdraw(t);
-            System.out.println("sto eliminando:" + t.getNickname());
         }
-
         sortTruckers();
-        for(Trucker t: toRemove){
-            toReturn.add(t.getNickname());
-        }
-        System.out.println("sono morti:" + toReturn);
-
-        return toReturn;
+        return toRemove;
     }
 
     public ServerEvent turnHourglass() throws CannotTurnHourglassException {

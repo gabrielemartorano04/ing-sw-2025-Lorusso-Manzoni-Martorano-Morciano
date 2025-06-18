@@ -123,7 +123,7 @@ public class WarZone extends Card implements Serializable {
             throw new GeneralError("CombatZone not callable in the state " + state);
         }
         if(Game.getIstance().getTruckerList().size() == 1){
-            ArrayList<String> truckerRemoved;
+            ArrayList<Trucker> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
             Map<String, Integer> track = new HashMap<>();
             for (Trucker t : Game.getIstance().getTruckerList()) {
@@ -588,7 +588,7 @@ public class WarZone extends Card implements Serializable {
     }
 
     private ServerEvent handleEndTurn() {
-        ArrayList<String> truckerRemoved = Game.getIstance().endTurn();
+        ArrayList<Trucker> truckerRemoved = Game.getIstance().endTurn();
         Map<String, Integer> track = new HashMap<>();
         for (Trucker t : Game.getIstance().getTruckerList()) {
             track.put(t.getNickname(), t.getPosition());

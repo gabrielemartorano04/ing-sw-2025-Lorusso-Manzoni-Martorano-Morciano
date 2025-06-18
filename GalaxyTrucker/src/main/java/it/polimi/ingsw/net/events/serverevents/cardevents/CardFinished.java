@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class CardFinished extends CardEvent {
     private final ArrayList<Trucker> truckersList;
-    private final ArrayList<String> truckersRemoved;
+    private final ArrayList<Trucker> truckersRemoved;
     Map<String, Integer> track;
-    public CardFinished(boolean forAll, ArrayList<Trucker> truckerList, ArrayList<String> truckerRemoved, Map<String, Integer> track) {
+    public CardFinished(boolean forAll, ArrayList<Trucker> truckerList, ArrayList<Trucker> truckerRemoved, Map<String, Integer> track) {
         super(ServerEventType.CARD_FINISHED, forAll, ParserState.DRAW_CARD, null);
         this.truckersList = truckerList;
         this.truckersRemoved = truckerRemoved;
@@ -26,7 +26,7 @@ public class CardFinished extends CardEvent {
         return truckersList;
     }
 
-    public ArrayList<String> getTruckersRemoved(){
+    public ArrayList<Trucker> getTruckersRemoved(){
         return truckersRemoved;
     }
 

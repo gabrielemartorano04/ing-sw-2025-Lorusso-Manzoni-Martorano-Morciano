@@ -14,11 +14,11 @@ public class EpidemicEvent extends CardEvent {
     private final ArrayList<Trucker> truckers;
     private final String cardDescription;
     private final String cardName;
-    private final ArrayList<String> truckersRemoved;
+    private final ArrayList<Trucker> truckersRemoved;
     private final Map<String, Integer> track;
     private final Card card;
 
-    public EpidemicEvent(String cardName, String cardDescription , boolean forAll, ArrayList<Trucker> turckerList, String nickname, ArrayList<String> truckersRemoved, Map<String, Integer> track, Card card) {
+    public EpidemicEvent(String cardName, String cardDescription , boolean forAll, ArrayList<Trucker> turckerList, String nickname, ArrayList<Trucker> truckersRemoved, Map<String, Integer> track, Card card) {
         super(ServerEventType.CARD_FINISHED, forAll, ParserState.DRAW_CARD, nickname);
         this.truckers = turckerList;
         this.cardDescription = cardDescription;
@@ -45,7 +45,7 @@ public class EpidemicEvent extends CardEvent {
         return truckers;
     }
 
-    public ArrayList<String> getTruckersRemoved(){
+    public ArrayList<Trucker> getTruckersRemoved(){
         return truckersRemoved;
     }
 

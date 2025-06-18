@@ -235,7 +235,7 @@ public class MeteorShower extends Card implements Serializable {
             j++;
         }
         if (meteors.size()==(currMeteorIndex)) {
-            ArrayList<String> truckerRemoved;
+            ArrayList<Trucker> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
             Map<String, Integer> track = new HashMap<>();
             for (Trucker t : Game.getIstance().getTruckerList()) {
