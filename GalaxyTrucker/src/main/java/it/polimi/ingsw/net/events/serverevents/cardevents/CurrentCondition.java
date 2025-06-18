@@ -14,9 +14,9 @@ public class CurrentCondition extends CardEvent{
     private final Condition condition;
     private final Map<String, Integer> track;
     private final Trucker weakestTrucker;
-    private final ArrayList<String> truckersRemoved;
+    private final ArrayList<Trucker> truckersRemoved;
 
-    public CurrentCondition(boolean forAll, ParserState parserState, String nickname, Condition condition, Map<String, Integer> track, Trucker weakestTrucker, ArrayList<String> deadTruckersName) {
+    public CurrentCondition(boolean forAll, ParserState parserState, String nickname, Condition condition, Map<String, Integer> track, Trucker weakestTrucker, ArrayList<Trucker> deadTruckersName) {
         super(ServerEventType.CONDITION, forAll, parserState, nickname);
         this.condition = condition;
         this.track=track;
@@ -32,7 +32,7 @@ public class CurrentCondition extends CardEvent{
         return track;
     }
 
-    public ArrayList<String> getTruckersRemoved(){
+    public ArrayList<Trucker> getTruckersRemoved(){
         return this.truckersRemoved;
     }
     public Trucker getWeakestTrucker() {

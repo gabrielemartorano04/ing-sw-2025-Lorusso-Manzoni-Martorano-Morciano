@@ -289,8 +289,8 @@ public class TUI implements UI {
 
     @Override
     public void cardFinished(CardFinished event){
-        for(String nicknames: event.getTruckersRemoved()){
-            System.out.println(nicknames + " died");
+        for(Trucker trucker: event.getTruckersRemoved()){
+            System.out.println(trucker.getNickname() + " died");
         }
         String message = "Truckers' positions order:\n";
         int i = 1;
@@ -308,8 +308,8 @@ public class TUI implements UI {
         for (Trucker t: event.getTruckers()) {
             System.out.println(t.getNickname() + " has lost ");
         }
-        for(String nicknames: event.getTruckersRemoved()){
-            System.out.println(nicknames + " died");
+        for(Trucker trucker: event.getTruckersRemoved()){
+            System.out.println(trucker.getNickname() + " died");
         }
 
         String message = "Truckers' positions order:\n";
@@ -327,8 +327,8 @@ public class TUI implements UI {
         for (Trucker t: event.getTruckers()) {
             System.out.println(t.getNickname() + " has lost " + t.getSpaceShip().countExposedConnectors() + String.format(t.getSpaceShip().countExposedConnectors() == 1 ? " day\n" : " days\n"));
         }
-        for(String nicknames: event.getTruckersRemoved()){
-            System.out.println(nicknames + " died");
+        for(Trucker trucker: event.getTruckersRemoved()){
+            System.out.println(trucker.getNickname() + " died");
         }
 
         String message = "Truckers' positions order:\n";
