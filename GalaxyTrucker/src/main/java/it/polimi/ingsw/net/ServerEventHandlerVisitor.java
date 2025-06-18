@@ -504,6 +504,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(InvalidCoordinatesEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
+            ui.showError(event.getMessage());
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -515,6 +516,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(NotEnoughBatterieEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
+            ui.showError(event.getMessage());
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -526,6 +528,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(InvalidComponentsExceptionEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
+            ui.showError(event.getMessage());
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -537,6 +540,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(InvalidPositionExceptionEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
+            ui.showError(event.getMessage());
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -549,6 +553,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(PlanetNotFreeExceptionEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
+            ui.showError(event.getMessage());
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
@@ -560,6 +565,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(InvalidGoodChosenEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
+            ui.showError(event.getMessage());
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
@@ -571,6 +577,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(NotEnoughGoodsChosenEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
+            ui.showError(event.getMessage());
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
@@ -582,6 +589,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(WrongNumberOfBatteriesSelectedEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
+            ui.showError(event.getMessage());
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
