@@ -409,7 +409,7 @@ public class WarZone extends Card implements Serializable {
             return cardEffect();
         }else{
             state=CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex, roll, weakestTrucker.getNickname(), true, "smallmeteor");
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex,shoot,null, roll, weakestTrucker.getNickname(), true, "smallmeteor");
         }
     }
 
