@@ -157,7 +157,6 @@ public class AppPerTest extends Application {
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
         flightScene.showDrawCardInput();
-
         flightScene.updatePlanetsOccupied(new ArrayList<>(){
             {
                 add(trucker);

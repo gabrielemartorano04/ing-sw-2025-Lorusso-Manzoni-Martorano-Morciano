@@ -413,17 +413,17 @@ public class GUI implements UI {
     @Override
     public void flightScene(FlightStartEvent event) {
         Platform.runLater(() -> {
+            this.buildingScene.hideWaitForOthers();
+
             this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip(), viewFlow, new StackPane());
             stage.setScene(this.flightScene.createScene(event.getPlayers(), viewFlow.getLevel()));
-            this.flightScene.hideWaitForOthers();
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
             stage.setFullScreen(true);
             stage.show();
-        });
 
-        Platform.runLater(() -> {
             this.flightScene.showStateInput();
+
         });
     }
 
