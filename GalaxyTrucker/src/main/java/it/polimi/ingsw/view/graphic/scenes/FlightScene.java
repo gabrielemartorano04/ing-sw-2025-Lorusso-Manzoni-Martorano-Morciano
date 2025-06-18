@@ -1598,6 +1598,7 @@ public class FlightScene {
     }
 
     public void hideWaitForOthers() {
+        System.out.println("Hide chiamata in fligth");
         Platform.runLater(() -> {
             if (waitOverlay != null) {
                 root.getChildren().remove(waitOverlay);

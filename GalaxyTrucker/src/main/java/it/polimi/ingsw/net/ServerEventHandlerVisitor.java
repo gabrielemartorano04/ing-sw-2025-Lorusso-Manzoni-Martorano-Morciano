@@ -237,6 +237,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(WaitOthersStartFlightEvent event) {
         //viewFlow.setStartFlight();
+        System.out.println("WaitOthersStartFlight");
         ui.showWaitForOthers();
     }
 
@@ -273,6 +274,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setTrack(event.getTrack());
 
         ui.flightScene(event);
+        System.out.println("flightScene");
+
     }
 
     @Override
