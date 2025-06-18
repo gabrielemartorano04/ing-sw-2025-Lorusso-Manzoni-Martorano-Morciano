@@ -57,6 +57,8 @@ public class FlightScene {
     private Button otherBtn;
     private Button withdrawButton;
 
+    private VBox optionsBox;
+
     private GoodsImagesGetter goodsImagesGetter;
     private Image goodImage;
     private ArrayList<Trucker> planets;
@@ -206,11 +208,11 @@ public class FlightScene {
      * @param scene scene where to add the buttons
      */
     private void attachOptionsBoxToScene(Scene scene) {
-        VBox optionsBox = new VBox(10);
+        optionsBox = new VBox(10);
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
-
         optionsBox.getChildren().addAll(otherBtn, rulesBtn, withdrawButton);
+        optionsBox.setPickOnBounds(false);
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) scene.getRoot();

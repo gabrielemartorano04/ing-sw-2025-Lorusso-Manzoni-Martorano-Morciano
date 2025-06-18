@@ -156,21 +156,20 @@ public class AppPerTest extends Application {
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
-        flightScene.showDrawCardInput();
-        flightScene.updatePlanetsOccupied(new ArrayList<>(){
-            {
-                add(trucker);
-                add(null);
-                add(null);
-            }
-        });
+//        flightScene.updatePlanetsOccupied(new ArrayList<>(){
+//            {
+//                add(trucker);
+//                add(null);
+//                add(null);
+//            }
+//        });
         flightScene.updateTrack(mockTrack);
 //        color = new HashMap<>();
 //        color.put("red", 3);
 //        color.put("yellow", 2);
 //        color.put("green", 4);
 //        color.put("blue", 1);
-//        flightScene.showMessage("Gabriele Ciuccia Piselli dalla mattina alla sera, preferibilmente la sera Gabriele Ciuccia Piselli dalla mattina alla sera, preferibilmente la sera");
+        flightScene.addCardDrawnToScene(card2, false);
     }
 
     public SpaceShip createShip1(SpaceShip ship) throws InvalidCoordinates {
