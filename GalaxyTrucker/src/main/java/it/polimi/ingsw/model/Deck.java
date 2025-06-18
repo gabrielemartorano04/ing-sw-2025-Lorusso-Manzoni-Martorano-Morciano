@@ -235,7 +235,24 @@ class Deck implements Serializable {
                 "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",
                 0
         );
+
+        WarZone warZone22 = new WarZone(
+                false, 2,
+                new ArrayList<>(List.of(Condition.CANNONS, Condition.ENGINES, Condition.HUMANS)),
+                Map.of(
+                        Condition.CANNONS, new Effect(TypeOfEffect.LOSE_DAYS, 4),
+                        Condition.ENGINES, new Effect(TypeOfEffect.LOSE_GOODS, 3),
+                        Condition.HUMANS, new Effect(TypeOfEffect.GET_SHOT, 3)
+                ),
+                warShoots2,
+                "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0116.jpg",
+                "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",8
+
+        );
         //TODO: riportare piratesPower a 5 e slaversPower a 6
+
+        //rimuovere questa add finito debug
+        cards.addLast(warZone22);
 
         cards.addLast(warZone1);
         cards.addLast(new Smugglers(true, 4, 2, 1, goodsGained1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_012.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 1));

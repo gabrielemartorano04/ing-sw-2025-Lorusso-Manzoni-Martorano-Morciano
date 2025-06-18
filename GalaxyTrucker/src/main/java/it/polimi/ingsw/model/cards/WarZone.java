@@ -518,7 +518,8 @@ public class WarZone extends Card implements Serializable {
                     }else{
                         currCondition = conditionsOrder.get(currConditionIndex);
                         state = CardState.WARZONE;
-                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,Game.getIstance().getTrack(),weakestTrucker.getSpaceShip(), Game.getIstance().endTurn());
+                        System.out.println(Game.getIstance().getTruckerList().getFirst().getNickname());
+                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,Game.getIstance().getTrack(), null, Game.getIstance().endTurn());
                     }
                 }
 

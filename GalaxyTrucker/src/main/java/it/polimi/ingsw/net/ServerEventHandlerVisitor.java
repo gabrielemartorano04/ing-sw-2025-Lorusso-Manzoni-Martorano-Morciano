@@ -277,14 +277,18 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(CurrentCondition event) {
-        viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
+        if(event.getNickname().equals(viewFlow.getNickname())){
+            viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
+        }else{
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+        }
         if(event.getTrack()!=null){
             ui.showTrack(event.getTrack(), viewFlow.getLevel());
         }
 
         handleDeath(event.getTruckersRemoved());
-
         ui.showCurrCondition(event);
+        ui.showInputFormat(viewFlow.getParserFlightState());
     }
 
     @Override

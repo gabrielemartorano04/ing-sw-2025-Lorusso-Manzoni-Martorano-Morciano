@@ -331,6 +331,7 @@ public class Game implements Serializable {
         }
         System.out.println("finalPos of " + trucker.getNickname() + ": " + finalPos);
         trucker.setPosition(finalPos);
+        this.sortTruckers();
     }
 
     //muove trucker in avanti, riceve days positivo
@@ -348,6 +349,7 @@ public class Game implements Serializable {
             }
         }
         trucker.setPosition(finalPos);
+        this.sortTruckers();
     }
 
 //    /**
