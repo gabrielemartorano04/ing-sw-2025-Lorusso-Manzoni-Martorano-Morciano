@@ -170,7 +170,7 @@ public class AppPerTest extends Application {
 //        color.put("yellow", 2);
 //        color.put("green", 4);
 //        color.put("blue", 1);
-//        flightScene.showMessage("ciao");
+//        flightScene.showMessage("Gabriele Ciuccia Piselli dalla mattina alla sera, preferibilmente la sera Gabriele Ciuccia Piselli dalla mattina alla sera, preferibilmente la sera");
     }
 
     public SpaceShip createShip1(SpaceShip ship) throws InvalidCoordinates {

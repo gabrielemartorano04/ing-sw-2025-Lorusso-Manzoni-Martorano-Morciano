@@ -1572,7 +1572,6 @@ public class FlightScene {
 
 
     public void hideWaitForOthers() {
-        System.out.println("Hide chiamata in fligth");
         Platform.runLater(() -> {
             if (waitOverlay != null) {
                 root.getChildren().remove(waitOverlay);
@@ -1587,7 +1586,7 @@ public class FlightScene {
 
     private void createWaitOverlayIfAbsent() {
         if (waitOverlay != null) return;
-        
+
         Label message = new Label("Waiting for other truckers to finish");
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
         message.setTextFill(Color.web("#FFDE69"));
