@@ -156,22 +156,21 @@ public class AppPerTest extends Application {
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
-        flightScene.showDrawCardInput();
-
-        flightScene.updatePlanetsOccupied(new ArrayList<>(){
-            {
-                add(trucker);
-                add(null);
-                add(null);
-            }
-        });
-        flightScene.updateTrack(mockTrack);
+//        flightScene.updatePlanetsOccupied(new ArrayList<>(){
+//            {
+//                add(trucker);
+//                add(null);
+//                add(null);
+//            }
+//        });
+//        flightScene.updateTrack(mockTrack);
 //        color = new HashMap<>();
 //        color.put("red", 3);
 //        color.put("yellow", 2);
 //        color.put("green", 4);
 //        color.put("blue", 1);
-//        flightScene.showMessage("ciao");
+        flightScene.showLandInput();
+
     }
 
     public SpaceShip createShip1(SpaceShip ship) throws InvalidCoordinates {

@@ -63,7 +63,7 @@ public class Epidemic extends Card implements Serializable {
         for(Trucker trucker : truckers) {
             trucker.getSpaceShip().epidemic();
         }
-        ArrayList<String> truckerRemoved;
+        ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
         Map<String, Integer> track = new HashMap<>();
         for (Trucker t : Game.getIstance().getTruckerList()) {

@@ -285,13 +285,12 @@ public class TUI implements UI {
     @Override
     public void showCurrCondition(CurrentCondition event){
         System.out.println("Current condition:" + event.getCondition());
-        System.out.println("Type Continue to proceed");
     }
 
     @Override
     public void cardFinished(CardFinished event){
-        for(String nicknames: event.getTruckersRemoved()){
-            System.out.println(nicknames + " died");
+        for(Trucker trucker: event.getTruckersRemoved()){
+            System.out.println(trucker.getNickname() + " died");
         }
         String message = "Truckers' positions order:\n";
         int i = 1;
@@ -309,8 +308,8 @@ public class TUI implements UI {
         for (Trucker t: event.getTruckers()) {
             System.out.println(t.getNickname() + " has lost ");
         }
-        for(String nicknames: event.getTruckersRemoved()){
-            System.out.println(nicknames + " died");
+        for(Trucker trucker: event.getTruckersRemoved()){
+            System.out.println(trucker.getNickname() + " died");
         }
 
         String message = "Truckers' positions order:\n";
@@ -328,8 +327,8 @@ public class TUI implements UI {
         for (Trucker t: event.getTruckers()) {
             System.out.println(t.getNickname() + " has lost " + t.getSpaceShip().countExposedConnectors() + String.format(t.getSpaceShip().countExposedConnectors() == 1 ? " day\n" : " days\n"));
         }
-        for(String nicknames: event.getTruckersRemoved()){
-            System.out.println(nicknames + " died");
+        for(Trucker trucker: event.getTruckersRemoved()){
+            System.out.println(trucker.getNickname() + " died");
         }
 
         String message = "Truckers' positions order:\n";
@@ -344,6 +343,7 @@ public class TUI implements UI {
     @Override
     public void showInputFormat(ParserState parserState) {
         switch (parserState){
+            case CURRENT_CONDITION -> System.out.println("Type Continue to proceed");
             case ACTIVATE_ENGINES -> System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
             case ACTIVATE_CANNONS -> System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
             case ACTIVATE_SHIELD -> System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x1> <y1>, <xB1> <yB1>>' or 'n': ");
@@ -366,16 +366,11 @@ public class TUI implements UI {
 
     @Override
     public void showResult(RollDiceResult event){
-        switch (event.getHitType()) {
-            case "bigmeteor" -> {
-                System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n");
-            }
-            case "smallmeteor" -> {
-                System.out.println("The dices result for the meteor # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n");
-            }
-            case "smallshot"-> {
-                System.out.println("The dices result for the shot # " + event.getCurrIndex() + " is " + event.getDiceResult() + "\n");
-            }
+        if(event.getShoot()!=null){
+            System.out.println(this.getShootDescription(event.getShoot(),event.getCurrIndex()));
+        }
+        else if(event.getMeteor()!=null){
+            System.out.println(this.getMeteoriteDescription(event.getMeteor(),event.getCurrIndex()));
         }
     }
 

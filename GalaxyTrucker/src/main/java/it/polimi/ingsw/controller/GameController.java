@@ -9,12 +9,10 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This class manages the game controller. It's used by the server.
- * Attributes:
- * - game: Game instance
+ * Attributes
  * - count: int counter of logged players
  * - timerStarted: boolean, true if the timer started, false otherwise
  * - gameStarted: boolean, true if the game started, false otherwise
@@ -26,15 +24,38 @@ public class GameController implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * This class instance
+     */
     private static GameController istance;
 
+    /**
+     * The linked game controlled by this class
+     */
     private final Game game;
-    private int count=0;
-    private final transient Timer startTimer = new Timer();//serve??
-    private boolean timerStarted = false;
+
+    /**
+     * Logged players counter
+     */
+    private int loggedPlayers =0;
+
+    /**
+     * It signals the game started
+     */
     private boolean gameStarted = false;
+
+    /**
+     * Players for the game
+     */
     private final int numOfPlayers;
+
+    /**
+     * Threads scheduler
+     */
     private transient ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    /**
+     * Current drawn card in the game
+     */
     private Card currentCard;
 
     /**
@@ -49,7 +70,7 @@ public class GameController implements Serializable {
     }
 
     /**
-     * @return game instance
+     * @return this game instance
      */
     public Game getGame() {
         return game;
@@ -113,16 +134,21 @@ public class GameController implements Serializable {
         else truckerController.initSpaceShip(game.getGameLevel());
         game.addTrucker(truckerController.getTrucker());
 
-        count++;
+        loggedPlayers++;
 
-        if (count == 4 || count==numOfPlayers) {
-            startTimer.cancel();
+        if (loggedPlayers == 4 || loggedPlayers ==numOfPlayers) {
             startBuildingPhase();
         }
 
         return truckerController;
     }
 
+    /**
+     * This method readds an old player in the game
+     * @param nickname old player nickname
+     * @param color old player color
+     * @return trucker controller linked to the trucker
+     */
     public synchronized TruckerController addOldPlayer(String nickname, PlayerColors color) {
         if (gameStarted) {
             throw new GameAlreadyStartedException("game already started");
@@ -161,27 +187,6 @@ public class GameController implements Serializable {
         if (gameStarted) return;
         gameStarted = true;
         game.setupGame();
-        startHourglassChecker();
-    }
-
-    /**
-     * SERVE?????????????
-     */
-    private void startHourglassChecker() {
-        scheduler.scheduleAtFixedRate(() -> {
-            if (game.isHourglassExpired()) {
-                forcePlayersToWaitEnd();
-            }
-        }, 0, 2, TimeUnit.SECONDS); // ogni 2 secondi controlla
-    }
-
-    private synchronized void forcePlayersToWaitEnd() {
-        for (Trucker t : game.getTruckerList()) {
-            if (t.getBuildingState() != BuildingState.WAIT_END) {
-                t.setBuildingState(BuildingState.WAIT_END);
-            }
-        }
-        scheduler.shutdown(); // ferma il controllo
     }
 
     /**
@@ -199,10 +204,17 @@ public class GameController implements Serializable {
 
     }
 
+    /**
+     * @return this game controller instance
+     */
     public static GameController getIstance() {
         return istance;
     }
 
+    /**
+     * This method sets gameStarted attribute
+     * @param gameStarted gameStarted's new value
+     */
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
     }

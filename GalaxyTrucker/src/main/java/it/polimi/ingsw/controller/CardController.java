@@ -8,8 +8,6 @@ import it.polimi.ingsw.view.ParserState;
 
 /**
  * This class call the right card method, based on current card and client events.
- * Attributes:
- * - currCard: Card, current card drawn in the game.
  */
 public class CardController {
     private Card currCard;

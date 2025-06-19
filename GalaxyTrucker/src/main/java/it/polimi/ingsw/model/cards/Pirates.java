@@ -233,7 +233,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }else{
             cardState = CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Choose if you want to activate a shield", currShootIndex - 1, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot");
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,currShootIndex - 1,shoot,null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot");
         }
     }
 
@@ -260,7 +260,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Do you want to activate a shield?", currShootIndex, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot");
+        return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex,shoot,null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot");
     }
 
     /**
@@ -302,7 +302,7 @@ public class Pirates extends Card implements Serializable {
         }
 
         else {
-            ArrayList<String> truckerRemoved;
+            ArrayList<Trucker> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
 
             GamePersistence.saveGame(GameController.getIstance());
@@ -310,7 +310,7 @@ public class Pirates extends Card implements Serializable {
         }
 
         if (shoots.size()==(currShootIndex)) {
-            ArrayList<String> truckerRemoved;
+            ArrayList<Trucker> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
 
             GamePersistence.saveGame(GameController.getIstance());
@@ -323,7 +323,7 @@ public class Pirates extends Card implements Serializable {
                 indexOfCurrentTrucker = 0;
                 return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
             }else {
-                ArrayList<String> truckerRemoved;
+                ArrayList<Trucker> truckerRemoved;
                 truckerRemoved = Game.getIstance().endTurn();
                 GamePersistence.saveGame(GameController.getIstance());
                 return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved,Game.getIstance().getTrack());

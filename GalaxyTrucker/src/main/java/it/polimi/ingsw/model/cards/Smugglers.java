@@ -336,7 +336,7 @@ public class Smugglers extends Card implements Serializable {
                     cardState = CardState.ESECUZIONE;
                     return cardEffect();
                 }else{
-                    return new RemotionConfirmed(ServerEventType.GOODS_REMOVED, nickname, spaceShip);
+                    return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED, nickname, spaceShip);
                 }
             }else{
                 this.cardState = CardState.REMOVE_BATTERIES;
@@ -371,7 +371,7 @@ public class Smugglers extends Card implements Serializable {
 
             defeatedTruckers.removeFirst();
             cardState = CardState.REMOVE_GOODS;
-            return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,nickname,spaceShip);
+            return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED,nickname,spaceShip);
         } else {
             // il trucker corrente deve perdere batterie
             cardState = CardState.REMOVE_BATTERIES;
@@ -438,7 +438,7 @@ public class Smugglers extends Card implements Serializable {
 
         defeatedTruckers.removeFirst();
         cardState = CardState.REMOVE_GOODS;
-        return new RemotionConfirmed(ServerEventType.GOODS_REMOVED,nickname,spaceShip);
+        return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED,nickname,spaceShip);
     }
 
 
@@ -454,7 +454,7 @@ public class Smugglers extends Card implements Serializable {
             winDecision = false;
             Game.getIstance().moveBackward(winnerTrucker, days);
         }
-        ArrayList<String> truckerRemoved;
+        ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
         Map<String, Integer> track = new HashMap<>();
         for (Trucker t : Game.getIstance().getTruckerList()) {

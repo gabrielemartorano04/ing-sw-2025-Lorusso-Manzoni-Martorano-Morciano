@@ -184,11 +184,11 @@ public class AbandonedShip extends Card implements Serializable {
             throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }
         if (truckerThatHasDecided != null) {
-            truckerThatHasDecided.getSpaceShip().removeNumHuman(coordinates);
+            truckerThatHasDecided.getSpaceShip().removeNumHuman(coordinates,numHuman);
             Game.getIstance().moveBackward(truckerThatHasDecided,days);
             truckerThatHasDecided.addCosmicCredit(credits);
         }
-        ArrayList<String> truckerRemoved;
+        ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
         Map<String, Integer> track = new HashMap<>();
         for (Trucker t : Game.getIstance().getTruckerList()) {

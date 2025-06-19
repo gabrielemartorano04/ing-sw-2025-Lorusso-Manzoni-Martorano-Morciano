@@ -4,14 +4,19 @@ import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 
 /**
- * Links a ClientEvent with the Client sending it, represented by the istance of ClientHandlerServer.
- * Attributes:
- * - client event
- * - client that sent the event
+ * This class links a ClientEvent with the Client sending it, represented by the instance of ClientHandlerServer.
  */
 
 public class EventWithSource {
+
+    /**
+     * Client event
+     */
     private final ClientEvent event;
+
+    /**
+     * Client that sent the event
+     */
     private final Client client;
 
     /**
@@ -32,7 +37,7 @@ public class EventWithSource {
     }
 
     /**
-     * @return client
+     * @return the client
      */
     public Client getClient() {
         return client;

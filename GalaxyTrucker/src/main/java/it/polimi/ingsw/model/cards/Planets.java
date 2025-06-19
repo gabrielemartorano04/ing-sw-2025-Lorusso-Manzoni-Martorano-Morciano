@@ -20,6 +20,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ */
 public class Planets extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -243,7 +246,7 @@ public class Planets extends Card implements Serializable {
             System.out.println("beni di trucker " + truckersLanded.get(i).getNickname() + ": " + truckersLanded.get(i).getSpaceShip().getGoodsList());
         }
         cardState = CardState.EXIT;
-        ArrayList<String> truckerRemoved;
+        ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
         Map<String, Integer> track = new HashMap<>();
         for (Trucker t : Game.getIstance().getTruckerList()) {

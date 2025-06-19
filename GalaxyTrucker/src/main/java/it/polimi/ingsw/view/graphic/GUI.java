@@ -344,7 +344,6 @@ public class GUI implements UI {
     @Override
     public void componentTurned(TurnedComponentSuccessEvent event){
         Platform.runLater(() -> {
-            System.out.println("Turning component view");
             ImageView component = new ImageView(this.viewFlow.getSelectedComponent().getFrontImage());
             this.buildingScene.insertSelectedComponent(component, true);
         });
@@ -413,16 +412,17 @@ public class GUI implements UI {
     @Override
     public void flightScene(FlightStartEvent event) {
         Platform.runLater(() -> {
+            this.buildingScene.hideWaitForOthers();
+
             this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip(), viewFlow, new StackPane());
             stage.setScene(this.flightScene.createScene(event.getPlayers(), viewFlow.getLevel()));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
             stage.setFullScreen(true);
             stage.show();
-        });
 
-        Platform.runLater(() -> {
             this.flightScene.showStateInput();
+
         });
     }
 
@@ -454,6 +454,7 @@ public class GUI implements UI {
     @Override
     public void showCardDrawn(StartCardEvent event) {
         Platform.runLater(() -> {
+            this.flightScene.hideWaitForOthers();
             this.flightScene.addCardDrawnToScene(event.getCard(), false);
         });
     }
@@ -558,7 +559,9 @@ public class GUI implements UI {
     public void showMessage(String message) {
         if(viewFlow.getViewState() == ViewFlow.ViewState.BULDING){
             this.buildingScene.showMessage(message);
-        }else{
+        }else if(viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
+            System.out.println("Show message fligtScene");
+            System.out.println(message);
             this.flightScene.showMessage(message);
         }
     }

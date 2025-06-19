@@ -127,10 +127,10 @@ public class MeteorShower extends Card implements Serializable {
         this.roll = Game.getIstance().rollDice();
         if (meteor[0]==1) {
             state=CardState.ACTIVATE_CANNONS;
-            return new RollDiceResult(ParserState.ACTIVATE_CANNONS, "Meteorite grande, attivare Cannoni doppi?", currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "bigmeteor");
+            return new RollDiceResult(ParserState.ACTIVATE_CANNONS, currMeteorIndex,null,meteor, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "bigmeteor");
         }else{
             state=CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, "Meteorite piccolo, attivare Scudo?", currMeteorIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "smallmeteor");
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currMeteorIndex, null,meteor, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "smallmeteor");
         }
     }
 
@@ -235,7 +235,7 @@ public class MeteorShower extends Card implements Serializable {
             j++;
         }
         if (meteors.size()==(currMeteorIndex)) {
-            ArrayList<String> truckerRemoved;
+            ArrayList<Trucker> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
             Map<String, Integer> track = new HashMap<>();
             for (Trucker t : Game.getIstance().getTruckerList()) {

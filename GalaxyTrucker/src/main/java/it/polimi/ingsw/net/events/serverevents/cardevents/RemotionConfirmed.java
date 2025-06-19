@@ -8,8 +8,8 @@ import it.polimi.ingsw.view.ParserState;
 public class RemotionConfirmed extends CardEvent{
     private SpaceShip spaceShip;
 
-    public RemotionConfirmed(ServerEventType type, String nickname,SpaceShip spaceShip) {
-        super(type, true, ParserState.REMOTION_CONFIRMED, nickname);
+    public RemotionConfirmed(ParserState parserState , String nickname,SpaceShip spaceShip) {
+        super(ServerEventType.GOODS_REMOVED, true, parserState, nickname);
         this.spaceShip=spaceShip;
     }
 

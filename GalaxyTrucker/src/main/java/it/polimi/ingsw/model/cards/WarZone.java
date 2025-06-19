@@ -123,7 +123,7 @@ public class WarZone extends Card implements Serializable {
             throw new GeneralError("CombatZone not callable in the state " + state);
         }
         if(Game.getIstance().getTruckerList().size() == 1){
-            ArrayList<String> truckerRemoved;
+            ArrayList<Trucker> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
             Map<String, Integer> track = new HashMap<>();
             for (Trucker t : Game.getIstance().getTruckerList()) {
@@ -135,7 +135,9 @@ public class WarZone extends Card implements Serializable {
             throw new GeneralError("All conditions have been verified");
         }
         indexOfCurrTrucker = 0;
-        this.currCondition = conditionsOrder.get(currConditionIndex);
+        if(currConditionIndex == 0){
+            this.currCondition = conditionsOrder.get(currConditionIndex);
+        }
         switch(currCondition){
             case HUMANS -> {
                 state = CardState.FIND_WEAKEST;
@@ -272,9 +274,10 @@ public class WarZone extends Card implements Serializable {
 
         if(colorOfCurrGoodToRemove == 0 && goodsLostCurrTrucker > 0){
             if(weakestTrucker.getSpaceShip().getNumBatteries() == 0){
-                this.state = CardState.WARZONE;
-                currConditionIndex++;
-                return new RemotionConfirmed(ServerEventType.GOODS_REMOVED, weakestTrucker.getNickname(), weakestTrucker.getSpaceShip());
+                this.state = CardState.ESECUZIONE;
+                return cardEffect();
+
+                // to be removed: return new RemotionConfirmed(ParserState.WARZONE, weakestTrucker.getNickname(), weakestTrucker.getSpaceShip());
 
             }else{
                 this.state = CardState.REMOVE_BATTERIES;
@@ -400,14 +403,13 @@ public class WarZone extends Card implements Serializable {
             throw new GeneralError("Stai cercando di accedere a un meteorite che non esiste, la carta dovrebbe essere finita");
         }
         shoot = shoots.get(currShootIndex);
-        currShootIndex++;
         this.roll = Game.getIstance().rollDice();
         if (shoot[0]==1) {
             state = CardState.ESECUZIONE;
             return cardEffect();
         }else{
             state=CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,"Small meteor, do you want to activate shield?", currConditionIndex, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "smallmeteor");
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex,shoot,null, roll, weakestTrucker.getNickname(), true, "smallmeteor");
         }
     }
 
@@ -436,10 +438,32 @@ public class WarZone extends Card implements Serializable {
             throw new GeneralError("FindWeakestTrucker not callable in the state " + state);
         }
         this.weakestTrucker = getWeakestTrucker(currCondition);
+        System.out.println(weakestTrucker.getNickname() + " is current weakest trucker");
         if(weakestTrucker == null){
             throw new GeneralError("FindWeakestTrucker error cause weakest trucker is null");
         }
         return handlePenaltyEffect(penalties.get(currCondition).getType());
+    }
+
+    private Trucker getWeakestTrucker(Condition currCondition) {
+        Trucker currWeakestTrucker = null;
+        float minValueCurrCondition = Integer.MAX_VALUE;
+        for (Trucker trucker : Game.getIstance().getTruckerList()) {
+            float currValue = switch (currCondition) {
+                case HUMANS -> trucker.getSpaceShip().getNumCrew();
+                case CANNONS -> trucker.getSpaceShip().getTotalCannonPower();
+                case ENGINES -> trucker.getSpaceShip().getTotalEnginePower();
+            };
+
+            // in caso di parità di criteri subisce la penitenza quello più avanti nel percorso quindi quando cerco
+            // il weakestTrucker nei confronti uso il minore stretto in modo che a parità di potenza di fuoco/motrice o
+            // numero di umani scelgo sempre il trucker più a sinistra nella lista cioè quello più avanti sulla plancia
+            if (currValue < minValueCurrCondition) {
+                minValueCurrCondition = currValue;
+                currWeakestTrucker = trucker;
+            }
+        }
+        return currWeakestTrucker;
     }
 
     private ServerEvent handlePenaltyEffect(TypeOfEffect effectType) throws GeneralError {
@@ -462,27 +486,6 @@ public class WarZone extends Card implements Serializable {
         }
     }
 
-
-    private Trucker getWeakestTrucker(Condition currCondition) {
-        Trucker currWeakestTrucker = null;
-        float minValueCurrCondition = Integer.MAX_VALUE;
-        for (Trucker trucker : Game.getIstance().getTruckerList()) {
-            float currValue = switch (currCondition) {
-                case HUMANS -> trucker.getSpaceShip().getNumCrew();
-                case CANNONS -> trucker.getSpaceShip().getTotalCannonPower();
-                case ENGINES -> trucker.getSpaceShip().getTotalEnginePower();
-            };
-
-            // in caso di parità di criteri subisce la penitenza quello più avanti nel percorso quindi quando cerco
-            // il weakestTrucker nei confronti uso il minore stretto in modo che a parità di potenza di fuoco/motrice o
-            // numero di umani scelgo sempre il trucker più a sinistra nella lista cioè quello più avanti sulla plancia
-            if (currValue < minValueCurrCondition) {
-                minValueCurrCondition = currValue;
-                currWeakestTrucker = trucker;
-            }
-        }
-        return currWeakestTrucker;
-    }
 
     private void deactivateTruckersSpaceShip(){
         for(Trucker trucker: Game.getIstance().getTruckerList()){
@@ -508,54 +511,43 @@ public class WarZone extends Card implements Serializable {
             switch(effect.getType()){
                 case LOSE_DAYS ->{
                     Game.getIstance().moveBackward(weakestTrucker, effect.getValue());
-                    currConditionIndex++;
                     deactivateTruckersSpaceShip();
+
+                    currConditionIndex++;
                     if(currConditionIndex == conditionsOrder.size()){
-                        ArrayList<String> truckerRemoved;
-                        truckerRemoved = Game.getIstance().endTurn();
-                        GamePersistence.saveGame(GameController.getIstance());
-                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
+                        return handleEndTurn();
                     }else{
+                        currCondition = conditionsOrder.get(currConditionIndex);
                         state = CardState.WARZONE;
-                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,Game.getIstance().getTrack(),weakestTrucker.getSpaceShip());
+                        System.out.println(Game.getIstance().getTruckerList().getFirst().getNickname());
+                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,Game.getIstance().getTrack(), null, Game.getIstance().endTurn());
                     }
                 }
 
                 case LOSE_HUMANS -> {
-                    weakestTrucker.getSpaceShip().removeNumHuman(humanCoordinates);
-                    currConditionIndex++;
+                    weakestTrucker.getSpaceShip().removeNumHuman(humanCoordinates,numOfHumanToRemove);
                     deactivateTruckersSpaceShip();
+
+                    currConditionIndex++;
                     if(currConditionIndex == conditionsOrder.size()){
-                        ArrayList<String> truckerRemoved;
-                        truckerRemoved = Game.getIstance().endTurn();
-                        Map<String, Integer> track = new HashMap<>();
-                        for (Trucker t : Game.getIstance().getTruckerList()) {
-                            track.put(t.getNickname(), t.getPosition());
-                        }
-                        GamePersistence.saveGame(GameController.getIstance());
-                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+                        return handleEndTurn();
                     }else{
+                        currCondition = conditionsOrder.get(currConditionIndex);
                         state = CardState.WARZONE;
-                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null,weakestTrucker.getSpaceShip());
+                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null,weakestTrucker, Game.getIstance().endTurn());
                     }
                 }
 
                 case LOSE_GOODS -> {
-                    // dovrebbe essere già gestito fuori
-                    currConditionIndex++;
                     deactivateTruckersSpaceShip();
+
+                    currConditionIndex++;
                     if(currConditionIndex == conditionsOrder.size()){
-                        ArrayList<String> truckerRemoved;
-                        truckerRemoved = Game.getIstance().endTurn();
-                        Map<String, Integer> track = new HashMap<>();
-                        for (Trucker t : Game.getIstance().getTruckerList()) {
-                            track.put(t.getNickname(), t.getPosition());
-                        }
-                        GamePersistence.saveGame(GameController.getIstance());
-                        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+                        return handleEndTurn();
                     }else{
+                        currCondition = conditionsOrder.get(currConditionIndex);
                         state = CardState.WARZONE;
-                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null,weakestTrucker.getSpaceShip());
+                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null,weakestTrucker, Game.getIstance().endTurn());
                     }
                 }
 
@@ -572,22 +564,18 @@ public class WarZone extends Card implements Serializable {
                             }
                         }
                     }
-                    currShootIndex++;
                     deactivateTruckersSpaceShip();
+
+                    currShootIndex++;
+
                     if(currShootIndex == shoots.size()){
                         currConditionIndex++;
                         if(currConditionIndex == conditionsOrder.size()){
-                            ArrayList<String> truckerRemoved;
-                            truckerRemoved = Game.getIstance().endTurn();
-                            Map<String, Integer> track = new HashMap<>();
-                            for (Trucker t : Game.getIstance().getTruckerList()) {
-                                track.put(t.getNickname(), t.getPosition());
-                            }
-                            GamePersistence.saveGame(GameController.getIstance());
-                            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+                            return handleEndTurn();
                         }else{
+                            currCondition = conditionsOrder.get(currConditionIndex);
                             state = CardState.WARZONE;
-                            return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition, null,weakestTrucker.getSpaceShip());
+                            return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition, null,weakestTrucker, Game.getIstance().endTurn());
                         }
                     }else{
                         state = CardState.ROLL_DICE;
@@ -597,6 +585,16 @@ public class WarZone extends Card implements Serializable {
                 default -> throw new GeneralError("Unknown TypeOfEffect");
             }
         }
+    }
+
+    private ServerEvent handleEndTurn() {
+        ArrayList<Trucker> truckerRemoved = Game.getIstance().endTurn();
+        Map<String, Integer> track = new HashMap<>();
+        for (Trucker t : Game.getIstance().getTruckerList()) {
+            track.put(t.getNickname(), t.getPosition());
+        }
+        GamePersistence.saveGame(GameController.getIstance());
+        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
     }
 
 

@@ -36,8 +36,7 @@ public class Game implements Serializable {
     private static Game istance;
     private ArrayList<String> oldNicknames;
     private ArrayList<PlayerColors> oldColors;
-
-    //private AskController askController;
+    private int checkOverTaken;
     private GameState gameState;
     private final Set<String> nicknames = new HashSet<>();
     private final Set<PlayerColors> usedColors = new HashSet<>();
@@ -64,6 +63,12 @@ public class Game implements Serializable {
         this.oldNicknames = new ArrayList<>();
         this.oldColors = new ArrayList<>();
         setIstance(this);
+        if(gameLevel == 0){
+            checkOverTaken=20;
+        } else if(gameLevel == 2){
+            checkOverTaken=24;
+        }
+
     }
 
     public static void initializeForTest(SpaceShip ship1, SpaceShip ship2) {
@@ -181,7 +186,7 @@ public class Game implements Serializable {
      */
     private boolean checkOvertaken(Trucker trucker) {
         return truckers.stream()
-                .anyMatch(t -> t != trucker && t.getPosition() - trucker.getPosition() >= 24);
+                .anyMatch(t -> t != trucker && t.getPosition() - trucker.getPosition() >= checkOverTaken);
     }
 
     /**
@@ -331,6 +336,7 @@ public class Game implements Serializable {
         }
         System.out.println("finalPos of " + trucker.getNickname() + ": " + finalPos);
         trucker.setPosition(finalPos);
+        this.sortTruckers();
     }
 
     //muove trucker in avanti, riceve days positivo
@@ -348,6 +354,7 @@ public class Game implements Serializable {
             }
         }
         trucker.setPosition(finalPos);
+        this.sortTruckers();
     }
 
 //    /**
@@ -484,28 +491,18 @@ public class Game implements Serializable {
         return hourglass;
     }
 
-    public ArrayList<String> endTurn() {
+    public ArrayList<Trucker> endTurn() {
         ArrayList<Trucker> toRemove = new ArrayList<>();
-        ArrayList<String> toReturn = new ArrayList<>();
         for (Trucker t : truckers) {
             if (noHumans(t) || checkOvertaken(t)) {
                 toRemove.add(t);
             }
         }
-
         for (Trucker t : toRemove) {
-            System.out.println("chiamo withdraw");
             withdraw(t);
-            System.out.println("sto eliminando:" + t.getNickname());
         }
-
         sortTruckers();
-        for(Trucker t: toRemove){
-            toReturn.add(t.getNickname());
-        }
-        System.out.println("sono morti:" + toReturn);
-
-        return toReturn;
+        return toRemove;
     }
 
     public ServerEvent turnHourglass() throws CannotTurnHourglassException {

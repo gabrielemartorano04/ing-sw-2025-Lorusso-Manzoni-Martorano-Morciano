@@ -246,7 +246,8 @@ public class Slavers extends Card implements Serializable {
         else{
             try {
                 defeatedTruckers.getFirst().getSpaceShip().checkCabin(coordinates, astronautsLost);
-                defeatedTruckers.getFirst().getSpaceShip().removeNumHuman(coordinates);
+
+                defeatedTruckers.getFirst().getSpaceShip().removeNumHuman(coordinates,astronautsLost);
 
                 SpaceShip defeatedShipUpdated = defeatedTruckers.getFirst().getSpaceShip();
                 String defeatedTruckerName = defeatedTruckers.getFirst().getNickname();
@@ -274,7 +275,7 @@ public class Slavers extends Card implements Serializable {
         if (cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Card state is not ESECUZIONE");
         }
-        ArrayList<String> truckerRemoved;
+        ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
         Map<String, Integer> track = new HashMap<>();
         for (Trucker t : Game.getIstance().getTruckerList()) {

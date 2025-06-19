@@ -8,6 +8,8 @@ import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
 
+import java.util.ArrayList;
+
 
 public class ServerEventHandlerVisitor implements VirtualView {
     private final UI ui;
@@ -235,6 +237,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(WaitOthersStartFlightEvent event) {
         //viewFlow.setStartFlight();
+        System.out.println("WaitOthersStartFlight");
         ui.showWaitForOthers();
     }
 
@@ -269,17 +272,32 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         viewFlow.setStartFlightForAll();
         viewFlow.setTrack(event.getTrack());
-
+        viewFlow.setShip(event.getSpaceShip());
         ui.flightScene(event);
+        System.out.println("flightScene");
+
     }
 
     @Override
     public void visit(CurrentCondition event) {
-        viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
+        if(event.getNickname().equals(viewFlow.getNickname())){
+            viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
+        }
+        else {
+            if(event.getWeakestTrucker()!=null){
+                if(event.getWeakestTrucker().getNickname().equals(viewFlow.getNickname())){
+                    viewFlow.setShip(event.getWeakestTrucker().getSpaceShip().getComponents());
+                }
+            }
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+        }
         if(event.getTrack()!=null){
             ui.showTrack(event.getTrack(), viewFlow.getLevel());
         }
+
+        handleDeath(event.getTruckersRemoved());
         ui.showCurrCondition(event);
+        ui.showInputFormat(viewFlow.getParserFlightState());
     }
 
     @Override
@@ -303,13 +321,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 break;
             }
         }
-        for(String nicknames: event.getTruckersRemoved()){
-            if(nicknames.equalsIgnoreCase(viewFlow.getNickname())) {
-                ui.showDead();
-                viewFlow.setOut();
-                viewFlow.setParserFlightState(ParserState.DEAD);
-            }
-        }
+
+        handleDeath(event.getTruckersRemoved());
+
         if(!viewFlow.getOut()){
             viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsByColor());
             viewFlow.setCredits(trucker.getCosmicCredit());
@@ -344,13 +358,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 break;
             }
         }
-        for(String nicknames: event.getTruckersRemoved()){
-            if(nicknames.equalsIgnoreCase(viewFlow.getNickname())) {
-                ui.showDead();
-                viewFlow.setOut();
-                viewFlow.setParserFlightState(ParserState.DEAD);
-            }
-        }
+
+        handleDeath(event.getTruckersRemoved());
+
         if(!viewFlow.getOut()){
             viewFlow.setPosition(trucker.getPosition());
             viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
@@ -437,13 +447,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 break;
             }
         }
-        for(String nicknames: event.getTruckersRemoved()){
-            if(nicknames.equalsIgnoreCase(viewFlow.getNickname())) {
-                ui.showDead();
-                viewFlow.setOut();
-                viewFlow.setParserFlightState(ParserState.DEAD);
-            }
-        }
+
+        handleDeath(event.getTruckersRemoved());
+
         if(!viewFlow.getOut()){
             viewFlow.setPosition(trucker.getPosition());
             viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
@@ -504,6 +510,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(InvalidCoordinatesEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
+            ui.showError(event.getMessage());
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -515,6 +522,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(NotEnoughBatterieEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
+            ui.showError(event.getMessage());
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -526,6 +534,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(InvalidComponentsExceptionEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
+            ui.showError(event.getMessage());
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -537,6 +546,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(InvalidPositionExceptionEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
+            ui.showError(event.getMessage());
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -549,6 +559,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(PlanetNotFreeExceptionEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
+            ui.showError(event.getMessage());
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
@@ -560,6 +571,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(InvalidGoodChosenEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
+            ui.showError(event.getMessage());
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
@@ -571,6 +583,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(NotEnoughGoodsChosenEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
+            ui.showError(event.getMessage());
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
@@ -582,6 +595,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(WrongNumberOfBatteriesSelectedEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
+            ui.showError(event.getMessage());
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
@@ -735,4 +749,18 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setViewState(ViewFlow.ViewState.START);
         ui.welcomeOldScene(availablePlayersEvent.getColors(), availablePlayersEvent.getNicknames());
     }
+
+    private void handleDeath(ArrayList<Trucker> truckersRemoved) {
+        for (Trucker trucker : truckersRemoved) {
+            if (trucker.getNickname().equalsIgnoreCase(viewFlow.getNickname())) {
+                viewFlow.setShip(trucker.getSpaceShip().getComponents());
+                ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
+                ui.showDead();
+                viewFlow.setOut();
+                viewFlow.setParserFlightState(ParserState.DEAD);
+                break; // opzionale: esci dopo aver trovato il nickname
+            }
+        }
+    }
+
 }
