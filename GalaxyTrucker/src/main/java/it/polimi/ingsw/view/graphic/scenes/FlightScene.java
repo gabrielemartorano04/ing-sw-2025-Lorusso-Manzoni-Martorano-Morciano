@@ -1193,6 +1193,7 @@ public class FlightScene {
             mainBox.setTranslateY(50);
         });
     }
+
     /**
      * Show the button to draw the next card with blocking overlay.
      */
