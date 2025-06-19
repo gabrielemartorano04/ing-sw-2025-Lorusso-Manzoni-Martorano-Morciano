@@ -60,6 +60,7 @@ public class FlightScene {
     private StackPane cardImageContainer;
 
     private VBox optionsBox;
+    private VBox rollDiceResultBox;
 
     private GoodsImagesGetter goodsImagesGetter;
     private Image goodImage;
@@ -1609,32 +1610,23 @@ public class FlightScene {
         });
     }
 
-
-
-
-    // DA SISTEMARE CON LA NUOVA LOGICA PER GESTIRE OVERLAY
-
-
     /**
-     * show the roll dice result and show it
-     * @param result result of the roll
+     * Show the roll dice result with animation and fixed display.
+     * @param result result of the dice roll
      */
     public void showRollDiceResult(int result) {
-        StackPane root = (StackPane) scene.getRoot();
-
         // === Overlay grigio trasparente ===
         Rectangle overlay = new Rectangle();
-        overlay.widthProperty().bind(scene.widthProperty());
-        overlay.heightProperty().bind(scene.heightProperty());
+        overlay.setWidth(scene.getWidth());
+        overlay.setHeight(scene.getHeight());
         overlay.setFill(Color.rgb(0, 0, 0, 0.5));
         overlay.setMouseTransparent(false); // blocca interazioni sotto
 
-        // === Testo "🎲 Roll the dice!" ===
+        // === Testo iniziale ===
         Label diceLabel = new Label("🎲 Rolling...");
         diceLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 35));
         diceLabel.setTextFill(Color.web("#FFDE69"));
 
-        // === Numero che cambia rapidamente ===
         Label resultLabel = new Label("");
         resultLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 60));
         resultLabel.setTextFill(Color.WHITE);
@@ -1645,7 +1637,7 @@ public class FlightScene {
         StackPane overlayPane = new StackPane(overlay, box);
         root.getChildren().add(overlayPane);
 
-        // === Animazione: mostra numeri casuali per 1.5s ===
+        // === Animazione numeri casuali per 1.5s ===
         Timeline rollAnimation = new Timeline();
         Random rand = new Random();
 
@@ -1656,16 +1648,20 @@ public class FlightScene {
             }));
         }
 
-        // === Mostra il risultato effettivo alla fine ===
+        // === Mostra il risultato reale ===
         rollAnimation.getKeyFrames().add(new KeyFrame(Duration.millis(1500), e -> {
             resultLabel.setText(String.valueOf(result));
         }));
 
-        // === Dopo altri 3s: rimuovi overlay e mostra risultato fisso ===
+        // === Dopo 3s: rimuove overlay e mostra risultato fisso ===
         rollAnimation.getKeyFrames().add(new KeyFrame(Duration.millis(4500), e -> {
             root.getChildren().remove(overlayPane);
 
-            // === Box fisso in basso a sinistra ===
+            // Rimuove il precedente risultato se presente
+            if (rollDiceResultBox != null) {
+                root.getChildren().remove(rollDiceResultBox);
+            }
+
             Label title = new Label("🎲 Dices result");
             title.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
             title.setTextFill(Color.web("#FFDE69"));
@@ -1683,11 +1679,124 @@ public class FlightScene {
             StackPane.setAlignment(resultBox, Pos.TOP_CENTER);
             StackPane.setMargin(resultBox, new Insets(20));
 
+            rollDiceResultBox = resultBox;
             root.getChildren().add(resultBox);
         }));
 
         rollAnimation.play();
     }
+
+    /**
+     * show in the top-right corner a popup with the message
+     * @param message message to show
+     */
+    public void showMessage(String message) {
+        // Titolo (bold)
+        Label title = new Label("New message:");
+        title.setTextFill(Color.WHITE);
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+
+        // Messaggio (normale)
+        Label content = new Label(message);
+        content.setTextFill(Color.WHITE);
+        content.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
+        content.setTextAlignment(TextAlignment.RIGHT);
+
+        VBox messageBox = new VBox(2, title, content);
+        messageBox.setAlignment(Pos.CENTER_RIGHT);
+
+        messageBox.setStyle(
+                "-fx-background-color: rgba(0, 0, 0, 0.85); " +
+                        "-fx-padding: 10px 15px; " +
+                        "-fx-background-radius: 10px;"
+        );
+
+        // Assicura dimensione del VBox
+        messageBox.setMaxWidth(Region.USE_PREF_SIZE);
+        messageBox.setMaxHeight(Region.USE_PREF_SIZE);
+
+        Platform.runLater(() -> {
+            Node rootNode = scene.getRoot();
+
+            if (rootNode instanceof StackPane root) {
+                // Posiziona il messaggio in alto a destra
+                StackPane.setAlignment(messageBox, Pos.TOP_RIGHT);
+                StackPane.setMargin(messageBox, new Insets(20, 20, 0, 0));
+                root.getChildren().add(messageBox);
+
+                // Rimozione automatica dopo 10 secondi
+                PauseTransition delay = new PauseTransition(Duration.seconds(10));
+                delay.setOnFinished(e -> root.getChildren().remove(messageBox));
+                delay.play();
+            }
+        });
+    }
+
+    /**
+     * show on screen the positions of the truckers and the relative days distance
+     * @param truckers map of nickname and related position
+     */
+    public void updateTrack(Map<String, Integer> truckers) {
+        if (scene == null || scene.getRoot() == null) return;
+
+        StackPane root = (StackPane) scene.getRoot();
+
+        // Rimuove eventuale trackBox precedente
+        root.getChildren().removeIf(node -> node.getId() != null && node.getId().equals("trackBox"));
+
+        // Ordina per posizione decrescente
+        List<Map.Entry<String, Integer>> sorted = new ArrayList<>(truckers.entrySet());
+        sorted.sort((a, b) -> b.getValue().compareTo(a.getValue())); // ordine decrescente
+
+        // Salva la posizione massima (del primo)
+        int maxPosition = sorted.get(0).getValue();
+
+        // Contenitore verticale
+        VBox trackBox = new VBox(10);
+        trackBox.setId("trackBox");
+        trackBox.setAlignment(Pos.CENTER_LEFT);
+        trackBox.setPadding(new Insets(10));
+        trackBox.setMouseTransparent(true);
+
+        // Titolo
+        Label title = new Label("Track Position");
+        title.setFont(Font.font("Bangers", FontWeight.BOLD, 24));
+        title.setTextFill(Color.web("#FFDE69"));
+        trackBox.getChildren().add(title);
+
+        // Aggiungi righe in ordine
+        for (int i = 0; i < sorted.size(); i++) {
+            int pos = i + 1;
+            String name = sorted.get(i).getKey();
+            int current = sorted.get(i).getValue();
+
+            Text posText = new Text(pos + "°  ");
+            posText.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+            posText.setFill(Color.WHITE);
+
+            Text nameText = new Text(name);
+            nameText.setFont(Font.font("Bangers", FontWeight.NORMAL, 20));
+            nameText.setFill(Color.WHITE);
+
+            Text daysText = new Text();
+            if (i > 0) {
+                int diff = maxPosition - current;
+                daysText.setText("  (+" + diff + " days)");
+                daysText.setFont(Font.font("Bangers", FontWeight.NORMAL, 15));
+                daysText.setFill(Color.WHITE);
+            }
+
+            TextFlow line = new TextFlow(posText, nameText, daysText);
+            trackBox.getChildren().add(line);
+        }
+
+        // Posiziona a sinistra al centro
+        StackPane.setAlignment(trackBox, Pos.CENTER_LEFT);
+        StackPane.setMargin(trackBox, new Insets(0, 0, 0, 20));
+
+        root.getChildren().add(trackBox);
+    }
+
 
     /**
      * updates the planet to show in planetDecision
@@ -1758,122 +1867,11 @@ public class FlightScene {
     }
 
     /**
-     * show in the top-right corner a popup with the message
-     * @param message message to show
-     */
-    public void showMessage(String message) {
-        // Titolo (bold)
-        Label title = new Label("New message:");
-        title.setTextFill(Color.WHITE);
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-
-        // Messaggio (normale)
-        Label content = new Label(message);
-        content.setTextFill(Color.WHITE);
-        content.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
-        content.setTextAlignment(TextAlignment.RIGHT);
-
-        VBox messageBox = new VBox(2, title, content);
-        messageBox.setAlignment(Pos.CENTER_RIGHT);
-
-        messageBox.setStyle(
-                "-fx-background-color: rgba(0, 0, 0, 0.85); " +
-                        "-fx-padding: 10px 15px; " +
-                        "-fx-background-radius: 10px;"
-        );
-
-        // Assicura dimensione del VBox
-        messageBox.setMaxWidth(Region.USE_PREF_SIZE);
-        messageBox.setMaxHeight(Region.USE_PREF_SIZE);
-
-        Platform.runLater(() -> {
-            Node rootNode = scene.getRoot();
-
-            if (rootNode instanceof StackPane root) {
-                // Posiziona il messaggio in alto a destra
-                StackPane.setAlignment(messageBox, Pos.TOP_RIGHT);
-                StackPane.setMargin(messageBox, new Insets(20, 20, 0, 0));
-                root.getChildren().add(messageBox);
-
-                // Rimozione automatica dopo 10 secondi
-                PauseTransition delay = new PauseTransition(Duration.seconds(10));
-                delay.setOnFinished(e -> root.getChildren().remove(messageBox));
-                delay.play();
-            }
-        });
-    }
-
-    /**
      * updates the curr good to show in showPlotGoodInput
      * @param good good to show
      */
     public void updateCurrGood(Goods good) {
         this.goodImage = goodsImagesGetter.getGoodImage(good.getValue());
-    }
-
-    /**
-     * show on screen the positions of the truckers and the relative days distance
-     * @param truckers map of nickname and related position
-     */
-    public void updateTrack(Map<String, Integer> truckers) {
-        if (scene == null || scene.getRoot() == null) return;
-
-        StackPane root = (StackPane) scene.getRoot();
-
-        // Rimuove eventuale trackBox precedente
-        root.getChildren().removeIf(node -> node.getId() != null && node.getId().equals("trackBox"));
-
-        // Ordina per posizione decrescente
-        List<Map.Entry<String, Integer>> sorted = new ArrayList<>(truckers.entrySet());
-        sorted.sort((a, b) -> b.getValue().compareTo(a.getValue())); // ordine decrescente
-
-        // Salva la posizione massima (del primo)
-        int maxPosition = sorted.get(0).getValue();
-
-        // Contenitore verticale
-        VBox trackBox = new VBox(10);
-        trackBox.setId("trackBox");
-        trackBox.setAlignment(Pos.CENTER_LEFT);
-        trackBox.setPadding(new Insets(10));
-        trackBox.setMouseTransparent(true);
-
-        // Titolo
-        Label title = new Label("Track Position");
-        title.setFont(Font.font("Bangers", FontWeight.BOLD, 24));
-        title.setTextFill(Color.web("#FFDE69"));
-        trackBox.getChildren().add(title);
-
-        // Aggiungi righe in ordine
-        for (int i = 0; i < sorted.size(); i++) {
-            int pos = i + 1;
-            String name = sorted.get(i).getKey();
-            int current = sorted.get(i).getValue();
-
-            Text posText = new Text(pos + "°  ");
-            posText.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-            posText.setFill(Color.WHITE);
-
-            Text nameText = new Text(name);
-            nameText.setFont(Font.font("Bangers", FontWeight.NORMAL, 20));
-            nameText.setFill(Color.WHITE);
-
-            Text daysText = new Text();
-            if (i > 0) {
-                int diff = maxPosition - current;
-                daysText.setText("  (+" + diff + " days)");
-                daysText.setFont(Font.font("Bangers", FontWeight.NORMAL, 15));
-                daysText.setFill(Color.WHITE);
-            }
-
-            TextFlow line = new TextFlow(posText, nameText, daysText);
-            trackBox.getChildren().add(line);
-        }
-
-        // Posiziona a sinistra al centro
-        StackPane.setAlignment(trackBox, Pos.CENTER_LEFT);
-        StackPane.setMargin(trackBox, new Insets(0, 0, 0, 20));
-
-        root.getChildren().add(trackBox);
     }
 
     public void updateStatusBar() {
@@ -2069,5 +2067,16 @@ public class FlightScene {
 
         return details.toString();
     }
+
+    /**
+     * Removes the fixed dice result box from the screen, if present.
+     */
+    public void clearRollDiceResult() {
+        if (rollDiceResultBox != null) {
+            root.getChildren().remove(rollDiceResultBox);
+            rollDiceResultBox = null;
+        }
+    }
+
 
 }
