@@ -455,7 +455,7 @@ public class GUI implements UI {
     public void showCardDrawn(StartCardEvent event) {
         Platform.runLater(() -> {
             this.flightScene.hideWaitForOthers();
-            this.flightScene.addCardDrawnToScene(event.getCard(), false);
+            this.flightScene.addCardDrawnToScene(event.getCard());
         });
     }
 
@@ -473,7 +473,7 @@ public class GUI implements UI {
     @Override
     public void showStardustCard(StarDustEvent event) {
         Platform.runLater(() -> {
-            this.flightScene.addCardDrawnToScene(event.getCard(),false);
+            this.flightScene.addCardDrawnToScene(event.getCard());
         });
     }
 
@@ -487,7 +487,7 @@ public class GUI implements UI {
     @Override
     public void showEpidemicCard(EpidemicEvent event) {
         Platform.runLater(() -> {
-            this.flightScene.addCardDrawnToScene(event.getCard(),false);
+            this.flightScene.addCardDrawnToScene(event.getCard());
         });
     }
 
@@ -499,32 +499,31 @@ public class GUI implements UI {
             this.flightScene.updateShipLayout();
             this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
-            this.flightScene.addCardDrawnToScene(event.getCard(),false);
         });
     }
 
     @Override
     public void showInputFormat(ParserState parserState) {
-        Platform.runLater(() -> {
-            switch (parserState){
-                case ACTIVATE_ENGINES ->  this.flightScene.showActivateEngineInput();
-                case ACTIVATE_CANNONS -> this.flightScene.showActivateCannonsInput();
-                case ACTIVATE_SHIELD -> this.flightScene.showActivateShieldInput();
-                case LAND -> this.flightScene.showLandInput();
-                case HUMAN_COORD -> this.flightScene.showHumanCoordInput();
-                case PLOT_GOOD -> this.flightScene.showPlotGoodInput();
-                case ROLL_DICE -> this.flightScene.showRollDiceInput();
-                case PLANET_DECISION-> this.flightScene.showPlanetDecisionInput();
-                case DRAW_CARD -> this.flightScene.showDrawCardInput();
-                case REMOTION_CONFIRMED -> this.flightScene.showRemotionConfirmedInput();
-                case REMOVE_BATTERIES -> this.flightScene.showRemoveBatteriesInput();
-                case REMOVE_GOODS -> this.flightScene.showRemoveGoodsInput();
-                case REARRANGE -> this.flightScene.showRearrangeInput();
-                case COSMIC_CREDITS -> this.flightScene.showCosmicCreditsInput();
-                case WARZONE -> this.flightScene.showWarzoneInput();
-
-            }
-        });
+//        Platform.runLater(() -> {
+//            switch (parserState){
+//                case ACTIVATE_ENGINES ->  this.flightScene.showActivateEngineInput();
+//                case ACTIVATE_CANNONS -> this.flightScene.showActivateCannonsInput();
+//                case ACTIVATE_SHIELD -> this.flightScene.showActivateShieldInput();
+//                case LAND -> this.flightScene.showLandInput();
+//                case HUMAN_COORD -> this.flightScene.showHumanCoordInput();
+//                case PLOT_GOOD -> this.flightScene.showPlotGoodInput();
+//                case ROLL_DICE -> this.flightScene.showRollDiceInput();
+//                case PLANET_DECISION-> this.flightScene.showPlanetDecisionInput();
+//                case DRAW_CARD -> this.flightScene.showDrawCardInput();
+//                case REMOTION_CONFIRMED -> this.flightScene.showRemotionConfirmedInput();
+//                case REMOVE_BATTERIES -> this.flightScene.showRemoveBatteriesInput();
+//                case REMOVE_GOODS -> this.flightScene.showRemoveGoodsInput();
+//                case REARRANGE -> this.flightScene.showRearrangeInput();
+//                case COSMIC_CREDITS -> this.flightScene.showCosmicCreditsInput();
+//                case WARZONE -> this.flightScene.showWarzoneInput();
+//
+//            }
+//        });
     }
 
     @Override

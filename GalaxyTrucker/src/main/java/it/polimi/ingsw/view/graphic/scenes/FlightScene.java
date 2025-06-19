@@ -56,6 +56,9 @@ public class FlightScene {
     private Button rulesBtn;
     private Button otherBtn;
     private Button withdrawButton;
+    private Button moreButton;
+
+    private StackPane cardImageContainer;
 
     private VBox optionsBox;
 
@@ -66,6 +69,9 @@ public class FlightScene {
     private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel;
     private Map<String, Label> goodLabels = new HashMap<>();
     private VBox statusBar;
+
+    private final StackPane overlayLayer = new StackPane(); // sopra tutto
+
 
     private StackPane waitOverlay;
     private Timeline waitAnimation;
@@ -109,13 +115,21 @@ public class FlightScene {
         } else {
             backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-2b.jpeg").toExternalForm());
         }
+
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(width);
         backgroundView.setFitHeight(height);
         backgroundView.setPreserveRatio(true);
         backgroundView.setMouseTransparent(true);
 
-        root.getChildren().setAll(backgroundView);
+        root.getChildren().clear();
+        root.getChildren().addAll(
+                backgroundView,
+                overlayLayer // container per popup/overlay (inizialmente vuoto)
+        );
+
+        overlayLayer.setMouseTransparent(true);
+        overlayLayer.setPickOnBounds(false);
 
         updateShipLayout();
         initializeStatusBar();
@@ -126,12 +140,11 @@ public class FlightScene {
         Consumer<Button> styleButton = createDefaultButtonStyler();
 
         addRulesButtonToScene(styleButton);
-        //TODO fare il giusto collegamento per la carta da mostrare
-        addCardDrawnToScene(null, true);
+        initCardPlaceholder();
         addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
-
         addWithdrawButtonToScene(viewFlow, styleButton);
         attachOptionsBoxToScene(scene);
+
         return scene;
     }
 
@@ -240,12 +253,66 @@ public class FlightScene {
         };
     }
 
+
+    public void initCardPlaceholder() {
+        if (scene == null || scene.getRoot() == null) return;
+
+        double imageWidth = 200;
+        double imageHeight = 308;
+
+        Rectangle border = new Rectangle(imageWidth, imageHeight);
+        border.setArcWidth(16);
+        border.setArcHeight(16);
+        border.setFill(Color.TRANSPARENT);
+        border.setStroke(Color.WHITE);
+        border.setStrokeWidth(2);
+        border.setMouseTransparent(true);
+
+        cardImageContainer = new StackPane(border);
+        cardImageContainer.setPrefSize(imageWidth, imageHeight);
+        cardImageContainer.setAlignment(Pos.CENTER);
+        cardImageContainer.setTranslateX(-420);
+        cardImageContainer.setMouseTransparent(true);
+        cardImageContainer.setUserData("cardContainer");
+
+        StackPane.setAlignment(cardImageContainer, Pos.CENTER);
+        root.getChildren().add(cardImageContainer);
+    }
+
+    /**
+     * Inserisce l'immagine della carta nel contenitore già esistente.
+     * @param card Carta da visualizzare
+     */
+    public void addCardDrawnToScene(Card card) {
+        if (cardImageContainer == null || card == null) return;
+
+        double imageWidth = 200;
+        double imageHeight = 308;
+
+        ImageView cardView = new ImageView(card.getFrontImage());
+        cardView.setFitWidth(imageWidth);
+        cardView.setFitHeight(imageHeight);
+        cardView.setPreserveRatio(true);
+        cardView.setMouseTransparent(true);
+
+        Rectangle clip = new Rectangle(imageWidth, imageHeight);
+        clip.setArcWidth(16);
+        clip.setArcHeight(16);
+        cardView.setClip(clip);
+
+        // Conserva il bordo esistente (primo elemento) e aggiungi la carta sopra
+        Node border = cardImageContainer.getChildren().isEmpty() ? null : cardImageContainer.getChildren().get(0);
+        cardImageContainer.getChildren().setAll(border, cardView);
+
+        restoreInteractiveLayers();
+    }
+
     /**
      * Add the image of the card to the scene or initialize with just the white border.
      * @param card Card to display (ignored if initialize is true)
      * @param initialize If true, only display the white border without a card image
      */
-    public void addCardDrawnToScene(Card card, boolean initialize) {
+    public void addCardDrawnToSceneOld(Card card, boolean initialize) {
         if (scene == null || scene.getRoot() == null) return;
 
         StackPane root = (StackPane) scene.getRoot();
@@ -452,6 +519,13 @@ public class FlightScene {
      */
     public void showStateInput() {
         viewFlow.handleInput("state");
+    }
+
+
+    private void restoreInteractiveLayers() {
+        overlayLayer.setMouseTransparent(true);
+        root.getChildren().removeAll(optionsBox, statusBar);
+        root.getChildren().addAll(optionsBox, statusBar);
     }
 
 
@@ -1823,7 +1897,7 @@ public class FlightScene {
             goodsBox.getChildren().add(singleGood);
         }
 
-        Button moreButton = new Button("More...");
+        moreButton = new Button("More...");
         moreButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         moreButton.setTextFill(Color.BLACK);
         moreButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
