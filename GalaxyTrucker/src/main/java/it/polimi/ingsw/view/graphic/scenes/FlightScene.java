@@ -1265,17 +1265,13 @@ public class FlightScene {
         });
     }
 
-
-
-    // DA SISTEMARE CON LA NUOVA LOGICA PER GESTIRE OVERLAY
-
     /**
-     * confirmation of the remotion and button to continue the game
+     * Show a confirmation of the remotion with a continue button.
      */
     public void showRemotionConfirmedInput() {
-        VBox container = new VBox(10);
-        container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
-        container.setPadding(new Insets(0, 0, -450, -840)); // margine dal basso
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
 
         Label title = new Label("Remotion confirmed");
         title.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
@@ -1288,33 +1284,35 @@ public class FlightScene {
         continueBtn.setCursor(Cursor.HAND);
         continueBtn.setPadding(new Insets(10, 20, 10, 20));
 
+        box.getChildren().addAll(title, continueBtn);
+
+        AnchorPane popupContent = new AnchorPane(box);
+        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setLeftAnchor(box, 100.0);
+
+        // Blocca interazioni sottostanti
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        // Chiusura popup e ripristino interazione
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
         continueBtn.setOnAction(e -> {
             viewFlow.handleInput("continue");
-            root.getChildren().remove(container);
+            closePopup.run();
         });
-
-        container.getChildren().addAll(title, continueBtn);
-
-        StackPane.setAlignment(container, Pos.CENTER); // posizionato in basso, ma centrato
-        root.getChildren().add(container);
     }
 
     /**
-     * asks for coordinates from where to remove batteries
+     * Ask for coordinates from where to remove batteries.
      */
     public void showRemoveBatteriesInput() {
-        StackPane root = (StackPane) scene.getRoot();
-
         VBox box = new VBox(10);
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
-
-        AnchorPane anchorPane = new AnchorPane(box);
-        anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
-        AnchorPane.setBottomAnchor(box, 170.0);
-        AnchorPane.setLeftAnchor(box, 60.0);
-
-        box.getChildren().clear();
 
         Label insertLabel = new Label("Insert the coordinates of the batteries you want to remove");
         insertLabel.setTextFill(Color.web("#FFDE69"));
@@ -1327,7 +1325,7 @@ public class FlightScene {
         hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
         TextField inputField = new TextField();
-        inputField.setPromptText("Ex. 2 3, 1");
+        inputField.setPromptText("Ex. 2 3 - 1");
         inputField.setPrefWidth(250);
 
         Button confirmBtn = new Button("Confirm");
@@ -1336,45 +1334,42 @@ public class FlightScene {
         confirmBtn.setCursor(Cursor.HAND);
         confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
 
-        // Azione comune per invio
-        Runnable sendInput = () -> {
-            String text = inputField.getText().trim();
-            if (!text.isEmpty()) {
-                viewFlow.handleInput(text);
-                root.getChildren().remove(anchorPane);
-            }
-        };
-
-        // ENTER sulla TextField
-        inputField.setOnAction(e -> sendInput.run());
-
-        // Clic su Confirm
-        confirmBtn.setOnAction(e -> sendInput.run());
-
         HBox inputBox = new HBox(10, inputField, confirmBtn);
         inputBox.setAlignment(Pos.CENTER);
 
         box.getChildren().addAll(insertLabel, hintLabel, inputBox);
 
-        root.getChildren().add(anchorPane);
+        AnchorPane popupContent = new AnchorPane(box);
+        AnchorPane.setBottomAnchor(box, 170.0);
+        AnchorPane.setLeftAnchor(box, 60.0);
+
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
+        Runnable sendInput = () -> {
+            String text = inputField.getText().trim();
+            if (!text.isEmpty()) {
+                viewFlow.handleInput(text);
+                closePopup.run();
+            }
+        };
+
+        inputField.setOnAction(e -> sendInput.run());
+        confirmBtn.setOnAction(e -> sendInput.run());
     }
 
     /**
-     * ask from where to remove the good
+     * Ask from where to remove the good.
      */
     public void showRemoveGoodsInput() {
-        StackPane root = (StackPane) scene.getRoot();
-
         VBox box = new VBox(10);
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
-
-        AnchorPane anchorPane = new AnchorPane(box);
-        anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
-        AnchorPane.setBottomAnchor(box, 170.0);
-        AnchorPane.setLeftAnchor(box, 90.0);
-
-        box.getChildren().clear();
 
         Label insertLabel = new Label("Insert the index of the good you want to remove");
         insertLabel.setTextFill(Color.web("#FFDE69"));
@@ -1396,36 +1391,39 @@ public class FlightScene {
         confirmBtn.setCursor(Cursor.HAND);
         confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
 
-        // Azione comune per invio
-        Runnable sendInput = () -> {
-            String text = inputField.getText().trim();
-            if (!text.isEmpty()) {
-                viewFlow.handleInput(text);
-                root.getChildren().remove(anchorPane);
-            }
-        };
-
-        // ENTER sulla TextField
-        inputField.setOnAction(e -> sendInput.run());
-
-        // Clic su Confirm
-        confirmBtn.setOnAction(e -> sendInput.run());
-
         HBox inputBox = new HBox(10, inputField, confirmBtn);
         inputBox.setAlignment(Pos.CENTER);
 
         box.getChildren().addAll(insertLabel, hintLabel, inputBox);
 
-        root.getChildren().add(anchorPane);
+        AnchorPane popupContent = new AnchorPane(box);
+        AnchorPane.setBottomAnchor(box, 170.0);
+        AnchorPane.setLeftAnchor(box, 90.0);
+
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
+        Runnable sendInput = () -> {
+            String text = inputField.getText().trim();
+            if (!text.isEmpty()) {
+                viewFlow.handleInput(text);
+                closePopup.run();
+            }
+        };
+
+        inputField.setOnAction(e -> sendInput.run());
+        confirmBtn.setOnAction(e -> sendInput.run());
     }
 
     /**
-     * let the player the possibility to rearrange goods
+     * Let the player rearrange goods with confirmation and coordinate input.
      */
     public void showRearrangeInput() {
-        StackPane root = (StackPane) scene.getRoot();
-
-        // VBox per contenere il messaggio e i pulsanti
         VBox box = new VBox(10);
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
@@ -1453,10 +1451,22 @@ public class FlightScene {
 
         box.getChildren().addAll(confirm, buttons);
 
-        // Posiziona VBox in basso a sinistra usando un AnchorPane
-        AnchorPane anchorPane = new AnchorPane(box);
+        AnchorPane popupContent = new AnchorPane(box);
         AnchorPane.setBottomAnchor(box, 180.0);
         AnchorPane.setLeftAnchor(box, 105.0);
+
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
+        no.setOnAction(ev -> {
+            viewFlow.handleInput("n");
+            closePopup.run();
+        });
 
         yes.setOnAction(ev -> {
             box.getChildren().clear();
@@ -1482,19 +1492,15 @@ public class FlightScene {
             confirmBtn.setCursor(Cursor.HAND);
             confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
 
-            // Azione comune per invio
             Runnable sendInput = () -> {
                 String text = inputField.getText().trim();
                 if (!text.isEmpty()) {
                     viewFlow.handleInput("y, " + text);
-                    root.getChildren().remove(anchorPane);
+                    closePopup.run();
                 }
             };
 
-            // ENTER sulla TextField
             inputField.setOnAction(e -> sendInput.run());
-
-            // Clic su Confirm
             confirmBtn.setOnAction(e -> sendInput.run());
 
             HBox inputBox = new HBox(10, inputField, confirmBtn);
@@ -1503,24 +1509,13 @@ public class FlightScene {
             box.getChildren().addAll(insertLabel, hintLabel, inputBox);
             box.setTranslateX(-50);
             box.setTranslateY(40);
-
         });
-
-        no.setOnAction(ev -> {
-            viewFlow.handleInput("n");
-            root.getChildren().remove(anchorPane);
-        });
-
-        root.getChildren().add(anchorPane);
     }
 
     /**
-     * asks if player want to gain the cosmic credits
+     * Asks if player wants to gain cosmic credits and lose days.
      */
     public void showCosmicCreditsInput() {
-        StackPane root = (StackPane) scene.getRoot();
-
-        // VBox per contenere il messaggio e i pulsanti
         VBox box = new VBox(10);
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
@@ -1550,38 +1545,38 @@ public class FlightScene {
         buttons.setAlignment(Pos.CENTER);
 
         box.getChildren().addAll(confirm, buttons);
-        box.setTranslateX(-420);
-        box.setTranslateY(230);
+
+        AnchorPane popupContent = new AnchorPane(box);
+        AnchorPane.setBottomAnchor(box, 160.0); // Stessa posizione del popup "rearrange"
+        AnchorPane.setLeftAnchor(box, 105.0);
+
+        // Applica overlay che blocca l’interazione
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
 
         yes.setOnAction(ev -> {
             viewFlow.handleInput("y");
-            root.getChildren().remove(box);
+            closePopup.run();
         });
 
         no.setOnAction(ev -> {
             viewFlow.handleInput("n");
-            root.getChildren().remove(box);
+            closePopup.run();
         });
-
-        root.getChildren().add(box);
     }
 
     /**
-     * show the button to roll the dice
+     * Show the button to roll the dice in the standard popup position.
      */
     public void showRollDiceInput() {
-        StackPane root = (StackPane) scene.getRoot();
-
-        // === Overlay grigio trasparente ===
-        Rectangle overlay = new Rectangle();
-        overlay.widthProperty().bind(scene.widthProperty());
-        overlay.heightProperty().bind(scene.heightProperty());
-        overlay.setFill(Color.rgb(0, 0, 0, 0.5));
-        overlay.setMouseTransparent(false); // blocca interazioni sotto
-
-        // === Contenitore centrale ===
         VBox box = new VBox(20);
         box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
 
         Label diceLabel = new Label("🎲 Roll the dices!");
         diceLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 35));
@@ -1590,21 +1585,34 @@ public class FlightScene {
         Button rollButton = new Button("Roll Dices");
         rollButton.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
         rollButton.setTextFill(Color.BLACK);
-        rollButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
         rollButton.setCursor(Cursor.HAND);
+        rollButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
 
         box.getChildren().addAll(diceLabel, rollButton);
 
-        StackPane overlayPane = new StackPane(overlay, box);
+        AnchorPane popupContent = new AnchorPane(box);
+        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setLeftAnchor(box, 105.0);
 
-        root.getChildren().add(overlayPane);
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
 
-        // === Azione pulsante ===
-        rollButton.setOnAction(ev -> {
-            root.getChildren().remove(overlayPane);
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
+        rollButton.setOnAction(e -> {
             viewFlow.handleInput("roll");
+            closePopup.run();
         });
     }
+
+
+
+
+    // DA SISTEMARE CON LA NUOVA LOGICA PER GESTIRE OVERLAY
+
 
     /**
      * show the roll dice result and show it
@@ -1919,14 +1927,7 @@ public class FlightScene {
         // Componenti della nave
         Trucker t = new Trucker("n", PlayerColors.BLUE);
         t.initSpaceShip(2);
-        SpaceShip ship;
-        try {
-            ship = createShip1(t.getSpaceShip());
-        } catch (InvalidCoordinates e) {
-            throw new RuntimeException(e);
-        }
-
-        Component[][] layout = ship.getComponents();
+        Component[][] layout = viewFlow.getShip();
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[i].length; j++) {
                 Component c = layout[i][j];
@@ -2067,64 +2068,5 @@ public class FlightScene {
 
         return details.toString();
     }
-
-    public SpaceShip createShip1(SpaceShip ship) throws InvalidCoordinates {
-        ship = new SpaceShip();
-        ship.initSpaceShip(2, PlayerColors.RED);
-        Component c1 = new BatteryStorage(3, 2, 0, 0, "Battery Storage", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web2.jpg", 2);
-        Component c2 = new Cannon(0, 3, 2, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web133.jpg", true);
-        Component c3 = new Cabin(0, 2, 0, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web47.jpg", null, false);
-        Component c4 = new LifeSupport(1, 1, 0, 1, "Life Support", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web137.jpg", AlienColor.BROWN);
-        Component c5 = new Cannon(1, 1, 1, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web115.jpg", false);
-        Component c6 = new Pipes(1, 3, 2, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web56.jpg");
-        Component c7 = new BatteryStorage(0, 0, 0, 1, "Battery Storage", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web17.jpg", 3);
-        Component c8 = new Pipes(3, 2, 0, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web59.jpg");
-        Component c9 = new Cabin(1, 0, 2, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web49.jpg", null, false);
-        Component c10 = new Load(2, 2, 2, 3, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web66.jpg", 1, true);
-        Component c11 = new Cabin(0, 1, 3, 2, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web41.jpg", null, false);
-        Component c12 = new Cannon(2, 1, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web109.jpg", false);
-        Component c13 = new Pipes(3, 2, 2, 3, "Pipes", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web60.jpg");
-        Component c14 = new Engine(3, 1, 0, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web95.jpg", true);
-        Component c15 = new Shield(1, 2, 1, 2, "Shield", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web154.jpg");
-        Component c16 = new Load(2, 0, 1, 2, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web32.jpg", 3, false);
-        Component c17 = new Engine(2, 0, 3, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web100.jpg", true);
-        Component c18 = new Cannon(1, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web105.jpg", false);
-        Component c19 = new Engine(2, 1, 1, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web81.jpg", false);
-        Component c20 = new Engine(0, 0, 3, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web89.jpg", false);
-        Component c21 = new Load(0, 0, 0, 2, "Load", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web70.jpg", 2, true);
-        ship.addComponent(c10, 7, 8);
-        c9.turn();
-        ship.addComponent(c9, 7, 6);
-        c8.turn();
-        ship.addComponent(c8, 7, 5);
-        ship.addComponent(c11, 7, 9);
-        ship.addComponent(c5, 6, 7);
-        c4.turn();
-        ship.addComponent(c4, 6, 6);
-        c3.turn();
-        ship.addComponent(c3, 6, 5);
-        ship.addComponent(c6, 6, 8);
-        ship.addComponent(c7, 6, 9);
-        c1.turn();
-        c1.turn();
-        ship.addComponent(c1, 5, 6);
-        ship.addComponent(c2, 5, 8);
-        c12.turn();
-        ship.addComponent(c12, 7, 10);
-        ship.addComponent(c14, 8, 7);
-        ship.addComponent(c13, 8, 5);
-        c15.turn();
-        ship.addComponent(c15, 8, 8);
-        c16.turn();
-        ship.addComponent(c16, 8, 9);
-        ship.addComponent(c17, 8, 10);
-        ship.addComponent(c19, 9, 5);
-        ship.addComponent(c18, 9, 4);
-        ship.addComponent(c20, 9, 6);
-        c21.turn();
-        ship.addComponent(c21, 9, 8);
-        return ship;
-    }
-
 
 }
