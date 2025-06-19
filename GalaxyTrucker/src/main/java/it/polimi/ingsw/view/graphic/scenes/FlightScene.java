@@ -295,6 +295,9 @@ public class FlightScene {
         // === Marcatore per poterlo rimuovere in futuro ===
         imageContainer.setUserData("cardContainer");
 
+        // Impedisce a questo container di bloccare gli eventi mouse e lascia passare i click
+        imageContainer.setMouseTransparent(true);
+
         root.getChildren().add(imageContainer);
         StackPane.setAlignment(imageContainer, Pos.CENTER);
     }
