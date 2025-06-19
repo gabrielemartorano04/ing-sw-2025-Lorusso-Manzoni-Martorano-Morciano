@@ -173,7 +173,7 @@ class SpaceShipTest {
         spaceShip1.setNumHuman();
         ArrayList<int[]> coord1=new ArrayList<>();
         coord1.add(new int[]{7,7,1});
-        spaceShip1.removeNumHuman(coord1);
+        spaceShip1.removeNumHuman(coord1,1);
         assertEquals(1,spaceShip1.getNumCrew());
 
         spaceShip2.setNumHuman();
@@ -181,8 +181,8 @@ class SpaceShipTest {
         coord2.add(new int[]{7,7,2});
         coord2.add(new int[]{7,8,2});
         coord2.add(new int[]{8,7,1});
-        spaceShip2.removeNumHuman(coord2);
-        assertEquals(1,spaceShip2.getNumCrew());
+        spaceShip2.removeNumHuman(coord2,4);
+        assertEquals(2,spaceShip2.getNumCrew());
     }
 
     @Test

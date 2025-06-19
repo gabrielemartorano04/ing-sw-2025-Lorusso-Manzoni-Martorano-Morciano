@@ -4,7 +4,7 @@ import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.components.*;
-
+// todo elimina dopo
 public class CreateShipTest {
 
     public CreateShipTest() {}

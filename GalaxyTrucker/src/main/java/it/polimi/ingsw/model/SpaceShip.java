@@ -338,18 +338,28 @@ public class SpaceShip implements Serializable {
      * @param coord where coord[0] coord[1] are the x coordinate of the component from which the player
      *              wants to remove a number of astronauts cointained in coord[2]
      */
-    public void removeNumHuman(ArrayList<int[]> coord){
+    public void removeNumHuman(ArrayList<int[]> coord,int numMax){
 
         for(int[] c:coord){
-            switch (components[c[0]][c[1]]){
-                case Cabin cabin -> {
+            if(numMax>0){
+                switch (components[c[0]][c[1]]){
+                    case Cabin cabin -> {
+                            if(c[2]==1){
+                                cabin.removeHumans(1);
+                                numHuman --;
+                                numMax--;
+                            }
+                             else {
+                                cabin.removeHumans(2);
+                                numHuman -=2;
+                                numMax-=2;
+                            }
+                        }
 
-                    cabin.removeHumans(c[2]);
-                    numHuman -= c[2];
-
+                    default -> { }
                 }
-                default -> { }
-            }
+            }else return;
+
         }
     }
 

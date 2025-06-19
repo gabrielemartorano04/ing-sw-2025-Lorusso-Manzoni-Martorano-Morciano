@@ -5,19 +5,31 @@ import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent
 
 /**
  * This class is used to manage the timer that controls the building time.
- * Attributes:
- * - the timer thread
- * - a boolean variable that is true if the timer is running, otherwise it's false.
  */
 public class BuildTimerManager {
+
+    /**
+     * This timer istance
+     */
     private static BuildTimerManager instance;
+
+    /**
+     * The timer thread
+     */
     private Thread timerThread;
+
+    /**
+     * It says if the timer is running
+     */
     private boolean running = false;
 
     /**
-     * The class constructor is empty
+     * The class constructor
      */
-    private BuildTimerManager() {}
+    private BuildTimerManager() {
+        this.instance=null;
+        this.timerThread = null;
+    }
 
     /**
      * @return the instance of the classe BuildTimerManager

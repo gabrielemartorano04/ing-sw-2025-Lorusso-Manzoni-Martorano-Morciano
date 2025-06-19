@@ -367,10 +367,10 @@ public class TUI implements UI {
     @Override
     public void showResult(RollDiceResult event){
         if(event.getShoot()!=null){
-            this.getShootDescription(event.getShoot(),event.getCurrIndex());
+            System.out.println(this.getShootDescription(event.getShoot(),event.getCurrIndex()));
         }
         else if(event.getMeteor()!=null){
-            this.getMeteoriteDescription(event.getMeteor(),event.getCurrIndex());
+            System.out.println(this.getMeteoriteDescription(event.getMeteor(),event.getCurrIndex()));
         }
     }
 
