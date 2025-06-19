@@ -24,13 +24,11 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -39,11 +37,9 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.*;
-import java.util.List;
 
 public class GUI implements UI {
 
@@ -455,7 +451,7 @@ public class GUI implements UI {
     public void showCardDrawn(StartCardEvent event) {
         Platform.runLater(() -> {
             this.flightScene.hideWaitForOthers();
-            this.flightScene.addCardDrawnToScene(event.getCard());
+            this.flightScene.updateCardInScene(event.getCard());
         });
     }
 
@@ -473,7 +469,7 @@ public class GUI implements UI {
     @Override
     public void showStardustCard(StarDustEvent event) {
         Platform.runLater(() -> {
-            this.flightScene.addCardDrawnToScene(event.getCard());
+            this.flightScene.updateCardInScene(event.getCard());
         });
     }
 
@@ -487,7 +483,7 @@ public class GUI implements UI {
     @Override
     public void showEpidemicCard(EpidemicEvent event) {
         Platform.runLater(() -> {
-            this.flightScene.addCardDrawnToScene(event.getCard());
+            this.flightScene.updateCardInScene(event.getCard());
         });
     }
 
@@ -504,26 +500,26 @@ public class GUI implements UI {
 
     @Override
     public void showInputFormat(ParserState parserState) {
-//        Platform.runLater(() -> {
-//            switch (parserState){
-//                case ACTIVATE_ENGINES ->  this.flightScene.showActivateEngineInput();
-//                case ACTIVATE_CANNONS -> this.flightScene.showActivateCannonsInput();
-//                case ACTIVATE_SHIELD -> this.flightScene.showActivateShieldInput();
-//                case LAND -> this.flightScene.showLandInput();
-//                case HUMAN_COORD -> this.flightScene.showHumanCoordInput();
-//                case PLOT_GOOD -> this.flightScene.showPlotGoodInput();
-//                case ROLL_DICE -> this.flightScene.showRollDiceInput();
-//                case PLANET_DECISION-> this.flightScene.showPlanetDecisionInput();
-//                case DRAW_CARD -> this.flightScene.showDrawCardInput();
-//                case REMOTION_CONFIRMED -> this.flightScene.showRemotionConfirmedInput();
-//                case REMOVE_BATTERIES -> this.flightScene.showRemoveBatteriesInput();
-//                case REMOVE_GOODS -> this.flightScene.showRemoveGoodsInput();
-//                case REARRANGE -> this.flightScene.showRearrangeInput();
-//                case COSMIC_CREDITS -> this.flightScene.showCosmicCreditsInput();
-//                case WARZONE -> this.flightScene.showWarzoneInput();
-//
-//            }
-//        });
+        Platform.runLater(() -> {
+            switch (parserState){
+                case ACTIVATE_ENGINES ->  this.flightScene.showActivateEngineInput();
+                case ACTIVATE_CANNONS -> this.flightScene.showActivateCannonsInput();
+                case ACTIVATE_SHIELD -> this.flightScene.showActivateShieldInput();
+                case LAND -> this.flightScene.showLandInput();
+                case HUMAN_COORD -> this.flightScene.showHumanCoordInput();
+                case PLOT_GOOD -> this.flightScene.showPlotGoodInput();
+                case ROLL_DICE -> this.flightScene.showRollDiceInput();
+                case PLANET_DECISION-> this.flightScene.showPlanetDecisionInput();
+                case DRAW_CARD -> this.flightScene.showDrawCardInput();
+                case REMOTION_CONFIRMED -> this.flightScene.showRemotionConfirmedInput();
+                case REMOVE_BATTERIES -> this.flightScene.showRemoveBatteriesInput();
+                case REMOVE_GOODS -> this.flightScene.showRemoveGoodsInput();
+                case REARRANGE -> this.flightScene.showRearrangeInput();
+                case COSMIC_CREDITS -> this.flightScene.showCosmicCreditsInput();
+                case WARZONE -> this.flightScene.showWarzoneInput();
+
+            }
+        });
     }
 
     @Override

@@ -25,7 +25,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -152,6 +151,11 @@ public class FlightScene {
         this.layout = ship;
     }
 
+    private void restoreInteractiveLayers() {
+        overlayLayer.setMouseTransparent(true);
+        root.getChildren().removeAll(optionsBox, statusBar);
+        root.getChildren().addAll(optionsBox, statusBar);
+    }
 
     public void printNodeTree(Node node, int level) {
         String indent = "  ".repeat(level);
@@ -164,57 +168,6 @@ public class FlightScene {
         }
     }
 
-
-
-    /**
-     * used to create the first ship matrix, but also to modify it based on what happened during flight
-     */
-    public void updateShipLayout() {
-        // se grid esiste già, la rimuovo dal root
-        if (grid != null) {
-            root.getChildren().remove(grid);
-        }
-
-        grid = new GridPane();
-        grid.setHgap(2);
-        grid.setVgap(2);
-        grid.setAlignment(Pos.TOP_RIGHT);
-        grid.setTranslateX(-57);
-        grid.setTranslateY(74);
-
-        grid.setMouseTransparent(true);
-
-
-        for (int row = 5; row < 10; row++) {
-            for (int col = 4; col < 11; col++) {
-                StackPane cell = new StackPane();
-                cell.setPrefSize(107, 107);
-
-                if (validCells[row][col]) {
-                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 6px; -fx-background-radius: 6px;");
-
-                    Component c = layout[row][col];
-                    if (c != null) {
-                        ImageView imageView = new ImageView(c.getFrontImage());
-                        imageView.setFitWidth(107);
-                        imageView.setFitHeight(107);
-                        Rectangle clip = new Rectangle(107, 107);
-                        clip.setArcWidth(12);
-                        clip.setArcHeight(12);
-                        imageView.setClip(clip);
-                        imageView.setRotate(c.getRotationAngle());
-                        cell.getChildren().add(imageView);
-                    }
-                } else {
-                    cell.setStyle("-fx-background-color: transparent;");
-                }
-
-                grid.add(cell, col - 4, row - 5);
-                cellMatrix[row][col] = cell;
-            }
-        }
-        root.getChildren().add(grid);
-    }
 
     /**
      * box with the options button of the game
@@ -253,7 +206,6 @@ public class FlightScene {
         };
     }
 
-
     public void initCardPlaceholder() {
         if (scene == null || scene.getRoot() == null) return;
 
@@ -280,97 +232,106 @@ public class FlightScene {
     }
 
     /**
-     * Inserisce l'immagine della carta nel contenitore già esistente.
-     * @param card Carta da visualizzare
+     * show the general status of the ship and the possibility to see the specific component status
      */
-    public void addCardDrawnToScene(Card card) {
-        if (cardImageContainer == null || card == null) return;
+    private void initializeStatusBar() {
+        Image engine = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
+        Image cannon = new Image(getClass().getResource("/it/polimi/ingsw/view/cannon.png").toExternalForm());
+        Image human = new Image(getClass().getResource("/it/polimi/ingsw/view/human.png").toExternalForm());
+        Image battery = engine; // Usa immagine engine per battery
+        Image pos = engine;     // Usa immagine engine per position
+        Image credit = engine;  // Usa immagine engine per credits
 
-        double imageWidth = 200;
-        double imageHeight = 308;
+        posLabel = createStyledLabel();
+        battLabel = createStyledLabel();
+        humanLabel = createStyledLabel();
+        cannonLabel = createStyledLabel();
+        engineLabel = createStyledLabel();
+        creditLabel = createStyledLabel();
 
-        ImageView cardView = new ImageView(card.getFrontImage());
-        cardView.setFitWidth(imageWidth);
-        cardView.setFitHeight(imageHeight);
-        cardView.setPreserveRatio(true);
-        cardView.setMouseTransparent(true);
+        ImageView posIcon = new ImageView(pos);
+        posIcon.setFitWidth(20);
+        posIcon.setPreserveRatio(true);
 
-        Rectangle clip = new Rectangle(imageWidth, imageHeight);
-        clip.setArcWidth(16);
-        clip.setArcHeight(16);
-        cardView.setClip(clip);
+        ImageView batteryIcon = new ImageView(battery);
+        batteryIcon.setFitWidth(20);
+        batteryIcon.setPreserveRatio(true);
 
-        // Conserva il bordo esistente (primo elemento) e aggiungi la carta sopra
-        Node border = cardImageContainer.getChildren().isEmpty() ? null : cardImageContainer.getChildren().get(0);
-        cardImageContainer.getChildren().setAll(border, cardView);
+        ImageView humanIcon = new ImageView(human);
+        humanIcon.setFitWidth(40);
+        humanIcon.setPreserveRatio(true);
 
-        restoreInteractiveLayers();
-    }
+        ImageView cannonIcon = new ImageView(cannon);
+        cannonIcon.setFitWidth(20);
+        cannonIcon.setPreserveRatio(true);
 
-    /**
-     * Add the image of the card to the scene or initialize with just the white border.
-     * @param card Card to display (ignored if initialize is true)
-     * @param initialize If true, only display the white border without a card image
-     */
-    public void addCardDrawnToSceneOld(Card card, boolean initialize) {
-        if (scene == null || scene.getRoot() == null) return;
+        ImageView engineIcon = new ImageView(engine);
+        engineIcon.setFitWidth(16);
+        engineIcon.setPreserveRatio(true);
 
-        StackPane root = (StackPane) scene.getRoot();
+        ImageView creditIcon = new ImageView(credit);
+        creditIcon.setFitWidth(16);
+        creditIcon.setPreserveRatio(true);
 
-        // === Dimensioni della carta ===
-        double imageWidth = 200;
-        double imageHeight = 308;
+        HBox posBox = new HBox(0, posIcon, posLabel);
+        HBox battBox = new HBox(0, batteryIcon, battLabel);
+        HBox humanBox = new HBox(0, humanIcon, humanLabel);
+        HBox cannonBox = new HBox(0, cannonIcon, cannonLabel);
+        HBox engineBox = new HBox(5, engineIcon, engineLabel);
+        HBox creditBox = new HBox(5, creditIcon, creditLabel);
 
-        // === Rimuove eventuali elementi precedenti ===
-        root.getChildren().removeIf(node -> node.getUserData() != null && node.getUserData().equals("cardContainer"));
 
-        // === Bordo bianco ===
-        Rectangle border = new Rectangle(imageWidth, imageHeight);
-        border.setArcWidth(16);
-        border.setArcHeight(16);
-        border.setFill(Color.TRANSPARENT);
-        border.setStroke(Color.WHITE);
-        border.setStrokeWidth(2);
-        border.setMouseTransparent(true);
-
-        StackPane imageContainer;
-
-        if (initialize) {
-            // Solo il bordo bianco
-            imageContainer = new StackPane(border);
-        } else {
-            // === Immagine della carta ===
-            ImageView cardView = new ImageView(card.getFrontImage());
-            cardView.setFitWidth(imageWidth);
-            cardView.setFitHeight(imageHeight);
-            cardView.setPreserveRatio(true);
-            cardView.setMouseTransparent(true);
-
-            // === Clip per angoli smussati ===
-            Rectangle clip = new Rectangle(imageWidth, imageHeight);
-            clip.setArcWidth(16);
-            clip.setArcHeight(16);
-            cardView.setClip(clip);
-
-            imageContainer = new StackPane(border, cardView);
+        for (HBox box : List.of(posBox, battBox, humanBox, cannonBox, engineBox, creditBox)) {
+            box.setAlignment(Pos.CENTER_RIGHT);
         }
 
-        imageContainer.setPrefSize(imageWidth, imageHeight);
-        imageContainer.setAlignment(Pos.CENTER);
-        imageContainer.setTranslateX(-420);
+        // Goods
+        HBox goodsBox = new HBox(10);
+        goodsBox.setAlignment(Pos.CENTER_RIGHT);
+        Map<String, Image> goodImages = Map.of(
+                "red", new Image(getClass().getResource("/it/polimi/ingsw/view/redgood.png").toExternalForm()),
+                "yellow", new Image(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png").toExternalForm()),
+                "green", new Image(getClass().getResource("/it/polimi/ingsw/view/greengood.png").toExternalForm()),
+                "blue", new Image(getClass().getResource("/it/polimi/ingsw/view/bluegood.png").toExternalForm())
+        );
 
-        // === Marcatore per poterlo rimuovere in futuro ===
-        imageContainer.setUserData("cardContainer");
+        for (String color : goodImages.keySet()) {
+            ImageView goodIcon = new ImageView(goodImages.get(color));
+            goodIcon.setFitWidth(35);
+            goodIcon.setPreserveRatio(true);
+            Label qtyLabel = createStyledLabel();
+            goodLabels.put(color.toLowerCase(), qtyLabel);
+            HBox singleGood = new HBox(0, goodIcon, qtyLabel);
+            singleGood.setAlignment(Pos.CENTER_RIGHT);
+            goodsBox.getChildren().add(singleGood);
+        }
 
-        // Impedisce a questo container di bloccare gli eventi mouse e lascia passare i click
-        imageContainer.setMouseTransparent(true);
+        moreButton = new Button("More...");
+        moreButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        moreButton.setTextFill(Color.BLACK);
+        moreButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        moreButton.setCursor(Cursor.HAND);
+        moreButton.setOnAction(e -> showMore());
 
-        root.getChildren().add(imageContainer);
-        StackPane.setAlignment(imageContainer, Pos.CENTER);
+        HBox resourceBox = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox, creditBox);
+        resourceBox.setAlignment(Pos.CENTER);
+        resourceBox.setPadding(new Insets(5));
+
+        statusBar = new VBox(5, resourceBox, moreButton);
+        statusBar.setAlignment(Pos.CENTER);
+        statusBar.setPadding(new Insets(10));
+        statusBar.setMaxWidth(800);
+        statusBar.setMouseTransparent(false);
+
+        Platform.runLater(() -> {
+            StackPane rootPane = (StackPane) root.getScene().getRoot();
+            StackPane.setAlignment(statusBar, Pos.CENTER_RIGHT);
+            StackPane.setMargin(statusBar, new Insets(0, 40, -550, 0));
+            if (!rootPane.getChildren().contains(statusBar)) {
+                rootPane.getChildren().add(statusBar);
+            }
+        });
     }
-
-
-    //TODO controllare se va bene
 
     /**
      * specific button for the withdraw of the player
@@ -521,295 +482,88 @@ public class FlightScene {
         viewFlow.handleInput("state");
     }
 
-
-    private void restoreInteractiveLayers() {
-        overlayLayer.setMouseTransparent(true);
-        root.getChildren().removeAll(optionsBox, statusBar);
-        root.getChildren().addAll(optionsBox, statusBar);
-    }
-
-
-
     /**
-     * ask if you want to activate engines and then ask for the coordinates
+     * used to create the first ship matrix, but also to modify it based on what happened during flight
      */
-    public void showActivateEngineInput() {
-        StackPane root = (StackPane) scene.getRoot();
+    public void updateShipLayout() {
+        // se grid esiste già, la rimuovo dal root
+        if (grid != null) {
+            root.getChildren().remove(grid);
+        }
 
-        VBox box = new VBox(10);
-        box.setAlignment(Pos.CENTER);
-        box.setPadding(new Insets(10));
+        grid = new GridPane();
+        grid.setHgap(2);
+        grid.setVgap(2);
+        grid.setAlignment(Pos.TOP_RIGHT);
+        grid.setTranslateX(-57);
+        grid.setTranslateY(74);
 
-        Label confirm = new Label("Would you like to activate double engines?");
-        confirm.setTextFill(Color.web("#FFDE69"));
-        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+        grid.setMouseTransparent(true);
 
-        Button yes = new Button("YES");
-        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-        yes.setTextFill(Color.WHITE);
-        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
-        yes.setCursor(Cursor.HAND);
-        yes.setPrefWidth(100);
 
-        Button no = new Button("NO");
-        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-        no.setTextFill(Color.WHITE);
-        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
-        no.setCursor(Cursor.HAND);
-        no.setPrefWidth(100);
+        for (int row = 5; row < 10; row++) {
+            for (int col = 4; col < 11; col++) {
+                StackPane cell = new StackPane();
+                cell.setPrefSize(107, 107);
 
-        HBox buttons = new HBox(10, yes, no);
-        buttons.setAlignment(Pos.CENTER);
+                if (validCells[row][col]) {
+                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 6px; -fx-background-radius: 6px;");
 
-        box.getChildren().addAll(confirm, buttons);
-
-        AnchorPane anchorPane = new AnchorPane(box);
-        anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
-        AnchorPane.setBottomAnchor(box, 180.0);
-        AnchorPane.setLeftAnchor(box, 70.0);
-
-        // Comportamento "NO"
-        no.setOnAction(ev -> {
-            viewFlow.handleInput("n");
-            root.getChildren().remove(anchorPane);
-        });
-
-        // Comportamento "YES"
-        yes.setOnAction(ev -> {
-            box.getChildren().clear();
-
-            Label insertLabel = new Label("Insert the coordinates of double engines and battery storages");
-            insertLabel.setTextFill(Color.web("#FFDE69"));
-            insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-
-            Label hintLabel = new Label("Type '<x1> <y1>, <x2> <y2>, ... , battery, <xs1> <ys1> - <numofbatteries>, ...'");
-            hintLabel.setTextFill(Color.LIGHTGRAY);
-            hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
-
-            TextField inputField = new TextField();
-            inputField.setPromptText("Ex. 2 3, 4 5, battery, 6 7 - 2");
-            inputField.setPrefWidth(250);
-
-            Button confirmBtn = new Button("Confirm");
-            confirmBtn.setFont(Font.font("Bangers", 14));
-            confirmBtn.setTextFill(Color.BLACK);
-            confirmBtn.setCursor(Cursor.HAND);
-            confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-
-            // Azione comune per invio
-            Runnable sendInput = () -> {
-                String text = inputField.getText().trim();
-                if (!text.isEmpty()) {
-                    viewFlow.handleInput("y, " + text);
-                    root.getChildren().remove(anchorPane);
+                    Component c = layout[row][col];
+                    if (c != null) {
+                        ImageView imageView = new ImageView(c.getFrontImage());
+                        imageView.setFitWidth(107);
+                        imageView.setFitHeight(107);
+                        Rectangle clip = new Rectangle(107, 107);
+                        clip.setArcWidth(12);
+                        clip.setArcHeight(12);
+                        imageView.setClip(clip);
+                        imageView.setRotate(c.getRotationAngle());
+                        cell.getChildren().add(imageView);
+                    }
+                } else {
+                    cell.setStyle("-fx-background-color: transparent;");
                 }
-            };
 
-            // ENTER sulla TextField
-            inputField.setOnAction(e -> sendInput.run());
-
-            // Clic su Confirm
-            confirmBtn.setOnAction(e -> sendInput.run());
-
-            HBox inputBox = new HBox(10, inputField, confirmBtn);
-            inputBox.setAlignment(Pos.CENTER);
-
-            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
-            box.setTranslateX(-20);
-        });
-
-        root.getChildren().add(anchorPane);
+                grid.add(cell, col - 4, row - 5);
+                cellMatrix[row][col] = cell;
+            }
+        }
+        root.getChildren().add(grid);
     }
 
     /**
-     * ask if you want to activate cannons and then ask for the coordinates
+     * Inserisce l'immagine della carta nel contenitore già esistente.
+     * @param card Carta da visualizzare
      */
-    public void showActivateCannonsInput() {
-        StackPane root = (StackPane) scene.getRoot();
+    public void updateCardInScene(Card card) {
+        if (cardImageContainer == null || card == null) return;
 
-        VBox box = new VBox(10);
-        box.setAlignment(Pos.CENTER);
-        box.setPadding(new Insets(10));
+        double imageWidth = 200;
+        double imageHeight = 308;
 
-        Label confirm = new Label("Would you like to activate double cannons?");
-        confirm.setTextFill(Color.web("#FFDE69"));
-        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+        ImageView cardView = new ImageView(card.getFrontImage());
+        cardView.setFitWidth(imageWidth);
+        cardView.setFitHeight(imageHeight);
+        cardView.setPreserveRatio(true);
+        cardView.setMouseTransparent(true);
 
-        Button yes = new Button("YES");
-        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-        yes.setTextFill(Color.WHITE);
-        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
-        yes.setCursor(Cursor.HAND);
-        yes.setPrefWidth(100);
+        Rectangle clip = new Rectangle(imageWidth, imageHeight);
+        clip.setArcWidth(16);
+        clip.setArcHeight(16);
+        cardView.setClip(clip);
 
-        Button no = new Button("NO");
-        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-        no.setTextFill(Color.WHITE);
-        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
-        no.setCursor(Cursor.HAND);
-        no.setPrefWidth(100);
+        // Conserva il bordo esistente (primo elemento) e aggiungi la carta sopra
+        Node border = cardImageContainer.getChildren().isEmpty() ? null : cardImageContainer.getChildren().get(0);
+        cardImageContainer.getChildren().setAll(border, cardView);
 
-        HBox buttons = new HBox(10, yes, no);
-        buttons.setAlignment(Pos.CENTER);
-
-        box.getChildren().addAll(confirm, buttons);
-
-        AnchorPane anchorPane = new AnchorPane(box);
-        anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
-        AnchorPane.setBottomAnchor(box, 180.0);
-        AnchorPane.setLeftAnchor(box, 70.0);
-
-        // Comportamento "NO"
-        no.setOnAction(ev -> {
-            viewFlow.handleInput("n");
-            root.getChildren().remove(anchorPane);
-        });
-
-        // Comportamento "YES"
-        yes.setOnAction(ev -> {
-            box.getChildren().clear();
-
-            Label insertLabel = new Label("Insert the coordinates of double cannons and battery storages");
-            insertLabel.setTextFill(Color.web("#FFDE69"));
-            insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-
-            Label hintLabel = new Label("Type '<x1> <y1>, <x2> <y2>, ... , battery, <xs1> <ys1> - <numofbatteries>, ...'");
-            hintLabel.setTextFill(Color.LIGHTGRAY);
-            hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
-
-            TextField inputField = new TextField();
-            inputField.setPromptText("Ex. 2 3, 4 5, battery, 6 7 - 2");
-            inputField.setPrefWidth(250);
-
-            Button confirmBtn = new Button("Confirm");
-            confirmBtn.setFont(Font.font("Bangers", 14));
-            confirmBtn.setTextFill(Color.BLACK);
-            confirmBtn.setCursor(Cursor.HAND);
-            confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-
-            // Azione comune per invio
-            Runnable sendInput = () -> {
-                String text = inputField.getText().trim();
-                if (!text.isEmpty()) {
-                    viewFlow.handleInput("y, " + text);
-                    root.getChildren().remove(anchorPane);
-                }
-            };
-
-            // ENTER sulla TextField
-            inputField.setOnAction(e -> sendInput.run());
-
-            // Clic su Confirm
-            confirmBtn.setOnAction(e -> sendInput.run());
-
-            HBox inputBox = new HBox(10, inputField, confirmBtn);
-            inputBox.setAlignment(Pos.CENTER);
-
-            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
-            box.setTranslateX(-20);
-        });
-
-        root.getChildren().add(anchorPane);
-    }
-
-    /**
-     * ask if you want to activate shields and then ask for the coordinates
-     */
-    public void showActivateShieldInput() {
-        StackPane root = (StackPane) scene.getRoot();
-
-        VBox box = new VBox(10);
-        box.setAlignment(Pos.CENTER);
-        box.setPadding(new Insets(10));
-
-        Label confirm = new Label("Would you like to activate a shield?");
-        confirm.setTextFill(Color.web("#FFDE69"));
-        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
-
-        Button yes = new Button("YES");
-        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-        yes.setTextFill(Color.WHITE);
-        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
-        yes.setCursor(Cursor.HAND);
-        yes.setPrefWidth(100);
-
-        Button no = new Button("NO");
-        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-        no.setTextFill(Color.WHITE);
-        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
-        no.setCursor(Cursor.HAND);
-        no.setPrefWidth(100);
-
-        HBox buttons = new HBox(10, yes, no);
-        buttons.setAlignment(Pos.CENTER);
-
-        box.getChildren().addAll(confirm, buttons);
-
-        AnchorPane anchorPane = new AnchorPane(box);
-        anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
-        AnchorPane.setBottomAnchor(box, 180.0);
-        AnchorPane.setLeftAnchor(box, 110.0);
-
-        // Comportamento "NO"
-        no.setOnAction(ev -> {
-            viewFlow.handleInput("n");
-            root.getChildren().remove(anchorPane);
-        });
-
-        // Comportamento "YES"
-        yes.setOnAction(ev -> {
-            box.getChildren().clear();
-
-            Label insertLabel = new Label("Insert the coordinates of the shield and the battery storage");
-            insertLabel.setTextFill(Color.web("#FFDE69"));
-            insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-
-            Label hintLabel = new Label("Type '<x> <y>, <x> <y>'");
-            hintLabel.setTextFill(Color.LIGHTGRAY);
-            hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
-
-            TextField inputField = new TextField();
-            inputField.setPromptText("Ex. 2 3, 4 5");
-            inputField.setPrefWidth(250);
-
-            Button confirmBtn = new Button("Confirm");
-            confirmBtn.setFont(Font.font("Bangers", 14));
-            confirmBtn.setTextFill(Color.BLACK);
-            confirmBtn.setCursor(Cursor.HAND);
-            confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-
-            // Azione comune per invio
-            Runnable sendInput = () -> {
-                String text = inputField.getText().trim();
-                if (!text.isEmpty()) {
-                    viewFlow.handleInput("y, " + text);
-                    root.getChildren().remove(anchorPane);
-                }
-            };
-
-            // ENTER sulla TextField
-            inputField.setOnAction(e -> sendInput.run());
-
-            // Clic su Confirm
-            confirmBtn.setOnAction(e -> sendInput.run());
-
-            HBox inputBox = new HBox(10, inputField, confirmBtn);
-            inputBox.setAlignment(Pos.CENTER);
-
-            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
-            box.setTranslateX(-50);
-        });
-
-        root.getChildren().add(anchorPane);
+        restoreInteractiveLayers();
     }
 
     /**
      * ask if you want to land on an abandoned card
      */
     public void showLandInput() {
-        StackPane root = (StackPane) scene.getRoot();
-
-        // VBox per contenere il messaggio e i pulsanti
         VBox box = new VBox(10);
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
@@ -834,50 +588,310 @@ public class FlightScene {
 
         HBox buttons = new HBox(10, yes, no);
         buttons.setAlignment(Pos.CENTER);
-
         box.getChildren().addAll(confirm, buttons);
 
-        AnchorPane anchorPane = new AnchorPane(box);
+        AnchorPane popupContent = new AnchorPane(box);
         AnchorPane.setBottomAnchor(box, 180.0);
         AnchorPane.setLeftAnchor(box, 170.0);
 
+        // Attiva overlay per disabilitare temporaneamente i layer interattivi
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        // Gestione click dei pulsanti
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
         yes.setOnAction(ev -> {
             viewFlow.handleInput("y");
-            root.getChildren().remove(anchorPane);
+            closePopup.run();
         });
 
         no.setOnAction(ev -> {
             viewFlow.handleInput("n");
-            root.getChildren().remove(anchorPane);
+            closePopup.run();
         });
-
-        // Aggiungi il popup **prima** di optionsBox per far rimanere i bottoni sopra il popup
-        int optionsIndex = root.getChildren().indexOf(optionsBox);
-        if (optionsIndex == -1) {
-            root.getChildren().add(anchorPane);
-        } else {
-            root.getChildren().add(optionsIndex, anchorPane);
-        }
     }
 
+    /**
+     * Ask if you want to activate engines and then ask for the coordinates.
+     */
+    public void showActivateEngineInput() {
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
+
+        Label confirm = new Label("Would you like to activate double engines?");
+        confirm.setTextFill(Color.web("#FFDE69"));
+        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+
+        Button yes = new Button("YES");
+        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        yes.setTextFill(Color.WHITE);
+        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
+        yes.setCursor(Cursor.HAND);
+        yes.setPrefWidth(100);
+
+        Button no = new Button("NO");
+        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        no.setTextFill(Color.WHITE);
+        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+        no.setCursor(Cursor.HAND);
+        no.setPrefWidth(100);
+
+        HBox buttons = new HBox(10, yes, no);
+        buttons.setAlignment(Pos.CENTER);
+        box.getChildren().addAll(confirm, buttons);
+
+        AnchorPane popupContent = new AnchorPane(box);
+        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setLeftAnchor(box, 70.0);
+
+        // Attiva overlay
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        // Funzione per chiudere e ripristinare interattività
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
+        // "NO" => invia n
+        no.setOnAction(ev -> {
+            viewFlow.handleInput("n");
+            closePopup.run();
+        });
+
+        // "YES" => chiede coordinate
+        yes.setOnAction(ev -> {
+            box.getChildren().clear();
+
+            Label insertLabel = new Label("Insert the coordinates of double engines and battery storages");
+            insertLabel.setTextFill(Color.web("#FFDE69"));
+            insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+
+            Label hintLabel = new Label("Type '<x1> <y1>, <x2> <y2>, ..., battery, <xs1> <ys1> - <num>, ...'");
+            hintLabel.setTextFill(Color.LIGHTGRAY);
+            hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+
+            TextField inputField = new TextField();
+            inputField.setPromptText("Ex. 2 3, 4 5, battery, 6 7 - 2");
+            inputField.setPrefWidth(250);
+
+            Button confirmBtn = new Button("Confirm");
+            confirmBtn.setFont(Font.font("Bangers", 14));
+            confirmBtn.setTextFill(Color.BLACK);
+            confirmBtn.setCursor(Cursor.HAND);
+            confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+
+            Runnable sendInput = () -> {
+                String text = inputField.getText().trim();
+                if (!text.isEmpty()) {
+                    viewFlow.handleInput("y, " + text);
+                    closePopup.run();
+                }
+            };
+
+            inputField.setOnAction(e -> sendInput.run());
+            confirmBtn.setOnAction(e -> sendInput.run());
+
+            HBox inputBox = new HBox(10, inputField, confirmBtn);
+            inputBox.setAlignment(Pos.CENTER);
+
+            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+            box.setTranslateX(-20);
+        });
+    }
 
     /**
-     * ask from where to remove humans
+     * Ask if you want to activate cannons and then ask for the coordinates.
+     */
+    public void showActivateCannonsInput() {
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
+
+        Label confirm = new Label("Would you like to activate double cannons?");
+        confirm.setTextFill(Color.web("#FFDE69"));
+        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+
+        Button yes = new Button("YES");
+        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        yes.setTextFill(Color.WHITE);
+        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
+        yes.setCursor(Cursor.HAND);
+        yes.setPrefWidth(100);
+
+        Button no = new Button("NO");
+        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        no.setTextFill(Color.WHITE);
+        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+        no.setCursor(Cursor.HAND);
+        no.setPrefWidth(100);
+
+        HBox buttons = new HBox(10, yes, no);
+        buttons.setAlignment(Pos.CENTER);
+        box.getChildren().addAll(confirm, buttons);
+
+        AnchorPane popupContent = new AnchorPane(box);
+        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setLeftAnchor(box, 70.0);
+
+        // Attiva overlay
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        // Chiudi e ripristina interattività
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
+        no.setOnAction(ev -> {
+            viewFlow.handleInput("n");
+            closePopup.run();
+        });
+
+        yes.setOnAction(ev -> {
+            box.getChildren().clear();
+
+            Label insertLabel = new Label("Insert the coordinates of double cannons and battery storages");
+            insertLabel.setTextFill(Color.web("#FFDE69"));
+            insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+
+            Label hintLabel = new Label("Type '<x1> <y1>, <x2> <y2>, ..., battery, <xs1> <ys1> - <num>, ...'");
+            hintLabel.setTextFill(Color.LIGHTGRAY);
+            hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+
+            TextField inputField = new TextField();
+            inputField.setPromptText("Ex. 2 3, 4 5, battery, 6 7 - 2");
+            inputField.setPrefWidth(250);
+
+            Button confirmBtn = new Button("Confirm");
+            confirmBtn.setFont(Font.font("Bangers", 14));
+            confirmBtn.setTextFill(Color.BLACK);
+            confirmBtn.setCursor(Cursor.HAND);
+            confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+
+            Runnable sendInput = () -> {
+                String text = inputField.getText().trim();
+                if (!text.isEmpty()) {
+                    viewFlow.handleInput("y, " + text);
+                    closePopup.run();
+                }
+            };
+
+            inputField.setOnAction(e -> sendInput.run());
+            confirmBtn.setOnAction(e -> sendInput.run());
+
+            HBox inputBox = new HBox(10, inputField, confirmBtn);
+            inputBox.setAlignment(Pos.CENTER);
+
+            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+            box.setTranslateX(-20);
+        });
+    }
+
+    /**
+     * Ask if you want to activate shields and then ask for the coordinates.
+     */
+    public void showActivateShieldInput() {
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
+
+        Label confirm = new Label("Would you like to activate a shield?");
+        confirm.setTextFill(Color.web("#FFDE69"));
+        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+
+        Button yes = new Button("YES");
+        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        yes.setTextFill(Color.WHITE);
+        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
+        yes.setCursor(Cursor.HAND);
+        yes.setPrefWidth(100);
+
+        Button no = new Button("NO");
+        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        no.setTextFill(Color.WHITE);
+        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+        no.setCursor(Cursor.HAND);
+        no.setPrefWidth(100);
+
+        HBox buttons = new HBox(10, yes, no);
+        buttons.setAlignment(Pos.CENTER);
+        box.getChildren().addAll(confirm, buttons);
+
+        AnchorPane popupContent = new AnchorPane(box);
+        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setLeftAnchor(box, 110.0);
+
+        // Attiva overlay e mostra il contenuto
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        // Funzione di chiusura del popup e ripristino
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
+        no.setOnAction(ev -> {
+            viewFlow.handleInput("n");
+            closePopup.run();
+        });
+
+        yes.setOnAction(ev -> {
+            box.getChildren().clear();
+
+            Label insertLabel = new Label("Insert the coordinates of the shield and the battery storage");
+            insertLabel.setTextFill(Color.web("#FFDE69"));
+            insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+
+            Label hintLabel = new Label("Type '<x> <y>, <x> <y>'");
+            hintLabel.setTextFill(Color.LIGHTGRAY);
+            hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+
+            TextField inputField = new TextField();
+            inputField.setPromptText("Ex. 2 3, 4 5");
+            inputField.setPrefWidth(250);
+
+            Button confirmBtn = new Button("Confirm");
+            confirmBtn.setFont(Font.font("Bangers", 14));
+            confirmBtn.setTextFill(Color.BLACK);
+            confirmBtn.setCursor(Cursor.HAND);
+            confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+
+            Runnable sendInput = () -> {
+                String text = inputField.getText().trim();
+                if (!text.isEmpty()) {
+                    viewFlow.handleInput("y, " + text);
+                    closePopup.run();
+                }
+            };
+
+            inputField.setOnAction(e -> sendInput.run());
+            confirmBtn.setOnAction(e -> sendInput.run());
+
+            HBox inputBox = new HBox(10, inputField, confirmBtn);
+            inputBox.setAlignment(Pos.CENTER);
+
+            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+            box.setTranslateX(-50);
+        });
+    }
+
+    /**
+     * Ask from where to remove humans.
      */
     public void showHumanCoordInput() {
-        StackPane root = (StackPane) scene.getRoot();
-
         VBox box = new VBox(10);
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
         box.setMaxWidth(400);
-
-        AnchorPane anchorPane = new AnchorPane(box);
-        anchorPane.setPickOnBounds(false); // lascia passare i click al di fuori del box
-        AnchorPane.setBottomAnchor(box, 150.0);
-        AnchorPane.setLeftAnchor(box, 100.0);
-
-        box.getChildren().clear();
 
         Label insertLabel = new Label("Insert the coordinates of the cabin from which to remove the crew members");
         insertLabel.setTextFill(Color.web("#FFDE69"));
@@ -899,35 +913,42 @@ public class FlightScene {
         confirmBtn.setCursor(Cursor.HAND);
         confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
 
-        // Azione comune per invio
-        Runnable sendInput = () -> {
-            String text = inputField.getText().trim();
-            if (!text.isEmpty()) {
-                viewFlow.handleInput("y, " + text);
-                root.getChildren().remove(anchorPane);
-            }
-        };
-
-        // ENTER sulla TextField
-        inputField.setOnAction(e -> sendInput.run());
-
-        // Clic su Confirm
-        confirmBtn.setOnAction(e -> sendInput.run());
-
         HBox inputBox = new HBox(10, inputField, confirmBtn);
         inputBox.setAlignment(Pos.CENTER);
 
         box.getChildren().addAll(insertLabel, hintLabel, inputBox);
 
-        root.getChildren().add(anchorPane);
+        AnchorPane popupContent = new AnchorPane(box);
+        AnchorPane.setBottomAnchor(box, 150.0);
+        AnchorPane.setLeftAnchor(box, 100.0);
+
+        // Mostra overlay per bloccare interazione
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        // Funzione di chiusura
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
+        // Azione invio testo
+        Runnable sendInput = () -> {
+            String text = inputField.getText().trim();
+            if (!text.isEmpty()) {
+                viewFlow.handleInput("y, " + text);
+                closePopup.run();
+            }
+        };
+
+        inputField.setOnAction(e -> sendInput.run());
+        confirmBtn.setOnAction(e -> sendInput.run());
     }
 
     /**
-     * show the good and ask if you want to gain it and where
+     * Show the good and ask if you want to gain it and where.
      */
     public void showPlotGoodInput() {
-        StackPane root = (StackPane) scene.getRoot();
-
         VBox box = new VBox(10);
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
@@ -936,7 +957,6 @@ public class FlightScene {
         confirm.setTextFill(Color.web("#FFDE69"));
         confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
 
-        // === IMMAGINE DEL GOOD ===
         ImageView goodView = new ImageView(goodImage);
         goodView.setFitWidth(50);
         goodView.setPreserveRatio(true);
@@ -958,21 +978,26 @@ public class FlightScene {
 
         HBox buttons = new HBox(10, yes, no);
         buttons.setAlignment(Pos.CENTER);
-
         box.getChildren().addAll(confirm, goodView, buttons);
 
-        AnchorPane anchorPane = new AnchorPane(box);
-        anchorPane.setPickOnBounds(false);
+        AnchorPane popupContent = new AnchorPane(box);
         AnchorPane.setBottomAnchor(box, 180.0);
         AnchorPane.setLeftAnchor(box, 120.0);
 
-        // "NO" logic
+        // Blocca gli altri layer temporaneamente
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
         no.setOnAction(ev -> {
             viewFlow.handleInput("n");
-            root.getChildren().remove(anchorPane);
+            closePopup.run();
         });
 
-        // "YES" logic
         yes.setOnAction(ev -> {
             box.getChildren().clear();
 
@@ -980,7 +1005,6 @@ public class FlightScene {
             insertLabel.setTextFill(Color.web("#FFDE69"));
             insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
 
-            // === SECOND COPY OF GOOD IMAGE ===
             ImageView goodView2 = new ImageView(goodImage);
             goodView2.setFitWidth(50);
             goodView2.setPreserveRatio(true);
@@ -1045,7 +1069,7 @@ public class FlightScene {
             box.setTranslateX(15);
             box.setTranslateY(50);
 
-            cancelBtn.setOnAction(e -> root.getChildren().remove(anchorPane));
+            cancelBtn.setOnAction(e -> closePopup.run());
 
             sendBtn.setOnAction(e -> {
                 String xText = xField.getText().trim();
@@ -1064,7 +1088,7 @@ public class FlightScene {
 
                     errorLabel.setVisible(false);
                     viewFlow.handleInput("y, " + x + " " + y + ", " + pos);
-                    root.getChildren().remove(anchorPane);
+                    closePopup.run();
                 } catch (NumberFormatException ex) {
                     errorLabel.setVisible(true);
                 }
@@ -1072,57 +1096,12 @@ public class FlightScene {
 
             posField.setOnAction(e -> sendBtn.fire());
         });
-
-        root.getChildren().add(anchorPane);
     }
 
     /**
-     * show the button to roll the dice
-     */
-    public void showRollDiceInput() {
-        StackPane root = (StackPane) scene.getRoot();
-
-        // === Overlay grigio trasparente ===
-        Rectangle overlay = new Rectangle();
-        overlay.widthProperty().bind(scene.widthProperty());
-        overlay.heightProperty().bind(scene.heightProperty());
-        overlay.setFill(Color.rgb(0, 0, 0, 0.5));
-        overlay.setMouseTransparent(false); // blocca interazioni sotto
-
-        // === Contenitore centrale ===
-        VBox box = new VBox(20);
-        box.setAlignment(Pos.CENTER);
-
-        Label diceLabel = new Label("🎲 Roll the dices!");
-        diceLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 35));
-        diceLabel.setTextFill(Color.web("#FFDE69"));
-
-        Button rollButton = new Button("Roll Dices");
-        rollButton.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-        rollButton.setTextFill(Color.BLACK);
-        rollButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-        rollButton.setCursor(Cursor.HAND);
-
-        box.getChildren().addAll(diceLabel, rollButton);
-
-        StackPane overlayPane = new StackPane(overlay, box);
-
-        root.getChildren().add(overlayPane);
-
-        // === Azione pulsante ===
-        rollButton.setOnAction(ev -> {
-            root.getChildren().remove(overlayPane);
-            viewFlow.handleInput("roll");
-        });
-    }
-
-    /**
-     * make player decide on which planet to land
+     * Make player decide on which planet to land.
      */
     public void showPlanetDecisionInput() {
-        StackPane root = (StackPane) scene.getRoot();
-
-        // Contenitore principale
         VBox mainBox = new VBox(15);
         mainBox.setAlignment(Pos.CENTER);
         mainBox.setPadding(new Insets(10));
@@ -1150,17 +1129,24 @@ public class FlightScene {
 
         mainBox.getChildren().addAll(confirm, buttons);
 
-        AnchorPane anchorPane = new AnchorPane(mainBox);
+        AnchorPane popupContent = new AnchorPane(mainBox);
         AnchorPane.setBottomAnchor(mainBox, 180.0);
         AnchorPane.setLeftAnchor(mainBox, 110.0);
 
-        // === Azione NO ===
+        // Applica overlay
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
         no.setOnAction(ev -> {
             viewFlow.handleInput("-1");
-            root.getChildren().remove(anchorPane);
+            closePopup.run();
         });
 
-        // === Azione YES ===
         yes.setOnAction(ev -> {
             mainBox.getChildren().clear();
 
@@ -1175,7 +1161,7 @@ public class FlightScene {
                 Trucker t = planets.get(i);
                 String status = (t == null) ? "free" : t.getNickname();
 
-                Text planetLabel = new Text("Planet " + i + 1 + ": ");
+                Text planetLabel = new Text("Planet " + (i + 1) + ": ");
                 planetLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
                 planetLabel.setFill(Color.WHITE);
 
@@ -1189,12 +1175,12 @@ public class FlightScene {
                 selectBtn.setStyle("-fx-background-color: #FFDE69;");
                 selectBtn.setCursor(Cursor.HAND);
                 selectBtn.setPrefWidth(80);
-                selectBtn.setDisable(t != null); // disabilita se pianeta occupato
+                selectBtn.setDisable(t != null); // disable if occupied
 
                 int finalI = i;
                 selectBtn.setOnAction(e -> {
                     viewFlow.handleInput(String.valueOf(finalI));
-                    root.getChildren().remove(anchorPane);
+                    closePopup.run();
                 });
 
                 HBox line = new HBox(10, selectBtn, planetLabel, statusText);
@@ -1206,17 +1192,14 @@ public class FlightScene {
             mainBox.setTranslateX(55);
             mainBox.setTranslateY(50);
         });
-
-        root.getChildren().add(anchorPane);
     }
-
     /**
-     * button to draw next card
+     * Show the button to draw the next card with blocking overlay.
      */
     public void showDrawCardInput() {
         VBox container = new VBox(10);
-        container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
-        container.setPadding(new Insets(0, 0, -420, -850)); // margine dal basso
+        container.setAlignment(Pos.CENTER);
+        container.setPadding(new Insets(10)); // evita padding negativo, usa ancore
 
         Button continueBtn = new Button("Draw next card");
         continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
@@ -1225,16 +1208,66 @@ public class FlightScene {
         continueBtn.setCursor(Cursor.HAND);
         continueBtn.setPadding(new Insets(10, 20, 10, 20));
 
+        container.getChildren().add(continueBtn);
+
+        AnchorPane popupContent = new AnchorPane(container);
+        AnchorPane.setBottomAnchor(container, 150.0);
+        AnchorPane.setLeftAnchor(container, 100.0);
+
+        // Abilita overlay (blocca il mouse dietro)
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
         continueBtn.setOnAction(e -> {
             viewFlow.handleInput("draw");
-            root.getChildren().remove(container);
+            closePopup.run();
         });
-
-        container.getChildren().addAll(continueBtn);
-
-        StackPane.setAlignment(container, Pos.CENTER); // posizionato in basso, ma centrato
-        root.getChildren().add(container);
     }
+
+    /**
+     * Show the button to start the warzone card with blocking overlay.
+     */
+    public void showWarzoneInput() {
+        VBox container = new VBox(10);
+        container.setAlignment(Pos.CENTER);
+        container.setPadding(new Insets(10)); // padding standard, niente negativo
+
+        Button continueBtn = new Button("Start warzone");
+        continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+        continueBtn.setTextFill(Color.BLACK);
+        continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        continueBtn.setCursor(Cursor.HAND);
+        continueBtn.setPadding(new Insets(10, 20, 10, 20));
+
+        container.getChildren().add(continueBtn);
+
+        AnchorPane popupContent = new AnchorPane(container);
+        AnchorPane.setBottomAnchor(container, 150.0); // regola la posizione come preferisci
+        AnchorPane.setLeftAnchor(container, 100.0);
+
+        // Abilita overlay per bloccare interazioni sotto
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
+        continueBtn.setOnAction(e -> {
+            viewFlow.handleInput("warzone");
+            closePopup.run();
+        });
+    }
+
+
+
+    // DA SISTEMARE CON LA NUOVA LOGICA PER GESTIRE OVERLAY
 
     /**
      * confirmation of the remotion and button to continue the game
@@ -1534,29 +1567,43 @@ public class FlightScene {
     }
 
     /**
-     * button to start warzone card
+     * show the button to roll the dice
      */
-    public void showWarzoneInput() {
-        VBox container = new VBox(10);
-        container.setAlignment(Pos.CENTER); // scritta + bottone centrati tra loro
-        container.setPadding(new Insets(0, 0, -420, -830));
+    public void showRollDiceInput() {
+        StackPane root = (StackPane) scene.getRoot();
 
-        Button continueBtn = new Button("Start warzone");
-        continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
-        continueBtn.setTextFill(Color.BLACK);
-        continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-        continueBtn.setCursor(Cursor.HAND);
-        continueBtn.setPadding(new Insets(10, 20, 10, 20));
+        // === Overlay grigio trasparente ===
+        Rectangle overlay = new Rectangle();
+        overlay.widthProperty().bind(scene.widthProperty());
+        overlay.heightProperty().bind(scene.heightProperty());
+        overlay.setFill(Color.rgb(0, 0, 0, 0.5));
+        overlay.setMouseTransparent(false); // blocca interazioni sotto
 
-        continueBtn.setOnAction(e -> {
-            viewFlow.handleInput("warzone");
-            root.getChildren().remove(container);
+        // === Contenitore centrale ===
+        VBox box = new VBox(20);
+        box.setAlignment(Pos.CENTER);
+
+        Label diceLabel = new Label("🎲 Roll the dices!");
+        diceLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 35));
+        diceLabel.setTextFill(Color.web("#FFDE69"));
+
+        Button rollButton = new Button("Roll Dices");
+        rollButton.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+        rollButton.setTextFill(Color.BLACK);
+        rollButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        rollButton.setCursor(Cursor.HAND);
+
+        box.getChildren().addAll(diceLabel, rollButton);
+
+        StackPane overlayPane = new StackPane(overlay, box);
+
+        root.getChildren().add(overlayPane);
+
+        // === Azione pulsante ===
+        rollButton.setOnAction(ev -> {
+            root.getChildren().remove(overlayPane);
+            viewFlow.handleInput("roll");
         });
-
-        container.getChildren().addAll(continueBtn);
-
-        StackPane.setAlignment(container, Pos.CENTER); // posizionato in basso, ma centrato
-        root.getChildren().add(container);
     }
 
     /**
@@ -1655,7 +1702,6 @@ public class FlightScene {
         });
     }
 
-
     public void hideWaitForOthers() {
         Platform.runLater(() -> {
             if (waitOverlay != null) {
@@ -1701,7 +1747,6 @@ public class FlightScene {
         );
         waitAnimation.setCycleCount(Animation.INDEFINITE);
     }
-
 
     /**
      * show in the top-right corner a popup with the message
@@ -1822,108 +1867,6 @@ public class FlightScene {
         root.getChildren().add(trackBox);
     }
 
-    /**
-     * show the general status of the ship and the possibility to see the specific component status
-     */
-    private void initializeStatusBar() {
-        Image engine = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
-        Image cannon = new Image(getClass().getResource("/it/polimi/ingsw/view/cannon.png").toExternalForm());
-        Image human = new Image(getClass().getResource("/it/polimi/ingsw/view/human.png").toExternalForm());
-        Image battery = engine; // Usa immagine engine per battery
-        Image pos = engine;     // Usa immagine engine per position
-        Image credit = engine;  // Usa immagine engine per credits
-
-        posLabel = createStyledLabel();
-        battLabel = createStyledLabel();
-        humanLabel = createStyledLabel();
-        cannonLabel = createStyledLabel();
-        engineLabel = createStyledLabel();
-        creditLabel = createStyledLabel();
-
-        ImageView posIcon = new ImageView(pos);
-        posIcon.setFitWidth(20);
-        posIcon.setPreserveRatio(true);
-
-        ImageView batteryIcon = new ImageView(battery);
-        batteryIcon.setFitWidth(20);
-        batteryIcon.setPreserveRatio(true);
-
-        ImageView humanIcon = new ImageView(human);
-        humanIcon.setFitWidth(40);
-        humanIcon.setPreserveRatio(true);
-
-        ImageView cannonIcon = new ImageView(cannon);
-        cannonIcon.setFitWidth(20);
-        cannonIcon.setPreserveRatio(true);
-
-        ImageView engineIcon = new ImageView(engine);
-        engineIcon.setFitWidth(16);
-        engineIcon.setPreserveRatio(true);
-
-        ImageView creditIcon = new ImageView(credit);
-        creditIcon.setFitWidth(16);
-        creditIcon.setPreserveRatio(true);
-
-        HBox posBox = new HBox(0, posIcon, posLabel);
-        HBox battBox = new HBox(0, batteryIcon, battLabel);
-        HBox humanBox = new HBox(0, humanIcon, humanLabel);
-        HBox cannonBox = new HBox(0, cannonIcon, cannonLabel);
-        HBox engineBox = new HBox(5, engineIcon, engineLabel);
-        HBox creditBox = new HBox(5, creditIcon, creditLabel);
-
-
-        for (HBox box : List.of(posBox, battBox, humanBox, cannonBox, engineBox, creditBox)) {
-            box.setAlignment(Pos.CENTER_RIGHT);
-        }
-
-        // Goods
-        HBox goodsBox = new HBox(10);
-        goodsBox.setAlignment(Pos.CENTER_RIGHT);
-        Map<String, Image> goodImages = Map.of(
-                "red", new Image(getClass().getResource("/it/polimi/ingsw/view/redgood.png").toExternalForm()),
-                "yellow", new Image(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png").toExternalForm()),
-                "green", new Image(getClass().getResource("/it/polimi/ingsw/view/greengood.png").toExternalForm()),
-                "blue", new Image(getClass().getResource("/it/polimi/ingsw/view/bluegood.png").toExternalForm())
-        );
-
-        for (String color : goodImages.keySet()) {
-            ImageView goodIcon = new ImageView(goodImages.get(color));
-            goodIcon.setFitWidth(35);
-            goodIcon.setPreserveRatio(true);
-            Label qtyLabel = createStyledLabel();
-            goodLabels.put(color.toLowerCase(), qtyLabel);
-            HBox singleGood = new HBox(0, goodIcon, qtyLabel);
-            singleGood.setAlignment(Pos.CENTER_RIGHT);
-            goodsBox.getChildren().add(singleGood);
-        }
-
-        moreButton = new Button("More...");
-        moreButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-        moreButton.setTextFill(Color.BLACK);
-        moreButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-        moreButton.setCursor(Cursor.HAND);
-        moreButton.setOnAction(e -> showMore());
-
-        HBox resourceBox = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox, creditBox);
-        resourceBox.setAlignment(Pos.CENTER);
-        resourceBox.setPadding(new Insets(5));
-
-        statusBar = new VBox(5, resourceBox, moreButton);
-        statusBar.setAlignment(Pos.CENTER);
-        statusBar.setPadding(new Insets(10));
-        statusBar.setMaxWidth(800);
-        statusBar.setMouseTransparent(false);
-
-        Platform.runLater(() -> {
-            StackPane rootPane = (StackPane) root.getScene().getRoot();
-            StackPane.setAlignment(statusBar, Pos.CENTER_RIGHT);
-            StackPane.setMargin(statusBar, new Insets(0, 40, -550, 0));
-            if (!rootPane.getChildren().contains(statusBar)) {
-                rootPane.getChildren().add(statusBar);
-            }
-        });
-    }
-
     public void updateStatusBar() {
         posLabel.setText(": " + viewFlow.getPosition());
         battLabel.setText(": " + viewFlow.getBatteryCount());
@@ -1946,8 +1889,6 @@ public class FlightScene {
         l.setTextFill(Color.WHITE);
         return l;
     }
-
-
 
     /**
      * connected with shipStatus that show the specific status of the single components
@@ -2126,7 +2067,6 @@ public class FlightScene {
 
         return details.toString();
     }
-
 
     public SpaceShip createShip1(SpaceShip ship) throws InvalidCoordinates {
         ship = new SpaceShip();
