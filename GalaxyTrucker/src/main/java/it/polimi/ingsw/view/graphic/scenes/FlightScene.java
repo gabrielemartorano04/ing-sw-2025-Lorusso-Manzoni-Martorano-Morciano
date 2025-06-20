@@ -1025,7 +1025,6 @@ public class FlightScene {
         confirmBtn.setOnAction(e -> sendInput.run());
     }
 
-
     /**
      * Show the good and ask if you want to gain it and where.
      */
