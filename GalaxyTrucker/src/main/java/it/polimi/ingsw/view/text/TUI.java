@@ -753,16 +753,29 @@ public class TUI implements UI {
                 StringBuilder details = new StringBuilder();
                 switch (c) {
                     case Engine engine -> {
-                        if (engine.getIsDouble())
+                        if (engine.getIsDouble()) {
                             details.append("[").append(i).append(",").append(j).append("] DOUBLE ENGINE");
-                        else
+                            if(engine.getIsActive()) {
+                                details.append(" is active");
+                            } else {
+                                details.append(" is inactive");
+                            }
+                        }
+                        else {
                             details.append("[").append(i).append(",").append(j).append("] ENGINE");
+                        }
                     }
                     case Cannon cannon -> {
-                        if (cannon.getIsDouble())
+                        if (cannon.getIsDouble()) {
                             details.append("[").append(i).append(",").append(j).append("] DOUBLE CANNON (Direction: ").append(cannon.getOrientation()).append(")");
-                        else
+                            if(cannon.getIsActive()) {
+                                details.append(" is active");
+                            } else {
+                                details.append(" is inactive");
+                            }
+                        } else {
                             details.append("[").append(i).append(",").append(j).append("] CANNON (Direction: ").append(cannon.getOrientation()).append(")");
+                        }
                     }
                     case Load load -> {
                         if (load.getIsSpecial()) {
@@ -789,6 +802,11 @@ public class TUI implements UI {
                     }
                     case Shield shield -> {
                         details.append("[").append(i).append(",").append(j).append("] SHIELD (direction: ").append(shield.getDirection()).append(")");
+                        if (shield.getIsActive()) {
+                            details.append(" is active");
+                        } else  {
+                            details.append(" is inactive");
+                        }
                     }
                     case BatteryStorage battery -> {
                         details.append("[").append(i).append(",").append(j).append("] BATTERY STORAGE (Capacity: ").append(battery.getCapacity()).append(")");
