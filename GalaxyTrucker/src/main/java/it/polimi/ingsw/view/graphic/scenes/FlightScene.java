@@ -242,7 +242,7 @@ public class FlightScene {
         Image battery = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/battery.png")).toExternalForm());
         Image pos = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/position.png")).toExternalForm());
         Image credit = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/credit.png")).toExternalForm());
-        Image lost = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/lost.png")).toExternalForm());
+        Image lost = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
 
         posLabel = createStyledLabel();
         battLabel = createStyledLabel();
@@ -930,7 +930,7 @@ public class FlightScene {
             insertLabel.setTextFill(Color.web("#FFDE69"));
             insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
 
-            Label hintLabel = new Label("Type '<x> <y>, <x> <y>'");
+            Label hintLabel = new Label("Type '<x> <y>, <xB> <yB>'");
             hintLabel.setTextFill(Color.LIGHTGRAY);
             hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
@@ -970,21 +970,22 @@ public class FlightScene {
         VBox box = new VBox(10);
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
-        box.setMaxWidth(400);
+        box.setMaxWidth(500);
 
-        Label insertLabel = new Label("Insert the coordinates of the cabin from which to remove the crew members");
+        Label insertLabel = new Label("Insert the coordinates of the cabins to remove the number of crew members indicated");
         insertLabel.setTextFill(Color.web("#FFDE69"));
         insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
         insertLabel.setTextAlignment(TextAlignment.CENTER);
         insertLabel.setWrapText(true);
 
-        Label hintLabel = new Label("Type '<x> <y>, <x> <y>'");
+        Label hintLabel = new Label("Type '<x1> <y1> - <number of crew>, <x2> <y2> - <number of crew>, ...'");
         hintLabel.setTextFill(Color.LIGHTGRAY);
         hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+        hintLabel.setWrapText(true);
 
         TextField inputField = new TextField();
-        inputField.setPromptText("Ex. 2 3, 4 5");
-        inputField.setPrefWidth(250);
+        inputField.setPromptText("Ex. 2 3 - 1, 4 5 - 2");
+        inputField.setPrefWidth(300);
 
         Button confirmBtn = new Button("Confirm");
         confirmBtn.setFont(Font.font("Bangers", 14));
@@ -1001,7 +1002,7 @@ public class FlightScene {
         AnchorPane.setBottomAnchor(box, 150.0);
         AnchorPane.setLeftAnchor(box, 100.0);
 
-        // Mostra overlay per bloccare interazione
+        // Blocca l'interazione con i layer sotto
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
@@ -1015,7 +1016,7 @@ public class FlightScene {
         Runnable sendInput = () -> {
             String text = inputField.getText().trim();
             if (!text.isEmpty()) {
-                viewFlow.handleInput("y, " + text);
+                viewFlow.handleInput(text);  // Nessun prefisso "y,", l'input deve essere diretto per il parser HUMAN_COORD
                 closePopup.run();
             }
         };
@@ -1023,6 +1024,7 @@ public class FlightScene {
         inputField.setOnAction(e -> sendInput.run());
         confirmBtn.setOnAction(e -> sendInput.run());
     }
+
 
     /**
      * Show the good and ask if you want to gain it and where.

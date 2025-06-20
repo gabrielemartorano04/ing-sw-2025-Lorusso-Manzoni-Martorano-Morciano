@@ -438,6 +438,7 @@ public class GUI implements UI {
         Platform.runLater(() -> {
             this.flightScene.setShip(viewFlow.getShip().getComponents());
             this.flightScene.updateShipLayout();
+            this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         });
     }

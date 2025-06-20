@@ -158,7 +158,7 @@ public class AppPerTest extends Application {
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
         //flightScene.showCurrCondition(Condition.ENGINES, true);
-        //flightScene.showRollDiceInput();
+        flightScene.showActivateShieldInput();
 //        flightScene.updatePlanetsOccupied(new ArrayList<>(){
 //            {
 //                add(trucker);
