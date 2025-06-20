@@ -1980,8 +1980,7 @@ public class FlightScene {
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[i].length; j++) {
                 Component c = layout[i][j];
-                if (c != null && !"Empty Space".equals(c.getType())
-                        && ("Load".equals(c.getType()) || "Battery Storage".equals(c.getType()) || "Cabin".equals(c.getType()))) {
+                if (c != null && !"Empty Space".equals(c.getType()) && ("Load".equals(c.getType()) || "Battery Storage".equals(c.getType()) || "Cabin".equals(c.getType()) || "Cannon".equals(c.getType()) || "Engine".equals(c.getType()) || "Shield".equals(c.getType()))) {
                     String desc = formatComponent(c, i, j);
                     Label l = new Label(desc);
                     l.setTextFill(Color.WHITE);
@@ -2109,6 +2108,31 @@ public class FlightScene {
                     }
                 } else {
                     details.append(" is empty");
+                }
+            }
+            case Cannon cannon -> {
+                if(cannon.getIsDouble()) {
+                    if(cannon.getIsActive()) {
+                        details.append("[").append(i).append(",").append(j).append("] DOUBLE CANNON is active");
+                    } else {
+                        details.append("[").append(i).append(",").append(j).append("] DOUBLE CANNON is inactive");
+                    }
+                }
+            }
+            case Engine engine -> {
+                if(engine.getIsDouble()) {
+                    if(engine.getIsActive()) {
+                        details.append("[").append(i).append(",").append(j).append("] DOUBLE ENGINE is active");
+                    } else {
+                        details.append("[").append(i).append(",").append(j).append("] DOUBLE ENGINE is inactive");
+                    }
+                }
+            }
+            case Shield shield -> {
+                if(shield.getIsActive()) {
+                    details.append("[").append(i).append(",").append(j).append("] SHIELD is active");
+                } else {
+                    details.append("[").append(i).append(",").append(j).append("] SHIELD is inactive");
                 }
             }
             default -> {
