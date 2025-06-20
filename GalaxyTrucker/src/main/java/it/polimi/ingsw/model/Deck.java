@@ -3,30 +3,35 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Class that manages the cards as a deck
+ * Class that manages cards in the deck.
  */
-
 class Deck implements Serializable {
+
+    /**
+     * List of cards in th deck
+     */
     private final ArrayList<Card> cards;
 
     /**
-     * Deck constructor, initialise the list of cards that will compose the deck
+     * Class constructor, initialise the list of cards that fills the deck
      */
     public Deck(int gameLevel) {
         cards = new ArrayList<>();
         fillDeck(gameLevel);
+        //shuffleDeck(); todo togli commento dopo debug
     }
 
-    //le prime 20 sono di livello 1 e le altre 20 di livello 2
-
     /**
-     * Fills the deck with the 40 cards available, the first 20 of level 1 and the other 20 of level 2
+     * This method fills the deck with cards. Some cards are added only if the game level is 2.
+     * @param gameLevel game level
      */
     private void fillDeck(int gameLevel) {
         Goods[] goodsGained1 = new Goods[3];
@@ -300,30 +305,27 @@ class Deck implements Serializable {
     }
 
     /**
-     * Returns a specific card from the deck
-     * @param index position in the deck
-     * @return card
+     * This method returns a specific card from the deck
+     * @param index position of the card in the deck
+     * @return card with that position in the deck
      */
     public Card getCard(int index) {
         return cards.get(index);
     }
 
     /**
-     * Returns the deck with all the 40 cards
-     * @return deck
+     * This method returns all the cards in the deck
+     * @return cards in the deck
      */
     public ArrayList<Card> getDeck() {
         return cards;
     }
 
-//    public void shuffleDeck() {
-//        Random rand = new Random();
-//        for (int i = cards.length - 1; i > 0; i--) {
-//            int j = rand.nextInt(i + 1);
-//            Card temp = cards[i];
-//            cards[i] = cards[j];
-//            cards[j] = temp;
-//        }
-//    }
+    /**
+     * This method shuffles the deck
+     */
+    private void shuffleDeck() {
+        Collections.shuffle(cards);
+    }
 }
 

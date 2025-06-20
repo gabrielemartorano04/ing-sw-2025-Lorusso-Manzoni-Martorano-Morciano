@@ -36,9 +36,10 @@ public class Epidemic extends Card implements Serializable {
         this.state = CardState.ESECUZIONE;
     }
 
-    public CardState getCardState() {
-        return state;
-    }
+//TODO da rimuovere
+//    public CardState getCardState() {
+//        return state;
+//    }
 
 
     @Override
