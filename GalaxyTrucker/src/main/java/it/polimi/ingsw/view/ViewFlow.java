@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.EventReceiver;
 import it.polimi.ingsw.net.events.clientevents.PongEvent;
@@ -30,7 +31,7 @@ public class ViewFlow implements EventReceiver {
     private final InputParserFlight inputParserFlight;
     private final UI ui;
     private String nickname;
-    private Component[][] ship;
+    private SpaceShip ship;
     private int position;
     private int batteryCount;
     private int enginePower;
@@ -86,7 +87,7 @@ public class ViewFlow implements EventReceiver {
         this.nameAlreadySet = false;
         this.end = false;
         this.stackSelected=-1;
-        this.ship = new Component[11][12];
+        this.ship = new SpaceShip();
         this.goodsByColor = new HashMap<>(){
             {
                 put("RED",0);
@@ -279,11 +280,11 @@ public class ViewFlow implements EventReceiver {
         }
     }
 
-    public Component[][] getShip() {
+    public SpaceShip getShip() {
         return ship;
     }
 
-    public void setShip(Component[][] ship) {
+    public void setShip(SpaceShip ship) {
         this.ship=ship;
     }
 
@@ -524,8 +525,7 @@ public class ViewFlow implements EventReceiver {
     }
 
     public int getLostComponents(){
-        return 0;
-        //TODO modificare con return ship.getLost();
+        return ship.getLost();
     }
 }
 

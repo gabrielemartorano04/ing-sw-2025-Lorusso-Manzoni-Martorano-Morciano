@@ -1992,7 +1992,7 @@ public class FlightScene {
         // Componenti della nave
         Trucker t = new Trucker("n", PlayerColors.BLUE);
         t.initSpaceShip(2);
-        Component[][] layout = viewFlow.getShip();
+        Component[][] layout = viewFlow.getShip().getComponents();
         StringBuilder desc = new StringBuilder();
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[i].length; j++) {
