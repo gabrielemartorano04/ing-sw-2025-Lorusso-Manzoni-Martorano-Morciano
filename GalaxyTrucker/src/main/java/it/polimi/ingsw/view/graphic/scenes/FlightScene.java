@@ -1,8 +1,6 @@
 package it.polimi.ingsw.view.graphic.scenes;
 
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
@@ -236,12 +234,12 @@ public class FlightScene {
      * show the general status of the ship and the possibility to see the specific component status
      */
     private void initializeStatusBar() {
-        Image engine = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
-        Image cannon = new Image(getClass().getResource("/it/polimi/ingsw/view/cannon.png").toExternalForm());
-        Image human = new Image(getClass().getResource("/it/polimi/ingsw/view/human.png").toExternalForm());
-        Image battery = engine; // Usa immagine engine per battery
-        Image pos = engine;     // Usa immagine engine per position
-        Image credit = engine;  // Usa immagine engine per credits
+        Image engine = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/engine.png")).toExternalForm());
+        Image cannon = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
+        Image human = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
+        Image battery = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/battery.png")).toExternalForm());
+        Image pos = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/position.png")).toExternalForm());
+        Image credit = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/credit.png")).toExternalForm());
 
         posLabel = createStyledLabel();
         battLabel = createStyledLabel();
@@ -255,8 +253,9 @@ public class FlightScene {
         posIcon.setPreserveRatio(true);
 
         ImageView batteryIcon = new ImageView(battery);
-        batteryIcon.setFitWidth(20);
-        batteryIcon.setPreserveRatio(true);
+        batteryIcon.setFitWidth(30);
+        batteryIcon.setFitHeight(50);
+        batteryIcon.setPreserveRatio(false);
 
         ImageView humanIcon = new ImageView(human);
         humanIcon.setFitWidth(40);
@@ -271,7 +270,7 @@ public class FlightScene {
         engineIcon.setPreserveRatio(true);
 
         ImageView creditIcon = new ImageView(credit);
-        creditIcon.setFitWidth(16);
+        creditIcon.setFitWidth(25);
         creditIcon.setPreserveRatio(true);
 
         HBox posBox = new HBox(0, posIcon, posLabel);
@@ -290,10 +289,10 @@ public class FlightScene {
         HBox goodsBox = new HBox(10);
         goodsBox.setAlignment(Pos.CENTER_RIGHT);
         Map<String, Image> goodImages = Map.of(
-                "red", new Image(getClass().getResource("/it/polimi/ingsw/view/redgood.png").toExternalForm()),
-                "yellow", new Image(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png").toExternalForm()),
-                "green", new Image(getClass().getResource("/it/polimi/ingsw/view/greengood.png").toExternalForm()),
-                "blue", new Image(getClass().getResource("/it/polimi/ingsw/view/bluegood.png").toExternalForm())
+                "red", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/redgood.png")).toExternalForm()),
+                "yellow", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png")).toExternalForm()),
+                "green", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/greengood.png")).toExternalForm()),
+                "blue", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/bluegood.png")).toExternalForm())
         );
 
         for (String color : goodImages.keySet()) {
@@ -308,7 +307,7 @@ public class FlightScene {
         }
 
         moreButton = new Button("More...");
-        moreButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        moreButton.setFont(Font.font("Arial", 16));
         moreButton.setTextFill(Color.BLACK);
         moreButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
         moreButton.setCursor(Cursor.HAND);
@@ -467,10 +466,77 @@ public class FlightScene {
         this.otherBtn = otherBtn;
     }
 
-    public void showCurrContidion(Condition condition) {
-        //TODO
+    //TODO non si vede  schermo AAAAAAAAAAAAAAA!!!
+    public void showCurrCondition(Condition condition) {
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
+
+        Label confirm = new Label("Current condition");
+        confirm.setTextFill(Color.web("#FFDE69"));
+        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+
+        Image conditionImage;
+        switch (condition) {
+            case HUMANS -> conditionImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
+            case ENGINES -> conditionImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/engine.png")).toExternalForm());
+            case CANNONS -> conditionImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
+            default -> throw new IllegalArgumentException("Condizione sconosciuta: " + condition);
+        }
+
+        ImageView conditionView = new ImageView(conditionImage);
+        conditionView.setFitWidth(50);
+        conditionView.setPreserveRatio(true);
+        conditionView.setMouseTransparent(true);
+
+        box.getChildren().addAll(confirm, conditionView);
+
+        AnchorPane popupContent = new AnchorPane(box);
+        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setLeftAnchor(box, 215.0);
+
+        // Blocca gli altri layer temporaneamente
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
     }
 
+    public void addContinueConditionButtonToScene() {
+        VBox container = new VBox(10);
+        container.setAlignment(Pos.CENTER);
+        container.setPadding(new Insets(10)); // evita padding negativo, usa ancore
+
+        Button continueBtn = new Button("Start condition");
+        continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+        continueBtn.setTextFill(Color.BLACK);
+        continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        continueBtn.setCursor(Cursor.HAND);
+        continueBtn.setPadding(new Insets(10, 20, 10, 20));
+
+        container.getChildren().add(continueBtn);
+
+        AnchorPane popupContent = new AnchorPane(container);
+        AnchorPane.setBottomAnchor(container, 150.0);
+        AnchorPane.setLeftAnchor(container, 215.0);
+
+        // Abilita overlay (blocca il mouse dietro)
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
+        continueBtn.setOnAction(e -> {
+            viewFlow.handleInput("continue");
+            closePopup.run();
+        });
+    }
 
     public Scene getScene() {
         return scene;
@@ -1107,34 +1173,17 @@ public class FlightScene {
         mainBox.setAlignment(Pos.CENTER);
         mainBox.setPadding(new Insets(10));
 
-        Label confirm = new Label("Would you like to land on a planet?");
-        confirm.setTextFill(Color.web("#FFDE69"));
-        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+        Label chooseLabel = new Label("Choose a planet to land on:");
+        chooseLabel.setTextFill(Color.web("#FFDE69"));
+        chooseLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
 
-        Button yes = new Button("YES");
-        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-        yes.setTextFill(Color.WHITE);
-        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
-        yes.setCursor(Cursor.HAND);
-        yes.setPrefWidth(100);
-
-        Button no = new Button("NO");
-        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-        no.setTextFill(Color.WHITE);
-        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
-        no.setCursor(Cursor.HAND);
-        no.setPrefWidth(100);
-
-        HBox buttons = new HBox(10, yes, no);
-        buttons.setAlignment(Pos.CENTER);
-
-        mainBox.getChildren().addAll(confirm, buttons);
+        VBox planetListBox = new VBox(8);
+        planetListBox.setAlignment(Pos.CENTER);
 
         AnchorPane popupContent = new AnchorPane(mainBox);
         AnchorPane.setBottomAnchor(mainBox, 180.0);
         AnchorPane.setLeftAnchor(mainBox, 110.0);
 
-        // Applica overlay
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
@@ -1143,56 +1192,60 @@ public class FlightScene {
             restoreInteractiveLayers();
         };
 
-        no.setOnAction(ev -> {
+        for (int i = 0; i < planets.size(); i++) {
+            Trucker t = planets.get(i);
+            String status = (t == null) ? "free" : t.getNickname();
+
+            Text planetLabel = new Text("Planet " + (i + 1) + ": ");
+            planetLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+            planetLabel.setFill(Color.WHITE);
+
+            Text statusText = new Text(status);
+            statusText.setFont(Font.font("Bangers", FontWeight.NORMAL, 16));
+            statusText.setFill(t == null ? Color.LIGHTGREEN : Color.RED);
+
+            Button selectBtn = new Button("Land");
+            selectBtn.setFont(Font.font("Bangers", 13));
+            selectBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            selectBtn.setTextFill(Color.BLACK);
+            selectBtn.setCursor(Cursor.HAND);
+            selectBtn.setPrefWidth(80);
+            selectBtn.setDisable(t != null); // disable if occupied
+
+            int finalI = i;
+            selectBtn.setOnAction(e -> {
+                viewFlow.handleInput(String.valueOf(finalI));
+                closePopup.run();
+            });
+
+            HBox line = new HBox(10, selectBtn, planetLabel, statusText);
+            line.setAlignment(Pos.CENTER);
+            planetListBox.getChildren().add(line);
+        }
+
+        // === Bottone "Don't land" ===
+        Button dontLandBtn = new Button("Don't land");
+        dontLandBtn.setFont(Font.font("Bangers", 16));
+        dontLandBtn.setTextFill(Color.BLACK);
+        dontLandBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        dontLandBtn.setCursor(Cursor.HAND);
+        dontLandBtn.setPrefWidth(160);
+        dontLandBtn.setOnAction(ev -> {
             viewFlow.handleInput("-1");
             closePopup.run();
         });
 
-        yes.setOnAction(ev -> {
-            mainBox.getChildren().clear();
+        // === Composizione finale ===
+        mainBox.getChildren().addAll(chooseLabel, planetListBox, dontLandBtn);
+        mainBox.setTranslateX(55);
+        if(planets.size() == 2) {
+            mainBox.setTranslateY(60);
+        } else if(planets.size() == 3) {
+            mainBox.setTranslateY(90);
+        } else {
+            mainBox.setTranslateY(130);
+        }
 
-            Label chooseLabel = new Label("Choose a planet to land on:");
-            chooseLabel.setTextFill(Color.web("#FFDE69"));
-            chooseLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
-
-            VBox planetListBox = new VBox(8);
-            planetListBox.setAlignment(Pos.CENTER);
-
-            for (int i = 0; i < planets.size(); i++) {
-                Trucker t = planets.get(i);
-                String status = (t == null) ? "free" : t.getNickname();
-
-                Text planetLabel = new Text("Planet " + (i + 1) + ": ");
-                planetLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-                planetLabel.setFill(Color.WHITE);
-
-                Text statusText = new Text(status);
-                statusText.setFont(Font.font("Bangers", FontWeight.NORMAL, 16));
-                statusText.setFill(t == null ? Color.LIGHTGREEN : Color.LIGHTCORAL);
-
-                Button selectBtn = new Button("Land");
-                selectBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 13));
-                selectBtn.setTextFill(Color.BLACK);
-                selectBtn.setStyle("-fx-background-color: #FFDE69;");
-                selectBtn.setCursor(Cursor.HAND);
-                selectBtn.setPrefWidth(80);
-                selectBtn.setDisable(t != null); // disable if occupied
-
-                int finalI = i;
-                selectBtn.setOnAction(e -> {
-                    viewFlow.handleInput(String.valueOf(finalI));
-                    closePopup.run();
-                });
-
-                HBox line = new HBox(10, selectBtn, planetLabel, statusText);
-                line.setAlignment(Pos.CENTER);
-                planetListBox.getChildren().add(line);
-            }
-
-            mainBox.getChildren().addAll(chooseLabel, planetListBox);
-            mainBox.setTranslateX(55);
-            mainBox.setTranslateY(50);
-        });
     }
 
     /**
@@ -2077,6 +2130,4 @@ public class FlightScene {
             rollDiceResultBox = null;
         }
     }
-
-
 }
