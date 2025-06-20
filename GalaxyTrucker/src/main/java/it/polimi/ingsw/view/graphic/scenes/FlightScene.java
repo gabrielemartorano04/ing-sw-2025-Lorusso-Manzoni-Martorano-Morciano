@@ -475,9 +475,14 @@ public class FlightScene {
         this.otherBtn = otherBtn;
     }
 
-    //TODO non si vede  schermo AAAAAAAAAAAAAAA!!!
-    public void showCurrCondition(Condition condition) {
-        VBox box = new VBox(10);
+    /**
+     * Mostra un popup con la condizione corrente e, se il giocatore è il leader, anche un pulsante per continuare.
+     *
+     * @param condition la condizione da mostrare
+     * @param isLeader  true se il giocatore può avviare la condizione
+     */
+    public void showCurrCondition(Condition condition, boolean isLeader) {
+        VBox box = new VBox(15);
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
 
@@ -485,13 +490,12 @@ public class FlightScene {
         confirm.setTextFill(Color.web("#FFDE69"));
         confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
 
-        Image conditionImage;
-        switch (condition) {
-            case HUMANS -> conditionImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
-            case ENGINES -> conditionImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/engine.png")).toExternalForm());
-            case CANNONS -> conditionImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
+        Image conditionImage = switch (condition) {
+            case HUMANS -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
+            case ENGINES -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/engine.png")).toExternalForm());
+            case CANNONS -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
             default -> throw new IllegalArgumentException("Condizione sconosciuta: " + condition);
-        }
+        };
 
         ImageView conditionView = new ImageView(conditionImage);
         conditionView.setFitWidth(50);
@@ -501,50 +505,34 @@ public class FlightScene {
         box.getChildren().addAll(confirm, conditionView);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setBottomAnchor(box, 150.0);
         AnchorPane.setLeftAnchor(box, 215.0);
 
-        // Blocca gli altri layer temporaneamente
+        // Attiva overlay e blocca i layer sotto
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
-        Runnable closePopup = () -> {
-            overlayLayer.getChildren().clear();
-            restoreInteractiveLayers();
-        };
-    }
-
-    public void addContinueConditionButtonToScene() {
-        VBox container = new VBox(10);
-        container.setAlignment(Pos.CENTER);
-        container.setPadding(new Insets(10)); // evita padding negativo, usa ancore
-
-        Button continueBtn = new Button("Start condition");
-        continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
-        continueBtn.setTextFill(Color.BLACK);
-        continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-        continueBtn.setCursor(Cursor.HAND);
-        continueBtn.setPadding(new Insets(10, 20, 10, 20));
-
-        container.getChildren().add(continueBtn);
-
-        AnchorPane popupContent = new AnchorPane(container);
-        AnchorPane.setBottomAnchor(container, 150.0);
-        AnchorPane.setLeftAnchor(container, 215.0);
-
-        // Abilita overlay (blocca il mouse dietro)
-        overlayLayer.setMouseTransparent(false);
-        overlayLayer.getChildren().setAll(popupContent);
-
+        // Definizione anticipata per evitare errori di riferimento
         Runnable closePopup = () -> {
             overlayLayer.getChildren().clear();
             restoreInteractiveLayers();
         };
 
-        continueBtn.setOnAction(e -> {
-            viewFlow.handleInput("continue");
-            closePopup.run();
-        });
+        if (isLeader) {
+            Button continueBtn = new Button("Start condition");
+            continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+            continueBtn.setTextFill(Color.BLACK);
+            continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            continueBtn.setCursor(Cursor.HAND);
+            continueBtn.setPadding(new Insets(10, 20, 10, 20));
+
+            continueBtn.setOnAction(e -> {
+                viewFlow.handleInput("continue");
+                closePopup.run();
+            });
+
+            box.getChildren().add(continueBtn);
+        }
     }
 
     public Scene getScene() {

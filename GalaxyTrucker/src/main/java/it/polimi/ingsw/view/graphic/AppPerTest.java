@@ -165,7 +165,7 @@ public class AppPerTest extends Application {
 
             }
         });
-        flightScene.showPlanetDecisionInput();
+        flightScene.showCurrCondition(Condition.HUMANS, true);
 //        flightScene.updateTrack(mockTrack);
 //        color = new HashMap<>();
 //        color.put("red", 3);
