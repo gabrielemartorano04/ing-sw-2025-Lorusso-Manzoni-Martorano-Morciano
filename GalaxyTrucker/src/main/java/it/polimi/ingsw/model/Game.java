@@ -11,8 +11,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-//gestisce la partita
-
 /**
  * The Game class manages the entire game process, including player actions,
  * deck management, and game phases. It handles trucker movements, card effects,
@@ -20,27 +18,103 @@ import java.util.*;
  */
 
 public class Game implements Serializable {
+
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * List of players.
+     */
     private final ArrayList<Trucker> truckers;
+
+    /**
+     * List of players out of the game
+     */
     private final ArrayList<Trucker> truckersOut;
+
+    /**
+     * Card stacks for level 2
+     */
     private final Stack[] cardStacks;
-    private final ArrayList<Card> gameDeck;
+
+    /**
+     * Building phase available components
+     */
     private final AvailableComponents components;
+
+    /**
+     * Horglass for building phase timer
+     */
     private Hourglass hourglass;
+
+    /**
+     * Game level
+     */
     private int gameLevel;
+
+    /**
+     * Game deck with all the cards, based on the level.
+     */
+    private final ArrayList<Card> gameDeck;
+
+    /**
+     * Deck for game deck creation
+     */
     private final Deck deck;
+
+    /**
+     * Available goods bank
+     */
     private final Bank bank;
+
+    /**
+     * This game instance
+     */
     private static Game istance;
+
+    /**
+     * Old players nicknames from old matches
+     */
     private ArrayList<String> oldNicknames;
+
+    /**
+     * Old players colors from old matches
+     */
     private ArrayList<PlayerColors> oldColors;
+
+    /**
+     * Track dimension based on level. It's used to check if a player was overtaken from another
+     */
     private int checkOverTaken;
+
+    /**
+     * Game state
+     */
     private GameState gameState;
+
+    /**
+     * Nicknames of players in the game.
+     */
     private final Set<String> nicknames = new HashSet<>();
+
+    /**
+     * Colors of players in the game.
+     */
     private final Set<PlayerColors> usedColors = new HashSet<>();
+
+    /**
+     * Available player colors
+     */
     private final EnumSet<PlayerColors> availableColors;
+
+    /**
+     * Number of players
+     */
     private int numPlayers;
+
     /**
      * Constructor that initializes the game attributes.
      */
@@ -70,6 +144,7 @@ public class Game implements Serializable {
 
     }
 
+    // todo togli dopo test
     public static void initializeForTest(SpaceShip ship1, SpaceShip ship2) {
         Game testGame = new Game(2, 2);
 
@@ -78,8 +153,6 @@ public class Game implements Serializable {
 
             t1.setSpaceShip(ship1);
             t2.setSpaceShip(ship2);
-
-        // Aggiungi i trucker al gioco
         try {
             testGame.addTrucker(t1);
             testGame.addTrucker(t2);
@@ -94,14 +167,25 @@ public class Game implements Serializable {
         Game.setIstance(testGame);
     }
 
+    /**
+     * Game level getter
+     * @return level of current game
+     */
     public int getGameLevel(){
         return gameLevel;
     }
 
+    /**
+     * @return this game instance
+     */
     public static Game getIstance() {
         return istance;
     }
 
+    /**
+     * todo frenk ti sei fermata qui
+     * @param istance
+     */
     public static void setIstance(Game istance) {
         Game.istance = istance;
     }
