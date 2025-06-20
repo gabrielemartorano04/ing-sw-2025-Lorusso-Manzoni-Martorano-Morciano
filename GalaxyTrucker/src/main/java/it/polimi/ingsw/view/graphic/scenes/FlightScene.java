@@ -1978,9 +1978,9 @@ public class FlightScene {
 
         // === TITOLO CENTRATO ===
         Label title = new Label("Components details:");
-        title.setTextFill(Color.web("#FFDE69"));
         title.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
         title.setTextAlignment(TextAlignment.LEFT);
+        title.setStyle("-fx-border-color: #FFDE69;");
 
         VBox titleBox = new VBox(title);
         titleBox.setAlignment(Pos.CENTER_LEFT);
@@ -1993,20 +1993,23 @@ public class FlightScene {
         Trucker t = new Trucker("n", PlayerColors.BLUE);
         t.initSpaceShip(2);
         Component[][] layout = viewFlow.getShip();
+        StringBuilder desc = new StringBuilder();
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[i].length; j++) {
                 Component c = layout[i][j];
                 if (c != null && !"Empty Space".equals(c.getType()) && ("Load".equals(c.getType()) || "Battery Storage".equals(c.getType()) || "Cabin".equals(c.getType()) || "Cannon".equals(c.getType()) || "Engine".equals(c.getType()) || "Shield".equals(c.getType()))) {
-                    String desc = formatComponent(c, i, j);
-                    Label l = new Label(desc);
-                    l.setTextFill(Color.WHITE);
-                    l.setFont(Font.font("Bangers", 18));
-                    l.setTextAlignment(TextAlignment.LEFT);
-                    l.setWrapText(true);
-                    textBox.getChildren().add(l);
+                    if(!formatComponent(c, i, j).isBlank()) {
+                        desc.append(formatComponent(c, i, j)).append("\n");
+                    }
                 }
             }
         }
+        Label l = new Label(desc.toString());
+        l.setTextFill(Color.WHITE);
+        l.setFont(Font.font("Bangers", 18));
+        l.setTextAlignment(TextAlignment.LEFT);
+        l.setWrapText(true);
+        textBox.getChildren().add(l);
 
         // === CREA E POSIZIONA LA GRIGLIA NELLO STESSO MODO ===
         GridPane overlayGrid = new GridPane();
@@ -2054,7 +2057,7 @@ public class FlightScene {
         scroll.setFitToWidth(true);
         scroll.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
         scroll.setPadding(new Insets(20));
-        scroll.setMaxWidth(400);
+        scroll.setMaxWidth(600);
         scroll.setMaxHeight(500);
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -2062,7 +2065,7 @@ public class FlightScene {
         StackPane overlayContainer = new StackPane(overlay, overlayGrid, scroll);
         overlayContainer.setId("moreOverlay");
         StackPane.setAlignment(scroll, Pos.CENTER_LEFT);
-        StackPane.setMargin(scroll, new Insets(0, 0, 0, 180));
+        StackPane.setMargin(scroll, new Insets(0, 0, 0, 120));
         StackPane.setAlignment(overlayGrid, Pos.TOP_RIGHT);
 
         root.setOnMouseClicked(e -> root.getChildren().remove(overlayContainer));
