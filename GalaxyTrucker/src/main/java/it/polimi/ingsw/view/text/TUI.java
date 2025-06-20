@@ -273,7 +273,7 @@ public class TUI implements UI {
     //TODO NON USATO SISTEMA
     @Override
     public void flightScene(FlightStartEvent event){
-        this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+        this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
         this.showPlayerShipStatus();
         this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         this.showFlightPhaseStart();
