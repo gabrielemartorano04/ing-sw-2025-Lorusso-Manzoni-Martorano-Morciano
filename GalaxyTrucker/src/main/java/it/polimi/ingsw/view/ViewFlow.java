@@ -522,5 +522,10 @@ public class ViewFlow implements EventReceiver {
     public int getCardsToGo() {
         return cardsToGo;
     }
+
+    public int getLostComponents(){
+        return 0;
+        //TODO modificare con return ship.getLost();
+    }
 }
 

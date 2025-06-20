@@ -66,7 +66,7 @@ public class FlightScene {
     private ArrayList<Trucker> planets;
     private Card currCard;
 
-    private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel;
+    private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel, lostLabel;
     private Map<String, Label> goodLabels = new HashMap<>();
     private VBox statusBar;
 
@@ -242,6 +242,7 @@ public class FlightScene {
         Image battery = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/battery.png")).toExternalForm());
         Image pos = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/position.png")).toExternalForm());
         Image credit = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/credit.png")).toExternalForm());
+        Image lost = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/lost.png")).toExternalForm());
 
         posLabel = createStyledLabel();
         battLabel = createStyledLabel();
@@ -249,6 +250,7 @@ public class FlightScene {
         cannonLabel = createStyledLabel();
         engineLabel = createStyledLabel();
         creditLabel = createStyledLabel();
+        lostLabel = createStyledLabel();
 
         ImageView posIcon = new ImageView(pos);
         posIcon.setFitWidth(20);
@@ -275,15 +277,20 @@ public class FlightScene {
         creditIcon.setFitWidth(25);
         creditIcon.setPreserveRatio(true);
 
+        ImageView lostIcon = new ImageView(lost);
+        lostIcon.setFitWidth(25);
+        lostIcon.setPreserveRatio(true);
+
         HBox posBox = new HBox(0, posIcon, posLabel);
         HBox battBox = new HBox(0, batteryIcon, battLabel);
         HBox humanBox = new HBox(0, humanIcon, humanLabel);
         HBox cannonBox = new HBox(0, cannonIcon, cannonLabel);
         HBox engineBox = new HBox(5, engineIcon, engineLabel);
-        HBox creditBox = new HBox(5, creditIcon, creditLabel);
+        HBox creditBox = new HBox(0, creditIcon, creditLabel);
+        HBox lostBox = new HBox(0, lostIcon, lostLabel);
 
 
-        for (HBox box : List.of(posBox, battBox, humanBox, cannonBox, engineBox, creditBox)) {
+        for (HBox box : List.of(posBox, battBox, humanBox, cannonBox, engineBox, creditBox, lostBox)) {
             box.setAlignment(Pos.CENTER_RIGHT);
         }
 
@@ -322,7 +329,7 @@ public class FlightScene {
         moreButton.setCursor(Cursor.HAND);
         moreButton.setOnAction(e -> showMore());
 
-        HBox resourceBox = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox, creditBox);
+        HBox resourceBox = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox, creditBox, lostBox);
         resourceBox.setAlignment(Pos.CENTER);
         resourceBox.setPadding(new Insets(5));
 
@@ -498,14 +505,19 @@ public class FlightScene {
         };
 
         ImageView conditionView = new ImageView(conditionImage);
-        conditionView.setFitWidth(50);
         conditionView.setPreserveRatio(true);
         conditionView.setMouseTransparent(true);
+        if(condition == Condition.CANNONS) {
+            conditionView.setFitWidth(30);
+        } else if(condition == Condition.HUMANS) {
+            conditionView.setFitWidth(50);
+        } else {
+            conditionView.setFitWidth(25);
+        }
 
         box.getChildren().addAll(confirm, conditionView);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 120.0);
         AnchorPane.setLeftAnchor(box, 200.0);
 
         // Attiva overlay e blocca i layer sotto
@@ -532,6 +544,9 @@ public class FlightScene {
             });
 
             box.getChildren().add(continueBtn);
+            AnchorPane.setBottomAnchor(box, 120.0);
+        } else {
+            AnchorPane.setBottomAnchor(box, 180.0);
         }
     }
 
@@ -1931,6 +1946,7 @@ public class FlightScene {
         cannonLabel.setText(": " + viewFlow.getCannonPower());
         engineLabel.setText(": " + viewFlow.getEnginePower());
         creditLabel.setText(": " + viewFlow.getCredits());
+        lostLabel.setText(": " + viewFlow.getLostComponents());
 
         for (Map.Entry<String, Integer> entry : viewFlow.getGoodsByColor().entrySet()) {
             String color = entry.getKey().toLowerCase();
