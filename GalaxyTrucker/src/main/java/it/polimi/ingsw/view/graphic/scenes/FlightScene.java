@@ -1224,7 +1224,7 @@ public class FlightScene {
         Button dontLandBtn = new Button("Don't land");
         dontLandBtn.setFont(Font.font("Bangers", 16));
         dontLandBtn.setTextFill(Color.BLACK);
-        dontLandBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        dontLandBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
         dontLandBtn.setCursor(Cursor.HAND);
         dontLandBtn.setPrefWidth(160);
         dontLandBtn.setOnAction(ev -> {
