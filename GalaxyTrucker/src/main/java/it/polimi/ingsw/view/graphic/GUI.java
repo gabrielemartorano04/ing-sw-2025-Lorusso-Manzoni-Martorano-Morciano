@@ -426,7 +426,7 @@ public class GUI implements UI {
     public void showCurrCondition(CurrentCondition event) {
         //TODO:
         Platform.runLater(() -> {
-            this.flightScene.showCurrContidion(event.getCondition());
+            this.flightScene.showCurrCondition(event.getCondition());
         });
 
     }

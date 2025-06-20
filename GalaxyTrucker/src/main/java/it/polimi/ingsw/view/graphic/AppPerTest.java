@@ -9,6 +9,7 @@ import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.view.ViewFlow;
 import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
 import it.polimi.ingsw.view.graphic.scenes.FlightScene;
+import it.polimi.ingsw.view.graphic.scenes.ResultScene;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -156,19 +157,34 @@ public class AppPerTest extends Application {
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
-//        flightScene.updatePlanetsOccupied(new ArrayList<>(){
-//            {
-//                add(trucker);
-//                add(null);
-//                add(null);
-//            }
-//        });
+        flightScene.updatePlanetsOccupied(new ArrayList<>(){
+            {
+                add(trucker);
+                add(null);
+                add(null);
+
+            }
+        });
+        flightScene.showPlanetDecisionInput();
 //        flightScene.updateTrack(mockTrack);
 //        color = new HashMap<>();
 //        color.put("red", 3);
 //        color.put("yellow", 2);
 //        color.put("green", 4);
 //        color.put("blue", 1);
+
+//        Map<String, Integer> scores = new HashMap<>();
+//        scores.put("luca", 0);
+//        scores.put("frenk", 5);
+//        scores.put("gabri", 12);
+//        scores.put("manzo", 20);
+//
+//        StackPane stackPane = new StackPane();
+//        ResultScene resultScene = new ResultScene(viewFlow, stackPane);
+//        primaryStage.setScene(resultScene.createScene(scores));
+//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+//        primaryStage.show();
 
     }
 

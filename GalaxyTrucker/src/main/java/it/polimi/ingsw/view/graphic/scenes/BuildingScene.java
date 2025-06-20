@@ -1457,6 +1457,7 @@ public class BuildingScene {
     }
 
     public void showAlienCabin() {
+        disableAndSaveAllButtonStates();
         VBox alienBox = new VBox(10);
         alienBox.setAlignment(Pos.CENTER_RIGHT);
         alienBox.setPadding(new Insets(0, 0, 25, 25));
