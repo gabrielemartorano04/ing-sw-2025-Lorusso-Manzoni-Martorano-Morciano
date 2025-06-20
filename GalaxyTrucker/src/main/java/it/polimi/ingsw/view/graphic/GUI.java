@@ -431,6 +431,8 @@ public class GUI implements UI {
 
     }
 
+
+
     @Override
     public void cardFinished(CardFinished event){
         Platform.runLater(() -> {
