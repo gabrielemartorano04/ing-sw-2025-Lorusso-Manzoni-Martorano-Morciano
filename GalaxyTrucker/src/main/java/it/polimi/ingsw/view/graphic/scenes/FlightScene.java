@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.graphic.scenes;
 
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.cards.AbandonedShip;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.*;
@@ -63,6 +64,7 @@ public class FlightScene {
     private GoodsImagesGetter goodsImagesGetter;
     private Image goodImage;
     private ArrayList<Trucker> planets;
+    private Card currCard;
 
     private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel;
     private Map<String, Label> goodLabels = new HashMap<>();
@@ -288,6 +290,7 @@ public class FlightScene {
         // Goods
         HBox goodsBox = new HBox(10);
         goodsBox.setAlignment(Pos.CENTER_RIGHT);
+
         Map<String, Image> goodImages = Map.of(
                 "red", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/redgood.png")).toExternalForm()),
                 "yellow", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png")).toExternalForm()),
@@ -295,14 +298,20 @@ public class FlightScene {
                 "blue", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/bluegood.png")).toExternalForm())
         );
 
-        for (String color : goodImages.keySet()) {
-            ImageView goodIcon = new ImageView(goodImages.get(color));
+        List<String> orderedColors = List.of("red", "yellow", "green", "blue");
+
+        for (String color : orderedColors) {
+            Image image = goodImages.get(color); // accedi in modo sicuro e ordinato
+            ImageView goodIcon = new ImageView(image);
             goodIcon.setFitWidth(35);
             goodIcon.setPreserveRatio(true);
+
             Label qtyLabel = createStyledLabel();
-            goodLabels.put(color.toLowerCase(), qtyLabel);
+            goodLabels.put(color, qtyLabel); // salva riferimento
+
             HBox singleGood = new HBox(0, goodIcon, qtyLabel);
             singleGood.setAlignment(Pos.CENTER_RIGHT);
+
             goodsBox.getChildren().add(singleGood);
         }
 
