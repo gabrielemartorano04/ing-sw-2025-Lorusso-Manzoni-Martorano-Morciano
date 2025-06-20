@@ -423,10 +423,10 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showCurrCondition(CurrentCondition event) {
+    public void showCurrCondition(CurrentCondition event, boolean isLeader) {
         //TODO:
         Platform.runLater(() -> {
-            this.flightScene.showCurrCondition(event.getCondition(), true);
+            this.flightScene.showCurrCondition(event.getCondition(), isLeader);
         });
 
     }

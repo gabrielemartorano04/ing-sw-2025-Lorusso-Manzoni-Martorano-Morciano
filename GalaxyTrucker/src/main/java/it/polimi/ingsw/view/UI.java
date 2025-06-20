@@ -70,7 +70,7 @@ public interface UI {
 
     void flightScene(FlightStartEvent event);
 
-    void showCurrCondition(CurrentCondition event);
+    void showCurrCondition(CurrentCondition event, boolean isLeader);
 
     void cardFinished(CardFinished event);
 

@@ -283,8 +283,11 @@ public class TUI implements UI {
 
 
     @Override
-    public void showCurrCondition(CurrentCondition event){
+    public void showCurrCondition(CurrentCondition event, boolean isLeader){
         System.out.println("Current condition:" + event.getCondition());
+        if(isLeader){
+            System.out.println("Type Continue to proceed");
+        }
     }
 
     @Override
@@ -343,7 +346,6 @@ public class TUI implements UI {
     @Override
     public void showInputFormat(ParserState parserState) {
         switch (parserState){
-            case CURRENT_CONDITION -> System.out.println("Type Continue to proceed");
             case ACTIVATE_ENGINES -> System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
             case ACTIVATE_CANNONS -> System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
             case ACTIVATE_SHIELD -> System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x1> <y1>, <xB1> <yB1>>' or 'n': ");

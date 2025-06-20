@@ -280,8 +280,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(CurrentCondition event) {
+        boolean isLeader = false;
+
+        // il getName qui da sempre il nome del leader quindi posso settare isLeader
         if(event.getNickname().equals(viewFlow.getNickname())){
             viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
+            isLeader = true;
         }
         else {
             if(event.getWeakestTrucker()!=null){
@@ -296,8 +300,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
 
         handleDeath(event.getTruckersRemoved());
-        ui.showCurrCondition(event);
-        ui.showInputFormat(viewFlow.getParserFlightState());
+        ui.showCurrCondition(event, isLeader);
     }
 
     @Override
