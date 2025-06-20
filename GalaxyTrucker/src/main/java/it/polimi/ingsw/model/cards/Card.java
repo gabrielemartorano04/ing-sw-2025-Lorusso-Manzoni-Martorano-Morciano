@@ -71,21 +71,23 @@ public abstract class Card implements Serializable, CardInterface{
         return level;
     }
 
-    /**
-     * Returns if the truckers are playing the trial flight
-     * @return specify if truckers are in trial flight
-     */
-    public boolean isTrialFlight() {
-        return trialFlight;
-    }
+//TODO da rimuovere
 
-    /**
-     * Returns the rear image of the Card
-     * @return rear image
-     */
-    public Image getBackImage() {
-        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(backImagePath)));
-    }
+//    /**
+//     * Returns if the truckers are playing the trial flight
+//     * @return specify if truckers are in trial flight
+//     */
+//    public boolean isTrialFlight() {
+//        return trialFlight;
+//    }
+//
+//    /**
+//     * Returns the rear image of the Card
+//     * @return rear image
+//     */
+//    public Image getBackImage() {
+//        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(backImagePath)));
+//    }
 
     /**
      * Returns the front image of the Card

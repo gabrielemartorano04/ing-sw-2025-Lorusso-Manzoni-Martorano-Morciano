@@ -150,22 +150,22 @@ public class AppPerTest extends Application {
 //
 //
 
-        StackPane stackPane = new StackPane();
-        FlightScene flightScene = new FlightScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
-        primaryStage.setScene(flightScene.createScene(playersNames, 2));
-
-        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-        primaryStage.show();
-        flightScene.updatePlanetsOccupied(new ArrayList<>(){
-            {
-                add(trucker);
-                add(null);
-                add(null);
-
-            }
-        });
-        flightScene.showPlanetDecisionInput();
+//        StackPane stackPane = new StackPane();
+//        FlightScene flightScene = new FlightScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
+//        primaryStage.setScene(flightScene.createScene(playersNames, 2));
+//
+//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+//        primaryStage.show();
+//        flightScene.updatePlanetsOccupied(new ArrayList<>(){
+//            {
+//                add(trucker);
+//                add(null);
+//                add(null);
+//
+//            }
+//        });
+//        flightScene.showPlanetDecisionInput();
 //        flightScene.updateTrack(mockTrack);
 //        color = new HashMap<>();
 //        color.put("red", 3);
@@ -173,18 +173,18 @@ public class AppPerTest extends Application {
 //        color.put("green", 4);
 //        color.put("blue", 1);
 
-//        Map<String, Integer> scores = new HashMap<>();
-//        scores.put("luca", 0);
-//        scores.put("frenk", 5);
-//        scores.put("gabri", 12);
-//        scores.put("manzo", 20);
-//
-//        StackPane stackPane = new StackPane();
-//        ResultScene resultScene = new ResultScene(viewFlow, stackPane);
-//        primaryStage.setScene(resultScene.createScene(scores));
-//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-//        primaryStage.show();
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("luca", 0);
+        scores.put("frenk", 5);
+        scores.put("gabri", 12);
+        scores.put("manzo", 20);
+
+        StackPane stackPane = new StackPane();
+        ResultScene resultScene = new ResultScene(viewFlow, stackPane);
+        primaryStage.setScene(resultScene.createScene(scores));
+        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+        primaryStage.show();
 
     }
 
