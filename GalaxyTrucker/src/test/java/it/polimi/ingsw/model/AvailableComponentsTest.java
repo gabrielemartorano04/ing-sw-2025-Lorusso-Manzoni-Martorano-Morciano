@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.components.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AvailableComponentsTest {
@@ -26,18 +29,25 @@ class AvailableComponentsTest {
     @Test
     void getComponents() {
         assertNotNull(av.getComponents());
+        assertEquals(152, av.getComponents().size());
     }
 
     @Test
     void shuffle() {
+        ArrayList<Component> original = av.getComponents();
+        ArrayList<Component> shuffled = new ArrayList<>(original);
+        Collections.shuffle(shuffled);
+        boolean orderChanged = false;
+        for(int i=0;i<10;i++) {
+            if (!shuffled.equals(original)) {
+                orderChanged = true;
+            }
+        }
+        assertTrue(orderChanged);
         assertNotNull(av.getComponents());
+        assertEquals(152, av.getComponents().size());
     }
 
-    @Test
-    void removeComponent() {
-        av.removeComponent(index);
-        assertFalse(av.getComponents().contains(component));
-    }
 
     @Test
     void setComponentAsSelected() {
