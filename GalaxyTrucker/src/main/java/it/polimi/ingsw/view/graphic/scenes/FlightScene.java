@@ -239,7 +239,7 @@ public class FlightScene {
         Image human = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
         Image battery = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/battery.png")).toExternalForm());
         Image pos = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/position.png")).toExternalForm());
-        Image credit = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
+        Image credit = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/credit.png")).toExternalForm());
 
         posLabel = createStyledLabel();
         battLabel = createStyledLabel();
@@ -270,7 +270,7 @@ public class FlightScene {
         engineIcon.setPreserveRatio(true);
 
         ImageView creditIcon = new ImageView(credit);
-        creditIcon.setFitWidth(16);
+        creditIcon.setFitWidth(25);
         creditIcon.setPreserveRatio(true);
 
         HBox posBox = new HBox(0, posIcon, posLabel);
@@ -289,10 +289,10 @@ public class FlightScene {
         HBox goodsBox = new HBox(10);
         goodsBox.setAlignment(Pos.CENTER_RIGHT);
         Map<String, Image> goodImages = Map.of(
-                "red", new Image(getClass().getResource("/it/polimi/ingsw/view/redgood.png").toExternalForm()),
-                "yellow", new Image(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png").toExternalForm()),
-                "green", new Image(getClass().getResource("/it/polimi/ingsw/view/greengood.png").toExternalForm()),
-                "blue", new Image(getClass().getResource("/it/polimi/ingsw/view/bluegood.png").toExternalForm())
+                "red", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/redgood.png")).toExternalForm()),
+                "yellow", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png")).toExternalForm()),
+                "green", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/greengood.png")).toExternalForm()),
+                "blue", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/bluegood.png")).toExternalForm())
         );
 
         for (String color : goodImages.keySet()) {
