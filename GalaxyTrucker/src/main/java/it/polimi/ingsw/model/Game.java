@@ -20,7 +20,6 @@ import java.util.*;
  */
 
 public class Game implements Serializable {
-    //attributi
     @Serial
     private static final long serialVersionUID = 1L;
 

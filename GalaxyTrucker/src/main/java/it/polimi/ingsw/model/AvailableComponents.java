@@ -8,17 +8,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Class that manages the components as a whole
+ * Class that manages the building phase available components
  */
 
 public class AvailableComponents implements Serializable {
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * List of available components
+     */
     private ArrayList<Component> components;
 
     /**
-     * Available components constructor, initialise the array of 156 component
+     * Available components constructor, initialise the array of 152 component
      */
     public AvailableComponents() {
         components = new ArrayList<>();
@@ -346,7 +352,7 @@ public class AvailableComponents implements Serializable {
     }
 
     /**
-     * Returns the array of components available
+     * Returns the list of available components
      * @return list of components
      */
     public ArrayList<Component> getComponents() {
@@ -360,37 +366,25 @@ public class AvailableComponents implements Serializable {
         Collections.shuffle(components);
     }
 
-
     /**
-     * probably useless considering the new idea of not removing but just changing the selcted attribute of the component
-     */
-    public void removeComponent(int index) {
-        components.remove(index);
-    }
-
-//    public void addComponent(Component component) {
-//        components.addFirst(component);
-//    }
-
-    /**
-     * sets that component as selected by a client
-     * @param index: index of component
+     * This methos sets the component with that index as selected by a player
+     * @param index: index of component in the list
      */
     public void setComponentAsSelected(int index) {
         components.get(index).setSelected(true);
     }
 
     /**
-     * sets that component as available because a client has discarded it
-     * @param index: index of component
+     * This method sets that component as available because a client has discarded it
+     * @param index: index of component in the list
      */
     public void setComponentAsUnselected(int index) {
         components.get(index).setSelected(false);
     }
 
     /**
-     * We can only set a component as Uncovered, we can't set back a component as Covered given game's rules
-     * @param index: index of the component
+     * This method sets a component as uncovered when it's discardes by a player
+     * @param index: index of the component in the list
      */
     public void setComponentAsUncovered(int index) {
         components.get(index).setCovered(false);
