@@ -505,8 +505,8 @@ public class FlightScene {
         box.getChildren().addAll(confirm, conditionView);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 150.0);
-        AnchorPane.setLeftAnchor(box, 215.0);
+        AnchorPane.setBottomAnchor(box, 120.0);
+        AnchorPane.setLeftAnchor(box, 200.0);
 
         // Attiva overlay e blocca i layer sotto
         overlayLayer.setMouseTransparent(false);
@@ -520,7 +520,7 @@ public class FlightScene {
 
         if (isLeader) {
             Button continueBtn = new Button("Start condition");
-            continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+            continueBtn.setFont(Font.font("Bangers", 18));
             continueBtn.setTextFill(Color.BLACK);
             continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
             continueBtn.setCursor(Cursor.HAND);
@@ -1631,11 +1631,11 @@ public class FlightScene {
         box.setPadding(new Insets(10));
 
         Label diceLabel = new Label("🎲 Roll the dices!");
-        diceLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 35));
+        diceLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
         diceLabel.setTextFill(Color.web("#FFDE69"));
 
         Button rollButton = new Button("Roll Dices");
-        rollButton.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+        rollButton.setFont(Font.font("Bangers", 18));
         rollButton.setTextFill(Color.BLACK);
         rollButton.setCursor(Cursor.HAND);
         rollButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
@@ -1643,8 +1643,8 @@ public class FlightScene {
         box.getChildren().addAll(diceLabel, rollButton);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 180.0);
-        AnchorPane.setLeftAnchor(box, 105.0);
+        AnchorPane.setBottomAnchor(box, 120.0);
+        AnchorPane.setLeftAnchor(box, 200.0);
 
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);

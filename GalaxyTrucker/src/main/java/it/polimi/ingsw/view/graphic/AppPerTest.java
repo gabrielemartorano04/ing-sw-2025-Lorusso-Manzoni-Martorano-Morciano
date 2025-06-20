@@ -157,7 +157,8 @@ public class AppPerTest extends Application {
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
-        flightScene.showCurrCondition(Condition.HUMANS);
+        //flightScene.showCurrCondition(Condition.HUMANS, true);
+        flightScene.showRollDiceInput();
 //        flightScene.updatePlanetsOccupied(new ArrayList<>(){
 //            {
 //                add(trucker);
