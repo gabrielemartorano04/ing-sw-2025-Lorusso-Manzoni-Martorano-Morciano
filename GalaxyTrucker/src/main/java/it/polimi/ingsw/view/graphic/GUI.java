@@ -87,7 +87,7 @@ public class GUI implements UI {
     // insertnumPlayerscene
 
     @Override
-    public void showInsertNumPlayers() {
+    public void showInsertNumPlayers(boolean resume) {
         Platform.runLater(() -> {
             double width = 1600;
             double height = 900;
