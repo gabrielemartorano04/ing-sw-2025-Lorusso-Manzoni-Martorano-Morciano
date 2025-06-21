@@ -131,52 +131,7 @@ public class ViewFlow implements EventReceiver {
     @Override
     public void onEventReceived(ServerEvent event) {
         if (event.getEventType() != ServerEventType.PING) {
-//            if (nickname == null) {
-//                System.out.println("[SERVER] Message received: " + event.getMessage() + ". || EventType ||: " + event.getEventType());
-//
-//            } else {
-//                System.out.println("[SERVER] Message received: " + event.getMessage() + ". || EventType ||: " + event.getEventType() + " per " + nickname);
-//            }
-        //!!questa deve gestire gli eventi dal server!!
-            switch (event.getEventType()) {
-                case CHOOSE_RESUME ->{
-                    ui.showMessage(event.getMessage());
-                    viewState = ViewState.CHOOSE_OLD;
-                }
-                case FIRST_CONNECTION-> {
-                    ui.showInsertNumPlayers();
-                    viewState = ViewState.FIRST;
-                }
-                default -> {
-                    if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS || event.getEventType() == ServerEventType.COMPONENT_LINKED
-                            || event.getEventType() == ServerEventType.COMPONENT_SELECTED || event.getEventType() == ServerEventType.DISCART_SUCCESS || event.getEventType() == ServerEventType.CARD_FINISHED) {
-                        event.call(serverEventVisitor);
-                        done = true;
-                    }
-                    if (event.getEventType() == ServerEventType.CHOOSE_COLOURS) {
-                        viewState = ViewState.START;
-                    }
-                    switch (viewState) {
-                        case START -> {
-                            event.call(serverEventVisitor);
-                            done = true;
-                        }
-                        case BULDING -> {
-
-                        }
-                        case FILL -> {
-
-                        }
-                        case FLIGTH -> {
-                        }
-                        case END -> event.call(serverEventVisitor);
-                    }
-                    if (!done) {
-                        event.call(serverEventVisitor);
-                    }
-                    done = false;
-                }
-            }
+            event.call(serverEventVisitor);
         }
     }
 
