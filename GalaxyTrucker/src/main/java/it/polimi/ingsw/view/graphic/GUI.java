@@ -698,8 +698,7 @@ public class GUI implements UI {
             });
         } else if (viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH) {
             Platform.runLater(() -> {
-                //TODO: mettere showOthership dentro la fligth scene
-                // this.flightScene.showOtherShip(layout, nickname);
+                this.flightScene.showOtherShip(layout, nickname);
             });
         }
     }

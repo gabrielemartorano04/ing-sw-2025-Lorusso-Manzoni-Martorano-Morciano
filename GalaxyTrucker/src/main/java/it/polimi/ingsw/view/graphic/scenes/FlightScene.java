@@ -1987,11 +1987,6 @@ public class FlightScene {
         });
     }
 
-
-
-
-
-
     /**
      * Show the button to roll the dice in the standard popup position.
      */
