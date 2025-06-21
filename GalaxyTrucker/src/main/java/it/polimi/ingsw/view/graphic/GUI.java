@@ -543,6 +543,7 @@ public class GUI implements UI {
     public void showCurrCondition(CurrentCondition event, boolean isLeader) {
         //TODO:
         Platform.runLater(() -> {
+            this.flightScene.clearRollDiceResult();
             this.flightScene.showCurrCondition(event.getCondition(), isLeader);
         });
 
@@ -553,6 +554,7 @@ public class GUI implements UI {
     @Override
     public void cardFinished(CardFinished event){
         Platform.runLater(() -> {
+            this.flightScene.clearRollDiceResult();
             this.flightScene.setShip(viewFlow.getShip().getComponents());
             this.flightScene.updateShipLayout();
             this.flightScene.updateStatusBar();
@@ -651,6 +653,7 @@ public class GUI implements UI {
 
     @Override
     public void showResult(RollDiceResult event){
+        this.flightScene.clearRollDiceResult();
         this.flightScene.showRollDiceResult(event.getDiceResult());
     }
 

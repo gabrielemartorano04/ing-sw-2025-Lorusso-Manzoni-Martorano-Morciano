@@ -170,7 +170,8 @@ public class AppPerTest extends Application {
 
             }
         });
-        flightScene.showRemoveGoodsInput();
+        flightScene.showAskWithdraw();
+
 //        flightScene.showRearrangeInput();
 //        flightScene.updatePlanetsOccupied(new ArrayList<>(){
 //            {

@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public class FlightScene {
@@ -53,7 +54,6 @@ public class FlightScene {
     private final ViewFlow viewFlow;
     private Button rulesBtn;
     private Button otherBtn;
-    private Button withdrawButton;
     private Button moreButton;
 
     private StackPane cardImageContainer;
@@ -144,7 +144,6 @@ public class FlightScene {
         addRulesButtonToScene(styleButton);
         initCardPlaceholder();
         addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
-        addWithdrawButtonToScene(viewFlow, styleButton);
         attachOptionsBoxToScene(scene);
 
         return scene;
@@ -180,7 +179,7 @@ public class FlightScene {
         optionsBox = new VBox(10);
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
-        optionsBox.getChildren().addAll(otherBtn, rulesBtn, withdrawButton);
+        optionsBox.getChildren().addAll(otherBtn, rulesBtn);
         optionsBox.setPickOnBounds(false);
 
         Platform.runLater(() -> {
@@ -349,64 +348,6 @@ public class FlightScene {
                 rootPane.getChildren().add(statusBar);
             }
         });
-    }
-
-    /**
-     * specific button for the withdraw of the player
-     * @param viewFlow to call the handleInput
-     * @param styleButton the style to use to make all buttons equal
-     */
-    private void addWithdrawButtonToScene(ViewFlow viewFlow, Consumer<Button> styleButton) {
-        Button withdrawButton = new Button("Withdraw");
-        styleButton.accept(withdrawButton);
-
-        withdrawButton.setOnAction(e -> {
-            StackPane root = (StackPane) scene.getRoot();
-
-            Rectangle bg = new Rectangle();
-            bg.widthProperty().bind(scene.widthProperty());
-            bg.heightProperty().bind(scene.heightProperty());
-            bg.setFill(Color.rgb(0, 0, 0, 0.4));
-
-            VBox box = new VBox(20);
-            box.setAlignment(Pos.CENTER);
-
-            Label confirm = new Label("Confirm to withdraw the flight?");
-            confirm.setTextFill(Color.web("#FFDE69"));
-            confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
-
-            Button yes = new Button("YES");
-            yes.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-            yes.setTextFill(Color.WHITE);
-            yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
-            yes.setCursor(Cursor.HAND);
-            yes.setPrefWidth(100);
-
-            Button no = new Button("NO");
-            no.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-            no.setTextFill(Color.WHITE);
-            no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
-            no.setCursor(Cursor.HAND);
-            no.setPrefWidth(100);
-
-            StackPane confirmation = new StackPane(bg, box);
-
-            yes.setOnAction(ev -> {
-                viewFlow.handleInput("withdraw");
-                root.getChildren().remove(confirmation);
-            });
-
-            no.setOnAction(ev -> root.getChildren().remove(confirmation));
-
-            HBox buttons = new HBox(20, yes, no);
-            buttons.setAlignment(Pos.CENTER);
-
-            box.getChildren().addAll(confirm, buttons);
-
-            root.getChildren().add(confirmation);
-        });
-
-        this.withdrawButton = withdrawButton;
     }
 
     /**
@@ -1143,7 +1084,6 @@ public class FlightScene {
         return true;
     }
 
-
     /**
      * Ask you to put the coordinates of the cabins to remove Humans.
      * */
@@ -1233,7 +1173,6 @@ public class FlightScene {
         }
         return true;
     }
-
 
     /**
      * Show the good and ask if you want to gain it and where.
@@ -1369,7 +1308,6 @@ public class FlightScene {
         });
     }
 
-
     private boolean isValidPlotGoodInput(String xText, String yText, String posText) {
         try {
             int x = Integer.parseInt(xText.trim());
@@ -1381,7 +1319,6 @@ public class FlightScene {
             return false;
         }
     }
-
 
     /**
      * Make player decide on which planet to land.
@@ -1778,21 +1715,6 @@ public class FlightScene {
         });
     }
 
-    private boolean isValidRemoveGoodsInput(String input) {
-        if (input == null || input.trim().isEmpty()) return false;
-
-        String[] tokens = input.split("\\s*,\\s*");
-        for (String token : tokens) {
-            try {
-                int index = Integer.parseInt(token.trim());
-                if (index < 0) return false;
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     /**
      * Let the player rearrange goods with confirmation and coordinate input.
      */
@@ -1976,6 +1898,99 @@ public class FlightScene {
             closePopup.run();
         });
     }
+
+    /**
+     * Ask if the player wants to withdraw, with confirmation required.
+     */
+    public void showAskWithdraw() {
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
+
+        Label title = new Label("Do you want to withdraw?");
+        title.setTextFill(Color.web("#FFDE69"));
+        title.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+
+        Button yes = new Button("YES");
+        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        yes.setTextFill(Color.WHITE);
+        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
+        yes.setCursor(Cursor.HAND);
+        yes.setPrefWidth(100);
+        yes.setOpacity(0.4);
+
+        Button no = new Button("NO");
+        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        no.setTextFill(Color.WHITE);
+        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+        no.setCursor(Cursor.HAND);
+        no.setPrefWidth(100);
+        no.setOpacity(0.4);
+
+        Label currentSelection = new Label("Please select YES or NO");
+        currentSelection.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        currentSelection.setTextFill(Color.RED);
+
+        Button confirm = new Button("Confirm");
+        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+        confirm.setTextFill(Color.WHITE);
+        confirm.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, new CornerRadii(10), Insets.EMPTY)));
+        confirm.setCursor(Cursor.HAND);
+        confirm.setPrefWidth(100);
+
+        HBox buttons = new HBox(10, yes, no);
+        buttons.setAlignment(Pos.CENTER);
+
+        VBox popupBox = new VBox(15, title, buttons, currentSelection, confirm);
+        popupBox.setAlignment(Pos.CENTER);
+        popupBox.setPadding(new Insets(15));
+
+        AnchorPane popupContent = new AnchorPane(popupBox);
+        AnchorPane.setBottomAnchor(popupBox, 180.0);
+        AnchorPane.setLeftAnchor(popupBox, 170.0);
+
+        // Overlay setup
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
+        AtomicReference<String> response = new AtomicReference<>(null);
+
+        yes.setOnAction(e -> {
+            response.set("y");
+            currentSelection.setText("Current selection: YES");
+            currentSelection.setTextFill(Color.GREEN);
+            yes.setOpacity(1.0);
+            no.setOpacity(0.4);
+        });
+
+        no.setOnAction(e -> {
+            response.set("n");
+            currentSelection.setText("Current selection: NO");
+            currentSelection.setTextFill(Color.RED);
+            no.setOpacity(1.0);
+            yes.setOpacity(0.4);
+        });
+
+        confirm.setOnAction(e -> {
+            if (response.get() == null) {
+                currentSelection.setText("Please select YES or NO");
+                currentSelection.setTextFill(Color.RED);
+                return;
+            }
+            viewFlow.handleInput(response.get());
+            closePopup.run();
+        });
+    }
+
+
+
+
+
 
     /**
      * Show the button to roll the dice in the standard popup position.
@@ -2201,7 +2216,6 @@ public class FlightScene {
 
         root.getChildren().add(trackBox);
     }
-
 
     /**
      * updates the planet to show in planetDecision
