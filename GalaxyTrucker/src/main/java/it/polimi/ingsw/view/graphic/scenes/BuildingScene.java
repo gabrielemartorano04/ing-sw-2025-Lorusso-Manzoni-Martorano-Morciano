@@ -1229,6 +1229,7 @@ public class BuildingScene {
                         ImageView iv = new ImageView(c.getFrontImage());
                         iv.setFitWidth(87.5);
                         iv.setFitHeight(87.5);
+                        iv.setRotate(c.getRotationAngle());
                         Rectangle r = new Rectangle(87.5, 87.5);
                         r.setArcWidth(8);
                         r.setArcHeight(8);
