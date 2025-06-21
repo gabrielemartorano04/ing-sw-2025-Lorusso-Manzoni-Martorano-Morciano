@@ -65,6 +65,7 @@ public class FlightScene {
     private Image goodImage;
     private ArrayList<Trucker> planets;
     private ArrayList<Goods> goodsList;
+    private int level;
 
     private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel, lostLabel;
     private Map<String, Label> goodLabels = new HashMap<>();
@@ -88,6 +89,7 @@ public class FlightScene {
         this.layout = layout;
         this.root = root;
         this.viewFlow = viewFlow;
+        this.level = viewFlow.getLevel();
         this.cellMatrix = new StackPane[10][11];
         this.validCells = new boolean[11][12];
         for (int i = 0; i < layout.length; i++) {
@@ -480,6 +482,93 @@ public class FlightScene {
         });
 
         this.otherBtn = otherBtn;
+    }
+
+    public void showOtherShip(Component[][] layout, String nickname) {
+
+        // === Immagine della nave ===
+        AnchorPane overlay = new AnchorPane();
+        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
+        overlay.setPickOnBounds(true);
+
+        root.getChildren().add(overlay);
+
+        ImageView backgroundView;
+        if (level == 0) {
+            backgroundView = new ImageView(new Image(Objects.requireNonNull(
+                    getClass().getResource("/it/polimi/ingsw/view/cardboard-3.jpeg")).toExternalForm()));
+        } else {
+            backgroundView = new ImageView(new Image(Objects.requireNonNull(
+                    getClass().getResource("/it/polimi/ingsw/view/cardboard-3b.jpeg")).toExternalForm()));
+        }
+
+        backgroundView.setFitWidth(679);
+        backgroundView.setFitHeight(492);
+        backgroundView.setPreserveRatio(true);
+        backgroundView.setMouseTransparent(true);
+
+        Rectangle clip = new Rectangle(679, 492);
+        clip.setArcWidth(20);
+        clip.setArcHeight(20);
+        backgroundView.setClip(clip);
+
+        // === Griglia componenti ===
+        GridPane grid = new GridPane();
+        grid.setHgap(1.5);
+        grid.setVgap(1.5);
+        grid.setAlignment(Pos.CENTER);
+        grid.setTranslateY(-1);
+
+        for (int row = 5; row < 10; row++) {
+            for (int col = 4; col < 11; col++) {
+                StackPane cell = new StackPane();
+                cell.setPrefSize(87.5, 87.5);
+
+                if (validCells[row][col]) {
+                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 4px; -fx-background-radius: 4px;");
+                    Component c = layout[row][col];
+                    if (c != null) {
+                        ImageView iv = new ImageView(c.getFrontImage());
+                        iv.setFitWidth(87.5);
+                        iv.setFitHeight(87.5);
+                        iv.setRotate(c.getRotationAngle());
+                        Rectangle r = new Rectangle(87.5, 87.5);
+                        r.setArcWidth(8);
+                        r.setArcHeight(8);
+                        iv.setClip(r);
+                        cell.getChildren().add(iv);
+                    }
+                } else {
+                    cell.setStyle("-fx-background-color: transparent;");
+                }
+
+                grid.add(cell, col - 4, row - 5);
+            }
+        }
+
+        // === Contenitore nave + griglia ===
+        StackPane shipPopup = new StackPane(backgroundView, grid);
+        shipPopup.setAlignment(Pos.CENTER);
+        shipPopup.setMaxSize(679, 500);
+        shipPopup.setMouseTransparent(false);
+
+        // === Label con nickname ===
+        Label nameLabel = new Label(nickname + "'s Ship");
+        nameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
+        nameLabel.setTextFill(Color.web("#FFDE69"));
+        nameLabel.setAlignment(Pos.CENTER);
+
+        // === Contenitore verticale: label sopra + nave sotto ===
+        VBox popupWithLabel = new VBox(10, nameLabel, shipPopup);
+        popupWithLabel.setAlignment(Pos.CENTER);
+
+        root.setOnMouseClicked(e -> {
+            root.getChildren().remove(overlay);
+            root.getChildren().remove(popupWithLabel);
+        });
+
+        // === Aggiunta sopra la UI ===
+        root.getChildren().add(popupWithLabel);
     }
 
     /**
