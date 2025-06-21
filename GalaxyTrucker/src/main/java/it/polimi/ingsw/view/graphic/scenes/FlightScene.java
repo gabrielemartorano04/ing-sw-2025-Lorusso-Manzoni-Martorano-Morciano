@@ -64,7 +64,7 @@ public class FlightScene {
     private GoodsImagesGetter goodsImagesGetter;
     private Image goodImage;
     private ArrayList<Trucker> planets;
-    private Card currCard;
+    private ArrayList<Goods> goodsList;
 
     private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel, lostLabel;
     private Map<String, Label> goodLabels = new HashMap<>();
@@ -1098,7 +1098,7 @@ public class FlightScene {
 
         AnchorPane popupContent = new AnchorPane(box);
         AnchorPane.setBottomAnchor(box, 150.0);
-        AnchorPane.setLeftAnchor(box, 100.0);
+        AnchorPane.setLeftAnchor(box, 80.0);
 
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
@@ -1580,6 +1580,10 @@ public class FlightScene {
         return true;
     }
 
+    public void updateGoodsListToRemove(ArrayList<Goods> goodsList) {
+        this.goodsList = goodsList;
+    }
+
     /**
      * Ask from where to remove the good.
      */
@@ -2021,7 +2025,7 @@ public class FlightScene {
         sorted.sort((a, b) -> b.getValue().compareTo(a.getValue())); // ordine decrescente
 
         // Salva la posizione massima (del primo)
-        int maxPosition = sorted.get(0).getValue();
+        int maxPosition = sorted.getFirst().getValue();
 
         // Contenitore verticale
         VBox trackBox = new VBox(10);
@@ -2043,18 +2047,18 @@ public class FlightScene {
             int current = sorted.get(i).getValue();
 
             Text posText = new Text(pos + "°  ");
-            posText.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+            posText.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
             posText.setFill(Color.WHITE);
 
             Text nameText = new Text(name);
-            nameText.setFont(Font.font("Bangers", FontWeight.NORMAL, 20));
+            nameText.setFont(Font.font("Bangers", FontWeight.NORMAL, 18));
             nameText.setFill(Color.WHITE);
 
             Text daysText = new Text();
             if (i > 0) {
                 int diff = maxPosition - current;
                 daysText.setText("  (+" + diff + " days)");
-                daysText.setFont(Font.font("Bangers", FontWeight.NORMAL, 15));
+                daysText.setFont(Font.font("Bangers", FontWeight.NORMAL, 14));
                 daysText.setFill(Color.WHITE);
             }
 
@@ -2187,7 +2191,7 @@ public class FlightScene {
         Label title = new Label("Components details:");
         title.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
         title.setTextAlignment(TextAlignment.LEFT);
-        title.setStyle("-fx-border-color: #FFDE69;");
+        title.setStyle("-fx-text-color: #FFDE69;");
 
         VBox titleBox = new VBox(title);
         titleBox.setAlignment(Pos.CENTER_LEFT);

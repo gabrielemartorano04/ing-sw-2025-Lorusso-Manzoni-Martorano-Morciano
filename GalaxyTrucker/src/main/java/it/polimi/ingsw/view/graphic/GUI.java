@@ -484,6 +484,13 @@ public class GUI implements UI {
     }
 
     @Override
+    public void updateGoodsListToRemove(ArrayList<Goods> goodsList) {
+        Platform.runLater(() -> {
+            // this.flightScene.updateGoodsListToRemove(goodsList);
+        });
+    }
+
+    @Override
     public void showEpidemicCard(EpidemicEvent event) {
         Platform.runLater(() -> {
             this.flightScene.updateCardInScene(event.getCard());

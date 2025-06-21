@@ -148,6 +148,6 @@ public interface UI {
     //NON ELIMINARE
     void showOtherShipLayout(String nickname, Component[][] layout);
 
-
+    void updateGoodsListToRemove(ArrayList<Goods> goodsList);
 
 }
