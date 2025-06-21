@@ -756,8 +756,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(ChooseResumeEvent chooseResumeEvent) {
-        ui.showInsertNumPlayers(true);
         viewFlow.setViewState(ViewFlow.ViewState.CHOOSE_OLD);
+        ui.showInsertNumPlayers(true);
     }
 
     @Override
