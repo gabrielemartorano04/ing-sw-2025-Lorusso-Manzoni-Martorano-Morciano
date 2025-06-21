@@ -41,7 +41,7 @@ public class Smugglers extends Card implements Serializable {
     private final ArrayList<Trucker> defeatedTruckers;
     private boolean winDecision;
 
-    private int goodsLostCurrTrucker;
+    private int goodsToLoseCurrTrucker;
     private int currGoodIndex;
 
     // variabili per la remove
@@ -75,7 +75,7 @@ public class Smugglers extends Card implements Serializable {
         this.numGoodCurrType = 0;
         this.goodsToRemove = new ArrayList<>();
         this.defeatedTruckers = new ArrayList<>();
-        this.goodsLostCurrTrucker = goodsLost;
+        this.goodsToLoseCurrTrucker = goodsLost;
     }
 
 //    /**
@@ -293,15 +293,10 @@ public class Smugglers extends Card implements Serializable {
         String nickname = defeatedTruckers.getFirst().getNickname();
         ArrayList<Goods> goodsList = ship.getGoodsList();
 
-        while (colorOfCurrGoodToRemove > 0 && goodsLostCurrTrucker > 0) {
+        while (colorOfCurrGoodToRemove > 0 && goodsToLoseCurrTrucker > 0) {
             numGoodCurrType = getNumGoodsForColor(ship, colorOfCurrGoodToRemove);
-            System.out.println("Checking color " + colorOfCurrGoodToRemove + " → " + " num of current good: " + numGoodCurrType);
-            System.out.println(ship.getRedGoods());
-            System.out.println(ship.getYellowGoods());
-            System.out.println(ship.getBlueGoods());
-            System.out.println(ship.getGreenGoods());
 
-            if (numGoodCurrType > 0 && numGoodCurrType <= goodsLostCurrTrucker) {
+            if (numGoodCurrType > 0 && numGoodCurrType <= goodsToLoseCurrTrucker) {
                 return removeWithoutAsking(goodsList);
             } else if (numGoodCurrType > 0) {
                 cardState = CardState.REMOVE_ASKING;
@@ -313,16 +308,13 @@ public class Smugglers extends Card implements Serializable {
                         goodsToRemove.add(g);
                     }
                 }
-
-                goodsToRemove.forEach(g -> System.out.println("To remove: " + g.getColor()));
-
                 return new RemoveGoods(true, nickname, ship, goodsToRemove);
             }
 
             colorOfCurrGoodToRemove--;
         }
 
-        if (colorOfCurrGoodToRemove == 0 && goodsLostCurrTrucker > 0) {
+        if (colorOfCurrGoodToRemove == 0 && goodsToLoseCurrTrucker > 0) {
             if (ship.getNumBatteries() == 0) {
                 defeatedTruckers.removeFirst();
 
@@ -334,7 +326,7 @@ public class Smugglers extends Card implements Serializable {
                 }
             } else {
                 cardState = CardState.REMOVE_BATTERIES;
-                return new RemoveBatteries(true, nickname, ship, goodsLostCurrTrucker);
+                return new RemoveBatteries(true, nickname, ship, goodsToLoseCurrTrucker);
             }
         }
 
@@ -351,25 +343,26 @@ public class Smugglers extends Card implements Serializable {
         };
     }
 
-    private ServerEvent removeWithoutAsking(ArrayList<Goods> goodsList) throws GeneralError {
-        if (goodsList == null) {
+    private ServerEvent removeWithoutAsking(ArrayList<Goods> goodsListFromShip) throws GeneralError {
+        if (goodsListFromShip == null) {
             throw new GeneralError("Remove without asking: goodsList is null");
         }
-        if(goodsList.isEmpty()){
+        if(goodsListFromShip.isEmpty()){
             System.out.println("Remove without asking: goodsList is empty");
         }
+
         ArrayList<Goods> list = new ArrayList<>();
         for (int i = 0; i < numGoodCurrType; i++) {
-            Goods good = goodsList.getFirst();
+            Goods good = goodsListFromShip.getFirst();
             list.add(good);
             Game.getIstance().getBank().addGoodsInBank(good.getValue());
             //TODO: Check che sto rimuovendo effettivamente dalla lista della nave
-            goodsList.removeFirst();
-            goodsLostCurrTrucker--;
+            goodsToLoseCurrTrucker--;
         }
+
         defeatedTruckers.getFirst().getSpaceShip().removeGoods(list);
 
-        if (goodsLostCurrTrucker == 0 || (goodsLostCurrTrucker > 0 && defeatedTruckers.getFirst().getSpaceShip().getNumBatteries() == 0)) {
+        if (goodsToLoseCurrTrucker == 0 || (goodsToLoseCurrTrucker > 0 && defeatedTruckers.getFirst().getSpaceShip().getNumBatteries() == 0)) {
             // se questo trucker ha perso tutte le merci notifico che la rimozione è stata fatta e passo al prossimo
             // per passare al prossimo obbligo il corrente a mandarmi un ok/continue
 
@@ -382,7 +375,7 @@ public class Smugglers extends Card implements Serializable {
         } else {
             // il trucker corrente deve perdere batterie
             cardState = CardState.REMOVE_BATTERIES;
-            return new RemoveBatteries(true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), goodsLostCurrTrucker);
+            return new RemoveBatteries(true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), goodsToLoseCurrTrucker);
         }
     }
 
@@ -397,22 +390,35 @@ public class Smugglers extends Card implements Serializable {
         if (cardState != CardState.REMOVE_ASKING){
             throw new GeneralError("Can't call removeAsking in the state " + cardState);
         }
-        if(indexesToRemove.size() != goodsLostCurrTrucker){
-            throw new NotEnoughGoodsChosen("The number of goods selected is not " + goodsLostCurrTrucker);
+        if(indexesToRemove.size() != goodsToLoseCurrTrucker){
+            throw new NotEnoughGoodsChosen("The number of goods selected is not " + goodsToLoseCurrTrucker);
         }
         for(Integer index : indexesToRemove){
             if(index < 0 || index >= goodsToRemove.size()){
                 throw new InvalidGoodChosen("A good with an index out of range has been chosen");
             }
         }
-        goodsLostCurrTrucker = 0;
-        ArrayList<Goods> list = new ArrayList<>();
-        for(Integer index : indexesToRemove){
-            list.add(goodsToRemove.get(index));
+        goodsToLoseCurrTrucker = 0;
+        ArrayList<Goods> selectedGoods = new ArrayList<>();
+        for (int i : indexesToRemove) {
+            Goods g = goodsToRemove.get(i);
+            selectedGoods.add(g);
+            Game.getIstance().getBank().addGoodsInBank(g.getValue());
         }
+
         goodsToRemove.clear();
+
+        SpaceShip ship = defeatedTruckers.getFirst().getSpaceShip();
+        String nickname = defeatedTruckers.getFirst().getNickname();
+
+        ship.removeGoods(selectedGoods);
+
+        // se questo trucker ha perso tutte le merci notifico che la rimozione è stata fatta e passo al prossimo
+        // per passare al prossimo obbligo il corrente a mandarmi un ok/continue
+
+        defeatedTruckers.removeFirst();
         cardState = CardState.REMOVE_GOODS;
-        return removeWithoutAsking(list);
+        return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED,nickname,ship);
     }
 
     /**
@@ -431,8 +437,8 @@ public class Smugglers extends Card implements Serializable {
         for (int[] coordinatesToRemoveBattery : coordinatesToRemoveBatteries) {
             counterOfBatteriesSelectedByPlayer += coordinatesToRemoveBattery[2];
         }
-        if(counterOfBatteriesSelectedByPlayer != goodsLostCurrTrucker){
-            throw new WrongNumberOfBatteriesSelected("The total number of batteries you selected to remove is not " + goodsLostCurrTrucker);
+        if(counterOfBatteriesSelectedByPlayer != goodsToLoseCurrTrucker){
+            throw new WrongNumberOfBatteriesSelected("The total number of batteries you selected to remove is not " + goodsToLoseCurrTrucker);
         }
         try{
             defeatedTruckers.getFirst().getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);

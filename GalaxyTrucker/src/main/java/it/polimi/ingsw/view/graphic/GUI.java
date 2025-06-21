@@ -24,6 +24,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -38,7 +39,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.shape.Rectangle;
 
+import java.awt.*;
 import java.util.*;
 
 public class GUI implements UI {
@@ -199,8 +202,83 @@ public class GUI implements UI {
     }
 
     @Override
-    public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames){
-        // TODO: per funzionalità aggiuntiva ci pensiamo piu avanti
+    public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames) {
+        double width = 1600;
+        double height = 900;
+
+        ImageView backgroundView = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm()));
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(true);
+        backgroundView.setMouseTransparent(true);
+
+        Label titleLabel = new Label("Welcome back! Select your profile:");
+        titleLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
+        titleLabel.setTextFill(Color.web("#FFDE69"));
+
+        // Contenitore per i riquadri
+        TilePane playerPane = new TilePane(30, 30);
+        playerPane.setAlignment(Pos.CENTER);
+
+        // Per gestire selezione
+        final StackPane[] selectedBox = {null};
+        final String[] selectedNickname = {null};
+        final PlayerColors[] selectedColor = {null};
+
+        for (int i = 0; i < colors.size(); i++) {
+            PlayerColors color = colors.get(i);
+            String nickname = nicknames.get(i);
+
+            Rectangle rect = new Rectangle(200, 80);
+            rect.setArcWidth(20);
+            rect.setArcHeight(20);
+            rect.setFill(getColorForEnum(color));
+
+            Label nameLabel = new Label(nickname);
+            nameLabel.setTextFill(Color.BLACK);
+            nameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+
+            StackPane box = new StackPane(rect, nameLabel);
+            box.setCursor(Cursor.HAND);
+
+            box.setOnMouseClicked(e -> {
+                // Rimuovi bordo precedente
+                if (selectedBox[0] != null) {
+                    selectedBox[0].setStyle("");
+                }
+                // Applica bordo al selezionato
+                box.setStyle("-fx-border-color: white; -fx-border-width: 3px;");
+                selectedBox[0] = box;
+                selectedNickname[0] = nickname;
+                selectedColor[0] = color;
+            });
+
+            playerPane.getChildren().add(box);
+        }
+
+        // Pulsante Confirm
+        Button confirmBtn = new Button("Confirm");
+        confirmBtn.setFont(Font.font("Bangers", 18));
+        confirmBtn.setTextFill(Color.BLACK);
+        confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        confirmBtn.setCursor(Cursor.HAND);
+        confirmBtn.setDisable(false);
+
+        confirmBtn.setOnAction(e -> {
+            if (selectedNickname[0] != null && selectedColor[0] != null) {
+                String input = selectedNickname[0] + " " + selectedColor[0];
+                viewFlow.handleInput(input);
+            }
+        });
+
+        VBox content = new VBox(30, titleLabel, playerPane, confirmBtn);
+        content.setAlignment(Pos.CENTER);
+        content.setPadding(new Insets(40));
+
+        this.root = new StackPane(backgroundView, content);
+        Scene scene = new Scene(root, width, height);
+        Stage stage = (Stage) root.getScene().getWindow(); // se già visibile
+        if (stage != null) stage.setScene(scene);
     }
 
     @Override
@@ -219,7 +297,7 @@ public class GUI implements UI {
     public void welcomeScene(AvailableColorsEvent event){
         Platform.runLater(() -> {
             this.loginScene = new LoginScene(event.getColors(), viewFlow);
-            stage.setScene(this.loginScene.createScene());
+            stage.setScene(this.loginScene.createScene(false));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
             stage.setFullScreen(true);
