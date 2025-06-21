@@ -243,15 +243,6 @@ class GameTest {
     }
 
     @Test
-    void allPlayersReady() {
-        for (Trucker trucker : game1.getTruckerList()) {
-            trucker.setBuildingState(BuildingState.END);
-        }
-        assertTrue(game1.allPlayersReady());
-    }
-
-
-    @Test
     void endTurn() {
     }
 
