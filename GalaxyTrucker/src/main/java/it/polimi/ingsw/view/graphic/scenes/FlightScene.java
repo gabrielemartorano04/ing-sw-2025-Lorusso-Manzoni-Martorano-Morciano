@@ -1588,65 +1588,105 @@ public class FlightScene {
      * Ask from where to remove the good.
      */
     public void showRemoveGoodsInput() {
-        VBox box = new VBox(10);
-        box.setAlignment(Pos.CENTER);
-        box.setPadding(new Insets(10));
+        // === Titolo fisso ===
+        Label chooseLabel = new Label("Select the goods you want to remove:");
+        chooseLabel.setTextFill(Color.web("#FFDE69"));
+        chooseLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
 
-        Label insertLabel = new Label("Insert the index of the goods you want to remove");
-        insertLabel.setTextFill(Color.web("#FFDE69"));
-        insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-        insertLabel.setTextAlignment(TextAlignment.CENTER);
-        insertLabel.setWrapText(true);
+        // === Griglia dei goods (2 colonne) ===
+        GridPane goodsGrid = new GridPane();
+        goodsGrid.setAlignment(Pos.CENTER);
+        goodsGrid.setHgap(30);
+        goodsGrid.setVgap(12);
 
-        Label hintLabel = new Label("Type '<index1>, <index2>, ...'");
-        hintLabel.setTextFill(Color.LIGHTGRAY);
-        hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+        // === Scroll pane che contiene la griglia ===
+        ScrollPane scrollPane = new ScrollPane(goodsGrid);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 
-        TextField inputField = new TextField();
-        inputField.setPromptText("Ex. 1, 2, 3");
-        inputField.setPrefWidth(200);
-
-        Label errorLabel = new Label("Invalid input. Must be comma-separated non-negative integers.");
-        errorLabel.setTextFill(Color.RED);
-        errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        errorLabel.setVisible(false);
-
+        // === Bottone di conferma ===
         Button confirmBtn = new Button("Confirm");
-        confirmBtn.setFont(Font.font("Bangers", 14));
+        confirmBtn.setFont(Font.font("Bangers", 16));
         confirmBtn.setTextFill(Color.BLACK);
-        confirmBtn.setCursor(Cursor.HAND);
         confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        confirmBtn.setCursor(Cursor.HAND);
+        confirmBtn.setPrefWidth(160);
 
-        HBox inputBox = new HBox(10, inputField, confirmBtn);
-        inputBox.setAlignment(Pos.CENTER);
+        // === VBox centrale con scroll e bottone ===
+        VBox centerBox = new VBox(15, chooseLabel, scrollPane, confirmBtn);
+        centerBox.setAlignment(Pos.TOP_CENTER);
+        centerBox.setPadding(new Insets(0));
 
-        box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
+        // === Overlay principale ===
+        AnchorPane popupContent = new AnchorPane();
+        AnchorPane.setTopAnchor(centerBox, 610.0);   // Titolo fisso in alto
+        AnchorPane.setLeftAnchor(centerBox, 100.0);
 
-        AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 170.0);
-        AnchorPane.setLeftAnchor(box, 90.0);
+        popupContent.getChildren().add(centerBox);
 
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
+        // === Chiusura popup ===
         Runnable closePopup = () -> {
             overlayLayer.getChildren().clear();
             restoreInteractiveLayers();
         };
 
-        Runnable sendInput = () -> {
-            String text = inputField.getText().trim();
-            if (isValidRemoveGoodsInput(text)) {
-                errorLabel.setVisible(false);
-                viewFlow.handleInput(text);
-                closePopup.run();
-            } else {
-                errorLabel.setVisible(true);
-            }
-        };
+        // === Costruzione della lista dei beni ===
+        StringBuilder selectedIndexes = new StringBuilder();
 
-        inputField.setOnAction(e -> sendInput.run());
-        confirmBtn.setOnAction(e -> sendInput.run());
+        for (int i = 0; i < goodsList.size(); i++) {
+            Goods g = goodsList.get(i);
+            int x = g.getX();
+            int y = g.getY();
+
+            String color = g.getColor().toLowerCase();
+            Image img = switch (color) {
+                case "red" -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/redgood.png")).toExternalForm());
+                case "yellow" -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png")).toExternalForm());
+                case "green" -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/greengood.png")).toExternalForm());
+                case "blue" -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/bluegood.png")).toExternalForm());
+                default -> null;
+            };
+
+            ImageView icon = new ImageView(img);
+            icon.setFitWidth(35);
+            icon.setPreserveRatio(true);
+
+            Label coordLabel = new Label("at [" + x + "," + y + "]");
+            coordLabel.setFont(Font.font("Bangers", 16));
+            coordLabel.setTextFill(Color.WHITE);
+
+            Button selectBtn = new Button("Remove");
+            selectBtn.setFont(Font.font("Bangers", 13));
+            selectBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            selectBtn.setTextFill(Color.BLACK);
+            selectBtn.setCursor(Cursor.HAND);
+            selectBtn.setPrefWidth(80);
+
+            int finalI = i;
+            selectBtn.setOnAction(e -> {
+                selectBtn.setDisable(true);
+                selectedIndexes.append(finalI).append(", ");
+            });
+
+            HBox line = new HBox(10, selectBtn, icon, coordLabel);
+            line.setAlignment(Pos.CENTER_LEFT);
+
+            int row = i / 2;
+            int col = i % 2;
+            goodsGrid.add(line, col, row);
+        }
+
+        // === Azione del bottone di conferma ===
+        confirmBtn.setOnAction(e -> {
+            if (!selectedIndexes.isEmpty()) {
+                String result = selectedIndexes.toString().replaceAll(",\\s*$", "");
+                viewFlow.handleInput(result);
+                closePopup.run();
+            }
+        });
     }
 
     private boolean isValidRemoveGoodsInput(String input) {
@@ -2271,7 +2311,7 @@ public class FlightScene {
         scroll.setMaxWidth(600);
         scroll.setMaxHeight(500);
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         StackPane overlayContainer = new StackPane(overlay, overlayGrid, scroll);
         overlayContainer.setId("moreOverlay");
