@@ -2187,7 +2187,7 @@ public class FlightScene {
         Label title = new Label("Components details:");
         title.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
         title.setTextAlignment(TextAlignment.LEFT);
-        title.setStyle("-fx-border-color: #FFDE69;");
+        title.setStyle("-fx-text-color: #FFDE69;");
 
         VBox titleBox = new VBox(title);
         titleBox.setAlignment(Pos.CENTER_LEFT);
