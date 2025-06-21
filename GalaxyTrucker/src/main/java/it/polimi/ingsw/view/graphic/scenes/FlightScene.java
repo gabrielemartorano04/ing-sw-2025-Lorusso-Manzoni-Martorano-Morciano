@@ -1062,7 +1062,7 @@ public class FlightScene {
         VBox box = new VBox(10);
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
-        box.setMaxWidth(500);
+        box.setMaxWidth(400);
 
         Label insertLabel = new Label("Insert the coordinates of the cabins to remove the number of crew members indicated");
         insertLabel.setTextFill(Color.web("#FFDE69"));
@@ -1070,7 +1070,7 @@ public class FlightScene {
         insertLabel.setTextAlignment(TextAlignment.CENTER);
         insertLabel.setWrapText(true);
 
-        Label hintLabel = new Label("Type '<x1> <y1> - <number>, <x2> <y2> - <number>, ...'");
+        Label hintLabel = new Label("Type '<x1> <y1> - <number>, ...'");
         hintLabel.setTextFill(Color.LIGHTGRAY);
         hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
         hintLabel.setWrapText(true);
@@ -1182,7 +1182,7 @@ public class FlightScene {
         box.getChildren().addAll(confirm, goodView, buttons);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setBottomAnchor(box, 150.0);
         AnchorPane.setLeftAnchor(box, 120.0);
 
         overlayLayer.setMouseTransparent(false);
@@ -1395,8 +1395,8 @@ public class FlightScene {
         container.getChildren().add(continueBtn);
 
         AnchorPane popupContent = new AnchorPane(container);
-        AnchorPane.setBottomAnchor(container, 150.0);
-        AnchorPane.setLeftAnchor(container, 100.0);
+        AnchorPane.setBottomAnchor(container, 180.0);
+        AnchorPane.setLeftAnchor(container, 150.0);
 
         // Abilita overlay (blocca il mouse dietro)
         overlayLayer.setMouseTransparent(false);
@@ -1431,8 +1431,8 @@ public class FlightScene {
         container.getChildren().add(continueBtn);
 
         AnchorPane popupContent = new AnchorPane(container);
-        AnchorPane.setBottomAnchor(container, 150.0); // regola la posizione come preferisci
-        AnchorPane.setLeftAnchor(container, 100.0);
+        AnchorPane.setBottomAnchor(container, 180.0); // regola la posizione come preferisci
+        AnchorPane.setLeftAnchor(container, 150.0);
 
         // Abilita overlay per bloccare interazioni sotto
         overlayLayer.setMouseTransparent(false);
