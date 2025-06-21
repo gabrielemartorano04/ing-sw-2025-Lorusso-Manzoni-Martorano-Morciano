@@ -336,7 +336,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         }
         client.getTruckerController().getSpaceShip().setNumHuman();
         client.getTruckerController().getSpaceShip().setBattery();
-        Component[][] spaceship= client.getTruckerController().getSpaceShip().getComponents();
+        SpaceShip spaceship= client.getTruckerController().getSpaceShip();
         client.getTruckerController().getSpaceShip().increaseLost(client.getTruckerController().getTrucker().getKeptComponents().size());
         client.getTruckerController().getSpaceShip().countExposedConnectors();
         float cannonPower=client.getTruckerController().getSpaceShip().getSingleCannonPower();
@@ -350,7 +350,7 @@ public class ClientHandlerVisitor implements VirtualServer {
             players.add(t.getNickname());
         }
 
-        return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,gameController.getGame().getTrack(), spaceship,players);
+        return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,gameController.getGame().getTrack(), spaceship, players);
     }
 
 
