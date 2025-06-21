@@ -130,18 +130,53 @@ public class InputParserFlight {
     }
 
     private ClientEvent parsePlotGood(String input, String nickname) {
-        String[] plotGood=input.split("\\s*,\\s*");
-        if(plotGood[0].trim().equals("y")){
-            String[] coord=plotGood[1].trim().split("\\s+");
-            int x=Integer.parseInt(coord[0].trim());
-            int y=Integer.parseInt(coord[1].trim());
-            int cont=Integer.parseInt(plotGood[2].trim());
-            return new PlotGoodEvent(true,new int[]{x,y}, cont,nickname);
+        if (input == null || input.trim().isEmpty()) {
+            ui.showError("Error: input is empty");
+            return null;
         }
-        else if(plotGood[0].trim().equals("n")){
-            return new PlotGoodEvent(false,null,-1,nickname);
+
+        String[] plotGood = input.trim().split("\\s*,\\s*");
+
+        if (plotGood.length == 0) {
+            ui.showError("Error: invalid format");
+            return null;
         }
-        ui.showError("Error: invalid command");
+
+        String decision = plotGood[0].trim().toLowerCase();
+
+        if (decision.equals("n")) {
+            return new PlotGoodEvent(false, null, -1, nickname);
+        } else if (decision.equals("y")) {
+            if (plotGood.length != 3) {
+                ui.showError("Error: expected format is 'y, <x> <y>, <position>'");
+                return null;
+            }
+
+            try {
+                String[] coord = plotGood[1].trim().split("\\s+");
+                if (coord.length != 2) {
+                    ui.showError("Error: coordinates must contain two integers");
+                    return null;
+                }
+
+                int x = Integer.parseInt(coord[0].trim());
+                int y = Integer.parseInt(coord[1].trim());
+                int position = Integer.parseInt(plotGood[2].trim());
+
+                if (x < 0 || y < 0 || position < 0) {
+                    ui.showError("Error: values must be non-negative integers");
+                    return null;
+                }
+
+                return new PlotGoodEvent(true, new int[]{x, y}, position, nickname);
+
+            } catch (NumberFormatException e) {
+                ui.showError("Error: all values must be integers");
+                return null;
+            }
+        }
+
+        ui.showError("Error: invalid command, please type 'y, <x> <y>, <position>' or 'n'");
         return null;
     }
 
