@@ -251,7 +251,7 @@ public class GUI implements UI {
     public void startBuildingScene(StartBuildingEvent event){
         this.loginScene.hideWaitForOthers();
         Platform.runLater(() -> {
-            buildingScene=new BuildingScene(viewFlow.getNickname(),viewFlow.getShip().getComponents(),viewFlow, new StackPane());
+            buildingScene=new BuildingScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow, new StackPane());
             stage.setScene(this.buildingScene.createScene(event.getPlayers(), viewFlow.getLevel()));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
@@ -384,7 +384,7 @@ public class GUI implements UI {
     public void  buildingComplete(BuildCompleteEvent event){
         Platform.runLater(() -> {
             this.buildingScene.hideWaitForOthers();
-            this.buildingScene.buildShipGrid(false, viewFlow.getShip().getComponents());
+            this.buildingScene.buildShipGrid(false, viewFlow.getShip());
             viewFlow.handleInput("alien");
         });
     }
@@ -410,7 +410,7 @@ public class GUI implements UI {
         Platform.runLater(() -> {
             this.buildingScene.hideWaitForOthers();
 
-            this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip().getComponents(), viewFlow, new StackPane());
+            this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip(), viewFlow, new StackPane());
             stage.setScene(this.flightScene.createScene(event.getPlayers(), viewFlow.getLevel()));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
@@ -436,7 +436,7 @@ public class GUI implements UI {
     @Override
     public void cardFinished(CardFinished event){
         Platform.runLater(() -> {
-            this.flightScene.setShip(viewFlow.getShip().getComponents());
+            this.flightScene.setShip(viewFlow.getShip());
             this.flightScene.updateShipLayout();
             this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
@@ -462,7 +462,7 @@ public class GUI implements UI {
     public  void epidemic(EpidemicEvent event){
 
         Platform.runLater(() -> {
-            this.flightScene.setShip(viewFlow.getShip().getComponents());
+            this.flightScene.setShip(viewFlow.getShip());
             this.flightScene.updateShipLayout();
             this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
@@ -501,7 +501,7 @@ public class GUI implements UI {
     public void stardust(StarDustEvent event){
 
         Platform.runLater(() -> {
-            this.flightScene.setShip(viewFlow.getShip().getComponents());
+            this.flightScene.setShip(viewFlow.getShip());
             this.flightScene.updateShipLayout();
             this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
