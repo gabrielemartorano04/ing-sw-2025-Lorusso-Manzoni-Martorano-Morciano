@@ -238,7 +238,7 @@ public class Pirates extends Card implements Serializable {
     }
 
     @Override
-    public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates {
+    public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
         if(cardState != CardState.ACTIVATE_SHIELDS){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
         }
@@ -252,7 +252,11 @@ public class Pirates extends Card implements Serializable {
             if(!Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkBatteryStorage(l)){
                 throw new InvalidCoordinates("Not a battery");
             }
-            Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().activateShield(shieldCoord, batteryCoord);
+            try {
+                Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().activateShield(shieldCoord, batteryCoord);
+            } catch (NotEnoughBatteries e) {
+                throw new NotEnoughBatteries(e.getMessage());
+            }
         }
         if(indexOfCurrentTrucker == defeatedTruckers.size() - 1){
             cardState = CardState.ESECUZIONE;

@@ -414,7 +414,7 @@ public class WarZone extends Card implements Serializable {
     }
 
     @Override
-    public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates {
+    public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
         if (state != CardState.ACTIVATE_SHIELDS) {
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
@@ -427,7 +427,11 @@ public class WarZone extends Card implements Serializable {
             if (!weakestTrucker.getSpaceShip().checkBatteryStorage(l)) {
                 throw new InvalidCoordinates("Not a battery");
             }
-            weakestTrucker.getSpaceShip().activateShield(shieldCoord, batteryCoord);
+            try {
+                weakestTrucker.getSpaceShip().activateShield(shieldCoord, batteryCoord);
+            } catch (NotEnoughBatteries e) {
+                throw new NotEnoughBatteries(e.getMessage());
+            }
         }
         state = CardState.ESECUZIONE;
         return cardEffect();

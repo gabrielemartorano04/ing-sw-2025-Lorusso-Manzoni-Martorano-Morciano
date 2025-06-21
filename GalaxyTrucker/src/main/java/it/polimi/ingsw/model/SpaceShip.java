@@ -11,33 +11,68 @@ import java.util.*;
 
 /**
  * Class that manage the Trucker's SpaceShip, with its components, goods, astronauts, aliens
- * */
-
-
+ */
 public class SpaceShip implements Serializable {
 
-    private final Component[][] components; //components in the matrix
-    private int lost; //number of lost components
-    private int redGoods, greenGoods, blueGoods, yellowGoods; // number of goods for each type color
-    private int numHuman; //number of astronauts on the spaceship
-    private int goodsCapacity; //number of goods capacity
-    private final ArrayList<Goods> goodsList; //list of goods in the spaceship, sort by their value (desc)
-    private int numOfBattery; //number of batteries in the spaceship
+    /**
+     * Components in the spaceship as a matrix
+     */
+    private final Component[][] components;
+
+    /**
+     * Number of lost components
+     */
+    private int lost;
+
+    /**
+     * Number of goods for each color
+     */
+    private int redGoods, greenGoods, blueGoods, yellowGoods;
+
+    /**
+     * Number of astronauts in the spaceship
+     */
+    private int numHuman;
+
+    /**
+     * Spaceship goods capacity
+     */
+    private int goodsCapacity;
+
+    /**
+     * List of goods in the spaceship, sort in descending order by their value
+     */
+    private final ArrayList<Goods> goodsList;
+
+    /**
+     * Number of batteries in the spaceship
+     */
+    private int numOfBattery;
+
+    /**
+     * Number of aliens in the spaceship
+     */
     private int numAlien;
+
+    /**
+     * Number of double cannons and number of double engines
+     */
     private int numDoubleCannon, numDoubleEngine;
+
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * It tells if there is an activeShield in the spaceship
+     */
     private boolean existsAnActiveShield;
 
     /**
-     * Spaceship constructor, it initializes the attributes of this class.
-     * If a components[i][j] can be filled it's initialized null,
-     * otherwise it's initialized as EmptySpace.
-     * The counters are 0 because the spaceship is empty.
-     * This constructor also initialize the main cabin in the middle of the spaceship.
+     * Class constructor, it initializes the attributes of this class.
      */
-
     public SpaceShip() {
         components = new Component[11][12];
         for(int i=0;i<5;i++){
@@ -62,16 +97,20 @@ public class SpaceShip implements Serializable {
         blueGoods = 0;
         yellowGoods = 0;
         goodsList = new ArrayList<>();
-        //ogni cabin se non ha un alieno ha due umani
         numHuman = 0;
         numAlien=0;
-        //ogni battery storage è pieno di batterie
         numOfBattery = 0;
         numDoubleCannon=0;
         numDoubleEngine=0;
         this.existsAnActiveShield = false;
     }
 
+    /**
+     * This method initializes the matrix. Component are null if that position can be filled,
+     * otherwise it's an empty space. It also places the main cabin in the middle of the spaceship
+     * @param level game level
+     * @param color player color
+     */
     public void initSpaceShip(int level, PlayerColors color){
         if(level==0){
             for(int i=5;i<=9;i++){
@@ -132,13 +171,17 @@ public class SpaceShip implements Serializable {
         components[7][7] = cabin;
     }
 
+    /**
+     * This method increase the number of lost components
+     * @param lost number of lost components to add
+     */
     public void increaseLost(int lost) {
         this.lost += lost;
     }
 
     /**
-     * This method set the full number of batteries in each battery storage and it updates numOfBattery counter to its
-     * maximum
+     * This method set the full number of batteries in each battery storage and
+     * updates numOfBattery counter to its maximum
      */
     public void setBattery(){
         for (int i = 5; i <= 9; i++) {
@@ -182,7 +225,6 @@ public class SpaceShip implements Serializable {
     /**
      * This method has to be called after setNumAlien, if the player didn't put an alien into the cabin we fill
      * the cabin with 2 astronauts
-     * @return number of astronauts in the spaceship
      */
     public void setNumHuman() {
 
@@ -207,6 +249,10 @@ public class SpaceShip implements Serializable {
         }
     }
 
+    /**
+     * This method returns goods in spaceship
+     * @return number of goods for each color
+     */
     public Map<String, Integer> getGoodsByColor() {
         Map<String, Integer> goodsByColor = new HashMap<>();
 
@@ -220,7 +266,7 @@ public class SpaceShip implements Serializable {
 
 
     /**
-     * This method
+     * This method returns the number of crew members in the spaceship
      * @return number of astronauts and aliens in the spaceship
      */
     public int getNumCrew(){
@@ -228,7 +274,7 @@ public class SpaceShip implements Serializable {
     }
 
     /**
-     * If the cabin is linked with a lifesupport and the player select the component this method puts the alien into
+     * If the cabin is linked with a life support and the player select the component this method puts the alien into
      * the cabin
      * @param coord coordinate of the components in which the player would like to put aliens
      */
@@ -313,11 +359,10 @@ public class SpaceShip implements Serializable {
     }
 
     /**
-     * This method supports epidemic
-     * @param x coordinate x of the component
-     * @param y coordinate x of the component
+     * This method remove a human from cabin in position (x,y)
+     * @param x coordinate x of the cabin
+     * @param y coordinate x of the cabin
      */
-
     public void removeHuman(int x, int y){
 
         switch(components[x][y]){
@@ -334,9 +379,10 @@ public class SpaceShip implements Serializable {
     }
 
     /**
-     *
-     * @param coord where coord[0] coord[1] are the x coordinate of the component from which the player
-     *              wants to remove a number of astronauts cointained in coord[2]
+     * This method remove a number of human from a list of cabins.
+     * @param coord list of coordinates, for each coordinate the first number is the x,
+     *              the second is the y and the third is the number of humans to remove.
+     * @param numMax maximum number of astronauts to lose
      */
     public void removeNumHuman(ArrayList<int[]> coord,int numMax){
 
@@ -370,9 +416,16 @@ public class SpaceShip implements Serializable {
         return components;
     }
 
+    /**
+     * @return the number of double cannons in the spaceship
+     */
     public int getNumDoubleCannon(){
         return numDoubleCannon;
     }
+
+    /**
+     * @return the number of double engines in the spaceship
+     */
     public int getNumDoubleEngine(){
         return numDoubleEngine;
     }
@@ -382,6 +435,7 @@ public class SpaceShip implements Serializable {
      * @param component component the player wants to add
      * @param x x coordinate of the cell in which the player wants to add the component
      * @param y y coordinate of the cell in which the player wants to add the component
+     * @throws InvalidCoordinates if the player can't place a component in the given position
      */
     public void addComponent(Component component, int x, int y) throws InvalidCoordinates{
         if(components[x][y]==null ) {
@@ -416,6 +470,7 @@ public class SpaceShip implements Serializable {
      * @param x x coordinate of the component to remove
      * @param y y coordinate of the component to remove
      * @return the removed component
+     * @throws InvalidCoordinates if there isn't any component to remove in that position
      */
     public Component removeComponent(int x, int y) throws InvalidCoordinates {
 
@@ -523,7 +578,6 @@ public class SpaceShip implements Serializable {
      * This method is called after the method that activates the double engines components
      * @return the power of activated double engines
      */
-
     public int getDoubleEngine() {
         int doubleEngine = 0;
         for (int i = 5; i <= 9; i++) {
@@ -544,7 +598,7 @@ public class SpaceShip implements Serializable {
     }
 
     /**
-     * This method takes two coordinates in input e return if the component is correctly linked with the others components
+     * This method checks if the component is correctly linked with the others components
      * @param x x coordinate of the component
      * @param y y coordinate of the component
      * @return boolean that says if the component in position (x,y) is correctly linked with the others components
@@ -696,6 +750,12 @@ public class SpaceShip implements Serializable {
         return true;
     }
 
+    /**
+     * This method checks if two links are compatible
+     * @param l1 first link
+     * @param l2 second link
+     * @return if the two links are compatible
+     */
     private boolean compatibleLinks(int l1, int l2) {
         if(l1==3)
             if(l2!=0) return true;
@@ -703,31 +763,10 @@ public class SpaceShip implements Serializable {
             if(l1!=0) return true;
         return l1 == l2 && l1!=0;
     }
-//in ingresso coordinate dei cannoni doppi che vogliamo attivare (da controller)
-
-
-    public void activeDoubleCannons(ArrayList<int[]> coord) throws NotEnoughBatteries {
-        if(coord.size()>numOfBattery)
-            throw new NotEnoughBatteries("You have not enough batteries to active all that cannons!");
-        for(int[] c:coord){
-            switch(components[c[0]][c[1]]){
-                case Cannon cannon->{
-
-                    if (numOfBattery>0){
-                        cannon.setIsActive(true);
-                        numOfBattery--;
-                    }
-
-                }default -> {}
-            }
-        }
-    }
-
 
     /**
-     * This method calculate the sum of single cannon power, double activated cannon and power given by aliens in the cabins
-     * Before calling this method setting the aliens is needed
-     * @return power of cannons of the spaceship
+     * This method calculates the total cannon power
+     * @return total cannon power
      */
     public float getTotalCannonPower() {
 
@@ -752,6 +791,9 @@ public class SpaceShip implements Serializable {
         return getSingleCannonPower() + getDoubleCannon() + power;
     }
 
+    /**
+     * This method sets all double cannons as unactive
+     */
     public void deactivateDoubleCannons() {
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
@@ -769,6 +811,9 @@ public class SpaceShip implements Serializable {
         }
     }
 
+    /**
+     * This method sets all double engines as unactive
+     */
     public void deactivateDoubleEngines() {
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
@@ -786,6 +831,14 @@ public class SpaceShip implements Serializable {
         }
     }
 
+    /**
+     * This method sets some double engines as active
+     * @param coord engines coordinates to activate
+     * @param batteriesCoord battery storages coordinates from which the player wants to lose batteries,
+     *                       for each coordinate in coordinates the first integer is x, the second is the y
+     *                       and the third is the number of batteries to remove from that battery storage
+     * @throws NotEnoughBatteries if the player doesn't have enough batteries
+     */
     public void activateDoubleEngines(ArrayList<int[]> coord, ArrayList<int[]> batteriesCoord) throws NotEnoughBatteries {
         if(coord.size()>numOfBattery)
             throw new NotEnoughBatteries("You don't have enough batteries to activate all that engines!");
@@ -810,6 +863,15 @@ public class SpaceShip implements Serializable {
         }
     }
 
+
+     /**
+     * This method sets some double cannons as active
+     * @param coord cannons coordinates to activate
+     * @param batteriesCoord battery storages coordinates from which the player wants to lose batteries,
+     *                       for each coordinate in coordinates the first integer is x, the second is the y
+     *                       and the third is the number of batteries to remove from that battery storage
+     * @throws NotEnoughBatteries if the player doesn't have enough batteries
+     */
     public void activateDoubleCannons(ArrayList<int[]> coord, ArrayList<int[]> batteriesCoord) throws NotEnoughBatteries {
         if(coord.size()>numOfBattery)
             throw new NotEnoughBatteries("You don't have enough batteries to activate all that engines!");
@@ -834,7 +896,15 @@ public class SpaceShip implements Serializable {
         }
     }
 
-    public void activateShield(int[] shieldCoord, int[] batteryCoord){
+    /**
+     * This method sets a shield as active
+     * @param shieldCoord shield coordinate to activate
+     * @param batteryCoord battery storages coordinate from which the player wants to lose batteries,
+     *                     the first integer is x, the second is the y
+     * @throws NotEnoughBatteries if the player doesn't have enough batteries
+     */
+    public void activateShield(int[] shieldCoord, int[] batteryCoord) throws NotEnoughBatteries {
+
         switch(components[shieldCoord[0]][shieldCoord[1]]){
             case Shield shield->{
                 shield.setIsActive(true);
@@ -844,7 +914,10 @@ public class SpaceShip implements Serializable {
         }
         switch(components[batteryCoord[0]][batteryCoord[1]]){
             case BatteryStorage bs->{
-                bs.removeNumOfBatteries(1);
+                if(bs.getQuantity()>0)
+                    bs.removeNumOfBatteries(1);
+                else throw new NotEnoughBatteries("You don't have enough batteries to activate all that engines!");
+
             }
             default -> {}
         }
