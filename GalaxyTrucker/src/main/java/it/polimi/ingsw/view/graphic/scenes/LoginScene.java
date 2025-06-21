@@ -2,8 +2,6 @@ package it.polimi.ingsw.view.graphic.scenes;
 
 import it.polimi.ingsw.model.PlayerColors;
 
-import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
-
 import it.polimi.ingsw.view.ViewFlow;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -24,7 +22,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.util.*;
 
 public class LoginScene {
@@ -48,7 +45,15 @@ public class LoginScene {
         this.unavailableColors = EnumSet.noneOf(PlayerColors.class);
     }
 
-    public Scene createScene() {
+    public Scene createScene(boolean resume) {
+        if(resume) {
+            return createResumeGameScene();
+        }else{
+            return createNewGameScene();
+        }
+    }
+
+    private Scene createNewGameScene(){
         double width = 1600;
         double height = 900;
 
@@ -143,6 +148,55 @@ public class LoginScene {
             root.getChildren().remove(content);
         });
 
+        this.root = new StackPane(backgroundView, content);
+        return new Scene(root, width, height);
+    }
+
+    private Scene createResumeGameScene() {
+        double width = 1600;
+        double height = 900;
+
+        // Sfondo
+        ImageView backgroundView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg")).toExternalForm()));
+        backgroundView.setFitWidth(width);
+        backgroundView.setFitHeight(height);
+        backgroundView.setPreserveRatio(true);
+        backgroundView.setMouseTransparent(true);
+
+        // Titolo
+        Label messageLabel = new Label("There is an old game to resume");
+        messageLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
+        messageLabel.setTextFill(Color.web("#FFDE69"));
+        messageLabel.setAlignment(Pos.CENTER);
+
+        // Pulsante Resume
+        Button resumeBtn = new Button("Resume");
+        resumeBtn.setFont(Font.font("Bangers", 20));
+        resumeBtn.setTextFill(Color.BLACK);
+        resumeBtn.setCursor(Cursor.HAND);
+        resumeBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        resumeBtn.setPrefWidth(160);
+        resumeBtn.setOnAction(e -> viewFlow.handleInput("y"));
+
+        // Pulsante New Game
+        Button newGameBtn = new Button("New Game");
+        newGameBtn.setFont(Font.font("Bangers", 20));
+        newGameBtn.setTextFill(Color.BLACK);
+        newGameBtn.setCursor(Cursor.HAND);
+        newGameBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        newGameBtn.setPrefWidth(160);
+        newGameBtn.setOnAction(e -> viewFlow.handleInput("n"));
+
+        // Contenitore pulsanti
+        HBox buttonBox = new HBox(30, resumeBtn, newGameBtn);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        // Layout verticale
+        VBox content = new VBox(40, messageLabel, buttonBox);
+        content.setAlignment(Pos.CENTER);
+        content.setPadding(new Insets(40));
+
+        // Stack finale
         this.root = new StackPane(backgroundView, content);
         return new Scene(root, width, height);
     }
