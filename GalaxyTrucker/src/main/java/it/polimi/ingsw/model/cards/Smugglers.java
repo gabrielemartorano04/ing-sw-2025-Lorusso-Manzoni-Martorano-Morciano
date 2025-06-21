@@ -351,22 +351,23 @@ public class Smugglers extends Card implements Serializable {
         };
     }
 
-    private ServerEvent removeWithoutAsking(ArrayList<Goods> goodsList) throws GeneralError {
-        if (goodsList == null) {
+    private ServerEvent removeWithoutAsking(ArrayList<Goods> goodsListFromShip) throws GeneralError {
+        if (goodsListFromShip == null) {
             throw new GeneralError("Remove without asking: goodsList is null");
         }
-        if(goodsList.isEmpty()){
+        if(goodsListFromShip.isEmpty()){
             System.out.println("Remove without asking: goodsList is empty");
         }
+
         ArrayList<Goods> list = new ArrayList<>();
         for (int i = 0; i < numGoodCurrType; i++) {
-            Goods good = goodsList.getFirst();
+            Goods good = goodsListFromShip.getFirst();
             list.add(good);
             Game.getIstance().getBank().addGoodsInBank(good.getValue());
             //TODO: Check che sto rimuovendo effettivamente dalla lista della nave
-            goodsList.removeFirst();
             goodsLostCurrTrucker--;
         }
+
         defeatedTruckers.getFirst().getSpaceShip().removeGoods(list);
 
         if (goodsLostCurrTrucker == 0 || (goodsLostCurrTrucker > 0 && defeatedTruckers.getFirst().getSpaceShip().getNumBatteries() == 0)) {
@@ -406,13 +407,28 @@ public class Smugglers extends Card implements Serializable {
             }
         }
         goodsLostCurrTrucker = 0;
-        ArrayList<Goods> list = new ArrayList<>();
-        for(Integer index : indexesToRemove){
-            list.add(goodsToRemove.get(index));
+        ArrayList<Goods> selectedGoods = new ArrayList<>();
+        for (int i : indexesToRemove) {
+            Goods g = goodsToRemove.get(i);
+            selectedGoods.add(g);
+            Game.getIstance().getBank().addGoodsInBank(g.getValue());
         }
+        selectedGoods.forEach(g -> System.out.println("List: " + g.getColor()));
+
         goodsToRemove.clear();
+
+        SpaceShip ship = defeatedTruckers.getFirst().getSpaceShip();
+        String nickname = defeatedTruckers.getFirst().getNickname();
+
+        ship.removeGoods(selectedGoods);
+
+        // se questo trucker ha perso tutte le merci notifico che la rimozione è stata fatta e passo al prossimo
+        // per passare al prossimo obbligo il corrente a mandarmi un ok/continue
+
+        defeatedTruckers.removeFirst();
+
         cardState = CardState.REMOVE_GOODS;
-        return removeWithoutAsking(list);
+        return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED,nickname,ship);
     }
 
     /**

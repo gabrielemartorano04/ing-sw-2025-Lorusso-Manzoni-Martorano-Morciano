@@ -1971,14 +1971,27 @@ public class SpaceShip implements Serializable {
         return yellowGoods;
     }
 
+    private void removeFromGoodsList(Goods good) {
+        for (int i = 0; i < goodsList.size(); i++) {
+            Goods g = goodsList.get(i);
+            if (g.getX() == good.getX() &&
+                    g.getY() == good.getY() &&
+                    g.getValue() == good.getValue()) {
+                goodsList.remove(i);
+                return;
+            }
+        }
+    }
+
     public void removeGoods(ArrayList<Goods> list) {
         for (Goods g : list) {
             switch (components[g.getX()][g.getY()]) {
                 case Load load -> {
-                    List<Goods> goodsList = load.getGoods();
-                    for (int i = 0; i < goodsList.size(); i++) {
-                        if (goodsList.get(i).getValue() == g.getValue()) {
+                    List<Goods> goodsInLoad = load.getGoods();
+                    for (int i = 0; i < goodsInLoad.size(); i++) {
+                        if (goodsInLoad.get(i).getValue() == g.getValue()) {
                             load.removeGood(i); // "svuota" la merce trovata
+                            removeFromGoodsList(goodsInLoad.get(i));
                             break; // rimuove solo la prima occorrenza
                         }
                     }

@@ -25,7 +25,6 @@ import java.util.Map;
 public class ViewFlow implements EventReceiver {
     private final ClientEventSender sender;
     private RemoteClientHandler rmiClient;
-    private boolean done = false;
     private final InputReader inputReader;
     private final InputParser inputParser;
     private final InputParserFlight inputParserFlight;
