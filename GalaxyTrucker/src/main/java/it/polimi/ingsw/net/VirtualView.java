@@ -123,4 +123,6 @@ public interface VirtualView {
     void visit(AvailablePlayersEvent availablePlayersEvent);
 
     void handleDeath(ArrayList<Trucker> truckersRemoved);
+
+    void visit(NewCardEvent newCardEvent);
 }

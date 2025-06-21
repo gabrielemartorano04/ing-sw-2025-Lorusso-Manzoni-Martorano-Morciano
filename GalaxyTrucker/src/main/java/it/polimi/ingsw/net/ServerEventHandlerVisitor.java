@@ -342,11 +342,20 @@ public class ServerEventHandlerVisitor implements VirtualView {
             ui.showPlayerShipStatus();
 
             ui.cardFinished(event);
+            viewFlow.setParserFlightState(ParserState.ASK_WITHDRAW);
+            ui.showInputFormat(viewFlow.getParserFlightState());
 
-            if (viewFlow.getNickname().equals(event.getTruckersList().get(0).getNickname())) {
-                viewFlow.setParserFlightState(ParserState.DRAW_CARD);
-                ui.showInputFormat(ParserState.DRAW_CARD);
-            } else viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+        }
+    }
+
+    @Override
+    public void visit(NewCardEvent event) {
+        if (viewFlow.getNickname().equals(event.getLeaderNickname())) {
+            viewFlow.setParserFlightState(ParserState.DRAW_CARD);
+            ui.showInputFormat(ParserState.DRAW_CARD);
+        } else {
+            viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showMessage(event.showInfoForOthers());
         }
     }
 
@@ -658,7 +667,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(TruckerWithdrawEvent event) {
-        ui.showTruckerWithdrawn(event.getTruckerWithdrawNick());
+        if(event.getTruckerWithdrawNick()!=null) {
+            if(event.getTruckerWithdrawNick().equalsIgnoreCase(viewFlow.getNickname()))
+                viewFlow.setParserFlightState(ParserState.DEAD);
+
+            ui.showTruckerWithdrawn(event.getTruckerWithdrawNick());
+        }
     }
 
 
@@ -778,5 +792,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             }
         }
     }
+
+
 
 }

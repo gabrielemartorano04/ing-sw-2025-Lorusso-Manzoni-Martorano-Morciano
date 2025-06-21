@@ -39,9 +39,7 @@ public class InputParserFlight {
             openRulesPdf();
             return null;
         }
-//        if (input.trim().equalsIgnoreCase("withdraw")) {
-//            return new WithdrawRequest(nickname);
-//        }
+
         input.trim();
         String[] tokens=input.split("\\s+");
          if (tokens[0].trim().equalsIgnoreCase("ship")) {
@@ -49,7 +47,7 @@ public class InputParserFlight {
             return new ShowOtherShipEvent(tokens[1].trim());
         }
 
-        //TODO: aggiungere withdraw e ship
+        //TODO: aggiungere withdraw
 
         return switch (parserState) {
             case HUMAN_COORD -> parseHumanCoord(input, nickname);
@@ -69,10 +67,8 @@ public class InputParserFlight {
             case CURRENT_CONDITION -> parseCurrentCondition(input);
             case REMOVE_BATTERIES -> parseRemoveBatteries(input, nickname);
             case REMOVE_GOODS -> parseRemoveGoods(input, nickname);
-            case DEAD -> {
-                setParserState(ParserState.DO_NOTHING);
-                yield new DeadTrucker();
-            }
+            case DEAD -> parseDead();
+            case ASK_WITHDRAW -> parseWithdraw(input,nickname);
             default -> {
                 ui.showError("Error: invalid command. Stato non gestito");
                 yield null;
@@ -80,6 +76,23 @@ public class InputParserFlight {
         };
     }
 
+    private ClientEvent parseDead(){
+        setParserState(ParserState.DO_NOTHING);
+        return new DeadTrucker();
+    }
+
+    private ClientEvent parseWithdraw(String input, String nickname) {
+        if (input.trim().equalsIgnoreCase("y")) {
+            return new WithdrawRequest(nickname);
+        }
+        else if (input.trim().equalsIgnoreCase("n")) {
+            return new WithdrawRequest(null);
+        }
+        else{
+            ui.showError("Error: invalid command. Type 'y' or 'n'");
+            return null;
+        }
+    }
 
 
     private void openRulesPdf() {

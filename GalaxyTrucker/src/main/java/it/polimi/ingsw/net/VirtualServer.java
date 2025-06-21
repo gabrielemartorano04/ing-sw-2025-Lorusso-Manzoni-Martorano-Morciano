@@ -83,4 +83,5 @@ public interface VirtualServer {
 
     ServerEvent visit(ChoseToResume event);
 
+    ServerEvent visit(WithdrawRequest withdrawRequest);
 }

@@ -13,6 +13,7 @@ import it.polimi.ingsw.net.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.events.clientevents.setupevents.ChoseToResume;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
+import it.polimi.ingsw.net.events.serverevents.cardevents.NewCardEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.ResumeGameEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
@@ -30,6 +31,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     private int startFlight;
     private CardController cardController;
     private GameState oldGameState;
+    private int withdrawChoice;
 
 
     public ClientHandlerVisitor() {
@@ -38,6 +40,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         startFlight = 0;
         numOfPlayers = 0;
         gameLevel=0;
+        withdrawChoice=0;
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
 
@@ -550,6 +553,29 @@ public class ClientHandlerVisitor implements VirtualServer {
         }
 
     }
+
+    @Override
+    public ServerEvent visit(WithdrawRequest event) {
+        String nickname=event.getNickname();
+        withdrawChoice++;
+        if(withdrawChoice<gameController.getGame().getTruckerList().size()){
+            if(nickname!=null){
+                for(Trucker t: gameController.getGame().getTruckerList()){
+                    if(t.getNickname().equals(nickname)){
+                        gameController.getGame().withdraw(t);
+                        gameController.getGame().sortTruckers();
+                        break;
+                    }
+                }
+                return new TruckerWithdrawEvent(nickname);
+            } else return new TruckerWithdrawEvent(null);
+        }
+        else {
+            withdrawChoice=0;
+            return new NewCardEvent(gameController.getGame().getTruckerList().getFirst().getNickname());
+        }
+    }
+
 
 
 }
