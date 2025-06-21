@@ -64,6 +64,7 @@ public class TUI implements UI {
         this.showAvailableComponent(viewFlow.getAvailableComponents());
         this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
         this.showKeptComponents(viewFlow.getKeptComponent());
+        this.showComponentSelected(viewFlow.getSelectedComponent());
     }
 
     @Override
@@ -1197,13 +1198,13 @@ public class TUI implements UI {
 
     @Override
     public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames) {
-        System.out.println("vecchi players:\n");
+        System.out.println("old players:\n");
         System.out.println(colors.getFirst());
         System.out.println(nicknames.getFirst());
         for(int i = 0; i < colors.size(); i++) {
             System.out.println("nickname: " + nicknames.get(i) + " color: " + colors.get(i));
         }
-        System.out.println("choose a player");
+        System.out.println("choose a player, type both nickname and color");
     }
 
     public void setGoodImage(Goods good) {

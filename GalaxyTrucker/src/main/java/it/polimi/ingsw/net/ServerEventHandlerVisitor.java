@@ -722,55 +722,68 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 trucker=t;
             }
         }
-        if(trucker!=null) {
-            viewFlow.setParserFlightState(ParserState.STATE);
-            viewFlow.setLevel(event.getLevel());
-            if(event.getTrack()!=null) {
-                viewFlow.setTrack(event.getTrack());
+
+        if(trucker == null){
+            // solo per debug, NON deve mai succedere
+            throw new RuntimeException("Trucker is null");
+        }
+
+        try {
+            if (trucker.getKeptComponent(0) != null) {
+                viewFlow.addKeptComponent(trucker.getKeptComponent(0));
             }
+        }catch (GeneralError e){
+            ui.showError(e.getMessage());
+        }
+        try {
+            if(trucker.getKeptComponent(1)!=null) {
+                viewFlow.addKeptComponent(trucker.getKeptComponent(1));
+            }
+        }catch (GeneralError e){
+            ui.showError(e.getMessage());
+        }
 
-            viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
-            viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
-            viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
-            viewFlow.setPosition(trucker.getPosition());
-            viewFlow.setShip(trucker.getSpaceShip());
-            viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsByColor());
+        if(trucker.getSelectedComponent() != null) {
+            viewFlow.setSelectedComponent(trucker.getSelectedComponent());
+        }
 
-            switch (event.getGameState()) {
-                case FLIGHT -> {
-                    viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
-                    viewFlow.setStartFlightForAll();
-                    viewFlow.setStartFlight(false);
+        viewFlow.setParserFlightState(ParserState.STATE);
+        viewFlow.setLevel(event.getLevel());
+        if(event.getTrack()!=null) {
+            viewFlow.setTrack(event.getTrack());
+        }
+
+        viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
+        viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
+        viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
+        viewFlow.setPosition(trucker.getPosition());
+        viewFlow.setShip(trucker.getSpaceShip());
+        viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsByColor());
+
+        switch (event.getGameState()) {
+            case FLIGHT -> {
+                viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
+                viewFlow.setStartFlightForAll();
+                viewFlow.setStartFlight(false);
+                viewFlow.setEnd();
+                ui.resumeFlightScene(event.getPlayerNames());
+
+                if(event.isLeader()){
                     viewFlow.setParserFlightState(ParserState.DRAW_CARD);
-                    ui.showMessage("type 'draw' to draw the next card");
-                    viewFlow.setEnd();
-                    ui.resumeFlightScene(event.getPlayerNames());
+                    ui.showInputFormat(ParserState.DRAW_CARD);
+                }else{
+                    viewFlow.setParserFlightState(ParserState.DO_NOTHING);
                 }
-                case ENDED -> viewFlow.setViewState(ViewFlow.ViewState.END);
-                case BUILDING -> {
-                    viewFlow.setViewState(ViewFlow.ViewState.BULDING);
-                    viewFlow.fillAvailableComponents(event.getComponents());
-                    ui.resumeBuildingScene(event.getPlayerNames());
-                }
-
             }
-
-            try {
-                if (trucker.getKeptComponent(0) != null) {
-                    viewFlow.addKeptComponent(trucker.getKeptComponent(0));
-                }
-            }catch (GeneralError e){
-                ui.showError(e.getMessage());
-            }
-            try {
-                if(trucker.getKeptComponent(1)!=null) {
-                    viewFlow.addKeptComponent(trucker.getKeptComponent(1));
-                }
-            }catch (GeneralError e){
-                ui.showError(e.getMessage());
+            case ENDED -> viewFlow.setViewState(ViewFlow.ViewState.END);
+            case BUILDING -> {
+                viewFlow.setViewState(ViewFlow.ViewState.BULDING);
+                viewFlow.fillAvailableComponents(event.getComponents());
+                ui.resumeBuildingScene(event.getPlayerNames());
             }
 
         }
+
     }
 
     @Override

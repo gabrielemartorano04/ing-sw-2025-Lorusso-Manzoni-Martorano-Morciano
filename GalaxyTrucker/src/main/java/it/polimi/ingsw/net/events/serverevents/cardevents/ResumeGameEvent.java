@@ -20,8 +20,9 @@ public class ResumeGameEvent extends ServerEvent {
     private final String nickname;
     private final ArrayList<Component> components;
     private final ArrayList<String> playerNames;
+    private final boolean isLeader;
 
-    public ResumeGameEvent(ArrayList<Component> availableComponents, String nickname, ArrayList<Trucker> trucker, GameState gameState, int level, Map<String, Integer> track, ArrayList<String> playerNames) {
+    public ResumeGameEvent(ArrayList<Component> availableComponents, String nickname, ArrayList<Trucker> trucker, GameState gameState, int level, Map<String, Integer> track, ArrayList<String> playerNames, boolean isLeader) {
         super(ServerEventType.RESUME_GAME, true);
         this.trucker = trucker;
         this.gameState = gameState;
@@ -30,6 +31,7 @@ public class ResumeGameEvent extends ServerEvent {
         this.nickname = nickname;
         this.components = availableComponents;
         this.playerNames = playerNames;
+        this.isLeader = isLeader;
     }
 
     public int getLevel() {
@@ -58,6 +60,10 @@ public class ResumeGameEvent extends ServerEvent {
 
     public ArrayList<String> getPlayerNames() {
         return playerNames;
+    }
+
+    public boolean isLeader() {
+        return isLeader;
     }
 
     @Override

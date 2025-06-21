@@ -295,6 +295,17 @@ public class GUI implements UI {
             stage.setResizable(false);
             stage.setFullScreen(true);
             stage.show();
+            if(viewFlow.getSelectedComponent()!=null){
+                this.buildingScene.setTurnToDo((viewFlow.getSelectedComponent().getRotationAngle()/90));
+                ImageView component = new ImageView(viewFlow.getSelectedComponent().getFrontImage());
+                this.buildingScene.insertSelectedComponent(component, true);
+            }
+            for(int i = 0; i < viewFlow.getKeptComponent().size(); i++){
+                Component c = viewFlow.getKeptComponent().get(i);
+                if(c!=null){
+                    this.buildingScene.insertComponentToKepts(c);
+                }
+            }
         });
     }
 
