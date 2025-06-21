@@ -7,7 +7,6 @@ public enum CardState {
     WARZONE,
     FIND_WEAKEST,
     GOODSTOADD,
-    CHOOSE_TO_GAIN,
     REMOVE_GOODS,
     REMOVE_ASKING,
     REMOVE_BATTERIES,
@@ -18,5 +17,4 @@ public enum CardState {
     ACTIVATE_SHIELDS,
     ACTIVATE_CANNONS,
     PIANETI,
-    EXIT
 }
