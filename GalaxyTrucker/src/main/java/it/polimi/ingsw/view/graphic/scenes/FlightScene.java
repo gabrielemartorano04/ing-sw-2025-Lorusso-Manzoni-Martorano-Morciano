@@ -242,7 +242,7 @@ public class FlightScene {
         Image battery = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/battery.png")).toExternalForm());
         Image pos = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/position.png")).toExternalForm());
         Image credit = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/credit.png")).toExternalForm());
-        Image lost = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
+        Image lost = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/lost.png")).toExternalForm());
 
         posLabel = createStyledLabel();
         battLabel = createStyledLabel();
