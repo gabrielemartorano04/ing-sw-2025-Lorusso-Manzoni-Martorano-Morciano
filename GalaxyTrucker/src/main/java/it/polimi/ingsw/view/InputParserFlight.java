@@ -43,11 +43,8 @@ public class InputParserFlight {
         input.trim();
         String[] tokens=input.split("\\s+");
          if (tokens[0].trim().equalsIgnoreCase("ship")) {
-            System.out.println("entrato");
             return new ShowOtherShipEvent(tokens[1].trim());
         }
-
-        //TODO: aggiungere withdraw
 
         return switch (parserState) {
             case HUMAN_COORD -> parseHumanCoord(input, nickname);
