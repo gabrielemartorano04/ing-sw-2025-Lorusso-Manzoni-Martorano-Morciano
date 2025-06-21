@@ -162,7 +162,9 @@ public class Smugglers extends Card implements Serializable {
 
         }else {
             defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
+            System.out.println(defeatedTruckers.size());
             if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
+                System.out.println("Entro a farti fare removeGoods");
                 cardState = CardState.REMOVE_GOODS;
                 indexOfCurrentTrucker = 0;
                 return removeGoods();
@@ -294,18 +296,22 @@ public class Smugglers extends Card implements Serializable {
         while (colorOfCurrGoodToRemove > 0 && goodsLostCurrTrucker > 0) {
             switch (colorOfCurrGoodToRemove) {
                 case 4 -> {
+                    System.out.println("Case 4 " + numGoodCurrType);
                     numGoodCurrType = defeatedTruckers.getFirst().getSpaceShip().getRedGoods();
                     colorOfCurrGoodToRemove--;
                 }
                 case 3 -> {
                     numGoodCurrType = defeatedTruckers.getFirst().getSpaceShip().getYellowGoods();
+                    System.out.println("Case 3 " + numGoodCurrType);
                     colorOfCurrGoodToRemove--;
                 }
                 case 2 -> {
+                    System.out.println("Case 2 " + numGoodCurrType);
                     numGoodCurrType = defeatedTruckers.getFirst().getSpaceShip().getGreenGoods();
                     colorOfCurrGoodToRemove--;
                 }
                 case 1 -> {
+                    System.out.println("Case 1 " + numGoodCurrType);
                     numGoodCurrType = defeatedTruckers.getFirst().getSpaceShip().getBlueGoods();
                     colorOfCurrGoodToRemove--;
                 }
@@ -318,6 +324,9 @@ public class Smugglers extends Card implements Serializable {
                 ArrayList<Goods> listOfGoods = defeatedTruckers.getFirst().getSpaceShip().getGoodsList();
                 for (int i = 0; i < numGoodCurrType; i++) {
                     goodsToRemove.add(listOfGoods.getFirst());
+                }
+                for(int i = 0; i < goodsToRemove.size(); i++){
+                    System.out.println(goodsToRemove.get(i).getColor());
                 }
                 return new RemoveGoods(true, defeatedTruckers.getFirst().getNickname(), defeatedTruckers.getFirst().getSpaceShip(),goodsToRemove);
             }
@@ -350,6 +359,9 @@ public class Smugglers extends Card implements Serializable {
     private ServerEvent removeWithoutAsking(ArrayList<Goods> goodsList) throws GeneralError {
         if (goodsList == null) {
             throw new GeneralError("Remove without asking: goodsList is null");
+        }
+        if(goodsList.isEmpty()){
+            System.out.println("Remove without asking: goodsList is empty");
         }
         ArrayList<Goods> list = new ArrayList<>();
         for (int i = 0; i < numGoodCurrType; i++) {
