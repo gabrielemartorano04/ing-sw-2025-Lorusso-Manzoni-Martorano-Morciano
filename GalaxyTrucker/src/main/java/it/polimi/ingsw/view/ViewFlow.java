@@ -15,7 +15,6 @@ import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.graphic.GUI;
 import it.polimi.ingsw.view.text.TUI;
 import it.polimi.ingsw.view.text.TimerDisplay;
-import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -350,7 +349,7 @@ public class ViewFlow implements EventReceiver {
 //        this.keptComponent.remove(index);
 //    }
 
-    public ArrayList<Component> getSelectedKeptComponent() {
+    public ArrayList<Component> getKeptComponent() {
         return keptComponent;
     }
 

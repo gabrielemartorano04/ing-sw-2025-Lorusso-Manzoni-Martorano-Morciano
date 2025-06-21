@@ -79,10 +79,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.deleteSelectedComponent();
         ui.componentLinked(event);
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
-            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        if (!viewFlow.getKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getKeptComponent());
         }
-        if (viewFlow.getSelectedKeptComponent() == null) {
+        if (viewFlow.getKeptComponent() == null) {
             ui.showBuildOptions();
         }
     }
@@ -90,10 +90,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(ComponentNotAvailableError event) {
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
-            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        if (!viewFlow.getKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getKeptComponent());
         }
-        if (viewFlow.getSelectedKeptComponent() == null) {
+        if (viewFlow.getKeptComponent() == null) {
             ui.showBuildOptions();
         }
         ui.componentNotAvailable(event);
@@ -108,8 +108,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setSelectedComponent(event.getIndex(), false);
 
             ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-            if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
-                ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+            if (!viewFlow.getKeptComponent().isEmpty()) {
+                ui.showKeptComponents(viewFlow.getKeptComponent());
             }
             ui.componentSelected(event);
         }
@@ -119,10 +119,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(DiscardSuccessEvent event) {
         if(viewFlow.getNickname().equals(event.getNickname())){
             ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-            if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
-                ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+            if (!viewFlow.getKeptComponent().isEmpty()) {
+                ui.showKeptComponents(viewFlow.getKeptComponent());
             }
-            if (viewFlow.getSelectedKeptComponent() == null) {
+            if (viewFlow.getKeptComponent() == null) {
                 ui.showBuildOptions();
             }
             ui.showDiscardComponent(viewFlow.getSelectedComponent());
@@ -136,10 +136,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(InvalidCoordinatesError event) {
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
-            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        if (!viewFlow.getKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getKeptComponent());
         }
-        if (viewFlow.getSelectedKeptComponent() == null) {
+        if (viewFlow.getKeptComponent() == null) {
             ui.showBuildOptions();
         }
         ui.invalidCoordinates(event);
@@ -149,10 +149,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(TurnHourglassError event) {
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
-            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        if (!viewFlow.getKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getKeptComponent());
         }
-        if (viewFlow.getSelectedKeptComponent() == null) {
+        if (viewFlow.getKeptComponent() == null) {
             ui.showBuildOptions();
         }
         ui.turnHourGlassError(event);
@@ -162,10 +162,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(HourglassTurnEvent event) {
         viewFlow.getTimerDisplay().start(event.getSeconds());
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
-            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        if (!viewFlow.getKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getKeptComponent());
         }
-        if (viewFlow.getSelectedKeptComponent() == null) {
+        if (viewFlow.getKeptComponent() == null) {
             ui.showBuildOptions();
         }
     }
@@ -191,10 +191,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.deleteSelectedComponent();
         ui.keptComponent(event);
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
-            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        if (!viewFlow.getKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getKeptComponent());
         }
-        if (viewFlow.getSelectedKeptComponent() == null) {
+        if (viewFlow.getKeptComponent() == null) {
             ui.showBuildOptions();
         }
     }
@@ -204,10 +204,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
         System.out.println("Turn andato a buon finite, visitor del client");
         viewFlow.setSelectedComponent(event.getComponent());
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
-            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        if (!viewFlow.getKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getKeptComponent());
         }
-        if (viewFlow.getSelectedKeptComponent() == null) {
+        if (viewFlow.getKeptComponent() == null) {
             ui.showBuildOptions();
         }
         ui.componentTurned(event);
@@ -218,11 +218,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setSelectedComponent(event.getComponent(), true);
         ui.keptSelected(event);
 
-        viewFlow.getSelectedKeptComponent().remove(event.getIndex());
-        if (!viewFlow.getSelectedKeptComponent().isEmpty()) {
-            ui.showKeptComponents(viewFlow.getSelectedKeptComponent());
+        viewFlow.getKeptComponent().remove(event.getIndex());
+        if (!viewFlow.getKeptComponent().isEmpty()) {
+            ui.showKeptComponents(viewFlow.getKeptComponent());
         }
-        if (viewFlow.getSelectedKeptComponent() == null) {
+        if (viewFlow.getKeptComponent() == null) {
             ui.showBuildOptions();
         }
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
@@ -724,6 +724,18 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
         if(trucker!=null) {
             viewFlow.setParserFlightState(ParserState.STATE);
+            viewFlow.setLevel(event.getLevel());
+            if(event.getTrack()!=null) {
+                viewFlow.setTrack(event.getTrack());
+            }
+
+            viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
+            viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
+            viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
+            viewFlow.setPosition(trucker.getPosition());
+            viewFlow.setShip(trucker.getSpaceShip());
+            viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsByColor());
+
             switch (event.getGameState()) {
                 case FLIGHT -> {
                     viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
@@ -732,22 +744,17 @@ public class ServerEventHandlerVisitor implements VirtualView {
                     viewFlow.setParserFlightState(ParserState.DRAW_CARD);
                     ui.showMessage("type 'draw' to draw the next card");
                     viewFlow.setEnd();
+                    ui.resumeFlightScene(event.getPlayerNames());
                 }
                 case ENDED -> viewFlow.setViewState(ViewFlow.ViewState.END);
                 case BUILDING -> {
                     viewFlow.setViewState(ViewFlow.ViewState.BULDING);
                     viewFlow.fillAvailableComponents(event.getComponents());
-                    ui.showAvailableComponent(viewFlow.getAvailableComponents());
+                    ui.resumeBuildingScene(event.getPlayerNames());
                 }
 
             }
-            viewFlow.setLevel(event.getLevel());
-            if(event.getTrack()!=null) {
-                viewFlow.setTrack(event.getTrack());
-            }
-            viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
-            viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
-            //viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsList());
+
             try {
                 if (trucker.getKeptComponent(0) != null) {
                     viewFlow.addKeptComponent(trucker.getKeptComponent(0));
@@ -763,9 +770,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 ui.showError(e.getMessage());
             }
 
-            viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
-            viewFlow.setPosition(trucker.getPosition());
-            viewFlow.setShip(trucker.getSpaceShip());
         }
     }
 

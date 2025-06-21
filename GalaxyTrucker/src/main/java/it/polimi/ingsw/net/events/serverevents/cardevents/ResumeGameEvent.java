@@ -13,14 +13,15 @@ import java.util.Map;
 
 public class ResumeGameEvent extends ServerEvent {
 
-    private ArrayList<Trucker> trucker;
-    private GameState gameState;
-    private int level;
-    private Map<String, Integer> track;
-    private String nickname;
-    private ArrayList<Component> components;
+    private final ArrayList<Trucker> trucker;
+    private final GameState gameState;
+    private final int level;
+    private final Map<String, Integer> track;
+    private final String nickname;
+    private final ArrayList<Component> components;
+    private final ArrayList<String> playerNames;
 
-    public ResumeGameEvent(ArrayList<Component> availableComponents, String nickname, ArrayList<Trucker> trucker, GameState gameState, int level, Map<String, Integer> track) {
+    public ResumeGameEvent(ArrayList<Component> availableComponents, String nickname, ArrayList<Trucker> trucker, GameState gameState, int level, Map<String, Integer> track, ArrayList<String> playerNames) {
         super(ServerEventType.RESUME_GAME, true);
         this.trucker = trucker;
         this.gameState = gameState;
@@ -28,6 +29,7 @@ public class ResumeGameEvent extends ServerEvent {
         this.track = track;
         this.nickname = nickname;
         this.components = availableComponents;
+        this.playerNames = playerNames;
     }
 
     public int getLevel() {
@@ -52,6 +54,10 @@ public class ResumeGameEvent extends ServerEvent {
 
     public ArrayList<Component> getComponents() {
         return components;
+    }
+
+    public ArrayList<String> getPlayerNames() {
+        return playerNames;
     }
 
     @Override

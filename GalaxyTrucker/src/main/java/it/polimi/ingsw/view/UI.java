@@ -152,4 +152,7 @@ public interface UI {
 
     void updateGoodsListToRemove(ArrayList<Goods> goodsList);
 
+    void resumeFlightScene(ArrayList<String> playerNames);
+
+    void resumeBuildingScene(ArrayList<String> playerNames);
 }

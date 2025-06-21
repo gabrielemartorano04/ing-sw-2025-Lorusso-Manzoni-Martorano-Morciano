@@ -41,7 +41,6 @@ public class TUI implements UI {
         this.showChooseColor(event.getColors());
     }
 
-
     @Override
     public void nickNameAlreadyTaken(NicknameAlreadyInError event){
         this.showNicknameTaken();
@@ -58,6 +57,18 @@ public class TUI implements UI {
     @Override
     public void showPlayerJoined(String nickname) {
         System.out.println("Congratulation " + nickname + "! You've joined the game!.");
+    }
+
+    @Override
+    public void resumeBuildingScene(ArrayList<String> playerNames){
+        this.showAvailableComponent(viewFlow.getAvailableComponents());
+        this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+        this.showKeptComponents(viewFlow.getKeptComponent());
+    }
+
+    @Override
+    public void resumeFlightScene(ArrayList<String> playerNames){
+
     }
 
     @Override
