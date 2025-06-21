@@ -646,6 +646,7 @@ public class GUI implements UI {
                 case REARRANGE -> this.flightScene.showRearrangeInput();
                 case COSMIC_CREDITS -> this.flightScene.showCosmicCreditsInput();
                 case WARZONE -> this.flightScene.showWarzoneInput();
+                case ASK_WITHDRAW -> this.flightScene.showAskWithdraw();
 
             }
         });
