@@ -1588,19 +1588,24 @@ public class FlightScene {
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
 
-        Label insertLabel = new Label("Insert the index of the good you want to remove");
+        Label insertLabel = new Label("Insert the index of the goods you want to remove");
         insertLabel.setTextFill(Color.web("#FFDE69"));
         insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
         insertLabel.setTextAlignment(TextAlignment.CENTER);
         insertLabel.setWrapText(true);
 
-        Label hintLabel = new Label("Type '<index>'");
+        Label hintLabel = new Label("Type '<index1>, <index2>, ...'");
         hintLabel.setTextFill(Color.LIGHTGRAY);
         hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
         TextField inputField = new TextField();
-        inputField.setPromptText("Ex. 2");
+        inputField.setPromptText("Ex. 1, 2, 3");
         inputField.setPrefWidth(200);
+
+        Label errorLabel = new Label("Invalid input. Must be comma-separated non-negative integers.");
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        errorLabel.setVisible(false);
 
         Button confirmBtn = new Button("Confirm");
         confirmBtn.setFont(Font.font("Bangers", 14));
@@ -1611,7 +1616,7 @@ public class FlightScene {
         HBox inputBox = new HBox(10, inputField, confirmBtn);
         inputBox.setAlignment(Pos.CENTER);
 
-        box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+        box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
 
         AnchorPane popupContent = new AnchorPane(box);
         AnchorPane.setBottomAnchor(box, 170.0);
@@ -1627,14 +1632,32 @@ public class FlightScene {
 
         Runnable sendInput = () -> {
             String text = inputField.getText().trim();
-            if (!text.isEmpty()) {
+            if (isValidRemoveGoodsInput(text)) {
+                errorLabel.setVisible(false);
                 viewFlow.handleInput(text);
                 closePopup.run();
+            } else {
+                errorLabel.setVisible(true);
             }
         };
 
         inputField.setOnAction(e -> sendInput.run());
         confirmBtn.setOnAction(e -> sendInput.run());
+    }
+
+    private boolean isValidRemoveGoodsInput(String input) {
+        if (input == null || input.trim().isEmpty()) return false;
+
+        String[] tokens = input.split("\\s*,\\s*");
+        for (String token : tokens) {
+            try {
+                int index = Integer.parseInt(token.trim());
+                if (index < 0) return false;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -1665,7 +1688,6 @@ public class FlightScene {
 
         HBox buttons = new HBox(10, yes, no);
         buttons.setAlignment(Pos.CENTER);
-
         box.getChildren().addAll(confirm, buttons);
 
         AnchorPane popupContent = new AnchorPane(box);
@@ -1695,13 +1717,18 @@ public class FlightScene {
             insertLabel.setMaxWidth(500);
             insertLabel.setWrapText(true);
 
-            Label hintLabel = new Label("Type '<x1> <y1> - <value1>, <x2> <y2> - <value2>'");
+            Label hintLabel = new Label("Type '<x1> <y1> - <val1>, <x2> <y2> - <val2>'");
             hintLabel.setTextFill(Color.LIGHTGRAY);
             hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
             TextField inputField = new TextField();
             inputField.setPromptText("Ex. 1 2 - 3, 5 6 - 1");
             inputField.setPrefWidth(250);
+
+            Label errorLabel = new Label("Invalid format. Try: 'x y - val, x y - val'");
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            errorLabel.setVisible(false);
 
             Button confirmBtn = new Button("Confirm");
             confirmBtn.setFont(Font.font("Bangers", 14));
@@ -1711,9 +1738,12 @@ public class FlightScene {
 
             Runnable sendInput = () -> {
                 String text = inputField.getText().trim();
-                if (!text.isEmpty()) {
+                if (isValidRearrangeInput(text)) {
+                    errorLabel.setVisible(false);
                     viewFlow.handleInput("y, " + text);
                     closePopup.run();
+                } else {
+                    errorLabel.setVisible(true);
                 }
             };
 
@@ -1723,10 +1753,37 @@ public class FlightScene {
             HBox inputBox = new HBox(10, inputField, confirmBtn);
             inputBox.setAlignment(Pos.CENTER);
 
-            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+            box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
             box.setTranslateX(-50);
             box.setTranslateY(40);
         });
+    }
+
+    private boolean isValidRearrangeInput(String input) {
+        if (input == null || input.trim().isEmpty()) return false;
+
+        String[] parts = input.split("\\s*,\\s*");
+        if (parts.length != 2) return false;
+
+        for (String part : parts) {
+            String[] split = part.trim().split("\\s*-\\s*");
+            if (split.length != 2) return false;
+
+            String[] coords = split[0].trim().split("\\s+");
+            if (coords.length != 2) return false;
+
+            try {
+                int x = Integer.parseInt(coords[0].trim());
+                int y = Integer.parseInt(coords[1].trim());
+                int val = Integer.parseInt(split[1].trim());
+
+                if (x < 0 || y < 0 || val < 0) return false;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
