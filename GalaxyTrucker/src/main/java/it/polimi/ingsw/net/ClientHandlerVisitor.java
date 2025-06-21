@@ -13,7 +13,7 @@ import it.polimi.ingsw.net.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.events.clientevents.setupevents.ChoseToResume;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
-import it.polimi.ingsw.net.events.serverevents.cardevents.NewCardEvent;
+import it.polimi.ingsw.net.events.serverevents.cardevents.DrawNewCardEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.ResumeGameEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
@@ -580,7 +580,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         }
         else {
             withdrawChoice=0;
-            return new NewCardEvent(gameController.getGame().getTruckerList().getFirst().getNickname());
+            return new DrawNewCardEvent(gameController.getGame().getTruckerList().getFirst().getNickname());
         }
     }
 

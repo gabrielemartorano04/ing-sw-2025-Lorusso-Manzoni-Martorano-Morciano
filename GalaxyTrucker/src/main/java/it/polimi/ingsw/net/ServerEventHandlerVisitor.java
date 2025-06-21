@@ -350,7 +350,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     }
 
     @Override
-    public void visit(NewCardEvent event) {
+    public void visit(DrawNewCardEvent event) {
         if (viewFlow.getNickname().equals(event.getLeaderNickname())) {
             viewFlow.setParserFlightState(ParserState.DRAW_CARD);
             ui.showInputFormat(ParserState.DRAW_CARD);
@@ -670,10 +670,13 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(TruckerWithdrawEvent event) {
         if(event.getTruckerWithdrawNick()!=null) {
-            if(event.getTruckerWithdrawNick().equalsIgnoreCase(viewFlow.getNickname()))
+            if(event.getTruckerWithdrawNick().equalsIgnoreCase(viewFlow.getNickname())) {
                 viewFlow.setParserFlightState(ParserState.DEAD);
-
+                ui.showDead();
+            }
             ui.showTruckerWithdrawn(event.getTruckerWithdrawNick());
+        }else{
+            ui.showWaitForOthers();
         }
     }
 

@@ -283,7 +283,7 @@ public class GUI implements UI {
 
     @Override
     public void showChooseResume() {
-
+        showInsertNumPlayers();
     }
 
     @Override
@@ -630,6 +630,9 @@ public class GUI implements UI {
     @Override
     public void showInputFormat(ParserState parserState) {
         Platform.runLater(() -> {
+
+            this.flightScene.hideWaitForOthers();
+
             switch (parserState){
                 case ACTIVATE_ENGINES ->  this.flightScene.showActivateEngineInput();
                 case ACTIVATE_CANNONS -> this.flightScene.showActivateCannonsInput();
@@ -654,8 +657,10 @@ public class GUI implements UI {
 
     @Override
     public void showResult(RollDiceResult event){
-        this.flightScene.clearRollDiceResult();
-        this.flightScene.showRollDiceResult(event.getDiceResult());
+        Platform.runLater(() -> {
+            this.flightScene.clearRollDiceResult();
+            this.flightScene.showRollDiceResult(event.getDiceResult());
+        });
     }
 
     @Override

@@ -6,7 +6,7 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 public class WithdrawRequest extends ClientEvent {
-    private String nickname;
+    private final String nickname;
     public WithdrawRequest(String nickname) {
         this.nickname = nickname;
     }
