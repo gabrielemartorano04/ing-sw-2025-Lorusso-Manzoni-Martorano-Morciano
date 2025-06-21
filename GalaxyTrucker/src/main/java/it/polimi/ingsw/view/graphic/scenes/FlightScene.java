@@ -64,7 +64,7 @@ public class FlightScene {
     private GoodsImagesGetter goodsImagesGetter;
     private Image goodImage;
     private ArrayList<Trucker> planets;
-    private Card currCard;
+    private ArrayList<Goods> goodsList;
 
     private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel, lostLabel;
     private Map<String, Label> goodLabels = new HashMap<>();
@@ -1578,6 +1578,10 @@ public class FlightScene {
         }
 
         return true;
+    }
+
+    public void updateGoodsListToRemove(ArrayList<Goods> goodsList) {
+        this.goodsList = goodsList;
     }
 
     /**
