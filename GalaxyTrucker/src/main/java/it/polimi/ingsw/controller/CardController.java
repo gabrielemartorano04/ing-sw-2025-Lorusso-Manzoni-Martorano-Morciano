@@ -6,11 +6,17 @@ import it.polimi.ingsw.net.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.view.ParserState;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * This class call the right card method, based on current card and client events.
  */
-public class CardController {
+public class CardController implements Serializable {
     private Card currCard;
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return current card in the game

@@ -72,7 +72,7 @@ public class ServerController {
             idToSet++;
             clients.add(client);
             //TODO rimettere questo al posto del false nell'if sotto GamePersistence.hasSaveFile()
-            if(false){
+            if(GamePersistence.hasSaveFile()){
                 ChooseResumeEvent chooseResumeEvent = new ChooseResumeEvent();
                 client.updateClient(chooseResumeEvent);
             }else {

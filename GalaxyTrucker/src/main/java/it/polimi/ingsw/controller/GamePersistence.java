@@ -27,6 +27,7 @@ public class GamePersistence {
             System.err.println("Errore durante il salvataggio: " + e.getMessage());
             e.printStackTrace();
         }
+        System.out.println("Save game successfully!");
     }
 
     /**
@@ -59,6 +60,7 @@ public class GamePersistence {
      * This method deletes the saves file
      */
     public static void deleteSave() {
+        System.out.println("Delete save file.");
         File file = new File(SAVE_PATH);
         if (file.exists()) file.delete();
     }

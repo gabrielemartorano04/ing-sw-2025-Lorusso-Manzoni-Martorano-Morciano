@@ -137,11 +137,12 @@ public class ViewFlow implements EventReceiver {
         //!!questa deve gestire gli eventi dal server!!
             switch (event.getEventType()) {
                 case CHOOSE_RESUME ->{
-                    System.out.println("CHOOSE_RESUME");
+                    ui.showMessage(event.getMessage());
                     viewState = ViewState.CHOOSE_OLD;
                 }
                 case FIRST_CONNECTION-> {
                     ui.showInsertNumPlayers();
+                    viewState = ViewState.FIRST;
                 }
                 default -> {
                     if (event.getEventType() == ServerEventType.UPDATE_STATE || event.getEventType() == ServerEventType.UPDATE_TRACK || event.getEventType() == ServerEventType.KEPT_COMPONENT || event.getEventType() == ServerEventType.AVAILABLE_COMPONENTS || event.getEventType() == ServerEventType.COMPONENT_LINKED
@@ -521,6 +522,10 @@ public class ViewFlow implements EventReceiver {
 
     public int getCardsToGo() {
         return cardsToGo;
+    }
+
+    public void setStartFlight(boolean startFlight) {
+        this.startFlight = startFlight;
     }
 }
 

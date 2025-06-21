@@ -695,6 +695,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(ResumeGameEvent event) {
         Trucker trucker=null;
+        if(viewFlow.getNickname()==null) {
+            viewFlow.setNickname(event.getNickname());
+        }
         for(Trucker t: event.getTrucker()){
             if(t.getNickname().equals(viewFlow.getNickname())){
                 trucker=t;
@@ -703,17 +706,26 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if(trucker!=null) {
             viewFlow.setParserFlightState(ParserState.STATE);
             switch (event.getGameState()) {
-                case FLIGHT -> viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
+                case FLIGHT -> {
+                    viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
+                    viewFlow.setStartFlightForAll();
+                    viewFlow.setStartFlight(false);
+                    viewFlow.setParserFlightState(ParserState.DRAW_CARD);
+                    ui.showMessage("type 'draw' to draw the next card");
+                    viewFlow.setEnd();
+                }
                 case ENDED -> viewFlow.setViewState(ViewFlow.ViewState.END);
-                case BUILDING -> viewFlow.setViewState(ViewFlow.ViewState.BULDING);
+                case BUILDING -> {
+                    viewFlow.setViewState(ViewFlow.ViewState.BULDING);
+                    viewFlow.fillAvailableComponents(event.getComponents());
+                    ui.showAvailableComponent(viewFlow.getAvailableComponents());
+                }
 
             }
             viewFlow.setLevel(event.getLevel());
             if(event.getTrack()!=null) {
                 viewFlow.setTrack(event.getTrack());
             }
-            viewFlow.setOut();
-            viewFlow.setEnd();
             viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
             viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
             //viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsList());
@@ -735,7 +747,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
             viewFlow.setPosition(trucker.getPosition());
             viewFlow.setShip(trucker.getSpaceShip().getComponents());
-            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip());
         }
     }
 
@@ -746,11 +757,14 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(AvailablePlayersEvent availablePlayersEvent) {
-        viewFlow.setViewState(ViewFlow.ViewState.START);
+        if(viewFlow.getNickname()==null) {
+            viewFlow.setViewState(ViewFlow.ViewState.START);
+        }else return;
         ui.welcomeOldScene(availablePlayersEvent.getColors(), availablePlayersEvent.getNicknames());
     }
 
-    private void handleDeath(ArrayList<Trucker> truckersRemoved) {
+    @Override
+    public void handleDeath(ArrayList<Trucker> truckersRemoved) {
         for (Trucker trucker : truckersRemoved) {
             if (trucker.getNickname().equalsIgnoreCase(viewFlow.getNickname())) {
                 viewFlow.setShip(trucker.getSpaceShip().getComponents());

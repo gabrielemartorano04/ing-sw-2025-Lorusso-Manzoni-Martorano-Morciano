@@ -58,6 +58,8 @@ public class GameController implements Serializable {
      */
     private Card currentCard;
 
+    private CardController cardController;
+
     /**
      * Class constructor
      * @param numberOfTruckers number of players
@@ -67,6 +69,13 @@ public class GameController implements Serializable {
         this.game=new Game(numberOfTruckers, gameLevel);
         this.numOfPlayers=numberOfTruckers;
         this.currentCard=null;
+        this.cardController=new CardController();
+        setIstance(this);
+        Game.setIstance(this.game);
+    }
+
+    public void setIstance(GameController gameController) {
+        GameController.istance=gameController;
     }
 
     /**
@@ -153,7 +162,14 @@ public class GameController implements Serializable {
         if (gameStarted) {
             throw new GameAlreadyStartedException("game already started");
         }
-        return new TruckerController(nickname, color);
+
+        for (Trucker t : game.getTruckerList()) {
+            if (t.getNickname().equals(nickname) && t.getColor().equals(color)) {
+                return new TruckerController(t);
+            }
+        }
+
+        throw new IllegalStateException("Trucker non trovato nel game durante ripristino.");
 
     }
 
@@ -219,4 +235,7 @@ public class GameController implements Serializable {
         this.gameStarted = gameStarted;
     }
 
+    public CardController getCardController() {
+        return cardController;
+    }
 }

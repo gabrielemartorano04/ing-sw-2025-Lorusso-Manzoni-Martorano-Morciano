@@ -4,6 +4,7 @@ package it.polimi.ingsw.net;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.events.clientevents.*;
@@ -18,10 +19,7 @@ import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.FlightStartEvent;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ClientHandlerVisitor implements VirtualServer {
     private int numOfPlayers;
@@ -30,7 +28,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     private int gameLevel;
     private int endBuilding;
     private int startFlight;
-    private final CardController cardController;
+    private CardController cardController;
     private GameState oldGameState;
 
 
@@ -40,7 +38,6 @@ public class ClientHandlerVisitor implements VirtualServer {
         startFlight = 0;
         numOfPlayers = 0;
         gameLevel=0;
-        cardController = new CardController();
     }
     //se login event prendo nickname e color, controllo da model e creo evento risposta
 
@@ -170,7 +167,6 @@ public class ClientHandlerVisitor implements VirtualServer {
         try {
             client.getTruckerController().link(component,x,y);
             GamePersistence.saveGame(gameController);
-
             return new ComponentLinkedEvent(event.getComponent(), x, y, gameController.getGame().getComponents().getComponents());
         }  catch (InvalidCoordinates e) {
             return new InvalidCoordinatesError(client.getTruckerController().getNickname());
@@ -202,9 +198,12 @@ public class ClientHandlerVisitor implements VirtualServer {
                     client.setTruckerController(gameController.addOldPlayer(nickname, color));
                     gameController.getGame().removeOldColors(event.getColor());
                     gameController.getGame().removeOldNicknames(event.getUsername());
+                    ArrayList<Trucker> allTruckers=gameController.getGame().getTruckerList();
+                    allTruckers.addAll(gameController.getGame().getTruckerOut());
                     return new PlayerJoinedEvent(nickname, client.getTruckerController().getSpaceShip());
                 }
                 else{
+                    numLog--;
                     return new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
                 }
             }
@@ -212,8 +211,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         if(numLog== gameController.getGame().getNumPlayers()){
             nickname = event.getUsername();
             PlayerColors color=event.getColor();
-            //TODO: rimettere questo quando finito di integrare con il resto !ServerController.getIstance().getOldGame()
-            if(true) {
+            if(!ServerController.getIstance().getOldGame()) {
                 try {
                     client.setTruckerController(gameController.tryAddPlayer(nickname, color));
                 } catch (NicknameUsedException e) {
@@ -240,18 +238,12 @@ public class ClientHandlerVisitor implements VirtualServer {
                     gameController.getGame().removeOldNicknames(event.getUsername());
                     ArrayList<Trucker> allTruckers=gameController.getGame().getTruckerList();
                     allTruckers.addAll(gameController.getGame().getTruckerOut());
-                    Map<String, Integer> track=null;
-                    if(gameController.getGame().getGameState()==null){
-                        gameController.getGame().sortTruckers();
-                        for (Trucker t : gameController.getGame().getTruckerList()) {
-                            track.put(t.getNickname(), t.getPosition());
-                        }
-                    }
                     gameController.getGame().setGameState(oldGameState);
                     gameController.setGameStarted(true);
-
-                    return new ResumeGameEvent(allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), track);
+                    System.out.println("sto mandando resume game");
+                    return new ResumeGameEvent(gameController.getGame().getComponents().getComponents(), nickname, allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), gameController.getGame().getTrack());
                 }else{
+                    numLog--;
                     return new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
                 }
             }
@@ -358,7 +350,7 @@ public class ClientHandlerVisitor implements VirtualServer {
             players.add(t.getNickname());
         }
 
-        return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,Game.getIstance().getTrack(), spaceship,players);
+        return new FlightStartEvent(position,batteryCount,humanCount,cannonPower,enginePower,gameController.getGame().getTrack(), spaceship,players);
     }
 
 
@@ -368,7 +360,9 @@ public class ClientHandlerVisitor implements VirtualServer {
         if(startFlight<gameController.getGame().getNumPlayers()){
             return new WaitOthersStartFlightEvent();
         }
+        gameController.getGame().setGameState(GameState.FLIGHT);
         gameController.getGame().sortTruckers();
+        cardController = gameController.getCardController();
         cardController.setCurrCard(gameController.pickCardFromDeck());
         return cardController.startCard();
     }
@@ -534,8 +528,15 @@ public class ClientHandlerVisitor implements VirtualServer {
         ServerController.setOldGame(event.getChoseToResume());
         if(event.getChoseToResume()){
             gameController = GamePersistence.loadGame();
+            if (gameController == null) {
+                return new GenericErrorEvent("gameController nullo, impossibile ripristinare partita!", true);
+            }
+            if(gameController.getGame().getGameState().equals(GameState.FLIGHT)){
+                cardController=gameController.getCardController();
+            }
             oldGameState=gameController.getGame().getGameState();
             gameController.getGame().setGameState(GameState.SETUP);
+            Game.setIstance(gameController.getGame());
             gameController.setGameStarted(false);
             gameController.getGame().createOldColors();
             gameController.getGame().createOldNicknames();
@@ -545,7 +546,7 @@ public class ClientHandlerVisitor implements VirtualServer {
             return new AvailablePlayersEvent(gameController.getGame().getOldColors(), gameController.getGame().getOldNicknames());
         }else{
             GamePersistence.deleteSave();
-            return new AvailableColorsEvent(EnumSet.allOf(PlayerColors.class), "First Player in the game, start login");
+            return new FirstConnectionEvent("First player in the game, choose the total number of players of the Game");
         }
 
     }

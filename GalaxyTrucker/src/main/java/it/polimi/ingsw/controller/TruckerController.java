@@ -34,6 +34,10 @@ public class TruckerController  {
         trucker=new Trucker(nickname,color);
     }
 
+    public TruckerController(Trucker existingTrucker) {
+        this.trucker = existingTrucker;
+    }
+
     /**
      * This methos sets the Trucker's position in the board
      * @param position new trucker's position

@@ -42,6 +42,8 @@ public class Game implements Serializable {
     private final Set<PlayerColors> usedColors = new HashSet<>();
     private final EnumSet<PlayerColors> availableColors;
     private int numPlayers;
+    Map<String, Integer> track = new HashMap<>();
+
     /**
      * Constructor that initializes the game attributes.
      */
@@ -122,6 +124,8 @@ public class Game implements Serializable {
     public GameState getGameState() {
         return gameState;
     }
+
+
 
     public Bank getBank() {
         return bank;
@@ -312,7 +316,6 @@ public class Game implements Serializable {
      * @return
      */
     public Map<String, Integer> getTrack() {
-        Map<String, Integer> track = new HashMap<>();
         for (Trucker p : truckers) {
             track.put(p.getNickname(), p.getPosition());
         }

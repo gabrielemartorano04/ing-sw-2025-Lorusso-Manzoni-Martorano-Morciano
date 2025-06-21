@@ -3,6 +3,7 @@ package it.polimi.ingsw.net.events.serverevents.cardevents;
 import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEventType;
@@ -16,14 +17,17 @@ public class ResumeGameEvent extends ServerEvent {
     private GameState gameState;
     private int level;
     private Map<String, Integer> track;
+    private String nickname;
+    private ArrayList<Component> components;
 
-    public ResumeGameEvent(ArrayList<Trucker> trucker, GameState gameState, int level, Map<String, Integer> track) {
+    public ResumeGameEvent(ArrayList<Component> availableComponents, String nickname, ArrayList<Trucker> trucker, GameState gameState, int level, Map<String, Integer> track) {
         super(ServerEventType.RESUME_GAME, true);
         this.trucker = trucker;
         this.gameState = gameState;
         this.level = level;
         this.track = track;
-
+        this.nickname = nickname;
+        this.components = availableComponents;
     }
 
     public int getLevel() {
@@ -40,6 +44,14 @@ public class ResumeGameEvent extends ServerEvent {
 
     public ArrayList<Trucker> getTrucker() {
         return trucker;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public ArrayList<Component> getComponents() {
+        return components;
     }
 
     @Override

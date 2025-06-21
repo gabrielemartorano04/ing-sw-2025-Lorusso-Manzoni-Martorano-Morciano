@@ -1,9 +1,12 @@
 package it.polimi.ingsw.net;
 
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
+
+import java.util.ArrayList;
 
 public interface VirtualView {
 
@@ -119,4 +122,5 @@ public interface VirtualView {
 
     void visit(AvailablePlayersEvent availablePlayersEvent);
 
+    void handleDeath(ArrayList<Trucker> truckersRemoved);
 }
