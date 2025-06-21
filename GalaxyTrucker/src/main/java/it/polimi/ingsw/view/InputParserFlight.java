@@ -1,7 +1,9 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.events.clientevents.ShowOtherShipEvent;
 import it.polimi.ingsw.net.events.clientevents.cardevents.*;
+import it.polimi.ingsw.net.events.serverevents.TruckerWithdrawEvent;
 
 
 import java.awt.*;
@@ -36,6 +38,15 @@ public class InputParserFlight {
         if (input.trim().equalsIgnoreCase("rules")) {
             openRulesPdf();
             return null;
+        }
+//        if (input.trim().equalsIgnoreCase("withdraw")) {
+//            return new WithdrawRequest(nickname);
+//        }
+        input.trim();
+        String[] tokens=input.split("\\s+");
+         if (tokens[0].trim().equalsIgnoreCase("ship")) {
+            System.out.println("entrato");
+            return new ShowOtherShipEvent(tokens[1].trim());
         }
 
         //TODO: aggiungere withdraw e ship
