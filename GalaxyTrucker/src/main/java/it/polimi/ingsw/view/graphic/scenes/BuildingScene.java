@@ -1229,6 +1229,7 @@ public class BuildingScene {
                         ImageView iv = new ImageView(c.getFrontImage());
                         iv.setFitWidth(87.5);
                         iv.setFitHeight(87.5);
+                        iv.setRotate(c.getRotationAngle());
                         Rectangle r = new Rectangle(87.5, 87.5);
                         r.setArcWidth(8);
                         r.setArcHeight(8);
@@ -1528,7 +1529,7 @@ public class BuildingScene {
         // Crea la scritta TIME EXPIRED + count
         Label message = new Label("TIME EXPIRED\n(" + "For " + expirationCount + " times)");
         message.setTextFill(Color.RED);
-        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 100));
+        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 80));
         message.setTextAlignment(TextAlignment.CENTER);
 
         // Effetto lampeggiante
@@ -1547,7 +1548,7 @@ public class BuildingScene {
         stopBlink.play();
 
         Rectangle dimBackground = new Rectangle();
-        dimBackground.setFill(Color.rgb(50, 50, 50, 0.6));
+        dimBackground.setFill(Color.rgb(0, 0, 0, 0.6));
         dimBackground.widthProperty().bind(scene.widthProperty());
         dimBackground.heightProperty().bind(scene.heightProperty());
 
