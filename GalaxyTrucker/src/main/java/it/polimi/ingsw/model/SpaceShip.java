@@ -1728,7 +1728,6 @@ public class SpaceShip implements Serializable {
      * @throws InvalidPositionException if the good is special but not the choosen load
      */
     public Goods addGood(Goods good,int[] coord,int positionInLoad ,Bank bank) throws InvalidPositionException{
-        System.out.println("adding good in position " + coord[0] + " " + coord[1] + ", position in load " + positionInLoad );
         if(components[coord[0]][coord[1]]!=null){
             switch(components[coord[0]][coord[1]]){
                 case Load load->{
@@ -1738,11 +1737,11 @@ public class SpaceShip implements Serializable {
                     }
                     if(!load.isFull()){
                         load.addGood(positionInLoad,good);
-                        switch(good.getValue()){
-                            case 1: blueGoods++;
-                            case 2: greenGoods++;
-                            case 3: yellowGoods++;
-                            case 4: redGoods++;
+                        switch(good.getValue()) {
+                            case 1 -> blueGoods++;
+                            case 2 -> greenGoods++;
+                            case 3 -> yellowGoods++;
+                            case 4 -> redGoods++;
                         }
                         bank.removeGoodsInBank(good.getValue());
                         addGoodsList(good);
@@ -1751,11 +1750,11 @@ public class SpaceShip implements Serializable {
                         Goods g=load.getGood(positionInLoad);
                         bank.addGoodsInBank(g.getValue()); // il valore di g non può essere -1 perché il load è pieno
                         load.addGood(positionInLoad,good);
-                        switch(good.getValue()){
-                            case 1: blueGoods++;
-                            case 2: greenGoods++;
-                            case 3: yellowGoods++;
-                            case 4: redGoods++;
+                        switch(good.getValue()) {
+                            case 1 -> blueGoods++;
+                            case 2 -> greenGoods++;
+                            case 3 -> yellowGoods++;
+                            case 4 -> redGoods++;
                         }
                         bank.removeGoodsInBank(good.getValue());
                         goodsList.remove(g);

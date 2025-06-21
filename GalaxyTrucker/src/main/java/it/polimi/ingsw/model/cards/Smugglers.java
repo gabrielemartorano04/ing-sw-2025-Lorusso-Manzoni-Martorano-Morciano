@@ -280,80 +280,76 @@ public class Smugglers extends Card implements Serializable {
     }
 
     @Override
-    public ServerEvent removeGoods() throws GeneralError{
-        if(cardState != CardState.REMOVE_GOODS){
+    public ServerEvent removeGoods() throws GeneralError {
+        if (cardState != CardState.REMOVE_GOODS) {
             throw new GeneralError("plotGoodsToRemove not callable in the state " + cardState);
         }
 
-        if(defeatedTruckers.isEmpty()){
+        if (defeatedTruckers.isEmpty()) {
             cardState = CardState.ESECUZIONE;
             return cardEffect();
         }
 
-        ArrayList<Goods> goodsList;
-        goodsList = defeatedTruckers.getFirst().getSpaceShip().getGoodsList();
+        SpaceShip ship = defeatedTruckers.getFirst().getSpaceShip();
+        String nickname = defeatedTruckers.getFirst().getNickname();
+        ArrayList<Goods> goodsList = ship.getGoodsList();
 
         while (colorOfCurrGoodToRemove > 0 && goodsLostCurrTrucker > 0) {
-            switch (colorOfCurrGoodToRemove) {
-                case 4 -> {
-                    System.out.println("Case 4 " + numGoodCurrType);
-                    numGoodCurrType = defeatedTruckers.getFirst().getSpaceShip().getRedGoods();
-                    colorOfCurrGoodToRemove--;
-                }
-                case 3 -> {
-                    numGoodCurrType = defeatedTruckers.getFirst().getSpaceShip().getYellowGoods();
-                    System.out.println("Case 3 " + numGoodCurrType);
-                    colorOfCurrGoodToRemove--;
-                }
-                case 2 -> {
-                    System.out.println("Case 2 " + numGoodCurrType);
-                    numGoodCurrType = defeatedTruckers.getFirst().getSpaceShip().getGreenGoods();
-                    colorOfCurrGoodToRemove--;
-                }
-                case 1 -> {
-                    System.out.println("Case 1 " + numGoodCurrType);
-                    numGoodCurrType = defeatedTruckers.getFirst().getSpaceShip().getBlueGoods();
-                    colorOfCurrGoodToRemove--;
-                }
-            }
+            numGoodCurrType = getNumGoodsForColor(ship, colorOfCurrGoodToRemove);
+            System.out.println("Checking color " + colorOfCurrGoodToRemove + " → " + " num of current good: " + numGoodCurrType);
+            System.out.println(ship.getRedGoods());
+            System.out.println(ship.getYellowGoods());
+            System.out.println(ship.getBlueGoods());
+            System.out.println(ship.getGreenGoods());
 
             if (numGoodCurrType > 0 && numGoodCurrType <= goodsLostCurrTrucker) {
                 return removeWithoutAsking(goodsList);
-            }else if (numGoodCurrType > 0){
+            } else if (numGoodCurrType > 0) {
                 cardState = CardState.REMOVE_ASKING;
-                ArrayList<Goods> listOfGoods = defeatedTruckers.getFirst().getSpaceShip().getGoodsList();
-                for (int i = 0; i < numGoodCurrType; i++) {
-                    goodsToRemove.add(listOfGoods.getFirst());
+
+                goodsToRemove.clear();
+
+                for (Goods g : goodsList) {
+                    if (g.getValue() == colorOfCurrGoodToRemove && goodsToRemove.size() < numGoodCurrType) {
+                        goodsToRemove.add(g);
+                    }
                 }
-                for(int i = 0; i < goodsToRemove.size(); i++){
-                    System.out.println(goodsToRemove.get(i).getColor());
-                }
-                return new RemoveGoods(true, defeatedTruckers.getFirst().getNickname(), defeatedTruckers.getFirst().getSpaceShip(),goodsToRemove);
+
+                goodsToRemove.forEach(g -> System.out.println("To remove: " + g.getColor()));
+
+                return new RemoveGoods(true, nickname, ship, goodsToRemove);
             }
+
+            colorOfCurrGoodToRemove--;
         }
 
-        // se sei uscito perche non avevi merci devo controllare se puoi perdere batterie
-        if(colorOfCurrGoodToRemove == 0 && goodsLostCurrTrucker > 0){
-            if(defeatedTruckers.getFirst().getSpaceShip().getNumBatteries() == 0){
-
-                SpaceShip spaceShip = defeatedTruckers.getFirst().getSpaceShip();
-                String nickname = defeatedTruckers.getFirst().getNickname();
-
+        if (colorOfCurrGoodToRemove == 0 && goodsLostCurrTrucker > 0) {
+            if (ship.getNumBatteries() == 0) {
                 defeatedTruckers.removeFirst();
 
-                if(defeatedTruckers.isEmpty()){
+                if (defeatedTruckers.isEmpty()) {
                     cardState = CardState.ESECUZIONE;
                     return cardEffect();
-                }else{
-                    return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED, nickname, spaceShip);
+                } else {
+                    return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED, nickname, ship);
                 }
-            }else{
-                this.cardState = CardState.REMOVE_BATTERIES;
-                return new RemoveBatteries(true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), goodsLostCurrTrucker);
+            } else {
+                cardState = CardState.REMOVE_BATTERIES;
+                return new RemoveBatteries(true, nickname, ship, goodsLostCurrTrucker);
             }
-        }else{
-            throw new GeneralError("RemoveGoods not working correctly");
         }
+
+        throw new GeneralError("RemoveGoods not working correctly");
+    }
+
+    private int getNumGoodsForColor(SpaceShip ship, int colorCode) {
+        return switch (colorCode) {
+            case 4 -> ship.getRedGoods();
+            case 3 -> ship.getYellowGoods();
+            case 2 -> ship.getGreenGoods();
+            case 1 -> ship.getBlueGoods();
+            default -> 0;
+        };
     }
 
     private ServerEvent removeWithoutAsking(ArrayList<Goods> goodsList) throws GeneralError {
