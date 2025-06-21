@@ -73,7 +73,6 @@ public class ViewFlow implements EventReceiver {
         this.sender = sender;
         this.inputReader = new InputReader();
         this.inputParser = new InputParser();
-        this.inputParserFlight = new InputParserFlight();
         this.nickname = null;
         this.running = true;
         this.viewState = ViewState.FIRST;
@@ -105,6 +104,9 @@ public class ViewFlow implements EventReceiver {
         }else{
             this.ui = new TUI(this);
         }
+
+        this.inputParserFlight = new InputParserFlight(ui);
+
 
         this.timerDisplay = new TimerDisplay(ui);
         this.serverEventVisitor = new ServerEventHandlerVisitor(this, ui);
