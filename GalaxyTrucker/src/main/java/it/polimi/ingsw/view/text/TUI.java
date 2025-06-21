@@ -273,7 +273,7 @@ public class TUI implements UI {
     //TODO NON USATO SISTEMA
     @Override
     public void flightScene(FlightStartEvent event){
-        this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip());
+        this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
         this.showPlayerShipStatus();
         this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         this.showFlightPhaseStart();
@@ -283,8 +283,11 @@ public class TUI implements UI {
 
 
     @Override
-    public void showCurrCondition(CurrentCondition event){
+    public void showCurrCondition(CurrentCondition event, boolean isLeader){
         System.out.println("Current condition:" + event.getCondition());
+        if(isLeader){
+            System.out.println("Type Continue to proceed");
+        }
     }
 
     @Override
@@ -343,7 +346,6 @@ public class TUI implements UI {
     @Override
     public void showInputFormat(ParserState parserState) {
         switch (parserState){
-            case CURRENT_CONDITION -> System.out.println("Type Continue to proceed");
             case ACTIVATE_ENGINES -> System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
             case ACTIVATE_CANNONS -> System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
             case ACTIVATE_SHIELD -> System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x1> <y1>, <xB1> <yB1>>' or 'n': ");
@@ -594,6 +596,19 @@ public class TUI implements UI {
         return "Shoot " + index + " (" + sizeText + ") arriving " + dirText + "\n";
     }
 
+    @Override
+    public void updateGoodsListToRemove(ArrayList<Goods> goodsList) {
+        if (goodsList == null || goodsList.isEmpty()) {
+            System.out.println("No goods available to remove.");
+            return;
+        }
+
+        System.out.println("Goods available for removal:");
+        for (int i = 0; i < goodsList.size(); i++) {
+            Goods g = goodsList.get(i);
+            System.out.println("Good " + i + ": " + g.getColor() + ", " + g.getX() + ", " + g.getY());
+        }
+    }
 
     @Override
     public void showStardustCard(StarDustEvent event) {
@@ -753,16 +768,29 @@ public class TUI implements UI {
                 StringBuilder details = new StringBuilder();
                 switch (c) {
                     case Engine engine -> {
-                        if (engine.getIsDouble())
+                        if (engine.getIsDouble()) {
                             details.append("[").append(i).append(",").append(j).append("] DOUBLE ENGINE");
-                        else
+                            if(engine.getIsActive()) {
+                                details.append(" is active");
+                            } else {
+                                details.append(" is inactive");
+                            }
+                        }
+                        else {
                             details.append("[").append(i).append(",").append(j).append("] ENGINE");
+                        }
                     }
                     case Cannon cannon -> {
-                        if (cannon.getIsDouble())
+                        if (cannon.getIsDouble()) {
                             details.append("[").append(i).append(",").append(j).append("] DOUBLE CANNON (Direction: ").append(cannon.getOrientation()).append(")");
-                        else
+                            if(cannon.getIsActive()) {
+                                details.append(" is active");
+                            } else {
+                                details.append(" is inactive");
+                            }
+                        } else {
                             details.append("[").append(i).append(",").append(j).append("] CANNON (Direction: ").append(cannon.getOrientation()).append(")");
+                        }
                     }
                     case Load load -> {
                         if (load.getIsSpecial()) {
@@ -789,6 +817,11 @@ public class TUI implements UI {
                     }
                     case Shield shield -> {
                         details.append("[").append(i).append(",").append(j).append("] SHIELD (direction: ").append(shield.getDirection()).append(")");
+                        if (shield.getIsActive()) {
+                            details.append(" is active");
+                        } else  {
+                            details.append(" is inactive");
+                        }
                     }
                     case BatteryStorage battery -> {
                         details.append("[").append(i).append(",").append(j).append("] BATTERY STORAGE (Capacity: ").append(battery.getCapacity()).append(")");

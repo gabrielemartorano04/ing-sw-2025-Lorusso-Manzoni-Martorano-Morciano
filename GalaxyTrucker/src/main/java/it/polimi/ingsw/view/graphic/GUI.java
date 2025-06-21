@@ -251,7 +251,7 @@ public class GUI implements UI {
     public void startBuildingScene(StartBuildingEvent event){
         this.loginScene.hideWaitForOthers();
         Platform.runLater(() -> {
-            buildingScene=new BuildingScene(viewFlow.getNickname(),viewFlow.getShip(),viewFlow, new StackPane());
+            buildingScene=new BuildingScene(viewFlow.getNickname(),viewFlow.getShip().getComponents(),viewFlow, new StackPane());
             stage.setScene(this.buildingScene.createScene(event.getPlayers(), viewFlow.getLevel()));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
@@ -384,7 +384,7 @@ public class GUI implements UI {
     public void  buildingComplete(BuildCompleteEvent event){
         Platform.runLater(() -> {
             this.buildingScene.hideWaitForOthers();
-            this.buildingScene.buildShipGrid(false, viewFlow.getShip());
+            this.buildingScene.buildShipGrid(false, viewFlow.getShip().getComponents());
             viewFlow.handleInput("alien");
         });
     }
@@ -410,7 +410,7 @@ public class GUI implements UI {
         Platform.runLater(() -> {
             this.buildingScene.hideWaitForOthers();
 
-            this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip(), viewFlow, new StackPane());
+            this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip().getComponents(), viewFlow, new StackPane());
             stage.setScene(this.flightScene.createScene(event.getPlayers(), viewFlow.getLevel()));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
@@ -423,19 +423,22 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showCurrCondition(CurrentCondition event) {
+    public void showCurrCondition(CurrentCondition event, boolean isLeader) {
         //TODO:
         Platform.runLater(() -> {
-            this.flightScene.showCurrContidion(event.getCondition());
+            this.flightScene.showCurrCondition(event.getCondition(), isLeader);
         });
 
     }
 
+
+
     @Override
     public void cardFinished(CardFinished event){
         Platform.runLater(() -> {
-            this.flightScene.setShip(viewFlow.getShip());
+            this.flightScene.setShip(viewFlow.getShip().getComponents());
             this.flightScene.updateShipLayout();
+            this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         });
     }
@@ -459,7 +462,7 @@ public class GUI implements UI {
     public  void epidemic(EpidemicEvent event){
 
         Platform.runLater(() -> {
-            this.flightScene.setShip(viewFlow.getShip());
+            this.flightScene.setShip(viewFlow.getShip().getComponents());
             this.flightScene.updateShipLayout();
             this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
@@ -481,6 +484,13 @@ public class GUI implements UI {
     }
 
     @Override
+    public void updateGoodsListToRemove(ArrayList<Goods> goodsList) {
+        Platform.runLater(() -> {
+            // this.flightScene.updateGoodsListToRemove(goodsList);
+        });
+    }
+
+    @Override
     public void showEpidemicCard(EpidemicEvent event) {
         Platform.runLater(() -> {
             this.flightScene.updateCardInScene(event.getCard());
@@ -491,7 +501,7 @@ public class GUI implements UI {
     public void stardust(StarDustEvent event){
 
         Platform.runLater(() -> {
-            this.flightScene.setShip(viewFlow.getShip());
+            this.flightScene.setShip(viewFlow.getShip().getComponents());
             this.flightScene.updateShipLayout();
             this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
@@ -555,8 +565,6 @@ public class GUI implements UI {
         if(viewFlow.getViewState() == ViewFlow.ViewState.BULDING){
             this.buildingScene.showMessage(message);
         }else if(viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
-            System.out.println("Show message fligtScene");
-            System.out.println(message);
             this.flightScene.showMessage(message);
         }
     }
@@ -659,7 +667,11 @@ public class GUI implements UI {
 
     @Override
     public void showError(String message) {
-
+        if(viewFlow.getViewState() == ViewFlow.ViewState.BULDING){
+            this.buildingScene.showError(message);
+        }else if(viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
+            this.flightScene.showError(message);
+        }
     }
 
 

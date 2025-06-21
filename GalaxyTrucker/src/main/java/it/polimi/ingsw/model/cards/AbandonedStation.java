@@ -55,56 +55,59 @@ public class AbandonedStation extends Card implements Serializable {
         this.indexOfCurrTrucker =0;
         this.currGood=0;
     }
-
-
-    public void setCardState(CardState cardState) {
-        this.cardState = cardState;
-    }
-
-    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided) {
-        this.truckerThatHasDecided = truckerThatHasDecided;
-    }
+//
+//
+//    public void setCardState(CardState cardState) {
+//        this.cardState = cardState;
+//    }
+//
+//    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided) {
+//        this.truckerThatHasDecided = truckerThatHasDecided;
+//    }
+//
+//    /**
+//     * Returns the number of days of flight to lose
+//     * @return days to lose
+//     */
+//    public int getDays() {
+//        return days;
+//    }
+//
+//    /**
+//     * Returns the number of crew members required
+//     * @return crew members to lose
+//     */
+//    public int getNumHuman() {
+//        return numHuman;
+//    }
+//
+//    /**
+//     * Returns the list of goods to gain
+//     * @return goods to gain
+//     */
+//    public ArrayList<Goods> getGoods() {
+//        return goods;
+//    }
+//
+//    public CardState getCardState() {
+//        return cardState;
+//    }
+//
+//    public int getCurrGood() {
+//        return currGood;
+//    }
+//
+//    public int getIndexOfCurrTrucker() {
+//        return indexOfCurrTrucker;
+//    }
+//
+//    public Trucker getTruckerThatHasDecided() {
+//        return truckerThatHasDecided;
+//    }
 
     /**
-     * Returns the number of days of flight to lose
-     * @return days to lose
+     * @return an event containing all the card details
      */
-    public int getDays() {
-        return days;
-    }
-
-    /**
-     * Returns the number of crew members required
-     * @return crew members to lose
-     */
-    public int getNumHuman() {
-        return numHuman;
-    }
-
-    /**
-     * Returns the list of goods to gain
-     * @return goods to gain
-     */
-    public ArrayList<Goods> getGoods() {
-        return goods;
-    }
-
-    public CardState getCardState() {
-        return cardState;
-    }
-
-    public int getCurrGood() {
-        return currGood;
-    }
-
-    public int getIndexOfCurrTrucker() {
-        return indexOfCurrTrucker;
-    }
-
-    public Trucker getTruckerThatHasDecided() {
-        return truckerThatHasDecided;
-    }
-
     @Override
     public ServerEvent startCard() {
         return new StartCardEvent(
@@ -191,6 +194,7 @@ public class AbandonedStation extends Card implements Serializable {
                 throw e;
             }
             if (currGood == goods.size() - 1) { // ci va il -1 qui!!!
+                System.out.println("Entro ");
                 cardState = CardState.REARRANGE;
                 return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
             } else {
@@ -198,7 +202,7 @@ public class AbandonedStation extends Card implements Serializable {
                 //TODO: Check che non ci sia loop infinito
                 do {
                     if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
-                        cardState = CardState.CHOOSE_TO_GAIN;
+                        cardState = CardState.GOODSTOADD;
                         return new PlotGood(true, truckerThatHasDecided.getNickname(), truckerThatHasDecided.getSpaceShip(),goods.get(currGood));
                     } else {
                         currGood++;
@@ -212,7 +216,20 @@ public class AbandonedStation extends Card implements Serializable {
         }
     }
 
-    // si potrebbe non metter contiune e procedere se tutto e a null
+    //TODO si potrebbe non metter contiune e procedere se tutto e a null
+
+    /**
+     * switch 2 goods to rearrange them in the ship
+     * @param coord1 initial position
+     * @param coord2 final position
+     * @param value1 initial internal position
+     * @param value2 final internat position
+     * @param stop when to end the swaps
+     * @return the server event to
+     * @throws GeneralError
+     * @throws InvalidCoordinates
+     * @throws InvalidPositionException
+     */
     @Override
     public ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean stop) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {

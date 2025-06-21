@@ -1229,6 +1229,7 @@ public class BuildingScene {
                         ImageView iv = new ImageView(c.getFrontImage());
                         iv.setFitWidth(87.5);
                         iv.setFitHeight(87.5);
+                        iv.setRotate(c.getRotationAngle());
                         Rectangle r = new Rectangle(87.5, 87.5);
                         r.setArcWidth(8);
                         r.setArcHeight(8);
@@ -1457,6 +1458,7 @@ public class BuildingScene {
     }
 
     public void showAlienCabin() {
+        disableAndSaveAllButtonStates();
         VBox alienBox = new VBox(10);
         alienBox.setAlignment(Pos.CENTER_RIGHT);
         alienBox.setPadding(new Insets(0, 0, 25, 25));
@@ -1527,7 +1529,7 @@ public class BuildingScene {
         // Crea la scritta TIME EXPIRED + count
         Label message = new Label("TIME EXPIRED\n(" + "For " + expirationCount + " times)");
         message.setTextFill(Color.RED);
-        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 100));
+        message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 80));
         message.setTextAlignment(TextAlignment.CENTER);
 
         // Effetto lampeggiante
@@ -1546,7 +1548,7 @@ public class BuildingScene {
         stopBlink.play();
 
         Rectangle dimBackground = new Rectangle();
-        dimBackground.setFill(Color.rgb(50, 50, 50, 0.6));
+        dimBackground.setFill(Color.rgb(0, 0, 0, 0.6));
         dimBackground.widthProperty().bind(scene.widthProperty());
         dimBackground.heightProperty().bind(scene.heightProperty());
 
@@ -1560,6 +1562,39 @@ public class BuildingScene {
         wait.setOnFinished(e -> root.getChildren().remove(overlay));
         wait.play();
     }
+
+
+    public void showError(String message) {
+        double width = root.getWidth();
+        double height = root.getHeight();
+
+        // Sfondo trasparente NON interattivo
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlay.setMouseTransparent(true);
+
+        // Testo di errore visibile
+        Label errorLabel = new Label(message);
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
+        errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
+
+        // Contenitore popup
+        StackPane popup = new StackPane(overlay, errorLabel);
+        popup.setMouseTransparent(true);
+        StackPane.setAlignment(errorLabel, Pos.CENTER);
+
+        Platform.runLater(() -> {
+            if (!root.getChildren().contains(popup)) {
+                root.getChildren().add(popup);
+
+                PauseTransition delay = new PauseTransition(Duration.seconds(3));
+                delay.setOnFinished(e -> root.getChildren().remove(popup));
+                delay.play();
+            }
+        });
+    }
+
 
 }
 

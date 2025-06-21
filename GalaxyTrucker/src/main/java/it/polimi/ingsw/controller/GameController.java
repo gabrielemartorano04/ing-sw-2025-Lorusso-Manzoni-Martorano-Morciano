@@ -131,8 +131,14 @@ public class GameController implements Serializable {
             } catch (InvalidCoordinates e) {
                 throw new RuntimeException(e);
             }
-        } else
-        if(nickname.equals("testuser2")){
+        } else if(nickname.equals("testuser1")){
+            CreateShipTest test=new CreateShipTest();
+            try {
+                truckerController.getTrucker().setSpaceShip(test.createShip2(truckerController.getSpaceShip()));
+            } catch (InvalidCoordinates e) {
+                throw new RuntimeException(e);
+            }
+        } else if(nickname.equals("testuser2")){
             CreateShipTest test=new CreateShipTest();
             try {
                 truckerController.getTrucker().setSpaceShip(test.createShip1(truckerController.getSpaceShip()));

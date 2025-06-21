@@ -43,7 +43,7 @@ public class AbandonedShip extends Card implements Serializable {
      * @param trialFlight specify if truckers are playing trial flight
      * @param level level of the game
      * @param numHuman number of crew members to lose
-     * @param credits number of cosmic credits gain
+     * @param credits number of cosmic credits gains
      * @param days number of days of flight to lose
      * @param frontImage front image of the card
      * @param backImage back image of the card
@@ -58,51 +58,55 @@ public class AbandonedShip extends Card implements Serializable {
         this.state = CardState.LAND;
     }
 
-    /**
-     * Returns the number of days of flight to lose
-     * @return days to lose
-     */
-    public int getDays() {
-        return days;
-    }
+// TODO tutto da rimuovere
+
+//    /**
+//     * Returns the number of days of flight to lose
+//     * @return days to lose
+//     */
+//    public int getDays() {
+//        return days;
+//    }
+//
+//    /**
+//     * Returns the number of cosmic credits to gain
+//     * @return credit to gain
+//     */
+//    public int getCredits() {
+//        return credits;
+//    }
+//
+//    /**
+//     * Returns the number of crew members to lose
+//     * @return crew members to lose
+//     */
+//    public int getNumHuman() {
+//        return numHuman;
+//    }
+//
+//    public CardState getCardState() {
+//        return state;
+//    }
+//
+//    public int getIndexOfCurrTrucker() {
+//        return indexOfCurrTrucker;
+//    }
+//
+//    public CardState getState() {
+//        return state;
+//    }
+//
+//    public void setState(CardState state) {
+//        this.state = state;
+//    }
+//
+//    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided){
+//        this.truckerThatHasDecided = truckerThatHasDecided;
+//    };
 
     /**
-     * Returns the number of cosmic credits to gain
-     * @return credit to gain
+     * @return an event containing all the card details
      */
-    public int getCredits() {
-        return credits;
-    }
-
-    /**
-     * Returns the number of crew members to lose
-     * @return crew members to lose
-     */
-    public int getNumHuman() {
-        return numHuman;
-    }
-
-
-    public CardState getCardState() {
-        return state;
-    }
-
-    public int getIndexOfCurrTrucker() {
-        return indexOfCurrTrucker;
-    }
-
-    public CardState getState() {
-        return state;
-    }
-
-    public void setState(CardState state) {
-        this.state = state;
-    }
-
-    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided){
-        this.truckerThatHasDecided = truckerThatHasDecided;
-    };
-
     @Override
     public ServerEvent startCard() {
         return new StartCardEvent(
@@ -177,7 +181,6 @@ public class AbandonedShip extends Card implements Serializable {
     /**
      * Applies the changes provided by the card
      */
-
     @Override
     public ServerEvent cardEffect() throws GeneralError {
         if(state != CardState.ESECUZIONE) {

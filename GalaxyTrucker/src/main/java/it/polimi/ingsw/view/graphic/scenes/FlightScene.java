@@ -1,9 +1,8 @@
 package it.polimi.ingsw.view.graphic.scenes;
 
-import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.cards.AbandonedShip;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.*;
@@ -65,8 +64,9 @@ public class FlightScene {
     private GoodsImagesGetter goodsImagesGetter;
     private Image goodImage;
     private ArrayList<Trucker> planets;
+    private ArrayList<Goods> goodsList;
 
-    private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel;
+    private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel, lostLabel;
     private Map<String, Label> goodLabels = new HashMap<>();
     private VBox statusBar;
 
@@ -236,12 +236,13 @@ public class FlightScene {
      * show the general status of the ship and the possibility to see the specific component status
      */
     private void initializeStatusBar() {
-        Image engine = new Image(getClass().getResource("/it/polimi/ingsw/view/engine.png").toExternalForm());
-        Image cannon = new Image(getClass().getResource("/it/polimi/ingsw/view/cannon.png").toExternalForm());
-        Image human = new Image(getClass().getResource("/it/polimi/ingsw/view/human.png").toExternalForm());
-        Image battery = engine; // Usa immagine engine per battery
-        Image pos = engine;     // Usa immagine engine per position
-        Image credit = engine;  // Usa immagine engine per credits
+        Image engine = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/engine.png")).toExternalForm());
+        Image cannon = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
+        Image human = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
+        Image battery = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/battery.png")).toExternalForm());
+        Image pos = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/position.png")).toExternalForm());
+        Image credit = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/credit.png")).toExternalForm());
+        Image lost = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/lost.png")).toExternalForm());
 
         posLabel = createStyledLabel();
         battLabel = createStyledLabel();
@@ -249,14 +250,16 @@ public class FlightScene {
         cannonLabel = createStyledLabel();
         engineLabel = createStyledLabel();
         creditLabel = createStyledLabel();
+        lostLabel = createStyledLabel();
 
         ImageView posIcon = new ImageView(pos);
         posIcon.setFitWidth(20);
         posIcon.setPreserveRatio(true);
 
         ImageView batteryIcon = new ImageView(battery);
-        batteryIcon.setFitWidth(20);
-        batteryIcon.setPreserveRatio(true);
+        batteryIcon.setFitWidth(30);
+        batteryIcon.setFitHeight(50);
+        batteryIcon.setPreserveRatio(false);
 
         ImageView humanIcon = new ImageView(human);
         humanIcon.setFitWidth(40);
@@ -271,50 +274,62 @@ public class FlightScene {
         engineIcon.setPreserveRatio(true);
 
         ImageView creditIcon = new ImageView(credit);
-        creditIcon.setFitWidth(16);
+        creditIcon.setFitWidth(25);
         creditIcon.setPreserveRatio(true);
+
+        ImageView lostIcon = new ImageView(lost);
+        lostIcon.setFitWidth(25);
+        lostIcon.setPreserveRatio(true);
 
         HBox posBox = new HBox(0, posIcon, posLabel);
         HBox battBox = new HBox(0, batteryIcon, battLabel);
         HBox humanBox = new HBox(0, humanIcon, humanLabel);
         HBox cannonBox = new HBox(0, cannonIcon, cannonLabel);
         HBox engineBox = new HBox(5, engineIcon, engineLabel);
-        HBox creditBox = new HBox(5, creditIcon, creditLabel);
+        HBox creditBox = new HBox(0, creditIcon, creditLabel);
+        HBox lostBox = new HBox(0, lostIcon, lostLabel);
 
 
-        for (HBox box : List.of(posBox, battBox, humanBox, cannonBox, engineBox, creditBox)) {
+        for (HBox box : List.of(posBox, battBox, humanBox, cannonBox, engineBox, creditBox, lostBox)) {
             box.setAlignment(Pos.CENTER_RIGHT);
         }
 
         // Goods
         HBox goodsBox = new HBox(10);
         goodsBox.setAlignment(Pos.CENTER_RIGHT);
+
         Map<String, Image> goodImages = Map.of(
-                "red", new Image(getClass().getResource("/it/polimi/ingsw/view/redgood.png").toExternalForm()),
-                "yellow", new Image(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png").toExternalForm()),
-                "green", new Image(getClass().getResource("/it/polimi/ingsw/view/greengood.png").toExternalForm()),
-                "blue", new Image(getClass().getResource("/it/polimi/ingsw/view/bluegood.png").toExternalForm())
+                "red", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/redgood.png")).toExternalForm()),
+                "yellow", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png")).toExternalForm()),
+                "green", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/greengood.png")).toExternalForm()),
+                "blue", new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/bluegood.png")).toExternalForm())
         );
 
-        for (String color : goodImages.keySet()) {
-            ImageView goodIcon = new ImageView(goodImages.get(color));
+        List<String> orderedColors = List.of("red", "yellow", "green", "blue");
+
+        for (String color : orderedColors) {
+            Image image = goodImages.get(color); // accedi in modo sicuro e ordinato
+            ImageView goodIcon = new ImageView(image);
             goodIcon.setFitWidth(35);
             goodIcon.setPreserveRatio(true);
+
             Label qtyLabel = createStyledLabel();
-            goodLabels.put(color.toLowerCase(), qtyLabel);
+            goodLabels.put(color, qtyLabel); // salva riferimento
+
             HBox singleGood = new HBox(0, goodIcon, qtyLabel);
             singleGood.setAlignment(Pos.CENTER_RIGHT);
+
             goodsBox.getChildren().add(singleGood);
         }
 
         moreButton = new Button("More...");
-        moreButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        moreButton.setFont(Font.font("Arial", 16));
         moreButton.setTextFill(Color.BLACK);
         moreButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
         moreButton.setCursor(Cursor.HAND);
         moreButton.setOnAction(e -> showMore());
 
-        HBox resourceBox = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox, creditBox);
+        HBox resourceBox = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox, creditBox, lostBox);
         resourceBox.setAlignment(Pos.CENTER);
         resourceBox.setPadding(new Insets(5));
 
@@ -467,10 +482,73 @@ public class FlightScene {
         this.otherBtn = otherBtn;
     }
 
-    public void showCurrContidion(Condition condition) {
-        //TODO
-    }
+    /**
+     * Mostra un popup con la condizione corrente e, se il giocatore è il leader, anche un pulsante per continuare.
+     *
+     * @param condition la condizione da mostrare
+     * @param isLeader  true se il giocatore può avviare la condizione
+     */
+    public void showCurrCondition(Condition condition, boolean isLeader) {
+        VBox box = new VBox(15);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
 
+        Label confirm = new Label("Current condition");
+        confirm.setTextFill(Color.web("#FFDE69"));
+        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+
+        Image conditionImage = switch (condition) {
+            case HUMANS -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
+            case ENGINES -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/engine.png")).toExternalForm());
+            case CANNONS -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
+            default -> throw new IllegalArgumentException("Condizione sconosciuta: " + condition);
+        };
+
+        ImageView conditionView = new ImageView(conditionImage);
+        conditionView.setPreserveRatio(true);
+        conditionView.setMouseTransparent(true);
+        if(condition == Condition.CANNONS) {
+            conditionView.setFitWidth(30);
+        } else if(condition == Condition.HUMANS) {
+            conditionView.setFitWidth(50);
+        } else {
+            conditionView.setFitWidth(25);
+        }
+
+        box.getChildren().addAll(confirm, conditionView);
+
+        AnchorPane popupContent = new AnchorPane(box);
+        AnchorPane.setLeftAnchor(box, 200.0);
+
+        // Attiva overlay e blocca i layer sotto
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        // Definizione anticipata per evitare errori di riferimento
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
+        if (isLeader) {
+            Button continueBtn = new Button("Start condition");
+            continueBtn.setFont(Font.font("Bangers", 18));
+            continueBtn.setTextFill(Color.BLACK);
+            continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            continueBtn.setCursor(Cursor.HAND);
+            continueBtn.setPadding(new Insets(10, 20, 10, 20));
+
+            continueBtn.setOnAction(e -> {
+                viewFlow.handleInput("continue");
+                closePopup.run();
+            });
+
+            box.getChildren().add(continueBtn);
+            AnchorPane.setBottomAnchor(box, 120.0);
+        } else {
+            AnchorPane.setBottomAnchor(box, 180.0);
+        }
+    }
 
     public Scene getScene() {
         return scene;
@@ -682,27 +760,36 @@ public class FlightScene {
             inputField.setPromptText("Ex. 2 3, 4 5, battery, 6 7 - 2");
             inputField.setPrefWidth(250);
 
+            Label errorLabel = new Label();
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            errorLabel.setVisible(false);
+
             Button confirmBtn = new Button("Confirm");
             confirmBtn.setFont(Font.font("Bangers", 14));
             confirmBtn.setTextFill(Color.BLACK);
             confirmBtn.setCursor(Cursor.HAND);
             confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
 
+
             Runnable sendInput = () -> {
                 String text = inputField.getText().trim();
-                if (!text.isEmpty()) {
+                if (isValidActivateWithBattery(text)) {
                     viewFlow.handleInput("y, " + text);
                     closePopup.run();
+                } else {
+                    errorLabel.setText("Invalid input! Format: '<x1> <y1>, ..., battery, <xb1> <yb1> - <n>'");
+                    errorLabel.setVisible(true);
                 }
             };
+
 
             inputField.setOnAction(e -> sendInput.run());
             confirmBtn.setOnAction(e -> sendInput.run());
 
             HBox inputBox = new HBox(10, inputField, confirmBtn);
             inputBox.setAlignment(Pos.CENTER);
-
-            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+            box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
             box.setTranslateX(-20);
         });
     }
@@ -741,11 +828,9 @@ public class FlightScene {
         AnchorPane.setBottomAnchor(box, 180.0);
         AnchorPane.setLeftAnchor(box, 70.0);
 
-        // Attiva overlay
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
-        // Chiudi e ripristina interattività
         Runnable closePopup = () -> {
             overlayLayer.getChildren().clear();
             restoreInteractiveLayers();
@@ -763,13 +848,18 @@ public class FlightScene {
             insertLabel.setTextFill(Color.web("#FFDE69"));
             insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
 
-            Label hintLabel = new Label("Type '<x1> <y1>, <x2> <y2>, ..., battery, <xs1> <ys1> - <num>, ...'");
+            Label hintLabel = new Label("Type '<x1> <y1>, <x2> <y2>, ..., battery, <xb1> <yb1> - <num>, ...'");
             hintLabel.setTextFill(Color.LIGHTGRAY);
             hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
             TextField inputField = new TextField();
             inputField.setPromptText("Ex. 2 3, 4 5, battery, 6 7 - 2");
             inputField.setPrefWidth(250);
+
+            Label errorLabel = new Label();
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            errorLabel.setVisible(false);
 
             Button confirmBtn = new Button("Confirm");
             confirmBtn.setFont(Font.font("Bangers", 14));
@@ -779,9 +869,12 @@ public class FlightScene {
 
             Runnable sendInput = () -> {
                 String text = inputField.getText().trim();
-                if (!text.isEmpty()) {
+                if (isValidActivateWithBattery(text)) {
                     viewFlow.handleInput("y, " + text);
                     closePopup.run();
+                } else {
+                    errorLabel.setText("Invalid input! Format: '<x> <y>, ..., battery, <xb> <yb> - <n>'");
+                    errorLabel.setVisible(true);
                 }
             };
 
@@ -791,9 +884,57 @@ public class FlightScene {
             HBox inputBox = new HBox(10, inputField, confirmBtn);
             inputBox.setAlignment(Pos.CENTER);
 
-            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+            box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
             box.setTranslateX(-20);
         });
+    }
+
+    // used by both activateEngine and Cannons
+    private boolean isValidActivateWithBattery(String input) {
+        String[] parts = input.split("\\s*,\\s*");
+        if (parts.length < 3) return false;
+
+        int batteryIndex = -1;
+
+        for (int i = 0; i < parts.length; i++) {
+            if (parts[i].trim().equalsIgnoreCase("battery")) {
+                batteryIndex = i;
+                break;
+            }
+        }
+
+        if (batteryIndex == -1 || batteryIndex == parts.length - 1) return false;
+
+        // Check coords before 'battery'
+        for (int i = 0; i < batteryIndex; i++) {
+            String[] coords = parts[i].trim().split("\\s+");
+            if (coords.length != 2) return false;
+            try {
+                Integer.parseInt(coords[0]);
+                Integer.parseInt(coords[1]);
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+
+        // Check batteries after 'battery'
+        for (int i = batteryIndex + 1; i < parts.length; i++) {
+            String[] batteryParts = parts[i].trim().split("\\s*-\\s*");
+            if (batteryParts.length != 2) return false;
+
+            String[] coord = batteryParts[0].trim().split("\\s+");
+            if (coord.length != 2) return false;
+
+            try {
+                Integer.parseInt(coord[0]);
+                Integer.parseInt(coord[1]);
+                Integer.parseInt(batteryParts[1].trim());
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -830,11 +971,9 @@ public class FlightScene {
         AnchorPane.setBottomAnchor(box, 180.0);
         AnchorPane.setLeftAnchor(box, 110.0);
 
-        // Attiva overlay e mostra il contenuto
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
-        // Funzione di chiusura del popup e ripristino
         Runnable closePopup = () -> {
             overlayLayer.getChildren().clear();
             restoreInteractiveLayers();
@@ -852,13 +991,18 @@ public class FlightScene {
             insertLabel.setTextFill(Color.web("#FFDE69"));
             insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
 
-            Label hintLabel = new Label("Type '<x> <y>, <x> <y>'");
+            Label hintLabel = new Label("Type '<x> <y>, <xB> <yB>'");
             hintLabel.setTextFill(Color.LIGHTGRAY);
             hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
             TextField inputField = new TextField();
             inputField.setPromptText("Ex. 2 3, 4 5");
             inputField.setPrefWidth(250);
+
+            Label errorLabel = new Label();
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            errorLabel.setVisible(false);
 
             Button confirmBtn = new Button("Confirm");
             confirmBtn.setFont(Font.font("Bangers", 14));
@@ -868,9 +1012,12 @@ public class FlightScene {
 
             Runnable sendInput = () -> {
                 String text = inputField.getText().trim();
-                if (!text.isEmpty()) {
+                if (isValidActivateShield(text)) {
                     viewFlow.handleInput("y, " + text);
                     closePopup.run();
+                } else {
+                    errorLabel.setText("Invalid input! Use format: '<x> <y>, <xB> <yB>' with numbers");
+                    errorLabel.setVisible(true);
                 }
             };
 
@@ -880,33 +1027,63 @@ public class FlightScene {
             HBox inputBox = new HBox(10, inputField, confirmBtn);
             inputBox.setAlignment(Pos.CENTER);
 
-            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+            box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
             box.setTranslateX(-50);
         });
     }
 
+    private boolean isValidActivateShield(String input) {
+        String[] parts = input.split("\\s*,\\s*");
+        if (parts.length != 2) return false;
+
+        try {
+            String[] shieldCoord = parts[0].trim().split("\\s+");
+            String[] batteryCoord = parts[1].trim().split("\\s+");
+
+            if (shieldCoord.length != 2 || batteryCoord.length != 2) return false;
+
+            Integer.parseInt(shieldCoord[0]);
+            Integer.parseInt(shieldCoord[1]);
+            Integer.parseInt(batteryCoord[0]);
+            Integer.parseInt(batteryCoord[1]);
+
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+
     /**
-     * Ask from where to remove humans.
-     */
+     * Ask you to put the coordinates of the cabins to remove Humans.
+     * */
     public void showHumanCoordInput() {
         VBox box = new VBox(10);
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
         box.setMaxWidth(400);
 
-        Label insertLabel = new Label("Insert the coordinates of the cabin from which to remove the crew members");
+        Label insertLabel = new Label("Insert the coordinates of the cabins to remove the number of crew members indicated");
         insertLabel.setTextFill(Color.web("#FFDE69"));
         insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
         insertLabel.setTextAlignment(TextAlignment.CENTER);
         insertLabel.setWrapText(true);
 
-        Label hintLabel = new Label("Type '<x> <y>, <x> <y>'");
+        Label hintLabel = new Label("Type '<x1> <y1> - <number>, ...'");
         hintLabel.setTextFill(Color.LIGHTGRAY);
         hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+        hintLabel.setWrapText(true);
 
         TextField inputField = new TextField();
-        inputField.setPromptText("Ex. 2 3, 4 5");
-        inputField.setPrefWidth(250);
+        inputField.setPromptText("Ex. 2 3 - 1, 4 5 - 2");
+        inputField.setPrefWidth(300);
+
+        // Errore visibile solo se serve
+        Label errorLabel = new Label();
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        errorLabel.setVisible(false);
 
         Button confirmBtn = new Button("Confirm");
         confirmBtn.setFont(Font.font("Bangers", 14));
@@ -917,34 +1094,57 @@ public class FlightScene {
         HBox inputBox = new HBox(10, inputField, confirmBtn);
         inputBox.setAlignment(Pos.CENTER);
 
-        box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+        box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
 
         AnchorPane popupContent = new AnchorPane(box);
         AnchorPane.setBottomAnchor(box, 150.0);
-        AnchorPane.setLeftAnchor(box, 100.0);
+        AnchorPane.setLeftAnchor(box, 80.0);
 
-        // Mostra overlay per bloccare interazione
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
-        // Funzione di chiusura
         Runnable closePopup = () -> {
             overlayLayer.getChildren().clear();
             restoreInteractiveLayers();
         };
 
-        // Azione invio testo
         Runnable sendInput = () -> {
             String text = inputField.getText().trim();
             if (!text.isEmpty()) {
-                viewFlow.handleInput("y, " + text);
-                closePopup.run();
+                if (isValidHumanCoord(text)) {
+                    viewFlow.handleInput(text);
+                    closePopup.run();
+                } else {
+                    errorLabel.setText("Invalid input format! Try again.");
+                    errorLabel.setVisible(true);
+                }
             }
         };
 
         inputField.setOnAction(e -> sendInput.run());
         confirmBtn.setOnAction(e -> sendInput.run());
     }
+
+    private boolean isValidHumanCoord(String input) {
+        String[] groups = input.split("\\s*,\\s*");
+        for (String group : groups) {
+            String[] parts = group.split("\\s*-\\s*");
+            if (parts.length != 2) return false;
+
+            String[] coord = parts[0].trim().split("\\s+");
+            if (coord.length != 2) return false;
+
+            try {
+                Integer.parseInt(coord[0].trim());
+                Integer.parseInt(coord[1].trim());
+                Integer.parseInt(parts[1].trim());
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     /**
      * Show the good and ask if you want to gain it and where.
@@ -982,10 +1182,9 @@ public class FlightScene {
         box.getChildren().addAll(confirm, goodView, buttons);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setBottomAnchor(box, 150.0);
         AnchorPane.setLeftAnchor(box, 120.0);
 
-        // Blocca gli altri layer temporaneamente
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
@@ -1026,30 +1225,22 @@ public class FlightScene {
             TextField xField = new TextField();
             xField.setPromptText("x");
             xField.setPrefWidth(50);
-            xField.textProperty().addListener((obs, oldVal, newVal) -> {
-                if (!newVal.matches("\\d*")) xField.setText(newVal.replaceAll("[^\\d]", ""));
-            });
 
             TextField yField = new TextField();
             yField.setPromptText("y");
             yField.setPrefWidth(50);
-            yField.textProperty().addListener((obs, oldVal, newVal) -> {
-                if (!newVal.matches("\\d*")) yField.setText(newVal.replaceAll("[^\\d]", ""));
-            });
 
             TextField posField = new TextField();
             posField.setPromptText("pos");
             posField.setPrefWidth(50);
-            posField.textProperty().addListener((obs, oldVal, newVal) -> {
-                if (!newVal.matches("\\d*")) posField.setText(newVal.replaceAll("[^\\d]", ""));
-            });
+
+            Label errorLabel = new Label("Invalid input: please enter valid numbers ≥ 0");
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            errorLabel.setVisible(false);
 
             HBox inputBox = new HBox(10, xLabel, xField, yLabel, yField, posLabel, posField);
             inputBox.setAlignment(Pos.CENTER);
-
-            Label errorLabel = new Label("Invalid coordinates or position");
-            errorLabel.setTextFill(Color.RED);
-            errorLabel.setVisible(false);
 
             Button cancelBtn = new Button("Undo");
             cancelBtn.setFont(Font.font("Bangers", 14));
@@ -1077,20 +1268,10 @@ public class FlightScene {
                 String yText = yField.getText().trim();
                 String posText = posField.getText().trim();
 
-                try {
-                    int x = Integer.parseInt(xText);
-                    int y = Integer.parseInt(yText);
-                    int pos = Integer.parseInt(posText);
-
-                    if (x < 0 || y < 0 || pos < 0) {
-                        errorLabel.setVisible(true);
-                        return;
-                    }
-
-                    errorLabel.setVisible(false);
-                    viewFlow.handleInput("y, " + x + " " + y + ", " + pos);
+                if (isValidPlotGoodInput(xText, yText, posText)) {
+                    viewFlow.handleInput("y, " + xText + " " + yText + ", " + posText);
                     closePopup.run();
-                } catch (NumberFormatException ex) {
+                } else {
                     errorLabel.setVisible(true);
                 }
             });
@@ -1098,6 +1279,20 @@ public class FlightScene {
             posField.setOnAction(e -> sendBtn.fire());
         });
     }
+
+
+    private boolean isValidPlotGoodInput(String xText, String yText, String posText) {
+        try {
+            int x = Integer.parseInt(xText.trim());
+            int y = Integer.parseInt(yText.trim());
+            int pos = Integer.parseInt(posText.trim());
+
+            return x >= 0 && y >= 0 && pos >= 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
 
     /**
      * Make player decide on which planet to land.
@@ -1107,34 +1302,17 @@ public class FlightScene {
         mainBox.setAlignment(Pos.CENTER);
         mainBox.setPadding(new Insets(10));
 
-        Label confirm = new Label("Would you like to land on a planet?");
-        confirm.setTextFill(Color.web("#FFDE69"));
-        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
+        Label chooseLabel = new Label("Choose a planet to land on:");
+        chooseLabel.setTextFill(Color.web("#FFDE69"));
+        chooseLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
 
-        Button yes = new Button("YES");
-        yes.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-        yes.setTextFill(Color.WHITE);
-        yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
-        yes.setCursor(Cursor.HAND);
-        yes.setPrefWidth(100);
-
-        Button no = new Button("NO");
-        no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-        no.setTextFill(Color.WHITE);
-        no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
-        no.setCursor(Cursor.HAND);
-        no.setPrefWidth(100);
-
-        HBox buttons = new HBox(10, yes, no);
-        buttons.setAlignment(Pos.CENTER);
-
-        mainBox.getChildren().addAll(confirm, buttons);
+        VBox planetListBox = new VBox(8);
+        planetListBox.setAlignment(Pos.CENTER);
 
         AnchorPane popupContent = new AnchorPane(mainBox);
         AnchorPane.setBottomAnchor(mainBox, 180.0);
         AnchorPane.setLeftAnchor(mainBox, 110.0);
 
-        // Applica overlay
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
@@ -1143,56 +1321,60 @@ public class FlightScene {
             restoreInteractiveLayers();
         };
 
-        no.setOnAction(ev -> {
+        for (int i = 0; i < planets.size(); i++) {
+            Trucker t = planets.get(i);
+            String status = (t == null) ? "free" : t.getNickname();
+
+            Text planetLabel = new Text("Planet " + (i + 1) + ": ");
+            planetLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+            planetLabel.setFill(Color.WHITE);
+
+            Text statusText = new Text(status);
+            statusText.setFont(Font.font("Bangers", FontWeight.NORMAL, 16));
+            statusText.setFill(t == null ? Color.LIGHTGREEN : Color.RED);
+
+            Button selectBtn = new Button("Land");
+            selectBtn.setFont(Font.font("Bangers", 13));
+            selectBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            selectBtn.setTextFill(Color.BLACK);
+            selectBtn.setCursor(Cursor.HAND);
+            selectBtn.setPrefWidth(80);
+            selectBtn.setDisable(t != null); // disable if occupied
+
+            int finalI = i;
+            selectBtn.setOnAction(e -> {
+                viewFlow.handleInput(String.valueOf(finalI));
+                closePopup.run();
+            });
+
+            HBox line = new HBox(10, selectBtn, planetLabel, statusText);
+            line.setAlignment(Pos.CENTER);
+            planetListBox.getChildren().add(line);
+        }
+
+        // === Bottone "Don't land" ===
+        Button dontLandBtn = new Button("Don't land");
+        dontLandBtn.setFont(Font.font("Bangers", 16));
+        dontLandBtn.setTextFill(Color.BLACK);
+        dontLandBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+        dontLandBtn.setCursor(Cursor.HAND);
+        dontLandBtn.setPrefWidth(160);
+        dontLandBtn.setOnAction(ev -> {
             viewFlow.handleInput("-1");
             closePopup.run();
         });
 
-        yes.setOnAction(ev -> {
-            mainBox.getChildren().clear();
+        // === Composizione finale ===
+        mainBox.getChildren().addAll(chooseLabel, planetListBox, dontLandBtn);
+        mainBox.setTranslateX(55);
+        if(planets.size() == 2) {
+            mainBox.setTranslateY(60);
+        } else if(planets.size() == 3) {
+            mainBox.setTranslateY(90);
+        } else {
+            mainBox.setTranslateY(130);
+        }
 
-            Label chooseLabel = new Label("Choose a planet to land on:");
-            chooseLabel.setTextFill(Color.web("#FFDE69"));
-            chooseLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
-
-            VBox planetListBox = new VBox(8);
-            planetListBox.setAlignment(Pos.CENTER);
-
-            for (int i = 0; i < planets.size(); i++) {
-                Trucker t = planets.get(i);
-                String status = (t == null) ? "free" : t.getNickname();
-
-                Text planetLabel = new Text("Planet " + (i + 1) + ": ");
-                planetLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-                planetLabel.setFill(Color.WHITE);
-
-                Text statusText = new Text(status);
-                statusText.setFont(Font.font("Bangers", FontWeight.NORMAL, 16));
-                statusText.setFill(t == null ? Color.LIGHTGREEN : Color.LIGHTCORAL);
-
-                Button selectBtn = new Button("Land");
-                selectBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 13));
-                selectBtn.setTextFill(Color.BLACK);
-                selectBtn.setStyle("-fx-background-color: #FFDE69;");
-                selectBtn.setCursor(Cursor.HAND);
-                selectBtn.setPrefWidth(80);
-                selectBtn.setDisable(t != null); // disable if occupied
-
-                int finalI = i;
-                selectBtn.setOnAction(e -> {
-                    viewFlow.handleInput(String.valueOf(finalI));
-                    closePopup.run();
-                });
-
-                HBox line = new HBox(10, selectBtn, planetLabel, statusText);
-                line.setAlignment(Pos.CENTER);
-                planetListBox.getChildren().add(line);
-            }
-
-            mainBox.getChildren().addAll(chooseLabel, planetListBox);
-            mainBox.setTranslateX(55);
-            mainBox.setTranslateY(50);
-        });
     }
 
     /**
@@ -1213,8 +1395,8 @@ public class FlightScene {
         container.getChildren().add(continueBtn);
 
         AnchorPane popupContent = new AnchorPane(container);
-        AnchorPane.setBottomAnchor(container, 150.0);
-        AnchorPane.setLeftAnchor(container, 100.0);
+        AnchorPane.setBottomAnchor(container, 180.0);
+        AnchorPane.setLeftAnchor(container, 150.0);
 
         // Abilita overlay (blocca il mouse dietro)
         overlayLayer.setMouseTransparent(false);
@@ -1249,8 +1431,8 @@ public class FlightScene {
         container.getChildren().add(continueBtn);
 
         AnchorPane popupContent = new AnchorPane(container);
-        AnchorPane.setBottomAnchor(container, 150.0); // regola la posizione come preferisci
-        AnchorPane.setLeftAnchor(container, 100.0);
+        AnchorPane.setBottomAnchor(container, 180.0); // regola la posizione come preferisci
+        AnchorPane.setLeftAnchor(container, 150.0);
 
         // Abilita overlay per bloccare interazioni sotto
         overlayLayer.setMouseTransparent(false);
@@ -1322,13 +1504,18 @@ public class FlightScene {
         insertLabel.setTextAlignment(TextAlignment.CENTER);
         insertLabel.setWrapText(true);
 
-        Label hintLabel = new Label("Type '<x> <y> - <quantity>'");
+        Label hintLabel = new Label("Type '<x> <y> - <quantity>, <x2> <y2> - <quantity>, ...'");
         hintLabel.setTextFill(Color.LIGHTGRAY);
         hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
         TextField inputField = new TextField();
-        inputField.setPromptText("Ex. 2 3 - 1");
-        inputField.setPrefWidth(250);
+        inputField.setPromptText("Ex. 2 3 - 1, 4 5 - 2");
+        inputField.setPrefWidth(300);
+
+        Label errorLabel = new Label("Invalid input. Format: <x> <y> - <qty>, ... (all ≥ 0)");
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        errorLabel.setVisible(false);
 
         Button confirmBtn = new Button("Confirm");
         confirmBtn.setFont(Font.font("Bangers", 14));
@@ -1339,7 +1526,7 @@ public class FlightScene {
         HBox inputBox = new HBox(10, inputField, confirmBtn);
         inputBox.setAlignment(Pos.CENTER);
 
-        box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+        box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
 
         AnchorPane popupContent = new AnchorPane(box);
         AnchorPane.setBottomAnchor(box, 170.0);
@@ -1355,9 +1542,12 @@ public class FlightScene {
 
         Runnable sendInput = () -> {
             String text = inputField.getText().trim();
-            if (!text.isEmpty()) {
+            if (isValidRemoveBatteriesInput(text)) {
+                errorLabel.setVisible(false);
                 viewFlow.handleInput(text);
                 closePopup.run();
+            } else {
+                errorLabel.setVisible(true);
             }
         };
 
@@ -1365,61 +1555,153 @@ public class FlightScene {
         confirmBtn.setOnAction(e -> sendInput.run());
     }
 
+    private boolean isValidRemoveBatteriesInput(String input) {
+        if (input == null || input.trim().isEmpty()) return false;
+
+        String[] entries = input.split("\\s*,\\s*");
+        for (String entry : entries) {
+            String[] parts = entry.trim().split("\\s*-\\s*");
+            if (parts.length != 2) return false;
+
+            String[] coords = parts[0].trim().split("\\s+");
+            if (coords.length != 2) return false;
+
+            try {
+                int x = Integer.parseInt(coords[0].trim());
+                int y = Integer.parseInt(coords[1].trim());
+                int qty = Integer.parseInt(parts[1].trim());
+
+                if (x < 0 || y < 0 || qty < 0) return false;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public void updateGoodsListToRemove(ArrayList<Goods> goodsList) {
+        this.goodsList = goodsList;
+    }
+
     /**
      * Ask from where to remove the good.
      */
     public void showRemoveGoodsInput() {
-        VBox box = new VBox(10);
-        box.setAlignment(Pos.CENTER);
-        box.setPadding(new Insets(10));
+        // === Titolo fisso ===
+        Label chooseLabel = new Label("Select the goods you want to remove:");
+        chooseLabel.setTextFill(Color.web("#FFDE69"));
+        chooseLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
 
-        Label insertLabel = new Label("Insert the index of the good you want to remove");
-        insertLabel.setTextFill(Color.web("#FFDE69"));
-        insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-        insertLabel.setTextAlignment(TextAlignment.CENTER);
-        insertLabel.setWrapText(true);
+        // === Griglia dei goods (2 colonne) ===
+        GridPane goodsGrid = new GridPane();
+        goodsGrid.setAlignment(Pos.CENTER);
+        goodsGrid.setHgap(30);
+        goodsGrid.setVgap(12);
 
-        Label hintLabel = new Label("Type '<index>'");
-        hintLabel.setTextFill(Color.LIGHTGRAY);
-        hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
+        // === Scroll pane che contiene la griglia ===
+        ScrollPane scrollPane = new ScrollPane(goodsGrid);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 
-        TextField inputField = new TextField();
-        inputField.setPromptText("Ex. 2");
-        inputField.setPrefWidth(200);
-
+        // === Bottone di conferma ===
         Button confirmBtn = new Button("Confirm");
-        confirmBtn.setFont(Font.font("Bangers", 14));
+        confirmBtn.setFont(Font.font("Bangers", 16));
         confirmBtn.setTextFill(Color.BLACK);
-        confirmBtn.setCursor(Cursor.HAND);
         confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        confirmBtn.setCursor(Cursor.HAND);
+        confirmBtn.setPrefWidth(160);
 
-        HBox inputBox = new HBox(10, inputField, confirmBtn);
-        inputBox.setAlignment(Pos.CENTER);
+        // === VBox centrale con scroll e bottone ===
+        VBox centerBox = new VBox(15, chooseLabel, scrollPane, confirmBtn);
+        centerBox.setAlignment(Pos.TOP_CENTER);
+        centerBox.setPadding(new Insets(0));
 
-        box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+        // === Overlay principale ===
+        AnchorPane popupContent = new AnchorPane();
+        AnchorPane.setTopAnchor(centerBox, 610.0);   // Titolo fisso in alto
+        AnchorPane.setLeftAnchor(centerBox, 100.0);
 
-        AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 170.0);
-        AnchorPane.setLeftAnchor(box, 90.0);
+        popupContent.getChildren().add(centerBox);
 
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
+        // === Chiusura popup ===
         Runnable closePopup = () -> {
             overlayLayer.getChildren().clear();
             restoreInteractiveLayers();
         };
 
-        Runnable sendInput = () -> {
-            String text = inputField.getText().trim();
-            if (!text.isEmpty()) {
-                viewFlow.handleInput(text);
+        // === Costruzione della lista dei beni ===
+        StringBuilder selectedIndexes = new StringBuilder();
+
+        for (int i = 0; i < goodsList.size(); i++) {
+            Goods g = goodsList.get(i);
+            int x = g.getX();
+            int y = g.getY();
+
+            String color = g.getColor().toLowerCase();
+            Image img = switch (color) {
+                case "red" -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/redgood.png")).toExternalForm());
+                case "yellow" -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/yellowgood.png")).toExternalForm());
+                case "green" -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/greengood.png")).toExternalForm());
+                case "blue" -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/bluegood.png")).toExternalForm());
+                default -> null;
+            };
+
+            ImageView icon = new ImageView(img);
+            icon.setFitWidth(35);
+            icon.setPreserveRatio(true);
+
+            Label coordLabel = new Label("at [" + x + "," + y + "]");
+            coordLabel.setFont(Font.font("Bangers", 16));
+            coordLabel.setTextFill(Color.WHITE);
+
+            Button selectBtn = new Button("Remove");
+            selectBtn.setFont(Font.font("Bangers", 13));
+            selectBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            selectBtn.setTextFill(Color.BLACK);
+            selectBtn.setCursor(Cursor.HAND);
+            selectBtn.setPrefWidth(80);
+
+            int finalI = i;
+            selectBtn.setOnAction(e -> {
+                selectBtn.setDisable(true);
+                selectedIndexes.append(finalI).append(", ");
+            });
+
+            HBox line = new HBox(10, selectBtn, icon, coordLabel);
+            line.setAlignment(Pos.CENTER_LEFT);
+
+            int row = i / 2;
+            int col = i % 2;
+            goodsGrid.add(line, col, row);
+        }
+
+        // === Azione del bottone di conferma ===
+        confirmBtn.setOnAction(e -> {
+            if (!selectedIndexes.isEmpty()) {
+                String result = selectedIndexes.toString().replaceAll(",\\s*$", "");
+                viewFlow.handleInput(result);
                 closePopup.run();
             }
-        };
+        });
+    }
 
-        inputField.setOnAction(e -> sendInput.run());
-        confirmBtn.setOnAction(e -> sendInput.run());
+    private boolean isValidRemoveGoodsInput(String input) {
+        if (input == null || input.trim().isEmpty()) return false;
+
+        String[] tokens = input.split("\\s*,\\s*");
+        for (String token : tokens) {
+            try {
+                int index = Integer.parseInt(token.trim());
+                if (index < 0) return false;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -1450,7 +1732,6 @@ public class FlightScene {
 
         HBox buttons = new HBox(10, yes, no);
         buttons.setAlignment(Pos.CENTER);
-
         box.getChildren().addAll(confirm, buttons);
 
         AnchorPane popupContent = new AnchorPane(box);
@@ -1480,13 +1761,18 @@ public class FlightScene {
             insertLabel.setMaxWidth(500);
             insertLabel.setWrapText(true);
 
-            Label hintLabel = new Label("Type '<x1> <y1> - <value1>, <x2> <y2> - <value2>'");
+            Label hintLabel = new Label("Type '<x1> <y1> - <val1>, <x2> <y2> - <val2>'");
             hintLabel.setTextFill(Color.LIGHTGRAY);
             hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
             TextField inputField = new TextField();
             inputField.setPromptText("Ex. 1 2 - 3, 5 6 - 1");
             inputField.setPrefWidth(250);
+
+            Label errorLabel = new Label("Invalid format. Try: 'x y - val, x y - val'");
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            errorLabel.setVisible(false);
 
             Button confirmBtn = new Button("Confirm");
             confirmBtn.setFont(Font.font("Bangers", 14));
@@ -1496,9 +1782,12 @@ public class FlightScene {
 
             Runnable sendInput = () -> {
                 String text = inputField.getText().trim();
-                if (!text.isEmpty()) {
+                if (isValidRearrangeInput(text)) {
+                    errorLabel.setVisible(false);
                     viewFlow.handleInput("y, " + text);
                     closePopup.run();
+                } else {
+                    errorLabel.setVisible(true);
                 }
             };
 
@@ -1508,10 +1797,37 @@ public class FlightScene {
             HBox inputBox = new HBox(10, inputField, confirmBtn);
             inputBox.setAlignment(Pos.CENTER);
 
-            box.getChildren().addAll(insertLabel, hintLabel, inputBox);
+            box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
             box.setTranslateX(-50);
             box.setTranslateY(40);
         });
+    }
+
+    private boolean isValidRearrangeInput(String input) {
+        if (input == null || input.trim().isEmpty()) return false;
+
+        String[] parts = input.split("\\s*,\\s*");
+        if (parts.length != 2) return false;
+
+        for (String part : parts) {
+            String[] split = part.trim().split("\\s*-\\s*");
+            if (split.length != 2) return false;
+
+            String[] coords = split[0].trim().split("\\s+");
+            if (coords.length != 2) return false;
+
+            try {
+                int x = Integer.parseInt(coords[0].trim());
+                int y = Integer.parseInt(coords[1].trim());
+                int val = Integer.parseInt(split[1].trim());
+
+                if (x < 0 || y < 0 || val < 0) return false;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -1581,11 +1897,11 @@ public class FlightScene {
         box.setPadding(new Insets(10));
 
         Label diceLabel = new Label("🎲 Roll the dices!");
-        diceLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 35));
+        diceLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
         diceLabel.setTextFill(Color.web("#FFDE69"));
 
         Button rollButton = new Button("Roll Dices");
-        rollButton.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+        rollButton.setFont(Font.font("Bangers", 18));
         rollButton.setTextFill(Color.BLACK);
         rollButton.setCursor(Cursor.HAND);
         rollButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
@@ -1593,8 +1909,8 @@ public class FlightScene {
         box.getChildren().addAll(diceLabel, rollButton);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 180.0);
-        AnchorPane.setLeftAnchor(box, 105.0);
+        AnchorPane.setBottomAnchor(box, 120.0);
+        AnchorPane.setLeftAnchor(box, 200.0);
 
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
@@ -1749,7 +2065,7 @@ public class FlightScene {
         sorted.sort((a, b) -> b.getValue().compareTo(a.getValue())); // ordine decrescente
 
         // Salva la posizione massima (del primo)
-        int maxPosition = sorted.get(0).getValue();
+        int maxPosition = sorted.getFirst().getValue();
 
         // Contenitore verticale
         VBox trackBox = new VBox(10);
@@ -1771,18 +2087,18 @@ public class FlightScene {
             int current = sorted.get(i).getValue();
 
             Text posText = new Text(pos + "°  ");
-            posText.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+            posText.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
             posText.setFill(Color.WHITE);
 
             Text nameText = new Text(name);
-            nameText.setFont(Font.font("Bangers", FontWeight.NORMAL, 20));
+            nameText.setFont(Font.font("Bangers", FontWeight.NORMAL, 18));
             nameText.setFill(Color.WHITE);
 
             Text daysText = new Text();
             if (i > 0) {
                 int diff = maxPosition - current;
                 daysText.setText("  (+" + diff + " days)");
-                daysText.setFont(Font.font("Bangers", FontWeight.NORMAL, 15));
+                daysText.setFont(Font.font("Bangers", FontWeight.NORMAL, 14));
                 daysText.setFill(Color.WHITE);
             }
 
@@ -1881,6 +2197,7 @@ public class FlightScene {
         cannonLabel.setText(": " + viewFlow.getCannonPower());
         engineLabel.setText(": " + viewFlow.getEnginePower());
         creditLabel.setText(": " + viewFlow.getCredits());
+        lostLabel.setText(": " + viewFlow.getLostComponents());
 
         for (Map.Entry<String, Integer> entry : viewFlow.getGoodsByColor().entrySet()) {
             String color = entry.getKey().toLowerCase();
@@ -1912,9 +2229,9 @@ public class FlightScene {
 
         // === TITOLO CENTRATO ===
         Label title = new Label("Components details:");
-        title.setTextFill(Color.web("#FFDE69"));
         title.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
         title.setTextAlignment(TextAlignment.LEFT);
+        title.setStyle("-fx-text-color: #FFDE69;");
 
         VBox titleBox = new VBox(title);
         titleBox.setAlignment(Pos.CENTER_LEFT);
@@ -1926,22 +2243,24 @@ public class FlightScene {
         // Componenti della nave
         Trucker t = new Trucker("n", PlayerColors.BLUE);
         t.initSpaceShip(2);
-        Component[][] layout = viewFlow.getShip();
+        Component[][] layout = viewFlow.getShip().getComponents();
+        StringBuilder desc = new StringBuilder();
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[i].length; j++) {
                 Component c = layout[i][j];
-                if (c != null && !"Empty Space".equals(c.getType())
-                        && ("Load".equals(c.getType()) || "Battery Storage".equals(c.getType()) || "Cabin".equals(c.getType()))) {
-                    String desc = formatComponent(c, i, j);
-                    Label l = new Label(desc);
-                    l.setTextFill(Color.WHITE);
-                    l.setFont(Font.font("Bangers", 18));
-                    l.setTextAlignment(TextAlignment.LEFT);
-                    l.setWrapText(true);
-                    textBox.getChildren().add(l);
+                if (c != null && !"Empty Space".equals(c.getType()) && ("Load".equals(c.getType()) || "Battery Storage".equals(c.getType()) || "Cabin".equals(c.getType()) || "Cannon".equals(c.getType()) || "Engine".equals(c.getType()) || "Shield".equals(c.getType()))) {
+                    if(!formatComponent(c, i, j).isBlank()) {
+                        desc.append(formatComponent(c, i, j)).append("\n");
+                    }
                 }
             }
         }
+        Label l = new Label(desc.toString());
+        l.setTextFill(Color.WHITE);
+        l.setFont(Font.font("Bangers", 18));
+        l.setTextAlignment(TextAlignment.LEFT);
+        l.setWrapText(true);
+        textBox.getChildren().add(l);
 
         // === CREA E POSIZIONA LA GRIGLIA NELLO STESSO MODO ===
         GridPane overlayGrid = new GridPane();
@@ -1989,15 +2308,15 @@ public class FlightScene {
         scroll.setFitToWidth(true);
         scroll.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
         scroll.setPadding(new Insets(20));
-        scroll.setMaxWidth(400);
+        scroll.setMaxWidth(600);
         scroll.setMaxHeight(500);
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         StackPane overlayContainer = new StackPane(overlay, overlayGrid, scroll);
         overlayContainer.setId("moreOverlay");
         StackPane.setAlignment(scroll, Pos.CENTER_LEFT);
-        StackPane.setMargin(scroll, new Insets(0, 0, 0, 180));
+        StackPane.setMargin(scroll, new Insets(0, 0, 0, 120));
         StackPane.setAlignment(overlayGrid, Pos.TOP_RIGHT);
 
         root.setOnMouseClicked(e -> root.getChildren().remove(overlayContainer));
@@ -2061,6 +2380,31 @@ public class FlightScene {
                     details.append(" is empty");
                 }
             }
+            case Cannon cannon -> {
+                if(cannon.getIsDouble()) {
+                    if(cannon.getIsActive()) {
+                        details.append("[").append(i).append(",").append(j).append("] DOUBLE CANNON is active");
+                    } else {
+                        details.append("[").append(i).append(",").append(j).append("] DOUBLE CANNON is inactive");
+                    }
+                }
+            }
+            case Engine engine -> {
+                if(engine.getIsDouble()) {
+                    if(engine.getIsActive()) {
+                        details.append("[").append(i).append(",").append(j).append("] DOUBLE ENGINE is active");
+                    } else {
+                        details.append("[").append(i).append(",").append(j).append("] DOUBLE ENGINE is inactive");
+                    }
+                }
+            }
+            case Shield shield -> {
+                if(shield.getIsActive()) {
+                    details.append("[").append(i).append(",").append(j).append("] SHIELD is active");
+                } else {
+                    details.append("[").append(i).append(",").append(j).append("] SHIELD is inactive");
+                }
+            }
             default -> {
             }
         }
@@ -2076,6 +2420,37 @@ public class FlightScene {
             root.getChildren().remove(rollDiceResultBox);
             rollDiceResultBox = null;
         }
+    }
+
+    public void showError(String message) {
+        double width = root.getWidth();
+        double height = root.getHeight();
+
+        // Sfondo trasparente NON interattivo
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlay.setMouseTransparent(true);
+
+        // Testo di errore visibile
+        Label errorLabel = new Label(message);
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
+        errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
+
+        // Contenitore popup
+        StackPane popup = new StackPane(overlay, errorLabel);
+        popup.setMouseTransparent(true);
+        StackPane.setAlignment(errorLabel, Pos.CENTER);
+
+        Platform.runLater(() -> {
+            if (!root.getChildren().contains(popup)) {
+                root.getChildren().add(popup);
+
+                PauseTransition delay = new PauseTransition(Duration.seconds(3));
+                delay.setOnFinished(e -> root.getChildren().remove(popup));
+                delay.play();
+            }
+        });
     }
 
 

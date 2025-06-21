@@ -70,7 +70,7 @@ public interface UI {
 
     void flightScene(FlightStartEvent event);
 
-    void showCurrCondition(CurrentCondition event);
+    void showCurrCondition(CurrentCondition event, boolean isLeader);
 
     void cardFinished(CardFinished event);
 
@@ -148,6 +148,6 @@ public interface UI {
     //NON ELIMINARE
     void showOtherShipLayout(String nickname, Component[][] layout);
 
-
+    void updateGoodsListToRemove(ArrayList<Goods> goodsList);
 
 }
