@@ -24,6 +24,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(AvailableColorsEvent event) {
+        viewFlow.setViewState(ViewFlow.ViewState.START);
         ui.welcomeScene(event);
     }
 
@@ -700,7 +701,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(FirstConnectionEvent event) {
-
+        ui.showInsertNumPlayers();
+        viewFlow.setViewState(ViewFlow.ViewState.FIRST);
     }
 
     @Override
@@ -768,7 +770,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(ChooseResumeEvent chooseResumeEvent) {
-        ui.showMessage(chooseResumeEvent.getMessage());
+        viewFlow.setViewState(ViewFlow.ViewState.CHOOSE_OLD);
+        ui.showChooseResume();
     }
 
     @Override

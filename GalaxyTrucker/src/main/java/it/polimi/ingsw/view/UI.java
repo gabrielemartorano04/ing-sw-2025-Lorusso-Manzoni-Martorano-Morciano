@@ -26,6 +26,8 @@ public interface UI {
 
     // WELCOME + CREATION
 
+    void showChooseResume();
+
     void showInsertNumPlayers();
 
     void welcomeScene(AvailableColorsEvent event);
