@@ -280,8 +280,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(CurrentCondition event) {
+        boolean isLeader = false;
         if(event.getNickname().equals(viewFlow.getNickname())){
             viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
+            isLeader = true;
         }
         else {
             if(event.getWeakestTrucker()!=null){
@@ -296,7 +298,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
 
         handleDeath(event.getTruckersRemoved());
-        ui.showCurrCondition(event);
+        ui.showCurrCondition(event, isLeader);
         ui.showInputFormat(viewFlow.getParserFlightState());
     }
 
