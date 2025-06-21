@@ -596,6 +596,19 @@ public class TUI implements UI {
         return "Shoot " + index + " (" + sizeText + ") arriving " + dirText + "\n";
     }
 
+    @Override
+    public void updateGoodsListToRemove(ArrayList<Goods> goodsList) {
+        if (goodsList == null || goodsList.isEmpty()) {
+            System.out.println("No goods available to remove.");
+            return;
+        }
+
+        System.out.println("Goods available for removal:");
+        for (int i = 0; i < goodsList.size(); i++) {
+            Goods g = goodsList.get(i);
+            System.out.println("Good " + i + ": " + g.getColor() + ", " + g.getX() + ", " + g.getY());
+        }
+    }
 
     @Override
     public void showStardustCard(StarDustEvent event) {

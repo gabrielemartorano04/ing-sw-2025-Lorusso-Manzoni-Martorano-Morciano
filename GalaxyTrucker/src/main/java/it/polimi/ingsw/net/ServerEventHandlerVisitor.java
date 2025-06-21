@@ -638,6 +638,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
             viewFlow.setShip(event.getShip());
+            ui.updateGoodsListToRemove(event.getGoodsList());
             ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -683,6 +684,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(ShowOtherShipResponse event) {
         ui.showOtherShipLayout(event.getNickname(), event.getSpaceship());
+        if(viewFlow.getViewState()== ViewFlow.ViewState.FLIGTH)
+            ui.showInputFormat(viewFlow.getParserFlightState());
     }
 
     @Override
