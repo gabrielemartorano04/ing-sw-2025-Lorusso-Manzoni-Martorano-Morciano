@@ -194,6 +194,7 @@ public class AbandonedStation extends Card implements Serializable {
                 throw e;
             }
             if (currGood == goods.size() - 1) { // ci va il -1 qui!!!
+                System.out.println("Entro ");
                 cardState = CardState.REARRANGE;
                 return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
             } else {
@@ -201,7 +202,7 @@ public class AbandonedStation extends Card implements Serializable {
                 //TODO: Check che non ci sia loop infinito
                 do {
                     if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
-                        cardState = CardState.CHOOSE_TO_GAIN;
+                        cardState = CardState.GOODSTOADD;
                         return new PlotGood(true, truckerThatHasDecided.getNickname(), truckerThatHasDecided.getSpaceShip(),goods.get(currGood));
                     } else {
                         currGood++;
