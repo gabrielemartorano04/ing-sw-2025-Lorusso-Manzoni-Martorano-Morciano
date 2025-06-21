@@ -143,7 +143,6 @@ public class AbandonedStation extends Card implements Serializable {
         }
         if(landing) {
             this.truckerThatHasDecided = Game.getIstance().getTrucker(indexOfCurrTrucker);
-            //TODO: TEST CHE NON CI SIA UN LOOP INFINITO
             do {
                 if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
                     cardState = CardState.GOODSTOADD;

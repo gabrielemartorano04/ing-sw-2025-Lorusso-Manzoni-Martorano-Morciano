@@ -233,7 +233,6 @@ public class Smugglers extends Card implements Serializable {
                 return new RearrangeEvent(true, this.winnerTrucker.getNickname());
             } else {
                 currGoodIndex++;
-                //TODO: Check che non ci sia loop infinito
                 do {
                     if (Game.getIstance().getBank().getGoodsInBank(goodsGained[currGoodIndex].getValue()) >= 1) {
                         cardState = CardState.GOODSTOADD;

@@ -226,8 +226,6 @@ public class Game implements Serializable {
         return components;
     }
 
-
-    //TODO CREARE DECK IN BASE A LIVELLO
     /**
      * Creates stacks of cards from the deck.
      */

@@ -58,52 +58,6 @@ public class AbandonedShip extends Card implements Serializable {
         this.state = CardState.LAND;
     }
 
-// TODO tutto da rimuovere
-
-//    /**
-//     * Returns the number of days of flight to lose
-//     * @return days to lose
-//     */
-//    public int getDays() {
-//        return days;
-//    }
-//
-//    /**
-//     * Returns the number of cosmic credits to gain
-//     * @return credit to gain
-//     */
-//    public int getCredits() {
-//        return credits;
-//    }
-//
-//    /**
-//     * Returns the number of crew members to lose
-//     * @return crew members to lose
-//     */
-//    public int getNumHuman() {
-//        return numHuman;
-//    }
-//
-//    public CardState getCardState() {
-//        return state;
-//    }
-//
-//    public int getIndexOfCurrTrucker() {
-//        return indexOfCurrTrucker;
-//    }
-//
-//    public CardState getState() {
-//        return state;
-//    }
-//
-//    public void setState(CardState state) {
-//        this.state = state;
-//    }
-//
-//    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided){
-//        this.truckerThatHasDecided = truckerThatHasDecided;
-//    };
-
     /**
      * @return an event containing all the card details
      */
