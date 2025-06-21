@@ -203,6 +203,11 @@ public class GUI implements UI {
         // TODO: per funzionalità aggiuntiva ci pensiamo piu avanti
     }
 
+    @Override
+    public void showChooseResume() {
+
+    }
+
 
     //fine insertNumPlayerscene
 
