@@ -1098,7 +1098,7 @@ public class FlightScene {
 
         AnchorPane popupContent = new AnchorPane(box);
         AnchorPane.setBottomAnchor(box, 150.0);
-        AnchorPane.setLeftAnchor(box, 100.0);
+        AnchorPane.setLeftAnchor(box, 80.0);
 
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
