@@ -1562,5 +1562,38 @@ public class BuildingScene {
         wait.play();
     }
 
+
+    public void showError(String message) {
+        double width = root.getWidth();
+        double height = root.getHeight();
+
+        // Sfondo trasparente NON interattivo
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlay.setMouseTransparent(true);
+
+        // Testo di errore visibile
+        Label errorLabel = new Label(message);
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
+        errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
+
+        // Contenitore popup
+        StackPane popup = new StackPane(overlay, errorLabel);
+        popup.setMouseTransparent(true);
+        StackPane.setAlignment(errorLabel, Pos.CENTER);
+
+        Platform.runLater(() -> {
+            if (!root.getChildren().contains(popup)) {
+                root.getChildren().add(popup);
+
+                PauseTransition delay = new PauseTransition(Duration.seconds(3));
+                delay.setOnFinished(e -> root.getChildren().remove(popup));
+                delay.play();
+            }
+        });
+    }
+
+
 }
 

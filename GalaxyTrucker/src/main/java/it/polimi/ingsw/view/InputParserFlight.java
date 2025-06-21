@@ -13,7 +13,11 @@ import java.util.ArrayList;
 
 public class InputParserFlight {
     private ParserState parserState;
-    //lo stato cambia nel serverhandler
+    private final UI ui;
+
+    public InputParserFlight(UI ui) {
+        this.ui = ui;
+    }
 
     public void setParserState(ParserState parserState) {
         this.parserState = parserState;
@@ -59,7 +63,7 @@ public class InputParserFlight {
                 yield new DeadTrucker();
             }
             default -> {
-                System.out.println("Error: invalid command. Stato non gestito");
+                ui.showError("Error: invalid command. Stato non gestito");
                 yield null;
             }
         };
@@ -70,7 +74,7 @@ public class InputParserFlight {
     private void openRulesPdf() {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
             if (is == null) {
-                System.out.println("File not found");
+                ui.showError("File not found");
                 return;
             }
 
@@ -88,7 +92,7 @@ public class InputParserFlight {
             Desktop.getDesktop().open(tempPdf);
 
         } catch (IOException e) {
-            System.out.println("Error in file opening: " + e.getMessage());
+            ui.showError("Error in file opening: " + e.getMessage());
         }
     }
 
@@ -98,12 +102,12 @@ public class InputParserFlight {
         for(String group: groups){
             String[] parts = group.split("\\s*-\\s*");
             if(parts.length!=2){
-                System.out.println("Error: invalid command");
+                ui.showError("Error: invalid command");
                 return null;
             }
             String[] coord=parts[0].trim().split("\\s+");
             if(coord.length!=2){
-                System.out.println("Error: invalid command");
+                ui.showError("Error: invalid command");
                 return null;
             }
             int num=Integer.parseInt(parts[1].trim());
@@ -126,14 +130,14 @@ public class InputParserFlight {
         else if(plotGood[0].trim().equals("n")){
             return new PlotGoodEvent(false,null,-1,nickname);
         }
-        System.out.println("Error: invalid command");
+        ui.showError("Error: invalid command");
         return null;
     }
 
     private ClientEvent parseRollDice(String input) {
         String[] rollDice=input.split("\\s+");
         if(rollDice.length!=1 || !rollDice[0].trim().equals("roll")){
-            System.out.println("Error: invalid command");
+            ui.showError("Error: invalid command");
             return null;
         }
         return new RollDiceEvent();
@@ -147,14 +151,14 @@ public class InputParserFlight {
         } else if (activateShield[0].trim().equalsIgnoreCase("y")) {
 
             if (activateShield.length < 3) {
-                System.out.println("Error: missing coordinates for shield or battery storage");
+                ui.showError("Error: missing coordinates for shield or battery storage");
                 return null;
             }
 
             try {
                 String[] coordShield = activateShield[1].trim().split("\\s+");
                 if (coordShield.length != 2) {
-                    System.out.println("Error: invalid shield coordinates");
+                    ui.showError("Error: invalid shield coordinates");
                     return null;
                 }
                 int x = Integer.parseInt(coordShield[0].trim());
@@ -162,7 +166,7 @@ public class InputParserFlight {
 
                 String[] coordBS = activateShield[2].trim().split("\\s+");
                 if (coordBS.length != 2) {
-                    System.out.println("Error: invalid battery storage coordinates");
+                    ui.showError("Error: invalid battery storage coordinates");
                     return null;
                 }
                 int xB = Integer.parseInt(coordBS[0].trim());
@@ -171,12 +175,12 @@ public class InputParserFlight {
                 return new ActivateShieldEvent(true, new int[]{x, y}, new int[]{xB, yB}, nickname);
 
             } catch (NumberFormatException e) {
-                System.out.println("Error: coordinates must be numeric");
+                ui.showError("Error: coordinates must be numeric");
                 return null;
             }
         }
 
-        System.out.println("Error: invalid command (must start with 'y' or 'n')");
+        ui.showError("Error: invalid command (must start with 'y' or 'n')");
         return null;
     }
 
@@ -197,7 +201,7 @@ public class InputParserFlight {
                 }
                 String[] coord = activateCannons[i].trim().split("\\s+");
                 if (coord.length != 2) {
-                    System.out.println("Error: invalid cannon coordinates");
+                    ui.showError("Error: invalid cannon coordinates");
                     return null;
                 }
                 try {
@@ -205,25 +209,25 @@ public class InputParserFlight {
                     int y = Integer.parseInt(coord[1].trim());
                     coordCannons.add(new int[]{x, y});
                 } catch (NumberFormatException e) {
-                    System.out.println("Error: coordinates must be numbers");
+                    ui.showError("Error: coordinates must be numbers");
                     return null;
                 }
             }
 
             if (index == -1 || index >= activateCannons.length) {
-                System.out.println("Error: missing or misplaced 'battery' keyword");
+                ui.showError("Error: missing or misplaced 'battery' keyword");
                 return null;
             }
 
             for (int i = index; i < activateCannons.length; i++) {
                 String[] part = activateCannons[i].trim().split("\\s*-\\s*");
                 if (part.length != 2) {
-                    System.out.println("Error: invalid battery format");
+                    ui.showError("Error: invalid battery format");
                     return null;
                 }
                 String[] coord = part[0].trim().split("\\s+");
                 if (coord.length != 2) {
-                    System.out.println("Error: invalid battery coordinates");
+                    ui.showError("Error: invalid battery coordinates");
                     return null;
                 }
                 try {
@@ -232,7 +236,7 @@ public class InputParserFlight {
                     int cont = Integer.parseInt(part[1].trim());
                     coordBS.add(new int[]{x, y, cont});
                 } catch (NumberFormatException e) {
-                    System.out.println("Error: battery values must be numbers");
+                    ui.showError("Error: battery values must be numbers");
                     return null;
                 }
             }
@@ -240,7 +244,7 @@ public class InputParserFlight {
             return new ActivateCannonsEvent(true, coordCannons, coordBS, nickname);
         }
 
-        System.out.println("Error: invalid command (missing y/n)");
+        ui.showError("Error: invalid command (missing y/n)");
         return null;
     }
 
@@ -261,7 +265,7 @@ public class InputParserFlight {
                 }
                 String[] coord = activateEngines[i].trim().split("\\s+");
                 if (coord.length != 2) {
-                    System.out.println("Error: invalid engine coordinates");
+                    ui.showError("Error: invalid engine coordinates");
                     return null;
                 }
                 try {
@@ -269,25 +273,25 @@ public class InputParserFlight {
                     int y = Integer.parseInt(coord[1].trim());
                     coordEngines.add(new int[]{x, y});
                 } catch (NumberFormatException e) {
-                    System.out.println("Error: engine coordinates must be numbers");
+                    ui.showError("Error: engine coordinates must be numbers");
                     return null;
                 }
             }
 
             if (indexE == -1 || indexE >= activateEngines.length) {
-                System.out.println("Error: missing or misplaced 'battery' keyword");
+                ui.showError("Error: missing or misplaced 'battery' keyword");
                 return null;
             }
 
             for (int i = indexE; i < activateEngines.length; i++) {
                 String[] part = activateEngines[i].trim().split("\\s*-\\s*");
                 if (part.length != 2) {
-                    System.out.println("Error: invalid battery format");
+                    ui.showError("Error: invalid battery format");
                     return null;
                 }
                 String[] coord = part[0].trim().split("\\s+");
                 if (coord.length != 2) {
-                    System.out.println("Error: invalid battery coordinates");
+                    ui.showError("Error: invalid battery coordinates");
                     return null;
                 }
                 try {
@@ -296,7 +300,7 @@ public class InputParserFlight {
                     int cont = Integer.parseInt(part[1].trim());
                     coordBattery.add(new int[]{x, y, cont});
                 } catch (NumberFormatException e) {
-                    System.out.println("Error: battery values must be numbers");
+                    ui.showError("Error: battery values must be numbers");
                     return null;
                 }
             }
@@ -304,14 +308,14 @@ public class InputParserFlight {
             return new ActivateEnginesEvent(true, coordEngines, coordBattery, nickname);
         }
 
-        System.out.println("Error: invalid command (missing y/n)");
+        ui.showError("Error: invalid command (missing y/n)");
         return null;
     }
 
     private ClientEvent parseDrawCard(String input, String nickname) {
         String[] cardFinish=input.split("\\s+");
         if(cardFinish.length!=1 || !cardFinish[0].trim().equals("draw")){
-            System.out.println("Error: invalid command");
+            ui.showError("Error: invalid command");
             return null;
         }
         return new DrawCardEvent(nickname);
@@ -321,7 +325,7 @@ public class InputParserFlight {
         String[] planetDecision = input.trim().split("\\s+");
 
         if (planetDecision.length != 1) {
-            System.out.println("Error: invalid command (expected a single number)");
+            ui.showError("Error: invalid command (expected a single number)");
             return null;
         }
 
@@ -329,13 +333,13 @@ public class InputParserFlight {
             int choice = Integer.parseInt(planetDecision[0].trim());
             return new PlanetDecisionEvent(choice, nickname);
         } catch (NumberFormatException e) {
-            System.out.println("Error: input must be a valid number");
+            ui.showError("Error: input must be a valid number");
             return null;
         }
     }
 
     private ClientEvent parseDoNothing() {
-        System.out.println("It's not your turn");
+        ui.showError("It's not your turn");
         return null;
     }
 
@@ -347,7 +351,7 @@ public class InputParserFlight {
         } else if (cmd.equals("n")) {
             return new TruckerLandingEvent(false);
         } else {
-            System.out.println("Error: invalid command, type y/n");
+            ui.showError("Error: invalid command, type y/n");
             return null;
         }
     }
@@ -355,7 +359,7 @@ public class InputParserFlight {
     private ClientEvent parseWarzone(String input) {
         String[] warzone=input.split("\\s+");
         if(warzone.length!=1 || !warzone[0].trim().equals("warzone")){
-            System.out.println("Error: invalid command");
+            ui.showError("Error: invalid command");
             return null;
         }
         return new WarzoneStartEvent();
@@ -366,7 +370,7 @@ public class InputParserFlight {
         if (cmd.equals("y")) return new GainCosmicCreditsResponseEvent(true);
         if (cmd.equals("n")) return new GainCosmicCreditsResponseEvent(false);
 
-        System.out.println("Error: invalid command, please type y/n");
+        ui.showError("Error: invalid command, please type y/n");
         return null;
     }
 
@@ -374,7 +378,7 @@ public class InputParserFlight {
         String[] rearrange = input.split("\\s*,\\s*");
 
         if (rearrange.length == 0) {
-            System.out.println("Error: empty input");
+            ui.showError("Error: empty input");
             return null;
         }
 
@@ -384,7 +388,7 @@ public class InputParserFlight {
 
         if (rearrange[0].trim().equals("y")) {
             if (rearrange.length < 3) {
-                System.out.println("Error: not enough arguments for rearrange");
+                ui.showError("Error: not enough arguments for rearrange");
                 return null;
             }
 
@@ -392,7 +396,7 @@ public class InputParserFlight {
                 String[] part1 = rearrange[1].trim().split("\\s*-\\s*");
                 String[] coord1 = part1[0].trim().split("\\s+");
                 if (part1.length != 2 || coord1.length != 2) {
-                    System.out.println("Error: invalid format for first item");
+                    ui.showError("Error: invalid format for first item");
                     return null;
                 }
 
@@ -403,7 +407,7 @@ public class InputParserFlight {
                 String[] part2 = rearrange[2].trim().split("\\s*-\\s*");
                 String[] coord2 = part2[0].trim().split("\\s+");
                 if (part2.length != 2 || coord2.length != 2) {
-                    System.out.println("Error: invalid format for second item");
+                    ui.showError("Error: invalid format for second item");
                     return null;
                 }
 
@@ -414,22 +418,22 @@ public class InputParserFlight {
                 return new RearrangeEvent(new int[]{x1, y1}, new int[]{x2, y2}, value1, value2, false, nickname);
 
             } catch (NumberFormatException e) {
-                System.out.println("Error: coordinates and values must be integers");
+                ui.showError("Error: coordinates and values must be integers");
                 return null;
             } catch (Exception e) {
-                System.out.println("Error: unexpected input format");
+                ui.showError("Error: unexpected input format");
                 return null;
             }
         }
 
-        System.out.println("Error: invalid command, please type 'y' or 'n'");
+        ui.showError("Error: invalid command, please type 'y' or 'n'");
         return null;
     }
 
     private ClientEvent parseRemotionConfirmed(String input) {
         String[] remotion=input.split("\\s+");
         if(remotion.length!=1 || !remotion[0].trim().equals("continue")){
-            System.out.println("Error: invalid command, please type 'continue'");
+            ui.showError("Error: invalid command, please type 'continue'");
             return null;
         }
         return new RemotionSeenEvent();
@@ -438,7 +442,7 @@ public class InputParserFlight {
     private ClientEvent parseCurrentCondition(String input) {
         String[] currCond=input.split("\\s+");
         if(currCond.length!=1 || !currCond[0].trim().equals("continue")){
-            System.out.println("Error: invalid command, please type 'continue'");
+            ui.showError("Error: invalid command, please type 'continue'");
             return null;
         }
         return new WarzoneStartEvent();
@@ -446,7 +450,7 @@ public class InputParserFlight {
 
     private ClientEvent parseRemoveBatteries(String input, String nickname) {
         if (input == null || input.trim().isEmpty()) {
-            System.out.println("Error: empty input");
+            ui.showError("Error: empty input");
             return null;
         }
 
@@ -457,13 +461,13 @@ public class InputParserFlight {
             try {
                 String[] parts = entry.trim().split("\\s*-\\s*");
                 if (parts.length != 2) {
-                    System.out.println("Error: expected '<x> <y> - <value>'");
+                    ui.showError("Error: expected '<x> <y> - <value>'");
                     return null;
                 }
 
                 String[] coord = parts[0].trim().split("\\s+");
                 if (coord.length != 2) {
-                    System.out.println("Error: coordinates must be two numbers");
+                    ui.showError("Error: coordinates must be two numbers");
                     return null;
                 }
 
@@ -472,16 +476,16 @@ public class InputParserFlight {
                 int quantity = Integer.parseInt(parts[1].trim());
 
                 if (x < 0 || y < 0 || quantity < 0) {
-                    System.out.println("Error: negative values are not allowed");
+                    ui.showError("Error: negative values are not allowed");
                     return null;
                 }
 
                 coordinates.add(new int[]{x, y, quantity});
             } catch (NumberFormatException e) {
-                System.out.println("Error: all values must be integers");
+                ui.showError("Error: all values must be integers");
                 return null;
             } catch (Exception e) {
-                System.out.println("Error: invalid format");
+                ui.showError("Error: invalid format");
                 return null;
             }
         }
@@ -492,7 +496,7 @@ public class InputParserFlight {
 
     private ClientEvent parseRemoveGoods(String input, String nickname) {
         if (input == null || input.trim().isEmpty()) {
-            System.out.println("Error: input is empty");
+            ui.showError("Error: input is empty");
             return null;
         }
 
@@ -503,12 +507,12 @@ public class InputParserFlight {
             try {
                 int index = Integer.parseInt(s.trim());
                 if (index < 0) {
-                    System.out.println("Error: index cannot be negative");
+                    ui.showError("Error: index cannot be negative");
                     return null;
                 }
                 indexes.add(index);
             } catch (NumberFormatException e) {
-                System.out.println("Error: invalid index '" + s + "', must be an integer");
+                ui.showError("Error: invalid index '" + s + "', must be an integer");
                 return null;
             }
         }

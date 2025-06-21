@@ -558,8 +558,6 @@ public class GUI implements UI {
         if(viewFlow.getViewState() == ViewFlow.ViewState.BULDING){
             this.buildingScene.showMessage(message);
         }else if(viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
-            System.out.println("Show message fligtScene");
-            System.out.println(message);
             this.flightScene.showMessage(message);
         }
     }
@@ -662,7 +660,11 @@ public class GUI implements UI {
 
     @Override
     public void showError(String message) {
-
+        if(viewFlow.getViewState() == ViewFlow.ViewState.BULDING){
+            this.buildingScene.showError(message);
+        }else if(viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
+            this.flightScene.showError(message);
+        }
     }
 
 
