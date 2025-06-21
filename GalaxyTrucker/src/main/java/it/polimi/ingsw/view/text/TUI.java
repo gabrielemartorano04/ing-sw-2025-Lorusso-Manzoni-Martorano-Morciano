@@ -1114,7 +1114,7 @@ public class TUI implements UI {
     }
 
     @Override
-    public void showInsertNumPlayers() {
+    public void showInsertNumPlayers(boolean resume) {
         System.out.println("\nInsert the number of players and the game level:");
     }
 
