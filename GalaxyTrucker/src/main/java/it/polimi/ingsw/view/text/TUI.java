@@ -1114,12 +1114,14 @@ public class TUI implements UI {
     }
 
     @Override
-    public void showInsertNumPlayers(boolean resume) {
-        if(resume){
-            System.out.println("An old game isn't finished yet, do you want to continue? (y/n)");
-        }else{
-            System.out.println("\nInsert the number of players and the game level:");
-        }
+    public void showChooseResume(){
+        System.out.println("An old game isn't finished yet, do you want to continue? (y/n)");
+    }
+
+    @Override
+    public void showInsertNumPlayers() {
+        System.out.println("\nInsert the number of players and the game level:");
+
     }
 
     @Override

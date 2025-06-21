@@ -26,7 +26,9 @@ public interface UI {
 
     // WELCOME + CREATION
 
-    void showInsertNumPlayers(boolean resume);
+    void showChooseResume();
+
+    void showInsertNumPlayers();
 
     void welcomeScene(AvailableColorsEvent event);
 
