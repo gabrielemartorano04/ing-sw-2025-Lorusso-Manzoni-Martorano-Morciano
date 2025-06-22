@@ -445,6 +445,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             ui.showInputFormat(viewFlow.getParserFlightState());
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+            ui.showResult(event);
             ui.showMessage(event.getInfoForOthers());
         }
     }
