@@ -484,11 +484,7 @@ public class ClientHandlerVisitor implements VirtualServer {
 
     @Override
     public ServerEvent visit(WarzoneStartEvent event) {
-        try {
-            return cardController.getCurrCard().handleCurrentCondition();
-        } catch (WrongCallerException | GeneralError e) {
-            return new GenericErrorEvent(e.getMessage(), false);
-        }
+        return cardController.handleCurrentCondition();
     }
 
     @Override

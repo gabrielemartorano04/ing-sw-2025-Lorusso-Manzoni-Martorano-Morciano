@@ -29,11 +29,24 @@ import java.util.Map;
 public class AbandonedShip extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * number of flight days to lose
+     */
     private final int days;
+
+    /**
+     * number of cosmic credits you win if you decide to land
+     */
     private final int credits;
+
+    /**
+     * number of aliens or humans you have to lose if you decide to land
+     */
     private final int numHuman;
-    private Trucker truckerThatHasDecided; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
-    private ArrayList<int[]> coordinates = null; //è la lista di coordinate da cui rimuovere gli umani che è settata dal controller
+
+    private Trucker truckerThatHasDecided;
+    private ArrayList<int[]> coordinates = null;
     private CardState state;
     private int indexOfCurrTrucker;
 

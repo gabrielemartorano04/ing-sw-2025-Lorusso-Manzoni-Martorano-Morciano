@@ -120,9 +120,9 @@ public class CardController implements Serializable {
         } catch (GeneralError | WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesEvent(e.getMessage(), false,ParserState.ACTIVATE_ENGINES,event.getNickname());
+            return new InvalidCoordinatesEvent(e.getMessage(), false,ParserState.ACTIVATE_SHIELD,event.getNickname());
         } catch (NotEnoughBatteries e) {
-            return new NotEnoughBatterieEvent(e.getMessage(), false, ParserState.ACTIVATE_ENGINES, event.getNickname());
+            return new NotEnoughBatterieEvent(e.getMessage(), false, ParserState.ACTIVATE_SHIELD, event.getNickname());
         }
     }
 
