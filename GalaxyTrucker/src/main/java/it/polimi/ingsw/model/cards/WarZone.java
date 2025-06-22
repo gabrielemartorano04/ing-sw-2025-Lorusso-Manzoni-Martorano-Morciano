@@ -280,9 +280,6 @@ public class WarZone extends Card implements Serializable {
             if(weakestTrucker.getSpaceShip().getNumBatteries() == 0){
                 this.state = CardState.ESECUZIONE;
                 return cardEffect();
-
-                // to be removed: return new RemotionConfirmed(ParserState.WARZONE, weakestTrucker.getNickname(), weakestTrucker.getSpaceShip());
-
             }else{
                 this.state = CardState.REMOVE_BATTERIES;
                 return new RemoveBatteries(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(), goodsToLose);
@@ -299,10 +296,9 @@ public class WarZone extends Card implements Serializable {
         ArrayList<Goods> list = new ArrayList<>();
 
         for (int i = 0; i < numGoodCurrType; i++) {
-            Goods good = goodsList.getFirst();
+            Goods good = goodsList.get(i);
             list.add(good);
             Game.getIstance().getBank().addGoodsInBank(good.getValue());
-            //TODO: Check che sto rimuovendo effettivamente dalla lista della nave
             goodsToLose--;
         }
         weakestTrucker.getSpaceShip().removeGoods(list);
