@@ -78,29 +78,6 @@ public class Smugglers extends Card implements Serializable {
         this.goodsToLoseCurrTrucker = goodsLost;
     }
 
-//    /**
-//     * Returns the cannon power required
-//     * @return cannon power required
-//     */
-//    public int getSmugglersPower() {
-//        return smugglersPower;
-//    }
-
-//    /**
-//     * Returns the number of goods to lose
-//     * @return goods to lose
-//     */
-//    public int getGoodsLost() {
-//        return goodsLost;
-//    }
-
-//    /**
-//     * Returns an array of goods to gain
-//     * @return array of goods to gain
-//     */
-//    public Goods[] getGoodsGained() {
-//        return goodsGained;
-//    }
 
     /**
      * Returns the number of days of flight to lose
