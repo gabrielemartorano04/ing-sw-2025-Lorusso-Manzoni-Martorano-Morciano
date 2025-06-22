@@ -314,6 +314,10 @@ public class ClientHandlerVisitor implements VirtualServer {
             return new TurnHourglassError();
         }
         if (tmp != null) {
+            endBuilding++;
+            if(endBuilding == gameController.getGame().getNumPlayers()){
+                return new BuildCompleteEvent(gameController.getGame().getTruckerList());
+            }
             ServerController.getIstance().startThreadHourglass();
             return tmp;
         }
