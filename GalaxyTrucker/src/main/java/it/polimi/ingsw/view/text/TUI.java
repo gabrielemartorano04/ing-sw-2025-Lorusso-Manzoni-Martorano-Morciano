@@ -41,7 +41,6 @@ public class TUI implements UI {
         this.showChooseColor(event.getColors());
     }
 
-
     @Override
     public void nickNameAlreadyTaken(NicknameAlreadyInError event){
         this.showNicknameTaken();
@@ -58,6 +57,19 @@ public class TUI implements UI {
     @Override
     public void showPlayerJoined(String nickname) {
         System.out.println("Congratulation " + nickname + "! You've joined the game!.");
+    }
+
+    @Override
+    public void resumeBuildingScene(ArrayList<String> playerNames){
+        this.showAvailableComponent(viewFlow.getAvailableComponents());
+        this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+        this.showKeptComponents(viewFlow.getKeptComponent());
+        this.showComponentSelected(viewFlow.getSelectedComponent());
+    }
+
+    @Override
+    public void resumeFlightScene(ArrayList<String> playerNames){
+
     }
 
     @Override
@@ -283,10 +295,10 @@ public class TUI implements UI {
 
 
     @Override
-    public void showCurrCondition(CurrentCondition event, boolean isLeader){
-        System.out.println("Current condition:" + event.getCondition());
+    public void showCurrCondition(Condition condition, boolean isLeader){
+        System.out.println("Current condition:" + condition);
         if(isLeader){
-            System.out.println("Type Continue to proceed");
+            System.out.println("Type warzone to proceed");
         }
     }
 
@@ -558,6 +570,10 @@ public class TUI implements UI {
         }
         if(event.getBank() != null) {
             System.out.println("Bank deposit: " + event.getBank().getGoodsInBank(1) + " red goods, " + event.getBank().getGoodsInBank(2) + " yellow goods, " + event.getBank().getGoodsInBank(3) + " green goods, " + event.getBank().getGoodsInBank(4) + " blue goods");
+        }
+
+        if(event.getConditionsOrder() != null) {
+            this.showCurrCondition(event.getConditionsOrder().getFirst(), false);
         }
 
     }
@@ -1186,13 +1202,13 @@ public class TUI implements UI {
 
     @Override
     public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames) {
-        System.out.println("vecchi players:\n");
+        System.out.println("old players:\n");
         System.out.println(colors.getFirst());
         System.out.println(nicknames.getFirst());
         for(int i = 0; i < colors.size(); i++) {
             System.out.println("nickname: " + nicknames.get(i) + " color: " + colors.get(i));
         }
-        System.out.println("choose a player");
+        System.out.println("choose a player, type both nickname and color");
     }
 
     public void setGoodImage(Goods good) {

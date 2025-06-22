@@ -124,5 +124,5 @@ public interface VirtualView {
 
     void handleDeath(ArrayList<Trucker> truckersRemoved);
 
-    void visit(NewCardEvent newCardEvent);
+    void visit(DrawNewCardEvent drawNewCardEvent);
 }

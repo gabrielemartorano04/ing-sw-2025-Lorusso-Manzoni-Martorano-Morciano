@@ -1,23 +1,37 @@
 package it.polimi.ingsw.net.events.serverevents;
 
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.events.serverevents.cardevents.CardEvent;
+import it.polimi.ingsw.view.ParserState;
 
-public class TruckerWithdrawEvent extends ServerEvent{
+public class TruckerWithdrawEvent extends CardEvent {
     private String message, nickname;
+    private boolean choice;
 
-    public TruckerWithdrawEvent(String nickname) {
-        super(ServerEventType.WITHDRAW, true);
-        message = nickname + " has withdrawn from the game";
+    public TruckerWithdrawEvent(String nickname,boolean choice) {
+        super(ServerEventType.WITHDRAW, true, ParserState.DO_NOTHING, nickname);
+        message = "";
         this.nickname = nickname;
+        this.choice = choice;
     }
 
     @Override
     public String getMessage() {
+        if(choice){
+            message+= nickname + " has withdrawn from the game";
+        }
+        else{
+            message+= nickname + " wants to play";
+        }
         return message;
     }
 
-    public String getTruckerWithdrawNick() {
+    public String getNickname() {
         return nickname;
+    }
+
+    public boolean getChoice(){
+        return choice;
     }
 
     @Override

@@ -80,10 +80,10 @@ public class InputParserFlight {
 
     private ClientEvent parseWithdraw(String input, String nickname) {
         if (input.trim().equalsIgnoreCase("y")) {
-            return new WithdrawRequest(nickname);
+            return new WithdrawRequest(nickname,true);
         }
         else if (input.trim().equalsIgnoreCase("n")) {
-            return new WithdrawRequest(null);
+            return new WithdrawRequest(nickname, false);
         }
         else{
             ui.showError("Error: invalid command. Type 'y' or 'n'");
@@ -497,8 +497,8 @@ public class InputParserFlight {
 
     private ClientEvent parseCurrentCondition(String input) {
         String[] currCond=input.split("\\s+");
-        if(currCond.length!=1 || !currCond[0].trim().equals("continue")){
-            ui.showError("Error: invalid command, please type 'continue'");
+        if(currCond.length!=1 || !currCond[0].trim().equals("warzone")){
+            ui.showError("Error: invalid command, please type 'warzone'");
             return null;
         }
         return new WarzoneStartEvent();

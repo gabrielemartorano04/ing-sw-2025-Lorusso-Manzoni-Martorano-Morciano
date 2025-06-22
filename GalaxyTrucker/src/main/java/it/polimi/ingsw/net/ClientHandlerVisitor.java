@@ -13,7 +13,7 @@ import it.polimi.ingsw.net.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.events.clientevents.setupevents.ChoseToResume;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
-import it.polimi.ingsw.net.events.serverevents.cardevents.NewCardEvent;
+import it.polimi.ingsw.net.events.serverevents.cardevents.DrawNewCardEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.ResumeGameEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
@@ -244,7 +244,12 @@ public class ClientHandlerVisitor implements VirtualServer {
                     gameController.getGame().setGameState(oldGameState);
                     gameController.setGameStarted(true);
                     System.out.println("sto mandando resume game");
-                    return new ResumeGameEvent(gameController.getGame().getComponents().getComponents(), nickname, allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), gameController.getGame().getTrack());
+                    ArrayList<String> players = new ArrayList<>();
+                    for (Trucker t : gameController.getGame().getTruckerList()) {
+                        players.add(t.getNickname());
+                    }
+
+                    return new ResumeGameEvent(gameController.getGame().getComponents().getComponents(), nickname, allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), gameController.getGame().getTrack(), players);
                 }else{
                     numLog--;
                     return new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
@@ -557,9 +562,10 @@ public class ClientHandlerVisitor implements VirtualServer {
     @Override
     public ServerEvent visit(WithdrawRequest event) {
         String nickname=event.getNickname();
+        boolean choice=event.getChoice();
         withdrawChoice++;
         if(withdrawChoice<gameController.getGame().getTruckerList().size()){
-            if(nickname!=null){
+            if(choice){
                 for(Trucker t: gameController.getGame().getTruckerList()){
                     if(t.getNickname().equals(nickname)){
                         gameController.getGame().withdraw(t);
@@ -567,12 +573,12 @@ public class ClientHandlerVisitor implements VirtualServer {
                         break;
                     }
                 }
-                return new TruckerWithdrawEvent(nickname);
-            } else return new TruckerWithdrawEvent(null);
+            }
+            return new TruckerWithdrawEvent(nickname,choice);
         }
         else {
             withdrawChoice=0;
-            return new NewCardEvent(gameController.getGame().getTruckerList().getFirst().getNickname());
+            return new DrawNewCardEvent(gameController.getGame().getTruckerList().getFirst().getNickname());
         }
     }
 

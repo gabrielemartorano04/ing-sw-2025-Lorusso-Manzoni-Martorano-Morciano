@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.graphic;
 
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
+import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
@@ -24,6 +25,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -38,7 +40,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.shape.Rectangle;
 
+import java.awt.*;
 import java.util.*;
 
 public class GUI implements UI {
@@ -47,19 +51,14 @@ public class GUI implements UI {
     private LoginScene loginScene;
     private BuildingScene buildingScene;
     private FlightScene flightScene;
-    private ClientEvent currentEvent;
-    private Component selectedComponent;
     public final ViewFlow viewFlow;
-    private boolean isLinkingEnabled;
-    private final Map<String, Integer> previousPositions;
+    private boolean showWarzone;
 
     public GUI(ViewFlow viewFlow) {
 
         //this.stage =new Stage();
         this.viewFlow = viewFlow;
-        this.isLinkingEnabled = false;
-        this.previousPositions = new HashMap<>();
-
+        this.showWarzone = true;
         //new Thread(() -> Application.launch(GUIApplication.class)).start();
 
     }
@@ -73,14 +72,6 @@ public class GUI implements UI {
         stage.setFullScreen(true);
         stage.setFullScreenExitHint("");
         stage.show();
-    }
-
-    public void setCurrentEvent(ClientEvent currentEvent) {
-        this.currentEvent = currentEvent;
-    }
-
-    public ClientEvent getCurrentEvent() {
-        return currentEvent;
     }
 
 
@@ -199,12 +190,99 @@ public class GUI implements UI {
     }
 
     @Override
-    public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames){
-        // TODO: per funzionalità aggiuntiva ci pensiamo piu avanti
+    public void showChooseResume() {
+        Platform.runLater(() -> {
+            double width = 1600;
+            double height = 900;
+
+            // Sfondo
+            ImageView backgroundView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg")).toExternalForm()));
+            backgroundView.setFitWidth(width);
+            backgroundView.setFitHeight(height);
+            backgroundView.setPreserveRatio(true);
+            backgroundView.setMouseTransparent(true);
+
+            // Titolo
+            Label messageLabel = new Label("There is an old game to resume");
+            messageLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
+            messageLabel.setTextFill(Color.web("#FFDE69"));
+            messageLabel.setAlignment(Pos.CENTER);
+
+            // Pulsante Resume
+            Button resumeBtn = new Button("Resume");
+            resumeBtn.setFont(Font.font("Bangers", 20));
+            resumeBtn.setTextFill(Color.BLACK);
+            resumeBtn.setCursor(Cursor.HAND);
+            resumeBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            resumeBtn.setPrefWidth(160);
+            resumeBtn.setOnAction(e -> viewFlow.handleInput("y"));
+
+            // Pulsante New Game
+            Button newGameBtn = new Button("New Game");
+            newGameBtn.setFont(Font.font("Bangers", 20));
+            newGameBtn.setTextFill(Color.BLACK);
+            newGameBtn.setCursor(Cursor.HAND);
+            newGameBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            newGameBtn.setPrefWidth(160);
+            newGameBtn.setOnAction(e -> viewFlow.handleInput("n"));
+
+            // Contenitore pulsanti
+            HBox buttonBox = new HBox(30, resumeBtn, newGameBtn);
+            buttonBox.setAlignment(Pos.CENTER);
+
+            // Layout verticale
+            VBox content = new VBox(40, messageLabel, buttonBox);
+            content.setAlignment(Pos.CENTER);
+            content.setPadding(new Insets(40));
+
+            // Stack finale
+            StackPane root = new StackPane(backgroundView, content); // <--- dichiarato qui
+            StackPane.setAlignment(content, Pos.CENTER);
+
+            if (stage.getScene() == null) {
+                stage.setScene(new Scene(root, width, height));
+            } else {
+                stage.getScene().setRoot(root);
+            }
+
+            stage.centerOnScreen();
+            stage.setFullScreen(true);
+        });
     }
 
     @Override
-    public void showChooseResume() {
+    public void resumeBuildingScene(ArrayList<String> playerNames){
+        Platform.runLater(() -> {
+            buildingScene=new BuildingScene(viewFlow.getNickname(),viewFlow.getShip().getComponents(),viewFlow, new StackPane());
+            stage.setScene(this.buildingScene.createScene(playerNames, viewFlow.getLevel()));
+            stage.setTitle("Galaxy Trucker");
+            stage.setResizable(false);
+            stage.setFullScreen(true);
+            stage.show();
+            if(viewFlow.getSelectedComponent()!=null){
+                this.buildingScene.setTurnToDo((viewFlow.getSelectedComponent().getRotationAngle()/90));
+                ImageView component = new ImageView(viewFlow.getSelectedComponent().getFrontImage());
+                this.buildingScene.insertSelectedComponent(component, true);
+            }
+            for(int i = 0; i < viewFlow.getKeptComponent().size(); i++){
+                Component c = viewFlow.getKeptComponent().get(i);
+                if(c!=null){
+                    this.buildingScene.insertComponentToKepts(c);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void resumeFlightScene(ArrayList<String> playerNames) {
+        Platform.runLater(() -> {
+            this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip().getComponents(), viewFlow, new StackPane());
+            stage.setScene(this.flightScene.createScene(playerNames, viewFlow.getLevel()));
+            stage.setTitle("Galaxy Trucker");
+            stage.setResizable(false);
+            stage.setFullScreen(true);
+            stage.show();
+        });
 
     }
 
@@ -216,10 +294,22 @@ public class GUI implements UI {
     // welcome scene
 
     @Override
+    public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames) {
+        Platform.runLater(() -> {
+            this.loginScene = new LoginScene(null, viewFlow);
+            stage.setScene(this.loginScene.createScene(true, nicknames,colors));
+            stage.setTitle("Galaxy Trucker");
+            stage.setResizable(false);
+            stage.setFullScreen(true);
+            stage.show();
+        });
+    }
+
+    @Override
     public void welcomeScene(AvailableColorsEvent event){
         Platform.runLater(() -> {
             this.loginScene = new LoginScene(event.getColors(), viewFlow);
-            stage.setScene(this.loginScene.createScene());
+            stage.setScene(this.loginScene.createScene(false, null,null));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
             stage.setFullScreen(true);
@@ -428,10 +518,10 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showCurrCondition(CurrentCondition event, boolean isLeader) {
-        //TODO:
+    public void showCurrCondition(Condition condition, boolean isLeader) {
         Platform.runLater(() -> {
-            this.flightScene.showCurrCondition(event.getCondition(), isLeader);
+            this.flightScene.clearRollDiceResult();
+            this.flightScene.showCurrCondition(condition, isLeader);
         });
 
     }
@@ -441,6 +531,7 @@ public class GUI implements UI {
     @Override
     public void cardFinished(CardFinished event){
         Platform.runLater(() -> {
+            this.flightScene.clearRollDiceResult();
             this.flightScene.setShip(viewFlow.getShip().getComponents());
             this.flightScene.updateShipLayout();
             this.flightScene.updateStatusBar();
@@ -460,6 +551,11 @@ public class GUI implements UI {
         Platform.runLater(() -> {
             this.flightScene.hideWaitForOthers();
             this.flightScene.updateCardInScene(event.getCard());
+            if(event.getConditionsOrder() != null){
+                this.showWarzone = false;
+                this.flightScene.showCurrCondition(event.getConditionsOrder().getFirst(), true);
+
+            }
         });
     }
 
@@ -516,6 +612,9 @@ public class GUI implements UI {
     @Override
     public void showInputFormat(ParserState parserState) {
         Platform.runLater(() -> {
+
+            this.flightScene.hideWaitForOthers();
+
             switch (parserState){
                 case ACTIVATE_ENGINES ->  this.flightScene.showActivateEngineInput();
                 case ACTIVATE_CANNONS -> this.flightScene.showActivateCannonsInput();
@@ -531,7 +630,13 @@ public class GUI implements UI {
                 case REMOVE_GOODS -> this.flightScene.showRemoveGoodsInput();
                 case REARRANGE -> this.flightScene.showRearrangeInput();
                 case COSMIC_CREDITS -> this.flightScene.showCosmicCreditsInput();
-                case WARZONE -> this.flightScene.showWarzoneInput();
+                case WARZONE -> {
+                    if(this.showWarzone){
+                        this.flightScene.showWarzoneInput();
+                    }
+                    this.showWarzone = true;
+                }
+                case ASK_WITHDRAW -> this.flightScene.showAskWithdraw();
 
             }
         });
@@ -539,12 +644,15 @@ public class GUI implements UI {
 
     @Override
     public void showResult(RollDiceResult event){
-        this.flightScene.showRollDiceResult(event.getDiceResult());
+        Platform.runLater(() -> {
+            this.flightScene.clearRollDiceResult();
+            this.flightScene.showRollDiceResult(event.getDiceResult());
+        });
     }
 
     @Override
     public void showDead(){
-//        this.flightScene.showDeadTrucker();
+        this.flightScene.showError("You died");
     }
 
     // fine flight scene
@@ -582,8 +690,7 @@ public class GUI implements UI {
             });
         } else if (viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH) {
             Platform.runLater(() -> {
-                //TODO: mettere showOthership dentro la fligth scene
-                // this.flightScene.showOtherShip(layout, nickname);
+                this.flightScene.showOtherShip(layout, nickname);
             });
         }
     }
@@ -605,50 +712,16 @@ public class GUI implements UI {
 
 
 
-
-
     @Override
     public void showShipLayout(String nickname, Component[][] layout){
-        //serve per la TUI forse c'è modo di unificare meglio intanto non rimuovere
-        return;
+        //serve per la TUI forse
     }
-
-
 
 
     @Override
     public void showTruckerWithdrawn(String nickname) {
-        Label message = new Label(nickname + " has withdrawn");
-        message.setStyle(
-                "-fx-background-color: rgba(0, 0, 0, 0.8); " +
-                        "-fx-text-fill: white; " +
-                        "-fx-padding: 10px 15px; " +
-                        "-fx-background-radius: 10px;"
-        );
-        message.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-
-        StackPane overlay = new StackPane(message);
-        overlay.setMouseTransparent(true);
-        StackPane.setAlignment(message, Pos.TOP_RIGHT);
-        StackPane.setMargin(message, new Insets(15, 15, 0, 0));
-
         Platform.runLater(() -> {
-            Scene scene = stage.getScene();
-            Node currentRoot = scene.getRoot();
-
-            StackPane newRoot;
-            if (!currentRoot.getClass().getName().equals("javafx.scene.layout.StackPane")) {
-                newRoot = new StackPane(currentRoot);
-                scene.setRoot(newRoot);
-            } else {
-                newRoot = (StackPane) currentRoot;
-            }
-
-            newRoot.getChildren().add(overlay);
-
-            PauseTransition delay = new PauseTransition(Duration.seconds(5));
-            delay.setOnFinished(e -> newRoot.getChildren().remove(overlay));
-            delay.play();
+           this.flightScene.showMessage(nickname + " has withdrawn");
         });
     }
 
@@ -679,15 +752,12 @@ public class GUI implements UI {
         }
     }
 
-
     @Override
     public void showPlayerShipStatus() {
         Platform.runLater(() -> {
             this.flightScene.updateStatusBar();
         });
     }
-
-
 
 
 

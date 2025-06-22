@@ -235,7 +235,7 @@ public class Trucker implements Serializable {
     }
 
     /**
-     * Player's spaceship setter
+     * Player's spaceship setter. It's used for test
      * @param spaceShip the new player's spaceship
      */
     public void setSpaceShip(SpaceShip spaceShip) {

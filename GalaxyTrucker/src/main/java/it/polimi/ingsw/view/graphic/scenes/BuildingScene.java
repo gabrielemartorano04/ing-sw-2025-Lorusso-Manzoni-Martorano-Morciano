@@ -338,6 +338,9 @@ public class BuildingScene {
 
     }
 
+    public void setTurnToDo(int turn) {
+        this.turnToDo = turn;
+    }
     public void insertSelectedComponent(ImageView componentView, boolean toTurn) {
         if (!inShipView && shipScreenContent != null) {
             root.getChildren().setAll(shipScreenContent);

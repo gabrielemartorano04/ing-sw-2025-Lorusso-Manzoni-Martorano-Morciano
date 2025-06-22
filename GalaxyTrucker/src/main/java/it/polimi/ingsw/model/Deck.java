@@ -202,7 +202,7 @@ class Deck implements Serializable {
 
         ArrayList<Goods> goods1 = new ArrayList<>();
         goods1.addLast(new Goods(3));
-        goods1.addLast(new Goods(3));
+        goods1.addLast(new Goods(2));
 
         ArrayList<Goods> goods2 = new ArrayList<>();
         goods2.addLast(new Goods(4));
@@ -243,14 +243,29 @@ class Deck implements Serializable {
 
         //TODO: riportare piratesPower a 5 e slaversPower a 6 e smugglersPower a 4
 
-        cards.addLast(new Planets(true, 2, 1, planets2, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0113.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",7));
+        WarZone warZone22 = new WarZone(
+                false, 2,
+                new ArrayList<>(List.of(Condition.CANNONS, Condition.ENGINES, Condition.HUMANS)),
+                Map.of(
+                        Condition.CANNONS, new Effect(TypeOfEffect.LOSE_DAYS, 4),
+                        Condition.ENGINES, new Effect(TypeOfEffect.LOSE_GOODS, 3),
+                        Condition.HUMANS, new Effect(TypeOfEffect.GET_SHOT, 3)
+                ),
+                warShoots2,
+                "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0116.jpg",
+                "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",8
+
+        );
+
         cards.addLast(new AbandonedStation(true, 1, goods1, 1,5, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0119.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 3));
-        cards.addLast(new Smugglers(true, 6, 1, 1, goodsGained1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_012.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 1));
-        cards.addLast(new AbandonedShip(true, 1, 3, 4, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0118.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 2));
+        cards.addLast(warZone22);
+        cards.addLast(new MeteorShower(true, direction1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_019.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",6));
+        cards.addLast(new Smugglers(true, 6, 2, 1, goodsGained1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_012.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 1));
         cards.addLast(warZone1);
+        cards.addLast(new AbandonedShip(true, 1, 3, 4, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0118.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 2));
         cards.addLast(new StarDust(true, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 4));
         cards.addLast(new OpenSpace(true, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_015.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",5 ));
-        cards.addLast(new MeteorShower(true, direction1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_019.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",6));
+        cards.addLast(new Planets(true, 2, 1, planets2, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0113.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",7));
 
         //NO TRIAL FLIGHT
         if(gameLevel==2){

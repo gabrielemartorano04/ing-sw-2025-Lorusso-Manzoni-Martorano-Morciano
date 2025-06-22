@@ -48,7 +48,8 @@ public class WarZone extends Card implements Serializable {
     private int colorOfCurrGoodToRemove;
     private int numGoodCurrType;
     private final ArrayList<Goods> goodsToRemove; // verrà creata al più una volta per istanza di questa classe
-    private int goodsLostCurrTrucker;
+    private int goodsToLose;
+    private boolean initializeRemoveGoods;
 
     // variabile per remove Human
     private int numOfHumanToRemove;
@@ -66,13 +67,14 @@ public class WarZone extends Card implements Serializable {
         this.currConditionIndex = 0;
         this.weakestTrucker = null;
         this.indexOfCurrTrucker = 0;
-        this.colorOfCurrGoodToRemove = 0;
+        this.colorOfCurrGoodToRemove = 4;
         this.numGoodCurrType = 0;
-        this.goodsLostCurrTrucker = 0;
+        this.goodsToLose = 0;
         this.currShootIndex = 0;
         this.currCondition = null;
         this.numOfHumanToRemove = 0;
 
+        this.initializeRemoveGoods = true;
         this.goodsToRemove = new ArrayList<>();
 
     }
@@ -250,12 +252,18 @@ public class WarZone extends Card implements Serializable {
         if(penalties.get(currCondition).getType() != TypeOfEffect.LOSE_GOODS){
             throw new GeneralError("removegoods error - curr penalty is not lose goods");
         }
-        goodsLostCurrTrucker = penalties.get(currCondition).getValue();
+        if(this.initializeRemoveGoods){
+            goodsToLose = penalties.get(currCondition).getValue();
+            this.initializeRemoveGoods = false;
+        }
 
-        while (colorOfCurrGoodToRemove > 0 && goodsLostCurrTrucker > 0) {
+        System.out.println("Goods to lose " + goodsToLose);
+
+        while (colorOfCurrGoodToRemove > 0 && goodsToLose > 0) {
             numGoodCurrType = getNumGoodsForColor(weakestTrucker.getSpaceShip(), colorOfCurrGoodToRemove);
 
-            if (numGoodCurrType > 0 && numGoodCurrType <= goodsLostCurrTrucker) {
+            if (numGoodCurrType > 0 && numGoodCurrType <= goodsToLose) {
+                System.out.println(numGoodCurrType + " " + goodsToLose + " Per debug");
                 return removeWithoutAsking(goodsList);
             }else if (numGoodCurrType > 0){
                 state = CardState.REMOVE_ASKING;
@@ -265,9 +273,10 @@ public class WarZone extends Card implements Serializable {
                 }
                 return new RemoveGoods(true, weakestTrucker.getNickname(), weakestTrucker.getSpaceShip(),goodsToRemove);
             }
+            colorOfCurrGoodToRemove--;
         }
 
-        if(colorOfCurrGoodToRemove == 0 && goodsLostCurrTrucker > 0){
+        if(colorOfCurrGoodToRemove == 0 && goodsToLose > 0){
             if(weakestTrucker.getSpaceShip().getNumBatteries() == 0){
                 this.state = CardState.ESECUZIONE;
                 return cardEffect();
@@ -276,7 +285,7 @@ public class WarZone extends Card implements Serializable {
 
             }else{
                 this.state = CardState.REMOVE_BATTERIES;
-                return new RemoveBatteries(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(), goodsLostCurrTrucker);
+                return new RemoveBatteries(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(), goodsToLose);
             }
         }else{
             throw new GeneralError("RemoveGoods not working correctly");
@@ -294,16 +303,23 @@ public class WarZone extends Card implements Serializable {
             list.add(good);
             Game.getIstance().getBank().addGoodsInBank(good.getValue());
             //TODO: Check che sto rimuovendo effettivamente dalla lista della nave
-            goodsLostCurrTrucker--;
+            goodsToLose--;
         }
         weakestTrucker.getSpaceShip().removeGoods(list);
 
-        if (goodsLostCurrTrucker == 0 || (goodsLostCurrTrucker > 0 && weakestTrucker.getSpaceShip().getNumBatteries() == 0)) {
+        if (goodsToLose == 0) {
             state = CardState.ESECUZIONE;
             return cardEffect();
-        } else {
+        } else if((goodsToLose > 0 && !weakestTrucker.getSpaceShip().getGoodsList().isEmpty())){
+            state = CardState.REMOVE_GOODS;
+            return removeGoods();
+        }else if (((goodsToLose > 0 && weakestTrucker.getSpaceShip().getNumBatteries() == 0))){
+            state = CardState.ESECUZIONE;
+            return cardEffect();
+        }
+        else {
             state = CardState.REMOVE_BATTERIES;
-            return new RemoveBatteries(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(), goodsLostCurrTrucker);
+            return new RemoveBatteries(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(), goodsToLose);
         }
     }
 
@@ -317,8 +333,8 @@ public class WarZone extends Card implements Serializable {
         if (state != CardState.REMOVE_ASKING){
             throw new GeneralError("Can't call removeAsking in the state " + state);
         }
-        if(indexesToRemove.size() != goodsLostCurrTrucker){
-            throw new NotEnoughGoodsChosen("The number of goods selected is not " + goodsLostCurrTrucker);
+        if(indexesToRemove.size() != goodsToLose){
+            throw new NotEnoughGoodsChosen("The number of goods selected is not " + goodsToLose);
         }
 
         ArrayList<Goods> selectedGoods = new ArrayList<>();
@@ -327,7 +343,7 @@ public class WarZone extends Card implements Serializable {
             selectedGoods.add(g);
             Game.getIstance().getBank().addGoodsInBank(g.getValue());
         }
-        goodsLostCurrTrucker = 0;
+        goodsToLose = 0;
 
         goodsToRemove.clear();
         weakestTrucker.getSpaceShip().removeGoods(selectedGoods);
@@ -354,8 +370,8 @@ public class WarZone extends Card implements Serializable {
         for (int[] coordinatesToRemoveBattery : coordinatesToRemoveBatteries) {
             counterOfBatteriesSelectedByPlayer += coordinatesToRemoveBattery[2];
         }
-        if(counterOfBatteriesSelectedByPlayer != goodsLostCurrTrucker){
-            throw new WrongNumberOfBatteriesSelected("The total number of batteries you selected to remove is not " + goodsLostCurrTrucker);
+        if(counterOfBatteriesSelectedByPlayer != goodsToLose){
+            throw new WrongNumberOfBatteriesSelected("The total number of batteries you selected to remove is not " + goodsToLose);
         }
         try{
             weakestTrucker.getSpaceShip().removeBatteries(coordinatesToRemoveBatteries);
@@ -408,7 +424,7 @@ public class WarZone extends Card implements Serializable {
     }
 
     @Override
-    public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates {
+    public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
         if (state != CardState.ACTIVATE_SHIELDS) {
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
@@ -421,7 +437,11 @@ public class WarZone extends Card implements Serializable {
             if (!weakestTrucker.getSpaceShip().checkBatteryStorage(l)) {
                 throw new InvalidCoordinates("Not a battery");
             }
-            weakestTrucker.getSpaceShip().activateShield(shieldCoord, batteryCoord);
+            try {
+                weakestTrucker.getSpaceShip().activateShield(shieldCoord, batteryCoord);
+            } catch (NotEnoughBatteries e) {
+                throw new NotEnoughBatteries(e.getMessage());
+            }
         }
         state = CardState.ESECUZIONE;
         return cardEffect();
