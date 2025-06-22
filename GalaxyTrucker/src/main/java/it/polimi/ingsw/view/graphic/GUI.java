@@ -50,19 +50,12 @@ public class GUI implements UI {
     private LoginScene loginScene;
     private BuildingScene buildingScene;
     private FlightScene flightScene;
-    private ClientEvent currentEvent;
-    private Component selectedComponent;
     public final ViewFlow viewFlow;
-    private boolean isLinkingEnabled;
-    private final Map<String, Integer> previousPositions;
 
     public GUI(ViewFlow viewFlow) {
 
         //this.stage =new Stage();
         this.viewFlow = viewFlow;
-        this.isLinkingEnabled = false;
-        this.previousPositions = new HashMap<>();
-
         //new Thread(() -> Application.launch(GUIApplication.class)).start();
 
     }
@@ -76,14 +69,6 @@ public class GUI implements UI {
         stage.setFullScreen(true);
         stage.setFullScreenExitHint("");
         stage.show();
-    }
-
-    public void setCurrentEvent(ClientEvent currentEvent) {
-        this.currentEvent = currentEvent;
-    }
-
-    public ClientEvent getCurrentEvent() {
-        return currentEvent;
     }
 
 
@@ -202,106 +187,53 @@ public class GUI implements UI {
     }
 
     @Override
-    public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames) {
+    public void showChooseResume() {
         Platform.runLater(() -> {
             double width = 1600;
             double height = 900;
 
-            ImageView backgroundView = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm()));
+            // Sfondo
+            ImageView backgroundView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg")).toExternalForm()));
             backgroundView.setFitWidth(width);
             backgroundView.setFitHeight(height);
             backgroundView.setPreserveRatio(true);
             backgroundView.setMouseTransparent(true);
 
-            Label titleLabel = new Label("Welcome back! Select your profile:");
-            titleLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
-            titleLabel.setTextFill(Color.web("#FFDE69"));
+            // Titolo
+            Label messageLabel = new Label("There is an old game to resume");
+            messageLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
+            messageLabel.setTextFill(Color.web("#FFDE69"));
+            messageLabel.setAlignment(Pos.CENTER);
 
-            // Contenitore per i riquadri
-            TilePane playerPane = new TilePane(30, 30);
-            playerPane.setAlignment(Pos.CENTER);
+            // Pulsante Resume
+            Button resumeBtn = new Button("Resume");
+            resumeBtn.setFont(Font.font("Bangers", 20));
+            resumeBtn.setTextFill(Color.BLACK);
+            resumeBtn.setCursor(Cursor.HAND);
+            resumeBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            resumeBtn.setPrefWidth(160);
+            resumeBtn.setOnAction(e -> viewFlow.handleInput("y"));
 
-            // Per gestire selezione
-            final StackPane[] selectedBox = {null};
-            final String[] selectedNickname = {null};
-            final PlayerColors[] selectedColor = {null};
+            // Pulsante New Game
+            Button newGameBtn = new Button("New Game");
+            newGameBtn.setFont(Font.font("Bangers", 20));
+            newGameBtn.setTextFill(Color.BLACK);
+            newGameBtn.setCursor(Cursor.HAND);
+            newGameBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            newGameBtn.setPrefWidth(160);
+            newGameBtn.setOnAction(e -> viewFlow.handleInput("n"));
 
-            Map<StackPane, Rectangle> boxToRect = new HashMap<>();
-            Map<StackPane, PlayerColors> boxToColor = new HashMap<>();
-            Map<StackPane, Rectangle> boxToOverlay = new HashMap<>();
+            // Contenitore pulsanti
+            HBox buttonBox = new HBox(30, resumeBtn, newGameBtn);
+            buttonBox.setAlignment(Pos.CENTER);
 
-            for (int i = 0; i < colors.size(); i++) {
-                PlayerColors color = colors.get(i);
-                String nickname = nicknames.get(i);
-
-                Rectangle baseRect = new Rectangle(180, 70);
-                baseRect.setArcWidth(20);
-                baseRect.setArcHeight(20);
-                baseRect.setFill(switch (color) {
-                    case RED -> Color.RED;
-                    case GREEN -> Color.LIMEGREEN;
-                    case BLUE -> Color.DODGERBLUE;
-                    case YELLOW -> Color.GOLD;
-                    default -> Color.GRAY;
-                });
-
-                Rectangle overlay = new Rectangle(180, 70);
-                overlay.setArcWidth(20);
-                overlay.setArcHeight(20);
-                overlay.setFill(Color.BLACK);
-                overlay.setOpacity(0.5); // trasparenza
-                overlay.setVisible(false); // visibile solo quando non selezionato
-
-                Label nameLabel = new Label(nickname);
-                nameLabel.setTextFill(Color.BLACK);
-                nameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-
-                StackPane box = new StackPane(baseRect, overlay, nameLabel);
-                box.setCursor(Cursor.HAND);
-
-                boxToRect.put(box, baseRect);
-                boxToColor.put(box, color);
-                boxToOverlay.put(box, overlay);
-
-                box.setOnMouseClicked(e -> {
-                    for (StackPane otherBox : boxToRect.keySet()) {
-                        otherBox.setStyle(""); // rimuovi bordi
-                        boxToOverlay.get(otherBox).setVisible(true); // metti overlay grigio
-                    }
-
-                    // evidenzia quello cliccato
-                    box.setStyle("-fx-border-color: transparent; -fx-border-width: 3px;");
-                    boxToOverlay.get(box).setVisible(false); // rimuovi overlay dal selezionato
-
-                    selectedBox[0] = box;
-                    selectedNickname[0] = nickname;
-                    selectedColor[0] = color;
-                });
-
-                playerPane.getChildren().add(box);
-            }
-
-            // Pulsante Confirm
-            Button confirmBtn = new Button("Confirm");
-            confirmBtn.setFont(Font.font("Bangers", 20));
-            confirmBtn.setPrefWidth(120);
-            confirmBtn.setTextFill(Color.BLACK);
-            confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-            confirmBtn.setCursor(Cursor.HAND);
-            confirmBtn.setDisable(false);
-
-            confirmBtn.setOnAction(e -> {
-                if (selectedNickname[0] != null && selectedColor[0] != null) {
-                    String input = selectedNickname[0] + " " + selectedColor[0];
-                    viewFlow.handleInput(input);
-                }
-            });
-
-            VBox content = new VBox(40, titleLabel, playerPane, confirmBtn);
+            // Layout verticale
+            VBox content = new VBox(40, messageLabel, buttonBox);
             content.setAlignment(Pos.CENTER);
             content.setPadding(new Insets(40));
 
-            StackPane root = new StackPane(backgroundView, content);
+            // Stack finale
+            StackPane root = new StackPane(backgroundView, content); // <--- dichiarato qui
             StackPane.setAlignment(content, Pos.CENTER);
 
             if (stage.getScene() == null) {
@@ -313,11 +245,6 @@ public class GUI implements UI {
             stage.centerOnScreen();
             stage.setFullScreen(true);
         });
-    }
-
-    @Override
-    public void showChooseResume() {
-        showInsertNumPlayers();
     }
 
     @Override
@@ -344,13 +271,15 @@ public class GUI implements UI {
     }
 
     @Override
-    public void resumeFlightScene(ArrayList<String> playerNames){
-        this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip().getComponents(), viewFlow, new StackPane());
-        stage.setScene(this.flightScene.createScene(playerNames, viewFlow.getLevel()));
-        stage.setTitle("Galaxy Trucker");
-        stage.setResizable(false);
-        stage.setFullScreen(true);
-        stage.show();
+    public void resumeFlightScene(ArrayList<String> playerNames) {
+        Platform.runLater(() -> {
+            this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip().getComponents(), viewFlow, new StackPane());
+            stage.setScene(this.flightScene.createScene(playerNames, viewFlow.getLevel()));
+            stage.setTitle("Galaxy Trucker");
+            stage.setResizable(false);
+            stage.setFullScreen(true);
+            stage.show();
+        });
 
     }
 
@@ -362,10 +291,22 @@ public class GUI implements UI {
     // welcome scene
 
     @Override
+    public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames) {
+        Platform.runLater(() -> {
+            this.loginScene = new LoginScene(null, viewFlow);
+            stage.setScene(this.loginScene.createScene(true, nicknames,colors));
+            stage.setTitle("Galaxy Trucker");
+            stage.setResizable(false);
+            stage.setFullScreen(true);
+            stage.show();
+        });
+    }
+
+    @Override
     public void welcomeScene(AvailableColorsEvent event){
         Platform.runLater(() -> {
             this.loginScene = new LoginScene(event.getColors(), viewFlow);
-            stage.setScene(this.loginScene.createScene(false));
+            stage.setScene(this.loginScene.createScene(false, null,null));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
             stage.setFullScreen(true);

@@ -45,10 +45,10 @@ public class LoginScene {
         this.unavailableColors = EnumSet.noneOf(PlayerColors.class);
     }
 
-    public Scene createScene(boolean resume) {
-        if(resume) {
-            return createResumeGameScene();
-        }else{
+    public Scene createScene(boolean resume, List<String> nicknames, List<PlayerColors> colors) {
+        if (resume) {
+            return createResumeGameScene(nicknames, colors);
+        } else {
             return createNewGameScene();
         }
     }
@@ -152,54 +152,105 @@ public class LoginScene {
         return new Scene(root, width, height);
     }
 
-    private Scene createResumeGameScene() {
+    private Scene createResumeGameScene(List<String> nicknames, List<PlayerColors> colors) {
         double width = 1600;
         double height = 900;
 
-        // Sfondo
-        ImageView backgroundView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg")).toExternalForm()));
+        ImageView backgroundView = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm()));
         backgroundView.setFitWidth(width);
         backgroundView.setFitHeight(height);
         backgroundView.setPreserveRatio(true);
         backgroundView.setMouseTransparent(true);
 
-        // Titolo
-        Label messageLabel = new Label("There is an old game to resume");
-        messageLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
-        messageLabel.setTextFill(Color.web("#FFDE69"));
-        messageLabel.setAlignment(Pos.CENTER);
+        Label titleLabel = new Label("Welcome back! Select your profile:");
+        titleLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
+        titleLabel.setTextFill(Color.web("#FFDE69"));
 
-        // Pulsante Resume
-        Button resumeBtn = new Button("Resume");
-        resumeBtn.setFont(Font.font("Bangers", 20));
-        resumeBtn.setTextFill(Color.BLACK);
-        resumeBtn.setCursor(Cursor.HAND);
-        resumeBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-        resumeBtn.setPrefWidth(160);
-        resumeBtn.setOnAction(e -> viewFlow.handleInput("y"));
+        TilePane playerPane = new TilePane(30, 30);
+        playerPane.setAlignment(Pos.CENTER);
 
-        // Pulsante New Game
-        Button newGameBtn = new Button("New Game");
-        newGameBtn.setFont(Font.font("Bangers", 20));
-        newGameBtn.setTextFill(Color.BLACK);
-        newGameBtn.setCursor(Cursor.HAND);
-        newGameBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-        newGameBtn.setPrefWidth(160);
-        newGameBtn.setOnAction(e -> viewFlow.handleInput("n"));
+        final StackPane[] selectedBox = {null};
+        final String[] selectedNickname = {null};
+        final PlayerColors[] selectedColor = {null};
 
-        // Contenitore pulsanti
-        HBox buttonBox = new HBox(30, resumeBtn, newGameBtn);
-        buttonBox.setAlignment(Pos.CENTER);
+        Map<StackPane, Rectangle> boxToRect = new HashMap<>();
+        Map<StackPane, PlayerColors> boxToColor = new HashMap<>();
+        Map<StackPane, Rectangle> boxToOverlay = new HashMap<>();
 
-        // Layout verticale
-        VBox content = new VBox(40, messageLabel, buttonBox);
+        for (int i = 0; i < colors.size(); i++) {
+            PlayerColors color = colors.get(i);
+            String nickname = nicknames.get(i);
+
+            Rectangle baseRect = new Rectangle(180, 70);
+            baseRect.setArcWidth(20);
+            baseRect.setArcHeight(20);
+            baseRect.setFill(switch (color) {
+                case RED -> Color.RED;
+                case GREEN -> Color.LIMEGREEN;
+                case BLUE -> Color.DODGERBLUE;
+                case YELLOW -> Color.GOLD;
+                default -> Color.GRAY;
+            });
+
+            Rectangle overlay = new Rectangle(180, 70);
+            overlay.setArcWidth(20);
+            overlay.setArcHeight(20);
+            overlay.setFill(Color.BLACK);
+            overlay.setOpacity(0.5);
+            overlay.setVisible(false);
+
+            Label nameLabel = new Label(nickname);
+            nameLabel.setTextFill(Color.BLACK);
+            nameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+
+            StackPane box = new StackPane(baseRect, overlay, nameLabel);
+            box.setCursor(Cursor.HAND);
+
+            boxToRect.put(box, baseRect);
+            boxToColor.put(box, color);
+            boxToOverlay.put(box, overlay);
+
+            box.setOnMouseClicked(e -> {
+                for (StackPane otherBox : boxToRect.keySet()) {
+                    otherBox.setStyle("");
+                    boxToOverlay.get(otherBox).setVisible(true);
+                }
+
+                box.setStyle("-fx-border-color: transparent; -fx-border-width: 3px;");
+                boxToOverlay.get(box).setVisible(false);
+
+                selectedBox[0] = box;
+                selectedNickname[0] = nickname;
+                selectedColor[0] = color;
+            });
+
+            playerPane.getChildren().add(box);
+        }
+
+        Button confirmBtn = new Button("Confirm");
+        confirmBtn.setFont(Font.font("Bangers", 20));
+        confirmBtn.setPrefWidth(120);
+        confirmBtn.setTextFill(Color.BLACK);
+        confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        confirmBtn.setCursor(Cursor.HAND);
+
+        confirmBtn.setOnAction(e -> {
+            if (selectedNickname[0] != null && selectedColor[0] != null) {
+                String input = selectedNickname[0] + " " + selectedColor[0];
+                viewFlow.handleInput(input);
+            }
+        });
+
+        VBox content = new VBox(40, titleLabel, playerPane, confirmBtn);
         content.setAlignment(Pos.CENTER);
         content.setPadding(new Insets(40));
 
-        // Stack finale
-        this.root = new StackPane(backgroundView, content);
+        root = new StackPane(backgroundView, content);
+        StackPane.setAlignment(content, Pos.CENTER);
+
         return new Scene(root, width, height);
     }
+
 
     private Color getColorForEnum(PlayerColors color) {
         return switch (color) {
