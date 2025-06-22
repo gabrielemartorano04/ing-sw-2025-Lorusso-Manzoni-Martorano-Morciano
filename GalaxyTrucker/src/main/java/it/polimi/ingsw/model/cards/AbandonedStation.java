@@ -248,7 +248,10 @@ public class AbandonedStation extends Card implements Serializable {
     }
 
     /**
-     * Applies the changes provided by the card
+     * Applies the changes provided by the card:
+     * makes the player landed move backwards
+     *
+     * @return the event containing the status of the game after the effects for clients
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {

@@ -29,11 +29,20 @@ import java.util.Map;
 public class OpenSpace extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * current state of the card, helper for debug and checking consistency
+     */
     private CardState state;
+
+    /**
+     * index of the current player to handle the fact that clients have to respect a specific turn
+     */
     private int indexOfCurrentTrucker;
 
     /**
      * Open space constructor, initialise the attributes of this class
+     *
      * @param trialFlight specify if truckers are playing trial flight
      * @param level level of the game
      * @param frontImage front image of the card
@@ -49,6 +58,9 @@ public class OpenSpace extends Card implements Serializable {
         return state;
     }
 
+    /**
+     * @return an event containing all the card details
+     */
     @Override
     public ServerEvent startCard() {
         return new StartCardEvent(
@@ -75,7 +87,14 @@ public class OpenSpace extends Card implements Serializable {
 
     /**
      * Sets for each trucker the coordinates of the double engines that he/she wants to activate
-     * @param coord list of arrays of coordinates
+     *
+     * @param activate: decision taken by the current player
+     * @param coord: coordinates of the doubleEngines to activate
+     * @param batteryCoord: coordinates of the BatteryStorages from which remove the batteries
+     * @return cardeffect if every player has decided, otherwise the event for the next player
+     * @throws InvalidCoordinates: coordinates are not of shields or batteryStorages
+     * @throws GeneralError: not in the right state
+     * @throws NotEnoughBatteries: not enoughBatteries indicated
      */
     @Override
     public ServerEvent activateEngines(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws InvalidCoordinates, GeneralError, NotEnoughBatteries {
@@ -107,6 +126,13 @@ public class OpenSpace extends Card implements Serializable {
         return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, ParserState.ACTIVATE_ENGINES, "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getNickname());
     }
 
+
+    /**
+     * Applies the changes provided by the card:
+     * moves forward every player based on the engine power of each ship
+     *
+     * @return the event containing the status of the game after the effects for clients
+     */
     @Override
     public ServerEvent cardEffect() throws GeneralError {
         if (this.state != CardState.ESECUZIONE) {

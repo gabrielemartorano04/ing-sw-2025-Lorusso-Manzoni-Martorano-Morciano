@@ -33,19 +33,38 @@ import java.util.stream.Collectors;
 public class MeteorShower extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * current state of the card, helper for debug and checking consistency
+     */
     public CardState state;
+
+    /**
+     * index of the current player to handle the fact that clients have to respect a specific turn
+     */
     private int indexOfCurrTrucker;
 
+    /**
+     * currentMeteor that is threatening players' ships
+     */
     private int[] meteor;
+
+    /**
+     * current roll dice result for the current meteor
+     */
     private int roll;
 
+    /**
+     * index of the current meteor in the list "meteors"
+     */
     private int currMeteorIndex = 0;
 
-    // direction è una lista dove direction.get(i) rappresenta l'i-esimo meteorite in questa specifica MeteorShower
-    // direction.get(i)[0] vale 1 se il meteorite è grande 0 se è piccolo
-    // direction.get(i)[1] indice la direzione da cui arriva il meteorite (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da sx)
-    // direction è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
-    // cioè scegliendo il meteorite dall'alto verso il basso
+    /**
+     * Ordered list of incoming meteors, where each element is an array of two integers:
+     * [0] = 1 if the meteor is large, 0 if small;
+     * [1] = direction of approach (0 = top, 1 = right, 2 = bottom, 3 = left).
+     * The list is pre-sorted in the correct order of resolution.
+     */
     private final ArrayList<int[]> meteors;
 
 
@@ -73,7 +92,9 @@ public class MeteorShower extends Card implements Serializable {
         return state;
     }
 
-
+    /**
+     * @return an event containing all the card details
+     */
     @Override
     public ServerEvent startCard() {
         return new StartCardEvent(
@@ -98,33 +119,26 @@ public class MeteorShower extends Card implements Serializable {
         );
     }
 
+
+    /**
+     * roll the dices for the current meteor
+     *
+     * @return the event containing the roll dice result and the current meteor
+     * @throws GeneralError
+     */
     public ServerEvent rollDice() throws GeneralError {
-
-        System.out.println("è stato tirato il dado ");
-
         if(state != CardState.ROLL_DICE) {
             throw new GeneralError("Can't roll dice in the state " + this.state);
         }
         if(currMeteorIndex <0 || currMeteorIndex >= meteors.size()){
             throw new GeneralError("Card should be already finished");
         }
+
+        this.roll = Game.getIstance().rollDice();
+
         meteor = meteors.get(currMeteorIndex);
         currMeteorIndex++;
 
-        int direction = meteor[1];
-        String sizeText = (meteor[0] == 1) ? "big" : "small";
-
-        String dirText;
-        switch (direction) {
-            case 0 -> dirText = "from the top";
-            case 1 -> dirText = "from the right side";
-            case 2 -> dirText = "from the bottom";
-            case 3 -> dirText = "from the left side";
-            default -> dirText = "from an unknown direction";
-        }
-        System.out.println("Meteorite " + currMeteorIndex + " (" + sizeText + ") arriving "  + dirText + " total number of meteors in the card " + meteors.size());
-
-        this.roll = Game.getIstance().rollDice();
         if (meteor[0]==1) {
             state=CardState.ACTIVATE_CANNONS;
             return new RollDiceResult(ParserState.ACTIVATE_CANNONS, currMeteorIndex,null,meteor, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "bigmeteor");
@@ -134,6 +148,18 @@ public class MeteorShower extends Card implements Serializable {
         }
     }
 
+
+    /**
+     * Activates for each player the shield indicated
+     *
+     * @param answer: if true the current player wants to activate shield otherwise no
+     * @param shieldCoord: coordinates of the shield the current player wants to activate
+     * @param batteryCoord: coordinates of the battery storage from which remove a battery
+     * @return: cardeffect if every player has decided, otherwise the event for the next player
+     * @throws GeneralError: card is not in the correct state (for debug)
+     * @throws InvalidCoordinates: coordinates don't match the type of component in the shield
+     * @throws NotEnoughBatteries: not enough batteries to remove were indicated by the plauer
+     */
     @Override
     public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
         if (state != CardState.ACTIVATE_SHIELDS) {
@@ -166,6 +192,19 @@ public class MeteorShower extends Card implements Serializable {
         return new BooleanDecision(ServerEventType.ACTIVATE_SHIELD, true, ParserState.ACTIVATE_SHIELD, "vuoi attivare uno scudo?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
     }
 
+
+    /**
+     * Sets for each trucker the coordinates of the double cannons that he/she wants to activate
+     *
+     * @param activate: true if the current player wants to activate any double Cannons, false otherwise
+     * @param coord: coordinates of the doubleCannons to activate
+     * @param batteryCoord: coordinates of the batteryStorages from which remove the batteries
+     * @return: cardEffect if it was the last player, otherwise it updates the next player to let him decide whether
+     * to activate any doubleCannons
+     * @throws GeneralError: card not in the right state
+     * @throws InvalidCoordinates: coordinates do not match to their component type
+     * @throws NotEnoughBatteries: not enoughBatteries indicated to activate the doubleCannons selected
+     */
     @Override
     public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
         if (this.state != CardState.ACTIVATE_ENGINES) {
@@ -198,7 +237,11 @@ public class MeteorShower extends Card implements Serializable {
     }
 
     /**
-     * Applies the changes provided by the card
+     * Applies the changes provided by the card:
+     * shoots players' ships with the current meteor
+     *
+     * @return the event containing the status of the game after the effects for clients if it was the last meteor,
+     * otherwise the event to notify the leader to roll dices
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {
@@ -217,23 +260,18 @@ public class MeteorShower extends Card implements Serializable {
             SpaceShip ship = trucker.getSpaceShip();
 
             if (ship.isHit(direction, roll)) {
-                System.out.println("La nave è colpita");
                 if (isBig) {
-                    System.out.println("Entrato");
 
-                    // qui assumo che il meteorite grande possa essere distrutto da un cannone ma è da rivedere
                     if (!ship.shootMeteor(direction, roll)) {
                         ship.destroyComponent(roll, direction, Game.getIstance().getBank());
                     }
                 } else {
-                    // Un meteorite piccolo può rimbalzare o essere fermato dallo scudo
                     if (!ship.blockSmallMeteor(direction, roll)){
                         ship.destroyComponent(roll, direction, Game.getIstance().getBank());
                     }
                 }
-            }else {
-                System.out.println("La nave di " + trucker.getNickname() + " non è colpita");
             }
+
             trucker.getSpaceShip().deActivateShields();
             trucker.getSpaceShip().deactivateDoubleCannons();
             j++;
@@ -241,17 +279,12 @@ public class MeteorShower extends Card implements Serializable {
         if (meteors.size()==(currMeteorIndex)) {
             ArrayList<Trucker> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
-            Map<String, Integer> track = new HashMap<>();
-            for (Trucker t : Game.getIstance().getTruckerList()) {
-                track.put(t.getNickname(), t.getPosition());
-            }
+
             GamePersistence.saveGame(GameController.getIstance());
-            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+
+            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
         }else {
             this.state = CardState.ROLL_DICE;
-            System.out.println("lista di trucker: " + Game.getIstance().getTruckerList().stream()
-                    .map(Trucker::getNickname)
-                    .collect(Collectors.joining(", "))  + ", mando messaggio a " + Game.getIstance().getTruckerList().getFirst().getNickname());
             return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", Game.getIstance().getTruckerList().getFirst().getNickname());
         }
     }
