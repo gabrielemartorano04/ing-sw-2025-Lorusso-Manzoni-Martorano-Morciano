@@ -295,8 +295,8 @@ public class TUI implements UI {
 
 
     @Override
-    public void showCurrCondition(CurrentCondition event, boolean isLeader){
-        System.out.println("Current condition:" + event.getCondition());
+    public void showCurrCondition(Condition condition, boolean isLeader){
+        System.out.println("Current condition:" + condition);
         if(isLeader){
             System.out.println("Type Continue to proceed");
         }
@@ -570,6 +570,10 @@ public class TUI implements UI {
         }
         if(event.getBank() != null) {
             System.out.println("Bank deposit: " + event.getBank().getGoodsInBank(1) + " red goods, " + event.getBank().getGoodsInBank(2) + " yellow goods, " + event.getBank().getGoodsInBank(3) + " green goods, " + event.getBank().getGoodsInBank(4) + " blue goods");
+        }
+
+        if(event.getConditionsOrder() != null) {
+            this.showCurrCondition(event.getConditionsOrder().getFirst(), false);
         }
 
     }

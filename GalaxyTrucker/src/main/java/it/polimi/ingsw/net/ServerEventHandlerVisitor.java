@@ -299,7 +299,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
 
         handleDeath(event.getTruckersRemoved());
-        ui.showCurrCondition(event, isLeader);
+        ui.showCurrCondition(event.getCondition(), isLeader);
         ui.showInputFormat(viewFlow.getParserFlightState());
     }
 
