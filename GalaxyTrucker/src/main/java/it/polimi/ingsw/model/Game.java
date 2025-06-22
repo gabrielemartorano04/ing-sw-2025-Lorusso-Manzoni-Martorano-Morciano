@@ -648,10 +648,10 @@ public class Game implements Serializable {
     }
 
     /**
-     *
-     * @param nickname
-     * @param color
-     * @return
+     * This method checks if an old player had a given nickname and color
+     * @param nickname nickname to check
+     * @param color color to check
+     * @return if an old player had a given nickname and color
      */
     public boolean checkOldPlayers(String nickname, PlayerColors color) {
         for(int i=0; i<numPlayers; i++){
@@ -662,6 +662,9 @@ public class Game implements Serializable {
         return false;
     }
 
+    /**
+     * This method fills the oldNicknames list
+     */
     public void createOldNicknames() {
         ArrayList<Trucker> truckers;
         truckers= this.truckers;
@@ -671,14 +674,23 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * @return old nicknames list
+     */
     public ArrayList<String> getOldNicknames() {
         return oldNicknames;
     }
 
+    /**
+     * @return old colors list
+     */
     public ArrayList<PlayerColors> getOldColors() {
         return oldColors;
     }
 
+    /**
+     * This method fills the oldColors list
+     */
     public void createOldColors() {
         ArrayList<Trucker> truckers;
         truckers= this.truckers;
@@ -688,10 +700,18 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * This method removes a color from old colors list
+     * @param color color to remove
+     */
     public void removeOldColors(PlayerColors color) {
         oldColors.remove(color);
     }
 
+    /**
+     * This method removes a nickname from old nicknames list
+     * @param nickname nickname to remove
+     */
     public void removeOldNicknames(String nickname) {
         oldNicknames.remove(nickname);
     }
