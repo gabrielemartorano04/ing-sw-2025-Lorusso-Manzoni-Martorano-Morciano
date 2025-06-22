@@ -635,6 +635,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setParserFlightState(event.getParserState());
             viewFlow.setShip(event.getShip());
             ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
+            viewFlow.setNumOfBatteriesToRemove(event.getBatteriesToRemove());
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
