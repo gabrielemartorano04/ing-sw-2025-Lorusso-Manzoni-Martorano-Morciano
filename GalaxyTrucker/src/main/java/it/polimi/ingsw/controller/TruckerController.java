@@ -13,6 +13,9 @@ import it.polimi.ingsw.model.components.Component;
  * - int selectedComponentIndex, the index of the selected component in the available components.
  */
 public class TruckerController  {
+    /**
+     * The player linked to this controller
+     */
     private final Trucker trucker;
     private int selectedComponentIndex;
 
