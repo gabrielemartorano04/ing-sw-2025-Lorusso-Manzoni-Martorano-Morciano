@@ -7,7 +7,14 @@ import java.io.Serializable;
  * Class that manages the single life support
  */
 final public class LifeSupport extends Component implements Serializable{
+    /**
+     * Life support's color
+     */
     private final AlienColor color;
+
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -28,7 +35,7 @@ final public class LifeSupport extends Component implements Serializable{
 
     /**
      * Returns the color of the life support
-     * @return return the color
+     * @return the color
      */
     public AlienColor getColor() {
         return color;

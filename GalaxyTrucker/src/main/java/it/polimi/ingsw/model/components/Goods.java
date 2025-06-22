@@ -12,11 +12,19 @@ import java.io.Serializable;
  * 1 = blue
  */
 public class Goods implements Serializable {
+    /**
+     * Good's value
+     */
     private final int value;
-    // x e y sono le coordinate della posizione della load che tiene la merce dentro la SpaceShip. Vengono usate solo per le merci
-    // dentro la SpaceShip quindi non vengono messo nel costruttore.
+
+    /**
+     * Load position if the good is placed in a spaceship
+     */
     private int x, y;
 
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -68,6 +76,10 @@ public class Goods implements Serializable {
         return y;
     }
 
+    /**
+     * This method returns good's color based on value
+     * @return good's color
+     */
     public String getColor() {
         switch (value){
             case 1 -> {

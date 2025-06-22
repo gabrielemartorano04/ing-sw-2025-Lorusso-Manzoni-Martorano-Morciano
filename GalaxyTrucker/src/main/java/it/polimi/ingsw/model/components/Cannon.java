@@ -7,9 +7,24 @@ import java.io.Serializable;
  * Class that manages the cannon
  */
 final public class Cannon extends Component implements Serializable  {
+    /**
+     * It tells if the cannon is double
+     */
     private final boolean isDouble;
+
+    /**
+     * It tells if the cannon is active
+     */
     private boolean isActive;
+
+    /**
+     * The cannon orientation
+     */
     private Orientation orientation;
+
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -71,7 +86,7 @@ final public class Cannon extends Component implements Serializable  {
     }
 
     /**
-     * Turns the orientation of the cannon and the component
+     * Turns the orientation of the cannon and the links
      */
     @Override
     public void turn(){

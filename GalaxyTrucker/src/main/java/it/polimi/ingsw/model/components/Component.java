@@ -7,17 +7,56 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Class that manages the single component
+ * Class that manages the generic component
  */
 public abstract sealed class Component implements Serializable  permits BatteryStorage, Cabin, Cannon, EmptySpace, Engine, LifeSupport,Load,Pipes,Shield {
+    /**
+     * Component's links:
+     * link[0]: upper link
+     * link[1]: right link
+     * link[2]: lower link
+     * link[3]: left link
+     */
     private final Integer[] link;
+
+    /**
+     * It tells if the component is selected
+     */
     private boolean selected;
+
+    /**
+     * It tells if the component is covered
+     */
     private boolean covered;
+
+    /**
+     * It tells if the component is linked to the main cabin, through different links
+     */
     private boolean visited;
+
+    /**
+     * Component's type
+     */
     private final String type;
+
+    /**
+     * Component's front image path
+     */
     private final String frontImagePath;
+
+    /**
+     * Component's back image path
+     */
     private final String backImagePath;
+
+    /**
+     * Component's rotation angle
+     */
     private int rotationAngle;
+
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -132,6 +171,10 @@ public abstract sealed class Component implements Serializable  permits BatteryS
         rotationAngle = (rotationAngle + 90) % 360;
     }
 
+    /**
+     * Component's rotation angle getter
+     * @return component's rotation angle
+     */
     public int getRotationAngle() {
         return rotationAngle;
     }
@@ -144,11 +187,10 @@ public abstract sealed class Component implements Serializable  permits BatteryS
         return this.type;
     }
 
-    public static void main(String[] args) {
-        Component com=new Engine(2, 0, 0, "Engine", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web77.jpg", false);
-        System.out.println(com.getType());
-    }
-
+    /**
+     * This method returns the component description
+     * @return component text description
+     */
     @Override
     public String toString(){
         String s;

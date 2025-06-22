@@ -9,11 +9,34 @@ import java.io.Serializable;
  * Class that manages the single cabin
  */
 final public class Cabin extends Component implements Serializable {
+    /**
+     * It tells if the cabin is the main one
+     */
     private final boolean isMain;
+
+    /**
+     * Number of crew members in the cabin
+     */
     private int quantity;
+
+    /**
+     * Cabin's capacity
+     */
     private final int capacity;
+
+    /**
+     * It's the alien in the cabin if it's present
+     */
     private Alien alien;
+
+    /**
+     * Player color to sets the main cabin color if this is the main cabin
+     */
     private final PlayerColors color;
+
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 
