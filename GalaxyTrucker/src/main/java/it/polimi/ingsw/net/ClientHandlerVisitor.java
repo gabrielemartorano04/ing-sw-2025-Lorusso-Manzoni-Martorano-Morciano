@@ -562,9 +562,10 @@ public class ClientHandlerVisitor implements VirtualServer {
     @Override
     public ServerEvent visit(WithdrawRequest event) {
         String nickname=event.getNickname();
+        boolean choice=event.getChoice();
         withdrawChoice++;
         if(withdrawChoice<gameController.getGame().getTruckerList().size()){
-            if(nickname!=null){
+            if(choice){
                 for(Trucker t: gameController.getGame().getTruckerList()){
                     if(t.getNickname().equals(nickname)){
                         gameController.getGame().withdraw(t);
@@ -572,8 +573,8 @@ public class ClientHandlerVisitor implements VirtualServer {
                         break;
                     }
                 }
-                return new TruckerWithdrawEvent(nickname);
-            } else return new TruckerWithdrawEvent(null);
+            }
+            return new TruckerWithdrawEvent(nickname,choice);
         }
         else {
             withdrawChoice=0;

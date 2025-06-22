@@ -80,10 +80,10 @@ public class InputParserFlight {
 
     private ClientEvent parseWithdraw(String input, String nickname) {
         if (input.trim().equalsIgnoreCase("y")) {
-            return new WithdrawRequest(nickname);
+            return new WithdrawRequest(nickname,true);
         }
         else if (input.trim().equalsIgnoreCase("n")) {
-            return new WithdrawRequest(null);
+            return new WithdrawRequest(nickname, false);
         }
         else{
             ui.showError("Error: invalid command. Type 'y' or 'n'");

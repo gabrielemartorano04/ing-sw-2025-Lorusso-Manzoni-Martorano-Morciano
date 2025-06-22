@@ -381,7 +381,10 @@ class SpaceShipTest {
     @Test
     void activateShield() {
         spaceShip2.setBattery();
-        spaceShip2.activateShield(new int[]{6,6},new int[]{8,8,1});
+        try {
+            spaceShip2.activateShield(new int[]{6,6},new int[]{8,8,1});
+        } catch (NotEnoughBatteries e) {
+        }
 
         switch(spaceShip2.getComponents()[6][6]){
             case Shield component->{
@@ -394,7 +397,10 @@ class SpaceShipTest {
     @Test
     void deActivateShields() {
         spaceShip2.setBattery();
-        spaceShip2.activateShield(new int[]{6,6},new int[]{8,8,1});
+        try {
+            spaceShip2.activateShield(new int[]{6,6},new int[]{8,8,1});
+        } catch (NotEnoughBatteries e) {
+        }
 
         spaceShip2.deActivateShields();
         switch(spaceShip2.getComponents()[6][6]){

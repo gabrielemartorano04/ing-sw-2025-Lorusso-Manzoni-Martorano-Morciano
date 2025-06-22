@@ -669,12 +669,20 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(TruckerWithdrawEvent event) {
-        if(event.getTruckerWithdrawNick()!=null) {
-            if(event.getTruckerWithdrawNick().equalsIgnoreCase(viewFlow.getNickname())) {
+        String nickname=event.getNickname();
+        boolean choice=event.getChoice();
+        if(choice){
+            if(event.getNickname().equalsIgnoreCase(viewFlow.getNickname())) {
                 viewFlow.setParserFlightState(ParserState.DEAD);
                 ui.showDead();
             }
-            ui.showTruckerWithdrawn(event.getTruckerWithdrawNick());
+            else ui.showTruckerWithdrawn(event.getNickname());
+        }
+        else{
+            if(event.getNickname().equalsIgnoreCase(viewFlow.getNickname())) {
+                viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+                ui.showWaitForOthers();
+            }
         }
     }
 
