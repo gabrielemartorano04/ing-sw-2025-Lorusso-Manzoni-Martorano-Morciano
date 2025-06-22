@@ -23,7 +23,12 @@ import java.util.Map;
 public class Epidemic extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * current state of the card, helper for debug and checking consistency
+     */
     public CardState state;
+
     /**
      * Epidemic constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -42,15 +47,19 @@ public class Epidemic extends Card implements Serializable {
 //    }
 
 
+    /**
+     * start the card and applies its effect since there is no need of interaction with clients
+     * @return: all changes that the cardEffect has provocated
+     */
     @Override
     public ServerEvent startCard() {
-        // TODO: mettere le informazioni per stampare la carta dentro l'epidemicEvent
         try {
             return cardEffect();
         } catch (GeneralError e) {
             return new GenericErrorEvent("errore", true);
         }
     }
+
 
     /**
      * Applies the changes provided by the card
