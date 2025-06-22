@@ -257,13 +257,10 @@ public class WarZone extends Card implements Serializable {
             this.initializeRemoveGoods = false;
         }
 
-        System.out.println("Goods to lose " + goodsToLose);
-
         while (colorOfCurrGoodToRemove > 0 && goodsToLose > 0) {
             numGoodCurrType = getNumGoodsForColor(weakestTrucker.getSpaceShip(), colorOfCurrGoodToRemove);
 
             if (numGoodCurrType > 0 && numGoodCurrType <= goodsToLose) {
-                System.out.println(numGoodCurrType + " " + goodsToLose + " Per debug");
                 return removeWithoutAsking(goodsList);
             }else if (numGoodCurrType > 0){
                 state = CardState.REMOVE_ASKING;
@@ -448,7 +445,6 @@ public class WarZone extends Card implements Serializable {
             throw new GeneralError("FindWeakestTrucker not callable in the state " + state);
         }
         this.weakestTrucker = getWeakestTrucker(currCondition);
-        System.out.println(weakestTrucker.getNickname() + " is current weakest trucker");
         if(weakestTrucker == null){
             throw new GeneralError("FindWeakestTrucker error cause weakest trucker is null");
         }
@@ -529,7 +525,6 @@ public class WarZone extends Card implements Serializable {
                     }else{
                         currCondition = conditionsOrder.get(currConditionIndex);
                         state = CardState.WARZONE;
-                        System.out.println(Game.getIstance().getTruckerList().getFirst().getNickname());
                         return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,Game.getIstance().getTrack(), null, Game.getIstance().endTurn());
                     }
                 }
