@@ -32,26 +32,71 @@ import java.util.Map;
 public class Pirates extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * cosmic credits that can be won
+     */
     private final int credits;
+
+    /**
+     * flight days to lose if the winner player decides to take credits
+     */
     private final int days;
+
+    /**
+     * cannonPower of the pirates
+     */
     private final int piratesPower;
+
+    /**
+     * current state of the card, helper for debug and checking consistency
+     */
     private CardState cardState;
 
-    // shoots è una lista dove shoots.get(i) rappresenta l'i-esimo colpo in questa specifica carta Pirates
-    // shoots.get(i)[0] vale 1 se il colpo è grande 0 se è piccolo
-    // shoots.get(i)[1] indice la direzione da cui arriva il colpo (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da sx)
-    // shoots è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
-    // cioè scegliendo il meteorite dall'alto verso il basso
+    /**
+     * A list of shots for this specific Pirates card.
+     * Each element represents a shot, where:
+     * - index 0 indicates the shot size (1 = large, 0 = small)
+     * - index 1 indicates the direction from which the shot comes
+     *   (0 = top, 1 = right, 2 = bottom, 3 = left)
+     */
     private final ArrayList<int[]> shoots;
 
+    /**
+     * index of the current shoot
+     */
+    private int currShootIndex;
+
+    /**
+     * current shoot
+     */
+    private int[] shoot;
+
+    /**
+     * roll dice result for the current shoot
+     */
+    private int roll;
+
+    /**
+     * index of the current player to handle the fact that clients have to respect a specific turn
+     */
     private int indexOfCurrentTrucker;
-    private Trucker winnerTrucker = null; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
+
+    /**
+     * player that has defeated the pirates
+     */
+    private Trucker winnerTrucker;
+
+    /**
+     * list of all defeated players
+     */
     private final ArrayList<Trucker> defeatedTruckers;
+
+    /**
+     * decision taken by the potential winner if there is one
+     */
     private boolean winDecision;
 
-    private int currShootIndex;
-    private int[] shoot;
-    private int roll;
 
     /**
      * Pirates constructor, initialise the attributes of this class
@@ -76,6 +121,7 @@ public class Pirates extends Card implements Serializable {
         this.defeatedTruckers = new ArrayList<>();
         this.currShootIndex = 0;
         this.winDecision = false;
+        this.winnerTrucker = null;
     }
 
     /**
@@ -111,7 +157,9 @@ public class Pirates extends Card implements Serializable {
         return shoots;
     }
 
-
+    /**
+     * @return an event containing all the card details
+     */
     @Override
     public ServerEvent startCard() {
         return new StartCardEvent(
@@ -138,39 +186,52 @@ public class Pirates extends Card implements Serializable {
     }
 
     private ServerEvent fightIsWin() throws GeneralError {
-        if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() > piratesPower) {
-            winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
-            cardState = CardState.COSMIC_CREDITS;
-            return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits, days);
-        }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() == piratesPower){
-            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
-                if(defeatedTruckers.isEmpty()){
-                    cardState = CardState.ESECUZIONE;
-                    return cardEffect();
-                }else{
-                    cardState = CardState.ROLL_DICE;
-                    indexOfCurrentTrucker = 0;
-                    return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
-                }
-            }else{
-                indexOfCurrentTrucker++;
-                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
-            }
+        float power = Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower();
 
+        if (power > piratesPower) {
+            return handleVictory();
+        }else if(power == piratesPower){
+            return handleDraw();
         }else {
-            defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
-            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
-                System.out.println("Entro 1");
+            return handleDefeat();
+        }
+    }
+
+    private ServerEvent handleVictory() {
+        winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
+        cardState = CardState.COSMIC_CREDITS;
+        return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits, days);
+    }
+
+    private ServerEvent handleDraw() throws GeneralError {
+        if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
+            if(defeatedTruckers.isEmpty()){
+                cardState = CardState.ESECUZIONE;
+                return cardEffect();
+            }else{
                 cardState = CardState.ROLL_DICE;
                 indexOfCurrentTrucker = 0;
                 return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
-            }else{
-                System.out.println("Entro 2");
-                indexOfCurrentTrucker++;
-                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
             }
+        }else{
+            indexOfCurrentTrucker++;
+            return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
         }
     }
+
+    private ServerEvent handleDefeat() {
+        defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
+        if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
+            cardState = CardState.ROLL_DICE;
+            indexOfCurrentTrucker = 0;
+            return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
+        }else{
+            indexOfCurrentTrucker++;
+            return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+        }
+    }
+
+
 
     @Override
     public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {

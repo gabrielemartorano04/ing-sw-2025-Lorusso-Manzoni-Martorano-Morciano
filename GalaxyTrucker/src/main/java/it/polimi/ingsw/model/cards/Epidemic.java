@@ -62,7 +62,8 @@ public class Epidemic extends Card implements Serializable {
 
 
     /**
-     * Applies the changes provided by the card
+     * Applies the changes provided by the card:
+     * removes a crew member from each occupied cabin that is connected to another occupied cabin for each player
      *
      * @return the event containing the status of the game after the effects for clients
      */
