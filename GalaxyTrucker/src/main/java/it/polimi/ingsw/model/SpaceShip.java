@@ -202,27 +202,6 @@ public class SpaceShip implements Serializable {
     }
 
     /**
-     * This method calculates the goods capacity of the entire spaceship
-     * @return goodsCapacity the goods capacity of the entire spaceship
-     */
-    public int getGoodsCapacity() {
-        for (int i = 5; i <= 9; i++) {
-            for (int j = 4; j <= 10; j++) {
-                if(components[i][j] != null){
-                    switch(components[i][j]){
-                        case Load c -> {
-                            goodsCapacity += c.getCapacity();
-                        }
-                        default -> {
-                        }
-                    }
-                }
-            }
-        }
-        return goodsCapacity;
-    }
-
-    /**
      * This method has to be called after setNumAlien, if the player didn't put an alien into the cabin we fill
      * the cabin with 2 astronauts
      */
