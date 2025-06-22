@@ -314,6 +314,10 @@ public class ClientHandlerVisitor implements VirtualServer {
             return new TurnHourglassError();
         }
         if (tmp != null) {
+            endBuilding++;
+            if(endBuilding == gameController.getGame().getNumPlayers()){
+                return new BuildCompleteEvent(gameController.getGame().getTruckerList());
+            }
             ServerController.getIstance().startThreadHourglass();
             return tmp;
         }
@@ -484,11 +488,7 @@ public class ClientHandlerVisitor implements VirtualServer {
 
     @Override
     public ServerEvent visit(WarzoneStartEvent event) {
-        try {
-            return cardController.getCurrCard().handleCurrentCondition();
-        } catch (WrongCallerException | GeneralError e) {
-            return new GenericErrorEvent(e.getMessage(), false);
-        }
+        return cardController.handleCurrentCondition();
     }
 
     @Override

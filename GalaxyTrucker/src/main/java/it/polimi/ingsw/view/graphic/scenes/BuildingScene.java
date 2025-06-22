@@ -1141,10 +1141,18 @@ public class BuildingScene {
                     int x = Integer.parseInt(xText);
                     int y = Integer.parseInt(yText);
 
-                    if (x < 5 || x > 10 || y < 6 || y > 9) {
-                        errorLabel.setVisible(true);
-                        return;
+                    if(viewFlow.getLevel() == 2) {
+                        if (x < 4 || x > 10 || y < 5 || y > 9) {
+                            errorLabel.setVisible(true);
+                            return;
+                        }
+                    }else{
+                        if(x < 5 || x > 9 || y < 5 || y > 9){
+                            errorLabel.setVisible(true);
+                            return;
+                        }
                     }
+
 
                     errorLabel.setVisible(false);
                     viewFlow.handleInput("link " + x + " " + y);

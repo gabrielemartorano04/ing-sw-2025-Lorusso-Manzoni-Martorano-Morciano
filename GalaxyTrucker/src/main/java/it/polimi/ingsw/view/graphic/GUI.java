@@ -480,7 +480,12 @@ public class GUI implements UI {
         Platform.runLater(() -> {
             this.buildingScene.hideWaitForOthers();
             this.buildingScene.buildShipGrid(false, viewFlow.getShip().getComponents());
-            viewFlow.handleInput("alien");
+            if(viewFlow.getLevel() == 2){
+                viewFlow.handleInput("alien");
+            }else{
+                viewFlow.handleInput("continue");
+            }
+
         });
     }
 
