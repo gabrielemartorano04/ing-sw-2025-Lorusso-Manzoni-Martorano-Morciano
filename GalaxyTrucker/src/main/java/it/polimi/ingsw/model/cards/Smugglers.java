@@ -189,8 +189,24 @@ public class Smugglers extends Card implements Serializable {
         }
 
         if(!answer){
-            cardState = CardState.REARRANGE;
-            return new RearrangeEvent(true, this.winnerTrucker.getNickname());
+            if (currGoodIndex == goodsGained.length - 1) {
+                cardState = CardState.REARRANGE;
+                return new RearrangeEvent(true, this.winnerTrucker.getNickname());
+            } else {
+                currGoodIndex++;
+                do {
+                    if (Game.getIstance().getBank().getGoodsInBank(goodsGained[currGoodIndex].getValue()) >= 1) {
+                        cardState = CardState.GOODSTOADD;
+                        return new PlotGood(true, winnerTrucker.getNickname(),winnerTrucker.getSpaceShip(), goodsGained[currGoodIndex]);
+                    } else {
+                        currGoodIndex++;
+                        if (currGoodIndex == goodsGained.length) {
+                            cardState = CardState.REARRANGE;
+                            return new RearrangeEvent(true, this.winnerTrucker.getNickname());
+                        }
+                    }
+                } while (true);
+            }
         }else {
             if (!winnerTrucker.getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
                 throw new InvalidCoordinates("Not goods deposit");
@@ -205,7 +221,7 @@ public class Smugglers extends Card implements Serializable {
                 cardState = CardState.GOODSTOADD;
                 throw e;
             }
-            if (currGoodIndex == goodsGained.length - 1) { // ci va il -1 qui!!!
+            if (currGoodIndex == goodsGained.length - 1) {
                 cardState = CardState.REARRANGE;
                 return new RearrangeEvent(true, this.winnerTrucker.getNickname());
             } else {

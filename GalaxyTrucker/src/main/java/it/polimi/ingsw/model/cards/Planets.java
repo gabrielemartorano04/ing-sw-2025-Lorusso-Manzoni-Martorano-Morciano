@@ -227,11 +227,14 @@ public class Planets extends Card implements Serializable {
         } else {
             // Passa al prossimo giocatore
             indexOfTrucker++;
+            currGoodIndex=0;
             //creao nuova lista
+            currentGoodsList.clear();
             currentGoodsList.addAll(planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker))));
             currentGoodsList.addAll(goodsPassed);
+            currentGood=currentGoodsList.get(currGoodIndex);
             cardState = CardState.GOODSTOADD;
-            return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname(),Game.getIstance().getTrucker(indexOfTrucker).getSpaceShip());
+            return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(),truckersLanded.get(indexOfTrucker).getSpaceShip(), currentGood);
         }
     }
 
