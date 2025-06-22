@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
+import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
@@ -72,7 +73,7 @@ public interface UI {
 
     void flightScene(FlightStartEvent event);
 
-    void showCurrCondition(CurrentCondition event, boolean isLeader);
+    void showCurrCondition(Condition condition, boolean isLeader);
 
     void cardFinished(CardFinished event);
 

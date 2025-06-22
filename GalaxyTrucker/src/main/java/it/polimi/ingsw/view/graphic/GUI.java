@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.graphic;
 
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
+import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
@@ -515,11 +516,10 @@ public class GUI implements UI {
     }
 
     @Override
-    public void showCurrCondition(CurrentCondition event, boolean isLeader) {
-        //TODO:
+    public void showCurrCondition(Condition condition, boolean isLeader) {
         Platform.runLater(() -> {
             this.flightScene.clearRollDiceResult();
-            this.flightScene.showCurrCondition(event.getCondition(), isLeader);
+            this.flightScene.showCurrCondition(condition, isLeader);
         });
 
     }
