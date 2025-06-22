@@ -58,6 +58,8 @@ public class ViewFlow implements EventReceiver {
     private boolean firstLinked;
     private int cardsToGo;
 
+    private int numOfBatteriesToRemove;
+
     public enum ViewState {
         FIRST,
         CHOOSE_OLD,
@@ -76,6 +78,7 @@ public class ViewFlow implements EventReceiver {
         this.running = true;
         this.viewState = ViewState.FIRST;
         this.credits=0;
+        this.numOfBatteriesToRemove = 0;
 
         this.availableComponents= new ArrayList<>();
         new Thread(inputReader, "InputReaderThread").start();
@@ -290,6 +293,14 @@ public class ViewFlow implements EventReceiver {
 
     public void setEnd() {
         this.end = true;
+    }
+
+    public void setNumOfBatteriesToRemove(int numOfBatteriesToRemove) {
+        this.numOfBatteriesToRemove = numOfBatteriesToRemove;
+    }
+
+    public int getNumOfBatteriesToRemove() {
+        return numOfBatteriesToRemove;
     }
 
 //    public boolean getEnd(){

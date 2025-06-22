@@ -243,22 +243,7 @@ class Deck implements Serializable {
 
         //TODO: riportare piratesPower a 5 e slaversPower a 6 e smugglersPower a 4
 
-        WarZone warZone22 = new WarZone(
-                false, 2,
-                new ArrayList<>(List.of(Condition.CANNONS, Condition.ENGINES, Condition.HUMANS)),
-                Map.of(
-                        Condition.CANNONS, new Effect(TypeOfEffect.LOSE_DAYS, 4),
-                        Condition.ENGINES, new Effect(TypeOfEffect.LOSE_GOODS, 3),
-                        Condition.HUMANS, new Effect(TypeOfEffect.GET_SHOT, 3)
-                ),
-                warShoots2,
-                "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0116.jpg",
-                "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",8
-
-        );
-
         cards.addLast(new AbandonedStation(true, 1, goods1, 1,5, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0119.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 3));
-        cards.addLast(warZone22);
         cards.addLast(new MeteorShower(true, direction1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_019.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",6));
         cards.addLast(new Smugglers(true, 6, 2, 1, goodsGained1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_012.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 1));
         cards.addLast(warZone1);

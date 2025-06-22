@@ -1524,7 +1524,7 @@ public class FlightScene {
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
 
-        Label insertLabel = new Label("Insert the coordinates of the batteries you want to remove");
+        Label insertLabel = new Label("Remove " + viewFlow.getNumOfBatteriesToRemove() + " batteries, insert coordinates");
         insertLabel.setTextFill(Color.web("#FFDE69"));
         insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
         insertLabel.setTextAlignment(TextAlignment.CENTER);

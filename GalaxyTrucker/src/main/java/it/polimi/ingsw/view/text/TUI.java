@@ -368,7 +368,7 @@ public class TUI implements UI {
             case PLANET_DECISION->System.out.println("Choose the planet you want to fly to. Type '<index>': ");
             case DRAW_CARD ->System.out.println("Type 'draw' when you're ready to draw the next card.");
             case REMOTION_CONFIRMED, HUMAN_REMOVED -> System.out.println("Remotion confirmed. Type 'continue' when you're ready to go on.");
-            case REMOVE_BATTERIES -> System.out.println("Choose from where you  want to remove batteries. Type '<x1> <y1> - <quantity>,<x2> <y2> - <quantity>...");
+            case REMOVE_BATTERIES -> System.out.println("You have to remove " + viewFlow.getNumOfBatteriesToRemove() + " batteries." + "\n" + "Choose from where you  want to remove batteries. Type '<x1> <y1> - <quantity>,<x2> <y2> - <quantity>...");
             case REMOVE_GOODS -> System.out.println("Choose goods you want to remove. Type '<index1>,<index2>...'.");
             case REARRANGE -> System.out.println("Choose if you want to rearrange your goods. If yes, insert coordinates.\n" +
                     "Type 'y, <x1> <y1> - <value1>, <x2> <y2> - <value2>' or 'n'");
