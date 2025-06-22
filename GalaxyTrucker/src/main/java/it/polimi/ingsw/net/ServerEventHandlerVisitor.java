@@ -439,13 +439,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(RollDiceResult event) {
+        ui.showResult(event);
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
-            ui.showResult(event);
             ui.showInputFormat(viewFlow.getParserFlightState());
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
-            ui.showResult(event);
             ui.showMessage(event.getInfoForOthers());
         }
     }
