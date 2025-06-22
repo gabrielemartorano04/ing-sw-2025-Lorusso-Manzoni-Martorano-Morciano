@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model;
 
+/**
+ * Building phases todo serve?
+ */
+
 public enum BuildingState {
     BUILDING,
     SELECT_COMPONENT,
