@@ -13,25 +13,23 @@ import java.util.Map;
 
 public class ResumeGameEvent extends ServerEvent {
 
-    private final ArrayList<Trucker> trucker;
+    private final ArrayList<Trucker> truckers;
     private final GameState gameState;
     private final int level;
     private final Map<String, Integer> track;
     private final String nickname;
     private final ArrayList<Component> components;
     private final ArrayList<String> playerNames;
-    private final boolean isLeader;
 
-    public ResumeGameEvent(ArrayList<Component> availableComponents, String nickname, ArrayList<Trucker> trucker, GameState gameState, int level, Map<String, Integer> track, ArrayList<String> playerNames, boolean isLeader) {
+    public ResumeGameEvent(ArrayList<Component> availableComponents, String nickname, ArrayList<Trucker> trucker, GameState gameState, int level, Map<String, Integer> track, ArrayList<String> playerNames) {
         super(ServerEventType.RESUME_GAME, true);
-        this.trucker = trucker;
+        this.truckers = trucker;
         this.gameState = gameState;
         this.level = level;
         this.track = track;
         this.nickname = nickname;
         this.components = availableComponents;
         this.playerNames = playerNames;
-        this.isLeader = isLeader;
     }
 
     public int getLevel() {
@@ -46,8 +44,8 @@ public class ResumeGameEvent extends ServerEvent {
         return gameState;
     }
 
-    public ArrayList<Trucker> getTrucker() {
-        return trucker;
+    public ArrayList<Trucker> getTruckers() {
+        return truckers;
     }
 
     public String getNickname() {
@@ -62,9 +60,6 @@ public class ResumeGameEvent extends ServerEvent {
         return playerNames;
     }
 
-    public boolean isLeader() {
-        return isLeader;
-    }
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {

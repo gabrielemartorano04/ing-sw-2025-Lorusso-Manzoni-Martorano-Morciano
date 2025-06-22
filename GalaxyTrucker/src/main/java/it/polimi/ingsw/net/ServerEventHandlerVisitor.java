@@ -720,7 +720,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if(viewFlow.getNickname()==null) {
             viewFlow.setNickname(event.getNickname());
         }
-        for(Trucker t: event.getTrucker()){
+        boolean isLeader = false;
+        if(viewFlow.getNickname().equalsIgnoreCase(event.getTruckers().getFirst().getNickname())) {
+            isLeader = true;
+        }
+        for(Trucker t: event.getTruckers()){
             if(t.getNickname().equals(viewFlow.getNickname())){
                 trucker=t;
             }
@@ -771,7 +775,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 viewFlow.setEnd();
                 ui.resumeFlightScene(event.getPlayerNames());
 
-                if(event.isLeader()){
+                if(isLeader){
                     viewFlow.setParserFlightState(ParserState.DRAW_CARD);
                     ui.showInputFormat(ParserState.DRAW_CARD);
                 }else{

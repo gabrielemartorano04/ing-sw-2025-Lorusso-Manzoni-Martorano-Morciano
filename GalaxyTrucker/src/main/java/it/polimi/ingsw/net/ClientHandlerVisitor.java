@@ -249,10 +249,7 @@ public class ClientHandlerVisitor implements VirtualServer {
                         players.add(t.getNickname());
                     }
 
-                    //TODO: check che questo ha senso
-                    boolean isLeader = client.getTruckerController().getTrucker() == Game.getIstance().getTrucker(0);
-
-                    return new ResumeGameEvent(gameController.getGame().getComponents().getComponents(), nickname, allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), gameController.getGame().getTrack(), players, isLeader);
+                    return new ResumeGameEvent(gameController.getGame().getComponents().getComponents(), nickname, allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), gameController.getGame().getTrack(), players);
                 }else{
                     numLog--;
                     return new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);

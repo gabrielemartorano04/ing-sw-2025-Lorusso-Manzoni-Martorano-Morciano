@@ -172,14 +172,13 @@ public class AppPerTest extends Application {
 //        });
 //        flightScene.showAskWithdraw();
         gui.initGui(primaryStage);
-//        gui.welcomeOldScene(new ArrayList<>(){
-//            {
-//                add(PlayerColors.BLUE);
-//                add(PlayerColors.RED);
-//                add(PlayerColors.YELLOW);
-//            }
-//        }, playersNames);
-        gui.showChooseResume();
+        gui.welcomeOldScene(new ArrayList<>(){
+            {
+                add(PlayerColors.BLUE);
+                add(PlayerColors.RED);
+                add(PlayerColors.YELLOW);
+            }
+        }, playersNames);
 
 //        flightScene.showRearrangeInput();
 //        flightScene.updatePlanetsOccupied(new ArrayList<>(){
