@@ -17,16 +17,10 @@ public class TruckerController  {
      * The player linked to this controller
      */
     private final Trucker trucker;
-    private int selectedComponentIndex;
-
     /**
-     * we keep both selectedComponent and its index so that we use selectedComponent for the methods that need it
-     * and we use its index to check every time that the selectedComponent on the server is the same as the one
-     * on the view for that client, given the fact that the index is relative to the list that never changes its size
-     * the check clientIndex = selectedComponentIndex is valid and works. In fact we couldn't compare this selectedComponent
-     * with a copy coming from the net.
+     * Index of the component selected by the player during the building phase.
      */
-
+    private int selectedComponentIndex;
 
     /**
      * Class constructor, it creates a linked trucker instance
@@ -37,12 +31,16 @@ public class TruckerController  {
         trucker=new Trucker(nickname,color);
     }
 
+    /**
+     * This class constructor creates an existing player from an old match
+     * @param existingTrucker existing player
+     */
     public TruckerController(Trucker existingTrucker) {
         this.trucker = existingTrucker;
     }
 
     /**
-     * This methos sets the Trucker's position in the board
+     * This method sets the Trucker's position in the board
      * @param position new trucker's position
      */
     public void setPosition(int position) {
@@ -61,21 +59,6 @@ public class TruckerController  {
      */
     public PlayerColors getColor() {
         return trucker.getColor();
-    }
-
-    /**
-     * This method adds cosmicCredit to the trucker
-     * @param cosmicCredit cosmicCredit to add
-     */
-    public void addCosmicCredit(int cosmicCredit) {
-        trucker.addCosmicCredit(cosmicCredit);
-    }
-
-    /**
-     * @return trucker's cosmic credits
-     */
-    public int getCosmicCredit() {
-        return trucker.getCosmicCredit();
     }
 
     /**
@@ -170,6 +153,10 @@ public class TruckerController  {
         return trucker;
     }
 
+    /**
+     * This method initializes player's spaceship
+     * @param level game level
+     */
     public void initSpaceShip(int level) {
         this.trucker.initSpaceShip(level);
     }
