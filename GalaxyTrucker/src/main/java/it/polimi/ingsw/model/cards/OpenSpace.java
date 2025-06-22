@@ -147,7 +147,6 @@ public class OpenSpace extends Card implements Serializable {
             enginePowerPerTrucker[i] = trucker.getSpaceShip().getTotalEnginePower();
         }
 
-        //elimino tutti gli umani così in automatico withdraw elimina trucker
         for (int i = 0; i < truckers.size(); i++) {
             if (enginePowerPerTrucker[i] == 0) {
                 truckers.get(i).getSpaceShip().removeAllHumans();
@@ -164,13 +163,10 @@ public class OpenSpace extends Card implements Serializable {
 
         ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        System.out.println("sono morti (open space):" + truckerRemoved);
-        Map<String, Integer> track = new HashMap<>();
-        for (Trucker t : Game.getIstance().getTruckerList()) {
-            track.put(t.getNickname(), t.getPosition());
-        }
+
         GamePersistence.saveGame(GameController.getIstance());
-        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+
+        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
 }
