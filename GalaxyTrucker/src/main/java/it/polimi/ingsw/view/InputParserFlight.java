@@ -497,8 +497,8 @@ public class InputParserFlight {
 
     private ClientEvent parseCurrentCondition(String input) {
         String[] currCond=input.split("\\s+");
-        if(currCond.length!=1 || !currCond[0].trim().equals("continue")){
-            ui.showError("Error: invalid command, please type 'continue'");
+        if(currCond.length!=1 || !currCond[0].trim().equals("warzone")){
+            ui.showError("Error: invalid command, please type 'warzone'");
             return null;
         }
         return new WarzoneStartEvent();

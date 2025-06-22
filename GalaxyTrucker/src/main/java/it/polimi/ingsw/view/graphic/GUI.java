@@ -52,11 +52,13 @@ public class GUI implements UI {
     private BuildingScene buildingScene;
     private FlightScene flightScene;
     public final ViewFlow viewFlow;
+    private boolean showWarzone;
 
     public GUI(ViewFlow viewFlow) {
 
         //this.stage =new Stage();
         this.viewFlow = viewFlow;
+        this.showWarzone = true;
         //new Thread(() -> Application.launch(GUIApplication.class)).start();
 
     }
@@ -549,6 +551,11 @@ public class GUI implements UI {
         Platform.runLater(() -> {
             this.flightScene.hideWaitForOthers();
             this.flightScene.updateCardInScene(event.getCard());
+            if(event.getConditionsOrder() != null){
+                this.showWarzone = false;
+                this.flightScene.showCurrCondition(event.getConditionsOrder().getFirst(), true);
+
+            }
         });
     }
 
@@ -623,7 +630,12 @@ public class GUI implements UI {
                 case REMOVE_GOODS -> this.flightScene.showRemoveGoodsInput();
                 case REARRANGE -> this.flightScene.showRearrangeInput();
                 case COSMIC_CREDITS -> this.flightScene.showCosmicCreditsInput();
-                case WARZONE -> this.flightScene.showWarzoneInput();
+                case WARZONE -> {
+                    if(this.showWarzone){
+                        this.flightScene.showWarzoneInput();
+                    }
+                    this.showWarzone = true;
+                }
                 case ASK_WITHDRAW -> this.flightScene.showAskWithdraw();
 
             }

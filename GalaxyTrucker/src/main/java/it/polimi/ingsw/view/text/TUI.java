@@ -298,7 +298,7 @@ public class TUI implements UI {
     public void showCurrCondition(Condition condition, boolean isLeader){
         System.out.println("Current condition:" + condition);
         if(isLeader){
-            System.out.println("Type Continue to proceed");
+            System.out.println("Type warzone to proceed");
         }
     }
 

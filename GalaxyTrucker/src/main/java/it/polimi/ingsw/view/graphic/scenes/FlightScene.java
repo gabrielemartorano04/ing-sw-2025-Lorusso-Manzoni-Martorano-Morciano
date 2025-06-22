@@ -569,7 +569,7 @@ public class FlightScene {
             continueBtn.setPadding(new Insets(10, 20, 10, 20));
 
             continueBtn.setOnAction(e -> {
-                viewFlow.handleInput("continue");
+                viewFlow.handleInput("warzone");
                 closePopup.run();
             });
 
