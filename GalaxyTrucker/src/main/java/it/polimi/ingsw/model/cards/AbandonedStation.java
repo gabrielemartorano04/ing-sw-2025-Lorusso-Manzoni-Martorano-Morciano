@@ -63,6 +63,7 @@ public class AbandonedStation extends Card implements Serializable {
      */
     private int indexOfCurrTrucker;
 
+
     /**
      * Abandoned station constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -82,6 +83,7 @@ public class AbandonedStation extends Card implements Serializable {
         this.indexOfCurrTrucker =0;
         this.currGood=0;
     }
+
 
     /**
      * @return an event containing all the card details
@@ -109,6 +111,7 @@ public class AbandonedStation extends Card implements Serializable {
                 this
         );
     }
+
 
     /**
      * sets truckerThatHasDecided based on the answer by the current client and updates the next client if landing is false
@@ -156,58 +159,56 @@ public class AbandonedStation extends Card implements Serializable {
         }
         if(!answer){
             if (currGood == goods.size() - 1) {
-                System.out.println("Entro ");
                 cardState = CardState.REARRANGE;
                 return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
             } else {
                 currGood++;
-                //TODO: Check che non ci sia loop infinito
-                do {
-                    if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
-                        cardState = CardState.GOODSTOADD;
-                        return new PlotGood(true, truckerThatHasDecided.getNickname(), truckerThatHasDecided.getSpaceShip(),goods.get(currGood));
-                    } else {
-                        currGood++;
-                        if (currGood == goods.size()) {
-                            cardState = CardState.REARRANGE;
-                            return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
-                        }
-                    }
-                } while (true);
+                return proceedToNextAvailableGoodOrRearrange();
             }
         }else {
+
             if (!truckerThatHasDecided.getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
                 throw new InvalidCoordinates("Not goods deposit");
             }
+
             try {
-                // addGood fa anche la remove dalla bank della merce corrente
-                goods.get(currGood).setX(goodsCoordinates[0]);
-                goods.get(currGood).setY(goodsCoordinates[1]);
-                truckerThatHasDecided.getSpaceShip().addGood(goods.get(currGood), goodsCoordinates, positionInLoad, Game.getIstance().getBank());
+                Goods goodToAdd = goods.get(currGood);
+                goodToAdd.setX(goodsCoordinates[0]);
+                goodToAdd.setY(goodsCoordinates[1]);
+                truckerThatHasDecided.getSpaceShip().addGood(goodToAdd, goodsCoordinates, positionInLoad, Game.getIstance().getBank());
             } catch (InvalidPositionException e) {
                 cardState = CardState.GOODSTOADD;
                 throw e;
             }
             if (currGood == goods.size() - 1) {
-                System.out.println("Entro ");
                 cardState = CardState.REARRANGE;
                 return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
             } else {
                 currGood++;
-                //TODO: Check che non ci sia loop infinito
-                do {
-                    if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
-                        cardState = CardState.GOODSTOADD;
-                        return new PlotGood(true, truckerThatHasDecided.getNickname(), truckerThatHasDecided.getSpaceShip(),goods.get(currGood));
-                    } else {
-                        currGood++;
-                        if (currGood == goods.size()) {
-                            cardState = CardState.REARRANGE;
-                            return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
-                        }
-                    }
-                } while (true);
+                return proceedToNextAvailableGoodOrRearrange();
             }
+        }
+    }
+
+
+    /**
+     * returns the next good available in the bank, that comes from the list of goods to gain from the winner.
+     * If the bank is empty then it proceeds to rearrange.
+     * @return PlotGood event if there is an available good otherwise RearrangeEvent
+     */
+    private ServerEvent proceedToNextAvailableGoodOrRearrange() {
+        while (true) {
+            if (currGood == goods.size()) {
+                cardState = CardState.REARRANGE;
+                return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
+            }
+
+            if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
+                cardState = CardState.GOODSTOADD;
+                return new PlotGood(true, truckerThatHasDecided.getNickname(), truckerThatHasDecided.getSpaceShip(), goods.get(currGood));
+            }
+
+            currGood++;
         }
     }
 
