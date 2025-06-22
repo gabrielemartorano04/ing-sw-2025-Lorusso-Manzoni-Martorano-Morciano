@@ -203,82 +203,116 @@ public class GUI implements UI {
 
     @Override
     public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames) {
-//        double width = 1600;
-//        double height = 900;
-//
-//        ImageView backgroundView = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm()));
-//        backgroundView.setFitWidth(width);
-//        backgroundView.setFitHeight(height);
-//        backgroundView.setPreserveRatio(true);
-//        backgroundView.setMouseTransparent(true);
-//
-//        Label titleLabel = new Label("Welcome back! Select your profile:");
-//        titleLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
-//        titleLabel.setTextFill(Color.web("#FFDE69"));
-//
-//        // Contenitore per i riquadri
-//        TilePane playerPane = new TilePane(30, 30);
-//        playerPane.setAlignment(Pos.CENTER);
-//
-//        // Per gestire selezione
-//        final StackPane[] selectedBox = {null};
-//        final String[] selectedNickname = {null};
-//        final PlayerColors[] selectedColor = {null};
-//
-//        for (int i = 0; i < colors.size(); i++) {
-//            PlayerColors color = colors.get(i);
-//            String nickname = nicknames.get(i);
-//
-//            Rectangle rect = new Rectangle(200, 80);
-//            rect.setArcWidth(20);
-//            rect.setArcHeight(20);
-//            rect.setFill(getColorForEnum(color));
-//
-//            Label nameLabel = new Label(nickname);
-//            nameLabel.setTextFill(Color.BLACK);
-//            nameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
-//
-//            StackPane box = new StackPane(rect, nameLabel);
-//            box.setCursor(Cursor.HAND);
-//
-//            box.setOnMouseClicked(e -> {
-//                // Rimuovi bordo precedente
-//                if (selectedBox[0] != null) {
-//                    selectedBox[0].setStyle("");
-//                }
-//                // Applica bordo al selezionato
-//                box.setStyle("-fx-border-color: white; -fx-border-width: 3px;");
-//                selectedBox[0] = box;
-//                selectedNickname[0] = nickname;
-//                selectedColor[0] = color;
-//            });
-//
-//            playerPane.getChildren().add(box);
-//        }
-//
-//        // Pulsante Confirm
-//        Button confirmBtn = new Button("Confirm");
-//        confirmBtn.setFont(Font.font("Bangers", 18));
-//        confirmBtn.setTextFill(Color.BLACK);
-//        confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
-//        confirmBtn.setCursor(Cursor.HAND);
-//        confirmBtn.setDisable(false);
-//
-//        confirmBtn.setOnAction(e -> {
-//            if (selectedNickname[0] != null && selectedColor[0] != null) {
-//                String input = selectedNickname[0] + " " + selectedColor[0];
-//                viewFlow.handleInput(input);
-//            }
-//        });
-//
-//        VBox content = new VBox(30, titleLabel, playerPane, confirmBtn);
-//        content.setAlignment(Pos.CENTER);
-//        content.setPadding(new Insets(40));
-//
-//        this.root = new StackPane(backgroundView, content);
-//        Scene scene = new Scene(root, width, height);
-//        Stage stage = (Stage) root.getScene().getWindow(); // se già visibile
-//        if (stage != null) stage.setScene(scene);
+        Platform.runLater(() -> {
+            double width = 1600;
+            double height = 900;
+
+            ImageView backgroundView = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm()));
+            backgroundView.setFitWidth(width);
+            backgroundView.setFitHeight(height);
+            backgroundView.setPreserveRatio(true);
+            backgroundView.setMouseTransparent(true);
+
+            Label titleLabel = new Label("Welcome back! Select your profile:");
+            titleLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
+            titleLabel.setTextFill(Color.web("#FFDE69"));
+
+            // Contenitore per i riquadri
+            TilePane playerPane = new TilePane(30, 30);
+            playerPane.setAlignment(Pos.CENTER);
+
+            // Per gestire selezione
+            final StackPane[] selectedBox = {null};
+            final String[] selectedNickname = {null};
+            final PlayerColors[] selectedColor = {null};
+
+            Map<StackPane, Rectangle> boxToRect = new HashMap<>();
+            Map<StackPane, PlayerColors> boxToColor = new HashMap<>();
+            Map<StackPane, Rectangle> boxToOverlay = new HashMap<>();
+
+            for (int i = 0; i < colors.size(); i++) {
+                PlayerColors color = colors.get(i);
+                String nickname = nicknames.get(i);
+
+                Rectangle baseRect = new Rectangle(180, 70);
+                baseRect.setArcWidth(20);
+                baseRect.setArcHeight(20);
+                baseRect.setFill(switch (color) {
+                    case RED -> Color.RED;
+                    case GREEN -> Color.LIMEGREEN;
+                    case BLUE -> Color.DODGERBLUE;
+                    case YELLOW -> Color.GOLD;
+                    default -> Color.GRAY;
+                });
+
+                Rectangle overlay = new Rectangle(180, 70);
+                overlay.setArcWidth(20);
+                overlay.setArcHeight(20);
+                overlay.setFill(Color.BLACK);
+                overlay.setOpacity(0.5); // trasparenza
+                overlay.setVisible(false); // visibile solo quando non selezionato
+
+                Label nameLabel = new Label(nickname);
+                nameLabel.setTextFill(Color.BLACK);
+                nameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
+
+                StackPane box = new StackPane(baseRect, overlay, nameLabel);
+                box.setCursor(Cursor.HAND);
+
+                boxToRect.put(box, baseRect);
+                boxToColor.put(box, color);
+                boxToOverlay.put(box, overlay);
+
+                box.setOnMouseClicked(e -> {
+                    for (StackPane otherBox : boxToRect.keySet()) {
+                        otherBox.setStyle(""); // rimuovi bordi
+                        boxToOverlay.get(otherBox).setVisible(true); // metti overlay grigio
+                    }
+
+                    // evidenzia quello cliccato
+                    box.setStyle("-fx-border-color: transparent; -fx-border-width: 3px;");
+                    boxToOverlay.get(box).setVisible(false); // rimuovi overlay dal selezionato
+
+                    selectedBox[0] = box;
+                    selectedNickname[0] = nickname;
+                    selectedColor[0] = color;
+                });
+
+                playerPane.getChildren().add(box);
+            }
+
+            // Pulsante Confirm
+            Button confirmBtn = new Button("Confirm");
+            confirmBtn.setFont(Font.font("Bangers", 20));
+            confirmBtn.setPrefWidth(120);
+            confirmBtn.setTextFill(Color.BLACK);
+            confirmBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+            confirmBtn.setCursor(Cursor.HAND);
+            confirmBtn.setDisable(false);
+
+            confirmBtn.setOnAction(e -> {
+                if (selectedNickname[0] != null && selectedColor[0] != null) {
+                    String input = selectedNickname[0] + " " + selectedColor[0];
+                    viewFlow.handleInput(input);
+                }
+            });
+
+            VBox content = new VBox(40, titleLabel, playerPane, confirmBtn);
+            content.setAlignment(Pos.CENTER);
+            content.setPadding(new Insets(40));
+
+            StackPane root = new StackPane(backgroundView, content);
+            StackPane.setAlignment(content, Pos.CENTER);
+
+            if (stage.getScene() == null) {
+                stage.setScene(new Scene(root, width, height));
+            } else {
+                stage.getScene().setRoot(root);
+            }
+
+            stage.centerOnScreen();
+            stage.setFullScreen(true);
+        });
     }
 
     @Override
