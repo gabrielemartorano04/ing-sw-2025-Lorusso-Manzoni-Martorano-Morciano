@@ -27,13 +27,40 @@ import java.util.Map;
 public class AbandonedStation extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * number of flight days to lose for the player that decided to land
+     */
     private final int days;
+
+    /**
+     * number of crew members you need in order to be eligible to land
+     */
     private final int numHuman;
+
+    /**
+     * goods that a player can obtain as reward for landing in this AbandonedStation
+     */
     private final ArrayList<Goods> goods;
-    private Trucker truckerThatHasDecided = null; //è il trucker che ha deciso di atterrare, è null se nessuno ha deciso di atterrare
-//    private final ArrayList<int[]> coordinates = null; //coordinates sono le coordinate dei Load dove inserire le merci. Viene settato dal Card controller, se è vuoto vuol dire che nessun giocatore ha voluto accettare la carta
+
+    /**
+     * player that has decided to land if exists a client that has decided to land
+     */
+    private Trucker truckerThatHasDecided = null;
+
+    /**
+     * current state of the card, helper for debug and checking consistency
+     */
     private CardState cardState;
+
+    /**
+     * index of the current good from the list of goods to be obtained
+     */
     private int currGood;
+
+    /**
+     * index of the current player to handle the fact that clients have to respect a specific turn
+     */
     private int indexOfCurrTrucker;
 
     /**
@@ -55,55 +82,6 @@ public class AbandonedStation extends Card implements Serializable {
         this.indexOfCurrTrucker =0;
         this.currGood=0;
     }
-//
-//
-//    public void setCardState(CardState cardState) {
-//        this.cardState = cardState;
-//    }
-//
-//    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided) {
-//        this.truckerThatHasDecided = truckerThatHasDecided;
-//    }
-//
-//    /**
-//     * Returns the number of days of flight to lose
-//     * @return days to lose
-//     */
-//    public int getDays() {
-//        return days;
-//    }
-//
-//    /**
-//     * Returns the number of crew members required
-//     * @return crew members to lose
-//     */
-//    public int getNumHuman() {
-//        return numHuman;
-//    }
-//
-//    /**
-//     * Returns the list of goods to gain
-//     * @return goods to gain
-//     */
-//    public ArrayList<Goods> getGoods() {
-//        return goods;
-//    }
-//
-//    public CardState getCardState() {
-//        return cardState;
-//    }
-//
-//    public int getCurrGood() {
-//        return currGood;
-//    }
-//
-//    public int getIndexOfCurrTrucker() {
-//        return indexOfCurrTrucker;
-//    }
-//
-//    public Trucker getTruckerThatHasDecided() {
-//        return truckerThatHasDecided;
-//    }
 
     /**
      * @return an event containing all the card details
@@ -133,8 +111,8 @@ public class AbandonedStation extends Card implements Serializable {
     }
 
     /**
-     * Sets the only trucker that has chosen to take the station
-     * @param landing: choice taken
+     * sets truckerThatHasDecided based on the answer by the current client and updates the next client if landing is false
+     * @param landing: choice taken by the current client
      */
     @Override
     public ServerEvent truckerLanding(boolean landing) throws GeneralError {
@@ -233,7 +211,6 @@ public class AbandonedStation extends Card implements Serializable {
         }
     }
 
-    //TODO si potrebbe non metter contiune e procedere se tutto e a null
 
     /**
      * switch 2 goods to rearrange them in the ship
@@ -282,12 +259,9 @@ public class AbandonedStation extends Card implements Serializable {
         }
         ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        Map<String, Integer> track = new HashMap<>();
-        for (Trucker t : Game.getIstance().getTruckerList()) {
-            track.put(t.getNickname(), t.getPosition());
-        }
+
         GamePersistence.saveGame(GameController.getIstance());
-        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
 }

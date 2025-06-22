@@ -45,9 +45,24 @@ public class AbandonedShip extends Card implements Serializable {
      */
     private final int numHuman;
 
+    /**
+     * player that has decided to land if exists a client that has decided to land
+     */
     private Trucker truckerThatHasDecided;
+
+    /**
+     * coordinates of all the cabins the player has decided to remove humans or aliens from
+     */
     private ArrayList<int[]> coordinates = null;
+
+    /**
+     * current state of the card, helper for debug and checking consistency
+     */
     private CardState state;
+
+    /**
+     * index of the current player to handle the fact that clients have to respect a specific turn
+     */
     private int indexOfCurrTrucker;
 
 
@@ -100,7 +115,7 @@ public class AbandonedShip extends Card implements Serializable {
 
 
     /**
-     * Sets the only trucker that has chosen to take the ship
+     * sets truckerThatHasDecided based on the answer by the current client and updates the next client if landing is false
      * @param landing: the choice taken by the current client
      */
     @Override
@@ -124,7 +139,8 @@ public class AbandonedShip extends Card implements Serializable {
     }
 
     /**
-     * Sets the coordinates of the cabins from which he wants to remove the crew members required
+     * Sets the coordinates of the cabins from which the player that decided to land wants to
+     * remove the crew members required, after checking if they are consistent
      * @param coordinates list of arrays of coordinates of the cabins
      */
     @Override
@@ -160,12 +176,10 @@ public class AbandonedShip extends Card implements Serializable {
         }
         ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        Map<String, Integer> track = new HashMap<>();
-        for (Trucker t : Game.getIstance().getTruckerList()) {
-            track.put(t.getNickname(), t.getPosition());
-        }
+
         GamePersistence.saveGame(GameController.getIstance());
-        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+
+        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
 }
