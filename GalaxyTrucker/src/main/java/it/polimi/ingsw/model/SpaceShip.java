@@ -627,7 +627,6 @@ public class SpaceShip implements Serializable {
                 }
             }
         }
-        //CONTROLLO CHE U,R,D,L SIA COLLEGATO BENE
         switch (com) {
             case Cannon c->{
                 switch (c.getOrientation()) {
@@ -902,6 +901,9 @@ public class SpaceShip implements Serializable {
         }
     }
 
+    /**
+     * This method deactivates all active shields in the spaceship
+     */
     public void deActivateShields(){
         this.existsAnActiveShield = false;
         for (int i = 5; i <= 9; i++) {
@@ -1327,13 +1329,6 @@ public class SpaceShip implements Serializable {
      * @param y: coordinate y of the main cabin
      */
     private void componentsVisited(int x, int y){
-        // caso base della funzione che è ricorsiva
-        // 1. sto uscendo dai bordi della matrice
-        // 2. sono in un component null o vuoto o è un componente già visitato che è diverso dalla cabina principale
-        // il fatto della cabina principale è dovuto al fatto che non è un albero ma un grafo e se setto la cabina principale
-        // a visited allora non riesco a esplorare tutto perchè appena ritorno alla main cabin è visited e quindi finisco
-        // per settare la cabina principale a visited uso il terzo if
-
         if (x < 0 || x > components.length-1 || y < 0 || y > components[0].length-1) {
             return;
         }
@@ -1708,7 +1703,7 @@ public class SpaceShip implements Serializable {
 
 
     /**
-     * This method remove an astronauts from each non empty cabin linked to an other non empty cabin
+     * This method remove an astronauts from each not empty cabin linked to another not empty cabin
      */
     public void epidemic() {
         for (int i = 5; i <= 9; i++) {
@@ -1869,6 +1864,11 @@ public class SpaceShip implements Serializable {
         return numOfBattery;
     }
 
+    /**
+     * This method checks if in the given list of coordinates there are only loads
+     * @param c list of coordinates to check
+     * @return if in the given positions there are only loads
+     */
     public boolean checkLoad(int[] c){
 
         if (components[c[0]][c[1]] != null) {
@@ -2001,7 +2001,12 @@ public class SpaceShip implements Serializable {
     }
 
 
-
+    /**
+     * This method returns the load in the given position
+     * @param coord position coordinates
+     * @return load in the given position
+     * @throws InvalidPositionException if there isn't a load in that position
+     */
     private Load getLoadAt(int[] coord) throws InvalidPositionException {
         switch (components[coord[0]][coord[1]]) {
             case Load l -> { return l; }
@@ -2010,19 +2015,38 @@ public class SpaceShip implements Serializable {
     }
 
 
+    /**
+     * @return number of red goods in the spaceship
+     */
     public int getRedGoods(){
         return redGoods;
     }
+
+    /**
+     * @return number of green goods in the spaceship
+     */
     public int getGreenGoods(){
         return greenGoods;
     }
+
+    /**
+     * @return number of blue goods in the spaceship
+     */
     public int getBlueGoods(){
         return blueGoods;
     }
+
+    /**
+     * @return number of yellow goods in the spaceship
+     */
     public int getYellowGoods() {
         return yellowGoods;
     }
 
+    /**
+     * This method removes a good from spaceship's goods list
+     * @param good good to remove
+     */
     private void removeFromGoodsList(Goods good) {
         for (int i = 0; i < goodsList.size(); i++) {
             Goods g = goodsList.get(i);
@@ -2035,6 +2059,10 @@ public class SpaceShip implements Serializable {
         }
     }
 
+    /**
+     * This method removes a list of the goods from the spaceship
+     * @param list list of goods to remove
+     */
     public void removeGoods(ArrayList<Goods> list) {
         for (Goods g : list) {
             switch (components[g.getX()][g.getY()]) {
@@ -2131,6 +2159,9 @@ public class SpaceShip implements Serializable {
         return alienCabin;
     }
 
+    /**
+     * This method removes all the crew members from the spaceship
+     */
     public void removeAllHumans() {
         for(int i=0; i<components.length; i++){
             for(int j=0; j<components[i].length; j++){

@@ -11,7 +11,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-//gestisce la partita
 
 /**
  * The Game class manages the entire game process, including player actions,
@@ -20,32 +19,111 @@ import java.util.*;
  */
 
 public class Game implements Serializable {
-    //attributi
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * List of players
+     */
     private final ArrayList<Trucker> truckers;
+
+    /**
+     * List of players out
+     */
     private final ArrayList<Trucker> truckersOut;
+
+    /**
+     * Cards stacks
+     */
     private final Stack[] cardStacks;
+
+    /**
+     * Cards that forms the deck
+     */
     private final ArrayList<Card> gameDeck;
+
+    /**
+     * Available components list
+     */
     private final AvailableComponents components;
+
+    /**
+     * Hourglass for building timer
+     */
     private Hourglass hourglass;
+
+    /**
+     * Game level
+     */
     private int gameLevel;
+
+    /**
+     * Cards deck
+     */
     private final Deck deck;
+
+    /**
+     * Available goods bank
+     */
     private final Bank bank;
+
+    /**
+     * Game instance
+     */
     private static Game istance;
+
+    /**
+     * List of nicknames used in an old match
+     */
     private ArrayList<String> oldNicknames;
+
+    /**
+     * List of colors used in an old match
+     */
     private ArrayList<PlayerColors> oldColors;
+
+    /**
+     * Track dimension based on level
+     */
     private int checkOverTaken;
+
+    /**
+     * Game state
+     */
     private GameState gameState;
+
+    /**
+     * Set of nicknames
+     */
     private final Set<String> nicknames = new HashSet<>();
+
+    /**
+     * Set of colors
+     */
     private final Set<PlayerColors> usedColors = new HashSet<>();
+
+    /**
+     * Available player colors
+     */
     private final EnumSet<PlayerColors> availableColors;
+
+    /**
+     * Number of players
+     */
     private int numPlayers;
+
+    /**
+     * Game track. Every player is associated to a position in the track
+     */
     Map<String, Integer> track = new HashMap<>();
 
     /**
      * Constructor that initializes the game attributes.
+     * @param numPlayers number of players
+     * @param gameLevel game level
      */
     public Game(int numPlayers, int gameLevel) {
         this.truckers = new ArrayList<>(numPlayers);
@@ -73,6 +151,7 @@ public class Game implements Serializable {
 
     }
 
+    //todo da togliere dopo test o mettere in test
     public static void initializeForTest(SpaceShip ship1, SpaceShip ship2) {
         Game testGame = new Game(2, 2);
 
@@ -97,36 +176,60 @@ public class Game implements Serializable {
         Game.setIstance(testGame);
     }
 
+
+    /**
+     * @return game level: 0 for trial flight and 2 for level 2
+     */
     public int getGameLevel(){
         return gameLevel;
     }
 
+    /**
+     * @return this game instance
+     */
     public static Game getIstance() {
         return istance;
     }
 
+    /**
+     * @param istance game instance to set instance
+     */
     public static void setIstance(Game istance) {
         Game.istance = istance;
     }
 
+    /**
+     * If game level is two this method initializes the hourglass and starts the timer
+     */
     public void startHourglass(){
         if(gameLevel==2) hourglass=new Hourglass();
     }
 
+    /**
+     * @return number of players
+     */
     public int getNumPlayers(){
         return numPlayers;
     }
 
+    /**
+     * Game state setter
+     * @param gameState new game state
+     */
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
 
+    /**
+     * @return current game state
+     */
     public GameState getGameState() {
         return gameState;
     }
 
-
-
+    /**
+     * @return goods bank
+     */
     public Bank getBank() {
         return bank;
     }
@@ -208,7 +311,6 @@ public class Game implements Serializable {
         }
     }
 
-    //i=posizione assoluta
     /**
      * Retrieves a trucker at a given index.
      * @param i index of the trucker
@@ -320,7 +422,6 @@ public class Game implements Serializable {
         return track;
     }
 
-    //muove trucker in avanti, riceve days positivo
     /**
      * Moves a trucker forward by a specified number of days.
      */
@@ -340,7 +441,6 @@ public class Game implements Serializable {
         this.sortTruckers();
     }
 
-    //muove trucker in avanti, riceve days positivo
     /**
      * Moves a trucker backward by a specified number of days.
      */
@@ -436,22 +536,29 @@ public class Game implements Serializable {
         return true;
     }
 
-    public EnumSet<PlayerColors> showAvailableColors() {
-        return availableColors;
-    }
-
-    public Set<PlayerColors> showUsedColors() {
-        return usedColors;
-    }
-
+    /**
+     * This method tells if the nickname is already in the game
+     * @param nickname nickname to check
+     * @return if the nickname is already in the game
+     */
     public synchronized boolean isNicknameTaken(String nickname) {
         return nicknames.contains(nickname);
     }
 
+    /**
+     * This method tells if the color is already in the game
+     * @param color color to check
+     * @return if the color is already in the game
+     */
     public synchronized boolean isColorTaken(PlayerColors color) {
         return usedColors.contains(color);
     }
 
+    /**
+     * This method adds a trucker in the game
+     * @param trucker player
+     * @throws IllegalStateException if the game already started
+     */
     public synchronized void addTrucker(Trucker trucker) throws IllegalStateException {
         if (gameState!= GameState.SETUP){
             throw new IllegalStateException("Game has already been started");
@@ -462,6 +569,10 @@ public class Game implements Serializable {
         availableColors.remove(trucker.getColor());
     }
 
+    /**
+     * This method sets cards for the game
+     * @throws IllegalStateException
+     */
     public void setupGame() throws IllegalStateException {
         if (gameState!= GameState.SETUP){
             throw new IllegalStateException("Game has already been started");
@@ -472,26 +583,24 @@ public class Game implements Serializable {
         gameState = GameState.BUILDING;
     }
 
-//    public void startFlightPhase() {
-//        if (gameState != GameState.BUILDING) {
-//            throw new IllegalStateException("Cannot start flight phase from state: " + gameState);
-//        }
-//        gameState = GameState.FLIGHT;
-//    }
-
+    /**
+     * @return if the building time ended
+     */
     public boolean isHourglassExpired() {
         return hourglass.timeIsUp() && hourglass.getTimeTurns() == 2;
     }
 
-    public boolean allPlayersReady() {
-        return truckers.stream()
-                .allMatch(t -> t.getBuildingState() == BuildingState.END);
-    }
-
+    /**
+     * @return game hourglass
+     */
     public Hourglass getHourglass(){
         return hourglass;
     }
 
+    /**
+     * Actions to do when a card effect finishes
+     * @return updated list of players
+     */
     public ArrayList<Trucker> endTurn() {
         ArrayList<Trucker> toRemove = new ArrayList<>();
         for (Trucker t : truckers) {
@@ -506,6 +615,11 @@ public class Game implements Serializable {
         return toRemove;
     }
 
+    /**
+     * This method turns the hourglass
+     * @return a server event for the player to wait others to finish building if it's the last hourglass turn
+     * @throws CannotTurnHourglassException if the hourglass can't be turned in the current phase
+     */
     public ServerEvent turnHourglass() throws CannotTurnHourglassException {
         ServerEvent event=null;
         if(hourglass.getTimeTurns()==0 && hourglass.timeIsUp()){
@@ -519,18 +633,26 @@ public class Game implements Serializable {
         return event;
     }
 
+    /**
+     * @return game cards stacks
+     */
     public Stack[] viewStacks() {
         return cardStacks;
     }
 
+    /**
+     * @return Truckers out of the game
+     */
     public ArrayList<Trucker> getTruckerOut() {
         return truckersOut;
     }
 
-    public void setNumPlayers(int i) {
-        numPlayers = i;
-    }
-
+    /**
+     *
+     * @param nickname
+     * @param color
+     * @return
+     */
     public boolean checkOldPlayers(String nickname, PlayerColors color) {
         for(int i=0; i<numPlayers; i++){
             if(oldColors.get(i).equals(color) && oldNicknames.get(i).equals(nickname)){
