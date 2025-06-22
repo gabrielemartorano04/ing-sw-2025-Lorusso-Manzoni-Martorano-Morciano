@@ -675,8 +675,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 ui.showDead();
             }
             ui.showTruckerWithdrawn(event.getTruckerWithdrawNick());
-        }else{
-            ui.showWaitForOthers();
         }
     }
 
