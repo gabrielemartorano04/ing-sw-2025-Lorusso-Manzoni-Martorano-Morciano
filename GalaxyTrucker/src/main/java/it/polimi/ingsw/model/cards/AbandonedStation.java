@@ -177,8 +177,26 @@ public class AbandonedStation extends Card implements Serializable {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
         if(!answer){
-            cardState = CardState.REARRANGE;
-            return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
+            if (currGood == goods.size() - 1) {
+                System.out.println("Entro ");
+                cardState = CardState.REARRANGE;
+                return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
+            } else {
+                currGood++;
+                //TODO: Check che non ci sia loop infinito
+                do {
+                    if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
+                        cardState = CardState.GOODSTOADD;
+                        return new PlotGood(true, truckerThatHasDecided.getNickname(), truckerThatHasDecided.getSpaceShip(),goods.get(currGood));
+                    } else {
+                        currGood++;
+                        if (currGood == goods.size()) {
+                            cardState = CardState.REARRANGE;
+                            return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
+                        }
+                    }
+                } while (true);
+            }
         }else {
             if (!truckerThatHasDecided.getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
                 throw new InvalidCoordinates("Not goods deposit");
@@ -192,7 +210,7 @@ public class AbandonedStation extends Card implements Serializable {
                 cardState = CardState.GOODSTOADD;
                 throw e;
             }
-            if (currGood == goods.size() - 1) { // ci va il -1 qui!!!
+            if (currGood == goods.size() - 1) {
                 System.out.println("Entro ");
                 cardState = CardState.REARRANGE;
                 return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
