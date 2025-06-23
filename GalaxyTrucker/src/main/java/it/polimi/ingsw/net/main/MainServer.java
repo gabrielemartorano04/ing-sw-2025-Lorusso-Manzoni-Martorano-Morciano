@@ -1,7 +1,5 @@
 package it.polimi.ingsw.net.main;
 
-
-import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.rmi.server.RmiServer;
@@ -12,6 +10,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+
+/**
+ * Main server application
+ */
 public class MainServer {
     public static void main(String[] args) {
         final int PORT = 12346;
