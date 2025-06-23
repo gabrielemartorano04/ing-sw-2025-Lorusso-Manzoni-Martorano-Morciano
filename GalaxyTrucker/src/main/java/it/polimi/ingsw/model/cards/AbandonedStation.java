@@ -264,5 +264,42 @@ public class AbandonedStation extends Card implements Serializable {
         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
+    //servono per i test
+
+    public int getDays() {
+        return days;
+    }
+
+    public int getNumHuman() {
+        return numHuman;
+    }
+
+    public ArrayList<Goods> getGoods() {
+        return goods;
+    }
+
+    public CardState getCardState() {
+        return cardState;
+    }
+
+    public int getIndexOfCurrTrucker() {
+        return indexOfCurrTrucker;
+    }
+
+    public int getCurrGood() {
+        return currGood;
+    }
+
+    public void setCardState(CardState cardState) {
+        this.cardState = cardState;
+    }
+
+    public void setTruckerThatHasDecided(Trucker first) {
+        truckerThatHasDecided = first;
+    }
+
+    public Trucker getTruckerThatHasDecided() {
+        return truckerThatHasDecided;
+    }
 }
 

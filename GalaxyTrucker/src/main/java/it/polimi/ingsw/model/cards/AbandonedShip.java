@@ -182,4 +182,21 @@ public class AbandonedShip extends Card implements Serializable {
         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
+    //servono per i test
+
+    public int getDays() {
+        return days;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public int getNumHuman() {
+        return numHuman;
+    }
+
+    public int getIndexOfCurrTrucker() {
+        return indexOfCurrTrucker;
+    }
 }
