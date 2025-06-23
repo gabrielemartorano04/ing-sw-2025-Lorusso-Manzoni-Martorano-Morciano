@@ -6,7 +6,7 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event from client to server, sent when the player wants to turn the hourglass
+ * Event sent for the turn of the hourglass during the building phase
  */
 public class TurnHourglassEvent extends ClientEvent {
 
@@ -18,6 +18,12 @@ public class TurnHourglassEvent extends ClientEvent {
         return "I want to turn the hourglass";
     }
 
+    /**
+     * This method calls the server method that manages this event reception
+     * @param visitor server class that manages client events
+     * @param client client that sent the event
+     * @return server event response based on client event reception
+     */
     @Override
     public ServerEvent call(VirtualServer visitor, Client client) {
          return visitor.visit(this, client );
