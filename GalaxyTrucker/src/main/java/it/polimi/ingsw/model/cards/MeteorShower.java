@@ -124,7 +124,6 @@ public class MeteorShower extends Card implements Serializable {
      * roll the dices for the current meteor
      *
      * @return the event containing the roll dice result and the current meteor
-     * @throws GeneralError
      */
     public ServerEvent rollDice() throws GeneralError {
         if(state != CardState.ROLL_DICE) {
@@ -155,8 +154,7 @@ public class MeteorShower extends Card implements Serializable {
      * @param answer: if true the current player wants to activate shield otherwise no
      * @param shieldCoord: coordinates of the shield the current player wants to activate
      * @param batteryCoord: coordinates of the battery storage from which remove a battery
-     * @return: cardeffect if every player has decided, otherwise the event for the next player
-     * @throws GeneralError: card is not in the correct state (for debug)
+     * @return serverEvent to send to clients
      * @throws InvalidCoordinates: coordinates don't match the type of component in the shield
      * @throws NotEnoughBatteries: not enough batteries to remove were indicated by the plauer
      */
@@ -199,8 +197,7 @@ public class MeteorShower extends Card implements Serializable {
      * @param activate: true if the current player wants to activate any double Cannons, false otherwise
      * @param coord: coordinates of the doubleCannons to activate
      * @param batteryCoord: coordinates of the batteryStorages from which remove the batteries
-     * @return: cardEffect if it was the last player, otherwise it updates the next player to let him decide whether
-     * to activate any doubleCannons
+     * @return serverEvent to send to clients
      * @throws GeneralError: card not in the right state
      * @throws InvalidCoordinates: coordinates do not match to their component type
      * @throws NotEnoughBatteries: not enoughBatteries indicated to activate the doubleCannons selected
@@ -240,8 +237,7 @@ public class MeteorShower extends Card implements Serializable {
      * Applies the changes provided by the card:
      * shoots players' ships with the current meteor
      *
-     * @return the event containing the status of the game after the effects for clients if it was the last meteor,
-     * otherwise the event to notify the leader to roll dices
+     * @return serverEvent to send to clients
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {

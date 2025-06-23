@@ -36,7 +36,7 @@ class WarZoneTest {
     }
 
     @Test
-    void removeAsking() {
+    void removeGoodsDecided() {
     }
 
     @Test

@@ -52,7 +52,7 @@ public interface CardInterface {
         throw new WrongCallerException("This method does not exist in the card ");
     }
 
-    default ServerEvent removeAsking(ArrayList<Integer> indexes) throws WrongCallerException, GeneralError, InvalidGoodChosen, NotEnoughGoodsChosen {
+    default ServerEvent removeGoodsDecided(ArrayList<Integer> indexes) throws WrongCallerException, GeneralError, InvalidGoodChosen, NotEnoughGoodsChosen {
         throw new WrongCallerException("This method does not exist in the card ");
     }
 

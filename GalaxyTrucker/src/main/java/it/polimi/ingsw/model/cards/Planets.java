@@ -148,7 +148,7 @@ public class Planets extends Card implements Serializable {
      *
      * @param indexOfPlanet: equals -1 if the current player doesn't want to land otherwise it containes the index of
      *                     the Planet where to land
-     * @return the event for the next player or cardEffect if every player has decided
+     * @return serverEvent to send to clients
      * @throws PlanetNotFreeException: that planet is already occupied
      */
     @Override
@@ -221,7 +221,7 @@ public class Planets extends Card implements Serializable {
      * @param wantsToLoadGood true if the current player wants this good false otherwise
      * @param goodsCoordinates list of coordinatest
      * @param positionInLoad position in the load to insert the good
-     * @return ServerEvent to send to client
+     * @return serverEvent to send to clients
      * @throws InvalidCoordinates coordinates are not of a load
      * @throws InvalidPositionException not a special load but that good was special
      */
@@ -268,7 +268,7 @@ public class Planets extends Card implements Serializable {
     /**
      * returns the next good available in the bank, that comes from the list of goods to gain from the winner.
      * If the bank is empty then it proceeds to rearrange.
-     * @return PlotGood event if there is an available good otherwise RearrangeEvent
+     * @return serverEvent to send to clients
      */
     private ServerEvent proceedToNextAvailableGoodOrRearrange() {
         while (currGoodIndex < currentGoodsList.size()) {
@@ -292,7 +292,7 @@ public class Planets extends Card implements Serializable {
      * @param value1 initial internal position
      * @param value2 final internat position
      * @param stop when to end the swaps
-     * @return the server event to
+     * @return serverEvent to send to clients
      * @throws InvalidCoordinates coordinates are not valid
      * @throws InvalidPositionException tried to put a special good in a not special load
      */
@@ -333,7 +333,7 @@ public class Planets extends Card implements Serializable {
      * Applies the changes provided by the card:
      * it moves backwards all the players that have decided to land
      *
-     * @return ServerEvent to send to client
+     * @return serverEvent to send to clients
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {

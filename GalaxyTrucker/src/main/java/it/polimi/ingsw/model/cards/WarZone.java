@@ -24,37 +24,104 @@ import java.util.ArrayList;
 public class WarZone extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    private CardState state;
-    private int currConditionIndex;
-    private final ArrayList<Condition> conditionsOrder;
-    private final Map<Condition, Effect> penalties;
-    private final ArrayList<int[]> shoots;
-    // shoots è una lista dove shoots.get(i) rappresenta l'i-esimo colpo in questa specifica carta Warzone
-    // shoots.get(i)[0] vale 1 se il colpo è grande 0 se è piccolo
-    // shoots.get(i)[1] indice la direzione da cui arriva il colpo (0 = dall'alto, 1 = da dx, 2 = dal basso, 3 = da dx)
-    // shoots è già ordinata nell'ordine corretto nel quale vanno considerati i meteoriti secondo le regole del gioco
-    // cioè scegliendo il meteorite dall'alto verso il basso
 
+    /**
+     * current state of the card, helper for debug and checking consistency
+     */
+    private CardState state;
+
+    /**
+     * index of the current condition
+     */
+    private int currConditionIndex;
+
+    /**
+     * list of conditions to be examinated ordered by the game rules
+     */
+    private final ArrayList<Condition> conditionsOrder;
+
+    /**
+     * map of penalties associated to their condition
+     */
+    private final Map<Condition, Effect> penalties;
+
+    /**
+     * A list of shots for this specific Pirates card.
+     * Each element represents a shot, where:
+     * - index 0 indicates the shot size (1 = large, 0 = small)
+     * - index 1 indicates the direction from which the shot comes
+     *   (0 = top, 1 = right, 2 = bottom, 3 = left)
+     */
+    private final ArrayList<int[]> shoots;
+
+    /**
+     * current condition in examination
+     */
     private Condition currCondition;
+
+    /**
+     * weakest trucker based on the current condition
+     */
     private Trucker weakestTrucker;
+
+    /**
+     * roll dices result for the current shot
+     */
     private int roll;
 
+    /**
+     * index of the current player to handle the fact that clients have to respect a specific turn
+     */
     private int indexOfCurrTrucker;
 
+    /**
+     * index of the current shot
+     */
     private int currShootIndex;
+
+    /**
+     * current shot
+     */
     private int[] shoot;
 
-    // variabili per la remove Goods
+    /**
+     * color of the current goods to remove
+     * 4 = red
+     * 3 = yellow
+     * 2 = green
+     * 1 = blue
+     */
     private int colorOfCurrGoodToRemove;
+
+    /**
+     * number of goods of the current color in the ship of the current player
+     */
     private int numGoodCurrType;
-    private final ArrayList<Goods> goodsToRemove; // verrà creata al più una volta per istanza di questa classe
+
+    /**
+     * list of goods to be removed for the player if he can have the decision on which to remove
+     */
+    private final ArrayList<Goods> goodsToRemove;
+
+    /**
+     * number of goods to remove from the weakest player ship if the penalty is to lose goods
+     */
     private int goodsToLose;
+
+    /**
+     * boolean value to initialize the goodsToLose value if the penalty is to lose goods
+     */
     private boolean initializeRemoveGoods;
 
-    // variabile per remove Human
+    /**
+     * number of crew members to lose if the penalty is to lose humans
+     */
     private int numOfHumanToRemove;
+
+    /**
+     * coordinates of the cabins from which remove humans
+     */
     private ArrayList<int[]> humanCoordinates;
-    //fine variabile per remove Human
 
 
 
@@ -73,6 +140,7 @@ public class WarZone extends Card implements Serializable {
         this.currShootIndex = 0;
         this.currCondition = null;
         this.numOfHumanToRemove = 0;
+        this.humanCoordinates = new ArrayList<>();
 
         this.initializeRemoveGoods = true;
         this.goodsToRemove = new ArrayList<>();
@@ -95,6 +163,9 @@ public class WarZone extends Card implements Serializable {
 //        return shoots;
 //    }
 
+    /**
+     * @return an event containing all the card details
+     */
     @Override
     public ServerEvent startCard() {
         return new StartCardEvent(
@@ -119,6 +190,12 @@ public class WarZone extends Card implements Serializable {
         );
     }
 
+
+    /**
+     * handle the current condition of the card
+     *
+     * @return serverEvent to send to clients
+     */
     @Override
     public ServerEvent handleCurrentCondition() throws GeneralError{
         if(state != CardState.WARZONE){
@@ -159,7 +236,16 @@ public class WarZone extends Card implements Serializable {
         }
     }
 
-
+    /**
+     * Sets for each trucker the coordinates of the double cannons that he/she wants to activate
+     *
+     * @param activate: true if the current player wants to activate any double Cannons, false otherwise
+     * @param coord: coordinates of the doubleCannons to activate
+     * @param batteryCoord: coordinates of the batteryStorages from which remove the batteries
+     * @return serverEvent to send to clients
+     * @throws InvalidComponentsException coordinates do not match to their component type
+     * @throws NotEnoughBatteries not enoughBatteries indicated to activate the doubleCannons selected
+     */
     @Override
     public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
         if (this.state != CardState.ACTIVATE_CANNONS) {
@@ -191,9 +277,16 @@ public class WarZone extends Card implements Serializable {
         return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "vuoi attivare un Cannone Doppio?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
     }
 
+
     /**
      * Sets for each trucker the coordinates of the double engines that he/she wants to activate
-     * @param coord list of arrays of coordinates
+     *
+     * @param activate: decision taken by the current player
+     * @param coord: coordinates of the doubleEngines to activate
+     * @param batteryCoord: coordinates of the BatteryStorages from which remove the batteries
+     * @return serverEvent to send to clients
+     * @throws InvalidCoordinates: coordinates are not of shields or batteryStorages
+     * @throws NotEnoughBatteries: not enoughBatteries indicated
      */
     @Override
     public ServerEvent activateEngines(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws InvalidCoordinates, GeneralError, NotEnoughBatteries {
@@ -225,6 +318,12 @@ public class WarZone extends Card implements Serializable {
         return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, ParserState.ACTIVATE_ENGINES, "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrTrucker).getNickname());
     }
 
+
+    /**
+     * @param ship of the current player
+     * @param colorCode current good's color
+     * @return number of goods of color "colorCode" in the current player's ship
+     */
     private int getNumGoodsForColor(SpaceShip ship, int colorCode) {
         return switch (colorCode) {
             case 4 -> ship.getRedGoods();
@@ -235,6 +334,12 @@ public class WarZone extends Card implements Serializable {
         };
     }
 
+
+    /**
+     * handle the remotion of goods from the ship of the current player
+     *
+     * @return serverEvent to send to clients
+     */
     @Override
     public ServerEvent removeGoods() throws GeneralError{
         if(state != CardState.REMOVE_GOODS){
@@ -261,7 +366,7 @@ public class WarZone extends Card implements Serializable {
             numGoodCurrType = getNumGoodsForColor(weakestTrucker.getSpaceShip(), colorOfCurrGoodToRemove);
 
             if (numGoodCurrType > 0 && numGoodCurrType <= goodsToLose) {
-                return removeWithoutAsking(goodsList);
+                return removeWithoutDecision(goodsList);
             }else if (numGoodCurrType > 0){
                 state = CardState.REMOVE_ASKING;
                 ArrayList<Goods> listOfGoods = weakestTrucker.getSpaceShip().getGoodsList();
@@ -286,7 +391,14 @@ public class WarZone extends Card implements Serializable {
         }
     }
 
-    private ServerEvent removeWithoutAsking(ArrayList<Goods> goodsList) throws GeneralError {
+
+    /**
+     * removes all the goods in the list from the ship of the current player
+     *
+     * @param goodsList goods to remove
+     * @return serverEvent to send to clients
+     */
+    private ServerEvent removeWithoutDecision(ArrayList<Goods> goodsList) throws GeneralError {
         if (goodsList == null) {
             throw new GeneralError("Remove without asking: goodsList is null");
         }
@@ -317,12 +429,13 @@ public class WarZone extends Card implements Serializable {
     }
 
     /**
+     *  removes all the goods from the goodsToRemove list based on the indexes chosen by the player
      *
-     * @param indexesToRemove: contains the indexes of the Goods within the list displayed on the screen that the player wants to remove from his ship
+     * @param indexesToRemove: contains the indexes of the goods that the player wants to remove
+     * @return serverEvent to send to clients
      */
-
     @Override
-    public ServerEvent removeAsking(ArrayList<Integer> indexesToRemove) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
+    public ServerEvent removeGoodsDecided(ArrayList<Integer> indexesToRemove) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
         if (state != CardState.REMOVE_ASKING){
             throw new GeneralError("Can't call removeAsking in the state " + state);
         }
@@ -345,12 +458,13 @@ public class WarZone extends Card implements Serializable {
         return cardEffect();
     }
 
+
     /**
+     *  removes batteries from the ship of the current player
      *
-     * @param coordinatesToRemoveBatteries: mi aspetto che ogni elemento dell'arraylist sia [x,y,z] dove x,y sono le coordinate del batteryStorage e z è il numero di batterie da rimuovere da quel battery storage
+     * @param coordinatesToRemoveBatteries: coordinates of the battery storages from which remove the number of batteries indicated
+     * @return serverEvent to send to clients
      */
-
-
     @Override
     public ServerEvent removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(state!= CardState.REMOVE_BATTERIES){
@@ -376,8 +490,10 @@ public class WarZone extends Card implements Serializable {
     }
 
     /**
-     * Sets the coordinates of the cabins from which he wants to remove the crew members required
+     * Sets the coordinates of the cabins from which the player that decided to land wants to
+     * remove the crew members required, after checking if they are consistent
      * @param coordinates list of arrays of coordinates of the cabins
+     * @return serverEvent to send to clients
      */
     @Override
     public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
@@ -397,6 +513,11 @@ public class WarZone extends Card implements Serializable {
         }
     }
 
+    /**
+     * roll the dices for the current shot
+     *
+     * @return the event containing the roll dice result and the current meteor
+     */
     @Override
     public ServerEvent rollDice() throws GeneralError {
         if(state != CardState.ROLL_DICE) {
@@ -416,6 +537,16 @@ public class WarZone extends Card implements Serializable {
         }
     }
 
+    /**
+     * Activates for each player the shield indicated
+     *
+     * @param answer: if true the current player wants to activate shield otherwise no
+     * @param shieldCoord: coordinates of the shield the current player wants to activate
+     * @param batteryCoord: coordinates of the battery storage from which remove a battery
+     * @return serverEvent to send to clients
+     * @throws InvalidCoordinates: coordinates don't match the type of component in the shield
+     * @throws NotEnoughBatteries: not enough batteries to remove were indicated by the plauer
+     */
     @Override
     public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
         if (state != CardState.ACTIVATE_SHIELDS) {
@@ -440,6 +571,10 @@ public class WarZone extends Card implements Serializable {
         return cardEffect();
     }
 
+    /**
+     * finds the weakest trucker based on the current condition and handles the penalty
+     * @return ServerEvent to send to clients
+     */
     private ServerEvent findWeakestTrucker()throws GeneralError {
         if(state != CardState.FIND_WEAKEST){
             throw new GeneralError("FindWeakestTrucker not callable in the state " + state);
@@ -451,6 +586,11 @@ public class WarZone extends Card implements Serializable {
         return handlePenaltyEffect(penalties.get(currCondition).getType());
     }
 
+    /**
+     * calculcates the weakest trucker based on the condition
+     * @param currCondition current condition
+     * @return weakest trucker
+     */
     private Trucker getWeakestTrucker(Condition currCondition) {
         Trucker currWeakestTrucker = null;
         float minValueCurrCondition = Integer.MAX_VALUE;
@@ -461,9 +601,6 @@ public class WarZone extends Card implements Serializable {
                 case ENGINES -> trucker.getSpaceShip().getTotalEnginePower();
             };
 
-            // in caso di parità di criteri subisce la penitenza quello più avanti nel percorso quindi quando cerco
-            // il weakestTrucker nei confronti uso il minore stretto in modo che a parità di potenza di fuoco/motrice o
-            // numero di umani scelgo sempre il trucker più a sinistra nella lista cioè quello più avanti sulla plancia
             if (currValue < minValueCurrCondition) {
                 minValueCurrCondition = currValue;
                 currWeakestTrucker = trucker;
@@ -472,6 +609,11 @@ public class WarZone extends Card implements Serializable {
         return currWeakestTrucker;
     }
 
+    /**
+     * applies the penalty to the weakest trucker
+     * @param effectType type of penalty
+     * @return serverEvent to send to clients
+     */
     private ServerEvent handlePenaltyEffect(TypeOfEffect effectType) throws GeneralError {
         switch (effectType) {
             case LOSE_DAYS:
@@ -492,7 +634,9 @@ public class WarZone extends Card implements Serializable {
         }
     }
 
-
+    /**
+     * deactivate every type of component from every player's ship
+     */
     private void deactivateTruckersSpaceShip(){
         for(Trucker trucker: Game.getIstance().getTruckerList()){
             trucker.getSpaceShip().deactivateDoubleCannons();
@@ -501,7 +645,10 @@ public class WarZone extends Card implements Serializable {
         }
     }
 
-
+    /**
+     * applies the card effect based on the penalty and if all conditions have been verified ends the card
+     * @return serverEvent to send to clients
+     */
     @Override
     public ServerEvent cardEffect() throws GeneralError {
         if(state != CardState.ESECUZIONE){
@@ -509,10 +656,10 @@ public class WarZone extends Card implements Serializable {
         }
         if(weakestTrucker == null){
             throw new GeneralError("WeakestTrucker is null");
-        }else {
-            // devo gestire le ulteriori richieste per i casi dove vieni sparato perché devo chiedere al giocatore
-            // se vuole attivare lo scudo ogni volta che il colpo è piccolo
-            // e per il caso dove devi perdere equipaggio che devi scegliere da dove perdere umani o alieni
+        }
+
+        else {
+
             Effect effect = penalties.get(currCondition);
             switch(effect.getType()){
                 case LOSE_DAYS ->{
@@ -592,14 +739,15 @@ public class WarZone extends Card implements Serializable {
         }
     }
 
+    /**
+     * handles the end of the card
+     * @return serverEvent to send to clients
+     */
     private ServerEvent handleEndTurn() {
         ArrayList<Trucker> truckerRemoved = Game.getIstance().endTurn();
-        Map<String, Integer> track = new HashMap<>();
-        for (Trucker t : Game.getIstance().getTruckerList()) {
-            track.put(t.getNickname(), t.getPosition());
-        }
+
         GamePersistence.saveGame(GameController.getIstance());
-        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
 
