@@ -621,19 +621,39 @@ public class GUI implements UI {
             this.flightScene.hideWaitForOthers();
 
             switch (parserState){
-                case ACTIVATE_ENGINES ->  this.flightScene.showActivateEngineInput();
-                case ACTIVATE_CANNONS -> this.flightScene.showActivateCannonsInput();
-                case ACTIVATE_SHIELD -> this.flightScene.showActivateShieldInput();
+                case ACTIVATE_ENGINES ->  {
+                    if(viewFlow.shipHasDoubleEngines()) {
+                        this.flightScene.showActivateEngineInput();
+                    }
+                }
+                case ACTIVATE_CANNONS -> {
+                    if(viewFlow.shipHasDoubleCannons()) {
+                        this.flightScene.showActivateCannonsInput();
+                    }
+                }
+                case ACTIVATE_SHIELD -> {
+                    if(viewFlow.shipHasShields()){
+                        this.flightScene.showActivateShieldInput();
+                    }
+                }
                 case LAND -> this.flightScene.showLandInput();
                 case HUMAN_COORD -> this.flightScene.showHumanCoordInput();
-                case PLOT_GOOD -> this.flightScene.showPlotGoodInput();
+                case PLOT_GOOD -> {
+                    if(viewFlow.shipHasLoad()){
+                        this.flightScene.showPlotGoodInput();
+                    }
+                }
                 case ROLL_DICE -> this.flightScene.showRollDiceInput();
                 case PLANET_DECISION-> this.flightScene.showPlanetDecisionInput();
                 case DRAW_CARD -> this.flightScene.showDrawCardInput();
                 case REMOTION_CONFIRMED -> this.flightScene.showRemotionConfirmedInput();
                 case REMOVE_BATTERIES -> this.flightScene.showRemoveBatteriesInput();
                 case REMOVE_GOODS -> this.flightScene.showRemoveGoodsInput();
-                case REARRANGE -> this.flightScene.showRearrangeInput();
+                case REARRANGE -> {
+                    if(viewFlow.shipHasLoad()) {
+                        this.flightScene.showRearrangeInput();
+                    }
+                }
                 case COSMIC_CREDITS -> this.flightScene.showCosmicCreditsInput();
                 case WARZONE -> {
                     if(this.showWarzone){

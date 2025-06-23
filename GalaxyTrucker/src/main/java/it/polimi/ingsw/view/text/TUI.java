@@ -358,20 +358,40 @@ public class TUI implements UI {
     @Override
     public void showInputFormat(ParserState parserState) {
         switch (parserState){
-            case ACTIVATE_ENGINES -> System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
-            case ACTIVATE_CANNONS -> System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
-            case ACTIVATE_SHIELD -> System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x1> <y1>, <xB1> <yB1>>' or 'n': ");
+            case ACTIVATE_ENGINES -> {
+                if(viewFlow.shipHasDoubleEngines()) {
+                    System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
+                }
+            }
+            case ACTIVATE_CANNONS -> {
+                if(viewFlow.shipHasDoubleCannons()){
+                    System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
+                }
+            }
+            case ACTIVATE_SHIELD -> {
+                if(viewFlow.shipHasShields()){
+                    System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x1> <y1>, <xB1> <yB1>>' or 'n': ");
+                }
+            }
             case LAND -> System.out.println("Type 'y' if you want to land, else 'n'.");
             case HUMAN_COORD -> System.out.println("Insert the coordinates of the cabins to remove the number of human indicated in the card description. Type '<x1> <y1> - <number of crew>, <x2> <y2> - <number of crew>,...' : ");
-            case PLOT_GOOD -> System.out.println("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <x> <y>, <position>' or 'n': ");
+            case PLOT_GOOD ->{
+                 if(viewFlow.shipHasLoad()){
+                     System.out.println("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <x> <y>, <position>' or 'n': ");
+                 }
+            }
             case ROLL_DICE -> System.out.println("Type 'roll' to roll the dices when yu're ready.");
             case PLANET_DECISION->System.out.println("Choose the planet you want to fly to. Type '<index>': ");
             case DRAW_CARD ->System.out.println("Type 'draw' when you're ready to draw the next card.");
             case REMOTION_CONFIRMED, HUMAN_REMOVED -> System.out.println("Remotion confirmed. Type 'continue' when you're ready to go on.");
             case REMOVE_BATTERIES -> System.out.println("You have to remove " + viewFlow.getNumOfBatteriesToRemove() + " batteries." + "\n" + "Choose from where you  want to remove batteries. Type '<x1> <y1> - <quantity>,<x2> <y2> - <quantity>...");
             case REMOVE_GOODS -> System.out.println("Choose goods you want to remove. Type '<index1>,<index2>...'.");
-            case REARRANGE -> System.out.println("Choose if you want to rearrange your goods. If yes, insert coordinates.\n" +
-                    "Type 'y, <x1> <y1> - <value1>, <x2> <y2> - <value2>' or 'n'");
+            case REARRANGE ->{
+                if(viewFlow.shipHasLoad()){
+                    System.out.println("Choose if you want to rearrange your goods. If yes, insert coordinates.\n" +
+                            "Type 'y, <x1> <y1> - <value1>, <x2> <y2> - <value2>' or 'n'");
+                }
+            }
             case COSMIC_CREDITS -> System.out.println("Do you want to gain that cosmic credits? Type '<y/n>'.");
             case WARZONE -> System.out.println("Type 'warzone' to start warzone card");
             case ASK_WITHDRAW -> System.out.println("Do you want to withdraw? Type 'y' or 'n'");
