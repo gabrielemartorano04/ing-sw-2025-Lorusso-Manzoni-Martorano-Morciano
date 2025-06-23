@@ -162,7 +162,10 @@ public class AbandonedShip extends Card implements Serializable {
     }
 
     /**
-     * Applies the changes provided by the card
+     * Applies the changes provided by the card:
+     * adds cosmic credits to the player landed and make him/her lose crew members and flight days
+     *
+     * @return the event containing the status of the game after the effects for clients
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {

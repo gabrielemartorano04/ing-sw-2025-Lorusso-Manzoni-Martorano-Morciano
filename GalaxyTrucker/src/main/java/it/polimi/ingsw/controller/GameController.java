@@ -12,15 +12,11 @@ import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * This class manages the game controller. It's used by the server.
- * Attributes
- * - count: int counter of logged players
- * - timerStarted: boolean, true if the timer started, false otherwise
- * - gameStarted: boolean, true if the game started, false otherwise
- * - numOfPlayers: int, number of player decided by the first one
- * - scheduler: ScheduledExecutorService, threads scheduler
- * - currentCard: card, current card during flight phase
  */
 public class GameController implements Serializable {
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -53,11 +49,15 @@ public class GameController implements Serializable {
      * Threads scheduler
      */
     private transient ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
     /**
      * Current drawn card in the game
      */
     private Card currentCard;
 
+    /**
+     * Card controller to manage flight phase cards
+     */
     private CardController cardController;
 
     /**
@@ -189,21 +189,7 @@ public class GameController implements Serializable {
     }
 
     /**
-     * This method sorts players by their position
-     */
-    public void orderByPosition(){
-        game.sortTruckers();
-    }
-
-    /**
-     * @return enum set of available player colors
-     */
-    public EnumSet<PlayerColors> showAvailableColors() {
-        return game.showAvailableColors();
-    }
-
-    /**
-     * This method set the game for building phase
+     * This method sets the game for building phase
      */
     public void startBuildingPhase() {
         if (gameStarted) return;
@@ -212,7 +198,7 @@ public class GameController implements Serializable {
     }
 
     /**
-     * This method show the cards stack requested by the player
+     * This method shows the cards stack requested by the player
      * @param stackIndex index of the stack to show
      * @return the requested stack
      * @throws GeneralError if another player is holding the stack
@@ -241,6 +227,10 @@ public class GameController implements Serializable {
         this.gameStarted = gameStarted;
     }
 
+    /**
+     * This method returns game card controller to manage flight phase
+     * @return card controller
+     */
     public CardController getCardController() {
         return cardController;
     }

@@ -13,8 +13,14 @@ import java.io.Serializable;
  * This class call the right card method, based on current card and client events.
  */
 public class CardController implements Serializable {
+    /**
+     * Current drawn card in the game
+     */
     private Card currCard;
 
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 

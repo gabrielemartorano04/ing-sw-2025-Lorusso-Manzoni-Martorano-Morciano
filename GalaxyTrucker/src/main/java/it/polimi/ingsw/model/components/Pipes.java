@@ -7,6 +7,9 @@ import java.io.Serializable;
  * Class that manages the single pipes
  */
 final public class Pipes extends Component implements Serializable{
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 

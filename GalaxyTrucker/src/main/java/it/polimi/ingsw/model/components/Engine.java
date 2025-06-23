@@ -4,13 +4,28 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * Class that manages the single engine
+ * Class that manages the engine
  */
 final public class Engine extends Component implements Serializable {
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * It tells if the engine is double
+     */
     private final boolean isDouble;
+
+    /**
+     * It tells if the engine is active
+     */
     private boolean isActive;
+
+    /**
+     * It's engine orientation
+     */
     private Orientation orientation;
 
     /**
@@ -70,7 +85,7 @@ final public class Engine extends Component implements Serializable {
     }
 
     /**
-     * Turns the orientation of the cannon and the component
+     * Turns the orientation of the cannon and links
      */
     @Override
     public void turn(){

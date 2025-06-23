@@ -27,17 +27,55 @@ public class Planets extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * List of planets of the card
+     */
     private final ArrayList<ArrayList<Goods>> planets;
+
+    /**
+     * flight days a player loses if he lands on a planet
+     */
     private final int daysLoss;
+
+    /**
+     * current state of the card, helper for debug and checking consistency
+     */
     private CardState cardState;
 
+    /**
+     * list of planets occupied. If the element in the list is null the planet is free otherwise
+     * it's occupied by that trucker
+     */
     private final ArrayList<Trucker> planetsOccupied;
+
+    /**
+     * list of players that decided to land on a planet
+     */
     private final ArrayList<Trucker> truckersLanded;
+
+    /**
+     * index of the current player to handle the fact that clients have to respect a specific turn
+     */
     private int indexOfTrucker;
 
+    /**
+     * current good to gain by a player
+     */
     private Goods currentGood;
+
+    /**
+     * current list of goods to be gained by a player
+     */
     private final ArrayList<Goods> currentGoodsList;
+
+    /**
+     * list of goods passed by a player to the next one if some goods have been discarded by the current player
+     */
     private ArrayList<Goods> goodsPassed;
+
+    /**
+     * index of the current good in the currentGoodsList
+     */
     private int currGoodIndex;
 
 
@@ -74,6 +112,9 @@ public class Planets extends Card implements Serializable {
     }
 
 
+    /**
+     * @return an event containing all the card details
+     */
     @Override
     public ServerEvent startCard() {
         System.out.println(Arrays.toString(Game.getIstance().getBank().getGoods()));
@@ -102,10 +143,16 @@ public class Planets extends Card implements Serializable {
         return startCardEvent;
     }
 
+    /**
+     * handle the landing of the current player on a planet based on the indexOfPlanet
+     *
+     * @param indexOfPlanet: equals -1 if the current player doesn't want to land otherwise it containes the index of
+     *                     the Planet where to land
+     * @return the event for the next player or cardEffect if every player has decided
+     * @throws PlanetNotFreeException: that planet is already occupied
+     */
     @Override
     public ServerEvent playerLandingPlanets(int indexOfPlanet) throws GeneralError, PlanetNotFreeException {
-
-        System.out.println("indice del trucker corrente " + indexOfTrucker + " con nickname " + Game.getIstance().getTruckerList().getFirst().getNickname() + " vuole atterrare nel pianeta " + indexOfPlanet);
 
         if(cardState != CardState.PIANETI){
             throw new GeneralError("Can't land in the state: " + this.cardState);
@@ -123,46 +170,69 @@ public class Planets extends Card implements Serializable {
             planetsOccupied.set(indexOfPlanet, Game.getIstance().getTrucker(indexOfTrucker));
             truckersLanded.add(Game.getIstance().getTrucker(indexOfTrucker));
         }
+
         if(indexOfTrucker == Game.getIstance().getTruckerList().size() -1){
             if(!truckersLanded.isEmpty()) {
-                indexOfTrucker = 0;
-                currentGoodsList.addAll(planets
-                        .get(planetsOccupied
-                                .indexOf(truckersLanded
-                                        .get(indexOfTrucker))));
-                currentGoodsList.addAll(goodsPassed);
-                if (indexOfTrucker < truckersLanded.size()) {
-                    for (Goods g : planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker)))) {
-                        if (Game.getIstance().getBank().getGoodsInBank(g.getValue()) > 0) {
-                            // abbiamo la merce corrente
-                            this.cardState = CardState.GOODSTOADD;
-                            this.currentGood = g;
-                            return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(),truckersLanded.get(indexOfTrucker).getSpaceShip(),g);
-                        }
-                    }
-                    indexOfTrucker++;
-                    return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname(),Game.getIstance().getTrucker(indexOfTrucker).getSpaceShip());
-                }
+                return handleLandedTruckersGoodsLoading();
+            }
+            else{
                 cardState = CardState.ESECUZIONE;
                 return cardEffect();
             }
-            cardState = CardState.ESECUZIONE;
-            return cardEffect();
         }
         indexOfTrucker++;
         return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname(),Game.getIstance().getTrucker(indexOfTrucker).getSpaceShip());
     }
 
+
+    /**
+     * Initializes the loading phase with the first trucker who landed.
+     * If there's at least one good available in the bank, transitions to GOODSTOADD.
+     * Otherwise, proceeds with the next trucker or finishes the card effect.
+     *
+     * @return ServerEvent to send to client
+     */
+    private ServerEvent handleLandedTruckersGoodsLoading() throws GeneralError {
+        indexOfTrucker = 0;
+        currentGoodsList.addAll(planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker))));
+        currentGoodsList.addAll(goodsPassed);
+
+        if (indexOfTrucker < truckersLanded.size()) {
+            for (Goods g : planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker)))) {
+                if (Game.getIstance().getBank().getGoodsInBank(g.getValue()) > 0) {
+                    this.cardState = CardState.GOODSTOADD;
+                    this.currentGood = g;
+                    return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(),truckersLanded.get(indexOfTrucker).getSpaceShip(),g);
+                }
+            }
+            indexOfTrucker++;
+            return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname(),Game.getIstance().getTrucker(indexOfTrucker).getSpaceShip());
+        }
+        else{
+            cardState = CardState.ESECUZIONE;
+            return cardEffect();
+        }
+    }
+
+    /**
+     *
+     * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
+     *
+     * @param wantsToLoadGood true if the current player wants this good false otherwise
+     * @param goodsCoordinates list of coordinatest
+     * @param positionInLoad position in the load to insert the good
+     * @return ServerEvent to send to client
+     * @throws InvalidCoordinates coordinates are not of a load
+     * @throws InvalidPositionException not a special load but that good was special
+     */
     @Override
     public ServerEvent setGoodsCoordinates(Boolean wantsToLoadGood, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
 
-        System.out.println("indice del trucker corrente " + indexOfTrucker + " con nickname " + Game.getIstance().getTruckerList().getFirst().getNickname() + " vuole la merce " + currGoodIndex + "?  " + wantsToLoadGood);
-
         if(wantsToLoadGood) {
-            if (goodsCoordinates == null || !truckersLanded.get(indexOfTrucker).getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
+            if (goodsCoordinates == null || !truckersLanded.get(indexOfTrucker).getSpaceShip().checkLoad(goodsCoordinates)) {
                 throw new InvalidCoordinates("Not goods deposit");
             }
             try {
@@ -170,11 +240,13 @@ public class Planets extends Card implements Serializable {
                 Goods goodToAdd = currentGood;
                 goodToAdd.setX(goodsCoordinates[0]);
                 goodToAdd.setY(goodsCoordinates[1]);
-                System.out.println("player " + Game.getIstance().getTrucker(indexOfTrucker).getNickname() + "sta per fare addGood");
-                goodInTheShip=truckersLanded.get(indexOfTrucker).getSpaceShip().addGood(goodToAdd, goodsCoordinates, positionInLoad, Game.getIstance().getBank());
+
+                goodInTheShip = truckersLanded.get(indexOfTrucker).getSpaceShip().addGood(goodToAdd, goodsCoordinates, positionInLoad, Game.getIstance().getBank());
+
                 if (goodInTheShip!=null){
                     goodsPassed.add(goodInTheShip);
                 }
+
             } catch (InvalidPositionException e) {
                 cardState = CardState.GOODSTOADD;
                 throw e;
@@ -188,22 +260,42 @@ public class Planets extends Card implements Serializable {
         }
         else{
             currGoodIndex++;
-            //TODO: Check che non ci sia loop infinito
-            do {
-                currentGood = currentGoodsList.get(currGoodIndex);
-                if (Game.getIstance().getBank().getGoodsInBank(currentGood.getValue()) >= 1) {
-                    return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(),truckersLanded.get(indexOfTrucker).getSpaceShip(), currentGood);
-                } else {
-                    currGoodIndex++;
-                    if(currGoodIndex>=currentGoodsList.size()) {
-                        cardState = CardState.REARRANGE;
-                        return new RearrangeEvent(true, this.truckersLanded.get(indexOfTrucker).getNickname());
-                    }
-                }
-            }while(true);
+            return proceedToNextAvailableGoodOrRearrange();
         }
     }
 
+
+    /**
+     * returns the next good available in the bank, that comes from the list of goods to gain from the winner.
+     * If the bank is empty then it proceeds to rearrange.
+     * @return PlotGood event if there is an available good otherwise RearrangeEvent
+     */
+    private ServerEvent proceedToNextAvailableGoodOrRearrange() {
+        while (currGoodIndex < currentGoodsList.size()) {
+            currentGood = currentGoodsList.get(currGoodIndex);
+            if (Game.getIstance().getBank().getGoodsInBank(currentGood.getValue()) >= 1) {
+                cardState = CardState.GOODSTOADD;
+                return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(),
+                        truckersLanded.get(indexOfTrucker).getSpaceShip(), currentGood);
+            }
+            currGoodIndex++;
+        }
+        cardState = CardState.REARRANGE;
+        return new RearrangeEvent(true, truckersLanded.get(indexOfTrucker).getNickname());
+    }
+
+
+    /**
+     * switch 2 goods to rearrange them in the ship
+     * @param coord1 initial position
+     * @param coord2 final position
+     * @param value1 initial internal position
+     * @param value2 final internat position
+     * @param stop when to end the swaps
+     * @return the server event to
+     * @throws InvalidCoordinates coordinates are not valid
+     * @throws InvalidPositionException tried to put a special good in a not special load
+     */
     @Override
     public ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean stop) throws GeneralError, InvalidCoordinates, InvalidPositionException{
         if(cardState != CardState.REARRANGE){
@@ -221,41 +313,44 @@ public class Planets extends Card implements Serializable {
             }
         }
         if (indexOfTrucker + 1 >= truckersLanded.size()) {
-            // Tutti hanno finito
             cardState = CardState.ESECUZIONE;
             return cardEffect();
-        } else {
-            // Passa al prossimo giocatore
+        }
+        else {
             indexOfTrucker++;
             currGoodIndex=0;
-            //creao nuova lista
             currentGoodsList.clear();
             currentGoodsList.addAll(planets.get(planetsOccupied.indexOf(truckersLanded.get(indexOfTrucker))));
             currentGoodsList.addAll(goodsPassed);
             currentGood=currentGoodsList.get(currGoodIndex);
             cardState = CardState.GOODSTOADD;
+
             return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(),truckersLanded.get(indexOfTrucker).getSpaceShip(), currentGood);
         }
     }
 
+    /**
+     * Applies the changes provided by the card:
+     * it moves backwards all the players that have decided to land
+     *
+     * @return ServerEvent to send to client
+     */
     @Override
     public ServerEvent cardEffect() throws GeneralError {
         if (this.cardState != CardState.ESECUZIONE) {
             throw new GeneralError("CardEffect not callable in the state: " + this.cardState);
         }
-        // muovo in dietro i giocatori ma partendo dal più indietro nella plancia non dal Leader
+
         for(int i = truckersLanded.size() - 1; i>=0; i--){
             Game.getIstance().moveBackward(truckersLanded.get(i), daysLoss);
             System.out.println("beni di trucker " + truckersLanded.get(i).getNickname() + ": " + truckersLanded.get(i).getSpaceShip().getGoodsList());
         }
+
         ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        Map<String, Integer> track = new HashMap<>();
-        for (Trucker t : Game.getIstance().getTruckerList()) {
-            track.put(t.getNickname(), t.getPosition());
-        }
+
         GamePersistence.saveGame(GameController.getIstance());
-        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
 }

@@ -1917,7 +1917,6 @@ public class FlightScene {
         yes.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(10), Insets.EMPTY)));
         yes.setCursor(Cursor.HAND);
         yes.setPrefWidth(100);
-        yes.setOpacity(0.4);
 
         Button no = new Button("NO");
         no.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
@@ -1925,29 +1924,29 @@ public class FlightScene {
         no.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
         no.setCursor(Cursor.HAND);
         no.setPrefWidth(100);
-        no.setOpacity(0.4);
 
-        Label currentSelection = new Label("Please select YES or NO");
-        currentSelection.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-        currentSelection.setTextFill(Color.RED);
+//        Label currentSelection = new Label("Please select YES or NO");
+//        currentSelection.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
+//        currentSelection.setTextFill(Color.RED);
 
         Button confirm = new Button("Confirm");
-        confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-        confirm.setTextFill(Color.WHITE);
-        confirm.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, new CornerRadii(10), Insets.EMPTY)));
+        confirm.setFont(Font.font("Bangers", 16));
+        confirm.setTextFill(Color.BLACK);
+        confirm.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
         confirm.setCursor(Cursor.HAND);
         confirm.setPrefWidth(100);
+        confirm.setOpacity(0.4);
 
         HBox buttons = new HBox(10, yes, no);
         buttons.setAlignment(Pos.CENTER);
 
-        VBox popupBox = new VBox(15, title, buttons, currentSelection, confirm);
+        VBox popupBox = new VBox(15, title, buttons, /*currentSelection,*/ confirm);
         popupBox.setAlignment(Pos.CENTER);
         popupBox.setPadding(new Insets(15));
 
         AnchorPane popupContent = new AnchorPane(popupBox);
-        AnchorPane.setBottomAnchor(popupBox, 180.0);
-        AnchorPane.setLeftAnchor(popupBox, 170.0);
+        AnchorPane.setBottomAnchor(popupBox, 140.0);
+        AnchorPane.setLeftAnchor(popupBox, 150.0);
 
         // Overlay setup
         overlayLayer.setMouseTransparent(false);
@@ -1962,24 +1961,26 @@ public class FlightScene {
 
         yes.setOnAction(e -> {
             response.set("y");
-            currentSelection.setText("Current selection: YES");
-            currentSelection.setTextFill(Color.GREEN);
+//            currentSelection.setText("Current selection: YES");
+//            currentSelection.setTextFill(Color.GREEN);
+            confirm.setOpacity(1);
             yes.setOpacity(1.0);
             no.setOpacity(0.4);
         });
 
         no.setOnAction(e -> {
             response.set("n");
-            currentSelection.setText("Current selection: NO");
-            currentSelection.setTextFill(Color.RED);
+//            currentSelection.setText("Current selection: NO");
+//            currentSelection.setTextFill(Color.RED);
+            confirm.setOpacity(1.0);
             no.setOpacity(1.0);
             yes.setOpacity(0.4);
         });
 
         confirm.setOnAction(e -> {
             if (response.get() == null) {
-                currentSelection.setText("Please select YES or NO");
-                currentSelection.setTextFill(Color.RED);
+//                currentSelection.setText("Please select YES or NO");
+//                currentSelection.setTextFill(Color.RED);
                 return;
             }
             viewFlow.handleInput(response.get());

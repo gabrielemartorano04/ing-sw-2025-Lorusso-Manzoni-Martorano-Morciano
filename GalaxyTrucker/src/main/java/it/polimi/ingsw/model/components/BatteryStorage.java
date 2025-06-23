@@ -7,8 +7,19 @@ import java.io.Serializable;
  * Class that manages the single battery storage
  */
 final public class BatteryStorage extends Component implements Serializable  {
+    /**
+     * Battery storage capacity
+     */
     private final int capacity;
+
+    /**
+     * Number of batteries in the battery storage
+     */
     private int quantity;
+
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -36,6 +47,10 @@ final public class BatteryStorage extends Component implements Serializable  {
         this.quantity = quantity;
     }
 
+    /**
+     * This method removes a number of batteries from the battery storage
+     * @param num number of battery to remove
+     */
     public void removeNumOfBatteries(int num) {
         this.quantity -= num;
     }

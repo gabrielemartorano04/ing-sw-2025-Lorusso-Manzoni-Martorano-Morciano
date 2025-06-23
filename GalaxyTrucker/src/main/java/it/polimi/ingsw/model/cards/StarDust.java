@@ -21,6 +21,9 @@ public class StarDust extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * current state of the card, helper for debug and checking consistency
+     */
     private final CardState cardState;
     /**
      * Star dust constructor, initialise the attributes of this class
@@ -32,6 +35,23 @@ public class StarDust extends Card implements Serializable {
     public StarDust(boolean trialFlight, int level, String frontImage, String backImage, int id) {
         super("Star Dust", "A cloud of cosmic dust", trialFlight, level, frontImage, backImage, id);
         this.cardState = CardState.ESECUZIONE;
+    }
+
+    public CardState getCardState() {
+        return cardState;
+    }
+
+    /**
+     * start the card and applies its effect since there is no need of interaction with clients
+     * @return: all changes that the cardEffect has provocated
+     */
+    @Override
+    public ServerEvent startCard() {
+        try {
+            return cardEffect();
+        } catch (GeneralError e) {
+            return new GenericErrorEvent("errore", true);
+        }
     }
 
     /**
@@ -59,16 +79,4 @@ public class StarDust extends Card implements Serializable {
         return new StarDustEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved, track, this);
     }
 
-    @Override
-    public ServerEvent startCard() {
-        try {
-            return cardEffect();
-        } catch (GeneralError e) {
-            return new GenericErrorEvent("errore", true);
-        }
-    }
-
-    public CardState getCardState() {
-        return cardState;
-    }
 }

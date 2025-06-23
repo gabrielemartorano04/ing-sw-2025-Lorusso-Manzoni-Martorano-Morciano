@@ -7,9 +7,20 @@ import java.io.Serializable;
  * Class that manages the single shield
  */
 public final class Shield extends Component implements Serializable {
+    /**
+     * Protection direction of the shield
+     */
     private Direction direction;
+
+    /**
+     * Serial version
+     */
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * It tells if the shield is active
+     */
     private boolean isActive;
 
     /**
@@ -43,15 +54,24 @@ public final class Shield extends Component implements Serializable {
         return direction;
     }
 
+    /**
+     * This method sets isActive shield's attribute
+     * @param isActive new value for isActive
+     */
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
     }
+
+    /**
+     * This method tells if the shield is active
+     * @return if the shield is active
+     */
     public boolean getIsActive() {
         return isActive;
     }
 
     /**
-     * Turns the direction of the shield and the component
+     * Turns the protection direction of the shield and links
      */
     public void turn(){
         super.turn();

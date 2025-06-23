@@ -31,21 +31,44 @@ import java.util.Map;
 public class Slavers extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * slavers cannon power
+     */
     private final int slaversPower;
+
+    /**
+     * cosmic credits to gain
+     */
     private final int credits;
+
+    /**
+     * flight days to lose
+     */
     private final int days;
+
+    /**
+     * number of members of the crew to lose
+     */
     private final int astronautsLost;
 
     private CardState cardState;
-    private int indexOfCurrentTrucker;
-    private Trucker winnerTrucker; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
-    private final ArrayList<Trucker> defeatedTruckers;
-    private boolean winDecision;
 
-    private final ArrayList<ArrayList<int[]>> truckersCoordinatesToRemoveHumans;
-    // contiene le coordinate delle cabine scelte dall'utente per rimuovere gli umani. Queste coordinate sono organizzate
-    // in liste di liste. La lista esterna è una per ogni trucker, la lista interna contiene la lista di coordinate per quel
-    // trucker, mantenute nell'ordine dei trucker.
+    /**
+     * index of the current player to handle the fact that clients have to respect a specific turn
+     */
+    private int indexOfCurrentTrucker;
+
+    /**
+     * player that has defeated the pirates
+     */
+    private Trucker winnerTrucker;
+
+    /**
+     * list of all defeated players
+     */
+    private final ArrayList<Trucker> defeatedTruckers;
+
 
     /**
      * Slavers constructor, initialise the attributes of this class
@@ -65,11 +88,9 @@ public class Slavers extends Card implements Serializable {
         this.astronautsLost = astronautsLost;
         this.slaversPower = slaversPower;
         this.cardState = CardState.ACTIVATE_CANNONS;
-        this.truckersCoordinatesToRemoveHumans = new ArrayList<>();
         this.indexOfCurrentTrucker = 0;
         this.winnerTrucker = null;
         this.defeatedTruckers = new ArrayList<>();
-        this.winDecision = false;
 
     }
 
@@ -109,7 +130,9 @@ public class Slavers extends Card implements Serializable {
         return credits;
     }
 
-
+    /**
+     * @return an event containing all the card details
+     */
     @Override
     public ServerEvent startCard() {
         return new StartCardEvent(
@@ -134,45 +157,85 @@ public class Slavers extends Card implements Serializable {
         );
     }
 
+    /**
+     * Handles the current fight between slavers and a player.
+     *
+     * @return the event to be sent to the current player or the next one, or cardEffect if every player has fought
+     */
     private ServerEvent fightIsWin() throws GeneralError {
-        if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() > slaversPower) {
-            winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
-            cardState = CardState.COSMIC_CREDITS;
-            return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits, days);
-        }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() == slaversPower){
-            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
-                if(defeatedTruckers.isEmpty()){
-                    cardState = CardState.ESECUZIONE;
-                    return cardEffect();
-                }else{
-                    cardState = CardState.HUMANSTOREMOVE;
-                    indexOfCurrentTrucker = 0;
-                    return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES,
-                            true,
-                            defeatedTruckers.getFirst().getNickname(),
-                            defeatedTruckers.getFirst().getSpaceShip(),
-                            null,
-                            ""
-                    );
-                }
-            }else{
-                indexOfCurrentTrucker++;
-                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
-            }
+        float power = Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower();
 
-        }else {
-            defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
-            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
-                cardState = CardState.HUMANSTOREMOVE;
-                indexOfCurrentTrucker = 0;
-                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), null, "" );
-            }else{
-                indexOfCurrentTrucker++;
-                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
-            }
+        if (power > slaversPower) {
+            return handleVictory();
+        } else if (power == slaversPower) {
+            return handleDraw();
+        } else {
+            return handleDefeat();
         }
     }
 
+    /**
+     * handle the victory of the fight
+     *
+     * @return ServerEvent to send to client
+     */
+    private ServerEvent handleVictory() {
+        winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
+        cardState = CardState.COSMIC_CREDITS;
+        return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits, days);
+    }
+
+    /**
+     * handle the draw of the fight
+     *
+     * @return ServerEvent to send to client
+     */
+    private ServerEvent handleDraw() throws GeneralError{
+        if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
+            if(defeatedTruckers.isEmpty()){
+                cardState = CardState.ESECUZIONE;
+                return cardEffect();
+            }else{
+                cardState = CardState.HUMANSTOREMOVE;
+                indexOfCurrentTrucker = 0;
+                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname(), defeatedTruckers.getFirst().getSpaceShip(), null, ""
+                );
+            }
+        }else{
+            indexOfCurrentTrucker++;
+            return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+        }
+    }
+
+    /**
+     * handle the defeat of the fight
+     *
+     * @return ServerEvent to send to client
+     */
+    private ServerEvent handleDefeat() throws GeneralError {
+        defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
+        if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
+            cardState = CardState.HUMANSTOREMOVE;
+            indexOfCurrentTrucker = 0;
+            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), null, "" );
+        }else{
+            indexOfCurrentTrucker++;
+            return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+        }
+    }
+
+
+    /**
+     * Sets for each trucker the coordinates of the double cannons that he/she wants to activate
+     *
+     * @param activate: true if the current player wants to activate any double Cannons, false otherwise
+     * @param coord: coordinates of the doubleCannons to activate
+     * @param batteryCoord: coordinates of the batteryStorages from which remove the batteries
+     * @return cardEffect if it was the last defeated player, otherwise it updates the next player to let him decide whether
+     * to activate any doubleCannons
+     * @throws InvalidComponentsException coordinates do not match to their component type
+     * @throws NotEnoughBatteries not enoughBatteries indicated to activate the doubleCannons selected
+     */
     @Override
     public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
         if(cardState!=CardState.ACTIVATE_CANNONS){
@@ -197,6 +260,14 @@ public class Slavers extends Card implements Serializable {
         }
     }
 
+
+    /**
+     * sets the decision taken by the winner if there is one
+     *
+     * @param answer: decision taken
+     * @return cardEffect or the event for the first defeated player
+     * @throws GeneralError: not in the right state
+     */
     @Override
     public ServerEvent setWinDecision(boolean answer)throws GeneralError{
         if(cardState!=CardState.COSMIC_CREDITS){
@@ -220,8 +291,11 @@ public class Slavers extends Card implements Serializable {
 
 
     /**
-     * Sets, for each trucker, the coordinates of the cabin where he/she want to remove the crew members
-     * @param coordinates list of lists of arrays of coordinates
+     * Sets the coordinates of the cabins from which the player that decided to land wants to
+     * remove the crew members required, after checking if they are consistent
+     * @param coordinates list of arrays of coordinates of the cabins
+     *
+     * @return ServerEvent to be sent to the client
      */
     @Override
     public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws GeneralError, InvalidCoordinates {
@@ -246,7 +320,6 @@ public class Slavers extends Card implements Serializable {
         else{
             try {
                 defeatedTruckers.getFirst().getSpaceShip().checkCabin(coordinates, astronautsLost);
-
                 defeatedTruckers.getFirst().getSpaceShip().removeNumHuman(coordinates,astronautsLost);
 
                 SpaceShip defeatedShipUpdated = defeatedTruckers.getFirst().getSpaceShip();
@@ -269,6 +342,8 @@ public class Slavers extends Card implements Serializable {
 
     /**
      * Applies the changes provided by the card
+     *
+     * @return ServerEvent to send to client
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {
@@ -277,12 +352,9 @@ public class Slavers extends Card implements Serializable {
         }
         ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        Map<String, Integer> track = new HashMap<>();
-        for (Trucker t : Game.getIstance().getTruckerList()) {
-            track.put(t.getNickname(), t.getPosition());
-        }
+
         GamePersistence.saveGame(GameController.getIstance());
-        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
 
