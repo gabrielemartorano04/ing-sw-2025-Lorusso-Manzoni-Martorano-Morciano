@@ -16,8 +16,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -403,9 +401,9 @@ public class Smugglers extends Card implements Serializable {
 
 
     /**
+     * handle the remotion of goods from the ship of the current player
      *
-     * @return
-     * @throws GeneralError
+     * @return serverEvent to send to the correct client
      */
     @Override
     public ServerEvent removeGoods() throws GeneralError {
@@ -426,8 +424,9 @@ public class Smugglers extends Card implements Serializable {
             numGoodCurrType = getNumGoodsForColor(ship, colorOfCurrGoodToRemove);
 
             if (numGoodCurrType > 0 && numGoodCurrType <= goodsToLoseCurrTrucker) {
-                return removeWithoutAsking(goodsList);
-            } else if (numGoodCurrType > 0) {
+                return removeWithoutDecision(goodsList);
+            }
+            else if (numGoodCurrType > 0) {
                 cardState = CardState.REMOVE_ASKING;
                 goodsToRemove.clear();
                 for (Goods g : goodsList) {
@@ -437,30 +436,46 @@ public class Smugglers extends Card implements Serializable {
                 }
                 return new RemoveGoods(true, nickname, ship, goodsToRemove);
             }
-
             colorOfCurrGoodToRemove--;
         }
 
-
         if (colorOfCurrGoodToRemove == 0 && goodsToLoseCurrTrucker > 0) {
-            if (ship.getNumBatteries() == 0) {
-                defeatedTruckers.removeFirst();
-                goodsToLoseCurrTrucker = goodsLost;
-                if (defeatedTruckers.isEmpty()) {
-                    cardState = CardState.ESECUZIONE;
-                    return cardEffect();
-                } else {
-                    return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED, nickname, ship);
-                }
-            } else {
-                cardState = CardState.REMOVE_BATTERIES;
-                return new RemoveBatteries(true, nickname, ship, goodsToLoseCurrTrucker);
-            }
+            return handleBatteryOrNextTrucker(ship, nickname);
         }
 
         throw new GeneralError("RemoveGoods not working correctly");
     }
 
+
+    /**
+     * handle the remotion of batteries if necessary or the transition to the next player
+     *
+     * @param ship of the current player
+     * @param nickname of the current player
+     * @return serverEvent for the correct client
+     */
+    private ServerEvent handleBatteryOrNextTrucker(SpaceShip ship, String nickname) throws GeneralError {
+        if (ship.getNumBatteries() == 0) {
+            defeatedTruckers.removeFirst();
+            goodsToLoseCurrTrucker = goodsLost;
+            if (defeatedTruckers.isEmpty()) {
+                cardState = CardState.ESECUZIONE;
+                return cardEffect();
+            } else {
+                return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED, nickname, ship);
+            }
+        } else {
+            cardState = CardState.REMOVE_BATTERIES;
+            return new RemoveBatteries(true, nickname, ship, goodsToLoseCurrTrucker);
+        }
+    }
+
+
+    /**
+     * @param ship of the current player
+     * @param colorCode current good's color
+     * @return number of goods of color "colorCode" in the current player's ship
+     */
     private int getNumGoodsForColor(SpaceShip ship, int colorCode) {
         return switch (colorCode) {
             case 4 -> ship.getRedGoods();
@@ -471,7 +486,13 @@ public class Smugglers extends Card implements Serializable {
         };
     }
 
-    private ServerEvent removeWithoutAsking(ArrayList<Goods> goodsListFromShip) throws GeneralError {
+    /**
+     * removes all the goods in the list from the ship of the current player
+     *
+     * @param goodsListFromShip goods to remove
+     * @return ServerEvent for the correct client
+     */
+    private ServerEvent removeWithoutDecision(ArrayList<Goods> goodsListFromShip) throws GeneralError {
         if (goodsListFromShip == null) {
             throw new GeneralError("Remove without asking: goodsList is null");
         }
@@ -492,7 +513,7 @@ public class Smugglers extends Card implements Serializable {
         SpaceShip spaceShip = defeatedTruckers.getFirst().getSpaceShip();
         String nickname = defeatedTruckers.getFirst().getNickname();
 
-        if (goodsToLoseCurrTrucker == 0) {
+        if (goodsToLoseCurrTrucker == 0 || (goodsToLoseCurrTrucker > 0 && spaceShip.getNumBatteries() == 0)) {
             defeatedTruckers.removeFirst();
             goodsToLoseCurrTrucker = goodsLost;
             cardState = CardState.REMOVE_GOODS;
@@ -502,11 +523,6 @@ public class Smugglers extends Card implements Serializable {
             cardState = CardState.REMOVE_GOODS;
             return removeGoods();
 
-        }else if (((goodsToLoseCurrTrucker > 0 && spaceShip.getNumBatteries() == 0))){
-            defeatedTruckers.removeFirst();
-            goodsToLoseCurrTrucker = goodsLost;
-            cardState = CardState.REMOVE_GOODS;
-            return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED,nickname,spaceShip);
         }
         else {
             cardState = CardState.REMOVE_BATTERIES;
@@ -516,8 +532,10 @@ public class Smugglers extends Card implements Serializable {
 
 
     /**
+     *  removes all the goods from the goodsToRemove list based on the indexes chosen by the player
      *
-     * @param indexesToRemove: contains the indexes of the Goods within the list displayed on the screen that the player wants to remove from his ship
+     * @param indexesToRemove: contains the indexes of the goods that the player wants to remove
+     * @return serverEvent to send to the correct client
      */
 
     @Override
@@ -555,8 +573,9 @@ public class Smugglers extends Card implements Serializable {
     }
 
     /**
+     *  removes batteries from the ship of the current player
      *
-     * @param coordinatesToRemoveBatteries: mi aspetto che ogni elemento dell'arraylist sia [x,y,z] dove x,y sono le coordinate del batteryStorage e z è il numero di batterie da rimuovere da quel battery storage
+     * @param coordinatesToRemoveBatteries: coordinates of the battery storages from which remove the number of batteries indicated
      */
     @Override
     public ServerEvent removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
@@ -591,6 +610,8 @@ public class Smugglers extends Card implements Serializable {
 
     /**
      * Applies the changes provided by the card
+     *
+     * @return serverEvent to send to all the clients
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError{
