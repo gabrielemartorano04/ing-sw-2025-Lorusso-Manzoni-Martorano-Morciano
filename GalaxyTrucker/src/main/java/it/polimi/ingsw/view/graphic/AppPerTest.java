@@ -111,13 +111,13 @@ public class AppPerTest extends Application {
 
 
 
-        StackPane stackPane = new StackPane();
-        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
-        primaryStage.setScene(buildingScene.createScene(playersNames, 2));
-        buildingScene.showTimeExpired(2);
-        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-        primaryStage.show();
+//        StackPane stackPane = new StackPane();
+//        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
+//        primaryStage.setScene(buildingScene.createScene(playersNames, 2));
+//        buildingScene.showTimeExpired(2);
+//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+//        primaryStage.show();
 
 
 //        buildingScene.insertSelectedComponent(cannon, false);
@@ -153,13 +153,14 @@ public class AppPerTest extends Application {
 //
 //
 
-//        StackPane stackPane = new StackPane();
-//        FlightScene flightScene = new FlightScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
-//        primaryStage.setScene(flightScene.createScene(playersNames, 2));
-//
-//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-//        primaryStage.show();
+        StackPane stackPane = new StackPane();
+        FlightScene flightScene = new FlightScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
+        primaryStage.setScene(flightScene.createScene(playersNames, 2));
+
+        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+        primaryStage.show();
+        flightScene.showAskWithdraw();
 //        flightScene.updateGoodsListToRemove(new ArrayList<>(){
 //            {
 //                add(new Goods(2));
