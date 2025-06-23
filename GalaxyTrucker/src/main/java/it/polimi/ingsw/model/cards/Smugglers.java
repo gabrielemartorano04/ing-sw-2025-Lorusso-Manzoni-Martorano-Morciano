@@ -30,25 +30,78 @@ import java.util.Map;
 public class Smugglers extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * smugglers cannon power
+     */
     private final int smugglersPower;
+
+    /**
+     * number of goods to remove from losers' ships
+     */
     private final int goodsLost;
+
+    /**
+     * flight days to lose
+     */
     private final int days;
+
+    /**
+     * goods that can be obtained by the winner
+     */
     private final Goods[] goodsGained;
 
     private CardState cardState;
+
+    /**
+     * index of the current player to handle the fact that clients have to respect a specific turn
+     */
     private int indexOfCurrentTrucker;
-    private Trucker winnerTrucker; // trucker che ha sconfitto la carta e vuole la ricompensa, se è uguale a Null allora nessuno ha accettato la ricompensa
+
+    /**
+     * player that has defeated the smugglers
+     */
+    private Trucker winnerTrucker;
+
+    /**
+     * list of all defeated players
+     */
     private final ArrayList<Trucker> defeatedTruckers;
+
+    /**
+     * decision taken by the potential winner if there is one
+     */
     private boolean winDecision;
 
+    /**
+     * number of goods to lose by the current player
+     */
     private int goodsToLoseCurrTrucker;
+
+    /**
+     * index of the current good
+     */
     private int currGoodIndex;
 
-    // variabili per la remove
+    /**
+     * color of the current good to remove
+     * 4 = red
+     * 3 = yellow
+     * 2 = green
+     * 1 = blue
+     */
     private int colorOfCurrGoodToRemove;
+
+    /**
+     * number of goods of the current type in the ship of the current player
+     */
     private int numGoodCurrType;
-    private final ArrayList<Goods> goodsToRemove;// verrà creata al più una volta per istanza di questa classe
-    // fine variabili per la remove
+
+    /**
+     * list of goods to be removed for the current player if he can have the decision on which to remove
+     */
+    private final ArrayList<Goods> goodsToRemove;
+
 
     /**
      * Smugglers constructor, initialise the attributes of this class
@@ -92,6 +145,9 @@ public class Smugglers extends Card implements Serializable {
         return cardState;
     }
 
+    /**
+     * @return an event containing all the card details
+     */
     @Override
     public ServerEvent startCard() {
         return new StartCardEvent(
@@ -116,42 +172,83 @@ public class Smugglers extends Card implements Serializable {
         );
     }
 
-
+    /**
+     * handle the current fight between pirates and a player
+     *
+     * @return the event to be sent to the current player or the next one, or cardeffect if every player has fought
+     */
     private ServerEvent fightIsWin() throws GeneralError {
-        if (Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() > smugglersPower) {
-            winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
-            cardState = CardState.GOODSTOADD;
-            return new PlotGood(true, winnerTrucker.getNickname(),winnerTrucker.getSpaceShip(),goodsGained[currGoodIndex]);
-        }else if(Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower() == smugglersPower){
-            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
-                if(defeatedTruckers.isEmpty()){
-                    cardState = CardState.ESECUZIONE;
-                    return cardEffect();
-                }else{
-                    cardState = CardState.REMOVE_GOODS;
-                    indexOfCurrentTrucker = 0;
-                    return removeGoods();
-                }
-            }else{
-                indexOfCurrentTrucker++;
-                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
-            }
+        float power = Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower();
 
+        if (power > smugglersPower) {
+            return handleVictory();
+        }else if(power == smugglersPower){
+            return handleDraw();
         }else {
-            defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
-            System.out.println(defeatedTruckers.size());
-            if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
-                System.out.println("Entro a farti fare removeGoods");
-                cardState = CardState.REMOVE_GOODS;
-                indexOfCurrentTrucker = 0;
-                return removeGoods();
-            }else{
-                indexOfCurrentTrucker++;
-                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
-            }
+            return handleDefeat();
         }
     }
 
+    /**
+     * handle the victory of the fight
+     *
+     * @return ServerEvent to send to client
+     */
+    private ServerEvent handleVictory() {
+        winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
+        cardState = CardState.GOODSTOADD;
+        return new PlotGood(true, winnerTrucker.getNickname(),winnerTrucker.getSpaceShip(),goodsGained[currGoodIndex]);
+    }
+
+    /**
+     * handle draw case
+     *
+     * @return ServerEvent to send to client
+     */
+    private ServerEvent handleDraw() throws GeneralError {
+        if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
+            if(defeatedTruckers.isEmpty()){
+                cardState = CardState.ESECUZIONE;
+                return cardEffect();
+            }else{
+                cardState = CardState.REMOVE_GOODS;
+                indexOfCurrentTrucker = 0;
+                return removeGoods();
+            }
+        }else{
+            indexOfCurrentTrucker++;
+            return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+        }
+    }
+
+    /**
+     * handle the defeat of the current player
+     *
+     * @return ServerEvent to send to client
+     */
+    private ServerEvent handleDefeat() throws GeneralError {
+        defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
+        if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
+            cardState = CardState.REMOVE_GOODS;
+            indexOfCurrentTrucker = 0;
+            return removeGoods();
+        }else{
+            indexOfCurrentTrucker++;
+            return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+        }
+    }
+
+
+    /**
+     * Sets for each trucker the coordinates of the double cannons that he/she wants to activate
+     *
+     * @param activate: true if the current player wants to activate any double Cannons, false otherwise
+     * @param coord: coordinates of the doubleCannons to activate
+     * @param batteryCoord: coordinates of the batteryStorages from which remove the batteries
+     * @return ServerEvent to be sent to the correct client
+     * @throws InvalidComponentsException coordinates do not match to their component type
+     * @throws NotEnoughBatteries not enoughBatteries indicated to activate the doubleCannons selected
+     */
     @Override
     public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
         if(cardState!=CardState.ACTIVATE_CANNONS){
@@ -179,70 +276,103 @@ public class Smugglers extends Card implements Serializable {
 
 
     /**
+     *
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
+     *
+     * @param answer true if the current player wants this good false otherwise
      * @param goodsCoordinates list of coordinatest
+     * @param positionInLoad position in the load to insert the good
+     * @return ServerEvent to send to client
+     * @throws InvalidCoordinates coordinates are not of a load
+     * @throws InvalidPositionException not a special load but that good was special
      */
     @Override
-    public ServerEvent setGoodsCoordinates(Boolean answer, int[] goodsCoordinates, int value) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public ServerEvent setGoodsCoordinates(Boolean answer, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
 
         if(!answer){
-            if (currGoodIndex == goodsGained.length - 1) {
-                cardState = CardState.REARRANGE;
-                return new RearrangeEvent(true, this.winnerTrucker.getNickname());
-            } else {
-                currGoodIndex++;
-                do {
-                    if (Game.getIstance().getBank().getGoodsInBank(goodsGained[currGoodIndex].getValue()) >= 1) {
-                        cardState = CardState.GOODSTOADD;
-                        return new PlotGood(true, winnerTrucker.getNickname(),winnerTrucker.getSpaceShip(), goodsGained[currGoodIndex]);
-                    } else {
-                        currGoodIndex++;
-                        if (currGoodIndex == goodsGained.length) {
-                            cardState = CardState.REARRANGE;
-                            return new RearrangeEvent(true, this.winnerTrucker.getNickname());
-                        }
-                    }
-                } while (true);
-            }
+            return handleGoodRefused();
         }else {
-            if (!winnerTrucker.getSpaceShip().checkLoad(goodsCoordinates)) { //check load deve controllare il singolo componente
-                throw new InvalidCoordinates("Not goods deposit");
-            }
-            try {
-                // addGood fa anche la remove dalla bank della merce corrente
-                Goods goodToAdd = goodsGained[currGoodIndex];
-                goodToAdd.setX(goodsCoordinates[0]);
-                goodToAdd.setY(goodsCoordinates[1]);
-                winnerTrucker.getSpaceShip().addGood(goodToAdd, goodsCoordinates, value, Game.getIstance().getBank());
-            } catch (InvalidPositionException e) {
-                cardState = CardState.GOODSTOADD;
-                throw e;
-            }
+            handleGoodAccepted(goodsCoordinates, positionInLoad);
+
             if (currGoodIndex == goodsGained.length - 1) {
                 cardState = CardState.REARRANGE;
                 return new RearrangeEvent(true, this.winnerTrucker.getNickname());
             } else {
                 currGoodIndex++;
-                do {
-                    if (Game.getIstance().getBank().getGoodsInBank(goodsGained[currGoodIndex].getValue()) >= 1) {
-                        cardState = CardState.GOODSTOADD;
-                        return new PlotGood(true, winnerTrucker.getNickname(),winnerTrucker.getSpaceShip(), goodsGained[currGoodIndex]);
-                    } else {
-                        currGoodIndex++;
-                        if (currGoodIndex == goodsGained.length) {
-                            cardState = CardState.REARRANGE;
-                            return new RearrangeEvent(true, this.winnerTrucker.getNickname());
-                        }
-                    }
-                } while (true);
+                return proceedToNextAvailableGoodOrRearrange();
             }
         }
     }
 
-    // si potrebbe non metter contiune e procedere se tutto e a null
+    /**
+     * handle the fact that the current player doesn't want the current good
+     *
+     * @return ServerEvent to sent to the current player
+     */
+    private ServerEvent handleGoodRefused() {
+        if (currGoodIndex == goodsGained.length - 1) {
+            cardState = CardState.REARRANGE;
+            return new RearrangeEvent(true, winnerTrucker.getNickname());
+        }
+
+        currGoodIndex++;
+        return proceedToNextAvailableGoodOrRearrange();
+    }
+
+    /**
+     * proceeds to the next available Good
+     *
+     * @return ServerEvent to send to the current player
+     */
+    private ServerEvent proceedToNextAvailableGoodOrRearrange() {
+        while (currGoodIndex < goodsGained.length) {
+            Goods g = goodsGained[currGoodIndex];
+            if (Game.getIstance().getBank().getGoodsInBank(g.getValue()) >= 1) {
+                cardState = CardState.GOODSTOADD;
+                return new PlotGood(true, winnerTrucker.getNickname(), winnerTrucker.getSpaceShip(), g);
+            }
+            currGoodIndex++;
+        }
+
+        cardState = CardState.REARRANGE;
+        return new RearrangeEvent(true, winnerTrucker.getNickname());
+    }
+
+    /**
+     * tries to add the corrent good to the ship in the coordinates indicated
+     */
+    private void handleGoodAccepted(int[] goodsCoordinates, int positionInLoad) throws InvalidCoordinates, InvalidPositionException {
+
+        if (!winnerTrucker.getSpaceShip().checkLoad(goodsCoordinates)) {
+            throw new InvalidCoordinates("Not goods deposit");
+        }
+        Goods goodToAdd = goodsGained[currGoodIndex];
+        goodToAdd.setX(goodsCoordinates[0]);
+        goodToAdd.setY(goodsCoordinates[1]);
+
+        try {
+            winnerTrucker.getSpaceShip().addGood(goodToAdd, goodsCoordinates, positionInLoad, Game.getIstance().getBank());
+        } catch (InvalidPositionException e) {
+            cardState = CardState.GOODSTOADD;
+            throw e;
+        }
+    }
+
+
+    /**
+     * switch 2 goods to rearrange them in the ship
+     * @param coord1 initial position
+     * @param coord2 final position
+     * @param value1 initial internal position
+     * @param value2 final internat position
+     * @param stop when to end the swaps
+     * @return the server event to client
+     * @throws InvalidCoordinates coordinates are not valid
+     * @throws InvalidPositionException tried to put a special good in a not special load
+     */
     @Override
     public ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean stop) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
@@ -271,6 +401,12 @@ public class Smugglers extends Card implements Serializable {
         }
     }
 
+
+    /**
+     *
+     * @return
+     * @throws GeneralError
+     */
     @Override
     public ServerEvent removeGoods() throws GeneralError {
         if (cardState != CardState.REMOVE_GOODS) {
@@ -467,12 +603,9 @@ public class Smugglers extends Card implements Serializable {
         }
         ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        Map<String, Integer> track = new HashMap<>();
-        for (Trucker t : Game.getIstance().getTruckerList()) {
-            track.put(t.getNickname(), t.getPosition());
-        }
+
         GamePersistence.saveGame(GameController.getIstance());
-        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+        return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
 

@@ -190,7 +190,6 @@ public class Pirates extends Card implements Serializable {
      * handle the current fight between pirates and a player
      *
      * @return the event to be sent to the current player or the next one, or cardeffect if every player has fought
-     * @throws GeneralError: cardEffect not called in the right card State
      */
     private ServerEvent fightIsWin() throws GeneralError {
         float power = Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower();

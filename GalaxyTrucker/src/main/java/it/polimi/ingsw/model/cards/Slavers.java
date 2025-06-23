@@ -60,7 +60,7 @@ public class Slavers extends Card implements Serializable {
     private int indexOfCurrentTrucker;
 
     /**
-     * player that has defeated the pirates
+     * player that has defeated the slavers
      */
     private Trucker winnerTrucker;
 
@@ -231,8 +231,7 @@ public class Slavers extends Card implements Serializable {
      * @param activate: true if the current player wants to activate any double Cannons, false otherwise
      * @param coord: coordinates of the doubleCannons to activate
      * @param batteryCoord: coordinates of the batteryStorages from which remove the batteries
-     * @return cardEffect if it was the last defeated player, otherwise it updates the next player to let him decide whether
-     * to activate any doubleCannons
+     * @return ServerEvent to be sent to the correct client
      * @throws InvalidComponentsException coordinates do not match to their component type
      * @throws NotEnoughBatteries not enoughBatteries indicated to activate the doubleCannons selected
      */
