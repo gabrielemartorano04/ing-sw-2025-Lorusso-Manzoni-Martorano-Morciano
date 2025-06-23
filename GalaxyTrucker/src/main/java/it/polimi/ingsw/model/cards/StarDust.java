@@ -25,6 +25,7 @@ public class StarDust extends Card implements Serializable {
      * current state of the card, helper for debug and checking consistency
      */
     private final CardState cardState;
+
     /**
      * Star dust constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -43,7 +44,7 @@ public class StarDust extends Card implements Serializable {
 
     /**
      * start the card and applies its effect since there is no need of interaction with clients
-     * @return: all changes that the cardEffect has provocated
+     * @return cardEffect
      */
     @Override
     public ServerEvent startCard() {
@@ -56,6 +57,8 @@ public class StarDust extends Card implements Serializable {
 
     /**
      * Applies the changes provided by the card
+     *
+     * @return serverEvent to send to clients
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {

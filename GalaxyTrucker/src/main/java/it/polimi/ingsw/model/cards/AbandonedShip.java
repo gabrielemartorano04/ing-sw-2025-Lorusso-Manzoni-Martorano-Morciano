@@ -117,6 +117,7 @@ public class AbandonedShip extends Card implements Serializable {
     /**
      * sets truckerThatHasDecided based on the answer by the current client and updates the next client if landing is false
      * @param landing: the choice taken by the current client
+     * @return serverEvent to send to all clients
      */
     @Override
     public ServerEvent truckerLanding(boolean landing) throws GeneralError {
@@ -142,6 +143,7 @@ public class AbandonedShip extends Card implements Serializable {
      * Sets the coordinates of the cabins from which the player that decided to land wants to
      * remove the crew members required, after checking if they are consistent
      * @param coordinates list of arrays of coordinates of the cabins
+     * @return serverEvent to send to all clients
      */
     @Override
     public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
@@ -165,7 +167,7 @@ public class AbandonedShip extends Card implements Serializable {
      * Applies the changes provided by the card:
      * adds cosmic credits to the player landed and make him/her lose crew members and flight days
      *
-     * @return the event containing the status of the game after the effects for clients
+     * @return serverEvent to send to clients
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {
@@ -185,7 +187,6 @@ public class AbandonedShip extends Card implements Serializable {
         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
-    //servono per i test
 
     public int getDays() {
         return days;

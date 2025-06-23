@@ -82,7 +82,7 @@ public class Smugglers extends Card implements Serializable {
     private int currGoodIndex;
 
     /**
-     * color of the current good to remove
+     * color of the current goods to remove
      * 4 = red
      * 3 = yellow
      * 2 = green
@@ -91,7 +91,7 @@ public class Smugglers extends Card implements Serializable {
     private int colorOfCurrGoodToRemove;
 
     /**
-     * number of goods of the current type in the ship of the current player
+     * number of goods of the current color in the ship of the current player
      */
     private int numGoodCurrType;
 
@@ -173,7 +173,7 @@ public class Smugglers extends Card implements Serializable {
     /**
      * handle the current fight between pirates and a player
      *
-     * @return the event to be sent to the current player or the next one, or cardeffect if every player has fought
+     * @return serverEvent to send to clients
      */
     private ServerEvent fightIsWin() throws GeneralError {
         float power = Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower();
@@ -190,7 +190,7 @@ public class Smugglers extends Card implements Serializable {
     /**
      * handle the victory of the fight
      *
-     * @return ServerEvent to send to client
+     * @return ServerEvent to send to clients
      */
     private ServerEvent handleVictory() {
         winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
@@ -201,7 +201,7 @@ public class Smugglers extends Card implements Serializable {
     /**
      * handle draw case
      *
-     * @return ServerEvent to send to client
+     * @return ServerEvent to send to clients
      */
     private ServerEvent handleDraw() throws GeneralError {
         if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
@@ -222,7 +222,7 @@ public class Smugglers extends Card implements Serializable {
     /**
      * handle the defeat of the current player
      *
-     * @return ServerEvent to send to client
+     * @return ServerEvent to send to clients
      */
     private ServerEvent handleDefeat() throws GeneralError {
         defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
@@ -243,7 +243,7 @@ public class Smugglers extends Card implements Serializable {
      * @param activate: true if the current player wants to activate any double Cannons, false otherwise
      * @param coord: coordinates of the doubleCannons to activate
      * @param batteryCoord: coordinates of the batteryStorages from which remove the batteries
-     * @return ServerEvent to be sent to the correct client
+     * @return serverEvent to send to clients
      * @throws InvalidComponentsException coordinates do not match to their component type
      * @throws NotEnoughBatteries not enoughBatteries indicated to activate the doubleCannons selected
      */
@@ -280,7 +280,7 @@ public class Smugglers extends Card implements Serializable {
      * @param answer true if the current player wants this good false otherwise
      * @param goodsCoordinates list of coordinatest
      * @param positionInLoad position in the load to insert the good
-     * @return ServerEvent to send to client
+     * @return serverEvent to send to clients
      * @throws InvalidCoordinates coordinates are not of a load
      * @throws InvalidPositionException not a special load but that good was special
      */
@@ -308,7 +308,7 @@ public class Smugglers extends Card implements Serializable {
     /**
      * handle the fact that the current player doesn't want the current good
      *
-     * @return ServerEvent to sent to the current player
+     * @return serverEvent to send to clients
      */
     private ServerEvent handleGoodRefused() {
         if (currGoodIndex == goodsGained.length - 1) {
@@ -323,7 +323,7 @@ public class Smugglers extends Card implements Serializable {
     /**
      * proceeds to the next available Good
      *
-     * @return ServerEvent to send to the current player
+     * @return serverEvent to send to clients
      */
     private ServerEvent proceedToNextAvailableGoodOrRearrange() {
         while (currGoodIndex < goodsGained.length) {
@@ -367,7 +367,7 @@ public class Smugglers extends Card implements Serializable {
      * @param value1 initial internal position
      * @param value2 final internat position
      * @param stop when to end the swaps
-     * @return the server event to client
+     * @return serverEvent to send to clients
      * @throws InvalidCoordinates coordinates are not valid
      * @throws InvalidPositionException tried to put a special good in a not special load
      */
@@ -403,7 +403,7 @@ public class Smugglers extends Card implements Serializable {
     /**
      * handle the remotion of goods from the ship of the current player
      *
-     * @return serverEvent to send to the correct client
+     * @return serverEvent to send to clients
      */
     @Override
     public ServerEvent removeGoods() throws GeneralError {
@@ -452,7 +452,7 @@ public class Smugglers extends Card implements Serializable {
      *
      * @param ship of the current player
      * @param nickname of the current player
-     * @return serverEvent for the correct client
+     * @return serverEvent to send to clients
      */
     private ServerEvent handleBatteryOrNextTrucker(SpaceShip ship, String nickname) throws GeneralError {
         if (ship.getNumBatteries() == 0) {
@@ -490,7 +490,7 @@ public class Smugglers extends Card implements Serializable {
      * removes all the goods in the list from the ship of the current player
      *
      * @param goodsListFromShip goods to remove
-     * @return ServerEvent for the correct client
+     * @return serverEvent to send to clients
      */
     private ServerEvent removeWithoutDecision(ArrayList<Goods> goodsListFromShip) throws GeneralError {
         if (goodsListFromShip == null) {
@@ -535,11 +535,11 @@ public class Smugglers extends Card implements Serializable {
      *  removes all the goods from the goodsToRemove list based on the indexes chosen by the player
      *
      * @param indexesToRemove: contains the indexes of the goods that the player wants to remove
-     * @return serverEvent to send to the correct client
+     * @return serverEvent to send to clients
      */
 
     @Override
-    public ServerEvent removeAsking(ArrayList<Integer> indexesToRemove) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
+    public ServerEvent removeGoodsDecided(ArrayList<Integer> indexesToRemove) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
         if (cardState != CardState.REMOVE_ASKING){
             throw new GeneralError("Can't call removeAsking in the state " + cardState);
         }
@@ -576,6 +576,7 @@ public class Smugglers extends Card implements Serializable {
      *  removes batteries from the ship of the current player
      *
      * @param coordinatesToRemoveBatteries: coordinates of the battery storages from which remove the number of batteries indicated
+     * @return serverEvent to send to clients
      */
     @Override
     public ServerEvent removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
@@ -611,7 +612,7 @@ public class Smugglers extends Card implements Serializable {
     /**
      * Applies the changes provided by the card
      *
-     * @return serverEvent to send to all the clients
+     * @return serverEvent to send to clients
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError{

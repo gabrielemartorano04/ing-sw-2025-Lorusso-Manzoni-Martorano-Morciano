@@ -160,7 +160,7 @@ public class Slavers extends Card implements Serializable {
     /**
      * Handles the current fight between slavers and a player.
      *
-     * @return the event to be sent to the current player or the next one, or cardEffect if every player has fought
+     * @return serverEvent to send to clients
      */
     private ServerEvent fightIsWin() throws GeneralError {
         float power = Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower();
@@ -177,7 +177,7 @@ public class Slavers extends Card implements Serializable {
     /**
      * handle the victory of the fight
      *
-     * @return ServerEvent to send to client
+     * @return ServerEvent to send to clients
      */
     private ServerEvent handleVictory() {
         winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
@@ -188,7 +188,7 @@ public class Slavers extends Card implements Serializable {
     /**
      * handle the draw of the fight
      *
-     * @return ServerEvent to send to client
+     * @return ServerEvent to send to clients
      */
     private ServerEvent handleDraw() throws GeneralError{
         if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
@@ -210,7 +210,7 @@ public class Slavers extends Card implements Serializable {
     /**
      * handle the defeat of the fight
      *
-     * @return ServerEvent to send to client
+     * @return ServerEvent to send to clients
      */
     private ServerEvent handleDefeat() throws GeneralError {
         defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
@@ -231,7 +231,7 @@ public class Slavers extends Card implements Serializable {
      * @param activate: true if the current player wants to activate any double Cannons, false otherwise
      * @param coord: coordinates of the doubleCannons to activate
      * @param batteryCoord: coordinates of the batteryStorages from which remove the batteries
-     * @return ServerEvent to be sent to the correct client
+     * @return serverEvent to send to clients
      * @throws InvalidComponentsException coordinates do not match to their component type
      * @throws NotEnoughBatteries not enoughBatteries indicated to activate the doubleCannons selected
      */
@@ -264,7 +264,7 @@ public class Slavers extends Card implements Serializable {
      * sets the decision taken by the winner if there is one
      *
      * @param answer: decision taken
-     * @return cardEffect or the event for the first defeated player
+     * @return serverEvent to send to clients
      * @throws GeneralError: not in the right state
      */
     @Override
@@ -294,7 +294,7 @@ public class Slavers extends Card implements Serializable {
      * remove the crew members required, after checking if they are consistent
      * @param coordinates list of arrays of coordinates of the cabins
      *
-     * @return ServerEvent to be sent to the client
+     * @return serverEvent to send to clients
      */
     @Override
     public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws GeneralError, InvalidCoordinates {
@@ -342,7 +342,7 @@ public class Slavers extends Card implements Serializable {
     /**
      * Applies the changes provided by the card
      *
-     * @return ServerEvent to send to client
+     * @return serverEvent to send to clients
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {

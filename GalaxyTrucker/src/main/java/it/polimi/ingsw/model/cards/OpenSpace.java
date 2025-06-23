@@ -91,9 +91,8 @@ public class OpenSpace extends Card implements Serializable {
      * @param activate: decision taken by the current player
      * @param coord: coordinates of the doubleEngines to activate
      * @param batteryCoord: coordinates of the BatteryStorages from which remove the batteries
-     * @return cardeffect if every player has decided, otherwise the event for the next player
+     * @return serverEvent to send to clients
      * @throws InvalidCoordinates: coordinates are not of shields or batteryStorages
-     * @throws GeneralError: not in the right state
      * @throws NotEnoughBatteries: not enoughBatteries indicated
      */
     @Override
@@ -131,7 +130,7 @@ public class OpenSpace extends Card implements Serializable {
      * Applies the changes provided by the card:
      * moves forward every player based on the engine power of each ship
      *
-     * @return the event containing the status of the game after the effects for clients
+     * @return serverEvent to send to clients
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {

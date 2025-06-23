@@ -48,7 +48,7 @@ public class Epidemic extends Card implements Serializable {
 
     /**
      * start the card and applies its effect since there is no need of interaction with clients
-     * @return: all changes that the cardEffect has provocated
+     * @return serverEvent to send to clients
      */
     @Override
     public ServerEvent startCard() {
@@ -64,7 +64,7 @@ public class Epidemic extends Card implements Serializable {
      * Applies the changes provided by the card:
      * removes a crew member from each occupied cabin that is connected to another occupied cabin for each player
      *
-     * @return the event containing the status of the game after the effects for clients
+     * @return serverEvent to send to clients
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {

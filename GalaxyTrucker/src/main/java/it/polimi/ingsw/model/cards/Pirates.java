@@ -189,7 +189,7 @@ public class Pirates extends Card implements Serializable {
     /**
      * handle the current fight between pirates and a player
      *
-     * @return the event to be sent to the current player or the next one, or cardeffect if every player has fought
+     * @return serverEvent to send to clients
      */
     private ServerEvent fightIsWin() throws GeneralError {
         float power = Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower();
@@ -206,7 +206,7 @@ public class Pirates extends Card implements Serializable {
     /**
      * handle the victory of the fight
      *
-     * @return ServerEvent to send to client
+     * @return serverEvent to send to clients
      */
     private ServerEvent handleVictory() {
         winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
@@ -217,7 +217,7 @@ public class Pirates extends Card implements Serializable {
     /**
      * handle draw case
      *
-     * @return ServerEvent to send to client
+     * @return ServerEvent to send to clients
      */
     private ServerEvent handleDraw() throws GeneralError {
         if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
@@ -238,7 +238,7 @@ public class Pirates extends Card implements Serializable {
     /**
      * handle the defeat of the current player
      *
-     * @return ServerEvent to send to client
+     * @return ServerEvent to send to clients
      */
     private ServerEvent handleDefeat() {
         defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
@@ -259,8 +259,7 @@ public class Pirates extends Card implements Serializable {
      * @param activate: true if the current player wants to activate any double Cannons, false otherwise
      * @param coord: coordinates of the doubleCannons to activate
      * @param batteryCoord: coordinates of the batteryStorages from which remove the batteries
-     * @return cardEffect if it was the last defeated player, otherwise it updates the next player to let him decide whether
-     * to activate any doubleCannons
+     * @return serverEvent to send to clients
      * @throws InvalidComponentsException coordinates do not match to their component type
      * @throws NotEnoughBatteries not enoughBatteries indicated to activate the doubleCannons selected
      */
@@ -293,7 +292,7 @@ public class Pirates extends Card implements Serializable {
      * sets the decision taken by the winner if there is one
      *
      * @param answer: decision taken
-     * @return cardEffect or the event for the first defeated player
+     * @return serverEvent to send to clients
      * @throws GeneralError: not in the right state
      */
     @Override
@@ -347,7 +346,7 @@ public class Pirates extends Card implements Serializable {
      * @param answer: if true the current player wants to activate shield otherwise no
      * @param shieldCoord: coordinates of the shield the current player wants to activate
      * @param batteryCoord: coordinates of the battery storage from which remove a battery
-     * @return cardeffect if every player has decided, otherwise the event for the next player
+     * @return serverEvent to send to clients
      * @throws GeneralError: card is not in the correct state (for debug)
      * @throws InvalidCoordinates: coordinates don't match the type of component in the shield
      * @throws NotEnoughBatteries: not enough batteries to remove were indicated by the plauer
@@ -387,7 +386,7 @@ public class Pirates extends Card implements Serializable {
      * Applies the changes provided by the card:
      * shoot the current shot at defeteadtruckers' ships and add cosmic credits to the winner
      *
-     * @return the event containing the status of the game after the effects for clients
+     * @return serverEvent to send to clients
      */
 
     @Override

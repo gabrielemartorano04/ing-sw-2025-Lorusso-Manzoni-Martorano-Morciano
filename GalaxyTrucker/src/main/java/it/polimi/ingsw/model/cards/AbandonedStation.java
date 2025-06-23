@@ -116,6 +116,7 @@ public class AbandonedStation extends Card implements Serializable {
     /**
      * sets truckerThatHasDecided based on the answer by the current client and updates the next client if landing is false
      * @param landing: choice taken by the current client
+     * @return serverEvent to send to all clients
      */
     @Override
     public ServerEvent truckerLanding(boolean landing) throws GeneralError {
@@ -155,7 +156,7 @@ public class AbandonedStation extends Card implements Serializable {
      * @param answer true if the current player wants this good false otherwise
      * @param goodsCoordinates list of coordinatest
      * @param positionInLoad position in the load to insert the good
-     * @return ServerEvent to send to client
+     * @return ServerEvent to send to clients
      * @throws InvalidCoordinates coordinates are not of a load
      * @throws InvalidPositionException not a special load but that good was special
      */
@@ -201,7 +202,7 @@ public class AbandonedStation extends Card implements Serializable {
     /**
      * returns the next good available in the bank, that comes from the list of goods to gain from the winner.
      * If the bank is empty then it proceeds to rearrange.
-     * @return PlotGood event if there is an available good otherwise RearrangeEvent
+     * @return serverEvent to send to all clients
      */
     private ServerEvent proceedToNextAvailableGoodOrRearrange() {
         while (currGood < goods.size()) {
@@ -225,7 +226,7 @@ public class AbandonedStation extends Card implements Serializable {
      * @param value1 initial internal position
      * @param value2 final internat position
      * @param stop when to end the swaps
-     * @return the server event to
+     * @return serverEvent to send to all clients
      * @throws InvalidCoordinates coordinates are not valid
      * @throws InvalidPositionException tried to put a special good in a not special load
      */
@@ -255,7 +256,7 @@ public class AbandonedStation extends Card implements Serializable {
      * Applies the changes provided by the card:
      * makes the player landed move backwards
      *
-     * @return ServerEvent to send to client
+     * @return serverEvent to send to all clients
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {

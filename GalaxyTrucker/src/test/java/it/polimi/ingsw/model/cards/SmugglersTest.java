@@ -40,7 +40,7 @@ class SmugglersTest {
     }
 
     @Test
-    void removeAsking() {
+    void removeGoodsDecided() {
     }
 
     @Test

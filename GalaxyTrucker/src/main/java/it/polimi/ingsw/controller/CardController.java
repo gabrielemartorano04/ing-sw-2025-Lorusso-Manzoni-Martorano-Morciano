@@ -217,7 +217,7 @@ public class CardController implements Serializable {
      */
     public ServerEvent removeAsking(RemoveAskingEvent event) {
         try {
-            return currCard.removeAsking(event.getIndexes());
+            return currCard.removeGoodsDecided(event.getIndexes());
         } catch (WrongCallerException | GeneralError e) {
             return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidGoodChosen e) {
