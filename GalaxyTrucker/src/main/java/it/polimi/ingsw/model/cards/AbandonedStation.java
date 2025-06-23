@@ -149,8 +149,15 @@ public class AbandonedStation extends Card implements Serializable {
 
 
     /**
+     *
      * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
+     *
+     * @param answer true if the current player wants this good false otherwise
      * @param goodsCoordinates list of coordinatest
+     * @param positionInLoad position in the load to insert the good
+     * @return ServerEvent to send to client
+     * @throws InvalidCoordinates coordinates are not of a load
+     * @throws InvalidPositionException not a special load but that good was special
      */
     @Override
     public ServerEvent setGoodsCoordinates(Boolean answer, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
@@ -197,19 +204,17 @@ public class AbandonedStation extends Card implements Serializable {
      * @return PlotGood event if there is an available good otherwise RearrangeEvent
      */
     private ServerEvent proceedToNextAvailableGoodOrRearrange() {
-        while (true) {
-            if (currGood == goods.size()) {
-                cardState = CardState.REARRANGE;
-                return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
-            }
-
+        while (currGood < goods.size()) {
             if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
                 cardState = CardState.GOODSTOADD;
-                return new PlotGood(true, truckerThatHasDecided.getNickname(), truckerThatHasDecided.getSpaceShip(), goods.get(currGood));
+                return new PlotGood(true, truckerThatHasDecided.getNickname(),
+                        truckerThatHasDecided.getSpaceShip(), goods.get(currGood));
             }
-
             currGood++;
         }
+
+        cardState = CardState.REARRANGE;
+        return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
     }
 
 
@@ -221,9 +226,8 @@ public class AbandonedStation extends Card implements Serializable {
      * @param value2 final internat position
      * @param stop when to end the swaps
      * @return the server event to
-     * @throws GeneralError
-     * @throws InvalidCoordinates
-     * @throws InvalidPositionException
+     * @throws InvalidCoordinates coordinates are not valid
+     * @throws InvalidPositionException tried to put a special good in a not special load
      */
     @Override
     public ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean stop) throws GeneralError, InvalidCoordinates, InvalidPositionException {
@@ -251,7 +255,7 @@ public class AbandonedStation extends Card implements Serializable {
      * Applies the changes provided by the card:
      * makes the player landed move backwards
      *
-     * @return the event containing the status of the game after the effects for clients
+     * @return ServerEvent to send to client
      */
     @Override
     public ServerEvent cardEffect() throws GeneralError {

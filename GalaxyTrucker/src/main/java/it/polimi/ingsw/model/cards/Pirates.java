@@ -185,6 +185,13 @@ public class Pirates extends Card implements Serializable {
         );
     }
 
+
+    /**
+     * handle the current fight between pirates and a player
+     *
+     * @return the event to be sent to the current player or the next one, or cardeffect if every player has fought
+     * @throws GeneralError: cardEffect not called in the right card State
+     */
     private ServerEvent fightIsWin() throws GeneralError {
         float power = Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getTotalCannonPower();
 
@@ -197,12 +204,22 @@ public class Pirates extends Card implements Serializable {
         }
     }
 
+    /**
+     * handle the victory of the fight
+     *
+     * @return ServerEvent to send to client
+     */
     private ServerEvent handleVictory() {
         winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
         cardState = CardState.COSMIC_CREDITS;
         return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits, days);
     }
 
+    /**
+     * handle draw case
+     *
+     * @return ServerEvent to send to client
+     */
     private ServerEvent handleDraw() throws GeneralError {
         if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
             if(defeatedTruckers.isEmpty()){
@@ -219,6 +236,11 @@ public class Pirates extends Card implements Serializable {
         }
     }
 
+    /**
+     * handle the defeat of the current player
+     *
+     * @return ServerEvent to send to client
+     */
     private ServerEvent handleDefeat() {
         defeatedTruckers.add(Game.getIstance().getTrucker(indexOfCurrentTrucker));
         if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
@@ -232,7 +254,17 @@ public class Pirates extends Card implements Serializable {
     }
 
 
-
+    /**
+     * Sets for each trucker the coordinates of the double cannons that he/she wants to activate
+     *
+     * @param activate: true if the current player wants to activate any double Cannons, false otherwise
+     * @param coord: coordinates of the doubleCannons to activate
+     * @param batteryCoord: coordinates of the batteryStorages from which remove the batteries
+     * @return cardEffect if it was the last defeated player, otherwise it updates the next player to let him decide whether
+     * to activate any doubleCannons
+     * @throws InvalidComponentsException coordinates do not match to their component type
+     * @throws NotEnoughBatteries not enoughBatteries indicated to activate the doubleCannons selected
+     */
     @Override
     public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
         if(cardState!=CardState.ACTIVATE_CANNONS){
@@ -258,6 +290,13 @@ public class Pirates extends Card implements Serializable {
         }
     }
 
+    /**
+     * sets the decision taken by the winner if there is one
+     *
+     * @param answer: decision taken
+     * @return cardEffect or the event for the first defeated player
+     * @throws GeneralError: not in the right state
+     */
     @Override
     public ServerEvent setWinDecision(boolean answer)throws GeneralError{
         if(cardState!=CardState.COSMIC_CREDITS){
@@ -276,6 +315,11 @@ public class Pirates extends Card implements Serializable {
         }
     }
 
+    /**
+     * roll the dices for the current shot
+     *
+     * @return the event containing the roll dice result and the current meteor
+     */
     @Override
     public ServerEvent rollDice() throws GeneralError {
         if(cardState != CardState.ROLL_DICE) {
@@ -298,6 +342,17 @@ public class Pirates extends Card implements Serializable {
         }
     }
 
+    /**
+     * Activates for each player the shield indicated
+     *
+     * @param answer: if true the current player wants to activate shield otherwise no
+     * @param shieldCoord: coordinates of the shield the current player wants to activate
+     * @param batteryCoord: coordinates of the battery storage from which remove a battery
+     * @return cardeffect if every player has decided, otherwise the event for the next player
+     * @throws GeneralError: card is not in the correct state (for debug)
+     * @throws InvalidCoordinates: coordinates don't match the type of component in the shield
+     * @throws NotEnoughBatteries: not enough batteries to remove were indicated by the plauer
+     */
     @Override
     public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
         if(cardState != CardState.ACTIVATE_SHIELDS){
@@ -328,8 +383,12 @@ public class Pirates extends Card implements Serializable {
         return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex,shoot,null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot");
     }
 
+
     /**
-     * Applies the changes provided by the card
+     * Applies the changes provided by the card:
+     * shoot the current shot at defeteadtruckers' ships and add cosmic credits to the winner
+     *
+     * @return the event containing the status of the game after the effects for clients
      */
 
     @Override
@@ -344,34 +403,32 @@ public class Pirates extends Card implements Serializable {
             Game.getIstance().moveBackward(winnerTrucker, days);
         }
 
-        if (!defeatedTruckers.isEmpty()) {
-            int j =0;
+        if(defeatedTruckers.isEmpty()){
+            ArrayList<Trucker> truckerRemoved;
+            truckerRemoved = Game.getIstance().endTurn();
+
+            GamePersistence.saveGame(GameController.getIstance());
+
+            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved,Game.getIstance().getTrack());
+        }
+        else {
             boolean isBig = (shoot[0] == 1);
             int direction = shoot[1];
             for (Trucker trucker : defeatedTruckers) {
                 SpaceShip ship = trucker.getSpaceShip();
                 if (ship.isHit(direction,roll)) {
                     if (isBig) {
-                        // colpo grande non può essere stoppato quindi devo distruggere il componente
+
                         ship.destroyComponent(roll, direction, Game.getIstance().getBank());
+
                     } else {
-                        // Un colpo piccolo può solo essere fermato con lo scudo
+
                         if (!ship.blockLightCannonShot(direction)) {
                             ship.destroyComponent(roll, direction, Game.getIstance().getBank());
                         }
                     }
                 }
-                j++;
             }
-
-        }
-
-        else {
-            ArrayList<Trucker> truckerRemoved;
-            truckerRemoved = Game.getIstance().endTurn();
-
-            GamePersistence.saveGame(GameController.getIstance());
-            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved,Game.getIstance().getTrack());
         }
 
         if (shoots.size()==(currShootIndex)) {
@@ -379,18 +436,22 @@ public class Pirates extends Card implements Serializable {
             truckerRemoved = Game.getIstance().endTurn();
 
             GamePersistence.saveGame(GameController.getIstance());
+
             return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved,Game.getIstance().getTrack());
         }
-
         else {
             if (!defeatedTruckers.isEmpty()) {
                 this.cardState = CardState.ROLL_DICE;
                 indexOfCurrentTrucker = 0;
+
                 return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
-            }else {
+            }
+            else {
                 ArrayList<Trucker> truckerRemoved;
                 truckerRemoved = Game.getIstance().endTurn();
+
                 GamePersistence.saveGame(GameController.getIstance());
+
                 return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved,Game.getIstance().getTrack());
             }
         }
