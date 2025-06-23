@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
 import java.util.ArrayList;
 
@@ -26,7 +25,7 @@ public class StartBuildingEvent extends ServerEvent {
     private int level;
 
     public StartBuildingEvent(String username, SpaceShip spaceShip, Stack[] stacks, ArrayList<Component> availableComponents, int seconds, ArrayList<String> players, int level) {
-        super(ServerEventType.START_BUILDING, true);
+        super(true);
         message = username + " logged\nIt's time to start building";
         this.nickname = username;
         this.spaceShip = spaceShip;

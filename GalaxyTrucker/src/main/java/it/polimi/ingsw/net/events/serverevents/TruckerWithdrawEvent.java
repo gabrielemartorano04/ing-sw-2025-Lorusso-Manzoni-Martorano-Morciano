@@ -9,7 +9,7 @@ public class TruckerWithdrawEvent extends CardEvent {
     private boolean choice;
 
     public TruckerWithdrawEvent(String nickname,boolean choice) {
-        super(ServerEventType.WITHDRAW, true, ParserState.DO_NOTHING, nickname);
+        super(true, ParserState.DO_NOTHING, nickname);
         message = "";
         this.nickname = nickname;
         this.choice = choice;

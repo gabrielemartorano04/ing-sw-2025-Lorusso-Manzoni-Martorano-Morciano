@@ -2,7 +2,6 @@ package it.polimi.ingsw.net.events.serverevents.buildingevents;
 
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
 /**
  * Event from server to client that returns the selected successfully component
@@ -13,7 +12,7 @@ public class ComponentSelectedEvent extends ServerEvent {
     private String nickname;
 
     public ComponentSelectedEvent(int index, String nickname) {
-        super(ServerEventType.COMPONENT_SELECTED, true);
+        super(true);
         this.index=index;
         this.nickname=nickname;
         message="Component selected";

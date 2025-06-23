@@ -10,7 +10,7 @@ public class InvalidCoordinatesEvent extends CardEvent {
 
     public InvalidCoordinatesEvent(String message, boolean forAll, ParserState parserState, String nickname) {
         //TODO inserire le cose giuste nel super
-        super(ServerEventType.INVALID_COORDINATES_ERROR, forAll, parserState, nickname);
+        super(forAll, parserState, nickname);
         this.message = message;
     }
 

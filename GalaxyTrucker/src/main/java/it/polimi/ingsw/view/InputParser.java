@@ -7,7 +7,7 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.clientevents.SendAlienCoord;
 import it.polimi.ingsw.net.events.clientevents.ShowOtherShipEvent;
 import it.polimi.ingsw.net.events.clientevents.buildingevents.*;
-import it.polimi.ingsw.net.events.clientevents.setupevents.ChoseToResume;
+import it.polimi.ingsw.net.events.clientevents.setupevents.ChooseToResume;
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
 
@@ -171,9 +171,9 @@ public class InputParser {
             return null;
         }
         if(tokens[0].equalsIgnoreCase("y")) {
-            return new ChoseToResume(true);
+            return new ChooseToResume(true);
         } else if (tokens[0].equalsIgnoreCase("n")) {
-            return new ChoseToResume(false);
+            return new ChooseToResume(false);
         }else return null;
     }
 

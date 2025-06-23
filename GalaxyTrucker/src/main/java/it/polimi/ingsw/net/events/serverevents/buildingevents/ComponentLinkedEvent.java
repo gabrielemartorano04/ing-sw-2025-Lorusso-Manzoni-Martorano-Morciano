@@ -3,7 +3,6 @@ package it.polimi.ingsw.net.events.serverevents.buildingevents;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
 import java.util.ArrayList;
 
@@ -18,7 +17,7 @@ public class ComponentLinkedEvent extends ServerEvent {
     private ArrayList<Component> avComponents;
 
     public ComponentLinkedEvent(Component component, int x, int y, ArrayList<Component> avComponents) {
-        super(ServerEventType.COMPONENT_LINKED, false);
+        super(false);
         coordx = x;
         coordy = y;
         this.component= component;

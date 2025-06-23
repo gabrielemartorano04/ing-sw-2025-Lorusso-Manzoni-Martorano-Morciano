@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.events.serverevents.cardevents.BooleanDecision;
 import it.polimi.ingsw.net.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.events.serverevents.cardevents.HumanCoordinates;
@@ -17,8 +16,6 @@ import it.polimi.ingsw.view.ParserState;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Class that manages the single card abandoned ship
@@ -127,14 +124,14 @@ public class AbandonedShip extends Card implements Serializable {
         if(landing) {
             truckerThatHasDecided = Game.getIstance().getTrucker(indexOfCurrTrucker);
             state = CardState.HUMANSTOREMOVE;
-            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(),Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip(),null,"");
+            return new HumanCoordinates(true, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(),Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip(),null,"");
         }else{
             if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()-1){
                 state = CardState.ESECUZIONE;
                 return cardEffect();
             }else{
                 indexOfCurrTrucker++;
-                return new BooleanDecision(ServerEventType.LAND, true, ParserState.LAND, "Do you want to land on this Abandoned Ship?",  Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+                return new BooleanDecision(true, ParserState.LAND, "Do you want to land on this Abandoned Ship?",  Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
             }
         }
     }

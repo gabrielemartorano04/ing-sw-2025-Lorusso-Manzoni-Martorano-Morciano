@@ -2,7 +2,6 @@ package it.polimi.ingsw.net.events.serverevents.buildingevents;
 
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
 /**
  * Error event from server to client. The selected component is not available
@@ -10,7 +9,7 @@ import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 public class ComponentNotAvailableError extends ServerEvent {
     private String message;
     public ComponentNotAvailableError() {
-        super(ServerEventType.COMPONENT_NOT_AVAILABLE, false);
+        super(false);
         message = "The component is not available";
     }
 

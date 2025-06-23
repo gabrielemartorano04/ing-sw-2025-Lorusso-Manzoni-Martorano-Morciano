@@ -7,7 +7,7 @@ import it.polimi.ingsw.net.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.events.clientevents.cardevents.*;
 import it.polimi.ingsw.net.events.clientevents.setupevents.CreateGameEvent;
 import it.polimi.ingsw.net.events.clientevents.setupevents.LoginEvent;
-import it.polimi.ingsw.net.events.clientevents.setupevents.ChoseToResume;
+import it.polimi.ingsw.net.events.clientevents.setupevents.ChooseToResume;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 
@@ -17,8 +17,6 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 public interface VirtualServer {
     void setGameController(GameController event);
-
-
 
     ServerEvent visit(CreateGameEvent event, Client client);
     ServerEvent visit(DiscardTileEvent event, Client client);
@@ -81,7 +79,7 @@ public interface VirtualServer {
 
     ServerEvent visit(PongEvent pongEvent, Client client);
 
-    ServerEvent visit(ChoseToResume event);
+    ServerEvent visit(ChooseToResume event);
 
     ServerEvent visit(WithdrawRequest withdrawRequest);
 }

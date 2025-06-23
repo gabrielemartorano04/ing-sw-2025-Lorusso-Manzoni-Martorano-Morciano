@@ -2,11 +2,10 @@ package it.polimi.ingsw.net.events.serverevents.setupevents;
 
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
 public class NumberOfPlayersError extends ServerEvent {
     public NumberOfPlayersError(){
-        super(ServerEventType.PLAYERS_NUMBER_ERROR, false);
+        super(false);
 
     }
     @Override

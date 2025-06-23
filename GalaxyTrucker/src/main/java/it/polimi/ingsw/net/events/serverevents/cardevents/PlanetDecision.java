@@ -4,9 +4,7 @@ import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
-import javax.xml.parsers.SAXParser;
 import java.util.ArrayList;
 
 public class PlanetDecision extends ServerEvent {
@@ -14,7 +12,7 @@ public class PlanetDecision extends ServerEvent {
     private String nickname;
     private SpaceShip spaceShip;
     public PlanetDecision(boolean forAll, ArrayList<Trucker> planetsOccupied, String nickname,SpaceShip spaceShip) {
-        super(ServerEventType.PLOT_PLANETS, forAll);
+        super(forAll);
         this.planetsOccupied = planetsOccupied;
         this.nickname = nickname;
         this.spaceShip=spaceShip;

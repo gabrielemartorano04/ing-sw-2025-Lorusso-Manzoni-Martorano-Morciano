@@ -1,11 +1,8 @@
 package it.polimi.ingsw.net.socket.client;
 
-import it.polimi.ingsw.net.EventReceiver;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.ViewFlow;
 
-import javax.swing.text.View;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -28,7 +25,7 @@ public class NetworkListenerClient {
                 while (running && !socket.isClosed()) {
                     try {
                         ServerEvent event = (ServerEvent) inputStream.readObject();
-                        if(event.getEventType() == ServerEventType.PING) {
+                        if(/*event.getEventType() == ServerEventType.PING*/false) {
                             receiver.respondToPing();
                         }else {
                             receiver.onEventReceived(event);

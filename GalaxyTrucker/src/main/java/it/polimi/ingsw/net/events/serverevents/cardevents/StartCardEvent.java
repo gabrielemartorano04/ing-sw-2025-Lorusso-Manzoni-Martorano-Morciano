@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.ParserState;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public class StartCardEvent extends CardEvent {
             ParserState parserState,
             Card card
     ) {
-        super(ServerEventType.START_CARD, true, parserState, null);
+        super(true, parserState, null);
         this.cardName = cardName;
         this.cardDescription = cardDescription;
         this.firstPlayerNickname = firstPlayerNickname;
