@@ -20,8 +20,11 @@ import java.util.ArrayList;
 
 public class InputParser {
     private int level;
+    private UI ui;
 
-    public InputParser() {}
+    public InputParser(UI ui) {
+        this.ui = ui;
+    }
 
     public void setLevel(int level) {
         this.level = level;
@@ -42,7 +45,6 @@ public class InputParser {
     try {
         int numOfPlayers = Integer.parseInt(tokens[0]);
         level = Integer.parseInt(tokens[1]);
-        System.out.println("Level: " + level);
         //TODO: CAMBIARE NUMERO GIOCATORI DA 2 A 4 DOPO DEBUG
         if (numOfPlayers < 1 || numOfPlayers > 4) {
             System.out.println("Error: invalid number of players (2-4)");
@@ -66,11 +68,11 @@ public class InputParser {
 
         String[] tokens = input.split("\\s+", 2);
         if (tokens.length < 2) {
-            System.out.println("Error: username and color are required and they have to be divided by space.");
+            ui.showError("Error: username and color are required and they have to be divided by space.");
             return null;
         }
         if (tokens.length > 2) {
-            System.out.println("Error: type only username and color and they have to be divided by space.");
+            ui.showError("Error: type only username and color and they have to be divided by space.");
             return null;
         }
         PlayerColors color=null;
@@ -84,7 +86,7 @@ public class InputParser {
         if(color!=null) {
             return new LoginEvent(tokens[0].trim(), color);
         }
-        System.out.println("Error: illegal color, please write an available color");
+        ui.showError("Error: illegal color, please write an available color");
         return null;
     }
 

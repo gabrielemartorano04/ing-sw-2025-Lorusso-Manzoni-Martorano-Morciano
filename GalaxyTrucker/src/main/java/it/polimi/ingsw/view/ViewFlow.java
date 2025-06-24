@@ -74,7 +74,6 @@ public class ViewFlow implements EventReceiver {
     public ViewFlow(ClientEventSender sender, boolean useGui) {
         this.sender = sender;
         this.inputReader = new InputReader();
-        this.inputParser = new InputParser();
         this.nickname = null;
         this.running = true;
         this.viewState = ViewState.FIRST;
@@ -107,7 +106,7 @@ public class ViewFlow implements EventReceiver {
         }else{
             this.ui = new TUI(this);
         }
-
+        this.inputParser = new InputParser(ui);
         this.inputParserFlight = new InputParserFlight(ui);
 
 

@@ -770,6 +770,9 @@ public class GUI implements UI {
 
     @Override
     public void showError(String message) {
+        if(viewFlow.getViewState() == ViewFlow.ViewState.START){
+            this.loginScene.showError(message);
+        }
         if(viewFlow.getViewState() == ViewFlow.ViewState.BULDING){
             this.buildingScene.showError(message);
         }else if(viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
