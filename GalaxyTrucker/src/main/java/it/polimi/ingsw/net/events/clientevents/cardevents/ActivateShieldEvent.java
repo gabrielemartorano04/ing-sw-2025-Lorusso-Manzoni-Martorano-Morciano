@@ -5,27 +5,30 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
-import java.util.ArrayList;
-
 /**
- * Event sent for the activation of a shield during flight phase
+ * Represents an event triggered by the activation of shields in the spaceship.
  */
 public class ActivateShieldEvent extends ClientEvent {
 
     /**
      * Decision about activation
      */
-    private boolean decision;
+    private final boolean decision;
 
     /**
-     * List of coordinates for shields and battery storages in the spaceship
+     * List of coordinates for shields in the spaceship
      */
-    private int[] coordinates, batteryCoordinates;
+    private final int[] coordinates;
+
+    /**
+     * List of coordinates for battery storages in the spaceship
+     */
+    private final int[] batteryCoordinates;
 
     /**
      * Nickname of the actual player
      */
-    private String nickname;
+    private final String nickname;
 
     /**
      * Event constructor

@@ -7,19 +7,20 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the login in an existing game
+ * Represents a login event sent by a client to the server. This event contains
+ * the player's chosen username and color
  */
 public class LoginEvent extends ClientEvent {
 
     /**
      * Username chosen by the player
      */
-    private String username;
+    private final String username;
 
     /**
      * Color chosen by the player
      */
-    private PlayerColors color;
+    private final PlayerColors color;
 
     /**
      * Event constructor

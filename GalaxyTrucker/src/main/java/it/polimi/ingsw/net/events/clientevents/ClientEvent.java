@@ -7,7 +7,10 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import java.io.Serializable;
 
 /**
- * Event created for the communication from the clint to the server
+ * Represents an abstract client event sent from the client to the server.
+ * ClientEvent serves as a base class for defining various specific types of events
+ * that a client can generate during its interaction with the server. Each event provides
+ * a method for processing it on the server and a default or customized message describing the event
  */
 public abstract class ClientEvent implements Serializable {
 

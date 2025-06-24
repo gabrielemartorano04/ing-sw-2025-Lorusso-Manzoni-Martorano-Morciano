@@ -5,7 +5,9 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the check of connected clients
+ * The PongEvent class extends ClientEvent and represents a specific type of event
+ * sent from the client to the server to indicate the reception of a ping or to maintain
+ * an active connection
  */
 public class PongEvent extends ClientEvent {
 

@@ -8,24 +8,25 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import java.util.ArrayList;
 
 /**
- * Event sent for the activation of double cannons during flight phase
+ * Represents an event triggered by the activation of double cannons in the spaceship.
  */
 public class ActivateCannonsEvent extends ClientEvent {
 
     /**
      * Decision about activation
      */
-    private boolean decision;
+    private final boolean decision;
 
     /**
      * List of coordinates for double cannons and battery storages in the spaceship
      */
-    private ArrayList<int[]> coordinates, batteryCoordinates;
+    private final ArrayList<int[]> coordinates;
+    private final ArrayList<int[]> batteryCoordinates;
 
     /**
      * Nickname of the actual player
      */
-    private String nickname;
+    private final String nickname;
 
     /**
      * Event constructor

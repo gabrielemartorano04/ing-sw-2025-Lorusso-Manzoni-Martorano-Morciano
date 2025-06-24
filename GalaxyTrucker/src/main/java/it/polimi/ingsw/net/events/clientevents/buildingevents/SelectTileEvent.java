@@ -6,14 +6,14 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the selection of a tile from the available components during building phase
+ * Represents a client event where a specific tile is selected from the list of available components
  */
 public class SelectTileEvent extends ClientEvent {
 
     /**
      * Index of the tile in the list of available components
      */
-    private int index;
+    private final int index;
 
     /**
      * Event constructor

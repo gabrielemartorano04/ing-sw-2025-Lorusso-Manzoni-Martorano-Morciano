@@ -6,29 +6,30 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent to plot goods that has to be deleted
+ * Represents an event triggered by a client to show the goods related to the removal
+ * in a specific game context
  */
 public class PlotGoodEvent extends ClientEvent {
 
     /**
      * Decision about remotion of the good
      */
-    private boolean decision;
+    private final boolean decision;
 
     /**
      * Coordinates of the load that contains the good
      */
-    private int[] coordinates;
+    private final int[] coordinates;
 
     /**
      * Position of the goods inside the load
      */
-    private int positionInLoad;
+    private final int positionInLoad;
 
     /**
      * Nickname of the player who has to
      */
-    private String nickname;
+    private final String nickname;
 
     /**
      * Event constructor

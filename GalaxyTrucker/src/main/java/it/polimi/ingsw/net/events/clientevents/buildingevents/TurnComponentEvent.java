@@ -7,14 +7,15 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the turn of the selected component before the link during building event
+ * Represents an event sent by the client to the server indicating that a specific
+ * component should be turned
  */
 public class TurnComponentEvent extends ClientEvent {
 
     /**
      * Component to turn
      */
-    private Component component;
+    private final Component component;
 
     /**
      * Event constructor

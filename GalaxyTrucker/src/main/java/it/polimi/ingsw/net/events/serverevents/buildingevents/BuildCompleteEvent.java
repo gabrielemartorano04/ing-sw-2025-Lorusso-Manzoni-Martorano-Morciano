@@ -7,7 +7,9 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import java.util.ArrayList;
 
 /**
- * Event sent to inform that building is completed
+ * Represents an event that indicates the completion of the building phase in the game.
+ * This event is used to notify the server and clients about the end of the building phase
+ * and provides additional details about the players involved.
  */
 public class BuildCompleteEvent extends ServerEvent {
 

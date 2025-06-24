@@ -6,14 +6,14 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the draw of the next card during flight phase
+ * Represents a specific client event indicating that a player needs to draw a card
  */
 public class DrawCardEvent extends ClientEvent {
 
     /**
      * Current player who has to draw the card
      */
-    private String currNickname;
+    private final String currNickname;
 
     /**
      * Event constructor

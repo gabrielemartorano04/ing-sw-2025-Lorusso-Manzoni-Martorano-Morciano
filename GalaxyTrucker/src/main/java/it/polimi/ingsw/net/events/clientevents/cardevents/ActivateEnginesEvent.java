@@ -8,7 +8,7 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import java.util.ArrayList;
 
 /**
- * Event sent for the activation of double engines during flight phase
+ * Represents an event triggered by the activation of double engines in the spaceship.
  */
 public class ActivateEnginesEvent extends ClientEvent {
 

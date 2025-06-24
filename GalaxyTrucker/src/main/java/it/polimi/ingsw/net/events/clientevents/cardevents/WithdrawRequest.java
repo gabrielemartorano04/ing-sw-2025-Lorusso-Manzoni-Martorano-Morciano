@@ -6,7 +6,7 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the withdrawal of a player
+ * Represents a specific event sent by a client to indicate a request to withdraw from the game
  */
 public class WithdrawRequest extends ClientEvent {
 

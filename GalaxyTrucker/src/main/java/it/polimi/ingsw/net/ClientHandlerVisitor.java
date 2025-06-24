@@ -231,9 +231,9 @@ public class ClientHandlerVisitor implements VirtualServer {
                 }
                 gameController.getGame().startHourglass();
                 if (gameController.getGame().getGameLevel() == 2) {
-                    return new StartBuildingEvent(nickname, client.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondsLeft(), players, gameController.getGame().getGameLevel());
+                    return new StartBuildingEvent(nickname, client.getTruckerController().getSpaceShip(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondsLeft(), players, gameController.getGame().getGameLevel());
                 } else {
-                    return new StartBuildingEvent(nickname, client.getTruckerController().getSpaceShip(), gameController.getGame().viewStacks(), gameController.getGame().getComponents().getComponents(), 0, players, gameController.getGame().getGameLevel());
+                    return new StartBuildingEvent(nickname, client.getTruckerController().getSpaceShip(), gameController.getGame().getComponents().getComponents(), 0, players, gameController.getGame().getGameLevel());
                 }
             }else{
                 if(gameController.getGame().checkOldPlayers(event.getUsername(), event.getColor())) {
@@ -483,7 +483,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     public ServerEvent visit(StackDroppedEvent event){
         System.out.println("sto per mandare StackDroppedOK");
         gameController.getGame().viewStacks()[event.getCurr()].dropStack();
-        return new StackDropOk("Stack numero " + event.getCurr() + "disponibile", false);
+        return new StackDropOk(false);
     }
 
 

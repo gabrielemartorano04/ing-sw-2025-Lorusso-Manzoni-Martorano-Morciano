@@ -6,14 +6,15 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the response about the questioning on the gaining of the cosmic credits
+ * Represents a specific event sent from a client to the server to respond to a request
+ * or decision related to gaining cosmic credits.
  */
 public class GainCosmicCreditsResponseEvent extends ClientEvent {
 
     /**
      * Answer about decision on gaining credits
      */
-    private boolean answer;
+    private final boolean answer;
 
     /**
      * Event constructor

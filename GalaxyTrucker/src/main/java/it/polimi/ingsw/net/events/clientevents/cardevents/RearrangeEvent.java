@@ -6,29 +6,42 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the rearrangement of the goods between loads
+ * Represents an event triggered by a client when requesting a rearrangement action.
+ * This event encapsulates information regarding the coordinates of the initial
+ * and final positions of a load, as well as the internal positions and a player's decision
+ * to stop or continue the rearrangement process
  */
 public class RearrangeEvent extends ClientEvent {
 
     /**
-     * Coordinates of the initial end final load
+     * Coordinates of the initial load
      */
-    private int[] coord1, coord2;
+    private final int[] coord1;
 
     /**
-     * Internal position of the initial and final good
+     * Coordinates of the final load
      */
-    private int value1, value2;
+    private final int[] coord2;
+
+    /**
+     * Internal position in the initial load
+     */
+    private final int value1;
+
+    /**
+     * Internal position in the final load
+     */
+    private final int value2;
 
     /**
      * Decision about to continue the rearrangement or to stop
      */
-    private boolean stop;
+    private final boolean stop;
 
     /**
      * Nickname of the player who wants to rearrange
      */
-    private String nickname;
+    private final String nickname;
 
     /**
      * Event constructor

@@ -6,7 +6,7 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent to start the warzone card
+ * Represents a client event to signal the start of a warzone
  */
 public class WarzoneStartEvent extends ClientEvent {
 

@@ -5,14 +5,15 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent to see other players spaceship
+ * The ShowOtherShipEvent class extends ClientEvent and represents a specific type of event
+ * sent by a client to request the visualization of another player's spaceship
  */
 public class ShowOtherShipEvent extends ClientEvent{
 
     /**
      * Nickname of the player of who show the spaceship
      */
-    private String nickname;
+    private final String nickname;
 
     /**
      * Event constructor
