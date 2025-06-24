@@ -20,7 +20,7 @@ public class ResumeGameEvent extends ServerEvent {
     private final ArrayList<String> playerNames;
 
     public ResumeGameEvent(ArrayList<Component> availableComponents, String nickname, ArrayList<Trucker> trucker, GameState gameState, int level, Map<String, Integer> track, ArrayList<String> playerNames) {
-        super(true);
+        super(true,false);
         this.truckers = trucker;
         this.gameState = gameState;
         this.level = level;

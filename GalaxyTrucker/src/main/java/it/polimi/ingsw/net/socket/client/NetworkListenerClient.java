@@ -25,11 +25,8 @@ public class NetworkListenerClient {
                 while (running && !socket.isClosed()) {
                     try {
                         ServerEvent event = (ServerEvent) inputStream.readObject();
-                        if(/*event.getEventType() == ServerEventType.PING*/false) {
-                            receiver.respondToPing();
-                        }else {
-                            receiver.onEventReceived(event);
-                        }
+                        receiver.onEventReceived(event);
+
 
                     } catch (ClassCastException e) {
                         System.err.println("Error: object received not in ServerEvent. Type: " + e.getMessage());

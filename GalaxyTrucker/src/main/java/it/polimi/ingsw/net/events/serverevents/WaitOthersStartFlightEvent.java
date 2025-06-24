@@ -4,7 +4,7 @@ import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 
 public class WaitOthersStartFlightEvent extends ServerEvent {
     public WaitOthersStartFlightEvent() {
-        super(false);
+        super(false,false);
 
     }
     @Override
