@@ -70,16 +70,14 @@ class TruckerTest {
         Engine engine=new Engine(1,1,1,"Engine","",true);
         try {
             trucker.keep(load);
-
-        } catch (InvalidComponentsException e) {
-            throw new RuntimeException(e);
-        }
-        try {
             trucker.keep(engine);
-
         } catch (InvalidComponentsException e) {
             throw new RuntimeException(e);
         }
+        assertThrows(InvalidComponentsException.class, () -> {
+            trucker.keep(engine);
+        });
+
         try {
             assertNotNull(trucker.getKeptComponent(0));
             assertEquals(trucker.getKeptComponent(0),load);
@@ -93,15 +91,23 @@ class TruckerTest {
             throw new RuntimeException(e);
         }
         assertEquals(2,trucker.getKeptComponents().size());
+        assertThrows(GeneralError.class, () -> { trucker.getKeptComponent(3);});
     }
 
     @Test
     public void showStack(){
         try {
             assertNotNull(trucker.showStack(1,new Game(2,2)));
+            assertNull(trucker.showStack(3,new Game(2,2)));
         } catch (GeneralError e) {
             System.out.println(e.getMessage());
         }
+        Game game=new Game(2,2);
+        game.viewStacks()[1].setSelected();
+
+        assertThrows(GeneralError.class, () -> {
+            trucker.showStack(1,game);
+        });
 
     }
 
@@ -117,11 +123,15 @@ class TruckerTest {
 
     @Test
     public void selectComponent() {
+        Game game=new Game(2,2);
         try {
-            trucker.selectComponent(2, new Game(2,2).getComponents());
+            trucker.selectComponent(2, game.getComponents());
         }  catch (GeneralError e) {
             throw new RuntimeException(e);
         }
+        game.getComponents().getComponents().get(4).setSelected(true);
+        assertThrows(GeneralError.class, () -> { trucker.selectComponent(4, game.getComponents()); });
+
     }
 
     @Test
@@ -148,6 +158,7 @@ class TruckerTest {
         } catch (GeneralError e) {
             throw new RuntimeException(e);
         }
+        assertThrows(IndexOutOfBoundsException.class, () -> {trucker.removeKeptComponent(3);});
     }
 
     @Test
@@ -161,6 +172,12 @@ class TruckerTest {
         }
         trucker.setSpaceShip(spaceShip);
         assertEquals(spaceShip,trucker.getSpaceShip());
+    }
+
+    @Test
+    void initSpaceShip() {
+        trucker.initSpaceShip(2);
+        assertNotNull(trucker.getSpaceShip());
     }
 
 }
