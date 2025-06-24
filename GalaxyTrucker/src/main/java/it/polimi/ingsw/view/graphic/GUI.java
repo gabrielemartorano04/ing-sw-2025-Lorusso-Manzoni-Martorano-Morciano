@@ -650,7 +650,7 @@ public class GUI implements UI {
                 case REMOVE_BATTERIES -> this.flightScene.showRemoveBatteriesInput();
                 case REMOVE_GOODS -> this.flightScene.showRemoveGoodsInput();
                 case REARRANGE -> {
-                    if(viewFlow.shipHasLoad()) {
+                    if(viewFlow.shipHasGoods()) {
                         this.flightScene.showRearrangeInput();
                     }
                 }
@@ -770,6 +770,9 @@ public class GUI implements UI {
 
     @Override
     public void showError(String message) {
+        if(viewFlow.getViewState() == ViewFlow.ViewState.START){
+            this.loginScene.showError(message);
+        }
         if(viewFlow.getViewState() == ViewFlow.ViewState.BULDING){
             this.buildingScene.showError(message);
         }else if(viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){

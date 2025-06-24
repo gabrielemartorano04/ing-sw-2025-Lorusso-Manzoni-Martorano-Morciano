@@ -165,4 +165,11 @@ public class OpenSpace extends Card implements Serializable {
         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
+    public void setState(CardState state) {
+        this.state = state;
+    }
+
+    public int getIndexOfCurrentTrucker(){
+        return indexOfCurrentTrucker;
+    }
 }

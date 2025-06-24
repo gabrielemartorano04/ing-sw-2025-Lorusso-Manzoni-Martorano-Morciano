@@ -74,7 +74,6 @@ public class ViewFlow implements EventReceiver {
     public ViewFlow(ClientEventSender sender, boolean useGui) {
         this.sender = sender;
         this.inputReader = new InputReader();
-        this.inputParser = new InputParser();
         this.nickname = null;
         this.running = true;
         this.viewState = ViewState.FIRST;
@@ -107,7 +106,7 @@ public class ViewFlow implements EventReceiver {
         }else{
             this.ui = new TUI(this);
         }
-
+        this.inputParser = new InputParser(ui);
         this.inputParserFlight = new InputParserFlight(ui);
 
 
@@ -132,10 +131,6 @@ public class ViewFlow implements EventReceiver {
 
     @Override
     public void onEventReceived(ServerEvent event) {
-        //TODO sistemare
-//        if (event.getEventType() != ServerEventType.PING) {
-//            event.call(serverEventVisitor);
-//        }
         event.call(serverEventVisitor);
     }
 
@@ -559,6 +554,14 @@ public class ViewFlow implements EventReceiver {
         }
         this.handleInput("n");
         return false;
+    }
+
+    public boolean shipHasGoods(){
+        if(ship.getGoodsList().isEmpty()){
+            this.handleInput("n");
+            return false;
+        }
+        return true;
     }
 }
 

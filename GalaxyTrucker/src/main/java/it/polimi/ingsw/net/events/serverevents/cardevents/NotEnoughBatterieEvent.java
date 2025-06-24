@@ -1,15 +1,13 @@
-package it.polimi.ingsw.net.events.serverevents;
+package it.polimi.ingsw.net.events.serverevents.cardevents;
 
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
-import it.polimi.ingsw.net.events.serverevents.cardevents.CardEvent;
 import it.polimi.ingsw.view.ParserState;
 
-public class InvalidCoordinatesEvent extends CardEvent {
+public class NotEnoughBatterieEvent extends CardEvent {
 
     private String message;
 
-    public InvalidCoordinatesEvent(String message, boolean forAll, ParserState parserState, String nickname) {
-        //TODO inserire le cose giuste nel super
+    public NotEnoughBatterieEvent(String message, boolean forAll, ParserState parserState, String nickname) {
         super(forAll, parserState, nickname);
         this.message = message;
     }
@@ -24,6 +22,6 @@ public class InvalidCoordinatesEvent extends CardEvent {
     }
 
     public String getInfoForOthers() {
-        return getNickname()+ "has to insert coordinates again.\n";
+        return getNickname()+" doesn't have enough batteries.\n";
     }
 }

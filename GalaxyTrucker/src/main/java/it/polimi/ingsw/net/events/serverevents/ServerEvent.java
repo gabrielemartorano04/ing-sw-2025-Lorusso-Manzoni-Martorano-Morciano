@@ -13,8 +13,7 @@ public abstract class ServerEvent implements Serializable {
     private boolean forAll;
 
     public ServerEvent(boolean forAll) {
-        this.forAll=forAll;
-    }
+        this.forAll=forAll;}
     public String getMessage() {return "";};
 
     public boolean isForAll() {

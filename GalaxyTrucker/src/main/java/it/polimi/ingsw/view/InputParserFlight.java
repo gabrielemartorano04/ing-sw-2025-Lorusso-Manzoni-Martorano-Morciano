@@ -3,7 +3,6 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.clientevents.ShowOtherShipEvent;
 import it.polimi.ingsw.net.events.clientevents.cardevents.*;
-import it.polimi.ingsw.net.events.serverevents.TruckerWithdrawEvent;
 
 
 import java.awt.*;

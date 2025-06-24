@@ -715,10 +715,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setViewState(ViewFlow.ViewState.FIRST);
     }
 
-    @Override
-    public void visit(PingEvent event){
-
-    }
 
     @Override
     public void visit(ResumeGameEvent event) {
@@ -825,6 +821,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 break; // opzionale: esci dopo aver trovato il nickname
             }
         }
+    }
+
+    @Override
+    public void visit(PingEvent e){
+        viewFlow.respondToPing();
     }
 
 

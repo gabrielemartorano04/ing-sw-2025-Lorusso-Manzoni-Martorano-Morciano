@@ -3,7 +3,9 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.net.events.clientevents.cardevents.*;
+import it.polimi.ingsw.net.events.clientevents.cardevents.RearrangeEvent;
 import it.polimi.ingsw.net.events.serverevents.*;
+import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.view.ParserState;
 
 import java.io.Serial;

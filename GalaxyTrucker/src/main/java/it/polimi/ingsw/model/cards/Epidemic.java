@@ -29,6 +29,8 @@ public class Epidemic extends Card implements Serializable {
      */
     public CardState state;
 
+    ArrayList<Trucker> truckerRemoved;
+
     /**
      * Epidemic constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
@@ -38,6 +40,7 @@ public class Epidemic extends Card implements Serializable {
      */
     public Epidemic(boolean trialFlight, int level, String frontImage, String backImage, int id) {
         super("Epidemic", "A contagious outbreak", trialFlight, level, frontImage, backImage, id);
+        this.truckerRemoved = new ArrayList<>();
         this.state = CardState.ESECUZIONE;
     }
 
@@ -75,7 +78,6 @@ public class Epidemic extends Card implements Serializable {
         for(Trucker trucker : truckers) {
             trucker.getSpaceShip().epidemic();
         }
-        ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
         Map<String, Integer> track = new HashMap<>();
         for (Trucker t : Game.getIstance().getTruckerList()) {
@@ -83,6 +85,12 @@ public class Epidemic extends Card implements Serializable {
         }
         GamePersistence.saveGame(GameController.getIstance());
         return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved, track, this);
+    }
+
+    //per test
+
+    public ArrayList<Trucker> getTruckersRemoved(){
+        return truckerRemoved;
     }
 
 }

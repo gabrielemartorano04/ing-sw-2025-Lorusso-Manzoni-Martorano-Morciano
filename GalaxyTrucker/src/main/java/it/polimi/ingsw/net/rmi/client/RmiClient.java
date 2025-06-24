@@ -2,6 +2,7 @@
 package it.polimi.ingsw.net.rmi.client;
 
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
+import it.polimi.ingsw.net.events.serverevents.PingEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.rmi.server.RmiServerInterface;
 import it.polimi.ingsw.view.ViewFlow;
@@ -35,8 +36,8 @@ public class RmiClient extends UnicastRemoteObject implements RemoteClientHandle
         server.handleIncomingEvent(event, this);
     }
 
-    public void respondToPing() throws RemoteException{
-        view.respondToPing();
+    public void respondToPing(PingEvent event) throws RemoteException{
+        view.onEventReceived(event);
     }
 
     @Override

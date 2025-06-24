@@ -452,4 +452,7 @@ public class Pirates extends Card implements Serializable {
         }
     }
 
+    public void setState(CardState cardState) {
+        this.cardState = cardState;
+    }
 }

@@ -18,34 +18,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-/**
- * Class that manage the inputs from the client to start the right action
- */
 public class InputParser {
-
-    /**
-     * Game level
-     */
     private int level;
 
-    /**
-     * Class constructor
-     */
     public InputParser() {}
 
-    /**
-     * Set the level of the game
-     * @param level of the game
-     */
     public void setLevel(int level) {
         this.level = level;
     }
-
-    /**
-     * Manages the connection of the first player for the creation of the game
-     * @param input from the client
-     * @return the client response for that input
-     */
     public ClientEvent parseFirstConnection(String input) {
     if (input == null || input.isEmpty()) {
         return null;
@@ -74,17 +54,11 @@ public class InputParser {
         }
 
         return new CreateGameEvent(numOfPlayers, level);
-        } catch (NumberFormatException e) {
-            System.out.println("Error: both value needs to be integer numbers");
-            return null;
-        }
+    } catch (NumberFormatException e) {
+        System.out.println("Error: both value needs to be integer numbers");
+        return null;
     }
-
-    /**
-     * Manages the login of the other players for the creation of the game
-     * @param input from the client
-     * @return the client response for that input
-     */
+}
     public ClientEvent parseLogin(String input){
         if (input == null || input.isEmpty()) {
             return null;
@@ -114,11 +88,6 @@ public class InputParser {
         return null;
     }
 
-    /**
-     * Manages the fill of the ship
-     * @param input from the client
-     * @return the client response for that input
-     */
     public ClientEvent parseFillTheShip(String input){
         if (input == null || input.isEmpty()) {
             return null;
@@ -187,11 +156,6 @@ public class InputParser {
 
     }
 
-    /**
-     * Manages the resumption of an old game
-     * @param input from the client
-     * @return the client response for that input
-     */
     public ClientEvent parseOld(String input){
         if(input == null || input.isEmpty()) {
             return null;
@@ -213,17 +177,6 @@ public class InputParser {
         }else return null;
     }
 
-    /**
-     * Manages the building of the spaceship
-     * @param input from the client
-     * @param component tha has to be linked
-     * @param index of the component in the list of all available components or kept components
-     * @param kept list of kept components
-     * @param isFromKept specify if the component is from the list of kept or all available
-     * @param stackSelected index of the selected stack to show
-     * @param firstLinked specify if the component connected is the first
-     * @return the client response for that input
-     */
     public ClientEvent parseBuilding(String input, Component component, int index, ArrayList<Component> kept, boolean isFromKept, int stackSelected, boolean firstLinked) {
         if (input == null || input.isEmpty()) return null;
 
@@ -267,13 +220,6 @@ public class InputParser {
         }
     }
 
-    /**
-     * Manages all the commands that don't require a first component to be selected
-     * @param command selected from the client
-     * @param tokens the string input inserted from the client
-     * @param kept list of kept components
-     * @return the client response for that input
-     */
     private ClientEvent handleNoComponentSelectedCommandFirst(String command, String[] tokens, ArrayList<Component> kept) {
         switch (command) {
             case "help":
@@ -331,14 +277,9 @@ public class InputParser {
         }
     }
 
-    /**
-     * Manages all the commands that require a component to be selected from kept's list
-     * @param command selected from the client
-     * @param tokens the string input inserted from the client
-     * @param component selected
-     * @param index of the component in the kept's list
-     * @return the client response for that input
-     */
+
+    // metodi per parseBuilding
+
     private ClientEvent handleFromKeptComponentCommand(String command, String[] tokens, Component component, int index) {
         switch (command) {
             case "help":
@@ -389,14 +330,6 @@ public class InputParser {
         }
     }
 
-    /**
-     * Maganes all the commands that require a component to be selected from available components' list
-     * @param command selected from the client
-     * @param tokens the string input inserted from the client
-     * @param component selected
-     * @param index of the component in the available components' list
-     * @return the client response for that input
-     */
     private ClientEvent handleSelectedFromListComponentCommand(String command, String[] tokens, Component component, int index) {
         switch (command) {
             case "help":
@@ -453,13 +386,6 @@ public class InputParser {
         }
     }
 
-    /**
-     * Manages all the commands that don't require a component to be selected
-     * @param command selected from the client
-     * @param tokens the string input inserted from the client
-     * @param kept list of kept components
-     * @return the client response for that input
-     */
     private ClientEvent handleNoComponentSelectedCommand(String command, String[] tokens, ArrayList<Component> kept) {
         switch (command) {
             case "help":
@@ -530,9 +456,6 @@ public class InputParser {
         }
     }
 
-    /**
-     * Manages the opening of the PDF containing the rules
-     */
     private void openRulesPdf() {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
             if (is == null) {
@@ -558,14 +481,6 @@ public class InputParser {
         }
     }
 
-    /**
-     * Manages all the commands that require a component to be selected from kept's list in the specific case of trial flight
-     * @param command selected from the client
-     * @param tokens the string input inserted from the client
-     * @param component selected
-     * @param index of the component in the kept's list
-     * @return the client response for that input
-     */
     private ClientEvent handleTrialModeCommandsFromKept(String command, String[] tokens, Component component, int index) {
         switch (command) {
             case "help":
@@ -616,14 +531,6 @@ public class InputParser {
         }
     }
 
-    /**
-     * Maganes all the commands that require a component to be selected from available components' list in the specific case of the trial flight
-     * @param command selected from the client
-     * @param tokens the string input inserted from the client
-     * @param component selected
-     * @param index of the component in the available components' list
-     * @return the client response for that input
-     */
     private ClientEvent handleTrialModeCommandsNotFromKept(String command, String[] tokens, Component component, int index) {
         switch (command) {
             case "help":
@@ -680,13 +587,6 @@ public class InputParser {
         }
     }
 
-    /**
-     * Manages all the commands that don't require a component to be selected in the specific case of the trial flight
-     * @param command selected from the client
-     * @param tokens the string input inserted from the client
-     * @param kept list of kept components
-     * @return the client response for that input
-     */
     private ClientEvent handleTrialModeNoComponentCommands(String command, String[] tokens, ArrayList<Component> kept) {
         switch (command) {
             case "help":
@@ -736,5 +636,9 @@ public class InputParser {
                 return null;
         }
     }
+
+    // fine metodi per parse Building
+
+
 }
 
