@@ -10,7 +10,7 @@ public class InvalidPositionExceptionEvent extends CardEvent {
 
     public InvalidPositionExceptionEvent(String message, boolean forAll, ParserState parserState, String nickname) {
         //TODO correggi ingressi super
-        super(ServerEventType.INVALID_POSITION_ERROR, forAll, parserState, nickname);
+        super(forAll, parserState, nickname);
         this.message = message;
     }
 

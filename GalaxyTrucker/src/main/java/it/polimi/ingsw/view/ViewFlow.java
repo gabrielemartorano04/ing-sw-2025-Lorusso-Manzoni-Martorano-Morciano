@@ -13,7 +13,6 @@ import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.clientevents.cardevents.OkStartFlight;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.graphic.GUI;
 import it.polimi.ingsw.view.text.TUI;
 import it.polimi.ingsw.view.text.TimerDisplay;
@@ -133,9 +132,11 @@ public class ViewFlow implements EventReceiver {
 
     @Override
     public void onEventReceived(ServerEvent event) {
-        if (event.getEventType() != ServerEventType.PING) {
-            event.call(serverEventVisitor);
-        }
+        //TODO sistemare
+//        if (event.getEventType() != ServerEventType.PING) {
+//            event.call(serverEventVisitor);
+//        }
+        event.call(serverEventVisitor);
     }
 
     /**

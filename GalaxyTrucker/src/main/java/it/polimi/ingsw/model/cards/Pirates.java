@@ -10,15 +10,12 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.view.ParserState;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Class that manages the single card pirates
@@ -227,11 +224,11 @@ public class Pirates extends Card implements Serializable {
             }else{
                 cardState = CardState.ROLL_DICE;
                 indexOfCurrentTrucker = 0;
-                return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
+                return new BooleanDecision(true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
             }
         }else{
             indexOfCurrentTrucker++;
-            return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+            return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
         }
     }
 
@@ -245,10 +242,10 @@ public class Pirates extends Card implements Serializable {
         if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
             cardState = CardState.ROLL_DICE;
             indexOfCurrentTrucker = 0;
-            return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
+            return new BooleanDecision(true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
         }else{
             indexOfCurrentTrucker++;
-            return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+            return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
         }
     }
 
@@ -309,7 +306,7 @@ public class Pirates extends Card implements Serializable {
         else{
             indexOfCurrentTrucker = 0;
             cardState = CardState.ROLL_DICE;
-            return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
+            return new BooleanDecision(true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
         }
     }
 
@@ -442,7 +439,7 @@ public class Pirates extends Card implements Serializable {
                 this.cardState = CardState.ROLL_DICE;
                 indexOfCurrentTrucker = 0;
 
-                return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
+                return new BooleanDecision(true, ParserState.ROLL_DICE, "Roll the dice", defeatedTruckers.getFirst().getNickname());
             }
             else {
                 ArrayList<Trucker> truckerRemoved;

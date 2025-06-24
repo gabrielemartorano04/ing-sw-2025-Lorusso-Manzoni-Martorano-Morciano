@@ -4,7 +4,6 @@ package it.polimi.ingsw.net.events.serverevents.setupevents;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
 /**
  * Event from server to client to notify the successful login for a player
@@ -14,7 +13,7 @@ public class PlayerJoinedEvent extends ServerEvent {
     private final SpaceShip spaceShip;
 
     public PlayerJoinedEvent(String username, SpaceShip spaceShip) {
-        super(ServerEventType.PLAYER_JOINED, false);
+        super(false);
         this.username = username;
         this.spaceShip = spaceShip;
         message = username+", you joined the game";

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.ParserState;
 
 public class RollDiceResult extends CardEvent {
@@ -12,7 +11,7 @@ public class RollDiceResult extends CardEvent {
     private int[] shoot,meteor;
 
     public RollDiceResult(ParserState parserState, int currIndex,int[] shoot,int [] meteor, int diceResult, String nickname, boolean forAll, String hitType){
-        super(ServerEventType.ROLL_DICE, forAll, parserState, nickname);
+        super(forAll, parserState, nickname);
         this.currIndex = currIndex;
         this.shoot=shoot;
         this.meteor=meteor;

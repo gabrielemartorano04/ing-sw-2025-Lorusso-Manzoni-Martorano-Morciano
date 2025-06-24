@@ -10,15 +10,10 @@ import java.io.Serializable;
  */
 
 public abstract class ServerEvent implements Serializable {
-    private final ServerEventType eventType;
     private boolean forAll;
 
-    public ServerEvent(ServerEventType eventType, boolean forAll) {
-        this.eventType = eventType;
+    public ServerEvent(boolean forAll) {
         this.forAll=forAll;
-    }
-    public ServerEventType getEventType() {
-        return eventType;
     }
     public String getMessage() {return "";};
 

@@ -6,7 +6,7 @@ public class GenericErrorEvent extends ServerEvent{
     private String message;
 
     public GenericErrorEvent(String message, boolean forAll) {
-        super(ServerEventType.GENERIC_ERROR, forAll);
+        super(forAll);
         this.message = message;
     }
 

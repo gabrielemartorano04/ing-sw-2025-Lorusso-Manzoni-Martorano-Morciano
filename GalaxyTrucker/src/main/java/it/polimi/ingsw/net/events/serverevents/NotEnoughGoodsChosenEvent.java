@@ -9,7 +9,7 @@ public class NotEnoughGoodsChosenEvent extends CardEvent {
     private String message;
 
     public NotEnoughGoodsChosenEvent(String message, boolean forAll, ParserState parserState, String nickname) {
-        super(ServerEventType.NOT_ENOUGH_GOODS_CHOSEN_ERROR, forAll, parserState, nickname);
+        super(forAll, parserState, nickname);
         this.message = message;
     }
 

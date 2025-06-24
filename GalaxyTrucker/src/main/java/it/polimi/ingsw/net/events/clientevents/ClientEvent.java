@@ -7,22 +7,28 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import java.io.Serializable;
 
 /**
- * An event will be used to communicate between server and client, we will create an event with the view and then
- * send it using RMI or socket based on client's choice
+ * Event created for the communication from the clint to the server
  */
-
 public abstract class ClientEvent implements Serializable {
 
-    private String message;
-
+    /**
+     * Event constructor
+     */
     public ClientEvent() {
-        message="";
     }
 
+    /**
+     * @return the message associated with the specific event
+     */
     public String getMessage() {
-        return message;
+        return "";
     }
 
-
+    /**
+     * This method calls the server method that manages this event reception
+     * @param visitor server class that manages client events
+     * @param client client that sent the event
+     * @return server event response based on client event reception
+     */
     public abstract ServerEvent call(VirtualServer visitor, Client client);
 }

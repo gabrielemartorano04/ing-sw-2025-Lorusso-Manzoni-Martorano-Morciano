@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.events.clientevents.*;
 import it.polimi.ingsw.net.events.clientevents.buildingevents.*;
 import it.polimi.ingsw.net.events.clientevents.cardevents.*;
-import it.polimi.ingsw.net.events.clientevents.setupevents.ChoseToResume;
+import it.polimi.ingsw.net.events.clientevents.setupevents.ChooseToResume;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.DrawNewCardEvent;
@@ -532,9 +532,9 @@ public class ClientHandlerVisitor implements VirtualServer {
     }
 
     @Override
-    public ServerEvent visit(ChoseToResume event){
-        ServerController.setOldGame(event.getChoseToResume());
-        if(event.getChoseToResume()){
+    public ServerEvent visit(ChooseToResume event){
+        ServerController.setOldGame(event.getChooseToResume());
+        if(event.getChooseToResume()){
             gameController = GamePersistence.loadGame();
             if (gameController == null) {
                 return new GenericErrorEvent("gameController nullo, impossibile ripristinare partita!", true);

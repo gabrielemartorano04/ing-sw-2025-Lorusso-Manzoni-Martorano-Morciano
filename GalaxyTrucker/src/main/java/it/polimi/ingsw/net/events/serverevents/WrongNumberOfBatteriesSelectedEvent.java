@@ -9,7 +9,7 @@ public class WrongNumberOfBatteriesSelectedEvent extends CardEvent {
     private String message;
 
     public WrongNumberOfBatteriesSelectedEvent(String message, boolean forAll, ParserState parserState, String nickname) {
-        super(ServerEventType.WRONG_NUMBER_OF_BATTERIES_SELECTED_ERROR, forAll, parserState, nickname);
+        super(forAll, parserState, nickname);
         this.message = message;
     }
 

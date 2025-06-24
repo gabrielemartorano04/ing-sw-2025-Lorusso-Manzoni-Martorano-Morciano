@@ -10,7 +10,7 @@ public class PlanetNotFreeExceptionEvent extends CardEvent {
 
     public PlanetNotFreeExceptionEvent(String message, boolean forAll, ParserState parserState, String nickname) {
         //TODO inserire i valori corretti nel super
-        super(ServerEventType.PLANET_NOT_FREE_ERROR, forAll, parserState, nickname);
+        super(forAll, parserState, nickname);
         this.message = message;
     }
 

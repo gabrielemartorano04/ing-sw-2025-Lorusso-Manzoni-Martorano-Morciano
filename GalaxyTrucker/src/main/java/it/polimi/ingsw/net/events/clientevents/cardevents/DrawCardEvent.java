@@ -5,16 +5,37 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
+/**
+ * Event sent for the draw of the next card during flight phase
+ */
 public class DrawCardEvent extends ClientEvent {
-    private String currNicknme;
-    public DrawCardEvent(String currNicknme) {
-        this.currNicknme=currNicknme;
+
+    /**
+     * Current player who has to draw the card
+     */
+    private String currNickname;
+
+    /**
+     * Event constructor
+     * @param currNickname player who has to draw the card
+     */
+    public DrawCardEvent(String currNickname) {
+        this.currNickname = currNickname;
     }
 
+    /**
+     * @return the current nickname of the player who has to draw the card
+     */
     public String getCurrNickname() {
-        return currNicknme;
+        return currNickname;
     }
 
+    /**
+     * This method calls the server method that manages this event reception
+     * @param visitor server class that manages client events
+     * @param client client that sent the event
+     * @return server event response based on client event reception
+     */
     @Override
     public ServerEvent call(VirtualServer visitor, Client client) {
          return visitor.visit(this);

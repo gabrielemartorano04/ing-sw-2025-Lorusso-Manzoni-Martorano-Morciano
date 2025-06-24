@@ -2,14 +2,13 @@ package it.polimi.ingsw.net.events.serverevents.buildingevents;
 
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
 public class HourglassTurnEvent extends ServerEvent {
     private String message;
     private int seconds;
 
     public HourglassTurnEvent(int seconds) {
-        super(ServerEventType.TURN_HOURGLASS, true);
+        super(true);
         message = "Hourglass turned";
         this.seconds= seconds;
     }

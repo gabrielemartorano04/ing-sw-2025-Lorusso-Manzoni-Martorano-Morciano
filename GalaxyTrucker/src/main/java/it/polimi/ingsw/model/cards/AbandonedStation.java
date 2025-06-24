@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
@@ -16,8 +15,6 @@ import it.polimi.ingsw.view.ParserState;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Class that manages the single card abandoned ship
@@ -144,7 +141,7 @@ public class AbandonedStation extends Card implements Serializable {
                 return cardEffect();
             }
             indexOfCurrTrucker++;
-            return new BooleanDecision(ServerEventType.LAND, true, ParserState.LAND, "Do you want to land on this AbandonedStation?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+            return new BooleanDecision(true, ParserState.LAND, "Do you want to land on this AbandonedStation?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
         }
     }
 

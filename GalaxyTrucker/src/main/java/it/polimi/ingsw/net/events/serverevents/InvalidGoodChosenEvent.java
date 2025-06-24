@@ -9,7 +9,7 @@ public class InvalidGoodChosenEvent extends CardEvent {
     private String message;
 
     public InvalidGoodChosenEvent(String message, boolean forAll, ParserState parserState, String nickname) {
-        super(ServerEventType.INVALID_GOODS_CHOSEN_ERROR, forAll, parserState, nickname);
+        super(forAll, parserState, nickname);
         this.message = message;
     }
 

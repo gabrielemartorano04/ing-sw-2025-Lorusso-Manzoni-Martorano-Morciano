@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.events.serverevents.cardevents.BooleanDecision;
 import it.polimi.ingsw.net.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
@@ -17,9 +16,7 @@ import it.polimi.ingsw.view.ParserState;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -122,7 +119,7 @@ public class OpenSpace extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, ParserState.ACTIVATE_ENGINES, "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getNickname());
+        return new BooleanDecision(true, ParserState.ACTIVATE_ENGINES, "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getNickname());
     }
 
 

@@ -1,10 +1,8 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
-import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.ParserState;
 
 import java.util.ArrayList;
@@ -17,7 +15,7 @@ public class CurrentCondition extends CardEvent{
     private final ArrayList<Trucker> truckersRemoved;
 
     public CurrentCondition(boolean forAll, ParserState parserState, String nickname, Condition condition, Map<String, Integer> track, Trucker weakestTrucker, ArrayList<Trucker> deadTruckersName) {
-        super(ServerEventType.CONDITION, forAll, parserState, nickname);
+        super(forAll, parserState, nickname);
         this.condition = condition;
         this.track=track;
         this.weakestTrucker =weakestTrucker;

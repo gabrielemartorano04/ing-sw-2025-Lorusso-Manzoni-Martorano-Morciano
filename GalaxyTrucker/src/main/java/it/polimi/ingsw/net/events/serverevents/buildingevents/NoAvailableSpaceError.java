@@ -3,7 +3,6 @@ package it.polimi.ingsw.net.events.serverevents.buildingevents;
 
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
 /**
  * Error event from server to client. It happens if a player try to join the game but there are already 4 players
@@ -11,7 +10,7 @@ import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 public class NoAvailableSpaceError extends ServerEvent {
     private String message;
     public NoAvailableSpaceError(){
-        super(ServerEventType.NO_AVAILABLE_SPACE, false);
+        super(false);
         message = "There is no available space";
     }
     @Override

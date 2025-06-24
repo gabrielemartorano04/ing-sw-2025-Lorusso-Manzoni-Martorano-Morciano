@@ -9,7 +9,7 @@ public class NotEnoughBatterieEvent extends CardEvent {
     private String message;
 
     public NotEnoughBatterieEvent(String message, boolean forAll, ParserState parserState, String nickname) {
-        super(ServerEventType.NOT_ENOUGH_BATTERIES_ERROR, forAll, parserState, nickname);
+        super(forAll, parserState, nickname);
         this.message = message;
     }
 
