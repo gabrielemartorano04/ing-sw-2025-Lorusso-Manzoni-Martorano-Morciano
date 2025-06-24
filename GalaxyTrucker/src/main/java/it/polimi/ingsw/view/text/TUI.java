@@ -697,7 +697,6 @@ public class TUI implements UI {
         System.out.println("Total crew members: " + viewFlow.getHumanCount());
         System.out.println("Total cannon power (only single): " + viewFlow.getCannonPower());
         System.out.println("Total engine power (only single): " + viewFlow.getEnginePower());
-        System.out.println("Cosmic credits: " + viewFlow.getCredits());
 
         System.out.println("Goods on the ship:");
         if (viewFlow.getGoodsByColor() != null) {
@@ -713,6 +712,7 @@ public class TUI implements UI {
         }
 
         System.out.println("Cosmic credits: " + viewFlow.getCredits());
+        System.out.println("Lost components: " + viewFlow.getLostComponents());
 
     }
 
