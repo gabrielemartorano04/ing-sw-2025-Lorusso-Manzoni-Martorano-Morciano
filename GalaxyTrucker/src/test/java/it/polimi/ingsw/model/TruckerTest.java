@@ -15,16 +15,9 @@ class TruckerTest {
     private Trucker trucker;
 
     @BeforeEach
-    public void setup(){
+    void setUp() {
         this.trucker =new Trucker("frenk", PlayerColors.BLUE);
         this.trucker.getSpaceShip().initSpaceShip(2,PlayerColors.BLUE);
-    }
-
-    @Test
-    public void setAndGetBuildingState(){
-        assertEquals(BuildingState.BUILDING, trucker.getBuildingState());
-        trucker.setBuildingState(BuildingState.END);
-        assertEquals(BuildingState.END, trucker.getBuildingState());
     }
 
     @Test
@@ -37,7 +30,6 @@ class TruckerTest {
     public void getColor(){
         assertEquals(PlayerColors.BLUE, trucker.getColor());
     }
-
 
     @Test
     public void addAndGetCosmicCredit(){
@@ -62,54 +54,15 @@ class TruckerTest {
     }
 
     @Test
-    public void getNickname(){
-        assertEquals("frenk", trucker.getNickname());
-    }
-
-    @Test
     public void getSpaceship(){
         assertNotNull(trucker.getSpaceShip());
     }
 
     @Test
-    public void showStack(){
-        try {
-            assertNotNull(trucker.showStack(1,new Game(2,2)));
-        } catch (GeneralError e) {
-            System.out.println(e.getMessage());
-        }
-
+    public void getNickname(){
+        assertEquals("frenk", trucker.getNickname());
     }
 
-    @Test
-    public void keep() {
-        try {
-            trucker.keep(new Load(1,1,1,1,"Load","",2,false));
-        } catch (InvalidComponentsException e) {}
-        assertEquals(1,trucker.getKeptComponents().size());
-    }
-
-    @Test
-    public void link() {
-        try {
-            trucker.link(new Load(1,1,1,1,"Load","",2,false),8,7);
-        } catch (InvalidCoordinates e) {}
-
-        assertNotNull(trucker.getSpaceShip().getComponents()[8][7]);
-
-    }
-
-    @Test
-    public void selectComponent() {
-        trucker.setBuildingState(BuildingState.SELECT_COMPONENT);
-        try {
-            trucker.selectComponent(2, new Game(2,2).getComponents());
-        }  catch (GeneralError e) {
-            throw new RuntimeException(e);
-        }
-        assertEquals(BuildingState.SELECT_COMPONENT, trucker.getBuildingState());
-
-    }
 
     @Test
     void keepAndGetKeptComponentAndGetComponents() {
@@ -143,6 +96,35 @@ class TruckerTest {
     }
 
     @Test
+    public void showStack(){
+        try {
+            assertNotNull(trucker.showStack(1,new Game(2,2)));
+        } catch (GeneralError e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    @Test
+    public void link() {
+        try {
+            trucker.link(new Load(1,1,1,1,"Load","",2,false),8,7);
+        } catch (InvalidCoordinates e) {}
+
+        assertNotNull(trucker.getSpaceShip().getComponents()[8][7]);
+
+    }
+
+    @Test
+    public void selectComponent() {
+        try {
+            trucker.selectComponent(2, new Game(2,2).getComponents());
+        }  catch (GeneralError e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
     void removeKeptComponent() {
         Load load=new Load(1,1,1,1,"Load","",2,false);
         Engine engine=new Engine(1,1,1,"Engine","",true);
@@ -167,4 +149,18 @@ class TruckerTest {
             throw new RuntimeException(e);
         }
     }
+
+    @Test
+    void setSpaceShip() {
+        CreateShipTest support=new CreateShipTest();
+        SpaceShip spaceShip = null;
+        try {
+            spaceShip=support.createShip3(spaceShip);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        trucker.setSpaceShip(spaceShip);
+        assertEquals(spaceShip,trucker.getSpaceShip());
+    }
+
 }
