@@ -163,7 +163,7 @@ public class Trucker implements Serializable {
         if(keptComponents.size()<2){
             keptComponents.add(component);
         }
-        else { //non c'è spazio per tenerlo quindi lancio eccezione
+        else {
             throw new InvalidComponentsException("No available spots to keep this component cause both places are taken");
         }
 
