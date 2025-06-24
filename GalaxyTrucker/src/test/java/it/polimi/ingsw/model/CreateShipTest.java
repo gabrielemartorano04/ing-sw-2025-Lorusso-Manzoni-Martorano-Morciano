@@ -192,7 +192,6 @@ public class CreateShipTest {
         c15.turn();
         ship.addComponent(c15, 9, 8);
         ship.addComponent(c16, 9, 9);
-        ship.setBattery();
         ship.setNumHuman();
         return ship;
     }

@@ -33,8 +33,20 @@ class CannonTest {
 
     @Test
     void turn() {
+        cannon.setOrientation(Orientation.N);
+        cannon.turn();
+        assertEquals(Orientation.E,cannon.getOrientation());
+
         cannon.setOrientation(Orientation.E);
         cannon.turn();
         assertEquals(Orientation.S,cannon.getOrientation());
+
+        cannon.setOrientation(Orientation.S);
+        cannon.turn();
+        assertEquals(Orientation.W,cannon.getOrientation());
+
+        cannon.setOrientation(Orientation.W);
+        cannon.turn();
+        assertEquals(Orientation.N,cannon.getOrientation());
     }
 }

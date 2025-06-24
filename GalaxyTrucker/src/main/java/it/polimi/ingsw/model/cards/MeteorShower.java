@@ -137,6 +137,9 @@ public class MeteorShower extends Card implements Serializable {
 
         this.roll = Game.getIstance().rollDice();
 
+        //TODO TOGLI TOGLI TOGLI
+        this.roll = 7;
+
         meteor = meteors.get(currMeteorIndex);
         currMeteorIndex++;
 

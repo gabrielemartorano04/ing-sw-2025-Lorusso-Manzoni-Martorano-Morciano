@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PiratesTest_FullCoverage {
+class PiratesTest {
 
     private Pirates pirates;
     private SpaceShip ship1, ship2;
@@ -97,11 +97,7 @@ class PiratesTest_FullCoverage {
         pirates.setWinDecision(true);
         // simulate shoot overflow
         pirates.setState(CardState.ROLL_DICE);
-        pirates.rollDice(); pirates.activateShield(false, new int[]{0,0}, new int[]{0,0});
-        pirates.setState(CardState.ROLL_DICE);
-        pirates.rollDice(); pirates.activateShield(false, new int[]{0,0}, new int[]{0,0});
-        pirates.setState(CardState.ROLL_DICE);
-        pirates.rollDice(); pirates.activateShield(false, new int[]{0,0}, new int[]{0,0});
+        pirates.setCurrShootIndex(10);
         assertThrows(GeneralError.class, () -> pirates.rollDice());
     }
 
@@ -136,7 +132,9 @@ class PiratesTest_FullCoverage {
         pirates.setWinDecision(true);
         pirates.setState(CardState.ROLL_DICE);
         pirates.rollDice();
-        assertThrows(NotEnoughBatteries.class, () -> pirates.activateShield(true, new int[]{5,6}, new int[]{5,6}));
+        ArrayList<int[]> coord = new ArrayList<>();
+        coord.add(new int[]{7, 6});
+        assertThrows(NotEnoughBatteries.class, () -> pirates.activateShield(true, new int[]{6,6}, new int[]{7,6}));
     }
 
     @Test

@@ -78,22 +78,6 @@ public class Trucker implements Serializable {
     }
 
     /**
-     * Building state getter
-     * @return building state during building phase
-     */
-    public BuildingState getBuildingState() {
-        return buildingState;
-    }
-
-    /**
-     * Building state setter
-     * @param buildingState the value of the new building state
-     */
-    public void setBuildingState(BuildingState buildingState) {
-        this.buildingState = buildingState;
-    }
-
-    /**
      * Player's position setter
      * @param position the new player's position
      */
@@ -179,7 +163,7 @@ public class Trucker implements Serializable {
         if(keptComponents.size()<2){
             keptComponents.add(component);
         }
-        else { //non c'è spazio per tenerlo quindi lancio eccezione
+        else {
             throw new InvalidComponentsException("No available spots to keep this component cause both places are taken");
         }
 

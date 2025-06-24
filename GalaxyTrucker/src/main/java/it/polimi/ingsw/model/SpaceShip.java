@@ -1328,25 +1328,81 @@ public class SpaceShip implements Serializable {
      * @param x: coordinate x of the main cabin
      * @param y: coordinate y of the main cabin
      */
-    private void componentsVisited(int x, int y){
-        if (x < 0 || x > components.length-1 || y < 0 || y > components[0].length-1) {
-            return;
-        }
-        if(components[x][y] == null  || (components[x][y].isVisited())) {
-            return;
-        }
-        switch(components[x][y]){
-            case EmptySpace ignored ->{
-                return;
-            }default -> {}
-        }
-        components[x][y].setVisited(true);
+    private void componentsVisited(int x, int y) {
+        if (x < 0 || x >= components.length || y < 0 || y >= components[0].length) return;
 
-        if(x+1<10) componentsVisited(x+1, y);
-        if(y+1<11)componentsVisited(x, y+1);
-        if(y-1>=0)componentsVisited(x, y-1);
-        if(x-1>=0)componentsVisited(x-1, y);
+        Component current = components[x][y];
+        if (current == null || current.isVisited()) return;
+
+        switch (current) {
+            case EmptySpace ignored -> { return; }
+            default -> {
+                current.setVisited(true);
+                Integer[] links = current.getLink();
+
+                if (x + 1 < components.length) {
+                    Component down = components[x + 1][y];
+                    if (down != null) {
+                        switch (down) {
+                            case EmptySpace ignored -> {}
+                            default -> {
+                                Integer[] downLinks = down.getLink();
+                                if (compatibleLinks(links[2], downLinks[0])) {
+                                    componentsVisited(x + 1, y);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (y + 1 < components[0].length) {
+                    Component right = components[x][y + 1];
+                    if (right != null) {
+                        switch (right) {
+                            case EmptySpace ignored -> {}
+                            default -> {
+                                Integer[] rightLinks = right.getLink();
+                                if (compatibleLinks(links[1], rightLinks[3])) {
+                                    componentsVisited(x, y + 1);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (x - 1 >= 0) {
+                    Component up = components[x - 1][y];
+                    if (up != null) {
+                        switch (up) {
+                            case EmptySpace ignored -> {}
+                            default -> {
+                                Integer[] upLinks = up.getLink();
+                                if (compatibleLinks(links[0], upLinks[2])) {
+                                    componentsVisited(x - 1, y);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (y - 1 >= 0) {
+                    Component left = components[x][y - 1];
+                    if (left != null) {
+                        switch (left) {
+                            case EmptySpace ignored -> {}
+                            default -> {
+                                Integer[] leftLinks = left.getLink();
+                                if (compatibleLinks(links[3], leftLinks[1])) {
+                                    componentsVisited(x, y - 1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
+
 
     /**
      * This method remove an unlinked component which is not reachable from the main cabin, then it sets all the

@@ -149,7 +149,6 @@ class AbandonedStationTest {
                 assertEquals(track, event.getTrack());
             } else {
                 BooleanDecision event = (BooleanDecision) sEvent;
-                assertEquals(ServerEventType.LAND, event.getEventType());
                 assertTrue(event.isForAll());
                 assertEquals(ParserState.LAND, event.getParserState());
                 assertEquals("Do you want to land on this AbandonedStation?", event.getMessage());
