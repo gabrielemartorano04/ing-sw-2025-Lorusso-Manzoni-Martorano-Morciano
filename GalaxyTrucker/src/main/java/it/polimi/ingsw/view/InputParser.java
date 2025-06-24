@@ -18,14 +18,42 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+/**
+ * Class that manage the inputs from the client to start the right action
+ */
 public class InputParser {
+
+    /**
+     * Game level
+     */
     private int level;
 
-    public InputParser() {}
+    /**
+     * User interface
+     */
+    private UI ui;
 
+    /**
+     * Class constructor
+     * @param ui user interface
+     */
+    public InputParser(UI ui) {
+        this.ui = ui;
+    }
+
+    /**
+     * Set the level of the game
+     * @param level of the game
+     */
     public void setLevel(int level) {
         this.level = level;
     }
+
+    /**
+     * Manages the connection of the first player for the creation of the game
+     * @param input from the client
+     * @return the client event that manages that input
+     */
     public ClientEvent parseFirstConnection(String input) {
     if (input == null || input.isEmpty()) {
         return null;
@@ -42,7 +70,6 @@ public class InputParser {
     try {
         int numOfPlayers = Integer.parseInt(tokens[0]);
         level = Integer.parseInt(tokens[1]);
-        System.out.println("Level: " + level);
         //TODO: CAMBIARE NUMERO GIOCATORI DA 2 A 4 DOPO DEBUG
         if (numOfPlayers < 1 || numOfPlayers > 4) {
             System.out.println("Error: invalid number of players (2-4)");
@@ -54,11 +81,17 @@ public class InputParser {
         }
 
         return new CreateGameEvent(numOfPlayers, level);
-    } catch (NumberFormatException e) {
-        System.out.println("Error: both value needs to be integer numbers");
-        return null;
+        } catch (NumberFormatException e) {
+            System.out.println("Error: both value needs to be integer numbers");
+            return null;
+        }
     }
-}
+
+    /**
+     * Manages the login of the other players for the creation of the game
+     * @param input from the client
+     * @return the client event that manages that input
+     */
     public ClientEvent parseLogin(String input){
         if (input == null || input.isEmpty()) {
             return null;
@@ -66,11 +99,11 @@ public class InputParser {
 
         String[] tokens = input.split("\\s+", 2);
         if (tokens.length < 2) {
-            System.out.println("Error: username and color are required and they have to be divided by space.");
+            ui.showError("Error: username and color are required and they have to be divided by space.");
             return null;
         }
         if (tokens.length > 2) {
-            System.out.println("Error: type only username and color and they have to be divided by space.");
+            ui.showError("Error: type only username and color and they have to be divided by space.");
             return null;
         }
         PlayerColors color=null;
@@ -84,10 +117,15 @@ public class InputParser {
         if(color!=null) {
             return new LoginEvent(tokens[0].trim(), color);
         }
-        System.out.println("Error: illegal color, please write an available color");
+        ui.showError("Error: illegal color, please write an available color");
         return null;
     }
 
+    /**
+     * Manages the fill of the ship
+     * @param input from the client
+     * @return the client event that manages that input
+     */
     public ClientEvent parseFillTheShip(String input){
         if (input == null || input.isEmpty()) {
             return null;
@@ -156,6 +194,11 @@ public class InputParser {
 
     }
 
+    /**
+     * Manages the resumption of an old game
+     * @param input from the client
+     * @return the client event that manages that input
+     */
     public ClientEvent parseOld(String input){
         if(input == null || input.isEmpty()) {
             return null;
@@ -177,6 +220,17 @@ public class InputParser {
         }else return null;
     }
 
+    /**
+     * Manages the building of the spaceship
+     * @param input from the client
+     * @param component tha has to be linked
+     * @param index of the component in the list of all available components or kept components
+     * @param kept list of kept components
+     * @param isFromKept specify if the component is from the list of kept or all available
+     * @param stackSelected index of the selected stack to show
+     * @param firstLinked specify if the component connected is the first
+     * @return the client event that manages that input
+     */
     public ClientEvent parseBuilding(String input, Component component, int index, ArrayList<Component> kept, boolean isFromKept, int stackSelected, boolean firstLinked) {
         if (input == null || input.isEmpty()) return null;
 
@@ -220,6 +274,13 @@ public class InputParser {
         }
     }
 
+    /**
+     * Manages all the commands that don't require a component to be selected
+     * @param command selected from the client
+     * @param tokens the string inserted from the client
+     * @param kept list of selected components
+     * @return the client event that manages that input
+     */
     private ClientEvent handleNoComponentSelectedCommandFirst(String command, String[] tokens, ArrayList<Component> kept) {
         switch (command) {
             case "help":
@@ -278,7 +339,6 @@ public class InputParser {
     }
 
 
-    // metodi per parseBuilding
 
     private ClientEvent handleFromKeptComponentCommand(String command, String[] tokens, Component component, int index) {
         switch (command) {
