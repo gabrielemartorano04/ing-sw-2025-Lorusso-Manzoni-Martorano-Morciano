@@ -34,6 +34,7 @@ public class LoginScene {
     private StackPane root;
     private final Set<PlayerColors> unavailableColors;
 
+    private VBox content;
 
     private StackPane waitOverlay;
     private Timeline waitAnimation;
@@ -137,7 +138,7 @@ public class LoginScene {
             doneButton.setStyle((nicknameOk && colorOk) ? "-fx-background-color: #FFDE69; -fx-text-fill: black;" : "-fx-background-color: gray; -fx-text-fill: white;");
         });
 
-        VBox content = new VBox(30, nicknameLabel, nicknameField, colorPane, doneButton);
+        this.content = new VBox(30, nicknameLabel, nicknameField, colorPane, doneButton);
         content.setAlignment(Pos.CENTER);
         content.setPadding(new Insets(40));
 
@@ -374,6 +375,10 @@ public class LoginScene {
         waitAnimation.play();
 
         Platform.runLater(() -> {
+            if (content != null) {
+                root.getChildren().remove(content);
+            }
+
             if (!root.getChildren().contains(waitOverlay)) {
                 root.getChildren().add(waitOverlay);
             }
@@ -422,18 +427,17 @@ public class LoginScene {
         double width = root.getWidth();
         double height = root.getHeight();
 
-        // Sfondo trasparente NON interattivo
+        // Overlay grigio trasparente
         Rectangle overlay = new Rectangle(width, height);
         overlay.setFill(Color.rgb(0, 0, 0, 0.4));
         overlay.setMouseTransparent(true);
 
-        // Testo di errore visibile
+        // Messaggio di errore
         Label errorLabel = new Label(message);
         errorLabel.setTextFill(Color.RED);
         errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
         errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
 
-        // Contenitore popup
         StackPane popup = new StackPane(overlay, errorLabel);
         popup.setMouseTransparent(true);
         StackPane.setAlignment(errorLabel, Pos.CENTER);
@@ -441,8 +445,7 @@ public class LoginScene {
         Platform.runLater(() -> {
             if (!root.getChildren().contains(popup)) {
                 root.getChildren().add(popup);
-
-                PauseTransition delay = new PauseTransition(Duration.seconds(3));
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
                 delay.setOnFinished(e -> root.getChildren().remove(popup));
                 delay.play();
             }
