@@ -132,10 +132,6 @@ public class ViewFlow implements EventReceiver {
 
     @Override
     public void onEventReceived(ServerEvent event) {
-        //TODO sistemare
-//        if (event.getEventType() != ServerEventType.PING) {
-//            event.call(serverEventVisitor);
-//        }
         event.call(serverEventVisitor);
     }
 

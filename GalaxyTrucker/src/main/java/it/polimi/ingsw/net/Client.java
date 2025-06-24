@@ -68,10 +68,10 @@ public class Client {
 
     public void notifyPing(){
         if(clientHandler != null){
-            sendPing();
+            clientHandler.sendEvent(new PingEvent());
         }else {
             try {
-                remoteClientHandler.respondToPing();
+                remoteClientHandler.respondToPing(new PingEvent());
             } catch (RemoteException e) {
                 ArrayList<Client> toRemove = new ArrayList<>();
                 toRemove.add(this);
@@ -112,17 +112,4 @@ public class Client {
         }
     }
 
-
-    public void sendPing() {
-        try {
-            if(clientHandler != null){
-                clientHandler.sendEvent(new PingEvent());
-            } else if (remoteClientHandler!=null) {
-                remoteClientHandler.respondToPing();
-            }
-
-        } catch (Exception e) {
-            System.err.println("Errore durante l'invio del ping: " + e.getMessage());
-        }
-    }
 }
