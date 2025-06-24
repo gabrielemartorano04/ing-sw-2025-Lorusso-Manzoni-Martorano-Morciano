@@ -194,6 +194,7 @@ public class Trucker implements Serializable {
      */
     public void link(Component component, int x, int y) throws InvalidCoordinates {
         spaceShip.addComponent(component,x,y);
+        this.selectedComponent = null;
     }
 
     /**
