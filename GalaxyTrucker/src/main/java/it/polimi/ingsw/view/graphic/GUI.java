@@ -20,6 +20,7 @@ import it.polimi.ingsw.view.ViewFlow;
 import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
 import it.polimi.ingsw.view.graphic.scenes.FlightScene;
 import it.polimi.ingsw.view.graphic.scenes.LoginScene;
+import it.polimi.ingsw.view.graphic.scenes.ResultScene;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -51,6 +52,7 @@ public class GUI implements UI {
     private LoginScene loginScene;
     private BuildingScene buildingScene;
     private FlightScene flightScene;
+    private ResultScene resultScene;
     public final ViewFlow viewFlow;
     private boolean showWarzone;
 
@@ -344,8 +346,9 @@ public class GUI implements UI {
 
     @Override
     public void startBuildingScene(StartBuildingEvent event){
-        this.loginScene.hideWaitForOthers();
         Platform.runLater(() -> {
+            this.loginScene.hideWaitForOthers();
+
             buildingScene=new BuildingScene(viewFlow.getNickname(),viewFlow.getShip().getComponents(),viewFlow, new StackPane());
             stage.setScene(this.buildingScene.createScene(event.getPlayers(), viewFlow.getLevel()));
             stage.setTitle("Galaxy Trucker");
@@ -760,12 +763,23 @@ public class GUI implements UI {
 
     @Override
     public void showGameEnded() {
-
+        Platform.runLater(() -> {
+            this.resultScene.showEndMessage();
+        });
     }
 
     @Override
     public void showScores(Map<String, Integer> finalScores) {
+        Platform.runLater(() -> {
+            this.flightScene.hideWaitForOthers();
 
+            resultScene=new ResultScene(viewFlow, new StackPane());
+            stage.setScene(this.resultScene.createScene(finalScores));
+            stage.setTitle("Galaxy Trucker");
+            stage.setResizable(false);
+            stage.setFullScreen(true);
+            stage.show();
+        });
     }
 
     @Override

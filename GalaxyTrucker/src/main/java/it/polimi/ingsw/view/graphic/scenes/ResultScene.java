@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.graphic.scenes;
 
 import it.polimi.ingsw.view.ViewFlow;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,8 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,4 +107,35 @@ public class ResultScene {
         scene = new Scene(root, width, height);
         return scene;
     }
+
+    public void showEndMessage() {
+        double width = root.getWidth();
+        double height = root.getHeight();
+
+        // Overlay grigio trasparente
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+        overlay.setMouseTransparent(true);
+
+        // Messaggio di errore
+        Label errorLabel = new Label("Game ended, thanks for playing!");
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
+        errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
+
+        StackPane popup = new StackPane(overlay, errorLabel);
+        popup.setMouseTransparent(true);
+        StackPane.setAlignment(errorLabel, Pos.CENTER);
+
+        Platform.runLater(() -> {
+            if (!root.getChildren().contains(popup)) {
+                root.getChildren().add(popup);
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                delay.setOnFinished(e -> root.getChildren().remove(popup));
+                delay.play();
+            }
+        });
+    }
+
+
 }
