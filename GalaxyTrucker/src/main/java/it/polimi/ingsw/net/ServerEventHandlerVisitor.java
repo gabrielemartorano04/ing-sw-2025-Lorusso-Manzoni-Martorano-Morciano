@@ -265,10 +265,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(FlightStartEvent event){
         viewFlow.setPosition(event.getPosition());
-        viewFlow.setBatteryCount(event.getBatteryCount());
-        viewFlow.setHumanCount(event.getHumanCount());
-        viewFlow.setCannonPower(event.getCannonPower());
-        viewFlow.setEnginePower(event.getEnginePower());
         viewFlow.setShip(event.getSpaceShip());
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         viewFlow.setStartFlightForAll();
@@ -330,10 +326,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsByColor());
             viewFlow.setCredits(trucker.getCosmicCredit());
             viewFlow.setPosition(trucker.getPosition());
-            viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
-            viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
-            viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
-            viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
 
             viewFlow.setTrack(event.getTrack());
             viewFlow.setShip(trucker.getSpaceShip());
@@ -374,10 +366,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
         if(!viewFlow.getOut()){
             viewFlow.setPosition(trucker.getPosition());
-            viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
-            viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
-            viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
-            viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
             viewFlow.setTrack(event.getTrack());
             viewFlow.setShip(trucker.getSpaceShip());
 
@@ -463,10 +451,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
         if(!viewFlow.getOut()){
             viewFlow.setPosition(trucker.getPosition());
-            viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
-            viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
-            viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
-            viewFlow.setEnginePower(trucker.getSpaceShip().getSingleEnginePower());
             viewFlow.setTrack(event.getTrack());
             viewFlow.setShip(trucker.getSpaceShip());
 
@@ -762,9 +746,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setTrack(event.getTrack());
         }
 
-        viewFlow.setBatteryCount(trucker.getSpaceShip().getNumBatteries());
-        viewFlow.setCannonPower(trucker.getSpaceShip().getSingleCannonPower());
-        viewFlow.setHumanCount(trucker.getSpaceShip().getNumCrew());
         viewFlow.setPosition(trucker.getPosition());
         viewFlow.setShip(trucker.getSpaceShip());
         viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsByColor());
