@@ -650,7 +650,7 @@ public class GUI implements UI {
                 case REMOVE_BATTERIES -> this.flightScene.showRemoveBatteriesInput();
                 case REMOVE_GOODS -> this.flightScene.showRemoveGoodsInput();
                 case REARRANGE -> {
-                    if(viewFlow.shipHasLoad()) {
+                    if(viewFlow.shipHasGoods()) {
                         this.flightScene.showRearrangeInput();
                     }
                 }

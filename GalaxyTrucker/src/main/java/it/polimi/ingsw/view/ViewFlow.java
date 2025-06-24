@@ -556,5 +556,13 @@ public class ViewFlow implements EventReceiver {
         this.handleInput("n");
         return false;
     }
+
+    public boolean shipHasGoods(){
+        if(ship.getGoodsList().isEmpty()){
+            this.handleInput("n");
+            return false;
+        }
+        return true;
+    }
 }
 

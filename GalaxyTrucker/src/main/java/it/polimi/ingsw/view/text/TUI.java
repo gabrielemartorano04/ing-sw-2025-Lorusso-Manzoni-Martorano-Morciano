@@ -387,7 +387,7 @@ public class TUI implements UI {
             case REMOVE_BATTERIES -> System.out.println("You have to remove " + viewFlow.getNumOfBatteriesToRemove() + " batteries." + "\n" + "Choose from where you  want to remove batteries. Type '<x1> <y1> - <quantity>,<x2> <y2> - <quantity>...");
             case REMOVE_GOODS -> System.out.println("Choose goods you want to remove. Type '<index1>,<index2>...'.");
             case REARRANGE ->{
-                if(viewFlow.shipHasLoad()){
+                if(viewFlow.shipHasGoods()){
                     System.out.println("Choose if you want to rearrange your goods. If yes, insert coordinates.\n" +
                             "Type 'y, <x1> <y1> - <value1>, <x2> <y2> - <value2>' or 'n'");
                 }
