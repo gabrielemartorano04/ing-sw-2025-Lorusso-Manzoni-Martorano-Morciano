@@ -74,7 +74,6 @@ class AbandonedShipTest {
 
             HumanCoordinates event = (HumanCoordinates) sEvent;
 
-            assertEquals(ServerEventType.HUMAN_COORDINATES, event.getEventType());
             assertTrue(event.isForAll());
             assertEquals(Game.getIstance().getTrucker(abandonedShip.getIndexOfCurrTrucker()).getNickname(), event.getNickname());
         }catch (Exception e){
@@ -110,7 +109,6 @@ class AbandonedShipTest {
                 ServerEvent sEvent = abandonedShip.truckerLanding(false);
                 BooleanDecision event = (BooleanDecision) sEvent;
 
-                assertEquals(ServerEventType.LAND, event.getEventType());
                 assertTrue(event.isForAll());
                 assertEquals("Do you want to land on this Abandoned Ship?", event.getMessage());
                 assertEquals(ParserState.LAND, event.getParserState());

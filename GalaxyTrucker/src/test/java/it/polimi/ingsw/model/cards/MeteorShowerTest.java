@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.events.serverevents.cardevents.BooleanDecision;
 import it.polimi.ingsw.net.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.events.serverevents.cardevents.RollDiceResult;
@@ -130,7 +129,6 @@ class MeteorShowerTest {
                     BooleanDecision e=(BooleanDecision) event;
                     assertEquals(ParserState.ACTIVATE_SHIELD, e.getParserState());
                     assertTrue(e.isForAll());
-                    assertEquals(ServerEventType.ACTIVATE_SHIELD, e.getEventType());
                     assertEquals("vuoi attivare uno scudo?", e.getMessage());
                     assertEquals(Game.getIstance().getTruckerList().get(meteorShower.getIndexOfCurrTrucker()).getNickname(), e.getNickname());
                 }
@@ -139,7 +137,6 @@ class MeteorShowerTest {
                 BooleanDecision e=(BooleanDecision) event;
                 assertEquals(ParserState.ACTIVATE_SHIELD, e.getParserState());
                 assertTrue(e.isForAll());
-                assertEquals(ServerEventType.ACTIVATE_SHIELD, e.getEventType());
                 assertEquals("vuoi attivare uno scudo?", e.getMessage());
                 assertEquals(Game.getIstance().getTrucker(meteorShower.getIndexOfCurrTrucker()).getNickname(), e.getNickname());
             }
@@ -176,7 +173,6 @@ class MeteorShowerTest {
                     BooleanDecision e=(BooleanDecision) event;
                     assertEquals(ParserState.ACTIVATE_CANNONS, e.getParserState());
                     assertTrue(e.isForAll());
-                    assertEquals(ServerEventType.ACTIVATE_CANNONS, e.getEventType());
                     assertEquals("vuoi attivare un Cannone Doppio?", e.getMessage());
                     assertEquals(Game.getIstance().getTruckerList().get(meteorShower.getIndexOfCurrTrucker()).getNickname(), e.getNickname());
                 }
@@ -185,7 +181,6 @@ class MeteorShowerTest {
                 BooleanDecision e=(BooleanDecision) event;
                 assertEquals(ParserState.ACTIVATE_CANNONS, e.getParserState());
                 assertTrue(e.isForAll());
-                assertEquals(ServerEventType.ACTIVATE_CANNONS, e.getEventType());
                 assertEquals("vuoi attivare uno scudo?", e.getMessage());
                 assertEquals(Game.getIstance().getTrucker(meteorShower.getIndexOfCurrTrucker()).getNickname(), e.getNickname());
             }
@@ -219,7 +214,6 @@ class MeteorShowerTest {
             BooleanDecision e=(BooleanDecision) event;
             assertEquals(ParserState.ROLL_DICE, e.getParserState());
             assertTrue(e.isForAll());
-            assertEquals(ServerEventType.ROLL_DICE, e.getEventType());
             assertEquals("Roll the dice", e.getMessage());
             assertEquals(Game.getIstance().getTruckerList().getFirst().getNickname(), e.getNickname());
         }

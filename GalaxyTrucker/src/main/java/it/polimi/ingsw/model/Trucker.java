@@ -78,22 +78,6 @@ public class Trucker implements Serializable {
     }
 
     /**
-     * Building state getter
-     * @return building state during building phase
-     */
-    public BuildingState getBuildingState() {
-        return buildingState;
-    }
-
-    /**
-     * Building state setter
-     * @param buildingState the value of the new building state
-     */
-    public void setBuildingState(BuildingState buildingState) {
-        this.buildingState = buildingState;
-    }
-
-    /**
      * Player's position setter
      * @param position the new player's position
      */
