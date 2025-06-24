@@ -51,7 +51,7 @@ public class Planets extends Card implements Serializable {
     /**
      * list of players that decided to land on a planet
      */
-    private final ArrayList<Trucker> truckersLanded;
+    private ArrayList<Trucker> truckersLanded;
 
     /**
      * index of the current player to handle the fact that clients have to respect a specific turn
@@ -353,5 +353,40 @@ public class Planets extends Card implements Serializable {
         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
+    public ArrayList<ArrayList<Goods>> getPlanets() {
+        return planets;
+    }
+
+    public void setState(CardState cardState) {
+        this.cardState = cardState;
+    }
+
+    public int getIndexOfTrucker() {
+        return indexOfTrucker;
+    }
+
+    public ArrayList<Goods> getCurrentGoodsList() {
+        return currentGoodsList;
+    }
+
+    public int getCurrGoodIndex() {
+        return currGoodIndex;
+    }
+
+    public ArrayList<Trucker> getTruckersLanded() {
+        return truckersLanded;
+    }
+
+    public ArrayList<Trucker> getPlanetsOccupied() {
+        return planetsOccupied;
+    }
+
+    public void setTruckersLanded(ArrayList<Trucker> truckerLanded) {
+        this.truckersLanded = truckerLanded;
+    }
+
+    public void setCurrGood(Goods goods) {
+        this.currentGood = goods;
+    }
 }
 

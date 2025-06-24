@@ -852,7 +852,7 @@ public class SpaceShip implements Serializable {
      */
     public void activateDoubleCannons(ArrayList<int[]> coord, ArrayList<int[]> batteriesCoord) throws NotEnoughBatteries {
         if(coord.size()>numOfBattery)
-            throw new NotEnoughBatteries("You don't have enough batteries to activate all that engines!");
+            throw new NotEnoughBatteries("You don't have enough batteries to activate all that cannons!");
         for(int[] c:coord){
             switch(components[c[0]][c[1]]){
                 case Cannon cannon->{
@@ -894,7 +894,7 @@ public class SpaceShip implements Serializable {
             case BatteryStorage bs->{
                 if(bs.getQuantity()>0)
                     bs.removeNumOfBatteries(1);
-                else throw new NotEnoughBatteries("You don't have enough batteries to activate all that engines!");
+                else throw new NotEnoughBatteries("You don't have enough batteries to activate all that shield!");
 
             }
             default -> {}
