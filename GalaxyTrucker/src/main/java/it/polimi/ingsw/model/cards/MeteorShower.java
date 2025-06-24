@@ -232,7 +232,7 @@ public class MeteorShower extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrTrucker++;
-        return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "vuoi attivare un Cannone Doppio?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+        return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, "vuoi attivare un Cannone Doppio?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
     }
 
     /**
