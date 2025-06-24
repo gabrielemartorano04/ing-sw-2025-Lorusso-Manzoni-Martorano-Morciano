@@ -6,8 +6,8 @@ import it.polimi.ingsw.view.ParserState;
 public class BooleanDecision extends CardEvent{
     private final String message;
 
-    public BooleanDecision(/*ServerEventType eventType, */boolean forAll, ParserState parserState, String message, String nickname) {
-        super(/*eventType, */forAll, parserState, nickname);
+    public BooleanDecision(boolean forAll, ParserState parserState, String message, String nickname) {
+        super(forAll, parserState, nickname);
         this.message = message;
     }
 

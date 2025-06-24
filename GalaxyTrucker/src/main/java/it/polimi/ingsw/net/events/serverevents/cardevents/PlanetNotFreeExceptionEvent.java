@@ -1,14 +1,13 @@
-package it.polimi.ingsw.net.events.serverevents;
+package it.polimi.ingsw.net.events.serverevents.cardevents;
 
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
-import it.polimi.ingsw.net.events.serverevents.cardevents.CardEvent;
 import it.polimi.ingsw.view.ParserState;
 
-public class NotEnoughGoodsChosenEvent extends CardEvent {
+public class PlanetNotFreeExceptionEvent extends CardEvent {
 
     private String message;
 
-    public NotEnoughGoodsChosenEvent(String message, boolean forAll, ParserState parserState, String nickname) {
+    public PlanetNotFreeExceptionEvent(String message, boolean forAll, ParserState parserState, String nickname) {
         super(forAll, parserState, nickname);
         this.message = message;
     }
@@ -18,7 +17,7 @@ public class NotEnoughGoodsChosenEvent extends CardEvent {
     }
 
     public String getInfoForOthers() {
-        return getNickname()+" doesn't have enough goods.\n";
+        return getNickname()+" chose a planet that is not free.\n";
     }
 
     @Override

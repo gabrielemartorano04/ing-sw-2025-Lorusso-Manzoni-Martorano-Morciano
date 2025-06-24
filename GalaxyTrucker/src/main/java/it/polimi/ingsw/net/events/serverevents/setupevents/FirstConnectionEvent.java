@@ -6,7 +6,7 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 public class FirstConnectionEvent extends ServerEvent {
     private final String message;
     public FirstConnectionEvent(String message) {
-        super(false,false);
+        super(false);
         this.message = message;
     }
 

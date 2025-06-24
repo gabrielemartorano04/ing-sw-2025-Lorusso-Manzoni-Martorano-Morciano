@@ -1,14 +1,13 @@
-package it.polimi.ingsw.net.events.serverevents;
+package it.polimi.ingsw.net.events.serverevents.cardevents;
 
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
-import it.polimi.ingsw.net.events.serverevents.cardevents.CardEvent;
 import it.polimi.ingsw.view.ParserState;
 
-public class NotEnoughBatterieEvent extends CardEvent {
+public class InvalidPositionExceptionEvent extends CardEvent {
 
     private String message;
 
-    public NotEnoughBatterieEvent(String message, boolean forAll, ParserState parserState, String nickname) {
+    public InvalidPositionExceptionEvent(String message, boolean forAll, ParserState parserState, String nickname) {
         super(forAll, parserState, nickname);
         this.message = message;
     }
@@ -23,6 +22,6 @@ public class NotEnoughBatterieEvent extends CardEvent {
     }
 
     public String getInfoForOthers() {
-        return getNickname()+" doesn't have enough batteries.\n";
+        return getNickname()+" chose an invalid position.\n";
     }
 }

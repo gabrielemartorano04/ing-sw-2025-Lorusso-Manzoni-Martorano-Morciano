@@ -11,20 +11,13 @@ import java.io.Serializable;
 
 public abstract class ServerEvent implements Serializable {
     private boolean forAll;
-    private boolean isPing;
 
-    public ServerEvent(boolean forAll,boolean isPing) {
-        this.forAll=forAll;
-        this.isPing=isPing;
-    }
+    public ServerEvent(boolean forAll) {
+        this.forAll=forAll;}
     public String getMessage() {return "";};
 
     public boolean isForAll() {
         return forAll;
-    }
-
-    public boolean isPing() {
-        return isPing;
     }
 
     public abstract void call(ServerEventHandlerVisitor visitor);

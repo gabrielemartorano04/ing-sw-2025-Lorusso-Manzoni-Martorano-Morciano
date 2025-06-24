@@ -1,7 +1,6 @@
-package it.polimi.ingsw.net.events.serverevents;
+package it.polimi.ingsw.net.events.serverevents.cardevents;
 
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
-import it.polimi.ingsw.net.events.serverevents.cardevents.CardEvent;
 import it.polimi.ingsw.view.ParserState;
 
 public class WrongNumberOfBatteriesSelectedEvent extends CardEvent {
