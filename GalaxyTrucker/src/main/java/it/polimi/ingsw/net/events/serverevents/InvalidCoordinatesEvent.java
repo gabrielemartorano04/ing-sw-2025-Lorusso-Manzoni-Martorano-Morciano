@@ -9,7 +9,6 @@ public class InvalidCoordinatesEvent extends CardEvent {
     private String message;
 
     public InvalidCoordinatesEvent(String message, boolean forAll, ParserState parserState, String nickname) {
-        //TODO inserire le cose giuste nel super
         super(forAll, parserState, nickname);
         this.message = message;
     }

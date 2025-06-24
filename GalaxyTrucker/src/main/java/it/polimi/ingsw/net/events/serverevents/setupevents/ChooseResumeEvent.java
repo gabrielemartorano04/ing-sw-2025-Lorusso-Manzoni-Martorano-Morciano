@@ -5,7 +5,7 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 public class ChooseResumeEvent extends ServerEvent {
     public ChooseResumeEvent() {
-        super(true);
+        super(true,false);
     }
 
     @Override

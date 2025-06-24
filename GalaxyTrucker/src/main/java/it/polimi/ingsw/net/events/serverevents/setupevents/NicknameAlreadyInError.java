@@ -13,7 +13,7 @@ public class NicknameAlreadyInError extends ServerEvent {
     private String username,message;
     EnumSet<PlayerColors> colors;
     public NicknameAlreadyInError(String username, EnumSet<PlayerColors> colors) {
-        super(false);
+        super(false,false);
         this.username = username;
         this.colors = colors;
         message = username + " is already in use";

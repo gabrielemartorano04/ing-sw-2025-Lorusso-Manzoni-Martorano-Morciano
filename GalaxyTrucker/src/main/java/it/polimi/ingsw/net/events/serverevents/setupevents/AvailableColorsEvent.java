@@ -10,7 +10,7 @@ public class AvailableColorsEvent extends ServerEvent {
     private final EnumSet<PlayerColors> colors;
     private final String message;
     public AvailableColorsEvent(EnumSet<PlayerColors> colors, String message) {
-        super(false);
+        super(false,false);
         this.colors=colors;
         this.message = message;
     }
