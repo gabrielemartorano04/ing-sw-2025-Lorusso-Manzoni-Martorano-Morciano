@@ -6,29 +6,56 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event client to server. The first player chooses the players number
+ * Event sent to the first player for the creation of a new game
  */
-
 public class CreateGameEvent extends ClientEvent {
-    private final int numberOfPlayers;
-    private final int gameLevel;
-    public CreateGameEvent(int numberOfPlayers, int gameLevel) {
 
+    /**
+     * Number of players
+     */
+    private final int numberOfPlayers;
+
+    /**
+     * Level of the game
+     */
+    private final int gameLevel;
+
+    /**
+     * Event constructor
+     * @param numberOfPlayers number of payers
+     * @param gameLevel level of the game
+     */
+    public CreateGameEvent(int numberOfPlayers, int gameLevel) {
         this.numberOfPlayers = numberOfPlayers;
         this.gameLevel = gameLevel;
     }
 
+    /**
+     * @return the number of players
+     */
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
+    /**
+     * @return the game level
+     */
     public int getGameLevel() {return gameLevel;}
 
+    /**
+     * @return the message associated with the creation of a new game
+     */
     @Override
     public String getMessage() {
         return "Create game, num of players: " + numberOfPlayers;
     }
 
+    /**
+     * This method calls the server method that manages this event reception
+     * @param visitor server class that manages client events
+     * @param client client that sent the event
+     * @return server event response based on client event reception
+     */
     @Override
     public ServerEvent call(VirtualServer visitor, Client client) {
         return visitor.visit(this, client);

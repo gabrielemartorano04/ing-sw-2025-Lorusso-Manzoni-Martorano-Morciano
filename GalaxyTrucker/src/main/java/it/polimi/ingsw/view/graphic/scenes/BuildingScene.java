@@ -343,6 +343,7 @@ public class BuildingScene {
     }
     public void insertSelectedComponent(ImageView componentView, boolean toTurn) {
         if (!inShipView && shipScreenContent != null) {
+            isComponentViewVisible = false;
             root.getChildren().setAll(shipScreenContent);
             inShipView = true;
         }
@@ -920,7 +921,12 @@ public class BuildingScene {
                 confirmLabel.setAlignment(Pos.CENTER);
 
                 // === Immagine del componente ===
-                ImageView componentImage = new ImageView(component.getFrontImage());
+                ImageView componentImage;
+                if(component.getCovered()){
+                    componentImage = new ImageView(component.getBackImage());
+                } else {
+                    componentImage = new ImageView(component.getFrontImage());
+                }
                 componentImage.setFitWidth(200);
                 componentImage.setFitHeight(200);
                 componentImage.setPreserveRatio(true);
@@ -1276,6 +1282,7 @@ public class BuildingScene {
             root.getChildren().remove(popupWithLabel);
             restoreAllButtonStates();
             if(shipScreenContent != null) {
+                isComponentViewVisible = false;
                 root.getChildren().setAll(shipScreenContent);
             }
         });
@@ -1457,6 +1464,7 @@ public class BuildingScene {
                 currentStackOverlay = null;
 
                 if (shipScreenContent != null) {
+                    isComponentViewVisible = false;
                     this.inShipView = true;
                     root.getChildren().setAll(shipScreenContent);
                 }

@@ -358,20 +358,40 @@ public class TUI implements UI {
     @Override
     public void showInputFormat(ParserState parserState) {
         switch (parserState){
-            case ACTIVATE_ENGINES -> System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
-            case ACTIVATE_CANNONS -> System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
-            case ACTIVATE_SHIELD -> System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x1> <y1>, <xB1> <yB1>>' or 'n': ");
+            case ACTIVATE_ENGINES -> {
+                if(viewFlow.shipHasDoubleEngines()) {
+                    System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
+                }
+            }
+            case ACTIVATE_CANNONS -> {
+                if(viewFlow.shipHasDoubleCannons()){
+                    System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
+                }
+            }
+            case ACTIVATE_SHIELD -> {
+                if(viewFlow.shipHasShields()){
+                    System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x1> <y1>, <xB1> <yB1>>' or 'n': ");
+                }
+            }
             case LAND -> System.out.println("Type 'y' if you want to land, else 'n'.");
             case HUMAN_COORD -> System.out.println("Insert the coordinates of the cabins to remove the number of human indicated in the card description. Type '<x1> <y1> - <number of crew>, <x2> <y2> - <number of crew>,...' : ");
-            case PLOT_GOOD -> System.out.println("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <x> <y>, <position>' or 'n': ");
+            case PLOT_GOOD ->{
+                 if(viewFlow.shipHasLoad()){
+                     System.out.println("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <x> <y>, <position>' or 'n': ");
+                 }
+            }
             case ROLL_DICE -> System.out.println("Type 'roll' to roll the dices when yu're ready.");
             case PLANET_DECISION->System.out.println("Choose the planet you want to fly to. Type '<index>': ");
             case DRAW_CARD ->System.out.println("Type 'draw' when you're ready to draw the next card.");
             case REMOTION_CONFIRMED, HUMAN_REMOVED -> System.out.println("Remotion confirmed. Type 'continue' when you're ready to go on.");
             case REMOVE_BATTERIES -> System.out.println("You have to remove " + viewFlow.getNumOfBatteriesToRemove() + " batteries." + "\n" + "Choose from where you  want to remove batteries. Type '<x1> <y1> - <quantity>,<x2> <y2> - <quantity>...");
             case REMOVE_GOODS -> System.out.println("Choose goods you want to remove. Type '<index1>,<index2>...'.");
-            case REARRANGE -> System.out.println("Choose if you want to rearrange your goods. If yes, insert coordinates.\n" +
-                    "Type 'y, <x1> <y1> - <value1>, <x2> <y2> - <value2>' or 'n'");
+            case REARRANGE ->{
+                if(viewFlow.shipHasLoad()){
+                    System.out.println("Choose if you want to rearrange your goods. If yes, insert coordinates.\n" +
+                            "Type 'y, <x1> <y1> - <value1>, <x2> <y2> - <value2>' or 'n'");
+                }
+            }
             case COSMIC_CREDITS -> System.out.println("Do you want to gain that cosmic credits? Type '<y/n>'.");
             case WARZONE -> System.out.println("Type 'warzone' to start warzone card");
             case ASK_WITHDRAW -> System.out.println("Do you want to withdraw? Type 'y' or 'n'");
@@ -677,7 +697,6 @@ public class TUI implements UI {
         System.out.println("Total crew members: " + viewFlow.getHumanCount());
         System.out.println("Total cannon power (only single): " + viewFlow.getCannonPower());
         System.out.println("Total engine power (only single): " + viewFlow.getEnginePower());
-        System.out.println("Cosmic credits: " + viewFlow.getCredits());
 
         System.out.println("Goods on the ship:");
         if (viewFlow.getGoodsByColor() != null) {
@@ -693,6 +712,7 @@ public class TUI implements UI {
         }
 
         System.out.println("Cosmic credits: " + viewFlow.getCredits());
+        System.out.println("Lost components: " + viewFlow.getLostComponents());
 
     }
 
@@ -1067,65 +1087,26 @@ public class TUI implements UI {
 
     @Override
     public void showTrack(Map<String, Integer> truckers, int level) {
-        int index;
-        String[] symbols = {"1️⃣", "2️⃣", "3️⃣", "4️⃣"};
-
         // Ordina i trucker per posizione crescente
         List<Map.Entry<String, Integer>> sortedTruckers = new ArrayList<>(truckers.entrySet());
         sortedTruckers.sort(Comparator.comparingInt(Map.Entry::getValue));
 
-        Map<Integer, String> board = new HashMap<>();
+        // Ottieni la posizione del primo (il migliore)
+        int firstPosition = sortedTruckers.get(0).getValue();
 
-        if (level == 2) {
-            for (int i = 0; i <= 6; i++) board.put(i, "▶️");
-            for (int i = 7; i <= 11; i++) board.put(i, "🔽");
-            for (int i = 12; i <= 18; i++) board.put(i, "◀️");
-            for (int i = 19; i <= 23; i++) board.put(i, "🔼");
+        // Stampa la classifica
+        for (int i = 0; i < sortedTruckers.size(); i++) {
+            String name = sortedTruckers.get(i).getKey();
+            int position = sortedTruckers.get(i).getValue();
 
-            index = 0;
-            for (Map.Entry<String, Integer> entry : sortedTruckers) {
-                int pos = entry.getValue();
-                board.put(pos, symbols[index]);
-                index++;
+            int rank = i + 1;
+
+            if (i == 0) {
+                System.out.println(rank + "° " + name);
+            } else {
+                int diff = position - firstPosition;
+                System.out.println(rank + "° " + name + " (+" + diff + " days)");
             }
-
-            System.out.println();
-            System.out.printf("         %s %s %s %s %s %s %s\n", board.get(0), board.get(1), board.get(2), board.get(3), board.get(4), board.get(5), board.get(6));
-            System.out.printf("      %s                       %s\n", board.get(23), board.get(7));
-            System.out.printf("      %s                       %s\n", board.get(22), board.get(8));
-            System.out.printf("      %s                       %s\n", board.get(21), board.get(9));
-            System.out.printf("      %s                       %s\n", board.get(20), board.get(10));
-            System.out.printf("      %s                       %s\n", board.get(19), board.get(11));
-            System.out.printf("         %s %s %s %s %s %s %s\n", board.get(18), board.get(17), board.get(16), board.get(15), board.get(14), board.get(13), board.get(12));
-            System.out.println();
-        } else if (level == 0) {
-            for (int i = 0; i <= 4; i++) board.put(i, "▶️");
-            for (int i = 5; i <= 8; i++) board.put(i, "🔽");
-            for (int i = 9; i <= 13; i++) board.put(i, "◀️");
-            for (int i = 14; i <= 17; i++) board.put(i, "🔼");
-
-            index = 0;
-            for (Map.Entry<String, Integer> entry : sortedTruckers) {
-                int pos = entry.getValue();
-                board.put(pos, symbols[index]);
-                index++;
-            }
-
-            System.out.println();
-            System.out.printf("         %s %s %s %s %s\n", board.get(0), board.get(1), board.get(2), board.get(3), board.get(4));
-            System.out.printf("      %s                       %s\n", board.get(17), board.get(5));
-            System.out.printf("      %s                       %s\n", board.get(16), board.get(6));
-            System.out.printf("      %s                       %s\n", board.get(15), board.get(7));
-            System.out.printf("      %s                       %s\n", board.get(14), board.get(8));
-            System.out.printf("         %s %s %s %s %s\n", board.get(13), board.get(12), board.get(11), board.get(10), board.get(9));
-            System.out.println();
-        }
-
-        // Legenda con i simboli e i nomi, ordinata
-        index = 0;
-        for (Map.Entry<String, Integer> entry : sortedTruckers) {
-            System.out.printf("%s %s\n", symbols[index], entry.getKey());
-            index++;
         }
     }
 
@@ -1158,46 +1139,47 @@ public class TUI implements UI {
 
     public void showComponentSelected(Component c) {
         StringBuilder info = new StringBuilder();
+        if(c != null){
+            switch(c) {
+                case Engine engine -> {
+                    if(engine.getIsDouble()) {
+                        info.append("DOUBLE ");
+                    }
+                    info.append("ENGINE");
+                }
+                case Cannon cannon -> {
+                    if(cannon.getIsDouble()) {
+                        info.append("DOUBLE ");
+                    }
+                    info.append("CANNON (Dir: " + cannon.getOrientation() + ")");
+                }
+                case Load load -> {
+                    if(load.getIsSpecial()) {
+                        info.append("SPECIAL ");
+                    }
+                    info.append("LOAD (Capacity: " + load.getCapacity() + ")");
+                }
+                case Shield shield -> {
+                    info.append("SHIELD (Direction: " + shield.getDirection() + ")");
+                }
+                case BatteryStorage batteryStorage -> {
+                    info.append("BATTERY STORAGE (Capacity: " + batteryStorage.getCapacity() + ")");
+                }
+                case LifeSupport lifeSupport -> {
+                    info.append("LIFE SUPPORT (Colour: " + lifeSupport.getColor() + ")");
+                }
+                default -> {
+                    info.append(c.getType().toUpperCase());
+                }
+            }
+            System.out.println(info);
+            System.out.print(" _______ \n");
+            System.out.printf("|   %s   |\n", c.getLink()[0]);
+            System.out.printf("| %d %c %d |\n", c.getLink()[3], c.getType().charAt(0), c.getLink()[1]);
+            System.out.printf("|   %s   |\n", c.getLink()[2]);
+            System.out.print("|_______|\n");
 
-        switch(c) {
-            case Engine engine -> {
-                if(engine.getIsDouble()) {
-                    info.append("DOUBLE ");
-                }
-                info.append("ENGINE");
-            }
-            case Cannon cannon -> {
-                if(cannon.getIsDouble()) {
-                    info.append("DOUBLE ");
-                }
-                info.append("CANNON (Dir: " + cannon.getOrientation() + ")");
-            }
-            case Load load -> {
-                if(load.getIsSpecial()) {
-                    info.append("SPECIAL ");
-                }
-                info.append("LOAD (Capacity: " + load.getCapacity() + ")");
-            }
-            case Shield shield -> {
-                info.append("SHIELD (Direction: " + shield.getDirection() + ")");
-            }
-            case BatteryStorage batteryStorage -> {
-                info.append("BATTERY STORAGE (Capacity: " + batteryStorage.getCapacity() + ")");
-            }
-            case LifeSupport lifeSupport -> {
-                info.append("LIFE SUPPORT (Colour: " + lifeSupport.getColor() + ")");
-            }
-            default -> {
-                info.append(c.getType().toUpperCase());
-            }
         }
-        System.out.println(info);
-        System.out.print(" _______ \n");
-        System.out.printf("|   %s   |\n", c.getLink()[0]);
-        System.out.printf("| %d %c %d |\n", c.getLink()[3], c.getType().charAt(0), c.getLink()[1]);
-        System.out.printf("|   %s   |\n", c.getLink()[2]);
-        System.out.print("|_______|\n");
-
     }
 
     @Override

@@ -2,7 +2,6 @@ package it.polimi.ingsw.net.events.serverevents.buildingevents;
 
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
 public class DiscardSuccessEvent extends ServerEvent {
 
@@ -10,7 +9,7 @@ public class DiscardSuccessEvent extends ServerEvent {
     private int index;
     private String nickname;
     public DiscardSuccessEvent(int index, String nickname) {
-        super(ServerEventType.DISCART_SUCCESS, true);
+        super(true);
         message = "Discard success";
         this.index = index;
         this.nickname = nickname;

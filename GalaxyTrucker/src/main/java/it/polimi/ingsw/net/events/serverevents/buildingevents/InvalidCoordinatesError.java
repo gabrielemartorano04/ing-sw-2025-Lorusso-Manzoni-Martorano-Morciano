@@ -2,7 +2,6 @@ package it.polimi.ingsw.net.events.serverevents.buildingevents;
 
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
 /**
  * Error event from server to client. It signals that the player inserted invalid coordinates.
@@ -10,7 +9,7 @@ import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 public class InvalidCoordinatesError extends ServerEvent {
     private String username, message;
     public InvalidCoordinatesError(String username) {
-        super(ServerEventType.INVALID_COORDINATES_ERROR, false);
+        super(false);
         this.username = username;
         message = username+" inserted invalid coordinates";
     }

@@ -5,7 +5,6 @@ import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.exceptions.InvalidComponentsException;
@@ -18,8 +17,6 @@ import it.polimi.ingsw.view.ParserState;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Class that manages the single card slavers
@@ -198,12 +195,12 @@ public class Slavers extends Card implements Serializable {
             }else{
                 cardState = CardState.HUMANSTOREMOVE;
                 indexOfCurrentTrucker = 0;
-                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname(), defeatedTruckers.getFirst().getSpaceShip(), null, ""
+                return new HumanCoordinates(true, defeatedTruckers.getFirst().getNickname(), defeatedTruckers.getFirst().getSpaceShip(), null, ""
                 );
             }
         }else{
             indexOfCurrentTrucker++;
-            return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+            return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
         }
     }
 
@@ -217,10 +214,10 @@ public class Slavers extends Card implements Serializable {
         if (indexOfCurrentTrucker == Game.getIstance().getTruckerList().size()-1) {
             cardState = CardState.HUMANSTOREMOVE;
             indexOfCurrentTrucker = 0;
-            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), null, "" );
+            return new HumanCoordinates(true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), null, "" );
         }else{
             indexOfCurrentTrucker++;
-            return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+            return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
         }
     }
 
@@ -283,7 +280,7 @@ public class Slavers extends Card implements Serializable {
         }else{
             cardState = CardState.HUMANSTOREMOVE;
             indexOfCurrentTrucker = 0;
-            return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), null, "");
+            return new HumanCoordinates(true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), null, "");
         }
 
     }
@@ -314,7 +311,7 @@ public class Slavers extends Card implements Serializable {
                 cardState = CardState.ESECUZIONE;
                 return cardEffect();
             }
-            return new HumanCoordinates(ServerEventType.HUMAN_REMOVED,true,defeatedTruckers.getFirst().getNickname(), defeatedTruckers.getFirst().getSpaceShip(), defeatedShipUpdated, defeatedTruckerName);
+            return new HumanCoordinates(true,defeatedTruckers.getFirst().getNickname(), defeatedTruckers.getFirst().getSpaceShip(), defeatedShipUpdated, defeatedTruckerName);
         }
         else{
             try {
@@ -330,7 +327,7 @@ public class Slavers extends Card implements Serializable {
                     cardState = CardState.ESECUZIONE;
                     return cardEffect();
                 }
-                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), defeatedShipUpdated, defeatedTruckerName);
+                return new HumanCoordinates(true, defeatedTruckers.getFirst().getNickname(),defeatedTruckers.getFirst().getSpaceShip(), defeatedShipUpdated, defeatedTruckerName);
 
             } catch (InvalidCoordinates e) {
                 throw new InvalidCoordinates(e.getMessage());

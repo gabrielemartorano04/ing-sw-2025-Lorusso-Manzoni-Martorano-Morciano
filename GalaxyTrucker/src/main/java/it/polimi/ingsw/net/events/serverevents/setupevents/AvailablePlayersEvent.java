@@ -3,7 +3,6 @@ package it.polimi.ingsw.net.events.serverevents.setupevents;
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
 import java.util.ArrayList;
 
@@ -14,7 +13,7 @@ public class AvailablePlayersEvent extends ServerEvent {
 
 
     public AvailablePlayersEvent(ArrayList<PlayerColors> colors, ArrayList<String> nicknames) {
-        super(ServerEventType.AVAILABLE_PLAYERS, false);
+        super(false);
         this.colors = colors;
         this.nicknames = nicknames;
     }

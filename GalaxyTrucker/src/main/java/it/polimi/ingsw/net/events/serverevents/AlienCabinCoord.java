@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class AlienCabinCoord extends ServerEvent {
     private ArrayList<int[]> AlienCabinCoord;
     public AlienCabinCoord(ArrayList<int[]> alienCabinCoord) {
-        super(ServerEventType.SEND_MESSAGE,false);
+        super(false);
         this.AlienCabinCoord = alienCabinCoord;
     }
     public ArrayList<int[]> getAlienCabinCoord() {

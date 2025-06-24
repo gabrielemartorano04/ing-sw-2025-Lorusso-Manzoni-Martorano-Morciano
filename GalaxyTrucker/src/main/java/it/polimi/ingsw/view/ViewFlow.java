@@ -2,6 +2,8 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.components.Component;
+import it.polimi.ingsw.model.components.Load;
+import it.polimi.ingsw.model.components.Shield;
 import it.polimi.ingsw.net.EventReceiver;
 import it.polimi.ingsw.net.events.clientevents.PongEvent;
 import it.polimi.ingsw.net.events.clientevents.cardevents.DeadTrucker;
@@ -11,7 +13,6 @@ import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.clientevents.cardevents.OkStartFlight;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.view.graphic.GUI;
 import it.polimi.ingsw.view.text.TUI;
 import it.polimi.ingsw.view.text.TimerDisplay;
@@ -131,9 +132,11 @@ public class ViewFlow implements EventReceiver {
 
     @Override
     public void onEventReceived(ServerEvent event) {
-        if (event.getEventType() != ServerEventType.PING) {
-            event.call(serverEventVisitor);
-        }
+        //TODO sistemare
+//        if (event.getEventType() != ServerEventType.PING) {
+//            event.call(serverEventVisitor);
+//        }
+        event.call(serverEventVisitor);
     }
 
     /**
@@ -497,6 +500,65 @@ public class ViewFlow implements EventReceiver {
 
     public int getLostComponents() {
         return ship.getLost();
+    }
+
+    public boolean shipHasDoubleEngines(){
+        if(ship.getNumDoubleEngine()>0 && ship.getNumBatteries() > 0){
+            return true;
+        }else{
+            this.handleInput("n");
+            return false;
+        }
+    }
+
+    public boolean shipHasDoubleCannons(){
+        if(ship.getNumDoubleCannon()>0 && ship.getNumBatteries() > 0){
+            return true;
+        }else{
+            this.handleInput("n");
+            return false;
+        }
+    }
+
+    public boolean shipHasShields(){
+        if(ship.getNumBatteries() == 0){
+            this.handleInput("n");
+            return false;
+        }else{
+            Component[][] components = ship.getComponents();
+            for (int i = 5; i <= 9; i++) {
+                for (int j = 4; j <= 10; j++) {
+                    if (components[i][j] != null) {
+                        switch (components[i][j]) {
+                            case Shield s -> {
+                                return true;
+                            }
+                            default -> {}
+                        }
+                    }
+                }
+            }
+            this.handleInput("n");
+            return false;
+        }
+    }
+
+    public boolean shipHasLoad(){
+        Component[][] components = ship.getComponents();
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if (components[i][j] != null) {
+                    switch (components[i][j]) {
+                        case Load l -> {
+                            return true;
+                        }
+                        default -> {}
+                    }
+                }
+            }
+        }
+        this.handleInput("n");
+        return false;
     }
 }
 

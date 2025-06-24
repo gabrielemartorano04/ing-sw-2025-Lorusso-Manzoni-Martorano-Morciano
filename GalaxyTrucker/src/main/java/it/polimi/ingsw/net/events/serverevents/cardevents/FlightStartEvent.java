@@ -1,10 +1,8 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,7 +20,7 @@ public class FlightStartEvent extends ServerEvent {
 
 
     public FlightStartEvent(int position, int batteryCount, int humanCount, float cannonPower, int enginePower, Map<String,Integer> track, SpaceShip spaceShip, ArrayList<String> players) {
-        super(ServerEventType.START_FLIGHT, false);
+        super(false);
         message = "Flight started, your spaceship were also filled";
         this.position = position;
         this.batteryCount = batteryCount;

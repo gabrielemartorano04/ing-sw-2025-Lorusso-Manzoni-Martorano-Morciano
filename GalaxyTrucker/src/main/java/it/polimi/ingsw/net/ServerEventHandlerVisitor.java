@@ -275,7 +275,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setTrack(event.getTrack());
         viewFlow.setShip(event.getSpaceShip());
         ui.flightScene(event);
-        System.out.println("flightScene");
 
     }
 

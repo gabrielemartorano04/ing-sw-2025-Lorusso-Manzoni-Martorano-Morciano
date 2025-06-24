@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.view.ParserState;
@@ -224,11 +223,11 @@ public class WarZone extends Card implements Serializable {
             }
             case CANNONS -> {
                 state = CardState.ACTIVATE_CANNONS;
-                return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "Activate double cannons?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+                return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, "Activate double cannons?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
             }
             case ENGINES -> {
                 state = CardState.ACTIVATE_ENGINES;
-                return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, ParserState.ACTIVATE_ENGINES, "Activate double engines?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+                return new BooleanDecision(true, ParserState.ACTIVATE_ENGINES, "Activate double engines?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
             }
             default ->
                 throw new GeneralError("Unknown condition " + currCondition);
@@ -274,7 +273,7 @@ public class WarZone extends Card implements Serializable {
             return findWeakestTrucker();
         }
         indexOfCurrTrucker++;
-        return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "vuoi attivare un Cannone Doppio?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+        return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, "vuoi attivare un Cannone Doppio?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
     }
 
 
@@ -315,7 +314,7 @@ public class WarZone extends Card implements Serializable {
             return findWeakestTrucker();
         }
         indexOfCurrTrucker++;
-        return new BooleanDecision(ServerEventType.ACTIVATE_ENGINES, true, ParserState.ACTIVATE_ENGINES, "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrTrucker).getNickname());
+        return new BooleanDecision(true, ParserState.ACTIVATE_ENGINES, "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrTrucker).getNickname());
     }
 
 
@@ -621,14 +620,14 @@ public class WarZone extends Card implements Serializable {
                 return cardEffect();
             case GET_SHOT:
                 state = CardState.ROLL_DICE;
-                return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", weakestTrucker.getNickname());
+                return new BooleanDecision(true, ParserState.ROLL_DICE, "Roll the dice", weakestTrucker.getNickname());
             case LOSE_GOODS:
                 state = CardState.REMOVE_GOODS;
                 return removeGoods();
             case LOSE_HUMANS:
                 state = CardState.HUMANSTOREMOVE;
                 numOfHumanToRemove = penalties.get(currCondition).getValue();
-                return new HumanCoordinates(ServerEventType.HUMAN_COORDINATES, true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(),null,"");
+                return new HumanCoordinates(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(),null,"");
             default:
                 throw new GeneralError("Unknown TypeOfEffect");
         }
@@ -731,7 +730,7 @@ public class WarZone extends Card implements Serializable {
                         }
                     }else{
                         state = CardState.ROLL_DICE;
-                        return new BooleanDecision(ServerEventType.ROLL_DICE, true, ParserState.ROLL_DICE, "Roll the dice", this.weakestTrucker.getNickname());
+                        return new BooleanDecision(true, ParserState.ROLL_DICE, "Roll the dice", this.weakestTrucker.getNickname());
                     }
                 }
                 default -> throw new GeneralError("Unknown TypeOfEffect");
