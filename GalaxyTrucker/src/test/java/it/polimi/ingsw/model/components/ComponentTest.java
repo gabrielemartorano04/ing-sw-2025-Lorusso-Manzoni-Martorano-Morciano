@@ -66,4 +66,14 @@ class ComponentTest {
     void getType() {
         assertEquals("Engine",component.getType());
     }
+
+    @Test
+    void getRotationAngle(){
+        assertEquals(0,component.getRotationAngle());
+    }
+
+    @Test
+    void toStringTest(){
+        assertNotNull(component.toString());
+    }
 }

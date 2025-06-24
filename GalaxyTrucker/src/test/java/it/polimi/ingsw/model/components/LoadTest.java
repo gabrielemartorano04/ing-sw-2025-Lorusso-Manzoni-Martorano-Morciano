@@ -33,11 +33,35 @@ class LoadTest {
     void addGood() {
         load.addGood(0,new Goods(2));
         assertEquals(1,load.getQuantity());
+        assertThrows(IndexOutOfBoundsException.class, () -> load.addGood(load.getCapacity()+1,new Goods(2)));
     }
 
     @Test
     void getGoods() {
         load.addGood(0,new Goods(2));
         assertEquals(1,load.getGoods().size());
+    }
+
+    @Test
+    void isEmpty(){
+        assertTrue(load.isEmpty());
+        load.addGood(0,new Goods(2));
+        assertFalse(load.isEmpty());
+    }
+
+    @Test
+    void removeGood(){
+        assertThrows(IndexOutOfBoundsException.class, () -> load.removeGood(load.getCapacity()+1));
+
+        load.addGood(0,new Goods(2));
+        load.removeGood(0);
+    }
+
+    @Test
+    void getGood(){
+        assertThrows(IndexOutOfBoundsException.class, () -> load.getGood(load.getCapacity()+1));
+        Goods good=new Goods(2);
+        load.addGood(0,good);
+        assertEquals(good,load.getGood(0));
     }
 }

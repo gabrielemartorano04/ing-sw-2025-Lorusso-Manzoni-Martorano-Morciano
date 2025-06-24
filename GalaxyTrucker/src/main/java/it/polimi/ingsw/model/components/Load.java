@@ -86,10 +86,10 @@ final public class Load extends Component implements Serializable {
     public boolean isEmpty() {
         for (Goods g : goods) {
             if (g.getValue() != -1) {
-                return false; // c'è almeno una merce valida
+                return false;
             }
         }
-        return true; // nessuna merce valida trovata
+        return true;
     }
 
     /**

@@ -32,10 +32,25 @@ class ShieldTest {
     @Test
     void turn() {
         shield.turn();
-        assertEquals(Direction.SE, shield.getDirection());
         assertEquals(shield.getLink()[0],1);
         assertEquals(shield.getLink()[1],1);
         assertEquals(shield.getLink()[2],2);
         assertEquals(shield.getLink()[3],3);
+        shield.setDirection(Direction.NE);
+        shield.turn();
+        assertEquals(Direction.SE, shield.getDirection());
+
+        shield.setDirection(Direction.SE);
+        shield.turn();
+        assertEquals(Direction.SW, shield.getDirection());
+
+        shield.setDirection(Direction.SW);
+        shield.turn();
+        assertEquals(Direction.NW, shield.getDirection());
+
+        shield.setDirection(Direction.NW);
+        shield.turn();
+        assertEquals(Direction.NE, shield.getDirection());
+
     }
 }
