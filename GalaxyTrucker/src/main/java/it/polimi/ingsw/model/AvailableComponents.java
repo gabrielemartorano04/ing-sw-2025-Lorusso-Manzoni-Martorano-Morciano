@@ -346,9 +346,6 @@ public class AvailableComponents implements Serializable {
         components.add(batteryStorage17);
 
         shuffle();
-        if (components.size() > 152) {
-            components = new ArrayList<>(components.subList(0, 152));
-        }
     }
 
     /**
