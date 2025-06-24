@@ -1,10 +1,9 @@
-package it.polimi.ingsw.net.events.serverevents.cardevents;
+package it.polimi.ingsw.net.events.serverevents;
 
 import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
-import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -20,7 +19,7 @@ public class ResumeGameEvent extends ServerEvent {
     private final ArrayList<String> playerNames;
 
     public ResumeGameEvent(ArrayList<Component> availableComponents, String nickname, ArrayList<Trucker> trucker, GameState gameState, int level, Map<String, Integer> track, ArrayList<String> playerNames) {
-        super(true,false);
+        super(true);
         this.truckers = trucker;
         this.gameState = gameState;
         this.level = level;

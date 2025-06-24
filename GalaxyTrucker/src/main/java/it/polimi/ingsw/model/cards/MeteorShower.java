@@ -6,6 +6,7 @@ import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
+import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.BooleanDecision;
 import it.polimi.ingsw.net.events.serverevents.cardevents.CardFinished;
@@ -15,8 +16,12 @@ import it.polimi.ingsw.view.ParserState;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Class that manages the single card meteor shower
@@ -42,6 +47,8 @@ public class MeteorShower extends Card implements Serializable {
      * currentMeteor that is threatening players' ships
      */
     private int[] meteor;
+
+    ArrayList<Trucker> truckerRemoved;
 
     /**
      * current roll dice result for the current meteor
@@ -75,6 +82,7 @@ public class MeteorShower extends Card implements Serializable {
         this.meteors = direction;
         this.indexOfCurrTrucker = 0;
         this.state = CardState.ROLL_DICE;
+        this.truckerRemoved = new ArrayList<>();
     }
 
 
@@ -198,7 +206,7 @@ public class MeteorShower extends Card implements Serializable {
      */
     @Override
     public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
-        if (this.state != CardState.ACTIVATE_ENGINES) {
+        if (this.state != CardState.ACTIVATE_CANNONS) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
         if(activate){
@@ -224,7 +232,7 @@ public class MeteorShower extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrTrucker++;
-        return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, "vuoi attivare un Cannone Doppio?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+        return new BooleanDecision(ServerEventType.ACTIVATE_CANNONS, true, ParserState.ACTIVATE_CANNONS, "vuoi attivare un Cannone Doppio?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
     }
 
     /**
@@ -267,7 +275,7 @@ public class MeteorShower extends Card implements Serializable {
             j++;
         }
         if (meteors.size()==(currMeteorIndex)) {
-            ArrayList<Trucker> truckerRemoved;
+
             truckerRemoved = Game.getIstance().endTurn();
 
             GamePersistence.saveGame(GameController.getIstance());
@@ -279,7 +287,28 @@ public class MeteorShower extends Card implements Serializable {
         }
     }
 
+    public ArrayList<int[]> getMeteors() {
+        return meteors;
+    }
 
+    public int getCurrMeteorIndex() {
+        return currMeteorIndex;
+    }
 
+    public int getIndexOfCurrTrucker() {
+        return indexOfCurrTrucker;
+    }
+
+    public ArrayList<Trucker> getTruckerRemoved() {
+        return truckerRemoved;
+    }
+
+    public void setState(CardState state) {
+        this.state = state;
+    }
+
+    public void setMeteor(){
+        meteor = meteors.getFirst();
+    }
 }
 

@@ -75,7 +75,7 @@ class AbandonedShipTest {
             HumanCoordinates event = (HumanCoordinates) sEvent;
 
             assertEquals(ServerEventType.HUMAN_COORDINATES, event.getEventType());
-            assertFalse(event.isForAll());
+            assertTrue(event.isForAll());
             assertEquals(Game.getIstance().getTrucker(abandonedShip.getIndexOfCurrTrucker()).getNickname(), event.getNickname());
         }catch (Exception e){
             fail();
@@ -120,6 +120,8 @@ class AbandonedShipTest {
 
     @Test
     void setHumansCoordinates() {
+        abandonedShip.setState(CardState.HUMANSTOREMOVE);
+        abandonedShip.setTruckerThatHasDecided(Game.getIstance().getTruckerList().get(0));
         ArrayList<int[]> coordinates = new ArrayList<>();
         coordinates.add(new int[]{7,7, 1});
         coordinates.add(new int[]{6,5, 1});
@@ -163,6 +165,8 @@ class AbandonedShipTest {
         coordinates.add(new int[]{7,7, 1});
         coordinates.add(new int[]{6,5, 1});
         try {
+            abandonedShip.setState(CardState.HUMANSTOREMOVE);
+            abandonedShip.setTruckerThatHasDecided(Game.getIstance().getTruckerList().get(0));
             abandonedShip.setHumansCoordinates(coordinates);
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
@@ -172,6 +176,7 @@ class AbandonedShipTest {
         //con trucker che atterrno
         ServerEvent sEvent = null;
         try {
+            abandonedShip.setState(CardState.ESECUZIONE);
             sEvent = abandonedShip.cardEffect();
         }catch (GeneralError e) {
             throw new RuntimeException(e);
@@ -200,6 +205,7 @@ class AbandonedShipTest {
 
     @Test
     void cardEffect_noLanding() {
+        abandonedShip.setState(CardState.ESECUZIONE);
         Game.getIstance().getTruckerList().getFirst().getSpaceShip().setNumHuman();
 
         //senza trucker che atterrno

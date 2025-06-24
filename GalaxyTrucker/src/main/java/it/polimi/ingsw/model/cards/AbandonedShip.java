@@ -200,4 +200,12 @@ public class AbandonedShip extends Card implements Serializable {
     public int getIndexOfCurrTrucker() {
         return indexOfCurrTrucker;
     }
+
+    public void setState(CardState state) {
+        this.state = state;
+    }
+
+    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided) {
+        this.truckerThatHasDecided = truckerThatHasDecided;
+    }
 }

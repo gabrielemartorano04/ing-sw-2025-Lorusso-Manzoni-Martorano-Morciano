@@ -8,7 +8,7 @@ import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 public class GenericErrorInsertedData extends ServerEvent {
     private String message;
     public GenericErrorInsertedData(){
-        super(false,false);
+        super(false);
         message = "Error inserted data";
     }
     @Override

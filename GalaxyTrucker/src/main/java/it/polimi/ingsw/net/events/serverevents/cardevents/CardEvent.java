@@ -8,7 +8,7 @@ public abstract class CardEvent extends ServerEvent {
     private final String nickname;
 
     public CardEvent(boolean forAll, ParserState parserState, String nickname) {
-        super(forAll,false);
+        super(forAll);
         this.parserState = parserState;
         this.nickname = nickname;
     }
