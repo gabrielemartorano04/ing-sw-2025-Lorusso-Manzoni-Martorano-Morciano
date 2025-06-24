@@ -1139,46 +1139,47 @@ public class TUI implements UI {
 
     public void showComponentSelected(Component c) {
         StringBuilder info = new StringBuilder();
+        if(c != null){
+            switch(c) {
+                case Engine engine -> {
+                    if(engine.getIsDouble()) {
+                        info.append("DOUBLE ");
+                    }
+                    info.append("ENGINE");
+                }
+                case Cannon cannon -> {
+                    if(cannon.getIsDouble()) {
+                        info.append("DOUBLE ");
+                    }
+                    info.append("CANNON (Dir: " + cannon.getOrientation() + ")");
+                }
+                case Load load -> {
+                    if(load.getIsSpecial()) {
+                        info.append("SPECIAL ");
+                    }
+                    info.append("LOAD (Capacity: " + load.getCapacity() + ")");
+                }
+                case Shield shield -> {
+                    info.append("SHIELD (Direction: " + shield.getDirection() + ")");
+                }
+                case BatteryStorage batteryStorage -> {
+                    info.append("BATTERY STORAGE (Capacity: " + batteryStorage.getCapacity() + ")");
+                }
+                case LifeSupport lifeSupport -> {
+                    info.append("LIFE SUPPORT (Colour: " + lifeSupport.getColor() + ")");
+                }
+                default -> {
+                    info.append(c.getType().toUpperCase());
+                }
+            }
+            System.out.println(info);
+            System.out.print(" _______ \n");
+            System.out.printf("|   %s   |\n", c.getLink()[0]);
+            System.out.printf("| %d %c %d |\n", c.getLink()[3], c.getType().charAt(0), c.getLink()[1]);
+            System.out.printf("|   %s   |\n", c.getLink()[2]);
+            System.out.print("|_______|\n");
 
-        switch(c) {
-            case Engine engine -> {
-                if(engine.getIsDouble()) {
-                    info.append("DOUBLE ");
-                }
-                info.append("ENGINE");
-            }
-            case Cannon cannon -> {
-                if(cannon.getIsDouble()) {
-                    info.append("DOUBLE ");
-                }
-                info.append("CANNON (Dir: " + cannon.getOrientation() + ")");
-            }
-            case Load load -> {
-                if(load.getIsSpecial()) {
-                    info.append("SPECIAL ");
-                }
-                info.append("LOAD (Capacity: " + load.getCapacity() + ")");
-            }
-            case Shield shield -> {
-                info.append("SHIELD (Direction: " + shield.getDirection() + ")");
-            }
-            case BatteryStorage batteryStorage -> {
-                info.append("BATTERY STORAGE (Capacity: " + batteryStorage.getCapacity() + ")");
-            }
-            case LifeSupport lifeSupport -> {
-                info.append("LIFE SUPPORT (Colour: " + lifeSupport.getColor() + ")");
-            }
-            default -> {
-                info.append(c.getType().toUpperCase());
-            }
         }
-        System.out.println(info);
-        System.out.print(" _______ \n");
-        System.out.printf("|   %s   |\n", c.getLink()[0]);
-        System.out.printf("| %d %c %d |\n", c.getLink()[3], c.getType().charAt(0), c.getLink()[1]);
-        System.out.printf("|   %s   |\n", c.getLink()[2]);
-        System.out.print("|_______|\n");
-
     }
 
     @Override
