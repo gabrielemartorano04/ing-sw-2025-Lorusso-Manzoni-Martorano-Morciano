@@ -13,7 +13,7 @@ public class PlayerJoinedEvent extends ServerEvent {
     private final SpaceShip spaceShip;
 
     public PlayerJoinedEvent(String username, SpaceShip spaceShip) {
-        super(false);
+        super(false,false);
         this.username = username;
         this.spaceShip = spaceShip;
         message = username+", you joined the game";

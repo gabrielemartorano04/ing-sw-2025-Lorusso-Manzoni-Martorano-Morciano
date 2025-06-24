@@ -8,7 +8,7 @@ public class ShowOtherShipResponse extends ServerEvent {
     private String nickname;
 
     public ShowOtherShipResponse(Component[][] spaceship, String nickname) {
-        super(false);
+        super(false,false);
         this.spaceship = spaceship;
         this.nickname = nickname;
     }

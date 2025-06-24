@@ -14,7 +14,7 @@ public class ColorAlreadyInError extends ServerEvent {
     private PlayerColors color;
     private EnumSet<PlayerColors> chooseColors;
     public ColorAlreadyInError(PlayerColors color, EnumSet<PlayerColors> availableColors) {
-        super(false);
+        super(false,false);
         this.color = color;
         this.chooseColors = availableColors;
         message= color.toString()+ "already is use. Available colors: " + availableColors;

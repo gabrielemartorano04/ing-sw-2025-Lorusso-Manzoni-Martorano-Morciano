@@ -9,7 +9,6 @@ public class InvalidComponentsExceptionEvent extends CardEvent {
     private String message;
 
     public InvalidComponentsExceptionEvent(String message, boolean forAll, ParserState parserState, String nickname) {
-        //TODO sistemare ingressi del super
         super(forAll, parserState, nickname);
         this.message = message;
     }
