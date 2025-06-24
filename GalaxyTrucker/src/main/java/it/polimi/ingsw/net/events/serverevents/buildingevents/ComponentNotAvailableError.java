@@ -4,20 +4,29 @@ import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Error event from server to client. The selected component is not available
+ * Error event sent when the selected component is not available
  */
 public class ComponentNotAvailableError extends ServerEvent {
-    private String message;
+
+    /**
+     * Event constructor
+     */
     public ComponentNotAvailableError() {
         super(false);
-        message = "The component is not available";
     }
 
+    /**
+     * @return the message associated with the error
+     */
     @Override
     public String getMessage() {
-        return message;
+        return "The component is not available";
     }
 
+    /**
+     * This method calls the client method that manages this event reception
+     * @param visitor client class that manages server events
+     */
     @Override
     public void call (ServerEventHandlerVisitor visitor) {
         visitor.visit(this);

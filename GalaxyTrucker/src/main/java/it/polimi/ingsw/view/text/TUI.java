@@ -1087,14 +1087,13 @@ public class TUI implements UI {
 
     @Override
     public void showTrack(Map<String, Integer> truckers, int level) {
-        // Ordina i trucker per posizione crescente
+
+        System.out.println("\n" + "Current Track: ");
         List<Map.Entry<String, Integer>> sortedTruckers = new ArrayList<>(truckers.entrySet());
         sortedTruckers.sort(Comparator.comparingInt(Map.Entry::getValue));
 
-        // Ottieni la posizione del primo (il migliore)
         int firstPosition = sortedTruckers.get(0).getValue();
 
-        // Stampa la classifica
         for (int i = 0; i < sortedTruckers.size(); i++) {
             String name = sortedTruckers.get(i).getKey();
             int position = sortedTruckers.get(i).getValue();
