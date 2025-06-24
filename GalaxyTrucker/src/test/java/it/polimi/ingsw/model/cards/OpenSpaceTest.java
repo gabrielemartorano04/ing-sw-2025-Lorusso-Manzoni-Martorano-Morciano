@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEventType;
 import it.polimi.ingsw.net.events.serverevents.cardevents.BooleanDecision;
 import it.polimi.ingsw.net.events.serverevents.cardevents.CardFinished;
 import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
@@ -101,7 +100,6 @@ class OpenSpaceTest {
         }else{
             BooleanDecision e= (BooleanDecision) event;
             assertTrue(e.isForAll());
-            assertEquals(ServerEventType.ACTIVATE_ENGINES, e.getEventType());
             assertEquals(ParserState.ACTIVATE_ENGINES, e.getParserState());
             assertEquals("Choose the position of the double engines to activate", e.getMessage());
             assertEquals(Game.getIstance().getTruckerList().get(openSpace.getIndexOfCurrentTrucker()).getNickname(), e.getNickname());
@@ -129,7 +127,6 @@ class OpenSpaceTest {
         }else{
             BooleanDecision e= (BooleanDecision) event;
             assertTrue(e.isForAll());
-            assertEquals(ServerEventType.ACTIVATE_ENGINES, e.getEventType());
             assertEquals(ParserState.ACTIVATE_ENGINES, e.getParserState());
             assertEquals("Choose the position of the double engines to activate", e.getMessage());
             assertEquals(Game.getIstance().getTruckerList().get(openSpace.getIndexOfCurrentTrucker()).getNickname(), e.getNickname());

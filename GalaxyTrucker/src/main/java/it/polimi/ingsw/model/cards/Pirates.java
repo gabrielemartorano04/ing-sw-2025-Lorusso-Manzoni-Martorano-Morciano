@@ -355,6 +355,8 @@ public class Pirates extends Card implements Serializable {
         }
 
         if(answer){
+            System.out.println("la nave di: " + Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+            System.out.println("in shield coord c'è:" + Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().getComponents()[shieldCoord[0]][shieldCoord[1]]);
             if(!Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkShield(shieldCoord)){
                 throw new InvalidCoordinates("Not a shield");
             }
@@ -454,5 +456,13 @@ public class Pirates extends Card implements Serializable {
 
     public void setState(CardState cardState) {
         this.cardState = cardState;
+    }
+
+    public void setCurrShootIndex(int currShootIndex) {
+        this.currShootIndex = currShootIndex;
+    }
+
+    public void setIndexOfCurrentTrucker(int indexOfCurrentTrucker) {
+        this.indexOfCurrentTrucker = indexOfCurrentTrucker;
     }
 }
