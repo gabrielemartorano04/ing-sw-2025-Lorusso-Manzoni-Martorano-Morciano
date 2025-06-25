@@ -58,8 +58,6 @@ public interface VirtualView {
 
     void visit(TruckerWithdrawEvent event);
 
-    void visit(GenericErrorInsertedData event);
-
     void visit(NoAvailableSpaceError event);
 
     void visit(ReturnStackEvent event);
