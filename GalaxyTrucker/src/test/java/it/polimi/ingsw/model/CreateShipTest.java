@@ -62,8 +62,8 @@ public class CreateShipTest {
         ship.addComponent(c20, 9, 6);
         c21.turn();
         ship.addComponent(c21, 9, 8);
-        ship.setNumHuman();
-        ship.setBattery();
+//        ship.setNumHuman();
+//        ship.setBattery();
         return ship;
     }
 
@@ -138,8 +138,8 @@ public class CreateShipTest {
         c22.turn();
         ship.addComponent(c22, 9, 5);
         ship.addComponent(c23, 9, 9);
-        ship.setBattery();
-        ship.setNumHuman();
+//        ship.setBattery();
+//        ship.setNumHuman();
         return ship;
     }
 
