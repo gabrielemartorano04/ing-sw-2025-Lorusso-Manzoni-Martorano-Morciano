@@ -145,7 +145,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.invalidCoordinates(event);
     }
 
-
     @Override
     public void visit(TurnHourglassError event) {
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
@@ -672,7 +671,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(TruckerWithdrawEvent event) {
-        String nickname=event.getNickname();
         boolean choice=event.getChoice();
         if(choice){
             if(event.getNickname().equalsIgnoreCase(viewFlow.getNickname())) {
@@ -692,10 +690,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
 
     // === ERRORI e MESSAGGI GENERICI ===
-    @Override
-    public void visit(GenericErrorInsertedData event) {
-        ui.showError(event.getMessage());
-    }
+
 
     @Override
     public void visit(NoAvailableSpaceError event) {
