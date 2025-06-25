@@ -34,7 +34,11 @@ class PiratesTest {
     @BeforeEach
     void setUp() throws InvalidCoordinates {
         ship1 = createShip.createShip1(new SpaceShip());
+        ship1.setBattery();
+        ship1.setNumHuman();
         ship2 = createShip.createShip3(new SpaceShip());
+        ship2.setBattery();
+        ship2.setNumHuman();
         Game.initializeForTest(ship1, ship2);
 
         ArrayList<int[]> shoots = new ArrayList<>();
@@ -136,9 +140,12 @@ class PiratesTest {
         pirates.setWinDecision(true);
         pirates.setState(CardState.ROLL_DICE);
         pirates.rollDice();
-        ArrayList<int[]> coord = new ArrayList<>();
-        coord.add(new int[]{7, 6});
-        assertThrows(NotEnoughBatteries.class, () -> pirates.activateShield(true, new int[]{6,6}, new int[]{7,6}));
+        ship1 = createShip.createShip1(new SpaceShip());
+        ship1.setNumHuman();
+        ship2 = createShip.createShip1(new SpaceShip());
+        ship2.setNumHuman();
+        Game.initializeForTest(ship1, ship2);
+        assertThrows(NotEnoughBatteries.class, () -> pirates.activateShield(true, new int[]{8,8}, new int[]{5,6}));
     }
 
     @Test

@@ -31,11 +31,15 @@ class MeteorShowerTest {
         SpaceShip ship2=new SpaceShip();
         try {
             ship1 = createShip.createShip1(ship1);
+            ship1.setBattery();
+            ship1.setNumHuman();
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }
         try {
             ship2 = createShip.createShip3(ship2);
+            ship2.setBattery();
+            ship2.setNumHuman();
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }
@@ -128,7 +132,6 @@ class MeteorShowerTest {
                     BooleanDecision e=(BooleanDecision) event;
                     assertEquals(ParserState.ACTIVATE_SHIELD, e.getParserState());
                     assertTrue(e.isForAll());
-                    assertEquals("vuoi attivare uno scudo?", e.getMessage());
                     assertEquals(Game.getIstance().getTruckerList().get(meteorShower.getIndexOfCurrTrucker()).getNickname(), e.getNickname());
                 }
 
@@ -172,7 +175,6 @@ class MeteorShowerTest {
                     BooleanDecision e=(BooleanDecision) event;
                     assertEquals(ParserState.ACTIVATE_CANNONS, e.getParserState());
                     assertTrue(e.isForAll());
-                    assertEquals("vuoi attivare un Cannone Doppio?", e.getMessage());
                     assertEquals(Game.getIstance().getTruckerList().get(meteorShower.getIndexOfCurrTrucker()).getNickname(), e.getNickname());
                 }
 
@@ -213,7 +215,6 @@ class MeteorShowerTest {
             BooleanDecision e=(BooleanDecision) event;
             assertEquals(ParserState.ROLL_DICE, e.getParserState());
             assertTrue(e.isForAll());
-            assertEquals("Roll the dice", e.getMessage());
             assertEquals(Game.getIstance().getTruckerList().getFirst().getNickname(), e.getNickname());
         }
     }

@@ -112,7 +112,6 @@ public class BuildingScene {
         }
     }
 
-    //TODO aggiungere per ogni componente un bottone in modo che premendo parla la link con la posizione x,y
     public Scene createScene(ArrayList<String> playersNames, int level) {
         double width = 1600;
         double height = 900;
@@ -191,7 +190,7 @@ public class BuildingScene {
     }
 
     public void buildShipGrid(boolean buildNew, Component[][] ship) {
-        // Se grid esiste già, la rimuovo dal root
+
         if (grid != null) {
             root.getChildren().remove(grid);
         }
@@ -265,7 +264,7 @@ public class BuildingScene {
 
     public void insertComponentToKepts(Component component) {
         if (keptFillLevel >= keptImages.size()) {
-            return; // tutti gli slot sono pieni, non dovrebbe succedere
+            return;
         }
 
         this.resetComponentSelectedBox();
@@ -280,7 +279,6 @@ public class BuildingScene {
         clip.setArcHeight(12);
         componentView.setClip(clip);
 
-        // Trova il primo slot libero
         int indexToInsert = -1;
         for (int i = 0; i < keptImages.size(); i++) {
             if (keptImages.get(i) == null) {
@@ -290,7 +288,7 @@ public class BuildingScene {
         }
 
         if (indexToInsert == -1) {
-            return; // nessuno slot libero, dovrebbe essere evitato a monte
+            return;
         }
 
         StackPane slot = keptSlotsRef.get(indexToInsert);
@@ -474,6 +472,37 @@ public class BuildingScene {
         });
     }
 
+    public void showComponentUnavailablePopup() {
+        if (!isComponentViewVisible) return;
+
+        double width = root.getWidth();
+        double height = root.getHeight();
+
+        Rectangle overlay = new Rectangle(width, height);
+        overlay.setFill(Color.TRANSPARENT);
+        overlay.setMouseTransparent(true);
+
+        Label messageLabel = new Label("Component Not Available, another player has just selected it");
+        messageLabel.setTextFill(Color.web("#FFDE69"));
+        messageLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
+        messageLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
+        messageLabel.setWrapText(true);
+        messageLabel.setAlignment(Pos.CENTER);
+
+        StackPane popup = new StackPane(overlay, messageLabel);
+        popup.setMouseTransparent(true);
+        StackPane.setAlignment(messageLabel, Pos.BOTTOM_CENTER);
+        StackPane.setMargin(messageLabel, new Insets(0, 0, 50, 0)); // margine dal basso
+
+        Platform.runLater(() -> {
+            if (!root.getChildren().contains(popup)) {
+                root.getChildren().add(popup);
+                PauseTransition delay = new PauseTransition(Duration.seconds(3));
+                delay.setOnFinished(e -> root.getChildren().remove(popup));
+                delay.play();
+            }
+        });
+    }
 
     public void refreshComponentsViewIfVisible() {
         if (isComponentViewVisible) {

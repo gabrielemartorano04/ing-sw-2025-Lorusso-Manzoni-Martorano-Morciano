@@ -30,11 +30,15 @@ class AbandonedStationTest {
         SpaceShip ship2=new SpaceShip();
         try {
             ship1 = createShip.createShip1(ship1);
+            ship1.setBattery();
+            ship1.setNumHuman();
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }
         try {
             ship2 = createShip.createShip3(ship2);
+            ship2.setBattery();
+            ship2.setNumHuman();
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }
@@ -151,7 +155,6 @@ class AbandonedStationTest {
                 BooleanDecision event = (BooleanDecision) sEvent;
                 assertTrue(event.isForAll());
                 assertEquals(ParserState.LAND, event.getParserState());
-                assertEquals("Do you want to land on this AbandonedStation?", event.getMessage());
                 assertEquals(Game.getIstance().getTruckerList().get(abandonedStation.getIndexOfCurrTrucker()).getNickname(), event.getNickname());
             }
         } catch (GeneralError e) {

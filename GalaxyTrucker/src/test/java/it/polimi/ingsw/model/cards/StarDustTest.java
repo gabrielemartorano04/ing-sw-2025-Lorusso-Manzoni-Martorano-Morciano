@@ -25,7 +25,11 @@ class StarDustTest {
     @BeforeEach
     void setUp() throws InvalidCoordinates {
         ship1 = createShip.createShip1(new SpaceShip());
+        ship1.setBattery();
+        ship1.setNumHuman();
         ship2 = createShip.createShip3(new SpaceShip());
+        ship2.setBattery();
+        ship2.setNumHuman();
         Game.initializeForTest(ship1, ship2);
         starDust = new StarDust(false, 1, "front.jpg", "back.jpg", 10);
     }
@@ -52,27 +56,16 @@ class StarDustTest {
 
     @Test
     void testCardEffectThrowsIfWrongState() throws Exception {
-        // uso reflection per forzare il cambio stato (non è previsto nei test reali ma serve per coprire il ramo)
-        var field = StarDust.class.getDeclaredField("cardState");
-        field.setAccessible(true);
-        field.set(starDust, null); // forza uno stato invalido per simulare errore
+        starDust.setState(CardState.LAND);
+        starDust.startCard();
 
         assertThrows(GeneralError.class, () -> starDust.cardEffect());
     }
-//
-//    @Test
-//    void testStartCardErrorFallback() throws Exception {
-//        // uso reflection per forzare stato invalido
-//        var field = StarDust.class.getDeclaredField("cardState");
-//        field.setAccessible(true);
-//        field.set(starDust, null);
-//
-//        ServerEvent event = starDust.startCard();
-//        assertTrue(event instanceof GenericErrorEvent);
-//    }
 
     @Test
     void testGetCardState() {
         assertEquals(CardState.ESECUZIONE, starDust.getCardState());
     }
+
+
 }

@@ -24,7 +24,7 @@ public class StarDust extends Card implements Serializable {
     /**
      * current state of the card, helper for debug and checking consistency
      */
-    private final CardState cardState;
+    private CardState cardState;
 
     /**
      * Star dust constructor, initialise the attributes of this class
@@ -67,7 +67,8 @@ public class StarDust extends Card implements Serializable {
         }
         List<Trucker> truckers = Game.getIstance().getTruckerList();
         Collections.reverse(truckers);
-        for (Trucker trucker : truckers) {
+        for (int i = 0; i < truckers.size(); i++) {
+            Trucker trucker = truckers.get(i);
             int exposedConnectors = trucker.getSpaceShip().countExposedConnectors();
             Game.getIstance().moveBackward(trucker, exposedConnectors);
         }
@@ -80,6 +81,10 @@ public class StarDust extends Card implements Serializable {
         }
         GamePersistence.saveGame(GameController.getIstance());
         return new StarDustEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved, track, this);
+    }
+
+    public void setState(CardState state){
+        this.cardState=state;
     }
 
 }

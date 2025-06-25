@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
-import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.AlienCabinCoord;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
@@ -21,13 +20,11 @@ import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
 import it.polimi.ingsw.view.graphic.scenes.FlightScene;
 import it.polimi.ingsw.view.graphic.scenes.LoginScene;
 import it.polimi.ingsw.view.graphic.scenes.ResultScene;
-import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -36,35 +33,68 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import javafx.scene.shape.Rectangle;
 
-import java.awt.*;
 import java.util.*;
 
+/**
+ * The GUI class represents the graphical user interface for the application.
+ * This class extends the UI class and is responsible for managing and displaying
+ * various game scenes and events
+ */
 public class GUI implements UI {
 
+    /**
+     * Represents the primary used in the GUI for rendering and managing scenes
+     */
     private Stage stage;
+
+    /**
+     * Represents the login scene in the graphical user interface
+     */
     private LoginScene loginScene;
+
+    /**
+     * Represents the scene where the building phase of the game takes place
+     */
     private BuildingScene buildingScene;
+
+    /**
+     * Represents the scene where the flight phase of the game takes place
+     */
     private FlightScene flightScene;
+
+    /**
+     * Represents the scene where the result phase of the game takes place
+     */
     private ResultScene resultScene;
+
+    /**
+     * Represents the ViewFlow component associated with the GUI
+     */
     public final ViewFlow viewFlow;
+
+    /**
+     * This variable determines whether the warzone feature or view
+     * should be displayed in the GUI
+     */
     private boolean showWarzone;
 
+    /**
+     * Constructs a GUI instance that initializes the graphical user interface of the game
+     * @param viewFlow an instance of {@code ViewFlow} that handles the flow of the game view
+     */
     public GUI(ViewFlow viewFlow) {
-
-        //this.stage =new Stage();
         this.viewFlow = viewFlow;
         this.showWarzone = true;
-        //new Thread(() -> Application.launch(GUIApplication.class)).start();
-
     }
 
+    /**
+     * Initializes the graphical user interface for the application, setting up the primary stage
+     * @param primaryStage the primary stage for the application on which the scenes and other GUI elements are displayed
+     */
     public void initGui(Stage primaryStage){
         this.stage=primaryStage;
         Scene loadingScene = new Scene(new StackPane(), 1600, 900);
@@ -76,16 +106,16 @@ public class GUI implements UI {
         stage.show();
     }
 
-
-    // insertnumPlayerscene
-
+    /**
+     * Displays the user interface for selecting the number of players and game mode
+     */
     @Override
     public void showInsertNumPlayers() {
         Platform.runLater(() -> {
             double width = 1600;
             double height = 900;
 
-            Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+            Image backgroundImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg")).toExternalForm());
             ImageView backgroundView = new ImageView(backgroundImage);
             backgroundView.setFitWidth(width);
             backgroundView.setFitHeight(height);
@@ -191,26 +221,26 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Displays a graphical interface prompting the user to choose between resuming an existing game or starting a new game.
+     */
     @Override
     public void showChooseResume() {
         Platform.runLater(() -> {
             double width = 1600;
             double height = 900;
 
-            // Sfondo
             ImageView backgroundView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg")).toExternalForm()));
             backgroundView.setFitWidth(width);
             backgroundView.setFitHeight(height);
             backgroundView.setPreserveRatio(true);
             backgroundView.setMouseTransparent(true);
 
-            // Titolo
             Label messageLabel = new Label("There is an old game to resume");
             messageLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
             messageLabel.setTextFill(Color.web("#FFDE69"));
             messageLabel.setAlignment(Pos.CENTER);
 
-            // Pulsante Resume
             Button resumeBtn = new Button("Resume");
             resumeBtn.setFont(Font.font("Bangers", 20));
             resumeBtn.setTextFill(Color.BLACK);
@@ -219,7 +249,6 @@ public class GUI implements UI {
             resumeBtn.setPrefWidth(160);
             resumeBtn.setOnAction(e -> viewFlow.handleInput("y"));
 
-            // Pulsante New Game
             Button newGameBtn = new Button("New Game");
             newGameBtn.setFont(Font.font("Bangers", 20));
             newGameBtn.setTextFill(Color.BLACK);
@@ -228,17 +257,14 @@ public class GUI implements UI {
             newGameBtn.setPrefWidth(160);
             newGameBtn.setOnAction(e -> viewFlow.handleInput("n"));
 
-            // Contenitore pulsanti
             HBox buttonBox = new HBox(30, resumeBtn, newGameBtn);
             buttonBox.setAlignment(Pos.CENTER);
 
-            // Layout verticale
             VBox content = new VBox(40, messageLabel, buttonBox);
             content.setAlignment(Pos.CENTER);
             content.setPadding(new Insets(40));
 
-            // Stack finale
-            StackPane root = new StackPane(backgroundView, content); // <--- dichiarato qui
+            StackPane root = new StackPane(backgroundView, content);
             StackPane.setAlignment(content, Pos.CENTER);
 
             if (stage.getScene() == null) {
@@ -252,6 +278,10 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Resumes the building scene in the GUI, setting up and displaying the related graphical interface
+     * @param playerNames a list of player names participating in the game, used to customize the building scene
+     */
     @Override
     public void resumeBuildingScene(ArrayList<String> playerNames){
         Platform.runLater(() -> {
@@ -275,6 +305,10 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Resumes the flight scene in the GUI, setting up and displaying the related graphical interface
+     * @param playerNames a list of player names participating in the game, used to customize the flight scene
+     */
     @Override
     public void resumeFlightScene(ArrayList<String> playerNames) {
         Platform.runLater(() -> {
@@ -288,13 +322,12 @@ public class GUI implements UI {
 
     }
 
-
-    //fine insertNumPlayerscene
-
-
-
-    // welcome scene
-
+    /**
+     * Initializes the login scene in the GUI, allowing the user to re-enter an ongoing game
+     * by setting up the scene with the provided player colors and nicknames.
+     * @param colors a list of {@code PlayerColors} representing the colors associated with each player in the game
+     * @param nicknames a list of {@code String} representing the nicknames of the players in the game
+     */
     @Override
     public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames) {
         Platform.runLater(() -> {
@@ -307,6 +340,12 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Displays the welcome scene in the graphical user interface, initializing and setting up
+     * the login scene with the available player color options provided in the event
+     * @param event an instance of {@code AvailableColorsEvent} containing the set of available
+     *              player colors and a message associated with the color selection process
+     */
     @Override
     public void welcomeScene(AvailableColorsEvent event){
         Platform.runLater(() -> {
@@ -319,13 +358,21 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Handles the event indicating that the selected nickname is already in use by another player
+     * @param event an instance of containing details about the error,
+     *              including the username that is already taken and available colors for selection
+     */
     @Override
     public void nickNameAlreadyTaken(NicknameAlreadyInError event){
-        Platform.runLater(() -> {
-            this.loginScene.showNicknameTakenPopup();
-        });
+        Platform.runLater(() -> this.loginScene.showNicknameTakenPopup());
     }
 
+    /**
+     * Handles the event when a player attempts to select a color that is already in use
+     * @param event an instance of containing the details of the color selection error,
+     *              including the color that is already taken.
+     */
     @Override
     public void colorAlreadyTaken(ColorAlreadyInError event){
         Platform.runLater(() -> {
@@ -334,16 +381,21 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Displays a notification indicating that a player has joined the game.
+     * @param nickname the nickname of the player who has joined
+     */
     @Override
     public void showPlayerJoined(String nickname) {
         this.loginScene.showPlayerJoined(nickname);
     }
 
-    // fine welcome scene
-
-
-    // building scene
-
+    /**
+     * Starts the building scene in the graphical user interface, setting up and displaying
+     * the related interface for players to construct their spaceships.
+     * @param event an instance of containing details about the current game state,
+     *              including the list of players, game level, and initial setup for the building phase
+     */
     @Override
     public void startBuildingScene(StartBuildingEvent event){
         Platform.runLater(() -> {
@@ -358,83 +410,110 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Resets the component selection box on the building scene in the graphical user interface.
+     * @param component the component that the user has chosen to discard
+     */
     @Override
     public void showDiscardComponent(Component component) {
-        Platform.runLater(() -> {
-            this.buildingScene.resetComponentSelectedBox();
-        });
+        Platform.runLater(() -> this.buildingScene.resetComponentSelectedBox());
     }
 
+    /**
+     * Handles the event where a component has been successfully linked to a specific
+     * position on the game board. Updates the building scene grid with the linked component.
+     * @param event the containing the details of the linked component, including its
+     *              position (row and column) and the component itself
+     */
     @Override
     public void componentLinked(ComponentLinkedEvent event){
-        Platform.runLater(() -> {
-            this.buildingScene.insertComponentInGrid(event.getComponent(),event.getX(),event.getY());
-        });
+        Platform.runLater(() -> this.buildingScene.insertComponentInGrid(event.getComponent(),event.getX(),event.getY()));
     }
 
+    /**
+     * Displays the specified card stack within the graphical user interface
+     * @param stack the object representing the stack of cards to be displayed
+     */
     @Override
     public void showStack(Stack stack) {
-        Platform.runLater(() -> {
-            this.buildingScene.showStack(stack);
+        Platform.runLater(() -> this.buildingScene.showStack(stack));
+    }
+
+    /**
+     * Handles the event indicating that the selected component is not available for selection
+     * @param event an instance of containing details about the unavailability of the selected component
+     */
+    @Override
+    public void componentNotAvailable(ComponentNotAvailableError event){
+        Platform.runLater(()-> {
+            this.buildingScene.refreshComponentsViewIfVisible();
+            this.buildingScene.showComponentUnavailablePopup();
         });
     }
 
-    @Override
-    public void componentNotAvailable(ComponentNotAvailableError event){
-        //TODO: notifica che il componente che hai provato a selezionare non è disponibile
-        // vogliamo farti restare nella parte dove vedi le componenti disponibili e farti selezionare un altra componente
-        // vogliamo che venga aggiornata la lista dei componenti cioè non devono essere plottati tutti quelli che hanno il selected a true
-
-        //this.buildingScene.showComponentNotAvailablePopup();
-    }
-
+    /**
+     * Handles the event triggered when a player selects a component.
+     * @param event an instance of containing details about the selected component,
+     *              including its index and the nickname of the player who selected it
+     */
     @Override
     public void componentSelected(ComponentSelectedEvent event){
-        // ti riporta nella schermata dove vedi la nave con visualizzato il componente che hai selezionato e le posibili azioni
         Platform.runLater(() -> {
             ImageView component = new ImageView(this.viewFlow.getSelectedComponent().getFrontImage());
             this.buildingScene.insertSelectedComponent(component, false);
         });
     }
 
+    /**
+     * Handles the event triggered when a player provides invalid coordinates during the game.
+     * @param event an instance of containing details about the event, including the username
+     *              of the player who provided invalid coordinates and an error message.
+     */
     @Override
     public void invalidCoordinates(InvalidCoordinatesError event) {
-        Platform.runLater(() -> {
-            this.buildingScene.showPopUpError(event.getMessage());
-        });
+        Platform.runLater(() -> this.buildingScene.showPopUpError(event.getMessage()));
     }
 
-
+    /**
+     * Handles the event indicating that the hourglass cannot be turned at the current moment in the game
+     * @param event an instance of containing the error message
+     */
     @Override
     public void turnHourGlassError(TurnHourglassError event) {
-        Platform.runLater(() -> {
-            this.buildingScene.showPopUpError(event.getMessage());
-
-        });
+        Platform.runLater(() -> this.buildingScene.showPopUpError(event.getMessage()));
     }
 
+    /**
+     * Turns the hourglass timer in the building scene for a specified duration
+     * @param seconds the number of seconds for the hourglass timer to run
+     */
     @Override
     public void turnHourGlass(int seconds){
-        Platform.runLater(() -> {
-            this.buildingScene.startHourglassTimer();
-        });
+        Platform.runLater(() -> this.buildingScene.startHourglassTimer());
     }
 
+    /**
+     * Displays a notification indicating that the time has expired in the building scene
+     * @param expirationCount the number of times the time expired has occurred
+     */
     @Override
     public void showTimeExpired(int expirationCount) {
-        Platform.runLater(() -> {
-            this.buildingScene.showTimeExpired(expirationCount);
-        });
+        Platform.runLater(() -> this.buildingScene.showTimeExpired(expirationCount));
     }
 
-
+    /**
+     * Handles the event triggered when a component is kept by a player.
+     * @param event an instance of containing details about the kept component
+     */
     @Override
     public void keptComponent(KeptComponentEvent event){
-        Platform.runLater(() -> {
-            this.buildingScene.insertComponentToKepts(event.getKept());
-        });
+        Platform.runLater(() -> this.buildingScene.insertComponentToKepts(event.getKept()));
     }
 
+    /**
+     * Handles the event triggered when a component has been successfully rotated.
+     * @param event an instance of containing details about the component that has been rotated
+     */
     @Override
     public void componentTurned(TurnedComponentSuccessEvent event){
         Platform.runLater(() -> {
@@ -443,41 +522,56 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Handles the event triggered when a component kept by the player is selected.
+     * @param event an instance of containing details about the selected kept component, including its index
+     */
     @Override
     public void keptSelected(SuccessSelectKept event){
-        Platform.runLater(() -> {
-            this.buildingScene.selectKeptComponent(event.getIndex());
-        });
+        Platform.runLater(() -> this.buildingScene.selectKeptComponent(event.getIndex()));
     }
 
+    /**
+     * Refreshes the view of available components in the building scene if the component view is currently visible
+     */
     @Override
     public void refreshAvailableComponents(){
-        Platform.runLater(() -> {
-            this.buildingScene.refreshComponentsViewIfVisible();
-        });
+        Platform.runLater(() -> this.buildingScene.refreshComponentsViewIfVisible());
     }
 
+    /**
+     * Refreshes the view of available components in the building scene if the component view is currently visible.
+     * @param components a list of objects representing the components that are currently available
+     *                   for selection or interaction in the building scene
+     */
     @Override
     public void showAvailableComponent(ArrayList<Component> components) {
-        Platform.runLater(() -> {
-            this.buildingScene.refreshComponentsViewIfVisible();
-        });
+        Platform.runLater(() -> this.buildingScene.refreshComponentsViewIfVisible());
     }
 
+    /**
+     * Displays the components that have been kept by the player.
+     * @param kept a list of objects that represent the components
+     *             currently kept by the player during the game
+     */
     @Override
     public void showKeptComponents(ArrayList<Component> kept) {
         // nella gui non deve fare nulla forse c'è un modo migliore di unificare ma per ora tengo cosi
     }
 
+    /**
+     * Handles the event triggered when the stack drop phase is complete.
+     * @param event an instance of containing details of the drop stack event.
+     */
     @Override
     public void dropStack(StackDropOk event){
-        //torna alla schermata base del buildind
-        Platform.runLater(() -> {
-            this.buildingScene.hideStackOverlay();
-        });
+        Platform.runLater(() -> this.buildingScene.hideStackOverlay());
     }
 
-
+    /**
+     * Handles the completion of the building process.
+     * @param event the event indicating that the building phase is complete
+     */
     @Override
     public void  buildingComplete(BuildCompleteEvent event){
         Platform.runLater(() -> {
@@ -488,11 +582,13 @@ public class GUI implements UI {
             }else{
                 viewFlow.handleInput("continue");
             }
-
         });
     }
 
-
+    /**
+     * Handles the AlienCabinCoord event and updates the building scene with the new alien cabin coordinates.
+     * @param event the event containing the alien cabin coordinates to be processed
+     */
     @Override
     public void askAlienCabin(AlienCabinCoord event){
         Platform.runLater(() -> {
@@ -501,13 +597,10 @@ public class GUI implements UI {
         });
     }
 
-    // fine building scene
-
-
-
-    // flight scene
-
-
+    /**
+     * Transitions the application to the flight scene based on the provided FlightStartEvent.
+     * @param event the FlightStartEvent containing information about the players and game state
+     */
     @Override
     public void flightScene(FlightStartEvent event) {
         Platform.runLater(() -> {
@@ -521,21 +614,29 @@ public class GUI implements UI {
             stage.show();
 
             this.flightScene.showStateInput();
-
         });
     }
 
+    /**
+     * Displays the current condition in the flight scene, updating the state based
+     * on the provided condition and leader status
+     * @param condition the current condition to be displayed
+     * @param isLeader a boolean indicating whether the user is the leader
+     */
     @Override
     public void showCurrCondition(Condition condition, boolean isLeader) {
         Platform.runLater(() -> {
             this.flightScene.clearRollDiceResult();
             this.flightScene.showCurrCondition(condition, isLeader);
         });
-
     }
 
-
-
+    /**
+     * Handles the card-finished event and updates the flight scene
+     * with new ship components, status bar information, and track details.
+     * @param event the CardFinished event containing information about the
+     *              card completion that triggers the updates in the flight scene
+     */
     @Override
     public void cardFinished(CardFinished event){
         Platform.runLater(() -> {
@@ -547,13 +648,20 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Displays the track information for a specified level and updates the UI accordingly.
+     * @param truckers a map where the keys are trucker identifiers (String) and the values are their associated data (Integer)
+     * @param level the level for which the track information should be displayed
+     */
     @Override
     public void showTrack(Map<String, Integer> truckers, int level){
-        Platform.runLater(() -> {
-            this.flightScene.updateTrack(truckers);
-        });
+        Platform.runLater(() -> this.flightScene.updateTrack(truckers));
     }
 
+    /**
+     * Displays the card drawn during the StartCardEvent and updates the UI accordingly.
+     * @param event the StartCardEvent containing the details of the drawn card and conditions' order
+     */
     @Override
     public void showCardDrawn(StartCardEvent event) {
         Platform.runLater(() -> {
@@ -567,28 +675,37 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Triggers an epidemic event by running the necessary operations on the platform's UI thread
+     * @param event the EpidemicEvent that contains information about the epidemic to be handled
+     */
     @Override
     public  void epidemic(EpidemicEvent event){
-
-        Platform.runLater(() -> {
-            this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
-        });
+        Platform.runLater(() -> this.showTrack(viewFlow.getTrack(), viewFlow.getLevel()));
     }
 
+    /**
+     * Displays the Stardust card in the flight scene based on the provided event
+     * @param event the StarDustEvent containing the card to be displayed
+     */
     @Override
     public void showStardustCard(StarDustEvent event) {
-        Platform.runLater(() -> {
-            this.flightScene.updateCardInScene(event.getCard());
-        });
+        Platform.runLater(() -> this.flightScene.updateCardInScene(event.getCard()));
     }
 
+    /**
+     * Updates the current good in the flight scene.
+     * @param good the Goods object to be updated in the flight scene
+     */
     @Override
     public void updateCurrGood(Goods good) {
-        Platform.runLater(() -> {
-            this.flightScene.updateCurrGood(good);
-        });
+        Platform.runLater(() -> this.flightScene.updateCurrGood(good));
     }
 
+    /**
+     * Updates the goods list to be removed
+     * @param goodsList A list of goods to be removed.
+     */
     @Override
     public void updateGoodsListToRemove(ArrayList<Goods> goodsList) {
         Platform.runLater(() -> {
@@ -596,16 +713,22 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Displays an epidemic card in the flight scene.
+     * @param event the EpidemicEvent containing the card to be displayed
+     */
     @Override
     public void showEpidemicCard(EpidemicEvent event) {
-        Platform.runLater(() -> {
-            this.flightScene.updateCardInScene(event.getCard());
-        });
+        Platform.runLater(() -> this.flightScene.updateCardInScene(event.getCard()));
     }
 
+    /**
+     * Handles the StarDust event by updating the flight scene and displaying the
+     * appropriate track and level information on the platform's UI thread
+     * @param event the StarDustEvent that contains the details of the event
+     */
     @Override
     public void stardust(StarDustEvent event){
-
         Platform.runLater(() -> {
             this.flightScene.setShip(viewFlow.getShip().getComponents());
             this.flightScene.updateShipLayout();
@@ -614,6 +737,10 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Displays input fields on the user interface based on the current parser state.
+     * @param parserState the current state of the parser determining which input format to show.
+     */
     @Override
     public void showInputFormat(ParserState parserState) {
         Platform.runLater(() -> {
@@ -667,6 +794,10 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Displays the result of a dice roll on the flight scene interface.
+     * @param event the RollDiceResult event containing the result of the dice roll
+     */
     @Override
     public void showResult(RollDiceResult event){
         Platform.runLater(() -> {
@@ -675,16 +806,17 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Displays a notification or message indicating that the user or player has died
+     */
     @Override
     public void showDead(){
         this.flightScene.showError("You died");
     }
 
-    // fine flight scene
-
-
-    // metodi validi in piu scene
-
+    /**
+     * Displays the "Wait For Others" screen based on the current view state of the application
+     */
     @Override
     public void showWaitForOthers() {
         if(viewFlow.getViewState() == ViewFlow.ViewState.START){
@@ -698,6 +830,10 @@ public class GUI implements UI {
         }
     }
 
+    /**
+     * Displays a message on the current scene depending on the current view state.
+     * @param message the message to be displayed
+     */
     @Override
     public void showMessage(String message) {
         if(viewFlow.getViewState() == ViewFlow.ViewState.BULDING){
@@ -707,36 +843,33 @@ public class GUI implements UI {
         }
     }
 
+    /**
+     * Displays the layout of the other ship on the appropriate scene based on the current view state
+     * @param nickname the nickname of the other ship's owner
+     * @param layout the 2D array representing the ship's layout
+     */
     @Override
     public void showOtherShipLayout(String nickname, Component[][] layout) {
         if (viewFlow.getViewState() == ViewFlow.ViewState.BULDING) {
-            Platform.runLater(() -> {
-                this.buildingScene.showOtherShip(layout, nickname);
-            });
+            Platform.runLater(() -> this.buildingScene.showOtherShip(layout, nickname));
         } else if (viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH) {
-            Platform.runLater(() -> {
-                this.flightScene.showOtherShip(layout, nickname);
-            });
+            Platform.runLater(() -> this.flightScene.showOtherShip(layout, nickname));
         }
     }
 
-    // fine eventi validi in piu scene
-
-
-    // end scene
-
-    // fine gioco
-
-
-
-
+    /**
+     * Displays build options to the user
+     */
     @Override
     public void showBuildOptions() {
         // Nella gui non deve fare nulla serve per la tui sarebbe da unificare meglio
     }
 
-
-
+    /**
+     * Displays the ship's layout in the GUI
+     * @param nickname the nickname of the user currently interacting with the ship view
+     * @param layout a 2D array representing the components of the ship's layout
+     */
     @Override
     public void showShipLayout(String nickname, Component[][] layout){
         Platform.runLater(() -> {
@@ -748,29 +881,37 @@ public class GUI implements UI {
         });
     }
 
-
+    /**
+     * Displays a message indicating that a trucker has withdrawn.
+     * @param nickname the nickname of the trucker who has withdrawn
+     */
     @Override
     public void showTruckerWithdrawn(String nickname) {
-        Platform.runLater(() -> {
-           this.flightScene.showMessage(nickname + " has withdrawn");
-        });
+        Platform.runLater(() -> this.flightScene.showMessage(nickname + " has withdrawn"));
     }
 
-
+    /**
+     * Updates the planets occupied based on the provided PlanetDecision event
+     * @param event the PlanetDecision event containing information about the planets currently occupied
+     */
     @Override
     public void updatePlanetsOccupied(PlanetDecision event) {
-        Platform.runLater(() -> {
-            this.flightScene.updatePlanetsOccupied(event.getPlanetsOccupied());
-        });
+        Platform.runLater(() -> this.flightScene.updatePlanetsOccupied(event.getPlanetsOccupied()));
     }
 
+    /**
+     * Displays the game-ended state by invoking the appropriate UI update on the JavaFX application thread.
+     */
     @Override
     public void showGameEnded() {
-        Platform.runLater(() -> {
-            this.resultScene.showEndMessage();
-        });
+        Platform.runLater(() -> this.resultScene.showEndMessage());
     }
 
+    /**
+     * Displays the final scores of the game and transitions the scene
+     * to the result screen.
+     * @param finalScores a map containing the players' names as keys and their respective scores as values
+     */
     @Override
     public void showScores(Map<String, Integer> finalScores) {
         Platform.runLater(() -> {
@@ -785,6 +926,10 @@ public class GUI implements UI {
         });
     }
 
+    /**
+     * Displays an error message on the current scene based on the application's view state.
+     * @param message the error message to be displayed
+     */
     @Override
     public void showError(String message) {
         if(viewFlow.getViewState() == ViewFlow.ViewState.START){
@@ -797,88 +942,11 @@ public class GUI implements UI {
         }
     }
 
+    /**
+     * Updates and displays the player's ship status on the status bar
+     */
     @Override
     public void showPlayerShipStatus() {
-        Platform.runLater(() -> {
-            this.flightScene.updateStatusBar();
-        });
+        Platform.runLater(() -> this.flightScene.updateStatusBar());
     }
-
-
-
-
-    @Deprecated
-    public void showTrackOld(Map<String, Integer> truckers, int level) {
-        double width = 1600;
-        double height = 900;
-
-        // 1. Board di sfondo
-        Image boardImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-5.png").toExternalForm());
-        ImageView boardView = new ImageView(boardImage);
-        boardView.setFitHeight(500);
-        boardView.setPreserveRatio(true);
-        boardView.setMouseTransparent(true);
-
-        // 2. Overlay contenente triangoli
-        Pane overlay = new Pane();
-
-        // 3. Parametri del tracciato (ellisse)
-        double centerX = width / 2 - 5;
-        double centerY = height / 2 + 2;
-        double radiusX = 315;
-        double radiusY = 175;
-
-        int totalSteps = 24;
-        int startOffset = 2; // posizione iniziale ruotata (0 = alto, 6 = basso)
-
-        // 4. Colori associati ai giocatori
-        Map<String, Color> playerColors = Map.of(
-                "RED", Color.RED,
-                "GREEN", Color.LIMEGREEN,
-                "BLUE", Color.DODGERBLUE,
-                "YELLOW", Color.GOLD
-        );
-
-        // 5. Disegna i triangoli (track positions)
-        for (int i = 0; i < totalSteps; i++) {
-            // Calcolo angolo e posizione
-            double angle = 2 * Math.PI * ((i + startOffset) % totalSteps) / totalSteps - Math.PI / 2;
-            double x = centerX + radiusX * Math.cos(angle);
-            double y = centerY + radiusY * Math.sin(angle);
-
-            // Triangolo
-            Polygon triangle = new Polygon();
-            triangle.getPoints().addAll(
-                    x, y - 15,      // punta
-                    x - 15, y + 5,   // base sinistra
-                    x + 15, y + 5    // base destra
-            );
-
-            triangle.setStroke(Color.WHITE);
-            triangle.setStrokeWidth(2);
-            triangle.setRotate(Math.toDegrees(angle) + 180); // punta verso direzione inversa
-            triangle.setFill(Color.TRANSPARENT); // default: trasparente
-
-            // Colora il triangolo se un giocatore si trova qui
-            for (Map.Entry<String, Integer> entry : truckers.entrySet()) {
-                if (entry.getValue() == i) {
-                    String name = entry.getKey().toUpperCase();
-                    triangle.setFill(playerColors.getOrDefault(name, Color.GRAY));
-                    break;
-                }
-            }
-
-            overlay.getChildren().add(triangle);
-        }
-
-        // 6. Stack finale
-        StackPane root = new StackPane(boardView, overlay);
-        Scene scene = new Scene(root, width, height);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.setFullScreen(true);
-    }
-
-
-
 }
