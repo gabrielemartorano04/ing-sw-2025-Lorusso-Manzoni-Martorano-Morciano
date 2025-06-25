@@ -487,6 +487,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     // === PHASE 3: Flight ===
 
+
     @Override
     public void visit(FlightStartEvent event){
         viewFlow.setPosition(event.getPosition());
@@ -928,10 +929,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showOtherShipLayout(event.getNickname(), event.getSpaceship());
     }
 
-
-
-    @Override
-    public void handleDeath(ArrayList<Trucker> truckersRemoved) {
+    private void handleDeath(ArrayList<Trucker> truckersRemoved) {
         for (Trucker trucker : truckersRemoved) {
             if (trucker.getNickname().equalsIgnoreCase(viewFlow.getNickname())) {
                 viewFlow.setCredits(trucker.getCosmicCredit());
