@@ -55,7 +55,7 @@ class Deck implements Serializable {
         shoots2.addLast(new int[]{1,0});
 
         ArrayList<int[]> direction1 = new ArrayList<>();
-        direction1.addLast(new int[]{0,0});
+        direction1.addLast(new int[]{1,0});
         direction1.addLast(new int[]{0,3});
         direction1.addLast(new int[]{0,1});
 
@@ -67,9 +67,9 @@ class Deck implements Serializable {
         direction2.addLast(new int[]{0,2});
 
         ArrayList<int[]> direction3 = new ArrayList<>();
-        direction3.addLast(new int[]{0,1});
+        direction3.addLast(new int[]{1,0});
         direction3.addLast(new int[]{0,0});
-        direction3.addLast(new int[]{0,1});
+        direction3.addLast(new int[]{1,0});
 
         ArrayList<int[]> direction4 = new ArrayList<>();
         direction4.addLast(new int[]{0,0});
@@ -243,10 +243,10 @@ class Deck implements Serializable {
 
         //TODO: riportare piratesPower a 5 e slaversPower a 6 e smugglersPower a 4
 
+        cards.addLast(new MeteorShower(true, direction1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_019.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",6));
         cards.addLast(new Planets(true, 2, 1, planets2, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0113.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",7));
         cards.addLast(new StarDust(true, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 4));
         cards.addLast(new AbandonedStation(true, 1, goods1, 1,5, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0119.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 3));
-        cards.addLast(new MeteorShower(true, direction1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_019.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",6));
         cards.addLast(new Smugglers(true, 6, 2, 1, goodsGained1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_012.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 1));
         cards.addLast(warZone1);
         cards.addLast(new AbandonedShip(true, 1, 3, 4, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0118.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 2));
