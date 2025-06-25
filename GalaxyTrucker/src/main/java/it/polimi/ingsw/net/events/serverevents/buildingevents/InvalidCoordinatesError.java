@@ -4,23 +4,36 @@ import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Error event from server to client. It signals that the player inserted invalid coordinates.
+ * Represents an event triggered when a client provides invalid coordinates.
  */
 public class InvalidCoordinatesError extends ServerEvent {
-    private String username, message;
+
+    /**
+     * Nickname of the player who inserts invalid coordinates
+     */
+    private final String username;
+
+    /**
+     * Event constructor
+     * @param username of the player who inserts invalid coordinates
+     */
     public InvalidCoordinatesError(String username) {
         super(false);
         this.username = username;
-        message = username+" inserted invalid coordinates";
-    }
-    public String getUsername() {
-        return username;
-    }
-    @Override
-    public String getMessage() {
-        return message;
     }
 
+    /**
+     * @return the message associated with the error
+     */
+    @Override
+    public String getMessage() {
+        return username+" inserted invalid coordinates";
+    }
+
+    /**
+     * This method calls the client method that manages this event reception
+     * @param visitor client class that manages server events
+     */
     @Override
     public void call (ServerEventHandlerVisitor visitor) {
         visitor.visit(this);

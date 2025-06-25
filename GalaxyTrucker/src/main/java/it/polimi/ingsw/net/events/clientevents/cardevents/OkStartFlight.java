@@ -6,7 +6,7 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent to notify the possibility to start the flight phase
+ * Represents a specific event sent by the client to the server to indicate that the flight can start
  */
 public class OkStartFlight extends ClientEvent {
 

@@ -5,19 +5,30 @@ import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event from server to client. A player tried to turn the hourglass but it's not possible at the moment
+ * The TurnHourglassError class represents a server event sent to indicate
+ * that the hourglass cannot be turned at the current moment in the game
  */
 public class TurnHourglassError extends ServerEvent {
-    private String message;
+
+    /**
+     * Event constructor
+     */
     public TurnHourglassError() {
         super(false);
-        message = " You can't turn the hourglass at the moment";
-    }
-    @Override
-    public String getMessage() {
-        return message;
     }
 
+    /**
+     * @return the message associated with the error
+     */
+    @Override
+    public String getMessage() {
+        return " You can't turn the hourglass at the moment";
+    }
+
+    /**
+     * This method calls the client method that manages this event reception
+     * @param visitor client class that manages server events
+     */
     @Override
     public void call (ServerEventHandlerVisitor visitor) {
         visitor.visit(this);

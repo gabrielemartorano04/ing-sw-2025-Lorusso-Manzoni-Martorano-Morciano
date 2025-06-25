@@ -6,7 +6,7 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the manage of a dead trucker during flight phase
+ * Represents a specific event sent from a client to the server to indicate the death of a trucker
  */
 public class DeadTrucker extends ClientEvent {
 

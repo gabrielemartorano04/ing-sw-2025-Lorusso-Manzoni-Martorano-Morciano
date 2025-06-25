@@ -8,19 +8,19 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import java.util.ArrayList;
 
 /**
- * Event sent for a remotion throw request
+ * Represents an event sent by a client to request the removal of specific goods
  */
 public class RemoveAskingEvent extends ClientEvent {
 
     /**
      * List of goods' indexes to remove
      */
-    private ArrayList<Integer> indexes;
+    private final ArrayList<Integer> indexes;
 
     /**
      * Nickname of the player who has received the request
      */
-    private String nickname;
+    private final String nickname;
 
     /**
      * Event constructor

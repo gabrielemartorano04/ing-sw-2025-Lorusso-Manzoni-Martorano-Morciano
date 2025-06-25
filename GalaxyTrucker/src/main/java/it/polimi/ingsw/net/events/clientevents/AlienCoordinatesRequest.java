@@ -5,7 +5,7 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the request of where to place aliens
+ * Represents a client-side event requesting coordinates for placing aliens in the spaceship
  */
 public class AlienCoordinatesRequest extends ClientEvent {
 

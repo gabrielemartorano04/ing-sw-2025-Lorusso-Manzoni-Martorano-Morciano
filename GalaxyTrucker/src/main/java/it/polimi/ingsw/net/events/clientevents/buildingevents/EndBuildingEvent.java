@@ -6,7 +6,7 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for tiles discard during building phase
+ * Event sent by the client to signal the end of the building phase.
  */
 public class EndBuildingEvent extends ClientEvent {
 

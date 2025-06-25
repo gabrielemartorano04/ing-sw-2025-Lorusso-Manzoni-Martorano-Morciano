@@ -6,14 +6,15 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent to see a stack of cards during building phase
+ * Represents a client event that requests to show a specific stack identified by its index
+ * from the list of stacks maintained on the server
  */
 public class ShowStackEvent extends ClientEvent {
 
     /**
      * Index of the stack in the list of stacks
      */
-    private int index;
+    private final int index;
 
     /**
      * Event constructor

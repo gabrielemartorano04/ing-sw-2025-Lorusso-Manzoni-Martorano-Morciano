@@ -8,19 +8,20 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import java.util.ArrayList;
 
 /**
- * Event sent for the remotion of batteries
+ * Represents an event sent by a client to the server indicating a player's action
+ * to remove batteries from specific locations.
  */
 public class RemoveBatteriesEvent extends ClientEvent {
 
     /**
      * List of battery storages' coordinates
      */
-    private ArrayList<int[]> coordinatesToRemoveBatteries;
+    private final ArrayList<int[]> coordinatesToRemoveBatteries;
 
     /**
      * Nickname of the player who has to remove the batteries
      */
-    private String nickname;
+    private final String nickname;
 
     /**
      * Event constructor

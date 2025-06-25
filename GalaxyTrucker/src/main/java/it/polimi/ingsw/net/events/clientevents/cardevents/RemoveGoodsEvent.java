@@ -6,7 +6,8 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the remotion of goods
+ * Represents an event sent from the client to the server to
+ * request the removal of goods
  */
 public class RemoveGoodsEvent extends ClientEvent {
 

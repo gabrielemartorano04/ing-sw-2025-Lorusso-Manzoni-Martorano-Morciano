@@ -5,20 +5,40 @@ import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import java.io.Serializable;
 
 /**
- * An event will be used to communicate between server and client, we will create an event with the view and then
- * send it using RMI or socket based on client's choice
+ * Represents an abstract server event sent from the server to the client.
+ * ServerEvent serves as a base class for defining various specific types of events
+ * that a server can generate during its interaction with the client. Each event provides
+ * a method for processing it by the clients and a default or customized message describing the event
  */
-
 public abstract class ServerEvent implements Serializable {
+
+    /**
+     * Specify if the message is for a player or everyone
+     */
     private boolean forAll;
 
+    /**
+     * Event constructor
+     * @param forAll specify if the game is for a player of everyone
+     */
     public ServerEvent(boolean forAll) {
         this.forAll=forAll;}
-    public String getMessage() {return "";};
 
+    /**
+     * @return if the message is for a player or everyone
+     */
     public boolean isForAll() {
         return forAll;
     }
 
+    /**
+     * @return the message associated with the event
+     */
+    public String getMessage() {return "";};
+
+    /**
+     * This method calls the client method that manages this event reception
+     * @param visitor client class that manages server events
+     */
     public abstract void call(ServerEventHandlerVisitor visitor);
 }

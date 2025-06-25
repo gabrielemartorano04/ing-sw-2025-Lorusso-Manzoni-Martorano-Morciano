@@ -6,7 +6,9 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the turn of the hourglass during the building phase
+ * Event representing the action where a client requests to turn the hourglass.
+ * This class extends the ClientEvent and provides a specific implementation of the
+ * interaction between the client and server for the hourglass-turning action.
  */
 public class TurnHourglassEvent extends ClientEvent {
 

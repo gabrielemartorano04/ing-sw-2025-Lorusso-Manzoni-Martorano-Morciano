@@ -7,7 +7,9 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import java.util.ArrayList;
 
 /**
- * Event sent when the component is correctly linked to the spaceship
+ * Represents a server event that occurs when a component has been successfully linked
+ * to a specific position on the game board. It contains the related component,
+ * the position (row and column) of the linkage, and a list of all available components.
  */
 public class ComponentLinkedEvent extends ServerEvent {
 
@@ -29,7 +31,7 @@ public class ComponentLinkedEvent extends ServerEvent {
     /**
      * List of all the available components
      */
-    private ArrayList<Component> avComponents;
+    private final ArrayList<Component> avComponents;
 
     /**
      * Event constructor

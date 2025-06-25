@@ -7,7 +7,7 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for linking tiles to the spaceship during building phase
+ * Represents an event where a client wants to link a specific component to a given position on the spaceship
  */
 public class LinkTileEvent extends ClientEvent {
 
@@ -19,12 +19,13 @@ public class LinkTileEvent extends ClientEvent {
     /**
      * Index of the component in the list of available components
      */
-    private int index;
+    private final int index;
 
     /**
      * Position row and column where to link the component in the spaceship
      */
-    private int x,y;
+    private final int x;
+    private final int y;
 
     /**
      * Event Constructor

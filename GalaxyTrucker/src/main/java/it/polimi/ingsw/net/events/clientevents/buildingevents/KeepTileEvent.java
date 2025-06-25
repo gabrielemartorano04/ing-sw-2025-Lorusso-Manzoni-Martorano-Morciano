@@ -8,14 +8,14 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for keeping tiles during building phase
+ * Represents a client event where a specific tile (component) is marked to be kept
  */
 public class KeepTileEvent extends ClientEvent {
 
     /**
      * Component to keep
      */
-    private Component component;
+    private final Component component;
 
     /**
      * Event constructor
