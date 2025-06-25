@@ -915,7 +915,6 @@ public class GUI implements UI {
     @Override
     public void showScores(Map<String, Integer> finalScores) {
         Platform.runLater(() -> {
-            this.flightScene.hideWaitForOthers();
 
             resultScene=new ResultScene(viewFlow, new StackPane());
             stage.setScene(this.resultScene.createScene(finalScores));
