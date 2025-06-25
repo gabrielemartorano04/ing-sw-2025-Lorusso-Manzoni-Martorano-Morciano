@@ -99,6 +99,7 @@ public class FlightScene {
             }
         }
         this.goodsImagesGetter = new GoodsImagesGetter();
+        this.planets = new ArrayList<>();
     }
 
     /**

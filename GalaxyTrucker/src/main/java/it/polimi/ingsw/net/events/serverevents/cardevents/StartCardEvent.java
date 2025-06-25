@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
 import it.polimi.ingsw.model.Bank;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.cards.Effect;
@@ -39,6 +40,8 @@ public class StartCardEvent extends CardEvent {
     private final List<Condition> conditionsOrder;
     private final Map<Condition, Effect> penalties;
 
+    private final ArrayList<Trucker> planetsOccupied;
+
     public StartCardEvent(
             String cardName,
             String cardDescription,
@@ -57,6 +60,7 @@ public class StartCardEvent extends CardEvent {
             List<Condition> conditionsOrder,
             Map<Condition, Effect> penalties,
             ParserState parserState,
+            ArrayList<Trucker> planetsOccupied,
             Card card
     ) {
         super(true, parserState, null, new ArrayList<>());
@@ -76,6 +80,7 @@ public class StartCardEvent extends CardEvent {
         this.conditionsOrder = conditionsOrder;
         this.penalties = penalties;
         this.question = question;
+        this.planetsOccupied = planetsOccupied;
         this.card = card;
     }
 
@@ -154,6 +159,10 @@ public class StartCardEvent extends CardEvent {
 
     public Card getCard() {
         return this.card;
+    }
+
+    public ArrayList<Trucker> getPlanetsOccupied() {
+        return planetsOccupied;
     }
 
     @Override

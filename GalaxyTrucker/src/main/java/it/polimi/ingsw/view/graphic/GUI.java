@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.graphic;
 
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
@@ -667,6 +668,9 @@ public class GUI implements UI {
         Platform.runLater(() -> {
             this.flightScene.hideWaitForOthers();
             this.flightScene.updateCardInScene(event.getCard());
+            if(event.getPlanetsOccupied()!= null){
+                this.flightScene.updatePlanetsOccupied(event.getPlanetsOccupied());
+            }
             if(event.getConditionsOrder() != null){
                 this.showWarzone = false;
                 this.flightScene.showCurrCondition(event.getConditionsOrder().getFirst(), true);
@@ -892,11 +896,11 @@ public class GUI implements UI {
 
     /**
      * Updates the planets occupied based on the provided PlanetDecision event
-     * @param event the PlanetDecision event containing information about the planets currently occupied
+     * @param planetsOccupied information about the planets currently occupied
      */
     @Override
-    public void updatePlanetsOccupied(PlanetDecision event) {
-        Platform.runLater(() -> this.flightScene.updatePlanetsOccupied(event.getPlanetsOccupied()));
+    public void updatePlanetsOccupied(ArrayList<Trucker> planetsOccupied) {
+        Platform.runLater(() -> this.flightScene.updatePlanetsOccupied(planetsOccupied));
     }
 
     /**
