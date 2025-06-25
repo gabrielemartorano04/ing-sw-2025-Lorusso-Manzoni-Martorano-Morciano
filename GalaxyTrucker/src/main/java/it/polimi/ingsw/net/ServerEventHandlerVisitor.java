@@ -376,7 +376,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
      */
     @Override
     public void visit(TurnedComponentSuccessEvent event) {
-        System.out.println("Turn andato a buon finite, visitor del client");
         viewFlow.setSelectedComponent(event.getComponent());
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
         if (!viewFlow.getKeptComponent().isEmpty()) {
