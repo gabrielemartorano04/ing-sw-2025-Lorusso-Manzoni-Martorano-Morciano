@@ -677,6 +677,7 @@ public class BuildingScene {
             nicknameChoices.setAlignment(Pos.CENTER);
 
             for (String nickname : playersNames) {
+                if(nickname.equals(viewFlow.getNickname())) continue;
                 Button nickBtn = new Button(nickname);
                 styleButton.accept(nickBtn);
                 nickBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
