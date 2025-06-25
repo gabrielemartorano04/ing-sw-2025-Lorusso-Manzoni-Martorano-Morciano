@@ -402,6 +402,7 @@ public class FlightScene {
             nicknameChoices.setAlignment(Pos.CENTER);
 
             for (String nickname : playersNames) {
+                if (nickname.equals(viewFlow.getNickname())) continue;
                 Button nickBtn = new Button(nickname);
                 styleButton.accept(nickBtn);
                 nickBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
@@ -2506,6 +2507,15 @@ public class FlightScene {
                 }
             }
             default -> {
+            }
+        }
+
+        if(i == 7 && j == 7){
+            switch(c){
+                case Cabin cabin -> {
+                    details.append("[").append(i).append(",").append(j).append("] CABIN contains ").append(cabin.getQuantity()).append(cabin.getQuantity() == 1 ? " human" : " humans");
+                }
+                default -> {}
             }
         }
 

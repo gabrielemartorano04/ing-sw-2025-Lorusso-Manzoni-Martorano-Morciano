@@ -166,6 +166,7 @@ public class Smugglers extends Card implements Serializable {
                 null,
                 ParserState.ACTIVATE_CANNONS,
                 null,
+                Game.getIstance().getTrack(),
                 this
         );
     }

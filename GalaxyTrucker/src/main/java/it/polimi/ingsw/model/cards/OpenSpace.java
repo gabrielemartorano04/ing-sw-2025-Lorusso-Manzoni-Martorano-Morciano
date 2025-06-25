@@ -79,6 +79,7 @@ public class OpenSpace extends Card implements Serializable {
                 null,
                 ParserState.ACTIVATE_ENGINES,
                 null,
+                Game.getIstance().getTrack(),
                 this
         );
     }

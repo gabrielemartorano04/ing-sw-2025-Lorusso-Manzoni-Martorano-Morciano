@@ -764,6 +764,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(StartCardEvent event) {
         ui.showCardDrawn(event);
         viewFlow.decreaseCardsToGo();
+        viewFlow.setTrack(event.getTrack());
+        ui.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         System.out.println("Number of cards to draw: " + viewFlow.getCardsToGo());
         if (event.getFirstPlayerNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
