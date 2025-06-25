@@ -1,5 +1,10 @@
 package it.polimi.ingsw.view;
 
+/**
+ * Enumeration representing the different possible states of the parser during the game.
+ * Each state corresponds to a specific point in the game where user input or specific actions
+ * are required by the system.
+ */
 public enum ParserState {
     STATE,
     HUMAN_COORD,

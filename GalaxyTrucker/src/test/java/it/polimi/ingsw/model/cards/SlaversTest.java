@@ -180,7 +180,7 @@ class SlaversTest {
             slavers.setIndexOfCurrentTrucker(0);
             ServerEvent event = slavers.activateCannons(false, new ArrayList<>(), new ArrayList<>());
             switch(event){
-                case CardFinished cf-> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckersList());
+                case CardFinished cf-> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckers());
                 case HumanCoordinates hc -> assertEquals(slavers.getDefeatedTruckers().getFirst().getNickname(), hc.getNickname());
                 case BooleanDecision bd -> assertEquals(Game.getIstance().getTrucker(slavers.getIndexOfCurrentTrucker()).getNickname(), bd.getNickname());
                 default -> fail();
@@ -190,7 +190,7 @@ class SlaversTest {
             ServerEvent event1 = slavers.activateCannons(false, new ArrayList<>(), new ArrayList<>());
             slavers.setIndexOfCurrentTrucker(1);
             switch(event1){
-                case CardFinished cf-> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckersList());
+                case CardFinished cf-> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckers());
                 default -> fail();
             }
             //ultimo e defeated

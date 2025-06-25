@@ -22,22 +22,52 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     // === PHASE 1: Lobby ===
 
+    /**
+     * Notifies that this game is already full
+     *
+     * @param event error indicating no available space
+     */
+    @Override
+    public void visit(NoAvailableSpaceError event) {
+        ui.showError(event.getMessage());
+    }
+
+    /**
+     * Receives available colors and shows the welcome screen
+     *
+     * @param event contains available colors for the client
+     */
     @Override
     public void visit(AvailableColorsEvent event) {
         viewFlow.setViewState(ViewFlow.ViewState.START);
         ui.welcomeScene(event);
     }
 
+    /**
+     * Notifies that the chosen nickname is already taken.
+     *
+     * @param event error indicating nickname conflict
+     */
     @Override
     public void visit(NicknameAlreadyInError event) {
         ui.nickNameAlreadyTaken(event);
     }
 
+    /**
+     * Notifies that the chosen color is already taken.
+     *
+     * @param event error indicating color conflict
+     */
     @Override
     public void visit(ColorAlreadyInError event) {
         ui.colorAlreadyTaken(event);
     }
 
+    /**
+     * Notifies a new player joined the game.
+     *
+     * @param event contains the joined player's info
+     */
     @Override
     public void visit(PlayerJoinedEvent event) {
         viewFlow.setAlreadyLogged();
@@ -51,8 +81,119 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     }
 
+    /**
+     * Handles the first connection and prompts for player count
+     *
+     * @param event first connection notification, which means this client is the first and will create the game
+     */
+
+    @Override
+    public void visit(FirstConnectionEvent event) {
+        ui.showInsertNumPlayers();
+        viewFlow.setViewState(ViewFlow.ViewState.FIRST);
+    }
+
+    /**
+     * Resumes a previously started game by restoring the trucker's state,
+     * view state, and UI scene based on the saved game state
+     *
+     * @param event contains game state, player info, and components to resume the game
+     */
+    @Override
+    public void visit(ResumeGameEvent event) {
+        Trucker trucker=null;
+
+        if(viewFlow.getNickname()==null) {
+            viewFlow.setNickname(event.getNickname());
+        }
+        boolean isLeader = viewFlow.getNickname().equalsIgnoreCase(event.getTruckers().getFirst().getNickname());
+
+        for(Trucker t: event.getTruckers()){
+            if(t.getNickname().equals(viewFlow.getNickname())){
+                trucker=t;
+            }
+        }
+
+        try {
+            if (trucker.getKeptComponent(0) != null) {
+                viewFlow.addKeptComponent(trucker.getKeptComponent(0));
+            }
+        }catch (GeneralError e){
+            ui.showError(e.getMessage());
+        }
+        try {
+            if(trucker.getKeptComponent(1)!=null) {
+                viewFlow.addKeptComponent(trucker.getKeptComponent(1));
+            }
+        }catch (GeneralError e){
+            ui.showError(e.getMessage());
+        }
+
+        if(trucker.getSelectedComponent() != null) {
+            viewFlow.setSelectedComponent(trucker.getSelectedComponent());
+        }
+
+        viewFlow.setParserFlightState(ParserState.STATE);
+        viewFlow.setLevel(event.getLevel());
+        if(event.getTrack()!=null) {
+            viewFlow.setTrack(event.getTrack());
+        }
+
+        viewFlow.setPosition(trucker.getPosition());
+        viewFlow.setShip(trucker.getSpaceShip());
+
+        switch (event.getGameState()) {
+            case FLIGHT -> {
+                viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
+                viewFlow.setStartFlightForAll();
+                viewFlow.setStartFlight(false);
+                viewFlow.setEnd();
+                ui.resumeFlightScene(event.getPlayerNames());
+
+                if(isLeader){
+                    viewFlow.setParserFlightState(ParserState.DRAW_CARD);
+                    ui.showInputFormat(ParserState.DRAW_CARD);
+                }else{
+                    viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+                }
+            }
+            case ENDED -> viewFlow.setViewState(ViewFlow.ViewState.END);
+            case BUILDING -> {
+                viewFlow.setViewState(ViewFlow.ViewState.BULDING);
+                viewFlow.fillAvailableComponents(event.getComponents());
+                ui.resumeBuildingScene(event.getPlayerNames());
+            }
+        }
+    }
+
+    /**
+     * Sets the view to allow the user to choose whether to resume a previous game
+     *
+     * @param chooseResumeEvent event signaling resume choice is available
+     */
+    @Override
+    public void visit(ChooseResumeEvent chooseResumeEvent) {
+        viewFlow.setViewState(ViewFlow.ViewState.CHOOSE_OLD);
+        ui.showChooseResume();
+    }
+
+    /**
+     * Displays the welcome screen of the old game for returning players with available nicknames and colors,
+     * only if no nickname is currently set
+     *
+     * @param availablePlayersEvent event containing available nicknames and colors of the old game
+     */
+    @Override
+    public void visit(AvailablePlayersEvent availablePlayersEvent) {
+        if(viewFlow.getNickname()==null) {
+            viewFlow.setViewState(ViewFlow.ViewState.START);
+        }else return;
+        ui.welcomeOldScene(availablePlayersEvent.getColors(), availablePlayersEvent.getNicknames());
+    }
+
 
     // === PHASE 2: Building ===
+
 
     @Override
     public void visit(StartBuildingEvent event) {
@@ -693,11 +834,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
 
     @Override
-    public void visit(NoAvailableSpaceError event) {
-        ui.showError(event.getMessage());
-    }
-
-    @Override
     public void visit(GenericErrorEvent event){
         ui.showError(event.getMessage());
     }
@@ -707,101 +843,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showOtherShipLayout(event.getNickname(), event.getSpaceship());
     }
 
-    @Override
-    public void visit(FirstConnectionEvent event) {
-        ui.showInsertNumPlayers();
-        viewFlow.setViewState(ViewFlow.ViewState.FIRST);
-    }
 
-
-    @Override
-    public void visit(ResumeGameEvent event) {
-        Trucker trucker=null;
-        if(viewFlow.getNickname()==null) {
-            viewFlow.setNickname(event.getNickname());
-        }
-        boolean isLeader = false;
-        if(viewFlow.getNickname().equalsIgnoreCase(event.getTruckers().getFirst().getNickname())) {
-            isLeader = true;
-        }
-        for(Trucker t: event.getTruckers()){
-            if(t.getNickname().equals(viewFlow.getNickname())){
-                trucker=t;
-            }
-        }
-
-        if(trucker == null){
-            // solo per debug, NON deve mai succedere
-            throw new RuntimeException("Trucker is null");
-        }
-
-        try {
-            if (trucker.getKeptComponent(0) != null) {
-                viewFlow.addKeptComponent(trucker.getKeptComponent(0));
-            }
-        }catch (GeneralError e){
-            ui.showError(e.getMessage());
-        }
-        try {
-            if(trucker.getKeptComponent(1)!=null) {
-                viewFlow.addKeptComponent(trucker.getKeptComponent(1));
-            }
-        }catch (GeneralError e){
-            ui.showError(e.getMessage());
-        }
-
-        if(trucker.getSelectedComponent() != null) {
-            viewFlow.setSelectedComponent(trucker.getSelectedComponent());
-        }
-
-        viewFlow.setParserFlightState(ParserState.STATE);
-        viewFlow.setLevel(event.getLevel());
-        if(event.getTrack()!=null) {
-            viewFlow.setTrack(event.getTrack());
-        }
-
-        viewFlow.setPosition(trucker.getPosition());
-        viewFlow.setShip(trucker.getSpaceShip());
-
-        switch (event.getGameState()) {
-            case FLIGHT -> {
-                viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
-                viewFlow.setStartFlightForAll();
-                viewFlow.setStartFlight(false);
-                viewFlow.setEnd();
-                ui.resumeFlightScene(event.getPlayerNames());
-
-                if(isLeader){
-                    viewFlow.setParserFlightState(ParserState.DRAW_CARD);
-                    ui.showInputFormat(ParserState.DRAW_CARD);
-                }else{
-                    viewFlow.setParserFlightState(ParserState.DO_NOTHING);
-                }
-            }
-            case ENDED -> viewFlow.setViewState(ViewFlow.ViewState.END);
-            case BUILDING -> {
-                viewFlow.setViewState(ViewFlow.ViewState.BULDING);
-                viewFlow.fillAvailableComponents(event.getComponents());
-                ui.resumeBuildingScene(event.getPlayerNames());
-            }
-
-        }
-
-    }
-
-    @Override
-    public void visit(ChooseResumeEvent chooseResumeEvent) {
-        viewFlow.setViewState(ViewFlow.ViewState.CHOOSE_OLD);
-        ui.showChooseResume();
-    }
-
-    @Override
-    public void visit(AvailablePlayersEvent availablePlayersEvent) {
-        if(viewFlow.getNickname()==null) {
-            viewFlow.setViewState(ViewFlow.ViewState.START);
-        }else return;
-        ui.welcomeOldScene(availablePlayersEvent.getColors(), availablePlayersEvent.getNicknames());
-    }
 
     @Override
     public void handleDeath(ArrayList<Trucker> truckersRemoved) {

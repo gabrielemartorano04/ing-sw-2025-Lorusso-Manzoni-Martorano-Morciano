@@ -168,7 +168,7 @@ class PiratesTest {
         pirates.setState(CardState.ESECUZIONE);
         ServerEvent ev = pirates.cardEffect();
         switch (ev){
-            case CardFinished cf ->  assertEquals(Game.getIstance().getTruckerList(), cf.getTruckersList());
+            case CardFinished cf ->  assertEquals(Game.getIstance().getTruckerList(), cf.getTruckers());
             default -> fail();
         }
     }
@@ -301,7 +301,7 @@ class PiratesTest {
         pirates.setCurrShootIndex(2); // all shoots done
         ServerEvent e = pirates.cardEffect();
         switch (e){
-            case CardFinished cf -> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckersList());
+            case CardFinished cf -> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckers());
             default -> fail();
         }
     }
