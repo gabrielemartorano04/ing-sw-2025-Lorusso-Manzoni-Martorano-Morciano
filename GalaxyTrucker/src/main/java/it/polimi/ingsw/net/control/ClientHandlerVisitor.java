@@ -426,6 +426,33 @@ public class ClientHandlerVisitor implements VirtualServer {
     }
 
     /**
+     * Handles the event to rotate the current selected component of a player
+     *
+     * @param turnComponentEvent the event containing the component to be rotated
+     * @return an event indicating that the component was successfully turned
+     */
+    @Override
+    public ServerEvent visit(TurnComponentEvent turnComponentEvent) {
+        Component component = turnComponentEvent.getComponent();
+        component.turn();
+        return new TurnedComponentSuccessEvent(component);
+    }
+
+    /**
+     * Handles the event where a stack of cards is dropped by a player in the building phase
+     * Drops the stack at the given index and acknowledges the drop.
+     *
+     * @param event the event containing the index of the stack to be dropped
+     * @return an acknowledgment event confirming that the stack was dropped
+     */
+    @Override
+    public ServerEvent visit(StackDroppedEvent event){
+        gameController.getGame().viewStacks()[event.getCurr()].dropStack();
+        return new StackDropOk(false);
+    }
+
+
+    /**
      * Turns the hourglass, if it is turned for the second time and by the last player it ends the building phase
      *
      * @param event the hourglass turn request
@@ -450,6 +477,9 @@ public class ClientHandlerVisitor implements VirtualServer {
         }
         return new HourglassTurnEvent(gameController.getGame().getHourglass().getSecondsLeft());
     }
+
+
+    // === PHASE 2.1: Filling the ship  ===
 
     /**
      * Handles the end of the spaceship building phase for a client
@@ -581,6 +611,9 @@ public class ClientHandlerVisitor implements VirtualServer {
         return cardController.startCard();
     }
 
+
+    // === PHASE 3: Flight ===
+
     /**
      * Handles the event for drawing a new card from the deck.
      * Only the first player in the list is allowed to draw. If the deck is empty,
@@ -704,53 +737,82 @@ public class ClientHandlerVisitor implements VirtualServer {
         return cardController.truckerLanding(event);
     }
 
-
+    /**
+     * Handles the event to rearrange goods in the player's ship.
+     *
+     * @param event the rearrangement event
+     * @return the resulting event after processing the rearrangement
+     */
     @Override
     public ServerEvent visit(RearrangeEvent event) {
         return cardController.rearrange(event);
     }
 
+    /**
+     * Handles the player's decision in response to gaining cosmic credits.
+     *
+     * @param event the event containing the player's decision
+     * @return the resulting event after processing the decision of the winner
+     */
     @Override
     public ServerEvent visit(GainCosmicCreditsResponseEvent event) {
         return cardController.setWinDecision(event);
     }
 
+    /**
+     * Notifies the client that he can choose which goods to remove
+     *
+     * @param event the event requesting goods removal
+     * @return the event containing the list of goods from which the player can decide the goods
+     * that will be removed
+     *
+     */
     @Override
     public ServerEvent visit(RemoveGoodsEvent event) {
         return cardController.removeGoods(event);
     }
 
+    /**
+     * Handles the event where the player has decided which goods to remove.
+     *
+     * @param event the event representing the decision of the client
+     * @return the resulting event after handling the remotion
+     */
     @Override
     public ServerEvent visit(RemoveAskingEvent event) {
         return cardController.removeAsking(event);
     }
 
+    /**
+     * Handles the event to remove batteries from the player's ship.
+     *
+     * @param event the event requesting battery removal
+     * @return the resulting event after removing the batteries
+     */
     @Override
     public ServerEvent visit(RemoveBatteriesEvent event) {
         return cardController.removeBatteries(event);
     }
 
-    @Override
-    public ServerEvent visit(TurnComponentEvent turnComponentEvent) {
-        System.out.println("Turn component in server");
-        Component component = turnComponentEvent.getComponent();
-        component.turn();
-        return new TurnedComponentSuccessEvent(component);
-    }
-
-    @Override
-    public ServerEvent visit(StackDroppedEvent event){
-        System.out.println("sto per mandare StackDroppedOK");
-        gameController.getGame().viewStacks()[event.getCurr()].dropStack();
-        return new StackDropOk(false);
-    }
-
-
+    /**
+     * Manages the current warzone condition of the current warzone card
+     *
+     * @param event the warzone start event
+     * @return the resulting event based on the condition
+     */
     @Override
     public ServerEvent visit(WarzoneStartEvent event) {
         return cardController.handleCurrentCondition();
     }
 
+
+    /**
+     * Handles the event indicating that the player has seen the remotion of goods or batteries from his/her ship.
+     *
+     * @param event  the event confirming the player has seen the component
+     * @param client the client triggering the event
+     * @return the resulting event based on the outcome of removeGoods
+     */
     @Override
     public ServerEvent visit(RemotionSeenEvent event, Client client) {
         try {
@@ -761,45 +823,14 @@ public class ClientHandlerVisitor implements VirtualServer {
 
     }
 
-    @Override
-    public ServerEvent visit(ShowOtherShipEvent event) {
-        for(Trucker t:gameController.getGame().getTruckerList()){
-            if(t.getNickname().equals(event.getNicknameRequested())){
-                return new ShowOtherShipResponse(t.getSpaceShip().getComponents(),event.getNicknameRequested());
-            }
-        }
-        return new GenericErrorEvent("No such trucker with that nickname",false);
-    }
-
-
-    @Override
-    public ServerEvent visit(DeadTrucker event){
-        Card card;
-        if (!gameController.getGame().getTruckerList().isEmpty()) {
-            cardController.setCurrCard(gameController.pickCardFromDeck());
-            card = cardController.getCurrCard();
-            if (card != null) {
-                GamePersistence.saveGame(gameController);
-                return cardController.startCard();
-            }
-        }
-        int[] scores;
-        Map<String, Integer> playersScores = new HashMap<>();
-        scores = gameController.getGame().computeScores();
-        for(int i=0; i<numOfPlayers; i++){
-            playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
-        }
-        GamePersistence.saveGame(gameController);
-        GamePersistence.deleteSave();
-        return new EndGameEvent(playersScores);
-    }
-
-    @Override
-    public ServerEvent visit(PongEvent event, Client client) {
-        client.updateLastPong();
-        return null;
-    }
-
+    /**
+     * Handles the event where a player chooses whether to withdraw or continue.
+     * Tracks each player's decision. When all have responded, proceeds to the next phase.
+     *
+     * @param event the withdrawal request containing the nickname and choice
+     * @return a TruckerWithdrawEvent if more players still need to respond,
+     *         or a DrawNewCardEvent if all players have responded
+     */
     @Override
     public ServerEvent visit(WithdrawRequest event) {
         String nickname=event.getNickname();
@@ -822,6 +853,67 @@ public class ClientHandlerVisitor implements VirtualServer {
             return new DrawNewCardEvent(gameController.getGame().getTruckerList().getFirst().getNickname());
         }
     }
+
+    /**
+     * Handles the event to show another player's ship to the requesting client.
+     *
+     * @param event the event containing the nickname of the player whose ship should be shown
+     * @return an event containing the other player's ship components,
+     *         or an error if the nickname is not found
+     */
+    @Override
+    public ServerEvent visit(ShowOtherShipEvent event) {
+        for(Trucker t:gameController.getGame().getTruckerList()){
+            if(t.getNickname().equals(event.getNicknameRequested())){
+                return new ShowOtherShipResponse(t.getSpaceShip().getComponents(),event.getNicknameRequested());
+            }
+        }
+        return new GenericErrorEvent("No such trucker with that nickname",false);
+    }
+
+    /**
+     * Handles the event confirming that the player has seen his/her death.
+     * If there are still players remaining, a new card is drawn and the game continues.
+     * If not, final scores are computed and the game ends.
+     *
+     * @param event the event that confirms the set of the view of the client in Dead status
+     * @return an event to start the next card or an end game event if the game is over
+     */
+    @Override
+    public ServerEvent visit(DeadTrucker event){
+        Card card;
+        if (!gameController.getGame().getTruckerList().isEmpty()) {
+            cardController.setCurrCard(gameController.pickCardFromDeck());
+            card = cardController.getCurrCard();
+            if (card != null) {
+                GamePersistence.saveGame(gameController);
+                return cardController.startCard();
+            }
+        }
+        int[] scores;
+        Map<String, Integer> playersScores = new HashMap<>();
+        scores = gameController.getGame().computeScores();
+        for(int i=0; i<numOfPlayers; i++){
+            playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
+        }
+        GamePersistence.saveGame(gameController);
+        GamePersistence.deleteSave();
+        return new EndGameEvent(playersScores);
+    }
+
+    /**
+     * Handles a pong response from a client, used to monitor client connectivity.
+     *
+     * @param event  the pong event
+     * @param client the client that sent the pong
+     * @return always returns null as no further action is needed
+     */
+    @Override
+    public ServerEvent visit(PongEvent event, Client client) {
+        client.updateLastPong();
+        return null;
+    }
+
 
 
 
