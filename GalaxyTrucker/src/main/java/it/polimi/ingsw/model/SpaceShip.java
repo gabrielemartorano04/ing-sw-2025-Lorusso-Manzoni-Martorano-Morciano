@@ -312,7 +312,6 @@ public class SpaceShip implements Serializable {
                                         if(selectedCoord[2]==0) alien = new Alien(AlienColor.PURPLE);
                                         else alien =new Alien(AlienColor.BROWN);
                                         c.setAlien(alien);
-                                        c.setQuantity(1);
                                         numAlien++;
                                     }
                                 }
@@ -907,6 +906,7 @@ public class SpaceShip implements Serializable {
                 }
             }
         }
+        this.existsAnActiveShield=false;
     }
 
 
@@ -2159,7 +2159,7 @@ public class SpaceShip implements Serializable {
                         if (goodsInLoad.get(i).getValue() == g.getValue()) {
                             load.removeGood(i); // "svuota" la merce trovata
                             removeFromGoodsList(goodsInLoad.get(i));
-                            break; // rimuove solo la prima occorrenza
+                            break;
                         }
                     }
                 }
