@@ -1120,14 +1120,14 @@ public class BuildingScene {
 
             // Due campi affiancati per x e y
             TextField xField = new TextField();
-            xField.setPromptText("X");
+            xField.setPromptText("row");
             xField.setPrefWidth(50);
             xField.textProperty().addListener((obs, oldVal, newVal) -> {
                 if (!newVal.matches("\\d*")) xField.setText(newVal.replaceAll("[^\\d]", ""));
             });
 
             TextField yField = new TextField();
-            yField.setPromptText("Y");
+            yField.setPromptText("col");
             yField.setPrefWidth(50);
             yField.textProperty().addListener((obs, oldVal, newVal) -> {
                 if (!newVal.matches("\\d*")) yField.setText(newVal.replaceAll("[^\\d]", ""));
@@ -1173,16 +1173,16 @@ public class BuildingScene {
                 String yText = yField.getText().trim();
 
                 try {
-                    int x = Integer.parseInt(xText);
-                    int y = Integer.parseInt(yText);
+                    int row = Integer.parseInt(xText);
+                    int col = Integer.parseInt(yText);
 
                     if(viewFlow.getLevel() == 2) {
-                        if (x < 4 || x > 10 || y < 5 || y > 9) {
+                        if (row < 5 || row > 9 || col < 4 || col > 10) {
                             errorLabel.setVisible(true);
                             return;
                         }
                     }else{
-                        if(x < 5 || x > 9 || y < 5 || y > 9){
+                        if(row < 5 || row > 9 || col < 5 || col > 9){
                             errorLabel.setVisible(true);
                             return;
                         }
@@ -1190,7 +1190,7 @@ public class BuildingScene {
 
 
                     errorLabel.setVisible(false);
-                    viewFlow.handleInput("link " + x + " " + y);
+                    viewFlow.handleInput("link " + row + " " + col);
                     removePopup.run();
                 } catch (NumberFormatException ex) {
                     errorLabel.setVisible(true);
