@@ -602,6 +602,30 @@ class SpaceShipTest {
     void blockBigMeteor() {
         assertTrue(spaceShip2.blockBigMeteor(0,7));
         assertTrue(spaceShip2.blockBigMeteor(0,8));
+
+        assertTrue(spaceShip3.blockBigMeteor(1,7));
+        assertTrue(spaceShip3.blockBigMeteor(0,4));
+        try {
+            spaceShip3.removeComponent(9,4);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceShip3.addComponent(
+                    new Cannon(3,3,3,"","",true),
+                    9,4
+            );
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        assertFalse(spaceShip3.blockBigMeteor(3,9));
+        switch(spaceShip3.getComponents()[9][4]){
+            case Cannon cannon->{
+                cannon.setIsActive(true);
+            }
+            default -> {}
+        }
+        assertTrue(spaceShip3.blockBigMeteor(3,9));
     }
 
     @Test
@@ -620,12 +644,42 @@ class SpaceShipTest {
         assertFalse( spaceShip2.blockSmallMeteor(3,7));
         assertTrue( spaceShip2.blockSmallMeteor(3,8));
 
+        assertFalse(spaceShip3.blockSmallMeteor(3,8));
         spaceShip3.setBattery();
-        ArrayList<int[]> list=new ArrayList<>();
-        list.add(new int[]{8,8});
-        ArrayList<int[]> listB=new ArrayList<>();
-       // spaceShip3.activateShield();
+        try {
+            spaceShip3.activateShield(new int[]{8,8},new int[]{6,9,1});
+        } catch (NotEnoughBatteries e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceShip3.removeComponent(9,8);
+            spaceShip3.removeComponent(8,10);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
 
+        assertTrue(spaceShip3.blockSmallMeteor(2,8));
+        assertTrue(spaceShip3.blockSmallMeteor(1,8));
+        switch(spaceShip3.getComponents()[8][8]){
+            case Shield shield->{
+                shield.setDirection(Direction.NW);
+                shield.setIsActive(true);
+            }
+            default -> {}
+        }
+        assertTrue(spaceShip3.blockSmallMeteor(3,8));
+        try {
+            spaceShip3.removeComponent(5,6);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        assertTrue(spaceShip3.blockSmallMeteor(0,6));
+        spaceShip3.deActivateShields();
+
+        assertFalse(spaceShip3.blockSmallMeteor(2,8));
+        assertFalse(spaceShip3.blockSmallMeteor(1,8));
+        assertFalse(spaceShip3.blockSmallMeteor(3,8));
+        assertFalse(spaceShip3.blockSmallMeteor(0,6));
     }
 
     @Test
