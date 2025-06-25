@@ -2348,6 +2348,9 @@ public class FlightScene {
         StringBuilder desc = new StringBuilder();
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[i].length; j++) {
+                if (i == 7 && j == 7){
+                    System.out.println("i = 7 j = 7");
+                }
                 Component c = layout[i][j];
                 if (c != null && !"Empty Space".equals(c.getType()) && ("Load".equals(c.getType()) || "Battery Storage".equals(c.getType()) || "Cabin".equals(c.getType()) || "Cannon".equals(c.getType()) || "Engine".equals(c.getType()) || "Shield".equals(c.getType()))) {
                     if(!formatComponent(c, i, j).isBlank()) {
