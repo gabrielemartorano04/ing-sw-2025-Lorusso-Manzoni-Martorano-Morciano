@@ -1240,11 +1240,11 @@ public class FlightScene {
             goodView2.setPreserveRatio(true);
             goodView2.setMouseTransparent(true);
 
-            Label xLabel = new Label("X:");
+            Label xLabel = new Label("Row:");
             xLabel.setTextFill(Color.web("#FFDE69"));
             xLabel.setFont(Font.font("Bangers", 15));
 
-            Label yLabel = new Label("Y:");
+            Label yLabel = new Label("Col:");
             yLabel.setTextFill(Color.web("#FFDE69"));
             yLabel.setFont(Font.font("Bangers", 15));
 
@@ -1253,11 +1253,11 @@ public class FlightScene {
             posLabel.setFont(Font.font("Bangers", 15));
 
             TextField xField = new TextField();
-            xField.setPromptText("x");
+            xField.setPromptText("row");
             xField.setPrefWidth(50);
 
             TextField yField = new TextField();
-            yField.setPromptText("y");
+            yField.setPromptText("col");
             yField.setPrefWidth(50);
 
             TextField posField = new TextField();
