@@ -445,11 +445,10 @@ public class GUI implements UI {
      */
     @Override
     public void componentNotAvailable(ComponentNotAvailableError event){
-        //TODO: notifica che il componente che hai provato a selezionare non è disponibile
-        // vogliamo farti restare nella parte dove vedi le componenti disponibili e farti selezionare un altra componente
-        // vogliamo che venga aggiornata la lista dei componenti cioè non devono essere plottati tutti quelli che hanno il selected a true
-
-        //this.buildingScene.showComponentNotAvailablePopup();
+        Platform.runLater(()-> {
+            this.buildingScene.refreshComponentsViewIfVisible();
+            this.buildingScene.showComponentUnavailablePopup();
+        });
     }
 
     /**
