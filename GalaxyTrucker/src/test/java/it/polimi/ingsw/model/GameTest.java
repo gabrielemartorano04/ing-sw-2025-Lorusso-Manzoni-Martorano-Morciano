@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.CannotTurnHourglassException;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import org.junit.jupiter.api.BeforeEach;
@@ -310,7 +311,41 @@ class GameTest {
 
     @Test
     void turnHourglass(){
-        game1.startHourglass();
+        Object lock=new Object();
+        game2.startHourglass();
+        assertThrows(CannotTurnHourglassException.class,()->{game2.turnHourglass();});
+        synchronized (lock){
+            try {
+                lock.wait(90000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            game2.turnHourglass();
+        } catch (CannotTurnHourglassException e) {
+            throw new RuntimeException(e);
+        }
+        synchronized (lock){
+            try {
+                lock.wait(90000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            game2.turnHourglass();
+        } catch (CannotTurnHourglassException e) {
+            throw new RuntimeException(e);
+        }
+        synchronized (lock){
+            try {
+                lock.wait(90000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        assertThrows(CannotTurnHourglassException.class,()->{game2.turnHourglass();});
 
     }
 

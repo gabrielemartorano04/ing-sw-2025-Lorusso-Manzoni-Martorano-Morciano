@@ -628,9 +628,8 @@ public class Game implements Serializable {
         } else if (hourglass.getTimeTurns()==1 && hourglass.timeIsUp()){
             hourglass.reset();
             event= new WaitOthersBuildingEvent();
-        } else {
+        } else
             throw new CannotTurnHourglassException("You can't turn the hourglass now!");
-        }
         return event;
     }
 
@@ -713,9 +712,6 @@ public class Game implements Serializable {
      * This method removes a nickname from old nicknames list
      * @param nickname nickname to remove
      */
-    public void removeOldNicknames(String nickname) {
-        oldNicknames.remove(nickname);
-    }
-
+    public void removeOldNicknames(String nickname) {oldNicknames.remove(nickname);}
 }
 
