@@ -189,7 +189,8 @@ public class PlanetsTest {
         switch (event){
             case CardFinished cf -> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckers());
             default -> fail();
-        }    }
+        }
+    }
 
     @Test
     void test_cardEffect_invalidState() {

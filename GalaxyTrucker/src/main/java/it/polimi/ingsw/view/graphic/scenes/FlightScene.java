@@ -1849,7 +1849,7 @@ public class FlightScene {
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(10));
 
-        Label confirm = new Label("Would you like to gain cosmic credits and lose days?");
+        Label confirm = new Label("Gain " + viewFlow.getCosmicCreditsToGain() + " cosmic credits and lose " + viewFlow.getDaysLost() + " days?");
         confirm.setTextFill(Color.web("#FFDE69"));
         confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
         confirm.setTextAlignment(TextAlignment.CENTER);

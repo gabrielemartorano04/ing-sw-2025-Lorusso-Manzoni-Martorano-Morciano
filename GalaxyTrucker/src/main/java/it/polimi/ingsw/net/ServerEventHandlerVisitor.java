@@ -145,7 +145,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.invalidCoordinates(event);
     }
 
-
     @Override
     public void visit(TurnHourglassError event) {
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
@@ -505,6 +504,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(GainCosmicCredits event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setCosmicCreditsToGain(event.getCosmicCredits());
+            viewFlow.setDaysLost(event.getDaysLost());
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -611,11 +612,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(RemotionConfirmed event) {
-        updatesFromFlight(event.getTruckers());
-
-        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
 
         if(event.getNickname().equals(viewFlow.getNickname())) {
+            updatesFromFlight(event.getTruckers());
+            ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -643,10 +644,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(RemoveGoods event) {
+        updatesFromFlight(event.getTruckers());
+
+        ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
+
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
-            viewFlow.setShip(event.getShip());
-            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
             ui.updateGoodsListToRemove(event.getGoodsList());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -668,7 +671,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(TruckerWithdrawEvent event) {
-        String nickname=event.getNickname();
         boolean choice=event.getChoice();
         if(choice){
             if(event.getNickname().equalsIgnoreCase(viewFlow.getNickname())) {
@@ -688,10 +690,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
 
     // === ERRORI e MESSAGGI GENERICI ===
-    @Override
-    public void visit(GenericErrorInsertedData event) {
-        ui.showError(event.getMessage());
-    }
+
 
     @Override
     public void visit(NoAvailableSpaceError event) {

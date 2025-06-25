@@ -11,7 +11,7 @@ public class DrawNewCardEvent extends ServerEvent {
     /**
      * Nickname of the leader player
      */
-    private String leaderNickname;
+    private final String leaderNickname;
 
     /**
      * Event constructor

@@ -13,6 +13,10 @@ import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.events.serverevents.cardevents.BooleanDecision;
+import it.polimi.ingsw.net.events.serverevents.cardevents.CardFinished;
+import it.polimi.ingsw.net.events.serverevents.cardevents.StartCardEvent;
+import it.polimi.ingsw.view.ParserState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -140,5 +144,170 @@ class PiratesTest {
     @Test
     void testCardEffectWrongState() {
         assertThrows(GeneralError.class, () -> pirates.cardEffect());
+    }
+
+    @Test
+    void testGetters() {
+        assertEquals(3, pirates.getCredits());
+        assertEquals(2, pirates.getDays());
+        assertEquals(2, pirates.getPiratesPower());
+        assertEquals(3, pirates.getShoots().size());
+        assertEquals(CardState.ACTIVATE_CANNONS, pirates.getCardState());
+    }
+
+    @Test
+    void testVictoryDrawDefeatFlow() throws Exception {
+        pirates.activateCannons(false, new ArrayList<>(), new ArrayList<>());
+        pirates.setWinDecision(true);
+        pirates.setState(CardState.ROLL_DICE);
+        pirates.rollDice(); // small -> ACTIVATE_SHIELDS
+        pirates.activateShield(false, new int[]{0,0}, new int[]{0,0});
+        pirates.setState(CardState.ROLL_DICE);
+        pirates.rollDice(); // big -> cardEffect
+
+        pirates.setState(CardState.ESECUZIONE);
+        ServerEvent ev = pirates.cardEffect();
+        switch (ev){
+            case CardFinished cf ->  assertEquals(Game.getIstance().getTruckerList(), cf.getTruckersList());
+            default -> fail();
+        }
+    }
+
+    @Test
+    void testMultipleRollDiceAndCardEffect() throws Exception {
+        pirates.activateCannons(false, new ArrayList<>(), new ArrayList<>());
+        pirates.setWinDecision(true);
+        pirates.setState(CardState.ROLL_DICE);
+        pirates.rollDice();
+        pirates.activateShield(false, new int[]{0,0}, new int[]{0,0});
+        pirates.setState(CardState.ROLL_DICE);
+        pirates.rollDice();
+        pirates.setState(CardState.ESECUZIONE);
+        pirates.cardEffect();
+        pirates.setCurrShootIndex(2);
+        pirates.setState(CardState.ROLL_DICE);
+        pirates.rollDice();
+    }
+
+    @Test
+    void testStartCard(){
+        ServerEvent sEvent = pirates.startCard();
+        StartCardEvent event = (StartCardEvent) sEvent;
+        assertEquals("Pirates", event.getCardName());
+        assertEquals(pirates.getDescription(), event.getCardDescription());
+        assertEquals(Game.getIstance().getTruckerList().getFirst().getNickname(), event.getFirstPlayerNickname());
+        assertEquals("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ",event.getQuestion());
+        assertEquals(pirates.getDays(), event.getDays());
+        assertEquals(pirates.getCredits(), event.getCredits());
+        assertEquals(-1, event.getNumHumans());
+        assertNull(event.getGoods());
+        assertNull(event.getMeteorites());
+        assertEquals(pirates.getPiratesPower(), event.getPower());
+        assertEquals(-1, event.getAstronautsLost());
+        assertEquals(-1, event.getAstronautsLost());
+        assertEquals(pirates.getShoots(), event.getShoots());
+        assertNull(event.getPlanets());
+        assertNull(event.getConditionsOrder());
+        assertNull(event.getPenalties());
+        assertEquals(ParserState.ACTIVATE_CANNONS, event.getParserState());
+    }
+
+    @Test
+    void testHandleDefeatThenRollDice() throws Exception {
+        pirates.setIndexOfCurrentTrucker(0);
+        pirates.setCurrShootIndex(0);
+        pirates.setState(CardState.ACTIVATE_CANNONS);
+        pirates.setIndexOfCurrentTrucker(1);
+        pirates.setDefeatedTrucker(Game.getIstance().getTruckerList().get(0));
+        ServerEvent ev1 = pirates.activateCannons(false, new ArrayList<>(), new ArrayList<>());
+        switch (ev1){
+            case BooleanDecision bl -> assertEquals(Game.getIstance().getTruckerList().get(pirates.getIndexOfCurrentTrucker()).getNickname(), bl.getNickname());
+            default -> fail();
+        }
+    }
+
+    @Test
+    void testCardEffectFlowBigAndSmallHit() throws Exception {
+        pirates.setState(CardState.ROLL_DICE);
+        pirates.setCurrShootIndex(0);
+        pirates.setIndexOfCurrentTrucker(0);
+        pirates.setState(CardState.ACTIVATE_CANNONS);
+        pirates.activateCannons(false, new ArrayList<>(), new ArrayList<>());
+        pirates.setWinDecision(true);
+        pirates.setState(CardState.ROLL_DICE);
+        pirates.rollDice();
+        pirates.activateShield(false, new int[]{0,0}, new int[]{0,0});
+        pirates.setState(CardState.ROLL_DICE);
+        pirates.rollDice();
+        pirates.setState(CardState.ESECUZIONE);
+        ServerEvent e = pirates.cardEffect();
+        assertNotNull(e);
+    }
+
+    @Test
+    void testCardEffectAfterAllShootsFinished() throws Exception {
+        pirates.setCurrShootIndex(2);
+        pirates.setState(CardState.ESECUZIONE);
+        ServerEvent e = pirates.cardEffect();
+        assertNotNull(e);
+    }
+
+    @Test
+    void testCardEffectDefeatedNotEmptyRemainingShots() throws Exception {
+        pirates.setCurrShootIndex(1);
+        pirates.setState(CardState.ACTIVATE_CANNONS);
+        pirates.activateCannons(false, new ArrayList<>(), new ArrayList<>());
+        pirates.setWinDecision(true);
+        pirates.setState(CardState.ROLL_DICE);
+        pirates.rollDice();
+        pirates.setState(CardState.ACTIVATE_SHIELDS);
+        pirates.activateShield(false, new int[]{0,0}, new int[]{0,0});
+        pirates.setDefeatedTrucker(Game.getIstance().getTruckerList().get(1));
+        pirates.setState(CardState.ESECUZIONE);
+        pirates.cardEffect(); // triggers blockLightCannonShot or destroyComponent
+    }
+
+    @Test
+    void testCardEffectBigShot() throws Exception {
+        pirates.activateCannons(false, new ArrayList<>(), new ArrayList<>());
+        pirates.setWinDecision(true);
+        pirates.setState(CardState.ROLL_DICE);
+        pirates.rollDice(); // big
+        pirates.setState(CardState.ESECUZIONE);
+        CardFinished result = (CardFinished) pirates.cardEffect();
+        assertNotNull(result);
+    }
+
+    @Test
+    void testCardEffectSmallShotWithBlock() throws Exception {
+        pirates.activateCannons(false, new ArrayList<>(), new ArrayList<>());
+        pirates.setWinDecision(true);
+        pirates.setState(CardState.ROLL_DICE);
+        pirates.rollDice(); // big shot (0)
+        pirates.setState(CardState.ESECUZIONE);
+        pirates.cardEffect();
+
+        pirates.setCurrShootIndex(1); // small shot
+        pirates.setState(CardState.ROLL_DICE);
+        pirates.rollDice();
+        pirates.setState(CardState.ESECUZIONE);
+        assertNotNull(pirates.cardEffect());
+    }
+
+    @Test
+    void testCardEffectNoMoreShootsNoDefeated() throws Exception {
+        pirates.setState(CardState.ESECUZIONE);
+        pirates.deleteDefeated();
+        pirates.setCurrShootIndex(2); // all shoots done
+        ServerEvent e = pirates.cardEffect();
+        switch (e){
+            case CardFinished cf -> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckersList());
+            default -> fail();
+        }
+    }
+
+    @Test
+    void getCurrentTrucker() throws Exception {
+        assertTrue(pirates.getIndexOfCurrentTrucker()<=4 && pirates.getIndexOfCurrentTrucker()>=0);
     }
 }

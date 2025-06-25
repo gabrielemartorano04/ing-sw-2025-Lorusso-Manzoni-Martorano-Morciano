@@ -194,7 +194,7 @@ public class Smugglers extends Card implements Serializable {
     private ServerEvent handleVictory() {
         winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
         cardState = CardState.GOODSTOADD;
-        return new PlotGood(true, winnerTrucker.getNickname(),winnerTrucker.getSpaceShip(),goodsGained[currGoodIndex]);
+        return new PlotGood(true, winnerTrucker.getNickname(),winnerTrucker.getSpaceShip(),goodsGained[currGoodIndex], Game.getIstance().getTruckerList());
     }
 
     /**
@@ -214,7 +214,7 @@ public class Smugglers extends Card implements Serializable {
             }
         }else{
             indexOfCurrentTrucker++;
-            return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+            return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), Game.getIstance().getTruckerList());
         }
     }
 
@@ -231,7 +231,7 @@ public class Smugglers extends Card implements Serializable {
             return removeGoods();
         }else{
             indexOfCurrentTrucker++;
-            return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, "Do you want to activate double Cannons?", Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname());
+            return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), Game.getIstance().getTruckerList());
         }
     }
 
@@ -296,7 +296,7 @@ public class Smugglers extends Card implements Serializable {
 
             if (currGoodIndex == goodsGained.length - 1) {
                 cardState = CardState.REARRANGE;
-                return new RearrangeEvent(true, this.winnerTrucker.getNickname());
+                return new RearrangeEvent(true, this.winnerTrucker.getNickname(), Game.getIstance().getTruckerList());
             } else {
                 currGoodIndex++;
                 return proceedToNextAvailableGoodOrRearrange();
@@ -312,7 +312,7 @@ public class Smugglers extends Card implements Serializable {
     private ServerEvent handleGoodRefused() {
         if (currGoodIndex == goodsGained.length - 1) {
             cardState = CardState.REARRANGE;
-            return new RearrangeEvent(true, winnerTrucker.getNickname());
+            return new RearrangeEvent(true, winnerTrucker.getNickname(), Game.getIstance().getTruckerList());
         }
 
         currGoodIndex++;
@@ -329,13 +329,13 @@ public class Smugglers extends Card implements Serializable {
             Goods g = goodsGained[currGoodIndex];
             if (Game.getIstance().getBank().getGoodsInBank(g.getValue()) >= 1) {
                 cardState = CardState.GOODSTOADD;
-                return new PlotGood(true, winnerTrucker.getNickname(), winnerTrucker.getSpaceShip(), g);
+                return new PlotGood(true, winnerTrucker.getNickname(), winnerTrucker.getSpaceShip(), g, Game.getIstance().getTruckerList());
             }
             currGoodIndex++;
         }
 
         cardState = CardState.REARRANGE;
-        return new RearrangeEvent(true, winnerTrucker.getNickname());
+        return new RearrangeEvent(true, winnerTrucker.getNickname(), Game.getIstance().getTruckerList());
     }
 
     /**
@@ -381,7 +381,7 @@ public class Smugglers extends Card implements Serializable {
             }
             try {
                 winnerTrucker.getSpaceShip().swapGoods(coord1, value1, coord2, value2);
-                return new RearrangeEvent(true, this.winnerTrucker.getNickname());
+                return new RearrangeEvent(true, this.winnerTrucker.getNickname(), Game.getIstance().getTruckerList());
             } catch (InvalidPositionException e) {
                 cardState = CardState.REARRANGE;
                 throw new InvalidPositionException("invalid positions");
@@ -433,7 +433,7 @@ public class Smugglers extends Card implements Serializable {
                         goodsToRemove.add(g);
                     }
                 }
-                return new RemoveGoods(true, nickname, ship, goodsToRemove);
+                return new RemoveGoods(true, nickname, ship, goodsToRemove, Game.getIstance().getTruckerList());
             }
             colorOfCurrGoodToRemove--;
         }
@@ -465,7 +465,7 @@ public class Smugglers extends Card implements Serializable {
             }
         } else {
             cardState = CardState.REMOVE_BATTERIES;
-            return new RemoveBatteries(true, nickname, ship, goodsToLoseCurrTrucker);
+            return new RemoveBatteries(true, nickname, ship, goodsToLoseCurrTrucker, Game.getIstance().getTruckerList());
         }
     }
 
@@ -525,7 +525,7 @@ public class Smugglers extends Card implements Serializable {
         }
         else {
             cardState = CardState.REMOVE_BATTERIES;
-            return new RemoveBatteries(true, nickname,spaceShip, goodsToLoseCurrTrucker);
+            return new RemoveBatteries(true, nickname,spaceShip, goodsToLoseCurrTrucker, Game.getIstance().getTruckerList());
         }
     }
 

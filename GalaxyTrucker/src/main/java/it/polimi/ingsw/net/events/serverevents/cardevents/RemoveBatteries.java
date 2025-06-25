@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class RemoveBatteries extends CardEvent{
     private final int batteriesToRemove;
-    private SpaceShip spaceShip;
+    private final SpaceShip spaceShip;
 
     public RemoveBatteries(boolean forAll, String nickname, SpaceShip spaceShip, int batteriesToRemove, ArrayList<Trucker> truckers) {
         super(forAll, ParserState.REMOVE_BATTERIES, nickname, truckers);

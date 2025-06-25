@@ -167,7 +167,7 @@ class AbandonedStationTest {
         abandonedStation.setCardState(CardState.GOODSTOADD);
         abandonedStation.setTruckerThatHasDecided(Game.getIstance().getTruckerList().getFirst());
         try {
-            ServerEvent sEvent = abandonedStation.setGoodsCoordinates(false, goodsCoord, 0);
+            ServerEvent sEvent = abandonedStation.setGoodsCoordinates(true, goodsCoord, 0);
             if(abandonedStation.getCurrGood()==abandonedStation.getGoods().size()){
                 RearrangeEvent event = (RearrangeEvent) sEvent;
                 assertFalse(event.isForAll());
@@ -201,14 +201,14 @@ class AbandonedStationTest {
         try {
             ServerEvent sEvent = null;
             try {
-                sEvent = abandonedStation.setGoodsCoordinates(true, null, -1);
+                sEvent = abandonedStation.setGoodsCoordinates(false, null, -1);
             } catch (InvalidCoordinates e) {
                 throw new RuntimeException(e);
             } catch (InvalidPositionException e) {
                 throw new RuntimeException(e);
             }
-            RearrangeEvent event = (RearrangeEvent) sEvent;
-            assertFalse(event.isForAll());
+            PlotGood event = (PlotGood) sEvent;
+            assertTrue(event.isForAll());
             assertEquals(abandonedStation.getTruckerThatHasDecided().getNickname(), event.getNickname());
         } catch (GeneralError e) {
             throw new RuntimeException(e);
