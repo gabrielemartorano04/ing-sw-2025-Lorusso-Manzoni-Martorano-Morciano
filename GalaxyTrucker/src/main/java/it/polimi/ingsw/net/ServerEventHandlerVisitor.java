@@ -20,7 +20,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     }
 
 
-    // === PHASE 1: Lobby ===
+    // === PHASE 1: Login and game creation or entrance to a game ===
 
     /**
      * Notifies that this game is already full
@@ -1036,46 +1036,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
-
-    // === PHASE 5: Fine Gioco ===
-
-    /**
-     * Handles the end of the game by displaying final scores and updating state
-     *
-     * @param event event containing the final score map
-     */
-    @Override
-    public void visit(EndGameEvent event) {
-        ui.showScores(event.getScores());
-        ui.showGameEnded();
-        viewFlow.setParserFlightState(ParserState.DO_NOTHING);
-        viewFlow.setViewState(ViewFlow.ViewState.END);
-    }
-
-
-
-    // === ERRORI e MESSAGGI GENERICI ===
-
-    /**
-     * Displays a generic error message coming from the server to the user
-     *
-     * @param event event containing the error message
-     */
-    @Override
-    public void visit(GenericErrorEvent event){
-        ui.showError(event.getMessage());
-    }
-
-    /**
-     * Displays the ship layout of another player
-     *
-     * @param event event containing the nickname and ship to display
-     */
-    @Override
-    public void visit(ShowOtherShipResponse event) {
-        ui.showOtherShipLayout(event.getNickname(), event.getSpaceship());
-    }
-
     /**
      * handle the possible elimination of this client from the game, updating the state of the view
      * and notifies the death
@@ -1115,6 +1075,49 @@ public class ServerEventHandlerVisitor implements VirtualView {
             }
         }
     }
+
+
+    // === USED IN MORE THAN ONE PHASE ===
+
+    /**
+     * Displays a generic error message coming from the server to the user
+     *
+     * @param event event containing the error message
+     */
+    @Override
+    public void visit(GenericErrorEvent event){
+        ui.showError(event.getMessage());
+    }
+
+    /**
+     * Displays the ship layout of another player
+     *
+     * @param event event containing the nickname and ship to display
+     */
+    @Override
+    public void visit(ShowOtherShipResponse event) {
+        ui.showOtherShipLayout(event.getNickname(), event.getSpaceship());
+    }
+
+
+    // === END OF THE GAME ===
+
+
+    /**
+     * Handles the end of the game by displaying final scores and updating state
+     *
+     * @param event event containing the final score map
+     */
+    @Override
+    public void visit(EndGameEvent event) {
+        ui.showScores(event.getScores());
+        ui.showGameEnded();
+        viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+        viewFlow.setViewState(ViewFlow.ViewState.END);
+    }
+
+
+    // === PING RESPONSE ===
 
     /**
      * responds to the pingEvent to confirm the client is still active
