@@ -23,7 +23,11 @@ public class PlanetsTest {
     @BeforeEach
     void setUp() throws InvalidCoordinates {
         ship1 = createShip.createShip1(new SpaceShip());
+        ship1.setBattery();
+        ship1.setNumHuman();
         ship2 = createShip.createShip3(new SpaceShip());
+        ship2.setBattery();
+        ship2.setNumHuman();
         Game.initializeForTest(ship1, ship2);
 
         ArrayList<ArrayList<Goods>> planets = new ArrayList<>();

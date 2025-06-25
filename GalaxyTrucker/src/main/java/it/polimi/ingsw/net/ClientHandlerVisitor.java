@@ -74,7 +74,6 @@ public class ClientHandlerVisitor implements VirtualServer {
 
     @Override
     public ServerEvent visit(DiscardTileEvent event, Client client) {
-        // The component is already set as uncovered by the select handle, because we can't have a discard before a select
         gameController.getGame().getComponents().setComponentAsUnselected(event.getIndex());
         return new DiscardSuccessEvent(event.getIndex(), client.getTruckerController().getNickname());
     }
@@ -82,27 +81,19 @@ public class ClientHandlerVisitor implements VirtualServer {
     @Override
     public ServerEvent visit(EndBuildingEvent event, Client client) {
         endBuilding++;
-        System.out.println(client.getTruckerController().getNickname() + " è in posizione: " + client.getTruckerController().getPosition());
-        //inserire condizione hourglass
         if(gameController.getGame().getGameLevel()==2){
             switch(endBuilding) {
                 case 1-> {
                     client.getTruckerController().setPosition(6);
-                    System.out.println("sono in caso 1 e sto gestendo " + client.getTruckerController().getNickname());
                 }
                 case 2-> {
                     client.getTruckerController().setPosition(3);
-                    System.out.println("sono in caso 2 e sto gestendo " + client.getTruckerController().getNickname());
-
                 }
                 case 3-> {
                     client.getTruckerController().setPosition(1);
-                    System.out.println("sono in caso 3 e sto gestendo " + client.getTruckerController().getNickname());
                 }
                 case 4-> {
                     client.getTruckerController().setPosition(0);
-                    System.out.println("sono in caso 4 e sto gestendo " + client.getTruckerController().getNickname());
-
                 }
             }
         }
@@ -110,28 +101,20 @@ public class ClientHandlerVisitor implements VirtualServer {
             switch(endBuilding) {
                 case 1-> {
                     client.getTruckerController().setPosition(4);
-                    System.out.println("sono in caso 1 e sto gestendo " + client.getTruckerController().getNickname());
                 }
                 case 2-> {
                     client.getTruckerController().setPosition(2);
-                    System.out.println("sono in caso 2 e sto gestendo " + client.getTruckerController().getNickname());
-
                 }
                 case 3-> {
                     client.getTruckerController().setPosition(1);
-                    System.out.println("sono in caso 3 e sto gestendo " + client.getTruckerController().getNickname());
                 }
                 case 4-> {
                     client.getTruckerController().setPosition(0);
-                    System.out.println("sono in caso 4 e sto gestendo " + client.getTruckerController().getNickname());
-
                 }
             }
         }
 
-            System.out.println(client.getTruckerController().getNickname() + " è in posizione: " + client.getTruckerController().getPosition());
         if(endBuilding< gameController.getGame().getNumPlayers()) {
-            System.out.println("You're not the last one to end");
             return new WaitOthersBuildingEvent();
         }else{
             BuildTimerManager.getInstance().stop();

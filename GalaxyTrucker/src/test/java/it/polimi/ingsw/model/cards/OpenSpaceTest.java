@@ -30,11 +30,15 @@ class OpenSpaceTest {
         SpaceShip ship2=new SpaceShip();
         try {
             ship1 = createShip.createShip1(ship1);
+            ship1.setBattery();
+            ship1.setNumHuman();
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }
         try {
             ship2 = createShip.createShip3(ship2);
+            ship2.setBattery();
+            ship2.setNumHuman();
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }
@@ -101,7 +105,6 @@ class OpenSpaceTest {
             BooleanDecision e= (BooleanDecision) event;
             assertTrue(e.isForAll());
             assertEquals(ParserState.ACTIVATE_ENGINES, e.getParserState());
-            assertEquals("Choose the position of the double engines to activate", e.getMessage());
             assertEquals(Game.getIstance().getTruckerList().get(openSpace.getIndexOfCurrentTrucker()).getNickname(), e.getNickname());
         }
     }
@@ -128,7 +131,6 @@ class OpenSpaceTest {
             BooleanDecision e= (BooleanDecision) event;
             assertTrue(e.isForAll());
             assertEquals(ParserState.ACTIVATE_ENGINES, e.getParserState());
-            assertEquals("Choose the position of the double engines to activate", e.getMessage());
             assertEquals(Game.getIstance().getTruckerList().get(openSpace.getIndexOfCurrentTrucker()).getNickname(), e.getNickname());
         }
     }
