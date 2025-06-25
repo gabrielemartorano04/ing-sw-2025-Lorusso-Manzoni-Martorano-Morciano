@@ -402,6 +402,7 @@ public class FlightScene {
             nicknameChoices.setAlignment(Pos.CENTER);
 
             for (String nickname : playersNames) {
+                if (nickname.equals(viewFlow.getNickname())) continue;
                 Button nickBtn = new Button(nickname);
                 styleButton.accept(nickBtn);
                 nickBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
@@ -2331,7 +2332,7 @@ public class FlightScene {
         Label title = new Label("Components details:");
         title.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
         title.setTextAlignment(TextAlignment.LEFT);
-        title.setStyle("-fx-text-color: #FFDE69;");
+        title.setTextFill(Color.web("#FFDE69"));
 
         VBox titleBox = new VBox(title);
         titleBox.setAlignment(Pos.CENTER_LEFT);

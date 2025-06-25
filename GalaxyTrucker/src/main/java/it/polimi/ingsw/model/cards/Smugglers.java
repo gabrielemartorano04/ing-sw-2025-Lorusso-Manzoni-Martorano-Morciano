@@ -166,6 +166,7 @@ public class Smugglers extends Card implements Serializable {
                 null,
                 ParserState.ACTIVATE_CANNONS,
                 null,
+                Game.getIstance().getTrack(),
                 this
         );
     }
@@ -663,5 +664,9 @@ public class Smugglers extends Card implements Serializable {
 
     public void setIndexOfCurrentTrucker(int indexOfCurrentTrucker) {
         this.indexOfCurrentTrucker = indexOfCurrentTrucker;
+    }
+
+    public void setWinnerTrucker(Trucker winnerTrucker) {
+        this.winnerTrucker = winnerTrucker;
     }
 }

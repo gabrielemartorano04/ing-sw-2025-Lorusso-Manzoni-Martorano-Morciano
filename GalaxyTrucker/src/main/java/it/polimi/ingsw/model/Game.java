@@ -418,6 +418,7 @@ public class Game implements Serializable {
     public Map<String, Integer> getTrack() {
         for (Trucker p : truckers) {
             track.put(p.getNickname(), p.getPosition());
+            System.out.println(p.getNickname() + ": " + p.getPosition());
         }
         return track;
     }

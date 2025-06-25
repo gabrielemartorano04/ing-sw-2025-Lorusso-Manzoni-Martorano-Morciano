@@ -156,16 +156,16 @@ public class SpaceShip implements Serializable {
         Cabin cabin=null;
         switch(color){
             case BLUE -> {
-                cabin = new Cabin(3, 3, 3, 3, "cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web33.jpg", PlayerColors.BLUE, true);
+                cabin = new Cabin(3, 3, 3, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web33.jpg", PlayerColors.BLUE, true);
             }
             case YELLOW -> {
-                cabin = new Cabin(3, 3, 3, 3, "cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web61.jpg", PlayerColors.YELLOW, true);
+                cabin = new Cabin(3, 3, 3, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web61.jpg", PlayerColors.YELLOW, true);
             }
             case RED -> {
-                cabin = new Cabin(3, 3, 3, 3, "cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
+                cabin = new Cabin(3, 3, 3, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web52.jpg", PlayerColors.RED, true);
             }
             case GREEN -> {
-                cabin = new Cabin(3, 3, 3, 3, "cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web34.jpg", PlayerColors.GREEN, true);
+                cabin = new Cabin(3, 3, 3, 3, "Cabin", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web34.jpg", PlayerColors.GREEN, true);
             }
         }
         components[7][7] = cabin;
