@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class PlanetDecision extends CardEvent {
     private ArrayList<Trucker> planetsOccupied;
     private SpaceShip spaceShip;
-    public PlanetDecision(boolean forAll, ArrayList<Trucker> planetsOccupied, String nickname,SpaceShip spaceShip) {
-        super(forAll, ParserState.PLANET_DECISION,nickname);
+    public PlanetDecision(boolean forAll, ArrayList<Trucker> planetsOccupied, String nickname,SpaceShip spaceShip, ArrayList<Trucker> truckers) {
+        super(forAll, ParserState.PLANET_DECISION,nickname,truckers);
         this.planetsOccupied = planetsOccupied;
         this.spaceShip=spaceShip;
     }

@@ -181,7 +181,7 @@ public class Planets extends Card implements Serializable {
             }
         }
         indexOfTrucker++;
-        return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname(),Game.getIstance().getTrucker(indexOfTrucker).getSpaceShip());
+        return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname(),Game.getIstance().getTrucker(indexOfTrucker).getSpaceShip(), Game.getIstance().getTruckerList());
     }
 
 
@@ -202,11 +202,11 @@ public class Planets extends Card implements Serializable {
                 if (Game.getIstance().getBank().getGoodsInBank(g.getValue()) > 0) {
                     this.cardState = CardState.GOODSTOADD;
                     this.currentGood = g;
-                    return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(),truckersLanded.get(indexOfTrucker).getSpaceShip(),g);
+                    return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(),truckersLanded.get(indexOfTrucker).getSpaceShip(),g, Game.getIstance().getTruckerList());
                 }
             }
             indexOfTrucker++;
-            return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname(),Game.getIstance().getTrucker(indexOfTrucker).getSpaceShip());
+            return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname(),Game.getIstance().getTrucker(indexOfTrucker).getSpaceShip(), Game.getIstance().getTruckerList());
         }
         else{
             cardState = CardState.ESECUZIONE;
@@ -256,7 +256,7 @@ public class Planets extends Card implements Serializable {
         }
         if(currGoodIndex >= currentGoodsList.size()-1){
             cardState = CardState.REARRANGE;
-            return new RearrangeEvent(true, this.truckersLanded.get(indexOfTrucker).getNickname());
+            return new RearrangeEvent(true, this.truckersLanded.get(indexOfTrucker).getNickname(), Game.getIstance().getTruckerList());
         }
         else{
             currGoodIndex++;
@@ -275,13 +275,12 @@ public class Planets extends Card implements Serializable {
             currentGood = currentGoodsList.get(currGoodIndex);
             if (Game.getIstance().getBank().getGoodsInBank(currentGood.getValue()) >= 1) {
                 cardState = CardState.GOODSTOADD;
-                return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(),
-                        truckersLanded.get(indexOfTrucker).getSpaceShip(), currentGood);
+                return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(), truckersLanded.get(indexOfTrucker).getSpaceShip(), currentGood, Game.getIstance().getTruckerList());
             }
             currGoodIndex++;
         }
         cardState = CardState.REARRANGE;
-        return new RearrangeEvent(true, truckersLanded.get(indexOfTrucker).getNickname());
+        return new RearrangeEvent(true, truckersLanded.get(indexOfTrucker).getNickname(), Game.getIstance().getTruckerList());
     }
 
 
@@ -325,7 +324,7 @@ public class Planets extends Card implements Serializable {
             currentGood=currentGoodsList.get(currGoodIndex);
             cardState = CardState.GOODSTOADD;
 
-            return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(),truckersLanded.get(indexOfTrucker).getSpaceShip(), currentGood);
+            return new PlotGood(true, truckersLanded.get(indexOfTrucker).getNickname(),truckersLanded.get(indexOfTrucker).getSpaceShip(), currentGood, Game.getIstance().getTruckerList());
         }
     }
 
