@@ -151,6 +151,7 @@ public class Slavers extends Card implements Serializable {
                 null,
                 null,
                 ParserState.ACTIVATE_CANNONS,
+                null,
                 this
         );
     }

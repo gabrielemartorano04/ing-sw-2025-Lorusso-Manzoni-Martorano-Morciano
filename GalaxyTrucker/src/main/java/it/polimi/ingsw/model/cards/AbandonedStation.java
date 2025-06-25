@@ -105,6 +105,7 @@ public class AbandonedStation extends Card implements Serializable {
                 null,
                 null,
                 ParserState.LAND,
+                null,
                 this
         );
     }

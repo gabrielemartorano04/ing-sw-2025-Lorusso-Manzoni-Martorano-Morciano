@@ -137,6 +137,7 @@ public class Planets extends Card implements Serializable {
                         null,
                         null,
                         ParserState.PLANET_DECISION,
+                        planetsOccupied,
                         this
                 );
         startCardEvent.setBank(Game.getIstance().getBank());
