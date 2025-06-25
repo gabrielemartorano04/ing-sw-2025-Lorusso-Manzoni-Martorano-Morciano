@@ -1262,14 +1262,16 @@ public class SpaceShip implements Serializable {
                 case Load load->{
                     goodsCapacity-= load.getCapacity();
                     if(load.getQuantity()>0){
+                        Iterator<Goods> iterator = goodsList.iterator();
+                        while (iterator.hasNext()) {
+                            Goods g = iterator.next();
+                            if (g.getX() == x && g.getY() == y) {
+                                if (g.getValue() == 4) redGoods--;
+                                else if (g.getValue() == 3) yellowGoods--;
+                                else if (g.getValue() == 2) greenGoods--;
+                                else if (g.getValue() == 1) blueGoods--;
 
-                        for(Goods g:goodsList){
-                            if(g.getX()==x && g.getY()==y){
-                                if(g.getValue()==4) redGoods--;
-                                else if(g.getValue()==3) yellowGoods--;
-                                else if(g.getValue()==2) greenGoods--;
-                                else if(g.getValue()==1) blueGoods--;
-                                goodsList.remove(g);
+                                iterator.remove();
                                 bank.addGoodsInBank(g.getValue());
                             }
                         }
@@ -1281,25 +1283,33 @@ public class SpaceShip implements Serializable {
                     }
                 }
                 case LifeSupport lifeSupport->{
-                    switch(components[x+1][y]){
-                        case Cabin cabin->{
-                            if(cabin.getAlien() != null) { numAlien--;}
-                        }default -> {}
+                    if(components[x+1][y]!=null){
+                        switch(components[x+1][y]){
+                            case Cabin cabin->{
+                                if(cabin.getAlien() != null) { numAlien--;}
+                            }default -> {}
+                        }
                     }
-                    switch(components[x-1][y]){
-                        case Cabin cabin->{
-                            if(cabin.getAlien() != null) { numAlien--;}
-                        }default -> {}
+                    if(components[x-1][y]!=null){
+                        switch(components[x-1][y]){
+                            case Cabin cabin->{
+                                if(cabin.getAlien() != null) { numAlien--;}
+                            }default -> {}
+                        }
                     }
-                    switch(components[x][y+1]){
-                        case Cabin cabin->{
-                            if(cabin.getAlien() != null) { numAlien--;}
-                        }default -> {}
+                    if(components[x][y+1]!=null){
+                        switch(components[x][y+1]){
+                            case Cabin cabin->{
+                                if(cabin.getAlien() != null) { numAlien--;}
+                            }default -> {}
+                        }
                     }
-                    switch(components[x][y-1]){
-                        case Cabin cabin->{
-                            if(cabin.getAlien() != null) { numAlien--;}
-                        }default -> {}
+                    if(components[x][y-1]!=null){
+                        switch(components[x][y-1]){
+                            case Cabin cabin->{
+                                if(cabin.getAlien() != null) { numAlien--;}
+                            }default -> {}
+                        }
                     }
 
                 }default -> {}

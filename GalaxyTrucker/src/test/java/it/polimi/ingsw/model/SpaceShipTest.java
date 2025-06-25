@@ -29,6 +29,7 @@ class SpaceShipTest {
         }
         spaceShip1=new SpaceShip();
         spaceShip1.initSpaceShip(2,PlayerColors.GREEN); // empty spaceship
+        Game.initializeForTest(spaceShip2,spaceShip3);
     }
 
     @Test
@@ -517,6 +518,17 @@ class SpaceShipTest {
             throw new RuntimeException(e);
         }
         assertTrue(spaceShip3.wellDone());
+        try {
+            spaceShip3.removeComponent(6,5);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceShip3.addComponent(new Cabin(3,1,2,0,"","",null,false),6,5);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        assertFalse(spaceShip3.wellDone());
 
     }
 
@@ -539,13 +551,51 @@ class SpaceShipTest {
         assertFalse(spaceShip2.isHit(0,13));
 
         assertFalse(spaceShip2.isHit(1,11));
+
+        assertTrue(spaceShip3.isHit(1,9));
+        assertTrue(spaceShip3.isHit(2,7));
+        assertTrue(spaceShip3.isHit(3,7));
     }
 
     @Test
     void destroyComponent() {
-// todo sistema
         spaceShip2.destroyComponent(8,1,new Bank());
-        //assertNull(spaceShip2.getComponents()[8][8]);
+        spaceShip3.setBattery();
+        spaceShip3.setNumHuman();
+        spaceShip3.destroyComponent(5,0,new Bank());
+        assertNull(spaceShip3.getComponents()[6][5]);
+
+        switch(spaceShip3.getComponents()[9][8]){
+            case Load load->{
+                Goods good=new Goods(2);
+                good.setX(9);
+                good.setY(8);
+                load.addGood(0,good);
+                spaceShip3.addGoodsList(good);
+            }
+            default -> {}
+        }
+        spaceShip3.destroyComponent(9,1,new Bank());
+        assertNull(spaceShip3.getComponents()[9][8]);
+
+        spaceShip3.destroyComponent(6,2,new Bank());
+        assertNull(spaceShip3.getComponents()[9][6]);
+
+        spaceShip3.destroyComponent(8,3,new Bank());
+        assertNull(spaceShip3.getComponents()[8][5]);
+        assertNull(spaceShip3.getComponents()[9][5]);
+
+        spaceShip3.destroyComponent(6,1,new Bank());
+        assertNull(spaceShip3.getComponents()[6][9]);
+        ArrayList<int[]> list=new ArrayList<>();
+        list.add(new int[]{7,6,1});
+        spaceShip3.setNumAlien(list);
+        spaceShip3.destroyComponent(6,3,new Bank());
+
+        spaceShip3.destroyComponent(7,1,new Bank());
+        spaceShip3.destroyComponent(7,1,new Bank());
+
+
     }
 
     @Test
