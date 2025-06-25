@@ -3,7 +3,7 @@ package it.polimi.ingsw.net.control;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 
 /**
- * This class links a ClientEvent with the Client sending it, represented by the instance of ClientHandlerServer.
+ * This class links a ClientEvent with the Client sending it
  */
 
 public class EventWithSource {
@@ -21,7 +21,7 @@ public class EventWithSource {
     /**
      * Class constructor
      * @param event client event
-     * @param client client's clientHandlerSocket
+     * @param client client class that represents the client on the server side
      */
     public EventWithSource(ClientEvent event, Client client) {
         this.event = event;

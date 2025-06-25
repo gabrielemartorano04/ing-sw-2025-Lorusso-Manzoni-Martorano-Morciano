@@ -16,10 +16,6 @@ public class Client {
     private int id;
     private long lastPongTime;
 
-    public long getLastPongTime() {
-        return lastPongTime;
-    }
-
     public Client(ClientHandler clientHandler, RemoteClientHandler remoteClientHandler) {
         this.clientHandler = clientHandler;
         this.remoteClientHandler = remoteClientHandler;
@@ -49,6 +45,9 @@ public class Client {
         return id;
     }
 
+    public long getLastPongTime() {
+        return lastPongTime;
+    }
 
     public ClientHandler getSocketClient() {
         return clientHandler;
@@ -90,9 +89,6 @@ public class Client {
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-        }
-        else{
-            System.out.println("Both remoteClientHandler and clientHandler are null!");
         }
     }
 
