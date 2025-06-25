@@ -8,7 +8,7 @@ public class RemotionConfirmed extends CardEvent{
     private SpaceShip spaceShip;
 
     public RemotionConfirmed(ParserState parserState , String nickname,SpaceShip spaceShip) {
-        super(true, parserState, nickname);
+        super(true, parserState, nickname, null);
         this.spaceShip=spaceShip;
     }
 
