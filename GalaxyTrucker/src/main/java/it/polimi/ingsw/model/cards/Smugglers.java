@@ -547,6 +547,7 @@ public class Smugglers extends Card implements Serializable {
         }
         for(Integer index : indexesToRemove){
             if(index < 0 || index >= goodsToRemove.size()){
+                System.out.println("goodsToRemove: " + goodsToRemove + ", index: " + index);
                 throw new InvalidGoodChosen("A good with an index out of range has been chosen");
             }
         }
@@ -629,6 +630,23 @@ public class Smugglers extends Card implements Serializable {
         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
+    public int getIndexOfCurrentTrucker() {
+        return indexOfCurrentTrucker;
+    }
 
+    public int getPower() {
+        return smugglersPower;
+    }
 
+    public void setCardState(CardState cardState) {
+        this.cardState = cardState;
+    }
+
+    public void addDefeatedTruckers(Trucker defeatedTruckers) {
+        this.defeatedTruckers.add(defeatedTruckers);
+    }
+
+    public void addGoodToRemove(Goods good){
+        goodsToRemove.add(good);
+    }
 }
