@@ -465,6 +465,7 @@ public class Smugglers extends Card implements Serializable {
                 cardState = CardState.ESECUZIONE;
                 return cardEffect();
             } else {
+                System.out.println("Remotion Confirmed in handleBatteryOrNextTrucker");
                 return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED, nickname, ship);
             }
         } else {
@@ -520,6 +521,7 @@ public class Smugglers extends Card implements Serializable {
             defeatedTruckers.removeFirst();
             goodsToLoseCurrTrucker = goodsLost;
             cardState = CardState.REMOVE_GOODS;
+            System.out.println("Remotion Confirmed in remove without decision");
             return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED,nickname,spaceShip);
 
         } else if((goodsToLoseCurrTrucker > 0 && !spaceShip.getGoodsList().isEmpty())){
@@ -573,6 +575,7 @@ public class Smugglers extends Card implements Serializable {
         defeatedTruckers.removeFirst();
         goodsToLoseCurrTrucker = goodsLost;
         cardState = CardState.REMOVE_GOODS;
+        System.out.println("RemotionConfirmed in removeGoodsDecided");
         return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED,nickname,ship);
     }
 
@@ -609,6 +612,7 @@ public class Smugglers extends Card implements Serializable {
         defeatedTruckers.removeFirst();
         goodsToLoseCurrTrucker = goodsLost;
         cardState = CardState.REMOVE_GOODS;
+        System.out.println("Remotion Confirm removeBatteries");
         return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED,nickname,spaceShip);
     }
 
