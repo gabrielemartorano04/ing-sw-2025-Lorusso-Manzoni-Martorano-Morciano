@@ -2303,7 +2303,11 @@ public class FlightScene {
         for (Map.Entry<String, Integer> entry : viewFlow.getGoodsByColor().entrySet()) {
             String color = entry.getKey().toLowerCase();
             if (goodLabels.containsKey(color)) {
-                goodLabels.get(color).setText(": " + entry.getValue());
+                if(entry.getValue() > 0) {
+                    goodLabels.get(color).setText(": " + entry.getValue());
+                } else {
+                    goodLabels.get(color).setText(": 0");
+                }
             }
         }
     }
