@@ -29,7 +29,7 @@ class EpidemicTest {
             throw new RuntimeException(e);
         }
         try {
-            ship2 = createShip.createShip3(ship2);
+            ship2 = createShip.createShip2(ship2);
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }

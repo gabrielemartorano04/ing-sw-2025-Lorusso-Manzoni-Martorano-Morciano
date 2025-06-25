@@ -1768,36 +1768,52 @@ public class SpaceShip implements Serializable {
                     switch (components[i][j]){
                         case Cabin cabin->{
                             if(cabin.getQuantity()>0){
-                                switch(components[i+1][j]){
-                                    case Cabin cabin1->{
-                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[2], cabin1.getLink()[0])){
-                                            removeHuman(i,j);
-                                            continue;
+                                if(components[i + 1][j]!=null) {
+                                    switch (components[i + 1][j]) {
+                                        case Cabin cabin1 -> {
+                                            if (cabin1.getQuantity() > 0 && compatibleLinks(cabin.getLink()[2], cabin1.getLink()[0])) {
+                                                removeHuman(i, j);
+                                                continue;
+                                            }
                                         }
-                                    }default -> {}
+                                        default -> {
+                                        }
+                                    }
                                 }
-                                switch(components[i][j+1]){
-                                    case Cabin cabin1->{
-                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[1], cabin1.getLink()[3])){
-                                            removeHuman(i,j);
-                                            continue;
+                                if(components[i][j + 1]!=null) {
+                                    switch (components[i][j + 1]) {
+                                        case Cabin cabin1 -> {
+                                            if (cabin1.getQuantity() > 0 && compatibleLinks(cabin.getLink()[1], cabin1.getLink()[3])) {
+                                                removeHuman(i, j);
+                                                continue;
+                                            }
                                         }
-                                    }default -> {}
+                                        default -> {
+                                        }
+                                    }
                                 }
-                                switch(components[i-1][j]){
-                                    case Cabin cabin1->{
-                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[0], cabin1.getLink()[2])){
-                                            removeHuman(i,j);
-                                            continue;
+                                if(components[i - 1][j]!=null) {
+                                    switch (components[i - 1][j]) {
+                                        case Cabin cabin1 -> {
+                                            if (cabin1.getQuantity() > 0 && compatibleLinks(cabin.getLink()[0], cabin1.getLink()[2])) {
+                                                removeHuman(i, j);
+                                                continue;
+                                            }
                                         }
-                                    }default -> {}
+                                        default -> {
+                                        }
+                                    }
                                 }
-                                switch(components[i][j-1]){
-                                    case Cabin cabin1->{
-                                        if(cabin1.getQuantity()>0 && compatibleLinks(cabin.getLink()[3], cabin1.getLink()[1])){
-                                            removeHuman(i,j);
+                                if(components[i][j-1]!=null) {
+                                    switch (components[i][j - 1]) {
+                                        case Cabin cabin1 -> {
+                                            if (cabin1.getQuantity() > 0 && compatibleLinks(cabin.getLink()[3], cabin1.getLink()[1])) {
+                                                removeHuman(i, j);
+                                            }
                                         }
-                                    }default -> {}
+                                        default -> {
+                                        }
+                                    }
                                 }
                             }
                         }default -> {}

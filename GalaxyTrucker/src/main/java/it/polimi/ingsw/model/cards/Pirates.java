@@ -465,4 +465,16 @@ public class Pirates extends Card implements Serializable {
     public void setIndexOfCurrentTrucker(int indexOfCurrentTrucker) {
         this.indexOfCurrentTrucker = indexOfCurrentTrucker;
     }
+
+    public void setDefeatedTrucker(Trucker defeatedTrucker) {
+        defeatedTruckers.add(defeatedTrucker);
+    }
+
+    public void deleteDefeated() {
+        defeatedTruckers.clear();
+    }
+
+    public int getIndexOfCurrentTrucker() {
+        return indexOfCurrentTrucker;
+    }
 }
