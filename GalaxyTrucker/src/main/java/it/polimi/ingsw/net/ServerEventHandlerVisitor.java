@@ -326,7 +326,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
 
         Trucker trucker=null;
-        for(Trucker t:event.getTruckersList()){
+        for(Trucker t:event.getTruckers()){
             if(t.getNickname().equals(viewFlow.getNickname())){
                 trucker=t;
                 break;

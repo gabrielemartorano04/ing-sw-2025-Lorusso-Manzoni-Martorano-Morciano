@@ -137,18 +137,15 @@ public class MeteorShower extends Card implements Serializable {
 
         this.roll = Game.getIstance().rollDice();
 
-        //TODO TOGLI TOGLI TOGLI
-        this.roll = 7;
-
         meteor = meteors.get(currMeteorIndex);
         currMeteorIndex++;
 
         if (meteor[0]==1) {
             state=CardState.ACTIVATE_CANNONS;
-            return new RollDiceResult(ParserState.ACTIVATE_CANNONS, currMeteorIndex,null,meteor, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "bigmeteor");
+            return new RollDiceResult(ParserState.ACTIVATE_CANNONS, currMeteorIndex,null,meteor, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "bigmeteor", Game.getIstance().getTruckerList());
         }else{
             state=CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currMeteorIndex, null,meteor, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "smallmeteor");
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currMeteorIndex, null,meteor, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "smallmeteor", Game.getIstance().getTruckerList());
         }
     }
 
@@ -192,7 +189,7 @@ public class MeteorShower extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrTrucker++;
-        return new BooleanDecision(true, ParserState.ACTIVATE_SHIELD, "vuoi attivare uno scudo?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+        return new BooleanDecision(true, ParserState.ACTIVATE_SHIELD, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), Game.getIstance().getTruckerList());
     }
 
 
@@ -235,7 +232,7 @@ public class MeteorShower extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrTrucker++;
-        return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, "vuoi attivare un Cannone Doppio?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+        return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), Game.getIstance().getTruckerList());
     }
 
     /**
@@ -286,7 +283,7 @@ public class MeteorShower extends Card implements Serializable {
             return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
         }else {
             this.state = CardState.ROLL_DICE;
-            return new BooleanDecision(true, ParserState.ROLL_DICE, "Roll the dice", Game.getIstance().getTruckerList().getFirst().getNickname());
+            return new BooleanDecision(true, ParserState.ROLL_DICE, Game.getIstance().getTruckerList().getFirst().getNickname(), Game.getIstance().getTruckerList());
         }
     }
 

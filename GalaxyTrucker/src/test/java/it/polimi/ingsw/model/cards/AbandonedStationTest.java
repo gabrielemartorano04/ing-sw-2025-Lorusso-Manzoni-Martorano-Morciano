@@ -114,7 +114,7 @@ class AbandonedStationTest {
                 }
 
                 assertTrue(event.isForAll());
-                assertEquals(Game.getIstance().getTruckerList(), event.getTruckersList());
+                assertEquals(Game.getIstance().getTruckerList(), event.getTruckers());
                 assertEquals(track, event.getTrack());
             }
         } catch (GeneralError e) {
@@ -145,7 +145,7 @@ class AbandonedStationTest {
                 }
 
                 assertTrue(event.isForAll());
-                assertEquals(Game.getIstance().getTruckerList(), event.getTruckersList());
+                assertEquals(Game.getIstance().getTruckerList(), event.getTruckers());
                 assertEquals(track, event.getTrack());
             } else {
                 BooleanDecision event = (BooleanDecision) sEvent;
@@ -274,7 +274,7 @@ class AbandonedStationTest {
         }
 
         assertTrue(event.isForAll());
-        assertEquals(Game.getIstance().getTruckerList(), event.getTruckersList());
+        assertEquals(Game.getIstance().getTruckerList(), event.getTruckers());
         assertEquals(track, event.getTrack());
     }
 
@@ -304,7 +304,7 @@ class AbandonedStationTest {
         }
 
         assertTrue(event.isForAll());
-        assertEquals(Game.getIstance().getTruckerList(), event.getTruckersList());
+        assertEquals(Game.getIstance().getTruckerList(), event.getTruckers());
         assertEquals(track, event.getTrack());
     }
 }

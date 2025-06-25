@@ -8,23 +8,16 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class CardFinished extends CardEvent {
-    private final ArrayList<Trucker> truckersList;
     private final ArrayList<Trucker> truckersRemoved;
     Map<String, Integer> track;
     public CardFinished(boolean forAll, ArrayList<Trucker> truckerList, ArrayList<Trucker> truckerRemoved, Map<String, Integer> track) {
-        super(forAll, ParserState.DRAW_CARD, null);
-        this.truckersList = truckerList;
+        super(forAll, ParserState.DRAW_CARD, null, truckerList);
         this.truckersRemoved = truckerRemoved;
         this.track = track;
         for(Trucker trucker : truckerList){
             System.out.println("trucker " + trucker.getNickname() + " in pos: " + trucker.getPosition());
         }
     }
-
-    public ArrayList<Trucker> getTruckersList() {
-        return truckersList;
-    }
-
     public ArrayList<Trucker> getTruckersRemoved(){
         return truckersRemoved;
     }

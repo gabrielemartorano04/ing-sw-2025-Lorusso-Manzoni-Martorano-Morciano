@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.cards;
 
-import com.sun.source.tree.AssertTree;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import it.polimi.ingsw.exceptions.NotEnoughBatteries;
@@ -122,7 +121,7 @@ class MeteorShowerTest {
                 if(meteorShower.getMeteors().size()==meteorShower.getCurrMeteorIndex()) {
                     CardFinished e = (CardFinished) event;
                     assertTrue(e.isForAll());
-                    assertEquals(Game.getIstance().getTruckerList(), e.getTruckersList());
+                    assertEquals(Game.getIstance().getTruckerList(), e.getTruckers());
                     assertEquals(Game.getIstance().getTrack(), e.getTrack());
                     assertEquals(meteorShower.getTruckerRemoved(), e.getTruckersRemoved());
                 }else{
@@ -166,7 +165,7 @@ class MeteorShowerTest {
                 if(meteorShower.getMeteors().size()==meteorShower.getCurrMeteorIndex()) {
                     CardFinished e = (CardFinished) event;
                     assertTrue(e.isForAll());
-                    assertEquals(Game.getIstance().getTruckerList(), e.getTruckersList());
+                    assertEquals(Game.getIstance().getTruckerList(), e.getTruckers());
                     assertEquals(Game.getIstance().getTrack(), e.getTrack());
                     assertEquals(meteorShower.getTruckerRemoved(), e.getTruckersRemoved());
                 }else{
@@ -207,7 +206,7 @@ class MeteorShowerTest {
         if(meteorShower.getMeteors().size()==meteorShower.getCurrMeteorIndex()) {
             CardFinished e = (CardFinished) event;
             assertTrue(e.isForAll());
-            assertEquals(Game.getIstance().getTruckerList(), e.getTruckersList());
+            assertEquals(Game.getIstance().getTruckerList(), e.getTruckers());
             assertEquals(Game.getIstance().getTrack(), e.getTrack());
             assertEquals(meteorShower.getTruckerRemoved(), e.getTruckersRemoved());
         }else{

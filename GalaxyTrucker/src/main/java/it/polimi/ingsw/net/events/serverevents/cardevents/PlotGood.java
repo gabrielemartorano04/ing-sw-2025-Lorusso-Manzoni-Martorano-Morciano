@@ -1,16 +1,19 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
 import it.polimi.ingsw.model.SpaceShip;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.view.ParserState;
+
+import java.util.ArrayList;
 
 public class PlotGood extends CardEvent{
     private final Goods good;
     private SpaceShip spaceShip;
 
-    public PlotGood(boolean forAll, String nickname,SpaceShip spaceShip, Goods good) {
-        super(forAll, ParserState.PLOT_GOOD, nickname);
+    public PlotGood(boolean forAll, String nickname,SpaceShip spaceShip, Goods good, ArrayList<Trucker> truckers) {
+        super(forAll, ParserState.PLOT_GOOD, nickname, truckers);
         this.good = good;
         this.spaceShip=spaceShip;
     }

@@ -125,7 +125,7 @@ public class AbandonedStation extends Card implements Serializable {
             do {
                 if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
                     cardState = CardState.GOODSTOADD;
-                    return new PlotGood(true, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(),Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip(),goods.get(currGood));
+                    return new PlotGood(true, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(),Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip(),goods.get(currGood), Game.getIstance().getTruckerList());
                 } else {
                     currGood++;
                     if(currGood==goods.size()) {
@@ -141,7 +141,7 @@ public class AbandonedStation extends Card implements Serializable {
                 return cardEffect();
             }
             indexOfCurrTrucker++;
-            return new BooleanDecision(true, ParserState.LAND, "Do you want to land on this AbandonedStation?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+            return new BooleanDecision(true, ParserState.LAND, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), Game.getIstance().getTruckerList());
         }
     }
 
@@ -165,7 +165,7 @@ public class AbandonedStation extends Card implements Serializable {
         if(!answer){
             if (currGood == goods.size() - 1) {
                 cardState = CardState.REARRANGE;
-                return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
+                return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname(), Game.getIstance().getTruckerList());
             } else {
                 currGood++;
                 return proceedToNextAvailableGoodOrRearrange();
@@ -187,7 +187,7 @@ public class AbandonedStation extends Card implements Serializable {
             }
             if (currGood == goods.size() - 1) {
                 cardState = CardState.REARRANGE;
-                return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
+                return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname(), Game.getIstance().getTruckerList());
             } else {
                 currGood++;
                 return proceedToNextAvailableGoodOrRearrange();
@@ -206,13 +206,13 @@ public class AbandonedStation extends Card implements Serializable {
             if (Game.getIstance().getBank().getGoodsInBank(goods.get(currGood).getValue()) >= 1) {
                 cardState = CardState.GOODSTOADD;
                 return new PlotGood(true, truckerThatHasDecided.getNickname(),
-                        truckerThatHasDecided.getSpaceShip(), goods.get(currGood));
+                        truckerThatHasDecided.getSpaceShip(), goods.get(currGood), Game.getIstance().getTruckerList());
             }
             currGood++;
         }
 
         cardState = CardState.REARRANGE;
-        return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
+        return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname(), Game.getIstance().getTruckerList());
     }
 
 
@@ -238,7 +238,7 @@ public class AbandonedStation extends Card implements Serializable {
             }
             try {
                 truckerThatHasDecided.getSpaceShip().swapGoods(coord1, value1, coord2, value2);
-                return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname());
+                return new RearrangeEvent(false, this.truckerThatHasDecided.getNickname(), Game.getIstance().getTruckerList());
             } catch (InvalidPositionException e) {
                 cardState = CardState.REARRANGE;
                 throw new InvalidPositionException("invalid positions");

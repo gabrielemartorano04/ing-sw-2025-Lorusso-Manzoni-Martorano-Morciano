@@ -309,7 +309,7 @@ public class TUI implements UI {
         }
         String message = "Truckers' positions order:\n";
         int i = 1;
-        for (Trucker t : event.getTruckersList()) {
+        for (Trucker t : event.getTruckers()) {
             message += i + ") " + t.getNickname() + "\n";
             i++;
         }

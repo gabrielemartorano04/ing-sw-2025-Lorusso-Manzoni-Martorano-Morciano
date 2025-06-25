@@ -104,7 +104,7 @@ public class PlanetsTest {
         card.setTruckersLanded(new ArrayList<>(List.of(Game.getIstance().getTruckerList().get(0))));
         ServerEvent e = card.rearrange(null, null, 0, 0, true);
         switch (e){
-            case CardFinished cf -> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckersList());
+            case CardFinished cf -> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckers());
             default -> fail();
         }
     }
@@ -123,7 +123,7 @@ public class PlanetsTest {
         card.setTruckersLanded(new ArrayList<>(List.of(Game.getIstance().getTruckerList().get(0))));
         ServerEvent ev = card.cardEffect();
         switch (ev){
-            case CardFinished cf -> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckersList());
+            case CardFinished cf -> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckers());
             default -> fail();
         }
     }
@@ -187,7 +187,7 @@ public class PlanetsTest {
         card.setState(CardState.REARRANGE);
         ServerEvent event = card.rearrange(null, null, 0, 0, true);
         switch (event){
-            case CardFinished cf -> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckersList());
+            case CardFinished cf -> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckers());
             default -> fail();
         }    }
 
