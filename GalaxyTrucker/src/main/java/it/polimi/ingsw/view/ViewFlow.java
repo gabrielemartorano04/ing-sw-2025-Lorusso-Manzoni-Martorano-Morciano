@@ -320,10 +320,8 @@ public class ViewFlow implements EventReceiver {
             case CHOOSE_OLD -> event=inputParser.parseOld(input);
             case FIRST -> event = inputParser.parseFirstConnection(input);
             case START-> {
-                if(!alreadyLogged)
+                if(!alreadyLogged) {
                     event = inputParser.parseLogin(input);
-                else {
-                    event = null;
                 }
             }
             case BULDING-> {
@@ -332,7 +330,6 @@ public class ViewFlow implements EventReceiver {
                 }
                 else {
                     ui.showWaitForOthers();
-                    event = null;
                 }
 
             }
@@ -349,7 +346,6 @@ public class ViewFlow implements EventReceiver {
                         event = inputParserFlight.parseFlight(input, nickname);
                     } else {
                         ui.showWaitForOthers();
-                        event = null;
                     }
                 }else{
                     event = new DeadTrucker();
@@ -442,28 +438,39 @@ public class ViewFlow implements EventReceiver {
         return numOfBatteriesToRemove;
     }
 
-
+    /**
+     * Sets the number of cosmic credits to gain
+     * @param cosmicCreditsToGain the number of cosmic credits to be gained
+     */
     public void setCosmicCreditsToGain(int cosmicCreditsToGain) {
         this.cosmicCreditsToGain = cosmicCreditsToGain;
     }
 
+    /**
+     * @return the number of cosmic credits to be gained as an integer.
+     */
     public int getCosmicCreditsToGain() {
         return cosmicCreditsToGain;
     }
 
+    /**
+     * Sets the number of days lost
+     * @param daysLost the number of days to set as lost
+     */
     public void setDaysLost(int daysLost) {
         this.daysToLose = daysLost;
     }
 
+    /**
+     * @return the number of days lost as an integer
+     */
     public int getDaysLost() {
         return this.daysToLose;
     }
 
-
     /**
-     * @return a Map<String, Integer> that represents the track field. The keys in the
-     *         map are Strings representing labels, and the values are Integers providing
-     *         the corresponding counts or values for these labels.
+     * @return a map that represents the track field. The keys in the
+     *         map are nicknames, and the values are positions.
      */
     public Map<String, Integer> getTrack() {
         return track;
@@ -847,7 +854,7 @@ public class ViewFlow implements EventReceiver {
                 for (int j = 4; j <= 10; j++) {
                     if (components[i][j] != null) {
                         switch (components[i][j]) {
-                            case Shield s -> {
+                            case Shield ignored -> {
                                 return true;
                             }
                             default -> {}
@@ -869,7 +876,7 @@ public class ViewFlow implements EventReceiver {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null) {
                     switch (components[i][j]) {
-                        case Load l -> {
+                        case Load ignored -> {
                             return true;
                         }
                         default -> {}
