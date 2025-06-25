@@ -31,7 +31,7 @@ public class InputParser {
     /**
      * User interface
      */
-    private UI ui;
+    private final UI ui;
 
     /**
      * Class constructor
@@ -106,14 +106,13 @@ public class InputParser {
             ui.showError("Error: type only username and color and they have to be divided by space.");
             return null;
         }
-        PlayerColors color=null;
-        switch (tokens[1].toLowerCase()) {
-            case "blue": color= PlayerColors.BLUE; break;
-            case "red": color = PlayerColors.RED; break;
-            case "green": color = PlayerColors.GREEN; break;
-            case "yellow": color = PlayerColors.YELLOW; break;
-
-        }
+        PlayerColors color = switch (tokens[1].toLowerCase()) {
+            case "blue" -> PlayerColors.BLUE;
+            case "red" -> PlayerColors.RED;
+            case "green" -> PlayerColors.GREEN;
+            case "yellow" -> PlayerColors.YELLOW;
+            default -> null;
+        };
         if(color!=null) {
             return new LoginEvent(tokens[0].trim(), color);
         }

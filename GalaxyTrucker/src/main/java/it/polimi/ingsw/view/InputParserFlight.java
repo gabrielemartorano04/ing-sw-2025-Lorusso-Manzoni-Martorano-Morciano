@@ -13,49 +13,49 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
- *
+ * InputParserFlight is responsible for interpreting and converting user-provided
+ * inputs into corresponding ClientEvent objects during the Flight phase of the game
  */
 public class InputParserFlight {
 
     /**
-     *
+     * State of the input parser
      */
     private ParserState parserState;
 
     /**
-     *
+     * User interface
      */
     private final UI ui;
 
     /**
-     *
-     * @param ui
+     *Event constructor
+     * @param ui user interface
      */
     public InputParserFlight(UI ui) {
         this.ui = ui;
     }
 
     /**
-     *
-     * @param parserState
+     * Set the state of the input parser
+     * @param parserState state of the parser
      */
     public void setParserState(ParserState parserState) {
         this.parserState = parserState;
     }
 
     /**
-     *
-     * @return
+     * @return the state of the input parser
      */
     public ParserState getParserState() {
         return parserState;
     }
 
     /**
-     *
-     * @param input
-     * @param nickname
-     * @return
+     * Manages the flight phase
+     * @param input from the player
+     * @param nickname of the player
+     * @return the client event that manages that input
      */
     public ClientEvent parseFlight(String input, String nickname) {
         if (input == null || input.isEmpty()) {
@@ -67,7 +67,6 @@ public class InputParserFlight {
             return null;
         }
 
-        input.trim();
         String[] tokens=input.split("\\s+");
          if (tokens[0].trim().equalsIgnoreCase("ship")) {
             return new ShowOtherShipEvent(tokens[1].trim());
@@ -101,8 +100,8 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @return
+     * Manages the dead of a player
+     * @return the client event that manages that input
      */
     private ClientEvent parseDead(){
         setParserState(ParserState.DO_NOTHING);
@@ -110,10 +109,10 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @param nickname
-     * @return
+     * Manages the withdrawal of a player
+     * @param input from the player
+     * @param nickname of the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseWithdraw(String input, String nickname) {
         if (input.trim().equalsIgnoreCase("y")) {
@@ -129,7 +128,7 @@ public class InputParserFlight {
     }
 
     /**
-     *
+     * Manages the opening of the PDF rules
      */
     private void openRulesPdf() {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
@@ -157,10 +156,10 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @param nickname
-     * @return
+     * Manages the request of crew members coordinates
+     * @param input from the player
+     * @param nickname of the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseHumanCoord(String input, String nickname) {
         String[] groups= input.split("\\s*,\\s*");
@@ -185,10 +184,10 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @param nickname
-     * @return
+     * Manages the plot of goods for gaining
+     * @param input form the player
+     * @param nickname of the player
+     * @return the client event that manages that input
      */
     private ClientEvent parsePlotGood(String input, String nickname) {
         if (input == null || input.trim().isEmpty()) {
@@ -242,9 +241,9 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @return
+     * Manages the roll of dices
+     * @param input from the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseRollDice(String input) {
         String[] rollDice=input.split("\\s+");
@@ -256,10 +255,10 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @param nickname
-     * @return
+     * Manages the activation of the shields
+     * @param input from the player
+     * @param nickname of the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseActivateShield(String input, String nickname) {
         String[] activateShield = input.split("\\s*,\\s*");
@@ -303,10 +302,10 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @param nickname
-     * @return
+     * Manages the activations of double cannons
+     * @param input from the player
+     * @param nickname of the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseActivateCannons(String input, String nickname) {
         String[] activateCannons = input.split("\\s*,\\s*");
@@ -373,10 +372,10 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @param nickname
-     * @return
+     * Manages the activation of the double engines
+     * @param input from the player
+     * @param nickname of th player
+     * @return the client event that manages that input
      */
     private ClientEvent parseActivateEngines(String input, String nickname) {
         String[] activateEngines = input.split("\\s*,\\s*");
@@ -443,10 +442,10 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @param nickname
-     * @return
+     * Manages the draw of the card
+     * @param input from the player
+     * @param nickname of the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseDrawCard(String input, String nickname) {
         String[] cardFinish=input.split("\\s+");
@@ -458,10 +457,10 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @param nickname
-     * @return
+     * Manages the decision to land on a planet
+     * @param input from the player
+     * @param nickname of the player
+     * @return the client event that manages that input
      */
     private ClientEvent parsePlanetDecision(String input, String nickname) {
         String[] planetDecision = input.trim().split("\\s+");
@@ -481,8 +480,8 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @return
+     * Manages the avoiding of doing actions
+     * @return the client event that manages that input
      */
     private ClientEvent parseDoNothing() {
         ui.showError("It's not your turn");
@@ -490,9 +489,9 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @return
+     * Manages the landing on an abandoned card
+     * @param input from the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseLand(String input) {
         String cmd = input.trim().toLowerCase();
@@ -508,9 +507,9 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @return
+     * Manages the start of the warzone card
+     * @param input from the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseWarzone(String input) {
         String[] warzone=input.split("\\s+");
@@ -522,9 +521,9 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @return
+     * Manages the gaining of cosmic credits
+     * @param input from the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseCosmicCredits(String input) {
         String cmd = input.trim().toLowerCase();
@@ -536,10 +535,10 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @param nickname
-     * @return
+     * Manages the rearranging of the goods' positions
+     * @param input from the player
+     * @param nickname of the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseRearrange(String input, String nickname) {
         String[] rearrange = input.split("\\s*,\\s*");
@@ -598,9 +597,9 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @return
+     * Manages the confirmation of a remotion
+     * @param input from the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseRemotionConfirmed(String input) {
         String[] remotion=input.split("\\s+");
@@ -612,9 +611,9 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @return
+     * Manages the warzone's current condition
+     * @param input from the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseCurrentCondition(String input) {
         String[] currCond=input.split("\\s+");
@@ -626,10 +625,10 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @param nickname
-     * @return
+     * Manages the remotion of batteries
+     * @param input from the player
+     * @param nickname of the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseRemoveBatteries(String input, String nickname) {
         if (input == null || input.trim().isEmpty()) {
@@ -677,10 +676,10 @@ public class InputParserFlight {
     }
 
     /**
-     *
-     * @param input
-     * @param nickname
-     * @return
+     * Manages the remotion of goods
+     * @param input from the player
+     * @param nickname of the player
+     * @return the client event that manages that input
      */
     private ClientEvent parseRemoveGoods(String input, String nickname) {
         if (input == null || input.trim().isEmpty()) {

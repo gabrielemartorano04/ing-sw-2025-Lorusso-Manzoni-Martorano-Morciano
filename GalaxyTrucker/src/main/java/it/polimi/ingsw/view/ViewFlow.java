@@ -22,6 +22,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The ViewFlow class is responsible for managing the flow of logic and events in the client-side
+ * application. It serves as a bridge between the GUI/TUI views and the server, handling user input,
+ * managing game states, and sending or receiving events
+ */
 public class ViewFlow implements EventReceiver {
 
     /**
@@ -113,7 +118,7 @@ public class ViewFlow implements EventReceiver {
     private boolean startFlightForAll;
 
     /**
-     * Timer associated to the hourglass
+     * Timer associated with the hourglass
      */
     private final TimerDisplay timerDisplay;
 
@@ -138,7 +143,7 @@ public class ViewFlow implements EventReceiver {
     private Map<String, Integer> track;
 
     /**
-     * Current number of batteries the client has to remove if he has to
+     * The current number of batteries the client has to remove if he has to
      */
     private int numOfBatteriesToRemove;
 
@@ -173,12 +178,12 @@ public class ViewFlow implements EventReceiver {
     private Component selectedComponent;
 
     /**
-     * Index of the selected Component within the available Components list, equals to -1 if selectedComponent is null
+     * Index of the selected Component within the available Components list equals to -1 if selectedComponent is null
      */
     private int selectedComponentIndex;
 
     /**
-     * List of kept components of this client
+     * List of client's kept components
      */
     private final ArrayList<Component> keptComponent= new ArrayList<>();
 
@@ -192,10 +197,16 @@ public class ViewFlow implements EventReceiver {
      */
     private SpaceShip ship;
 
+    /**
+     * Map associating the color of the good and the number og that good in the spaceship
+     */
     private Map<String, Integer> goodsByColor;
 
-
-
+    /**
+     * Constructs an instance of the ViewFlow class and initializes its state, components, and dependencies
+     * @param sender the ClientEventSender used to send events from the view to the server
+     * @param useGui a boolean indicating whether to use the graphical user interface (GUI) or the textual user interface (TUI)
+     */
     public ViewFlow(ClientEventSender sender, boolean useGui) {
         this.sender = sender;
         this.inputReader = new InputReader();
@@ -204,7 +215,6 @@ public class ViewFlow implements EventReceiver {
         this.viewState = ViewState.FIRST;
         this.credits=0;
         this.numOfBatteriesToRemove = 0;
-
         this.availableComponents= new ArrayList<>();
         new Thread(inputReader, "InputReaderThread").start();
         this.selectedComponentIndex = -1;
@@ -233,34 +243,41 @@ public class ViewFlow implements EventReceiver {
         }
         this.inputParser = new InputParser(ui);
         this.inputParserFlight = new InputParserFlight(ui);
-
-
         this.timerDisplay = new TimerDisplay(ui);
         this.serverEventVisitor = new ServerEventHandlerVisitor(this, ui);
         this.alreadyLogged=false;
         this.firstLinked=false;
     }
 
+    /**
+     * Sets the state of the 'firstLinked' field to true.
+     * This method is used to mark the first link in the process or sequence
+     * within the context of the current ViewFlow instance.
+     */
     public void setFirstLinked(){
         this.firstLinked=true;
     }
 
-    public boolean getFirstLinked(){
-        return this.firstLinked;
-    }
-
+    /**
+     * Retrieves the current state of the view
+     * @return the current ViewState of the view, representing the phase or state
+     *         in which the view is operating.
+     */
     public ViewState getViewState() {
         return viewState;
     }
 
-
+    /**
+     * Handles the reception of a server event and delegates its processing to the appropriate handler
+     * @param event the server event received, containing the data and behavior to handle
+     */
     @Override
     public void onEventReceived(ServerEvent event) {
         event.call(serverEventVisitor);
     }
 
     /**
-     * this method is used by the TUI to read client's input while the GUI directly calls handleInput
+     * This method is used by the TUI to read client's input while the GUI directly calls handleInput
      */
     public void start() {
         // Thread per input utente
@@ -284,7 +301,7 @@ public class ViewFlow implements EventReceiver {
     }
 
     /**
-     * method called by viewFlow and GUI's handlers to generate and send events to the server
+     * Method called by viewFlow and GUI's handlers to generate and send events to the server
      */
     public void handleInput(String input){
         //TODO: gestire il caso in cui input è exit per la GUI
@@ -335,21 +352,21 @@ public class ViewFlow implements EventReceiver {
         }
     }
 
-//    public void run() {
-//        start();
-//        while (running) {
-//            try {
-//                Thread.sleep(100);
-//            } catch (InterruptedException e) {
-//                Thread.currentThread().interrupt();
-//            }
-//        }
-//    }
-
+    /**
+     * Sets the RemoteClientHandler instance for the current ViewFlow object.
+     * This method is used to define the RMI client handler responsible for communicating
+     * with the remote server
+     * @param rmiClient the RemoteClientHandler instance to be assigned.
+     */
     public void setRmiClient(RemoteClientHandler rmiClient) {
         this.rmiClient = rmiClient;
     }
 
+    /**
+     * Handles an outgoing client event by delegating its processing to the appropriate handler
+     * @param event the client event to be processed and sent. It contains the behavior and data to be
+     *              handled by either a local sender or a remote client handler.
+     */
     public void handleOutgoingEvent(ClientEvent event) {
         if (this.sender != null){
             sender.handleEvent(event);
@@ -362,50 +379,93 @@ public class ViewFlow implements EventReceiver {
         }
     }
 
+    /**
+     * @return the SpaceShip instance associated with the current view.
+     */
     public SpaceShip getShip() {
         return ship;
     }
 
+    /**
+     * Sets the SpaceShip instance for the current ViewFlow object
+     * @param ship the SpaceShip instance to be associated with the current view.
+     */
     public void setShip(SpaceShip ship) {
         this.ship=ship;
     }
 
+    /**
+     * @return the current position as an integer, representing the state or value
+     *         associated with the position field.
+     */
     public int getPosition() {
         return position;
     }
 
+    /**
+     * Sets the position value for the current instance
+     * @param position the new value to be assigned to the position field.
+     */
     public void setPosition(int position) {
         this.position = position;
     }
 
+    /**
+     * Marks the end of the building phase in the current ViewFlow instance
+     */
     public void setEnd() {
         this.endBuildingPhase = true;
     }
 
+    /**
+     * Sets the number of batteries to be removed
+     * @param numOfBatteriesToRemove the number of batteries to be removed. Must be a non-negative integer.
+     */
     public void setNumOfBatteriesToRemove(int numOfBatteriesToRemove) {
         this.numOfBatteriesToRemove = numOfBatteriesToRemove;
     }
 
+    /**
+     * @return the number of batteries to remove as an integer.
+     */
     public int getNumOfBatteriesToRemove() {
         return numOfBatteriesToRemove;
     }
 
-//    public boolean getEnd(){
-//        return end;
-//    }
-
+    /**
+     * @return a Map<String, Integer> that represents the track field. The keys in the
+     *         map are Strings representing labels, and the values are Integers providing
+     *         the corresponding counts or values for these labels.
+     */
     public Map<String, Integer> getTrack() {
         return track;
     }
 
+    /**
+     * Assigns a map to the track field of the current instance
+     * @param track a map containing keys as strings and values as integers.
+     *              Represents labels with their corresponding counts or values.
+     */
     public void setTrack(Map<String, Integer> track) {
         this.track = track;
     }
 
+    /**
+     * Sets the state of the view
+     * @param viewState the new ViewState to be assigned to the view. It represents
+     *                  the current phase or state of the view's operation.
+     */
     public void setViewState(ViewState viewState) {
         this.viewState = viewState;
     }
 
+    /**
+     * Sets the selected component and its index based on the given parameters
+     * @param index the index of the component to be selected, referring to its position
+     *              in the list of available components.
+     * @param isFromKept a boolean indicating whether the selected component originates
+     *                   from the kept component list.
+     */
     public void setSelectedComponent(int index, boolean isFromKept) {
         this.selectedComponent = availableComponents.get(index);
         this.selectedComponentIndex = index;
@@ -413,113 +473,198 @@ public class ViewFlow implements EventReceiver {
     }
 
     /**
-     * serve anche cosi
+     * Sets the selected component for the current view along with its origin status
+     * @param component the Component to be marked as selected.
+     * @param isFromKept a boolean indicating whether the selected component
+     *                   originates from the kept components list.
      */
     public void setSelectedComponent(Component component, boolean isFromKept) {
         this.selectedComponent = component;
         this.isFromKept = isFromKept;
     }
+
+    /**
+     * Sets the selected component for the current instance
+     * @param component the Component to be assigned as the selected component.
+     */
     public void setSelectedComponent(Component component) {
         this.selectedComponent = component;
     }
 
+    /**
+     * Clears the selected component and its index within the current view
+     */
     public void deleteSelectedComponent() {
         this.selectedComponent = null;
         this.selectedComponentIndex = -1;
     }
 
+    /**
+     * @return the selected Component, or null if no component is currently selected.
+     */
     public Component getSelectedComponent() {
         return selectedComponent;
 
     }
 
+    /**
+     * @return a Map where the key is a String representing the color of the goods,
+     *         and the value is an Integer representing the count of goods for that color.
+     */
     public Map<String, Integer> getGoodsByColor() {
         this.goodsByColor = ship.getGoodsByColor();
         return goodsByColor;
     }
 
+    /**
+     * Adds a component to the kept components list if space is available.
+     * The list can hold a maximum of two components
+     * @param keptComponent the Component to be added to the kept components list.
+     * @throws IllegalArgumentException if the kept components list already contains two components.
+     */
     public void addKeptComponent(Component keptComponent) throws IllegalArgumentException{
         if(this.keptComponent.size()<2) {
             this.keptComponent.add(keptComponent);
         }else throw new IllegalArgumentException("no more space to keep components");
     }
 
-//    public void removeKeptComponent(int index) {
-//        this.keptComponent.remove(index);
-//    }
-
+    /**
+     * @return an ArrayList of Component objects representing the components
+     *         currently stored in the kept components list.
+     */
     public ArrayList<Component> getKeptComponent() {
         return keptComponent;
     }
 
+    /**
+     * @return the TimerDisplay object, which manages and displays the timer functionality
+     *         within the context of the ViewFlow instance.
+     */
     public TimerDisplay getTimerDisplay() {
         return timerDisplay;
     }
 
+    /**
+     * Updates the list of available components for the current instance.
+     * Clears the existing list of available components and adds all components from the provided list
+     * @param availableComponents the list of components to be added to the available components
+     *                            of the current instance. It must be a non-null ArrayList
+     *                            containing Component objects.
+     */
     public void fillAvailableComponents(ArrayList<Component> availableComponents) {
         this.availableComponents.clear();
         this.availableComponents.addAll(availableComponents);
     }
 
+    /**
+     * @return an ArrayList of Component objects representing the components that are currently available.
+     */
     public ArrayList<Component> getAvailableComponents() {
         return availableComponents;
     }
 
+    /**
+     * Sets the nickname for the current instance.
+     * This method updates the nickname field and marks the name as already set
+     * @param nickname the new nickname to be assigned. It must be a non-null, non-empty string
+     *                 representing the desired nickname for the current instance.
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
         this.nameAlreadySet = true;
     }
 
+    /**
+     * @return a boolean value where true indicates that the name is already set,
+     *         and false indicates that it is not set.
+     */
     public boolean getNameAlreadySet() {
         return nameAlreadySet;
     }
 
+    /**
+     * @return a String representing the nickname. If no nickname has been set,
+     *         the returned value may be null or an empty string depending on the implementation.
+     */
     public String getNickname(){
         return nickname;
     }
 
+    /**
+     * Marks the component at the specified index as selected
+     * @param index the index of the component to be selected
+     */
     public void componentAsSelected(int index){
         availableComponents.get(index).setSelected(true);
     }
 
+    /**
+     * Marks the component at the specified index as unselected
+     * @param index the index of the component to be marked as unselected
+     */
     public void componentAsUnselected(int index){
         availableComponents.get(index).setSelected(false);
     }
 
     /**
-     * sets the component at the index as not Covered since it has been selected by a client
+     * Marks a specific component, identified by its index, as uncovered
+     * @param index the index of the component in the list of available components to be marked as uncovered
      */
     public void componentAsUncovered(int index){
         availableComponents.get(index).setCovered(false);
     }
 
-
-//    public void setStartFlight() {
-//        this.startFlight = true;
-//    }
+    /**
+     * Sets the 'startFlightForAll' flag to true, indicating that all flights
+     * are ready to start
+     */
     public void setStartFlightForAll(){
         this.startFlightForAll = true;
     }
 
+    /**
+     * Updates the parser state for the inputParserFlight instance
+     * @param state the new state to set for the parser
+     */
     public void setParserFlightState(ParserState state) {
         inputParserFlight.setParserState(state);
     }
+
+    /**
+     * @return the current state of the flight input parser as a ParserState object
+     */
     public ParserState getParserFlightState() {
         return inputParserFlight.getParserState();
     }
 
+    /**
+     * Sets the stackSelected value to indicate whether a stack is selected
+     * @param i the integer value to set the stackSelected attribute
+     */
     public void setHasStack(int i) {
         this.stackSelected = i;
     }
 
+    /**
+     * Sets the output state to true
+     */
     public void setOut() {
         this.out = true;
     }
 
+    /**
+     * @return true if the state is "out", false otherwise
+     */
     public boolean isOut() {
         return out;
     }
 
+    /**
+     * Sets the level of the game and adjusts the number of cards required
+     * accordingly. It also updates the input parser with the specified level
+     * @param level the game level to be set; typically determines difficulty
+     *              and the number of cards needed
+     */
     public void setLevel(int level) {
         this.level = level;
         this.inputParser.setLevel(level);
@@ -527,23 +672,45 @@ public class ViewFlow implements EventReceiver {
             this.cardsToGo = 12;
         }else this.cardsToGo = 9;
     }
+
+    /**
+     * @return the current level as an integer.
+     */
     public int getLevel() {
         return level;
     }
 
+    /**
+     * @return the number of batteries in the ship.
+     */
     public int getBatteryCount(){
         return ship.getNumBatteries();
     }
+
+    /**
+     * @return the total engine power as an integer value
+     */
     public int getEnginePower(){
         return ship.getTotalEnginePower();
     }
+
+    /**
+     * @return the total cannon power as a float value
+     */
     public float getCannonPower(){
         return ship.getTotalCannonPower();
     }
+
+    /**
+     * @return the total number of human crew members aboard the ship.
+     */
     public int getHumanCount(){
         return ship.getNumCrew();
     }
 
+    /**
+     * Responds to a ping event by sending a corresponding PongEvent
+     */
     public void respondToPing() {
             if (this.sender != null){
                 sender.handleEvent(new PongEvent());
@@ -556,38 +723,68 @@ public class ViewFlow implements EventReceiver {
             }
     }
 
+    /**
+     * @return the GUI instance cast from the 'ui' object
+     */
     public GUI getGUI(){
         return (GUI)ui;
     }
 
+    /**
+     * Updates the state to indicate that the action, event, or condition associated
+     * with this method has already been logged
+     */
     public void setAlreadyLogged(){
         this.alreadyLogged = true;
     }
 
+    /**
+     * Sets the number of credits.
+     * @param credits the number of credits to be set
+     */
     public void setCredits(int credits) {
         this.credits = credits;
     }
 
+    /**
+     * @return the number of credits
+     */
     public int getCredits() {
         return credits;
     }
 
+    /**
+     * Decreases the number of cards remaining to go by one
+     */
     public void decreaseCardsToGo() {
         this.cardsToGo--;
     }
 
+    /**
+     * @return the number of cards still to go as an integer
+     */
     public int getCardsToGo() {
         return cardsToGo;
     }
 
+    /**
+     * Sets the start flight status
+     * @param startFlight a boolean indicating whether the flight should be started or not
+     */
     public void setStartFlight(boolean startFlight) {
         this.startFlight = startFlight;
     }
 
+    /**
+     * @return the number of lost components as an integer
+     */
     public int getLostComponents() {
         return ship.getLost();
     }
 
+    /**
+     * @return true if the ship has at least one double engine and one battery, false otherwise
+     */
     public boolean shipHasDoubleEngines(){
         if(ship.getNumDoubleEngine()>0 && ship.getNumBatteries() > 0){
             return true;
@@ -597,6 +794,9 @@ public class ViewFlow implements EventReceiver {
         }
     }
 
+    /**
+     * @return true if the ship has at least one double cannon and one battery; false otherwise
+     */
     public boolean shipHasDoubleCannons(){
         if(ship.getNumDoubleCannon()>0 && ship.getNumBatteries() > 0){
             return true;
@@ -606,6 +806,9 @@ public class ViewFlow implements EventReceiver {
         }
     }
 
+    /**
+     * @return true if the ship has at least one shield; false otherwise
+     */
     public boolean shipHasShields(){
         if(ship.getNumBatteries() == 0){
             this.handleInput("n");
@@ -629,6 +832,9 @@ public class ViewFlow implements EventReceiver {
         }
     }
 
+    /**
+     * @return true if a load is present in the specified component range, false otherwise.
+     */
     public boolean shipHasLoad(){
         Component[][] components = ship.getComponents();
         for (int i = 5; i <= 9; i++) {
@@ -647,6 +853,9 @@ public class ViewFlow implements EventReceiver {
         return false;
     }
 
+    /**
+     * @return true if the ship has goods, false otherwise
+     */
     public boolean shipHasGoods(){
         if(ship.getGoodsList().isEmpty()){
             this.handleInput("n");
