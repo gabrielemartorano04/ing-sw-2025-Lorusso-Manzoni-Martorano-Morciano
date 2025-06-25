@@ -8,6 +8,8 @@ import it.polimi.ingsw.model.components.Component;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SpaceShipTest {
@@ -146,8 +148,48 @@ class SpaceShipTest {
             assertEquals(AlienColor.BROWN, cabin.getAlien().getColor());}
             default -> {}
         }
-
         assertEquals(7, spaceShip3.getNumCrew());
+
+        SpaceShip shipAlien1=new SpaceShip();
+        shipAlien1.initSpaceShip(2,PlayerColors.BLUE);
+        try {
+            shipAlien1.addComponent(
+                    new Cabin(3,3,3,3,"Cabin","",null,false),
+                    7 ,8
+            );
+            shipAlien1.addComponent(
+                    new LifeSupport(3,3,3,3,"Life Support","",AlienColor.PURPLE),
+                    8,8
+            );
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        ArrayList<int[]> aliencoord2=new ArrayList<>();
+        aliencoord2.add(new int[]{7,8,0});
+        shipAlien1.setNumAlien(aliencoord2);
+        shipAlien1.setNumHuman();
+        assertEquals(3,shipAlien1.getNumCrew());
+
+        SpaceShip shipAlien2=new SpaceShip();
+        shipAlien2.initSpaceShip(2,PlayerColors.BLUE);
+        try {
+            shipAlien2.addComponent(
+                    new Cabin(3,3,3,3,"Cabin","",null,false),
+                    6 ,7
+            );
+            shipAlien2.addComponent(
+                    new LifeSupport(3,3,3,3,"Life Support","",AlienColor.PURPLE),
+                    6,6
+            );
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        ArrayList<int[]> aliencoord3=new ArrayList<>();
+        aliencoord3.add(new int[]{6,7,0});
+        shipAlien2.setNumAlien(aliencoord3);
+        shipAlien2.setNumHuman();
+        assertEquals(3,shipAlien2.getNumCrew());
+
     }
 
     @Test
@@ -214,19 +256,36 @@ class SpaceShipTest {
 
     @Test
     void addAndRemoveComponent() {
+        Component component=new Engine(2,2,2,"Engine","",false);
+        spaceShip2.initSpaceShip(2,PlayerColors.BLUE);
+        assertThrows(InvalidCoordinates.class, () -> spaceShip2.addComponent(component,6,5));
+        assertThrows(InvalidCoordinates.class, () -> spaceShip2.addComponent(component,9,7));
         try {
-            spaceShip2.removeComponent(9,8);
+            spaceShip2.addComponent(component,8,7);
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }
-        assertNull(spaceShip2.getComponents()[9][8]);
-        Component component=new Engine(2,2,0,"Engine","",false);
         try {
-            spaceShip2.addComponent(component,9,8);
+            spaceShip2.removeComponent(8,7);
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }
-        assertNotNull(spaceShip2.getComponents()[9][8]);
+        assertNull(spaceShip2.getComponents()[8][7]);
+        assertThrows(InvalidCoordinates.class,()->{spaceShip2.removeComponent(8,7);});
+        try {
+            spaceShip2.addComponent(new Cannon(3,3,3,"","",true),6,7);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceShip2.removeComponent(6,7);
+            spaceShip2.removeComponent(5,7);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        assertNull(spaceShip2.getComponents()[6][7]);
+        assertNotNull(spaceShip2.getComponents()[5][7]);
+
     }
 
 
@@ -254,6 +313,33 @@ class SpaceShipTest {
             throw new RuntimeException(e);
         }
         assertEquals(2,spaceShip3.getDoubleCannon());
+
+        try {
+            spaceShip3.removeComponent(7,10);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            Component component=new Cannon(3,3,3,"","",true);
+            component.turn();
+            spaceShip3.addComponent(component,7,10);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        spaceShip3.deactivateDoubleCannons();
+        ArrayList<int[]> coord1=new ArrayList<>();
+        ArrayList<int[]> batt1=new ArrayList<>();
+        coord1.add(new int[]{7,10});
+        batt1.add(new int[]{6,9,1});
+        try {
+            spaceShip3.activateDoubleCannons(coord1,batt1);
+        } catch (NotEnoughBatteries e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(1,spaceShip3.getDoubleCannon());
+
+
     }
 
     @Test
@@ -416,6 +502,22 @@ class SpaceShipTest {
         assertTrue(spaceShip2.wellDone());
 
         assertTrue(spaceShip3.wellDone());
+
+        try {
+            spaceShip3.removeComponent(9,4);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        Component cannon=new Cannon(0,0,3,"","",false);
+        cannon.turn();
+        cannon.turn();
+        try {
+            spaceShip3.addComponent(cannon,9,4);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        assertTrue(spaceShip3.wellDone());
+
     }
 
     @Test
@@ -734,6 +836,19 @@ class SpaceShipTest {
         spaceShip2.setNumHuman();
         spaceShip2.removeAllHumans();
         assertEquals(0,spaceShip2.getNumCrew());
+    }
+
+    @Test
+    void getGoodsByColor(){
+        Goods good1=new Goods(2);
+        spaceShip2.addGoodsList(good1);
+        Goods good2=new Goods(4);
+        spaceShip2.addGoodsList(good2);
+
+        Map<String,Integer> goodsByColor=spaceShip2.getGoodsByColor();
+        assertEquals(1, goodsByColor.get("red"));
+        assertEquals(1, goodsByColor.get("green"));
+        assertEquals(2, goodsByColor.size());
     }
 
 }

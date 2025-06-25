@@ -29,7 +29,11 @@ class SlaversTest {
     @BeforeEach
     void setUp() throws InvalidCoordinates {
         ship1 = createShip.createShip1(new SpaceShip());
+        ship1.setBattery();
+        ship1.setNumHuman();
         ship2 = createShip.createShip3(new SpaceShip());
+        ship2.setBattery();
+        ship2.setNumHuman();
         Game.initializeForTest(ship1, ship2);
         slavers = new Slavers(false, 1, 5, 1, 3, 2,
                 "/it/polimi/ingsw/model/cards/GT-cards_I_IT_01.jpg",
@@ -170,7 +174,11 @@ class SlaversTest {
     void testHandleDraw(){
         try {
             ship1 = createShip.createShip3(new SpaceShip());
+            ship1.setBattery();
+            ship1.setNumHuman();
             ship2 = createShip.createShip3(new SpaceShip());
+            ship2.setBattery();
+            ship2.setNumHuman();
             Game.initializeForTest(ship1, ship2);
             //non ultimo
             slavers = new Slavers(false, 1, 5, 1, 3, 2,
@@ -216,7 +224,11 @@ class SlaversTest {
     void testHandleDefeat(){
         try {
             ship1 = createShip.createShip1(new SpaceShip());
+            ship1.setBattery();
+            ship1.setNumHuman();
             ship2 = createShip.createShip3(new SpaceShip());
+            ship2.setBattery();
+            ship2.setNumHuman();
             Game.initializeForTest(ship1, ship2);
             //no ultimo
             slavers = new Slavers(false, 1, 5, 1, 3, 4,

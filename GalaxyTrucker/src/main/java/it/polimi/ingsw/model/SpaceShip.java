@@ -193,7 +193,6 @@ public class SpaceShip implements Serializable {
                             c.setQuantity(c.getCapacity());
                         }
                         default -> {
-                            break;
                         }
                     }
                 }
@@ -218,9 +217,7 @@ public class SpaceShip implements Serializable {
                             }
 
                         }
-                        default -> {
-                            break;
-                        }
+                        default -> {}
                     }
                 }
 
@@ -274,9 +271,7 @@ public class SpaceShip implements Serializable {
                                             int link2=components[i+1][j].getLink()[0];
                                             if(compatibleLinks(link1,link2))  ls.add(c1);
                                         }
-                                        default -> {
-                                            break;
-                                        }
+                                        default -> {}
                                     }
                                 }
                                 if(components[i-1][j]!=null){
@@ -286,9 +281,7 @@ public class SpaceShip implements Serializable {
                                             int link2=components[i-1][j].getLink()[2];
                                             if(compatibleLinks(link1,link2))  ls.add(c2);
                                         }
-                                        default -> {
-                                            break;
-                                        }
+                                        default -> {}
                                     }
                                 }
                                 if(components[i][j+1]!=null){
@@ -298,9 +291,7 @@ public class SpaceShip implements Serializable {
                                             int link2=components[i][j+1].getLink()[3];
                                             if(compatibleLinks(link1,link2))  ls.add(c3);
                                         }
-                                        default -> {
-                                            break;
-                                        }
+                                        default -> { }
                                     }
                                 }
                                 if(components[i][j-1]!=null){
@@ -310,9 +301,7 @@ public class SpaceShip implements Serializable {
                                             int link2=components[i][j-1].getLink()[1];
                                             if(compatibleLinks(link1,link2))  ls.add(c4);
                                         }
-                                        default -> {
-                                            break;
-                                        }
+                                        default -> {}
                                     }
                                 }
                             }
@@ -666,9 +655,7 @@ public class SpaceShip implements Serializable {
                             }
                         }
                         break;
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + c.getOrientation());
-                }
+                    }
             }
             case Engine e->{
                 switch (e.getOrientation()) {
