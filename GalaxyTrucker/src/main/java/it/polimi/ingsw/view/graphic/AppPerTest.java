@@ -99,7 +99,7 @@ public class AppPerTest extends Application {
         //gui.showPlayerShipStatus(12, 4, 3, 6, 5, mockTrack);
         //gui.colorAlreadyTaken(new ColorAlreadyInError(PlayerColors.RED, EnumSet.of(PlayerColors.GREEN, PlayerColors.BLUE, PlayerColors.YELLOW)));ù
 
-        trucker.initSpaceShip(2);
+        trucker.initSpaceShip(0);
 
 //        LoginScene loginScene = new LoginScene(EnumSet.allOf(PlayerColors.class), viewFlow);
 //        primaryStage.setScene(loginScene.createScene());
@@ -110,14 +110,16 @@ public class AppPerTest extends Application {
 //        primaryStage.show();
 
 
+        SpaceShip ship = new SpaceShip();
+        ship.initSpaceShip(0,PlayerColors.RED);
 
-//        StackPane stackPane = new StackPane();
-//        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
-//        primaryStage.setScene(buildingScene.createScene(playersNames, 2));
-//        buildingScene.showTimeExpired(2);
-//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-//        primaryStage.show();
+        StackPane stackPane = new StackPane();
+        BuildingScene buildingScene = new BuildingScene(trucker.getNickname(), ship.getComponents(), viewFlow, stackPane);
+        primaryStage.setScene(buildingScene.createScene(playersNames, 0));
+        buildingScene.showTimeExpired(2);
+        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+        primaryStage.show();
 
 
 //        buildingScene.insertSelectedComponent(cannon, false);
@@ -153,14 +155,14 @@ public class AppPerTest extends Application {
 //
 //
 
-        StackPane stackPane = new StackPane();
-        FlightScene flightScene = new FlightScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
-        primaryStage.setScene(flightScene.createScene(playersNames, 2));
-
-        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-        primaryStage.show();
-        flightScene.showAskWithdraw();
+//        StackPane stackPane = new StackPane();
+//        FlightScene flightScene = new FlightScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
+//        primaryStage.setScene(flightScene.createScene(playersNames, 2));
+//
+//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+//        primaryStage.show();
+//        flightScene.showAskWithdraw();
 //        flightScene.updateGoodsListToRemove(new ArrayList<>(){
 //            {
 //                add(new Goods(2));

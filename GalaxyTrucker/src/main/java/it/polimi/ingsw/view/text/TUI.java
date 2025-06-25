@@ -23,8 +23,18 @@ import it.polimi.ingsw.view.ViewFlow;
 import java.util.*;
 import java.util.List;
 
+/**
+ * The TUI class represents a text-based user interface for interacting with a game system.
+ * It provides methods to handle various events and display relevant information and states to players
+ */
 public class TUI implements UI {
 
+    /**
+     * A reference to an InputReader instance used in the TUI class to handle user input.
+     * The InputReader operates in a separate thread to continuously read and process
+     * input lines from the console, ensuring non-blocking input handling within the UI.
+     * It facilitates interaction by providing a thread-safe mechanism for retrieving user inputs.
+     */
     private final InputReader inputReader;
     private final ViewFlow viewFlow;
 
