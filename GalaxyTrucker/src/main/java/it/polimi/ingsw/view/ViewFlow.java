@@ -148,6 +148,16 @@ public class ViewFlow implements EventReceiver {
     private int numOfBatteriesToRemove;
 
     /**
+     * Current number of cosmic credits the client can gain
+     */
+    private int cosmicCreditsToGain;
+
+    /**
+     * Current number of days to lose
+     */
+    private int daysToLose;
+
+    /**
      * Number of cards to draw in the flight scene
      */
     private int cardsToGo;
@@ -431,6 +441,24 @@ public class ViewFlow implements EventReceiver {
     public int getNumOfBatteriesToRemove() {
         return numOfBatteriesToRemove;
     }
+
+
+    public void setCosmicCreditsToGain(int cosmicCreditsToGain) {
+        this.cosmicCreditsToGain = cosmicCreditsToGain;
+    }
+
+    public int getCosmicCreditsToGain() {
+        return cosmicCreditsToGain;
+    }
+
+    public void setDaysLost(int daysLost) {
+        this.daysToLose = daysLost;
+    }
+
+    public int getDaysLost() {
+        return this.daysToLose;
+    }
+
 
     /**
      * @return a Map<String, Integer> that represents the track field. The keys in the

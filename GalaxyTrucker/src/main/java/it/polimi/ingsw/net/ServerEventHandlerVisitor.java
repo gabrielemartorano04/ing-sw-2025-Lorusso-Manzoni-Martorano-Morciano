@@ -22,6 +22,21 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     // === PHASE 1: Lobby ===
 
+    /**
+     * notifies that this game is already full
+     *
+     * @param event error that states there is no more space in the game
+     */
+    @Override
+    public void visit(NoAvailableSpaceError event) {
+        ui.showError(event.getMessage());
+    }
+
+    /**
+     * notifies the client to
+     *
+     * @param event
+     */
     @Override
     public void visit(AvailableColorsEvent event) {
         viewFlow.setViewState(ViewFlow.ViewState.START);
@@ -49,6 +64,101 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setShip(event.getSpaceShip());
         }
 
+    }
+
+    @Override
+    public void visit(FirstConnectionEvent event) {
+        ui.showInsertNumPlayers();
+        viewFlow.setViewState(ViewFlow.ViewState.FIRST);
+    }
+
+    @Override
+    public void visit(ResumeGameEvent event) {
+        Trucker trucker=null;
+        if(viewFlow.getNickname()==null) {
+            viewFlow.setNickname(event.getNickname());
+        }
+        boolean isLeader = false;
+        if(viewFlow.getNickname().equalsIgnoreCase(event.getTruckers().getFirst().getNickname())) {
+            isLeader = true;
+        }
+        for(Trucker t: event.getTruckers()){
+            if(t.getNickname().equals(viewFlow.getNickname())){
+                trucker=t;
+            }
+        }
+
+        if(trucker == null){
+            // solo per debug, NON deve mai succedere
+            throw new RuntimeException("Trucker is null");
+        }
+
+        try {
+            if (trucker.getKeptComponent(0) != null) {
+                viewFlow.addKeptComponent(trucker.getKeptComponent(0));
+            }
+        }catch (GeneralError e){
+            ui.showError(e.getMessage());
+        }
+        try {
+            if(trucker.getKeptComponent(1)!=null) {
+                viewFlow.addKeptComponent(trucker.getKeptComponent(1));
+            }
+        }catch (GeneralError e){
+            ui.showError(e.getMessage());
+        }
+
+        if(trucker.getSelectedComponent() != null) {
+            viewFlow.setSelectedComponent(trucker.getSelectedComponent());
+        }
+
+        viewFlow.setParserFlightState(ParserState.STATE);
+        viewFlow.setLevel(event.getLevel());
+        if(event.getTrack()!=null) {
+            viewFlow.setTrack(event.getTrack());
+        }
+
+        viewFlow.setPosition(trucker.getPosition());
+        viewFlow.setShip(trucker.getSpaceShip());
+
+        switch (event.getGameState()) {
+            case FLIGHT -> {
+                viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
+                viewFlow.setStartFlightForAll();
+                viewFlow.setStartFlight(false);
+                viewFlow.setEnd();
+                ui.resumeFlightScene(event.getPlayerNames());
+
+                if(isLeader){
+                    viewFlow.setParserFlightState(ParserState.DRAW_CARD);
+                    ui.showInputFormat(ParserState.DRAW_CARD);
+                }else{
+                    viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+                }
+            }
+            case ENDED -> viewFlow.setViewState(ViewFlow.ViewState.END);
+            case BUILDING -> {
+                viewFlow.setViewState(ViewFlow.ViewState.BULDING);
+                viewFlow.fillAvailableComponents(event.getComponents());
+                ui.resumeBuildingScene(event.getPlayerNames());
+            }
+
+        }
+
+    }
+
+    @Override
+    public void visit(ChooseResumeEvent chooseResumeEvent) {
+        viewFlow.setViewState(ViewFlow.ViewState.CHOOSE_OLD);
+        ui.showChooseResume();
+    }
+
+    @Override
+    public void visit(AvailablePlayersEvent availablePlayersEvent) {
+        if(viewFlow.getNickname()==null) {
+            viewFlow.setViewState(ViewFlow.ViewState.START);
+        }else return;
+        ui.welcomeOldScene(availablePlayersEvent.getColors(), availablePlayersEvent.getNicknames());
     }
 
 
@@ -693,11 +803,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
 
     @Override
-    public void visit(NoAvailableSpaceError event) {
-        ui.showError(event.getMessage());
-    }
-
-    @Override
     public void visit(GenericErrorEvent event){
         ui.showError(event.getMessage());
     }
@@ -707,101 +812,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showOtherShipLayout(event.getNickname(), event.getSpaceship());
     }
 
-    @Override
-    public void visit(FirstConnectionEvent event) {
-        ui.showInsertNumPlayers();
-        viewFlow.setViewState(ViewFlow.ViewState.FIRST);
-    }
 
-
-    @Override
-    public void visit(ResumeGameEvent event) {
-        Trucker trucker=null;
-        if(viewFlow.getNickname()==null) {
-            viewFlow.setNickname(event.getNickname());
-        }
-        boolean isLeader = false;
-        if(viewFlow.getNickname().equalsIgnoreCase(event.getTruckers().getFirst().getNickname())) {
-            isLeader = true;
-        }
-        for(Trucker t: event.getTruckers()){
-            if(t.getNickname().equals(viewFlow.getNickname())){
-                trucker=t;
-            }
-        }
-
-        if(trucker == null){
-            // solo per debug, NON deve mai succedere
-            throw new RuntimeException("Trucker is null");
-        }
-
-        try {
-            if (trucker.getKeptComponent(0) != null) {
-                viewFlow.addKeptComponent(trucker.getKeptComponent(0));
-            }
-        }catch (GeneralError e){
-            ui.showError(e.getMessage());
-        }
-        try {
-            if(trucker.getKeptComponent(1)!=null) {
-                viewFlow.addKeptComponent(trucker.getKeptComponent(1));
-            }
-        }catch (GeneralError e){
-            ui.showError(e.getMessage());
-        }
-
-        if(trucker.getSelectedComponent() != null) {
-            viewFlow.setSelectedComponent(trucker.getSelectedComponent());
-        }
-
-        viewFlow.setParserFlightState(ParserState.STATE);
-        viewFlow.setLevel(event.getLevel());
-        if(event.getTrack()!=null) {
-            viewFlow.setTrack(event.getTrack());
-        }
-
-        viewFlow.setPosition(trucker.getPosition());
-        viewFlow.setShip(trucker.getSpaceShip());
-
-        switch (event.getGameState()) {
-            case FLIGHT -> {
-                viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
-                viewFlow.setStartFlightForAll();
-                viewFlow.setStartFlight(false);
-                viewFlow.setEnd();
-                ui.resumeFlightScene(event.getPlayerNames());
-
-                if(isLeader){
-                    viewFlow.setParserFlightState(ParserState.DRAW_CARD);
-                    ui.showInputFormat(ParserState.DRAW_CARD);
-                }else{
-                    viewFlow.setParserFlightState(ParserState.DO_NOTHING);
-                }
-            }
-            case ENDED -> viewFlow.setViewState(ViewFlow.ViewState.END);
-            case BUILDING -> {
-                viewFlow.setViewState(ViewFlow.ViewState.BULDING);
-                viewFlow.fillAvailableComponents(event.getComponents());
-                ui.resumeBuildingScene(event.getPlayerNames());
-            }
-
-        }
-
-    }
-
-    @Override
-    public void visit(ChooseResumeEvent chooseResumeEvent) {
-        viewFlow.setViewState(ViewFlow.ViewState.CHOOSE_OLD);
-        ui.showChooseResume();
-    }
-
-    @Override
-    public void visit(AvailablePlayersEvent availablePlayersEvent) {
-        if(viewFlow.getNickname()==null) {
-            viewFlow.setViewState(ViewFlow.ViewState.START);
-        }else return;
-        ui.welcomeOldScene(availablePlayersEvent.getColors(), availablePlayersEvent.getNicknames());
-    }
 
     @Override
     public void handleDeath(ArrayList<Trucker> truckersRemoved) {
