@@ -664,4 +664,8 @@ public class Smugglers extends Card implements Serializable {
     public void setIndexOfCurrentTrucker(int indexOfCurrentTrucker) {
         this.indexOfCurrentTrucker = indexOfCurrentTrucker;
     }
+
+    public void setWinnerTrucker(Trucker winnerTrucker) {
+        this.winnerTrucker = winnerTrucker;
+    }
 }
