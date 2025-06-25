@@ -1530,8 +1530,10 @@ public class SpaceShip implements Serializable {
                     if (components[num][j] != null) {
                         switch(components[num][j]){
                             case Cannon cannon->{
-                                if(cannon.getIsDouble() && cannon.getIsActive()) return true;
-                                else if(!cannon.getIsDouble()) return true;
+                                if(Game.getIstance().getGameLevel()==2){
+                                    if(cannon.getIsDouble() && cannon.getIsActive()) return true;
+                                    else if(!cannon.getIsDouble()) return true;
+                                }
                             } default->{}
                         }
                     }
@@ -1542,8 +1544,10 @@ public class SpaceShip implements Serializable {
                     if (components[i][num] != null) {
                         switch(components[i][num]){
                             case Cannon cannon->{
-                                if(cannon.getIsDouble() && cannon.getIsActive()) return true;
-                                else if(!cannon.getIsDouble()) return true;
+                                if(Game.getIstance().getGameLevel()==2){
+                                    if(cannon.getIsDouble() && cannon.getIsActive()) return true;
+                                    else if(!cannon.getIsDouble()) return true;
+                                }
                             } default -> {}
                         }
                     }
@@ -1554,8 +1558,10 @@ public class SpaceShip implements Serializable {
                     if (components[num][j] != null) {
                         switch(components[num][j]){
                             case Cannon cannon->{
-                                if(cannon.getIsDouble() && cannon.getIsActive()) return true;
-                                else if(!cannon.getIsDouble()) return true;
+                                if(Game.getIstance().getGameLevel()==2){
+                                    if(cannon.getIsDouble() && cannon.getIsActive()) return true;
+                                    else if(!cannon.getIsDouble()) return true;
+                                }
                             } default -> {}
                         }
                     }

@@ -2509,6 +2509,15 @@ public class FlightScene {
             }
         }
 
+        if(i == 7 && j == 7){
+            switch(c){
+                case Cabin cabin -> {
+                    details.append("[").append(i).append(",").append(j).append("] CABIN contains ").append(cabin.getQuantity()).append(cabin.getQuantity() == 1 ? " human" : " humans");
+                }
+                default -> {}
+            }
+        }
+
         return details.toString();
     }
 
