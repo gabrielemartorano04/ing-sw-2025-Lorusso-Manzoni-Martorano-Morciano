@@ -1,6 +1,7 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
 import it.polimi.ingsw.model.SpaceShip;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.view.ParserState;
@@ -11,8 +12,8 @@ public class RemoveGoods extends CardEvent{
     private final ArrayList<Goods> goodsList;
     private SpaceShip spaceShip;
 
-    public RemoveGoods(boolean forAll, String nickname,SpaceShip spaceShip, ArrayList<Goods> goodsList) {
-        super(forAll, ParserState.REMOVE_GOODS, nickname);
+    public RemoveGoods(boolean forAll, String nickname,SpaceShip spaceShip, ArrayList<Goods> goodsList, ArrayList<Trucker> truckers) {
+        super(forAll, ParserState.REMOVE_GOODS, nickname, truckers);
         this.goodsList = goodsList;
         this.spaceShip=spaceShip;
     }

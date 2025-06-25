@@ -13,8 +13,8 @@ public class CurrentCondition extends CardEvent{
     private final Map<String, Integer> track;
     private final ArrayList<Trucker> truckersRemoved;
 
-    public CurrentCondition(boolean forAll, ParserState parserState, String nickname, Condition condition, Map<String, Integer> track, ArrayList<Trucker> deadTruckersName) {
-        super(forAll, parserState, nickname);
+    public CurrentCondition(boolean forAll, ParserState parserState, String nickname, Condition condition, Map<String, Integer> track, ArrayList<Trucker> deadTruckersName, ArrayList<Trucker> truckers) {
+        super(forAll, parserState, nickname, truckers);
         this.condition = condition;
         this.track=track;
         this.truckersRemoved=deadTruckersName;
