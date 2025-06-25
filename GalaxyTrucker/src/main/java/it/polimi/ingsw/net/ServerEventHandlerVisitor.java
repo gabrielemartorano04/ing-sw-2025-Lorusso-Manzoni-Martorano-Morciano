@@ -194,7 +194,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     // === PHASE 2: Building ===
 
-
+    /**
+     * Initializes the building phase by setting nickname, ship, level, components,
+     * and starting the building scene (with timer if level is 2)
+     *
+     * @param event event containing player info and components to build with
+     */
     @Override
     public void visit(StartBuildingEvent event) {
         if(!viewFlow.getNameAlreadySet()){
@@ -213,6 +218,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Updates the UI and the viewFlow after a component has been successfully linked to the ship
+     *
+     * @param event event containing the linked component and its coordinates
+     */
     @Override
     public void visit(ComponentLinkedEvent event) {
         viewFlow.setFirstLinked();
@@ -228,6 +238,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Handles the case when the client tries to select a component no longer available
+     *
+     * @param event error indicating component unavailability
+     */
     @Override
     public void visit(ComponentNotAvailableError event) {
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
@@ -240,6 +255,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.componentNotAvailable(event);
     }
 
+    /**
+     * Updates the view after the selection of the component by this client is a success
+     *
+     * @param event event confirming the selected component and its index
+     */
     @Override
     public void visit(ComponentSelectedEvent event) {
         viewFlow.componentAsUncovered(event.getIndex());
@@ -256,6 +276,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Handles a successful discard action from the player
+     *
+     * @param event event indicating which component was discarded
+     */
     @Override
     public void visit(DiscardSuccessEvent event) {
         if(viewFlow.getNickname().equals(event.getNickname())){
@@ -274,6 +299,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     }
 
+    /**
+     * Handles the case where a player tries to place a component in invalid coordinates
+     *
+     * @param event error indicating invalid ship coordinates
+     */
     @Override
     public void visit(InvalidCoordinatesError event) {
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
@@ -286,6 +316,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.invalidCoordinates(event);
     }
 
+    /**
+     * Handles an error when a player incorrectly attempts to turn the hourglass.
+     *
+     * @param event error indicating invalid hourglass usage
+     */
     @Override
     public void visit(TurnHourglassError event) {
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
@@ -298,6 +333,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.turnHourGlassError(event);
     }
 
+    /**
+     * Starts the hourglass timer and updates the build UI accordingly
+     *
+     * @param event event containing the remaining time in seconds
+     */
     @Override
     public void visit(HourglassTurnEvent event) {
         viewFlow.getTimerDisplay().start(event.getSeconds());
@@ -310,21 +350,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
-    @Override
-    public void visit(BuildCompleteEvent event){
-        viewFlow.getTimerDisplay().stop();
-        viewFlow.setViewState(ViewFlow.ViewState.FILL);
-
-        for(Trucker t: event.getTruckers()){
-            if(t.getNickname().equals(viewFlow.getNickname())){
-                viewFlow.setShip(t.getSpaceShip());
-            }
-        }
-
-        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-        ui.buildingComplete(event);
-    }
-
+    /**
+     * Handles the case where the user keeps a component instead of placing it
+     *
+     * @param event event confirming the kept component
+     */
     @Override
     public void visit(KeptComponentEvent event){
         viewFlow.addKeptComponent(event.getKept());
@@ -339,6 +369,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Handles the successful rotation of a component and updates the view accordingly
+     *
+     * @param event event containing the rotated component
+     */
     @Override
     public void visit(TurnedComponentSuccessEvent event) {
         System.out.println("Turn andato a buon finite, visitor del client");
@@ -353,6 +388,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.componentTurned(event);
     }
 
+    /**
+     * Handles successful selection of a kept component by the player
+     *
+     * @param event event containing the selected component and its index
+     */
     @Override
     public void visit(SuccessSelectKept event){
         viewFlow.setSelectedComponent(event.getComponent(), true);
@@ -369,12 +409,22 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     }
 
+    /**
+     * Indicates that the player must wait for others to complete building
+     *
+     * @param event event signaling wait state for others building
+     */
     @Override
     public void visit(WaitOthersBuildingEvent event){
         viewFlow.setEnd();
         ui.showWaitForOthers();
     }
 
+    /**
+     * Indicates that the player must wait for others to start flight
+     *
+     * @param event event signaling wait state for others to start flight
+     */
     @Override
     public void visit(WaitOthersStartFlightEvent event) {
         //viewFlow.setStartFlight();
@@ -382,23 +432,58 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showWaitForOthers();
     }
 
+    /**
+     * Requests the player to provide coordinates for the alien cabin if he wants to
+     *
+     * @param event event containing alien cabin coordinate request
+     */
     @Override
     public void visit(AlienCabinCoord event) {
         ui.askAlienCabin(event);
     }
 
+    /**
+     * Updates the state and UI with the returned stack information
+     *
+     * @param event event containing the returned stack details
+     */
     @Override
     public void visit(ReturnStackEvent event){
         viewFlow.setHasStack(event.getStack().getIndexOfThis());
         ui.showStack(event.getStack());
     }
 
+    /**
+     * Handles successful dropping of a stack and updates state/UI accordingly
+     *
+     * @param event event indicating the stack drop was successful
+     */
     @Override
     public void visit(StackDropOk event) {
         viewFlow.setHasStack(-1);
         ui.dropStack(event);
     }
 
+    /**
+     * Handles the end of the building phase, stops the timer, updates the ship,
+     * and transitions the view to the filling phase.
+     *
+     * @param event event containing final ship configurations of all truckers
+     */
+    @Override
+    public void visit(BuildCompleteEvent event){
+        viewFlow.getTimerDisplay().stop();
+        viewFlow.setViewState(ViewFlow.ViewState.FILL);
+
+        for(Trucker t: event.getTruckers()){
+            if(t.getNickname().equals(viewFlow.getNickname())){
+                viewFlow.setShip(t.getSpaceShip());
+            }
+        }
+
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+        ui.buildingComplete(event);
+    }
 
     // === PHASE 3: Flight ===
 
