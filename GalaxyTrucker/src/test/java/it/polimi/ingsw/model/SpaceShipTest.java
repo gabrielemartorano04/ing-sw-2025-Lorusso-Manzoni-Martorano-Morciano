@@ -602,6 +602,30 @@ class SpaceShipTest {
     void blockBigMeteor() {
         assertTrue(spaceShip2.blockBigMeteor(0,7));
         assertTrue(spaceShip2.blockBigMeteor(0,8));
+
+        assertTrue(spaceShip3.blockBigMeteor(1,7));
+        assertTrue(spaceShip3.blockBigMeteor(0,4));
+        try {
+            spaceShip3.removeComponent(9,4);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceShip3.addComponent(
+                    new Cannon(3,3,3,"","",true),
+                    9,4
+            );
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        assertFalse(spaceShip3.blockBigMeteor(3,9));
+        switch(spaceShip3.getComponents()[9][4]){
+            case Cannon cannon->{
+                cannon.setIsActive(true);
+            }
+            default -> {}
+        }
+        assertTrue(spaceShip3.blockBigMeteor(3,9));
     }
 
     @Test
@@ -612,7 +636,6 @@ class SpaceShipTest {
         assertTrue( spaceShip2.blockSmallMeteor(0,9));
         assertFalse( spaceShip2.blockSmallMeteor(0,6));
 
-       // todo assertTrue( spaceShip2.blockSmallMeteor(1,9));
         assertTrue( spaceShip2.blockSmallMeteor(1,7));
 
         assertTrue( spaceShip2.blockSmallMeteor(2,7));
@@ -621,6 +644,42 @@ class SpaceShipTest {
         assertFalse( spaceShip2.blockSmallMeteor(3,7));
         assertTrue( spaceShip2.blockSmallMeteor(3,8));
 
+        assertFalse(spaceShip3.blockSmallMeteor(3,8));
+        spaceShip3.setBattery();
+        try {
+            spaceShip3.activateShield(new int[]{8,8},new int[]{6,9,1});
+        } catch (NotEnoughBatteries e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceShip3.removeComponent(9,8);
+            spaceShip3.removeComponent(8,10);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+
+        assertTrue(spaceShip3.blockSmallMeteor(2,8));
+        assertTrue(spaceShip3.blockSmallMeteor(1,8));
+        switch(spaceShip3.getComponents()[8][8]){
+            case Shield shield->{
+                shield.setDirection(Direction.NW);
+                shield.setIsActive(true);
+            }
+            default -> {}
+        }
+        assertTrue(spaceShip3.blockSmallMeteor(3,8));
+        try {
+            spaceShip3.removeComponent(5,6);
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        assertTrue(spaceShip3.blockSmallMeteor(0,6));
+        spaceShip3.deActivateShields();
+
+        assertFalse(spaceShip3.blockSmallMeteor(2,8));
+        assertFalse(spaceShip3.blockSmallMeteor(1,8));
+        assertFalse(spaceShip3.blockSmallMeteor(3,8));
+        assertFalse(spaceShip3.blockSmallMeteor(0,6));
     }
 
     @Test
@@ -794,7 +853,6 @@ class SpaceShipTest {
 
     @Test
     void getRedGoods() {
-        ArrayList<Goods> goods=new ArrayList<>();
         Goods good1=new Goods(4);
         try {
             spaceShip2.addGood(good1,new int[]{7,5},0,new Bank());
@@ -803,6 +861,9 @@ class SpaceShipTest {
         }
 
         assertEquals(1,spaceShip2.getRedGoods());
+
+        Goods good2=new Goods(3);
+
     }
 
     @Test
@@ -855,9 +916,13 @@ class SpaceShipTest {
         switch(spaceShip2.getComponents()[7][5]){
             case Load component->{
                 Goods good1=new Goods(4);
+                ArrayList<Goods> list=new ArrayList<>();
+                list.add(good1);
                 good1.setX(7);
                 good1.setY(5);
                 component.addGood(0,good1);
+                spaceShip2.addGoodsList(good1);
+                spaceShip2.removeGoods(list);
             }
             default -> {}
         }
@@ -900,5 +965,4 @@ class SpaceShipTest {
         assertEquals(1, goodsByColor.get("green"));
         assertEquals(2, goodsByColor.size());
     }
-
 }

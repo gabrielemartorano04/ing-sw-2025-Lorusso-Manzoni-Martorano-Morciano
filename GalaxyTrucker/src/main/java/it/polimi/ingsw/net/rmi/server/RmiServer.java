@@ -69,7 +69,7 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "127.0.0.1"; // fallback
+        return "127.0.0.1";
     }
 
 }
