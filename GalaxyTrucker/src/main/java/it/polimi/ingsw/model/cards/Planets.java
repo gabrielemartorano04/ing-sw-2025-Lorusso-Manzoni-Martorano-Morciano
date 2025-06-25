@@ -116,7 +116,7 @@ public class Planets extends Card implements Serializable {
      * @return an event containing all the card details
      */
     @Override
-    public ServerEvent startCard() {
+    public synchronized ServerEvent startCard() {
         System.out.println(Arrays.toString(Game.getIstance().getBank().getGoods()));
         StartCardEvent startCardEvent =
                 new StartCardEvent(
@@ -154,7 +154,7 @@ public class Planets extends Card implements Serializable {
      * @throws PlanetNotFreeException: that planet is already occupied
      */
     @Override
-    public ServerEvent playerLandingPlanets(int indexOfPlanet) throws GeneralError, PlanetNotFreeException {
+    public synchronized ServerEvent playerLandingPlanets(int indexOfPlanet) throws GeneralError, PlanetNotFreeException {
 
         if(cardState != CardState.PIANETI){
             throw new GeneralError("Can't land in the state: " + this.cardState);
@@ -229,7 +229,7 @@ public class Planets extends Card implements Serializable {
      * @throws InvalidPositionException not a special load but that good was special
      */
     @Override
-    public ServerEvent setGoodsCoordinates(Boolean wantsToLoadGood, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public synchronized ServerEvent setGoodsCoordinates(Boolean wantsToLoadGood, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
@@ -299,7 +299,7 @@ public class Planets extends Card implements Serializable {
      * @throws InvalidPositionException tried to put a special good in a not special load
      */
     @Override
-    public ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean stop) throws GeneralError, InvalidCoordinates, InvalidPositionException{
+    public synchronized ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean stop) throws GeneralError, InvalidCoordinates, InvalidPositionException{
         if(cardState != CardState.REARRANGE){
             throw new GeneralError("Card state is not REARRANGE");
         }
@@ -338,7 +338,7 @@ public class Planets extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent cardEffect() throws GeneralError {
+    public synchronized ServerEvent cardEffect() throws GeneralError {
         if (this.cardState != CardState.ESECUZIONE) {
             throw new GeneralError("CardEffect not callable in the state: " + this.cardState);
         }

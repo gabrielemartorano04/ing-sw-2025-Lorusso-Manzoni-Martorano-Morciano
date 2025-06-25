@@ -146,7 +146,7 @@ public class Smugglers extends Card implements Serializable {
      * @return an event containing all the card details
      */
     @Override
-    public ServerEvent startCard() {
+    public synchronized ServerEvent startCard() {
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
@@ -249,7 +249,7 @@ public class Smugglers extends Card implements Serializable {
      * @throws NotEnoughBatteries not enoughBatteries indicated to activate the doubleCannons selected
      */
     @Override
-    public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
+    public synchronized ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
         if(cardState!=CardState.ACTIVATE_CANNONS){
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
@@ -286,7 +286,7 @@ public class Smugglers extends Card implements Serializable {
      * @throws InvalidPositionException not a special load but that good was special
      */
     @Override
-    public ServerEvent setGoodsCoordinates(Boolean answer, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public synchronized ServerEvent setGoodsCoordinates(Boolean answer, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
@@ -373,7 +373,7 @@ public class Smugglers extends Card implements Serializable {
      * @throws InvalidPositionException tried to put a special good in a not special load
      */
     @Override
-    public ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean stop) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public synchronized ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean stop) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.REARRANGE) {
             throw new GeneralError("Card state is not REARRANGE");
         }
@@ -407,7 +407,7 @@ public class Smugglers extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent removeGoods() throws GeneralError {
+    public synchronized ServerEvent removeGoods() throws GeneralError {
         if (cardState != CardState.REMOVE_GOODS) {
             throw new GeneralError("plotGoodsToRemove not callable in the state " + cardState);
         }
@@ -544,7 +544,7 @@ public class Smugglers extends Card implements Serializable {
      */
 
     @Override
-    public ServerEvent removeGoodsDecided(ArrayList<Integer> indexesToRemove) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
+    public synchronized ServerEvent removeGoodsDecided(ArrayList<Integer> indexesToRemove) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
         if (cardState != CardState.REMOVE_ASKING){
             throw new GeneralError("Can't call removeAsking in the state " + cardState);
         }
@@ -586,7 +586,7 @@ public class Smugglers extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
+    public synchronized ServerEvent removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(cardState!= CardState.REMOVE_BATTERIES){
             throw new GeneralError("Can't call removeBatteries in the state " + cardState);
         }
@@ -623,7 +623,7 @@ public class Smugglers extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent cardEffect() throws GeneralError{
+    public synchronized ServerEvent cardEffect() throws GeneralError{
         if(cardState != CardState.ESECUZIONE){
             throw new GeneralError("Can't call cardEffect in the state " + cardState);
         }
