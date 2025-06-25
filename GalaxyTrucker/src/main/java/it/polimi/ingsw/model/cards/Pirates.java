@@ -208,7 +208,7 @@ public class Pirates extends Card implements Serializable {
     private ServerEvent handleVictory() {
         winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
         cardState = CardState.COSMIC_CREDITS;
-        return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits, days, Game.getIstance().getTruckerList());
+        return new GainCosmicCredits(true, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), credits, days);
     }
 
     /**
