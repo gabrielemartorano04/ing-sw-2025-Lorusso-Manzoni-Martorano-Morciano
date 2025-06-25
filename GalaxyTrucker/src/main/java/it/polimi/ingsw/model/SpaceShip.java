@@ -1509,7 +1509,7 @@ public class SpaceShip implements Serializable {
      * @param num number of row or colon from which the meteorite arrives
      * @return true if there is a cannon which can shoot the arriving meteorite, false otherwise
      */
-    public boolean shootMeteor(int direction, int num) {
+    public boolean blockBigMeteor(int direction, int num) {
         switch (direction) {
             case 0:
                 for (int i = 5; i <= 9; i++) {
