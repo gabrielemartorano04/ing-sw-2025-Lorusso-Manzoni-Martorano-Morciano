@@ -378,10 +378,6 @@ public class ViewFlow implements EventReceiver {
         this.position = position;
     }
 
-    public void setGoodsByColor(Map<String, Integer> goodsByColor) {
-        this.goodsByColor = goodsByColor;
-    }
-
     public void setEnd() {
         this.endBuildingPhase = true;
     }
@@ -519,7 +515,8 @@ public class ViewFlow implements EventReceiver {
     public void setOut() {
         this.out = true;
     }
-    public boolean getOut() {
+
+    public boolean isOut() {
         return out;
     }
 

@@ -8,27 +8,16 @@ public class HumanCoordinates extends CardEvent {
 
     private final SpaceShip spaceShip;
 
-    private final SpaceShip previousSpaceShip;
-    private final String previousNickName;
 
-    public HumanCoordinates(boolean forAll, String nickname,SpaceShip spaceShip, SpaceShip previousSpaceShip, String previousNickName) {
+    public HumanCoordinates(boolean forAll, String nickname,SpaceShip spaceShip) {
         super(forAll, ParserState.HUMAN_COORD, nickname);
         this.spaceShip=spaceShip;
-        this.previousSpaceShip=previousSpaceShip;
-        this.previousNickName=previousNickName;
     }
 
     public SpaceShip getShip(){
         return spaceShip;
     }
 
-    public SpaceShip getPreviousSpaceShip(){
-        return previousSpaceShip;
-    }
-
-    public String getPreviousNickName(){
-        return previousNickName;
-    }
 
     @Override
     public void call(ServerEventHandlerVisitor visitor) {

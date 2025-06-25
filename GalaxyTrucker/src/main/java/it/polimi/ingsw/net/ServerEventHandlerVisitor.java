@@ -270,6 +270,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setStartFlightForAll();
         viewFlow.setTrack(event.getTrack());
         viewFlow.setShip(event.getSpaceShip());
+
         ui.flightScene(event);
 
     }
@@ -277,29 +278,35 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(CurrentCondition event) {
         boolean isLeader = false;
+
+        if(event.getTrack()!=null){
+            viewFlow.setTrack(event.getTrack());
+            ui.showTrack(event.getTrack(), viewFlow.getLevel());
+        }
+
+        handleDeath(event.getTruckersRemoved());
+
+        if(!viewFlow.isOut()){
+            updatesFromFlight(event.getTruckers());
+        }
+
         if(event.getNickname().equals(viewFlow.getNickname())){
             viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
             isLeader = true;
         }
         else {
-            if(event.getWeakestTrucker()!=null){
-                if(event.getWeakestTrucker().getNickname().equals(viewFlow.getNickname())){
-                    viewFlow.setShip(event.getWeakestTrucker().getSpaceShip());
-                }
-            }
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
         }
-        if(event.getTrack()!=null){
-            ui.showTrack(event.getTrack(), viewFlow.getLevel());
-        }
 
-        handleDeath(event.getTruckersRemoved());
         ui.showCurrCondition(event.getCondition(), isLeader);
         ui.showInputFormat(viewFlow.getParserFlightState());
     }
 
     @Override
     public void visit(BooleanDecision event) {
+
+        updatesFromFlight(event.getTruckers());
+
         if (event.getNickname().equals(viewFlow.getNickname())){
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(viewFlow.getParserFlightState());
@@ -312,6 +319,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(CardFinished event) {
+        handleDeath(event.getTruckersRemoved());
+
+        if(!viewFlow.isOut()){
+            updatesFromFlight(event.getTruckersRemoved());
+        }
+
         Trucker trucker=null;
         for(Trucker t:event.getTruckersList()){
             if(t.getNickname().equals(viewFlow.getNickname())){
@@ -320,10 +333,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             }
         }
 
-        handleDeath(event.getTruckersRemoved());
-
-        if(!viewFlow.getOut()){
-            viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsByColor());
+        if(!viewFlow.isOut()){
             viewFlow.setCredits(trucker.getCosmicCredit());
             viewFlow.setPosition(trucker.getPosition());
 
@@ -354,54 +364,49 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(EpidemicEvent event) {
         ui.showEpidemicCard(event);
-        Trucker trucker=null;
-        for(Trucker t:event.getTruckers()){
-            if(t.getNickname().equals(viewFlow.getNickname())){
-                trucker=t;
-                break;
-            }
-        }
 
         handleDeath(event.getTruckersRemoved());
 
-        if(!viewFlow.getOut()){
-            viewFlow.setPosition(trucker.getPosition());
-            viewFlow.setTrack(event.getTrack());
-            viewFlow.setShip(trucker.getSpaceShip());
+        viewFlow.setTrack(event.getTrack());
+        if(!viewFlow.isOut()) {
+            updatesFromFlight(event.getTruckers());
 
-            ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-            ui.epidemic(event);
-            if (viewFlow.getNickname().equals(event.getTruckers().get(0).getNickname())) {
+            if (viewFlow.getNickname().equals(event.getTruckers().getFirst().getNickname())) {
                 viewFlow.setParserFlightState(ParserState.DRAW_CARD);
-                ui.showInputFormat(ParserState.DRAW_CARD);
             } else viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+        }
+
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+        ui.epidemic(event);
+
+        if(!viewFlow.getParserFlightState().equals(ParserState.DO_NOTHING)){
+            ui.showInputFormat(viewFlow.getParserFlightState());
         }
     }
 
     @Override
     public void visit(HumanCoordinates event) {
+        updatesFromFlight(event.getTruckers());
+
+        ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
+
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.HUMAN_COORD);
-            viewFlow.setShip(event.getShip());
-            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
             ui.showInputFormat(ParserState.HUMAN_COORD);
         } else {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
-            if(event.getPreviousNickName().equals(viewFlow.getNickname())){
-                viewFlow.setShip(event.getPreviousSpaceShip());
-                ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
-            }
-
             ui.showMessage(event.getInfoForOthers());
         }
     }
 
     @Override
     public void visit(PlanetDecision event) {
+        updatesFromFlight(event.getTruckers());
+
+        ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
+
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLANET_DECISION);
-            viewFlow.setShip(event.getShip());
-            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
             ui.updatePlanetsOccupied(event);
             ui.showInputFormat(ParserState.PLANET_DECISION);
         } else {
@@ -412,10 +417,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(PlotGood event) {
+        updatesFromFlight(event.getTruckers());
+
+        ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
+
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLOT_GOOD);
-            viewFlow.setShip(event.getShip());
-            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
             ui.updateCurrGood(event.getGood());
             ui.showInputFormat(ParserState.PLOT_GOOD);
         } else {
@@ -426,6 +433,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(RollDiceResult event) {
+        updatesFromFlight(event.getTruckers());
+
+        ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
+
         ui.showResult(event);
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
@@ -439,27 +450,23 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(StarDustEvent event) {
         ui.showStardustCard(event);
-        Trucker trucker=null;
-        for(Trucker t:event.getTruckers()){
-            if(t.getNickname().equals(viewFlow.getNickname())){
-                trucker=t;
-                break;
-            }
-        }
+        viewFlow.setTrack(event.getTrack());
 
         handleDeath(event.getTruckersRemoved());
 
-        if(!viewFlow.getOut()){
-            viewFlow.setPosition(trucker.getPosition());
-            viewFlow.setTrack(event.getTrack());
-            viewFlow.setShip(trucker.getSpaceShip());
-
-            ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-            ui.stardust(event);
-            if (viewFlow.getNickname().equals(event.getTruckers().get(0).getNickname())) {
+        if(!viewFlow.isOut()){
+            updatesFromFlight(event.getTruckers());
+            if (viewFlow.getNickname().equals(event.getTruckers().getFirst().getNickname())) {
                 viewFlow.setParserFlightState(ParserState.DRAW_CARD);
                 ui.showInputFormat(ParserState.DRAW_CARD);
             } else viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+        }
+
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+        ui.stardust(event);
+
+        if(!viewFlow.getParserFlightState().equals(ParserState.DO_NOTHING)){
+            ui.showInputFormat(viewFlow.getParserFlightState());
         }
 
     }
@@ -482,6 +489,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(RearrangeEvent event) {
+        updatesFromFlight(event.getTruckers());
+
+        ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
+
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
@@ -600,10 +611,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(RemotionConfirmed event) {
+        updatesFromFlight(event.getTruckers());
+
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
-            viewFlow.setShip(event.getShip());
-            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
             ui.showInputFormat(event.getParserState());
         }else{
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
@@ -614,10 +627,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(RemoveBatteries event) {
+        updatesFromFlight(event.getTruckers());
+
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
-            viewFlow.setShip(event.getShip());
-            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
             viewFlow.setNumOfBatteriesToRemove(event.getBatteriesToRemove());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -748,7 +763,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
         viewFlow.setPosition(trucker.getPosition());
         viewFlow.setShip(trucker.getSpaceShip());
-        viewFlow.setGoodsByColor(trucker.getSpaceShip().getGoodsByColor());
 
         switch (event.getGameState()) {
             case FLIGHT -> {
@@ -794,20 +808,38 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void handleDeath(ArrayList<Trucker> truckersRemoved) {
         for (Trucker trucker : truckersRemoved) {
             if (trucker.getNickname().equalsIgnoreCase(viewFlow.getNickname())) {
+                viewFlow.setCredits(trucker.getCosmicCredit());
+                viewFlow.setPosition(trucker.getPosition());
                 viewFlow.setShip(trucker.getSpaceShip());
-                ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
-                ui.showDead();
+
                 viewFlow.setOut();
                 viewFlow.setParserFlightState(ParserState.DEAD);
-                break; // opzionale: esci dopo aver trovato il nickname
+
+                ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
+                ui.showDead();
+
+                break;
             }
         }
     }
+
+    private void updatesFromFlight (ArrayList<Trucker> truckers){
+        for(Trucker t:truckers){
+            if(t.getNickname().equals(viewFlow.getNickname())){
+                viewFlow.setCredits(t.getCosmicCredit());
+                viewFlow.setPosition(t.getPosition());
+                viewFlow.setShip(t.getSpaceShip());
+                break;
+            }
+        }
+    }
+
 
     @Override
     public void visit(PingEvent e){
         viewFlow.respondToPing();
     }
+
 
 
 

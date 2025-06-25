@@ -1,43 +1,31 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.view.ParserState;
 
-/**
- * Represents an abstract event related to a card-based interaction in the game.
- * CardEvent is a specialized type of ServerEvent used as a base class for all events
- * that specifically involve card mechanics or card-related actions
- */
-public abstract class CardEvent extends ServerEvent {
+import java.util.ArrayList;
 
-    /**
-     * State of the input parser
-     */
+public abstract class CardEvent extends ServerEvent {
     private final ParserState parserState;
     private final String nickname;
+    private final ArrayList<Trucker> truckers;
 
-    /**
-     * Event constructor
-     * @param forAll specify if the message is for a player or for everyone
-     * @param parserState state of the input parser
-     * @param nickname of the current player
-     */
-    public CardEvent(boolean forAll, ParserState parserState, String nickname) {
+    public CardEvent(boolean forAll, ParserState parserState, String nickname, ArrayList<Trucker> truckers) {
         super(forAll);
         this.parserState = parserState;
         this.nickname = nickname;
+        this.truckers = truckers;
     }
 
-    /**
-     * @return the state of the input parser
-     */
+    public ArrayList<Trucker> getTruckers() {
+        return truckers;
+    }
+
     public ParserState getParserState() {
         return parserState;
     }
 
-    /**
-     * @return the nickname of the current player
-     */
     public String getNickname() {
         return nickname;
     }

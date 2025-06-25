@@ -571,9 +571,6 @@ public class GUI implements UI {
     public  void epidemic(EpidemicEvent event){
 
         Platform.runLater(() -> {
-            this.flightScene.setShip(viewFlow.getShip().getComponents());
-            this.flightScene.updateShipLayout();
-            this.flightScene.updateStatusBar();
             this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         });
     }
@@ -742,7 +739,13 @@ public class GUI implements UI {
 
     @Override
     public void showShipLayout(String nickname, Component[][] layout){
-        //serve per la TUI forse
+        Platform.runLater(() -> {
+           if(viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
+               this.flightScene.setShip(viewFlow.getShip().getComponents());
+               this.flightScene.updateShipLayout();
+               this.flightScene.updateStatusBar();
+           }
+        });
     }
 
 
