@@ -87,7 +87,7 @@ public class AbandonedShip extends Card implements Serializable {
      * @return an event containing all the card details
      */
     @Override
-    public ServerEvent startCard() {
+    public synchronized ServerEvent startCard() {
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
@@ -119,7 +119,7 @@ public class AbandonedShip extends Card implements Serializable {
      * @return serverEvent to send to all clients
      */
     @Override
-    public ServerEvent truckerLanding(boolean landing) throws GeneralError {
+    public synchronized ServerEvent truckerLanding(boolean landing) throws GeneralError {
         if(state != CardState.LAND) {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }
@@ -145,7 +145,7 @@ public class AbandonedShip extends Card implements Serializable {
      * @return serverEvent to send to all clients
      */
     @Override
-    public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
+    public synchronized ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
         if(state != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Can't call setCoordinates in the state: " + state);
         }
@@ -169,7 +169,7 @@ public class AbandonedShip extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent cardEffect() throws GeneralError {
+    public synchronized ServerEvent cardEffect() throws GeneralError {
         if(state != CardState.ESECUZIONE) {
             throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }

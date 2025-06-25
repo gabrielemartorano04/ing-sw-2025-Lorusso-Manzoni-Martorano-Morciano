@@ -59,7 +59,7 @@ public class OpenSpace extends Card implements Serializable {
      * @return an event containing all the card details
      */
     @Override
-    public ServerEvent startCard() {
+    public synchronized ServerEvent startCard() {
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
@@ -95,7 +95,7 @@ public class OpenSpace extends Card implements Serializable {
      * @throws NotEnoughBatteries: not enoughBatteries indicated
      */
     @Override
-    public ServerEvent activateEngines(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws InvalidCoordinates, GeneralError, NotEnoughBatteries {
+    public synchronized ServerEvent activateEngines(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws InvalidCoordinates, GeneralError, NotEnoughBatteries {
         if (this.state != CardState.ACTIVATE_ENGINES) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
@@ -132,7 +132,7 @@ public class OpenSpace extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent cardEffect() throws GeneralError {
+    public synchronized ServerEvent cardEffect() throws GeneralError {
         if (this.state != CardState.ESECUZIONE) {
             throw new GeneralError("Non è possibile eseguire card effect nello stato " + this.state);
         }

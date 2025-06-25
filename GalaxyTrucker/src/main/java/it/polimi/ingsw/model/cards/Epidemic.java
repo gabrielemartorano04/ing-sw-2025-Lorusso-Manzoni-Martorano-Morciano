@@ -54,7 +54,7 @@ public class Epidemic extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent startCard() {
+    public synchronized ServerEvent startCard() {
         try {
             return cardEffect();
         } catch (GeneralError e) {
@@ -70,7 +70,7 @@ public class Epidemic extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent cardEffect() throws GeneralError {
+    public synchronized ServerEvent cardEffect() throws GeneralError {
         if(state != CardState.ESECUZIONE) {
             throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }

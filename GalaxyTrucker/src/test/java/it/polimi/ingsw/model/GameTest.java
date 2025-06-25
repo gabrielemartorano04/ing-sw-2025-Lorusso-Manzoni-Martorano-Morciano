@@ -230,7 +230,9 @@ class GameTest {
     @Test
     void oldGame(){
         Trucker trucker=new Trucker("frenk",PlayerColors.RED);
+        Trucker trucker1=new Trucker("luca",PlayerColors.BLUE);
         game1.addTrucker(trucker);
+        game1.addTrucker(trucker1);
 
         game1.createOldNicknames();
         game1.createOldColors();
@@ -242,7 +244,8 @@ class GameTest {
         assertFalse(game1.getOldNicknames().isEmpty());
         game1.removeOldColors(PlayerColors.RED);
         game1.removeOldNicknames("frenk");
-
+        game1.removeOldColors(PlayerColors.BLUE);
+        game1.removeOldNicknames("luca");
         assertTrue(game1.getOldColors().isEmpty());
         assertTrue(game1.getOldNicknames().isEmpty());
     }
@@ -303,6 +306,12 @@ class GameTest {
         Trucker trucker1=new Trucker("frenk",PlayerColors.BLUE);
         game1.addTrucker(trucker1);
         assertTrue(game1.isColorTaken(PlayerColors.BLUE));
+    }
+
+    @Test
+    void turnHourglass(){
+        game1.startHourglass();
+
     }
 
 }

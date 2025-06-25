@@ -132,7 +132,7 @@ public class Slavers extends Card implements Serializable {
      * @return an event containing all the card details
      */
     @Override
-    public ServerEvent startCard() {
+    public synchronized ServerEvent startCard() {
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
@@ -236,7 +236,7 @@ public class Slavers extends Card implements Serializable {
      * @throws NotEnoughBatteries not enoughBatteries indicated to activate the doubleCannons selected
      */
     @Override
-    public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
+    public synchronized ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
         if(cardState!=CardState.ACTIVATE_CANNONS){
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
@@ -268,7 +268,7 @@ public class Slavers extends Card implements Serializable {
      * @throws GeneralError: not in the right state
      */
     @Override
-    public ServerEvent setWinDecision(boolean answer)throws GeneralError{
+    public synchronized ServerEvent setWinDecision(boolean answer)throws GeneralError{
         if(cardState!=CardState.COSMIC_CREDITS){
             throw new GeneralError("Card state is not COSMIC_CREDITS");
         }
@@ -297,7 +297,7 @@ public class Slavers extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws GeneralError, InvalidCoordinates {
+    public synchronized ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws GeneralError, InvalidCoordinates {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Card state in not HUMANSTOREMOVE");
         }
@@ -339,7 +339,7 @@ public class Slavers extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent cardEffect() throws GeneralError {
+    public synchronized ServerEvent cardEffect() throws GeneralError {
         if (cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Card state is not ESECUZIONE");
         }
