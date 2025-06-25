@@ -2,17 +2,57 @@ package it.polimi.ingsw.view.text;
 
 import it.polimi.ingsw.view.UI;
 
+/**
+ * The TimerDisplay class is responsible for managing a countdown timer with
+ * a specified duration and notifying a UI component when the timer expires
+ */
 public class TimerDisplay {
+
+    /**
+     * Represents the duration of the countdown timer in seconds
+     */
     private int durationSeconds;
+
+    /**
+     * Represents the start time of the countdown timer in milliseconds
+     */
     private long startTime;
-    private int expirationCount = 0;
+
+    /**
+     * Tracks the number of times the countdown timer has completed and expired
+     */
+    private int expirationCount;
+
+    /**
+     * The thread responsible for executing the countdown timer functionality
+     * in the TimerDisplay class.
+     */
     private Thread timerThread;
+
+    /**
+     * The UI component associated with the TimerDisplay class, responsible for
+     * providing visual feedback to the user, such as displaying the countdown,
+     * indicating when the timer starts, or showing when the timer has expired.
+     */
     private final UI ui;
 
+
+    /**
+     * Constructs a TimerDisplay object and initializes the associated UI component.
+     * @param ui the UI component that provides visual feedback for the timer, such
+     *           as indicating the countdown progress or showing when the timer expires
+     */
     public TimerDisplay(UI ui) {
         this.ui = ui;
+        expirationCount = 0;
     }
 
+    /**
+     * Starts the countdown timer with the specified duration in seconds and
+     * updates the associated UI component. Once the timer expires, it notifies
+     * the UI and increments the expiration count.
+     * @param durationSeconds the duration of the countdown timer in seconds
+     */
     public void start(int durationSeconds) {
         this.startTime = System.currentTimeMillis();
         this.durationSeconds=durationSeconds;
@@ -34,17 +74,10 @@ public class TimerDisplay {
         timerThread.start();
     }
 
-    public long getTimeLeft() {
-        long elapsed = (System.currentTimeMillis() - startTime) / 1000;
-        long remaining = durationSeconds - elapsed;
-        return Math.max(0, remaining);
-    }
-
-    public int getExpirationCount() {
-        return expirationCount;
-    }
-
-
+    /**
+     * Stops the currently running countdown timer if it exists and is active.
+     * This method interrupts the timer thread to cease its execution prematurely.
+     */
     public void stop() {
         if (timerThread != null && timerThread.isAlive()) {
             timerThread.interrupt();
