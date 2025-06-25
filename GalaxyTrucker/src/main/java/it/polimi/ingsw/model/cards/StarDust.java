@@ -47,7 +47,7 @@ public class StarDust extends Card implements Serializable {
      * @return cardEffect
      */
     @Override
-    public ServerEvent startCard() {
+    public synchronized ServerEvent startCard() {
         try {
             return cardEffect();
         } catch (GeneralError e) {
@@ -61,7 +61,7 @@ public class StarDust extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent cardEffect() throws GeneralError {
+    public synchronized ServerEvent cardEffect() throws GeneralError {
         if(cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Not callable in the state " + cardState);
         }

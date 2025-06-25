@@ -158,7 +158,7 @@ public class Pirates extends Card implements Serializable {
      * @return an event containing all the card details
      */
     @Override
-    public ServerEvent startCard() {
+    public synchronized ServerEvent startCard() {
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
@@ -263,7 +263,7 @@ public class Pirates extends Card implements Serializable {
      * @throws NotEnoughBatteries not enoughBatteries indicated to activate the doubleCannons selected
      */
     @Override
-    public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
+    public synchronized ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
         if(cardState!=CardState.ACTIVATE_CANNONS){
             throw new GeneralError("Card state is not ATTESA_RISPOSTE");
         }
@@ -295,7 +295,7 @@ public class Pirates extends Card implements Serializable {
      * @throws GeneralError: not in the right state
      */
     @Override
-    public ServerEvent setWinDecision(boolean answer)throws GeneralError{
+    public synchronized ServerEvent setWinDecision(boolean answer)throws GeneralError{
         if(cardState!=CardState.COSMIC_CREDITS){
             throw new GeneralError("Card state is not COSMIC_CREDITS");
         }
@@ -318,7 +318,7 @@ public class Pirates extends Card implements Serializable {
      * @return the event containing the roll dice result and the current meteor
      */
     @Override
-    public ServerEvent rollDice() throws GeneralError {
+    public synchronized ServerEvent rollDice() throws GeneralError {
         if(cardState != CardState.ROLL_DICE) {
             throw new GeneralError("Non si può girare i dadi nello stato " + cardState);
         }
@@ -351,7 +351,7 @@ public class Pirates extends Card implements Serializable {
      * @throws NotEnoughBatteries: not enough batteries to remove were indicated by the plauer
      */
     @Override
-    public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
+    public synchronized ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
         if(cardState != CardState.ACTIVATE_SHIELDS){
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.cardState);
         }
@@ -389,7 +389,7 @@ public class Pirates extends Card implements Serializable {
      */
 
     @Override
-    public ServerEvent cardEffect() throws GeneralError {
+    public synchronized ServerEvent cardEffect() throws GeneralError {
 
         if (cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Card state is not ESECUZIONE");

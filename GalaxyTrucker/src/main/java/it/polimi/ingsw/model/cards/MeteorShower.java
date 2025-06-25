@@ -93,7 +93,7 @@ public class MeteorShower extends Card implements Serializable {
      * @return an event containing all the card details
      */
     @Override
-    public ServerEvent startCard() {
+    public synchronized ServerEvent startCard() {
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
@@ -124,7 +124,7 @@ public class MeteorShower extends Card implements Serializable {
      *
      * @return the event containing the roll dice result and the current meteor
      */
-    public ServerEvent rollDice() throws GeneralError {
+    public synchronized ServerEvent rollDice() throws GeneralError {
         if(state != CardState.ROLL_DICE) {
             throw new GeneralError("Can't roll dice in the state " + this.state);
         }
@@ -158,7 +158,7 @@ public class MeteorShower extends Card implements Serializable {
      * @throws NotEnoughBatteries: not enough batteries to remove were indicated by the plauer
      */
     @Override
-    public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
+    public synchronized ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
         if (state != CardState.ACTIVATE_SHIELDS) {
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
@@ -202,7 +202,7 @@ public class MeteorShower extends Card implements Serializable {
      * @throws NotEnoughBatteries: not enoughBatteries indicated to activate the doubleCannons selected
      */
     @Override
-    public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
+    public synchronized ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
         if (this.state != CardState.ACTIVATE_CANNONS) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
@@ -239,7 +239,7 @@ public class MeteorShower extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent cardEffect() throws GeneralError {
+    public synchronized ServerEvent cardEffect() throws GeneralError {
         System.out.println("Entrato in cardEffect");
 
         if (this.state != CardState.ESECUZIONE) {
