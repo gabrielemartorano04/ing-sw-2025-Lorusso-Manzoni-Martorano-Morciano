@@ -23,18 +23,60 @@ import it.polimi.ingsw.net.events.serverevents.cardevents.FlightStartEvent;
 
 import java.util.*;
 
+/**
+ * visitor that handles all the incoming events from clients after their connection and returns the response
+ * that the server has to send in broadcast or to the specific client
+ */
 public class ClientHandlerVisitor implements VirtualServer {
+
+    /**
+     * number of players in the current game
+     */
     private int numOfPlayers;
+
+    /**
+     * gameController of this game, which is a singleton
+     */
     private GameController gameController;
+
+    /**
+     * current number of clients logged, in order to know when the game can actually start
+     */
     private int numLog;
+
+    /**
+     * game Level of the current game
+     */
     private int gameLevel;
+
+    /**
+     * number of players that have ended the building phase
+     */
     private int endBuilding;
+
+    /**
+     * number of players ready to start the flight phase
+     */
     private int startFlight;
+
+    /**
+     * controller of the cards for the flight phase
+     */
     private CardController cardController;
+
+    /**
+     * state of the old game if players want to load the old game
+     */
     private GameState oldGameState;
+
+    /**
+     * number of players that have withdrawn
+     */
     private int withdrawChoice;
 
-
+    /**
+     * constructor of the class
+     */
     public ClientHandlerVisitor() {
         numLog = 0;
         endBuilding = 0;
@@ -43,27 +85,37 @@ public class ClientHandlerVisitor implements VirtualServer {
         gameLevel=0;
         withdrawChoice=0;
     }
-    //se login event prendo nickname e color, controllo da model e creo evento risposta
 
+    /**
+     * sets the game controller
+     *
+     * @param gameController controller of the game
+     */
     @Override
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
     }
 
-
+    /**
+     * @return number of players in this game
+     */
     public int getNumOfPlayers() {
         return numOfPlayers;
     }
+
+    /**
+     * @return level of this game
+     */
     public int getGameLevel(){return gameLevel;}
 
-
-    //@Override
-    //public void visit(EVENTO CON RISPOSTA SE VUOI CARICARE PARTITA VECCHIA O NO)
-    // se la risposta è si allora manda l'evento con la partita vecchia e setta una variabile nel serverController che dica che si è scelto di ricaricare partita vecchia
-    // se la risposta è no manda FirstConnection
-    // A QUESTO PUNTO LA PARTITA NON ESISTE ANCORA CORRETTAMENTE
-
-
+    /**
+     * Handles the creation of a new game by storing the number of players and game level,
+     * and returns the available colors for the first player.
+     *
+     * @param event  the event containing game setup information
+     * @param client the client requesting the game creation
+     * @return an event with available colors for player selection
+     */
     @Override
     public ServerEvent visit(CreateGameEvent event, Client client) {
         int numPlayers= event.getNumberOfPlayers();
@@ -71,6 +123,164 @@ public class ClientHandlerVisitor implements VirtualServer {
         this.numOfPlayers = numPlayers;
         return new AvailableColorsEvent(EnumSet.allOf(PlayerColors.class), "First Player in the game, start login");
     }
+
+    /**
+     * Handles a login request by validating the player's nickname and color,
+     * adding the player to the game if valid. Also handles the restorage and login
+     * of a player to and old game if players decided to reload an old game
+     *
+     * @param event  the login event containing user credentials
+     * @param client the client attempting to log in
+     * @return a ServerEvent indicating the result (success, error, or game start)
+     */
+    @Override
+    public ServerEvent visit(LoginEvent event, Client client) {
+        String nickname;
+        numLog++;
+        if(numLog< gameController.getGame().getNumPlayers()){
+            nickname = event.getUsername();
+            PlayerColors color = event.getColor();
+            if(!ServerController.getIstance().getOldGame()) {
+                return tryAddNewPlayer(client,nickname,color);
+            }else{
+                return tryAddOldPlayer(client,nickname,color);
+            }
+        }
+        if(numLog== gameController.getGame().getNumPlayers()){
+            nickname = event.getUsername();
+            PlayerColors color=event.getColor();
+
+            return handleLastLogin(event,client,nickname,color);
+        }
+        return new NoAvailableSpaceError();
+    }
+
+    /**
+     * tries to add a player to the old Game
+     *
+     * @param client client to log
+     * @param nickname nickname chosen
+     * @param color color chosen
+     * @return serverEvent to send to client
+     */
+    private ServerEvent tryAddOldPlayer(Client client, String nickname, PlayerColors color){
+        if(gameController.getGame().checkOldPlayers(nickname, color)) {
+            client.setTruckerController(gameController.addOldPlayer(nickname, color));
+            gameController.getGame().removeOldColors(color);
+            gameController.getGame().removeOldNicknames(nickname);
+            ArrayList<Trucker> allTruckers=gameController.getGame().getTruckerList();
+            allTruckers.addAll(gameController.getGame().getTruckerOut());
+            return new PlayerJoinedEvent(nickname, client.getTruckerController().getSpaceShip());
+        }
+        else{
+            numLog--;
+            return new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
+        }
+    }
+
+    /**
+     * tries to add a player to the new Game
+     *
+     * @param client client to log
+     * @param nickname nickname chosen
+     * @param color color chosen
+     * @return serverEvent to send to client
+     */
+    private ServerEvent tryAddNewPlayer(Client client, String nickname, PlayerColors color){
+        try {
+            client.setTruckerController(gameController.tryAddPlayer(nickname, color));
+        } catch (NicknameUsedException e) {
+            numLog--;
+            return new NicknameAlreadyInError(nickname, gameController.getAvailablePlayerColors());
+        } catch (ColorNotAvailable e) {
+            numLog--;
+            return new ColorAlreadyInError(color, gameController.getAvailablePlayerColors());
+        }
+
+        return new PlayerJoinedEvent(nickname, client.getTruckerController().getSpaceShip());
+    }
+
+    /**
+     * handles the last player to the game, if the log is successful the game can start
+     *
+     * @param client client to log
+     * @param nickname nickname chosen
+     * @param color color chosen
+     * @return serverEvent to send to all clients if the log is successful or to this client if
+     *         there were some errors
+     */
+    private ServerEvent handleLastLogin(LoginEvent event, Client client, String nickname, PlayerColors color) {
+        if(!ServerController.getIstance().getOldGame()) {
+            try {
+                client.setTruckerController(gameController.tryAddPlayer(nickname, color));
+            } catch (NicknameUsedException e) {
+                numLog--;
+                return new NicknameAlreadyInError(nickname, gameController.getAvailablePlayerColors());
+            } catch (ColorNotAvailable e) {
+                numLog--;
+                return new ColorAlreadyInError(color, gameController.getAvailablePlayerColors());
+            }
+            ArrayList<String> players = new ArrayList<>();
+            for (Trucker t : gameController.getGame().getTruckerList()) {
+                players.add(t.getNickname());
+            }
+            gameController.getGame().startHourglass();
+            if (gameController.getGame().getGameLevel() == 2) {
+                return new StartBuildingEvent(nickname, client.getTruckerController().getSpaceShip(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondsLeft(), players, gameController.getGame().getGameLevel());
+            } else {
+                return new StartBuildingEvent(nickname, client.getTruckerController().getSpaceShip(), gameController.getGame().getComponents().getComponents(), 0, players, gameController.getGame().getGameLevel());
+            }
+        }else{
+            if(gameController.getGame().checkOldPlayers(event.getUsername(), event.getColor())) {
+                client.setTruckerController(gameController.addOldPlayer(nickname, color));
+                gameController.getGame().removeOldColors(event.getColor());
+                gameController.getGame().removeOldNicknames(event.getUsername());
+                ArrayList<Trucker> allTruckers=gameController.getGame().getTruckerList();
+                allTruckers.addAll(gameController.getGame().getTruckerOut());
+                gameController.getGame().setGameState(oldGameState);
+                gameController.setGameStarted(true);
+                ArrayList<String> players = new ArrayList<>();
+                for (Trucker t : gameController.getGame().getTruckerList()) {
+                    players.add(t.getNickname());
+                }
+
+                return new ResumeGameEvent(gameController.getGame().getComponents().getComponents(), nickname, allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), gameController.getGame().getTrack(), players);
+            }else{
+                numLog--;
+                return new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
+            }
+        }
+    }
+
+
+    @Override
+    public ServerEvent visit(ChooseToResume event){
+        ServerController.setOldGame(event.getChooseToResume());
+        if(event.getChooseToResume()){
+            gameController = GamePersistence.loadGame();
+            if (gameController == null) {
+                return new GenericErrorEvent("gameController nullo, impossibile ripristinare partita!", true);
+            }
+            if(gameController.getGame().getGameState().equals(GameState.FLIGHT)){
+                cardController=gameController.getCardController();
+            }
+            oldGameState=gameController.getGame().getGameState();
+            gameController.getGame().setGameState(GameState.SETUP);
+            Game.setIstance(gameController.getGame());
+            gameController.setGameStarted(false);
+            gameController.getGame().createOldColors();
+            gameController.getGame().createOldNicknames();
+            for(int i = 0; i < gameController.getGame().getOldColors().size(); i++) {
+                System.out.println("nickname: " + gameController.getGame().getOldNicknames().get(i) + " color: " + gameController.getGame().getOldColors().get(i));
+            }
+            return new AvailablePlayersEvent(gameController.getGame().getOldColors(), gameController.getGame().getOldNicknames());
+        }else{
+            GamePersistence.deleteSave();
+            return new FirstConnectionEvent("First player in the game, choose the total number of players of the Game");
+        }
+
+    }
+
 
     @Override
     public ServerEvent visit(DiscardTileEvent event, Client client) {
@@ -158,89 +368,6 @@ public class ClientHandlerVisitor implements VirtualServer {
         }  catch (InvalidCoordinates e) {
             return new InvalidCoordinatesError(client.getTruckerController().getNickname());
         }
-    }
-
-
-    @Override
-    public ServerEvent visit(LoginEvent event, Client client) {
-        String nickname;
-        numLog++;
-        if(numLog< gameController.getGame().getNumPlayers()){
-            nickname = event.getUsername();
-            PlayerColors color = event.getColor();
-            if(!ServerController.getIstance().getOldGame()) {
-                try {
-                    client.setTruckerController(gameController.tryAddPlayer(nickname, color));
-                } catch (NicknameUsedException e) {
-                    numLog--;
-                    return new NicknameAlreadyInError(nickname, gameController.getAvailablePlayerColors());
-                } catch (ColorNotAvailable e) {
-                    numLog--;
-                    return new ColorAlreadyInError(color, gameController.getAvailablePlayerColors());
-                }
-
-                return new PlayerJoinedEvent(nickname, client.getTruckerController().getSpaceShip());
-            }else{
-                if(gameController.getGame().checkOldPlayers(event.getUsername(), event.getColor())) {
-                    client.setTruckerController(gameController.addOldPlayer(nickname, color));
-                    gameController.getGame().removeOldColors(event.getColor());
-                    gameController.getGame().removeOldNicknames(event.getUsername());
-                    ArrayList<Trucker> allTruckers=gameController.getGame().getTruckerList();
-                    allTruckers.addAll(gameController.getGame().getTruckerOut());
-                    return new PlayerJoinedEvent(nickname, client.getTruckerController().getSpaceShip());
-                }
-                else{
-                    numLog--;
-                    return new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
-                }
-            }
-        }
-        if(numLog== gameController.getGame().getNumPlayers()){
-            nickname = event.getUsername();
-            PlayerColors color=event.getColor();
-            if(!ServerController.getIstance().getOldGame()) {
-                try {
-                    client.setTruckerController(gameController.tryAddPlayer(nickname, color));
-                } catch (NicknameUsedException e) {
-                    numLog--;
-                    return new NicknameAlreadyInError(nickname, gameController.getAvailablePlayerColors());
-                } catch (ColorNotAvailable e) {
-                    numLog--;
-                    return new ColorAlreadyInError(color, gameController.getAvailablePlayerColors());
-                }
-                ArrayList<String> players = new ArrayList<>();
-                for (Trucker t : gameController.getGame().getTruckerList()) {
-                    players.add(t.getNickname());
-                }
-                gameController.getGame().startHourglass();
-                if (gameController.getGame().getGameLevel() == 2) {
-                    return new StartBuildingEvent(nickname, client.getTruckerController().getSpaceShip(), gameController.getGame().getComponents().getComponents(), gameController.getGame().getHourglass().getSecondsLeft(), players, gameController.getGame().getGameLevel());
-                } else {
-                    return new StartBuildingEvent(nickname, client.getTruckerController().getSpaceShip(), gameController.getGame().getComponents().getComponents(), 0, players, gameController.getGame().getGameLevel());
-                }
-            }else{
-                if(gameController.getGame().checkOldPlayers(event.getUsername(), event.getColor())) {
-                    client.setTruckerController(gameController.addOldPlayer(nickname, color));
-                    gameController.getGame().removeOldColors(event.getColor());
-                    gameController.getGame().removeOldNicknames(event.getUsername());
-                    ArrayList<Trucker> allTruckers=gameController.getGame().getTruckerList();
-                    allTruckers.addAll(gameController.getGame().getTruckerOut());
-                    gameController.getGame().setGameState(oldGameState);
-                    gameController.setGameStarted(true);
-                    System.out.println("sto mandando resume game");
-                    ArrayList<String> players = new ArrayList<>();
-                    for (Trucker t : gameController.getGame().getTruckerList()) {
-                        players.add(t.getNickname());
-                    }
-
-                    return new ResumeGameEvent(gameController.getGame().getComponents().getComponents(), nickname, allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), gameController.getGame().getTrack(), players);
-                }else{
-                    numLog--;
-                    return new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
-                }
-            }
-        }
-        return new NoAvailableSpaceError();
     }
 
     @Override
@@ -510,34 +637,6 @@ public class ClientHandlerVisitor implements VirtualServer {
     public ServerEvent visit(PongEvent event, Client client) {
         client.updateLastPong();
         return null;
-    }
-
-    @Override
-    public ServerEvent visit(ChooseToResume event){
-        ServerController.setOldGame(event.getChooseToResume());
-        if(event.getChooseToResume()){
-            gameController = GamePersistence.loadGame();
-            if (gameController == null) {
-                return new GenericErrorEvent("gameController nullo, impossibile ripristinare partita!", true);
-            }
-            if(gameController.getGame().getGameState().equals(GameState.FLIGHT)){
-                cardController=gameController.getCardController();
-            }
-            oldGameState=gameController.getGame().getGameState();
-            gameController.getGame().setGameState(GameState.SETUP);
-            Game.setIstance(gameController.getGame());
-            gameController.setGameStarted(false);
-            gameController.getGame().createOldColors();
-            gameController.getGame().createOldNicknames();
-            for(int i = 0; i < gameController.getGame().getOldColors().size(); i++) {
-                System.out.println("nickname: " + gameController.getGame().getOldNicknames().get(i) + " color: " + gameController.getGame().getOldColors().get(i));
-            }
-            return new AvailablePlayersEvent(gameController.getGame().getOldColors(), gameController.getGame().getOldNicknames());
-        }else{
-            GamePersistence.deleteSave();
-            return new FirstConnectionEvent("First player in the game, choose the total number of players of the Game");
-        }
-
     }
 
     @Override
