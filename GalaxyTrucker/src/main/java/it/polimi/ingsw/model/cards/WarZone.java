@@ -223,11 +223,11 @@ public class WarZone extends Card implements Serializable {
             }
             case CANNONS -> {
                 state = CardState.ACTIVATE_CANNONS;
-                return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, "Activate double cannons?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+                return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), Game.getIstance().getTruckerList());
             }
             case ENGINES -> {
                 state = CardState.ACTIVATE_ENGINES;
-                return new BooleanDecision(true, ParserState.ACTIVATE_ENGINES, "Activate double engines?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+                return new BooleanDecision(true, ParserState.ACTIVATE_ENGINES, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), Game.getIstance().getTruckerList());
             }
             default ->
                 throw new GeneralError("Unknown condition " + currCondition);
@@ -273,7 +273,7 @@ public class WarZone extends Card implements Serializable {
             return findWeakestTrucker();
         }
         indexOfCurrTrucker++;
-        return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, "vuoi attivare un Cannone Doppio?", Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname());
+        return new BooleanDecision(true, ParserState.ACTIVATE_CANNONS, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(),Game.getIstance().getTruckerList());
     }
 
 
@@ -314,7 +314,7 @@ public class WarZone extends Card implements Serializable {
             return findWeakestTrucker();
         }
         indexOfCurrTrucker++;
-        return new BooleanDecision(true, ParserState.ACTIVATE_ENGINES, "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrTrucker).getNickname());
+        return new BooleanDecision(true, ParserState.ACTIVATE_ENGINES, Game.getIstance().getTruckerList().get(indexOfCurrTrucker).getNickname(), Game.getIstance().getTruckerList());
     }
 
 
@@ -372,7 +372,7 @@ public class WarZone extends Card implements Serializable {
                 for (int i = 0; i < numGoodCurrType; i++) {
                     goodsToRemove.add(listOfGoods.getFirst());
                 }
-                return new RemoveGoods(true, weakestTrucker.getNickname(), weakestTrucker.getSpaceShip(),goodsToRemove);
+                return new RemoveGoods(true, weakestTrucker.getNickname(), weakestTrucker.getSpaceShip(),goodsToRemove, Game.getIstance().getTruckerList());
             }
             colorOfCurrGoodToRemove--;
         }
@@ -383,7 +383,7 @@ public class WarZone extends Card implements Serializable {
                 return cardEffect();
             }else{
                 this.state = CardState.REMOVE_BATTERIES;
-                return new RemoveBatteries(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(), goodsToLose);
+                return new RemoveBatteries(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(), goodsToLose, Game.getIstance().getTruckerList());
             }
         }else{
             throw new GeneralError("RemoveGoods not working correctly");
@@ -423,7 +423,7 @@ public class WarZone extends Card implements Serializable {
         }
         else {
             state = CardState.REMOVE_BATTERIES;
-            return new RemoveBatteries(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(), goodsToLose);
+            return new RemoveBatteries(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(), goodsToLose, Game.getIstance().getTruckerList());
         }
     }
 
@@ -532,7 +532,7 @@ public class WarZone extends Card implements Serializable {
             return cardEffect();
         }else{
             state=CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex,shoot,null, roll, weakestTrucker.getNickname(), true, "smallmeteor");
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex,shoot,null, roll, weakestTrucker.getNickname(), true, "smallmeteor", Game.getIstance().getTruckerList());
         }
     }
 
@@ -620,14 +620,14 @@ public class WarZone extends Card implements Serializable {
                 return cardEffect();
             case GET_SHOT:
                 state = CardState.ROLL_DICE;
-                return new BooleanDecision(true, ParserState.ROLL_DICE, "Roll the dice", weakestTrucker.getNickname());
+                return new BooleanDecision(true, ParserState.ROLL_DICE, weakestTrucker.getNickname(), Game.getIstance().getTruckerList());
             case LOSE_GOODS:
                 state = CardState.REMOVE_GOODS;
                 return removeGoods();
             case LOSE_HUMANS:
                 state = CardState.HUMANSTOREMOVE;
                 numOfHumanToRemove = penalties.get(currCondition).getValue();
-                return new HumanCoordinates(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(),null,"");
+                return new HumanCoordinates(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(),Game.getIstance().getTruckerList());
             default:
                 throw new GeneralError("Unknown TypeOfEffect");
         }
@@ -671,7 +671,7 @@ public class WarZone extends Card implements Serializable {
                     }else{
                         currCondition = conditionsOrder.get(currConditionIndex);
                         state = CardState.WARZONE;
-                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,Game.getIstance().getTrack(), null, Game.getIstance().endTurn());
+                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,Game.getIstance().getTrack(), Game.getIstance().endTurn(), Game.getIstance().getTruckerList());
                     }
                 }
 
@@ -685,7 +685,7 @@ public class WarZone extends Card implements Serializable {
                     }else{
                         currCondition = conditionsOrder.get(currConditionIndex);
                         state = CardState.WARZONE;
-                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null,weakestTrucker, Game.getIstance().endTurn());
+                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null, Game.getIstance().endTurn(), Game.getIstance().getTruckerList());
                     }
                 }
 
@@ -698,7 +698,7 @@ public class WarZone extends Card implements Serializable {
                     }else{
                         currCondition = conditionsOrder.get(currConditionIndex);
                         state = CardState.WARZONE;
-                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null,weakestTrucker, Game.getIstance().endTurn());
+                        return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition,null, Game.getIstance().endTurn(), Game.getIstance().getTruckerList());
                     }
                 }
 
@@ -726,11 +726,11 @@ public class WarZone extends Card implements Serializable {
                         }else{
                             currCondition = conditionsOrder.get(currConditionIndex);
                             state = CardState.WARZONE;
-                            return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition, null,weakestTrucker, Game.getIstance().endTurn());
+                            return new CurrentCondition(true, ParserState.WARZONE, Game.getIstance().getTruckerList().getFirst().getNickname(), currCondition, null, Game.getIstance().endTurn(), Game.getIstance().getTruckerList());
                         }
                     }else{
                         state = CardState.ROLL_DICE;
-                        return new BooleanDecision(true, ParserState.ROLL_DICE, "Roll the dice", this.weakestTrucker.getNickname());
+                        return new BooleanDecision(true, ParserState.ROLL_DICE, this.weakestTrucker.getNickname(), Game.getIstance().getTruckerList());
                     }
                 }
                 default -> throw new GeneralError("Unknown TypeOfEffect");

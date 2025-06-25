@@ -6,7 +6,7 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the roll of the dices
+ * Represents a client event triggered when a player rolls dice during gameplay
  */
 public class RollDiceEvent extends ClientEvent {
 

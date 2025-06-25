@@ -5,27 +5,44 @@ import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import java.util.Map;
 
 /**
- * Server to client
+ * Represents an event that signals the end of a game
  */
 public class EndGameEvent extends ServerEvent {
-    private String message;
-    private Map<String, Integer> scores;
 
+    /**
+     * Map containing the final scores of the game participants
+     */
+    private final Map<String, Integer> scores;
+
+    /**
+     * Event constructor
+     * @param scores of the participants
+     */
     public EndGameEvent(Map<String, Integer> scores) {
         super(true);
-        message = "The game ended";
         this.scores = scores;
     }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
+    /**
+     * @return the map of the final scores of the game participants
+     */
     public Map<String, Integer> getScores() {
         return scores;
     }
 
+
+    /**
+     * @return the message associated with the end of the game
+     */
+    @Override
+    public String getMessage() {
+        return "The game ended";
+    }
+
+    /**
+     * This method calls the client method that manages this event reception
+     * @param visitor client class that manages server events
+     */
     @Override
     public void call (ServerEventHandlerVisitor visitor) {
         visitor.visit(this);

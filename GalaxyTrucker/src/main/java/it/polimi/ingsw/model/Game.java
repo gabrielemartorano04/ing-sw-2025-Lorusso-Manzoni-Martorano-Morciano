@@ -489,12 +489,12 @@ public class Game implements Serializable {
             for(int j=0; j<numPlayers; j++){
                 scores[j]=0;
             }
+            return scores;
         }
-        int i=0;
-        for(i=0; i<numPlayers; i++){
+        for(int i=0; i<numPlayers; i++){
             scores[i]=0;
         }
-        i=0;
+        int i=0;
         ArrayList<Goods> goodsList;
         for(Trucker t: truckers) {
             if(t.getCosmicCredit()<t.getSpaceShip().getLost()) {
@@ -529,11 +529,11 @@ public class Game implements Serializable {
      */
     public boolean bestSpaceShip(Trucker trucker) {
         for(Trucker t: truckers) {
-            if (trucker.getSpaceShip().countExposedConnectors() > t.getSpaceShip().countExposedConnectors()){
-                return false;
+            if (trucker!=t && trucker.getSpaceShip().countExposedConnectors() >= t.getSpaceShip().countExposedConnectors()){
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**

@@ -6,14 +6,14 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the decision of landing on an abandoned place
+ * Represents an event sent from the client to the server to indicate a trucker's decision to land
  */
 public class TruckerLandingEvent extends ClientEvent {
 
     /**
      * Decision about landing
      */
-    private boolean landing;
+    private final boolean landing;
 
     /**
      * Event constructor

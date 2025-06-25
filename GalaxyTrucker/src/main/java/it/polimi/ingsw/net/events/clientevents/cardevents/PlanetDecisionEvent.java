@@ -6,19 +6,20 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the decision of the card "Planets"
+ * Represents an event sent from a client to the server to indicate a decision
+ * regarding a chosen planet from a list of planets
  */
 public class PlanetDecisionEvent extends ClientEvent {
 
     /**
      * index of the planet from the list of the card
      */
-    private int index;
+    private final int index;
 
     /**
      * Nickname of the player who has to decide
      */
-    private String nickname;
+    private final String nickname;
 
     /**
      * Event constructor

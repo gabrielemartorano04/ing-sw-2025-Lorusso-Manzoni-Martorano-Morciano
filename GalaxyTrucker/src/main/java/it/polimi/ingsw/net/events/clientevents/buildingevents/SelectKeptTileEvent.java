@@ -6,14 +6,14 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the selection of a tile from the kept tiles
+ * Represents a client event where a specific tile from the list of kept components is selected.
  */
 public class SelectKeptTileEvent extends ClientEvent {
 
     /**
      * Index of the tile in the list of kept components
      */
-    private int index;
+    private final int index;
 
     /**
      * Event constructor

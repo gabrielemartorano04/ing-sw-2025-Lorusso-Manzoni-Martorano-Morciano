@@ -119,7 +119,7 @@ public class OpenSpace extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new BooleanDecision(true, ParserState.ACTIVATE_ENGINES, "Choose the position of the double engines to activate", Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getNickname());
+        return new BooleanDecision(true, ParserState.ACTIVATE_ENGINES, Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getNickname(), Game.getIstance().getTruckerList());
     }
 
 

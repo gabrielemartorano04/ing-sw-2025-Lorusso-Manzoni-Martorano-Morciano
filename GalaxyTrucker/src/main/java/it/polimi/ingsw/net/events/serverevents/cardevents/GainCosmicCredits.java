@@ -1,14 +1,17 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.view.ParserState;
+
+import java.util.ArrayList;
 
 public class GainCosmicCredits extends CardEvent{
     private final int cosmicCredits;
     private final int daysLost;
 
     public GainCosmicCredits(boolean forAll, String nickname, int cosmicCredits, int daysLost) {
-        super(forAll, ParserState.COSMIC_CREDITS, nickname);
+        super(forAll, ParserState.COSMIC_CREDITS, nickname,null);
         this.cosmicCredits = cosmicCredits;
         this.daysLost = daysLost;
     }

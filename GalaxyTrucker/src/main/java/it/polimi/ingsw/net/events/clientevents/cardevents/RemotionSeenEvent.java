@@ -6,7 +6,7 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the confirmation about a remotion
+ * Represents a specific event sent from a client to the server to signal that a remotion has been seen
  */
 public class RemotionSeenEvent extends ClientEvent {
 

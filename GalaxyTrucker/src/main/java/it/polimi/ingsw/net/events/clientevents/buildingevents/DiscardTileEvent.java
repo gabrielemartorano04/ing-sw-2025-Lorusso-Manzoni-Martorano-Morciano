@@ -7,14 +7,14 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for tiles discard during building phase
+ * Event sent for discarding a tile during the building phase
  */
 public class DiscardTileEvent extends ClientEvent {
 
     /**
-     * index of the tile in the list of available components
+     * Index of the tile in the list of available components
      */
-    private int index;
+    private final int index;
 
     /**
      * Event constructor

@@ -95,7 +95,7 @@ class OpenSpaceTest {
         if(openSpace.getIndexOfCurrentTrucker() == Game.getIstance().getTruckerList().size()){
             CardFinished e = (CardFinished) event;
             assertTrue(e.isForAll());
-            assertEquals(Game.getIstance().getTruckerList(), e.getTruckersList());
+            assertEquals(Game.getIstance().getTruckerList(), e.getTruckers());
             assertEquals(Game.getIstance().getTrack(), e.getTrack());
         }else{
             BooleanDecision e= (BooleanDecision) event;
@@ -122,7 +122,7 @@ class OpenSpaceTest {
         if(openSpace.getIndexOfCurrentTrucker() == Game.getIstance().getTruckerList().size()){
             CardFinished e = (CardFinished) event;
             assertTrue(e.isForAll());
-            assertEquals(Game.getIstance().getTruckerList(), e.getTruckersList());
+            assertEquals(Game.getIstance().getTruckerList(), e.getTruckers());
             assertEquals(Game.getIstance().getTrack(), e.getTrack());
         }else{
             BooleanDecision e= (BooleanDecision) event;
@@ -144,7 +144,7 @@ class OpenSpaceTest {
         }
         CardFinished e = (CardFinished) event;
         assertTrue(e.isForAll());
-        assertEquals(Game.getIstance().getTruckerList(), e.getTruckersList());
+        assertEquals(Game.getIstance().getTruckerList(), e.getTruckers());
         assertEquals(Game.getIstance().getTrack(), e.getTrack());
     }
 

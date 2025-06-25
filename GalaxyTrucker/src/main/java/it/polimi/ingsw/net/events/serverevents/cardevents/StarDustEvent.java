@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class StarDustEvent extends CardEvent {
 
-    private final ArrayList<Trucker> truckers;
     private final String cardDescription;
     private final String cardName;
     private final ArrayList<Trucker> truckersRemoved;
@@ -18,8 +17,7 @@ public class StarDustEvent extends CardEvent {
     private final Card card;
 
     public StarDustEvent (String cardName, String cardDescription, boolean forAll, ArrayList<Trucker> turckerList, String nickname, ArrayList<Trucker> truckersRemoved, Map<String, Integer> track, Card card) {
-        super(forAll, ParserState.DRAW_CARD, nickname);
-        this.truckers = turckerList;
+        super(forAll, ParserState.DRAW_CARD, nickname,turckerList);
         this.cardName = cardName;
         this.cardDescription = cardDescription;
         this.truckersRemoved = truckersRemoved;
@@ -40,9 +38,6 @@ public class StarDustEvent extends CardEvent {
         return cardName;
     }
 
-    public ArrayList<Trucker> getTruckers() {
-        return truckers;
-    }
 
     public ArrayList<Trucker> getTruckersRemoved(){
         return truckersRemoved;

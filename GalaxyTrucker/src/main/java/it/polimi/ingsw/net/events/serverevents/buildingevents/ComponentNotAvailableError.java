@@ -4,7 +4,8 @@ import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Error event sent when the selected component is not available
+ * The ComponentNotAvailableError class represents a server-side event triggered when
+ * a specific component becomes unavailable.
  */
 public class ComponentNotAvailableError extends ServerEvent {
 

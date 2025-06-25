@@ -6,14 +6,14 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the initial choice to resume an old game
+ * Represents an event in which a client decides whether to resume a previously saved game
  */
 public class ChooseToResume extends ClientEvent {
 
     /**
      * Decision to resume an old game
      */
-    private boolean chooseToResume;
+    private final boolean chooseToResume;
 
     /**
      * Event constructor

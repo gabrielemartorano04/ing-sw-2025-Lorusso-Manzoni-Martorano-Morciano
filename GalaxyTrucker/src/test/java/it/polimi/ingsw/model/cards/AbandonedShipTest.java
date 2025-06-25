@@ -99,7 +99,7 @@ class AbandonedShipTest {
                 }
 
                 assertTrue(event.isForAll());
-                assertEquals(Game.getIstance().getTruckerList(), event.getTruckersList());
+                assertEquals(Game.getIstance().getTruckerList(), event.getTruckers());
                 assertEquals(track, event.getTrack());
             }catch (Exception e){
                 fail();
@@ -151,7 +151,7 @@ class AbandonedShipTest {
         }
 
         assertTrue(event.isForAll());
-        assertEquals(Game.getIstance().getTruckerList(), event.getTruckersList());
+        assertEquals(Game.getIstance().getTruckerList(), event.getTruckers());
         assertEquals(track, event.getTrack());
     }
 
@@ -196,7 +196,7 @@ class AbandonedShipTest {
         }
 
         assertTrue(event.isForAll());
-        assertEquals(Game.getIstance().getTruckerList(), event.getTruckersList());
+        assertEquals(Game.getIstance().getTruckerList(), event.getTruckers());
         assertEquals(track, event.getTrack());
 
     }
@@ -230,7 +230,7 @@ class AbandonedShipTest {
         }
 
         assertTrue(event.isForAll());
-        assertEquals(Game.getIstance().getTruckerList(), event.getTruckersList());
+        assertEquals(Game.getIstance().getTruckerList(), event.getTruckers());
         assertEquals(track, event.getTrack());
 
     }

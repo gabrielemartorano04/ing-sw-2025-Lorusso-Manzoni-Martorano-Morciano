@@ -11,14 +11,12 @@ import java.util.Map;
 public class CurrentCondition extends CardEvent{
     private final Condition condition;
     private final Map<String, Integer> track;
-    private final Trucker weakestTrucker;
     private final ArrayList<Trucker> truckersRemoved;
 
-    public CurrentCondition(boolean forAll, ParserState parserState, String nickname, Condition condition, Map<String, Integer> track, Trucker weakestTrucker, ArrayList<Trucker> deadTruckersName) {
-        super(forAll, parserState, nickname);
+    public CurrentCondition(boolean forAll, ParserState parserState, String nickname, Condition condition, Map<String, Integer> track, ArrayList<Trucker> deadTruckersName, ArrayList<Trucker> truckers) {
+        super(forAll, parserState, nickname, truckers);
         this.condition = condition;
         this.track=track;
-        this.weakestTrucker =weakestTrucker;
         this.truckersRemoved=deadTruckersName;
     }
 
@@ -32,9 +30,6 @@ public class CurrentCondition extends CardEvent{
 
     public ArrayList<Trucker> getTruckersRemoved(){
         return this.truckersRemoved;
-    }
-    public Trucker getWeakestTrucker() {
-        return weakestTrucker;
     }
 
     @Override

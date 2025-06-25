@@ -6,7 +6,7 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent to the first player for the creation of a new game
+ * Represents an event triggered by a client to request the creation of a new game
  */
 public class CreateGameEvent extends ClientEvent {
 
@@ -59,7 +59,7 @@ public class CreateGameEvent extends ClientEvent {
     @Override
     public ServerEvent call(VirtualServer visitor, Client client) {
         return visitor.visit(this, client);
-    };
+    }
 
 }
 

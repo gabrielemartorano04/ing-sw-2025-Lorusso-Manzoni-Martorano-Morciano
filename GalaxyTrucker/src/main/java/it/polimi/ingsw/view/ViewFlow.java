@@ -23,44 +23,65 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ViewFlow implements EventReceiver {
+
+    /**
+     * Socket Sender if the client has chosen SOCKET
+     */
     private final ClientEventSender sender;
+
+    /**
+     * Rmi client if the client has chosen RMI
+     */
     private RemoteClientHandler rmiClient;
+
+    /**
+     * Reader of client's input if he chose TUI
+     */
     private final InputReader inputReader;
+
+    /**
+     * Input parser of input coming from both GUI and TUI, used for initial phase and building phase
+     */
     private final InputParser inputParser;
+
+    /**
+     * Input parser of input coming from both GUI and TUI, used for the flight phase
+     */
     private final InputParserFlight inputParserFlight;
+
+    /**
+     * User interface that represents both GUI and TUI
+     */
     private final UI ui;
-    private String nickname;
-    private SpaceShip ship;
-    private int position;
-    private int batteryCount;
-    private int enginePower;
-    private float cannonPower;
-    private int humanCount;
-    private Map<String, Integer> goodsByColor;
-    private Map<String, Integer> track;
+
+    /**
+     * Visitor that handles all the incoming events from the Server to this client
+     */
     private final ServerEventHandlerVisitor serverEventVisitor;
-    private Component selectedComponent;
-    private int selectedComponentIndex; // is equal -1 if selectedComponent is null
-    private final ArrayList<Component> availableComponents;
+
+    /**
+     * Represents the running status of the view
+     */
     private volatile boolean running;
-    private final ArrayList<Component> keptComponent= new ArrayList<>();
-    private ViewState viewState;
-    private final TimerDisplay timerDisplay;
-    private boolean isFromKept;
-    private boolean nameAlreadySet;
-    private boolean end;
-    private boolean startFlight;
-    private boolean startFlightForAll;
-    private int stackSelected;
-    private boolean out;
-    private int level;
+
+    /**
+     * States if this client is already logged
+     */
     private boolean alreadyLogged;
-    private int credits;
-    private boolean firstLinked;
-    private int cardsToGo;
 
-    private int numOfBatteriesToRemove;
+    /**
+     * States if the nickname of the current class has already been setted
+     */
+    private boolean nameAlreadySet;
 
+    /**
+     * Nickname associated to this view chosen by the client
+     */
+    private String nickname;
+
+    /**
+     * States in which the view can be
+     */
     public enum ViewState {
         FIRST,
         CHOOSE_OLD,
@@ -70,6 +91,110 @@ public class ViewFlow implements EventReceiver {
         FLIGTH,
         END
     }
+
+    /**
+     * Current viewState
+     */
+    private ViewState viewState;
+
+    /**
+     * Boolean value that is true if the building phase has ended
+     */
+    private boolean endBuildingPhase;
+
+    /**
+     * Boolean value that is true if this client is ready for the flight phase
+     */
+    private boolean startFlight;
+
+    /**
+     * Boolean value that is true if all clients are in the flight phase and therefore the flight phase can start
+     */
+    private boolean startFlightForAll;
+
+    /**
+     * Timer associated to the hourglass
+     */
+    private final TimerDisplay timerDisplay;
+
+    /**
+     * States if the client has been eliminated
+     */
+    private boolean out;
+
+    /**
+     * Level of the game the client is in
+     */
+    private int level;
+
+    /**
+     * Number of flight days this player has flown
+     */
+    private int position;
+
+    /**
+     * Track positions of all players in the game updated to the last change
+     */
+    private Map<String, Integer> track;
+
+    /**
+     * Current number of batteries the client has to remove if he has to
+     */
+    private int numOfBatteriesToRemove;
+
+    /**
+     * Number of cards to draw in the flight scene
+     */
+    private int cardsToGo;
+
+    /**
+     * True if the client has linked at least one component to his/her ship
+     */
+    private boolean firstLinked;
+
+    /**
+     * Current number of cosmic credits the client has
+     */
+    private int credits;
+
+    /**
+     * True if the client has currently selected a stack
+     */
+    private int stackSelected;
+
+    /**
+     * List of the available components for the building phase always updated for all clients
+     */
+    private final ArrayList<Component> availableComponents;
+
+    /**
+     * Current component selected by this client, null if he/she hasn't selected a component
+     */
+    private Component selectedComponent;
+
+    /**
+     * Index of the selected Component within the available Components list, equals to -1 if selectedComponent is null
+     */
+    private int selectedComponentIndex;
+
+    /**
+     * List of kept components of this client
+     */
+    private final ArrayList<Component> keptComponent= new ArrayList<>();
+
+    /**
+     * True if selectedComponent comes from the keptComponents list, false if it comes from the available Components
+     */
+    private boolean isFromKept;
+
+    /**
+     * Ship of this client always updated
+     */
+    private SpaceShip ship;
+
+    private Map<String, Integer> goodsByColor;
+
+
 
     public ViewFlow(ClientEventSender sender, boolean useGui) {
         this.sender = sender;
@@ -85,7 +210,7 @@ public class ViewFlow implements EventReceiver {
         this.selectedComponentIndex = -1;
         this.isFromKept = false;
         this.nameAlreadySet = false;
-        this.end = false;
+        this.endBuildingPhase = false;
         this.stackSelected=-1;
         this.ship = new SpaceShip();
         this.goodsByColor = new HashMap<>(){
@@ -175,7 +300,7 @@ public class ViewFlow implements EventReceiver {
                 }
             }
             case BULDING-> {
-                if (!this.end) {
+                if (!this.endBuildingPhase) {
                     event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected,firstLinked);
                 }
                 else {
@@ -253,44 +378,8 @@ public class ViewFlow implements EventReceiver {
         this.position = position;
     }
 
-//    public int getBatteryCount() {
-//        return batteryCount;
-//    }
-
-    public void setBatteryCount(int batteryCount) {
-        this.batteryCount = batteryCount;
-    }
-
-//    public int getEnginePower() {
-//        return enginePower;
-//    }
-
-    public void setEnginePower(int enginePower) {
-        this.enginePower = enginePower;
-    }
-
-//    public int getCannonPower() {
-//        return cannonPower;
-//    }
-
-    public void setCannonPower(float cannonPower) {
-        this.cannonPower = cannonPower;
-    }
-
-//    public int getHumanCount() {
-//        return humanCount;
-//    }
-
-    public void setHumanCount(int humanCount) {
-        this.humanCount = humanCount;
-    }
-
-    public void setGoodsByColor(Map<String, Integer> goodsByColor) {
-        this.goodsByColor = goodsByColor;
-    }
-
     public void setEnd() {
-        this.end = true;
+        this.endBuildingPhase = true;
     }
 
     public void setNumOfBatteriesToRemove(int numOfBatteriesToRemove) {
@@ -345,6 +434,7 @@ public class ViewFlow implements EventReceiver {
     }
 
     public Map<String, Integer> getGoodsByColor() {
+        this.goodsByColor = ship.getGoodsByColor();
         return goodsByColor;
     }
 
@@ -425,7 +515,8 @@ public class ViewFlow implements EventReceiver {
     public void setOut() {
         this.out = true;
     }
-    public boolean getOut() {
+
+    public boolean isOut() {
         return out;
     }
 
@@ -441,16 +532,16 @@ public class ViewFlow implements EventReceiver {
     }
 
     public int getBatteryCount(){
-        return batteryCount;
+        return ship.getNumBatteries();
     }
     public int getEnginePower(){
-        return enginePower;
+        return ship.getTotalEnginePower();
     }
     public float getCannonPower(){
-        return cannonPower;
+        return ship.getTotalCannonPower();
     }
     public int getHumanCount(){
-        return humanCount;
+        return ship.getNumCrew();
     }
 
     public void respondToPing() {

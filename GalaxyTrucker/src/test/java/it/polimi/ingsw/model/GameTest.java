@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.GeneralError;
+import it.polimi.ingsw.exceptions.InvalidCoordinates;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,13 @@ class GameTest {
     void setUp() {
         game1=new Game(2,0);
         game2=new Game(2,2);
+    }
+
+    @Test
+    void setupGame(){
+        game1.setupGame();
+        assertNotNull(game1.viewStacks());
+        assertNotNull(game1.drawCard());
     }
 
     @Test
@@ -48,11 +56,6 @@ class GameTest {
     }
 
     @Test
-    void setAndGetGameState() {
-    }
-
-
-    @Test
     void getBank() {
         assertNotNull(game1.getBank());
         assertNotNull(game2.getBank());
@@ -62,6 +65,8 @@ class GameTest {
     void sortTruckers() {
         game1.addTrucker(new Trucker("frenk",PlayerColors.BLUE));
         game1.addTrucker(new Trucker("manzo",PlayerColors.RED));
+        game1.setGameState(GameState.FLIGHT);
+        assertThrows(IllegalStateException.class, () ->         game1.addTrucker(new Trucker("manzo",PlayerColors.RED)));
         assertEquals("frenk", game1.getTruckerList().get(0).getNickname());
         assertEquals("manzo", game1.getTruckerList().get(1).getNickname());
         game1.getTrucker(0).setPosition(3);
@@ -144,6 +149,7 @@ class GameTest {
         assertEquals(game1.getTruckerList().size(),2);
     }
 
+
     @Test
     void moveForward() {
         Trucker trucker1=new Trucker("frenk",PlayerColors.BLUE);
@@ -174,39 +180,6 @@ class GameTest {
         assertEquals(2,game1.getGameLevel());
         game2.setLevel(0);
         assertEquals(0,game2.getGameLevel());
-    }
-
-    @Test
-    void computeScores() {
-
-    }
-
-    @Test
-    void bestSpaceShip() {
-    }
-
-    @Test
-    void showAvailableColors() {
-    }
-
-    @Test
-    void showUsedColors() {
-    }
-
-    @Test
-    void isNicknameTaken() {
-    }
-
-    @Test
-    void isColorTaken() {
-    }
-
-    @Test
-    void addTrucker() {
-    }
-
-    @Test
-    void setupGame() {
     }
 
     @Test
@@ -241,14 +214,95 @@ class GameTest {
     }
 
     @Test
-    void endTurn() {
+    void setAndGetGameState(){
+        game1.setGameState(GameState.FLIGHT);
+        assertEquals(GameState.FLIGHT,game1.getGameState());
     }
 
     @Test
-    void turnHourglass() {
+    void endTurnAndGetTruckersOut(){
+        Trucker trucker=new Trucker("frenk",PlayerColors.RED);
+        game1.addTrucker(trucker);
+        game1.endTurn();
+        assertFalse(game1.getTruckerOut().isEmpty());
     }
 
     @Test
-    void getTruckerOut() {
+    void oldGame(){
+        Trucker trucker=new Trucker("frenk",PlayerColors.RED);
+        game1.addTrucker(trucker);
+
+        game1.createOldNicknames();
+        game1.createOldColors();
+
+        assertTrue(game1.checkOldPlayers("frenk",PlayerColors.RED));
+        assertFalse(game1.checkOldPlayers("manzo",PlayerColors.BLUE));
+
+        assertFalse(game1.getOldColors().isEmpty());
+        assertFalse(game1.getOldNicknames().isEmpty());
+        game1.removeOldColors(PlayerColors.RED);
+        game1.removeOldNicknames("frenk");
+
+        assertTrue(game1.getOldColors().isEmpty());
+        assertTrue(game1.getOldNicknames().isEmpty());
     }
+
+    @Test
+    void computeScores(){
+        Trucker trucker1=new Trucker("frenk",PlayerColors.BLUE);
+        Trucker trucker2=new Trucker("manzo",PlayerColors.RED);
+        game1.addTrucker(trucker1);
+        game1.addTrucker(trucker2);
+
+        game1.setGameState(GameState.BUILDING);
+        assertEquals(0,game1.computeScores()[0]);
+        assertEquals(0,game1.computeScores()[1]);
+
+        game1.setGameState(GameState.FLIGHT);
+        SpaceShip spaceShip1=null;
+        SpaceShip spaceShip2=null;
+        CreateShipTest support=new CreateShipTest();
+        try {
+            trucker1.setSpaceShip(support.createShip1(spaceShip1));
+            trucker2.setSpaceShip(support.createShip2(spaceShip2));
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        //todo calcola dei punteggi sulla base della nave ma devi aggiungere dei goods e cosmic credits e lost e truckers out
+
+    }
+
+    @Test
+    void bestSpaceship(){
+        Trucker trucker1=new Trucker("frenk",PlayerColors.BLUE);
+        Trucker trucker2=new Trucker("manzo",PlayerColors.RED);
+        game1.addTrucker(trucker1);
+        game1.addTrucker(trucker2);
+        SpaceShip spaceShip1=null;
+        SpaceShip spaceShip2=null;
+        CreateShipTest support=new CreateShipTest();
+        try {
+            trucker1.setSpaceShip(support.createShip1(spaceShip1));
+            trucker2.setSpaceShip(support.createShip3(spaceShip2));
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        assertTrue(game1.bestSpaceShip(trucker1));
+        assertTrue(game1.bestSpaceShip(trucker2));
+    }
+
+    @Test
+    void isNicknameTaken(){
+        Trucker trucker1=new Trucker("frenk",PlayerColors.BLUE);
+        game1.addTrucker(trucker1);
+        assertTrue(game1.isNicknameTaken("frenk"));
+    }
+
+    @Test
+    void isColorTaken(){
+        Trucker trucker1=new Trucker("frenk",PlayerColors.BLUE);
+        game1.addTrucker(trucker1);
+        assertTrue(game1.isColorTaken(PlayerColors.BLUE));
+    }
+
 }

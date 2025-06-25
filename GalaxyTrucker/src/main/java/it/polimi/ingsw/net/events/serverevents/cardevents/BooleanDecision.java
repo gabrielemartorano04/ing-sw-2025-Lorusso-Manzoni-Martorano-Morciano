@@ -1,18 +1,16 @@
 package it.polimi.ingsw.net.events.serverevents.cardevents;
 
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.view.ParserState;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class BooleanDecision extends CardEvent{
-    private final String message;
 
-    public BooleanDecision(boolean forAll, ParserState parserState, String message, String nickname) {
-        super(forAll, parserState, nickname);
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
+    public BooleanDecision(boolean forAll, ParserState parserState, String nickname, ArrayList<Trucker> truckers) {
+        super(forAll, parserState, nickname, truckers);
     }
 
     public String getInfoForOthers(){

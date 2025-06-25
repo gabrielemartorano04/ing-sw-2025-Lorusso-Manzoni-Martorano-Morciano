@@ -59,7 +59,7 @@ public class StartCardEvent extends CardEvent {
             ParserState parserState,
             Card card
     ) {
-        super(true, parserState, null);
+        super(true, parserState, null, new ArrayList<>());
         this.cardName = cardName;
         this.cardDescription = cardDescription;
         this.firstPlayerNickname = firstPlayerNickname;

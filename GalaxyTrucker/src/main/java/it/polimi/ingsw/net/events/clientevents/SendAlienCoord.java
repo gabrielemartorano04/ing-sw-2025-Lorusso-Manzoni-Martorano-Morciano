@@ -7,14 +7,15 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import java.util.ArrayList;
 
 /**
- * Event sent for the coordinates of where to place aliens
+ * The SendAlienCoord class extends ClientEvent and represents a specific type of event
+ * sent from the client to the server, which communicates the coordinates where to place aliens.
  */
 public class SendAlienCoord extends ClientEvent {
 
     /**
      * List of coordinates where to place aliens
      */
-    private ArrayList<int[]> coord;
+    private final ArrayList<int[]> coord;
 
     /**
      * Event constructor

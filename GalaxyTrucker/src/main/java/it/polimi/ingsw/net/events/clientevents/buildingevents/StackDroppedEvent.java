@@ -6,12 +6,12 @@ import it.polimi.ingsw.net.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**
- * Event sent for the drop of the selected stack during building phase
+ * Represents a client event where a specific stack is selected to be dropped.
  */
 public class StackDroppedEvent extends ClientEvent {
 
     /**
-     * Current selected stack
+     * Current-selected stack
      */
     int curr;
 

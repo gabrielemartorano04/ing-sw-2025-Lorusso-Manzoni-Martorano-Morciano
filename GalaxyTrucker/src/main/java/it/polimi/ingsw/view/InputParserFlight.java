@@ -12,23 +12,51 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class InputParserFlight {
+
+    /**
+     *
+     */
     private ParserState parserState;
+
+    /**
+     *
+     */
     private final UI ui;
 
+    /**
+     *
+     * @param ui
+     */
     public InputParserFlight(UI ui) {
         this.ui = ui;
     }
 
+    /**
+     *
+     * @param parserState
+     */
     public void setParserState(ParserState parserState) {
         this.parserState = parserState;
     }
 
+    /**
+     *
+     * @return
+     */
     public ParserState getParserState() {
         return parserState;
     }
 
-
+    /**
+     *
+     * @param input
+     * @param nickname
+     * @return
+     */
     public ClientEvent parseFlight(String input, String nickname) {
         if (input == null || input.isEmpty()) {
             return null;
@@ -72,11 +100,21 @@ public class InputParserFlight {
         };
     }
 
+    /**
+     *
+     * @return
+     */
     private ClientEvent parseDead(){
         setParserState(ParserState.DO_NOTHING);
         return new DeadTrucker();
     }
 
+    /**
+     *
+     * @param input
+     * @param nickname
+     * @return
+     */
     private ClientEvent parseWithdraw(String input, String nickname) {
         if (input.trim().equalsIgnoreCase("y")) {
             return new WithdrawRequest(nickname,true);
@@ -90,7 +128,9 @@ public class InputParserFlight {
         }
     }
 
-
+    /**
+     *
+     */
     private void openRulesPdf() {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
             if (is == null) {
@@ -116,6 +156,12 @@ public class InputParserFlight {
         }
     }
 
+    /**
+     *
+     * @param input
+     * @param nickname
+     * @return
+     */
     private ClientEvent parseHumanCoord(String input, String nickname) {
         String[] groups= input.split("\\s*,\\s*");
         ArrayList<int[]> humanCoord=new ArrayList<>();
@@ -138,6 +184,12 @@ public class InputParserFlight {
         return new HumanCoordEvent(humanCoord,nickname);
     }
 
+    /**
+     *
+     * @param input
+     * @param nickname
+     * @return
+     */
     private ClientEvent parsePlotGood(String input, String nickname) {
         if (input == null || input.trim().isEmpty()) {
             ui.showError("Error: input is empty");
@@ -189,6 +241,11 @@ public class InputParserFlight {
         return null;
     }
 
+    /**
+     *
+     * @param input
+     * @return
+     */
     private ClientEvent parseRollDice(String input) {
         String[] rollDice=input.split("\\s+");
         if(rollDice.length!=1 || !rollDice[0].trim().equals("roll")){
@@ -198,6 +255,12 @@ public class InputParserFlight {
         return new RollDiceEvent();
     }
 
+    /**
+     *
+     * @param input
+     * @param nickname
+     * @return
+     */
     private ClientEvent parseActivateShield(String input, String nickname) {
         String[] activateShield = input.split("\\s*,\\s*");
 
@@ -239,6 +302,12 @@ public class InputParserFlight {
         return null;
     }
 
+    /**
+     *
+     * @param input
+     * @param nickname
+     * @return
+     */
     private ClientEvent parseActivateCannons(String input, String nickname) {
         String[] activateCannons = input.split("\\s*,\\s*");
         ArrayList<int[]> coordCannons = new ArrayList<>();
@@ -303,6 +372,12 @@ public class InputParserFlight {
         return null;
     }
 
+    /**
+     *
+     * @param input
+     * @param nickname
+     * @return
+     */
     private ClientEvent parseActivateEngines(String input, String nickname) {
         String[] activateEngines = input.split("\\s*,\\s*");
         ArrayList<int[]> coordEngines = new ArrayList<>();
@@ -367,6 +442,12 @@ public class InputParserFlight {
         return null;
     }
 
+    /**
+     *
+     * @param input
+     * @param nickname
+     * @return
+     */
     private ClientEvent parseDrawCard(String input, String nickname) {
         String[] cardFinish=input.split("\\s+");
         if(cardFinish.length!=1 || !cardFinish[0].trim().equals("draw")){
@@ -376,6 +457,12 @@ public class InputParserFlight {
         return new DrawCardEvent(nickname);
     }
 
+    /**
+     *
+     * @param input
+     * @param nickname
+     * @return
+     */
     private ClientEvent parsePlanetDecision(String input, String nickname) {
         String[] planetDecision = input.trim().split("\\s+");
 
@@ -393,11 +480,20 @@ public class InputParserFlight {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     private ClientEvent parseDoNothing() {
         ui.showError("It's not your turn");
         return null;
     }
 
+    /**
+     *
+     * @param input
+     * @return
+     */
     private ClientEvent parseLand(String input) {
         String cmd = input.trim().toLowerCase();
 
@@ -411,6 +507,11 @@ public class InputParserFlight {
         }
     }
 
+    /**
+     *
+     * @param input
+     * @return
+     */
     private ClientEvent parseWarzone(String input) {
         String[] warzone=input.split("\\s+");
         if(warzone.length!=1 || !warzone[0].trim().equals("warzone")){
@@ -420,6 +521,11 @@ public class InputParserFlight {
         return new WarzoneStartEvent();
     }
 
+    /**
+     *
+     * @param input
+     * @return
+     */
     private ClientEvent parseCosmicCredits(String input) {
         String cmd = input.trim().toLowerCase();
         if (cmd.equals("y")) return new GainCosmicCreditsResponseEvent(true);
@@ -429,6 +535,12 @@ public class InputParserFlight {
         return null;
     }
 
+    /**
+     *
+     * @param input
+     * @param nickname
+     * @return
+     */
     private ClientEvent parseRearrange(String input, String nickname) {
         String[] rearrange = input.split("\\s*,\\s*");
 
@@ -485,6 +597,11 @@ public class InputParserFlight {
         return null;
     }
 
+    /**
+     *
+     * @param input
+     * @return
+     */
     private ClientEvent parseRemotionConfirmed(String input) {
         String[] remotion=input.split("\\s+");
         if(remotion.length!=1 || !remotion[0].trim().equals("continue")){
@@ -494,6 +611,11 @@ public class InputParserFlight {
         return new RemotionSeenEvent();
     }
 
+    /**
+     *
+     * @param input
+     * @return
+     */
     private ClientEvent parseCurrentCondition(String input) {
         String[] currCond=input.split("\\s+");
         if(currCond.length!=1 || !currCond[0].trim().equals("warzone")){
@@ -503,6 +625,12 @@ public class InputParserFlight {
         return new WarzoneStartEvent();
     }
 
+    /**
+     *
+     * @param input
+     * @param nickname
+     * @return
+     */
     private ClientEvent parseRemoveBatteries(String input, String nickname) {
         if (input == null || input.trim().isEmpty()) {
             ui.showError("Error: empty input");
@@ -548,7 +676,12 @@ public class InputParserFlight {
         return new RemoveBatteriesEvent(coordinates, nickname);
     }
 
-
+    /**
+     *
+     * @param input
+     * @param nickname
+     * @return
+     */
     private ClientEvent parseRemoveGoods(String input, String nickname) {
         if (input == null || input.trim().isEmpty()) {
             ui.showError("Error: input is empty");
@@ -574,7 +707,4 @@ public class InputParserFlight {
 
         return new RemoveAskingEvent(indexes, nickname);
     }
-
-
-
 }

@@ -10,63 +10,113 @@ import java.util.ArrayList;
 
 
 /**
- * Event from server to client. It's time for all the players to start building their spaceships
+ * Represents an event triggered on the server when a player begins constructing a spaceship
  */
-
-
 public class StartBuildingEvent extends ServerEvent {
-    private String message;
-    private Stack[] stacks;
-    private final SpaceShip spaceShip;
-    private int seconds;
-    private ArrayList<Component> components;
-    private final String nickname;
-    private ArrayList<String> players;
-    private int level;
 
-    public StartBuildingEvent(String username, SpaceShip spaceShip, Stack[] stacks, ArrayList<Component> availableComponents, int seconds, ArrayList<String> players, int level) {
+    /**
+     * Spaceship of the player
+     */
+    private final SpaceShip spaceShip;
+
+    /**
+     * Seconds remaining to the hourglass
+     */
+    private final int seconds;
+
+    /**
+     * List of the available components
+     */
+    private final ArrayList<Component> components;
+
+    /**
+     * Nickname of the player
+     */
+    private final String nickname;
+
+    /**
+     * List of all the players
+     */
+    private final ArrayList<String> players;
+
+    /**
+     * Level of the game
+     */
+    private final int level;
+
+    /**
+     * Event constructor
+     * @param username of the player
+     * @param spaceShip of the player
+     * @param availableComponents list of all the available components
+     * @param seconds remaining to the hourglass
+     * @param players list of players
+     * @param level of the game
+     */
+    public StartBuildingEvent(String username, SpaceShip spaceShip, ArrayList<Component> availableComponents, int seconds, ArrayList<String> players, int level) {
         super(true);
-        message = username + " logged\nIt's time to start building";
         this.nickname = username;
         this.spaceShip = spaceShip;
         this.components = availableComponents;
-        this.stacks = stacks;
         this.seconds = seconds;
         this.players=players;
         this.level=level;
     }
 
+    /**
+     * @return the list of players
+     */
     public ArrayList<String> getPlayers() {
         return players;
     }
 
+    /**
+     * @return the nickname of the player
+     */
     public String getNickname() {
         return nickname;
     }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
+    /**
+     * @return the spaceship of the player
+     */
     public SpaceShip getSpaceShip() {
         return spaceShip;
     }
 
-    public Stack[] getStacks() {return stacks;}
-
+    /**
+     * @return the list of available components
+     */
     public ArrayList<Component> getComponents() {return components;}
 
-    @Override
-    public void call(ServerEventHandlerVisitor visitor) {
-        visitor.visit(this);
-    }
-
+    /**
+     * @return the seconds remaining to the hourglass
+     */
     public int getSeconds() {
         return seconds;
     }
 
+    /**
+     * @return the level of the game
+     */
     public int getLevel() {
         return level;
+    }
+
+    /**
+     * @return the message associated with the start of the building phase
+     */
+    @Override
+    public String getMessage() {
+        return nickname + " logged\nIt's time to start building";
+    }
+
+    /**
+     * This method calls the client method that manages this event reception
+     * @param visitor client class that manages server events
+     */
+    @Override
+    public void call(ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
     }
 }
