@@ -3,12 +3,15 @@ package it.polimi.ingsw.net.events.serverevents.cardevents;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.view.ParserState;
 
+import java.util.ArrayList;
+
 public class TruckerWithdrawEvent extends CardEvent {
-    private String message, nickname;
-    private boolean choice;
+    private String message;
+    private final String nickname;
+    private final boolean choice;
 
     public TruckerWithdrawEvent(String nickname,boolean choice) {
-        super(true, ParserState.DO_NOTHING, nickname);
+        super(true, ParserState.DO_NOTHING, nickname,new ArrayList<>());
         message = "";
         this.nickname = nickname;
         this.choice = choice;

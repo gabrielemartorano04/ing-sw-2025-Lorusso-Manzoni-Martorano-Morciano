@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class PlotGood extends CardEvent{
     private final Goods good;
-    private SpaceShip spaceShip;
+    private final SpaceShip spaceShip;
 
     public PlotGood(boolean forAll, String nickname,SpaceShip spaceShip, Goods good, ArrayList<Trucker> truckers) {
         super(forAll, ParserState.PLOT_GOOD, nickname, truckers);

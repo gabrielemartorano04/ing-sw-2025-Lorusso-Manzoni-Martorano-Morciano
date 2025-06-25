@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.view.ParserState;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class BooleanDecision extends CardEvent{
@@ -19,13 +18,13 @@ public class BooleanDecision extends CardEvent{
                 return getNickname() + " is rolling the dice";
             }
             case ACTIVATE_CANNONS -> {
-                return getNickname() + " is deciding wich cannons to activate";
+                return getNickname() + " is deciding which cannons to activate";
             }
             case ACTIVATE_ENGINES -> {
-                return getNickname() + " is deciding wich engines to activate";
+                return getNickname() + " is deciding which engines to activate";
             }
             case ACTIVATE_SHIELD -> {
-                return getNickname() + " is deciding wich shield to activate";
+                return getNickname() + " is deciding which shield to activate";
             }
             case LAND -> {
                 return getNickname() + " is deciding whether to land or not";

@@ -8,10 +8,11 @@ import java.util.ArrayList;
 
 public class RollDiceResult extends CardEvent {
 
-    private int currIndex;
-    private int diceResult;
-    private String hitType;
-    private int[] shoot,meteor;
+    private final int currIndex;
+    private final int diceResult;
+    private final String hitType;
+    private final int[] shoot;
+    private final int[] meteor;
 
     public RollDiceResult(ParserState parserState, int currIndex, int[] shoot, int [] meteor, int diceResult, String nickname, boolean forAll, String hitType, ArrayList<Trucker> truckers){
         super(forAll, parserState, nickname, truckers);
@@ -37,11 +38,6 @@ public class RollDiceResult extends CardEvent {
     @Override
     public void call(ServerEventHandlerVisitor visitor) {
         visitor.visit(this);
-    }
-
-    @Override
-    public String getMessage(){
-        return "ERRORE IN ROLLDICERESULT, hai chiamato getMessage";
     }
 
     public String getInfoForOthers(){
