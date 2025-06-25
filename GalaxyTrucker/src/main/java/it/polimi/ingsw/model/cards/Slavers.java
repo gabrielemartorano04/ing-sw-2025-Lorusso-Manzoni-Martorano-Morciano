@@ -17,6 +17,7 @@ import it.polimi.ingsw.view.ParserState;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.SequencedCollection;
 
 /**
  * Class that manages the single card slavers
@@ -348,4 +349,23 @@ public class Slavers extends Card implements Serializable {
     }
 
 
+    public void setState(CardState cardState) {
+        this.cardState = cardState;
+    }
+
+    public void addDefeatedTruckers(Trucker defeatedTruckers) {
+        this.defeatedTruckers.add(defeatedTruckers);
+    }
+
+    public int getIndexOfCurrentTrucker() {
+        return indexOfCurrentTrucker;
+    }
+
+    public ArrayList<Trucker> getDefeatedTruckers() {
+        return defeatedTruckers;
+    }
+
+    public void setIndexOfCurrentTrucker(int indexOfCurrentTrucker) {
+        this.indexOfCurrentTrucker = indexOfCurrentTrucker;
+    }
 }
