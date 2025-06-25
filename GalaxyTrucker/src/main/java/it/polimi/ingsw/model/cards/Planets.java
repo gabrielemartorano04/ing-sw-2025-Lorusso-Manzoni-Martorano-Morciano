@@ -92,9 +92,6 @@ public class Planets extends Card implements Serializable {
         super("Planets", "A new planetary system discovered", trialFlight, level, frontImage, backImage, id);
         goodsPassed = new ArrayList<>();
         planetsOccupied = new ArrayList<>();
-        for (int i = 0; i < planets.size(); i++) {
-            this.planetsOccupied.add(null);
-        }
         truckersLanded = new ArrayList<>();
         this.daysLoss = daysLoss;
         this.planets = planets;
@@ -105,6 +102,9 @@ public class Planets extends Card implements Serializable {
         this.currentGoodsList = new ArrayList<>();
         this.goodsPassed = new ArrayList<>();
 
+        for (int i = 0; i < this.planets.size(); i++) {
+            this.planetsOccupied.add(null);
+        }
     }
 
     public CardState getCardState() {
@@ -181,6 +181,7 @@ public class Planets extends Card implements Serializable {
             }
         }
         indexOfTrucker++;
+        System.out.println("trucker " + Game.getIstance().getTrucker(indexOfTrucker).getNickname());
         return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname(),Game.getIstance().getTrucker(indexOfTrucker).getSpaceShip(), Game.getIstance().getTruckerList());
     }
 

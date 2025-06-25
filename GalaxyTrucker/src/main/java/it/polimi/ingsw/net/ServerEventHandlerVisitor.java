@@ -675,6 +675,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLANET_DECISION);
+            System.out.println(event.getPlanetsOccupied().size());
             ui.updatePlanetsOccupied(event);
             ui.showInputFormat(ParserState.PLANET_DECISION);
         } else {
