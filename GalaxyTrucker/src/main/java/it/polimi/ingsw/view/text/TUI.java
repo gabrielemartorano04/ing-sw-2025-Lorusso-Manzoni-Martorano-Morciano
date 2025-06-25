@@ -606,6 +606,10 @@ public class TUI implements UI {
             this.showCurrCondition(event.getConditionsOrder().getFirst(), false);
         }
 
+        if(event.getPlanetsOccupied() != null) {
+            this.updatePlanetsOccupied(event.getPlanetsOccupied());
+        }
+
     }
 
     private String getMeteoriteDescription(int[] meteor, int index) {
@@ -1082,9 +1086,9 @@ public class TUI implements UI {
 
 
     @Override
-    public void updatePlanetsOccupied(PlanetDecision event) {
+    public void updatePlanetsOccupied(ArrayList<Trucker> planetsOccupied) {
         int index=0;
-        for(Trucker planets: event.getPlanetsOccupied()){
+        for(Trucker planets: planetsOccupied){
             if(planets==null){
                 System.out.println("Planets "+index+" is free");
             }

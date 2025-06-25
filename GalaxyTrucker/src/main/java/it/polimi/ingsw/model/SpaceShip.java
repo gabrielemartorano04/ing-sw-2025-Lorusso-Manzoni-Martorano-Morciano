@@ -1509,15 +1509,17 @@ public class SpaceShip implements Serializable {
      * @param num number of row or colon from which the meteorite arrives
      * @return true if there is a cannon which can shoot the arriving meteorite, false otherwise
      */
-    public boolean shootMeteor(int direction, int num) {
+    public boolean blockBigMeteor(int direction, int num) {
         switch (direction) {
             case 0:
                 for (int i = 5; i <= 9; i++) {
                     if (components[i][num] != null) {
                         switch(components[i][num]){
                             case Cannon cannon->{
-                                if (cannon.getOrientation() == Orientation.N)
-                                    return true;
+                                if (cannon.getOrientation() == Orientation.N){
+                                    if(cannon.getIsDouble() && cannon.getIsActive()) return true;
+                                    else if(!cannon.getIsDouble()) return true;
+                                }
                             }default->{}
                         }
                     }
@@ -1528,8 +1530,8 @@ public class SpaceShip implements Serializable {
                     if (components[num][j] != null) {
                         switch(components[num][j]){
                             case Cannon cannon->{
-                                if (cannon.getOrientation() == Orientation.E)
-                                    return true;
+                                if(cannon.getIsDouble() && cannon.getIsActive()) return true;
+                                else if(!cannon.getIsDouble()) return true;
                             } default->{}
                         }
                     }
@@ -1540,8 +1542,8 @@ public class SpaceShip implements Serializable {
                     if (components[i][num] != null) {
                         switch(components[i][num]){
                             case Cannon cannon->{
-                                if (cannon.getOrientation() == Orientation.S)
-                                    return true;
+                                if(cannon.getIsDouble() && cannon.getIsActive()) return true;
+                                else if(!cannon.getIsDouble()) return true;
                             } default -> {}
                         }
                     }
@@ -1552,8 +1554,8 @@ public class SpaceShip implements Serializable {
                     if (components[num][j] != null) {
                         switch(components[num][j]){
                             case Cannon cannon->{
-                                if (cannon.getOrientation() == Orientation.W)
-                                    return true;
+                                if(cannon.getIsDouble() && cannon.getIsActive()) return true;
+                                else if(!cannon.getIsDouble()) return true;
                             } default -> {}
                         }
                     }
@@ -1574,7 +1576,6 @@ public class SpaceShip implements Serializable {
 
 
             switch (direction) {
-                //if the meteor comes from nord
                 case 0:
                     for (int i = 5; i <= 9; i++) {
                         if (components[i][num] != null) {
@@ -1591,8 +1592,10 @@ public class SpaceShip implements Serializable {
                                                     if (components[w][z] != null) {
                                                         switch(components[w][z]) {
                                                             case Shield shield->{
-                                                                if(shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.NW)){
-                                                                    return true;
+                                                                if(shield.getIsActive()){
+                                                                    if(shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.NW)){
+                                                                        return true;
+                                                                    }
                                                                 }
                                                             }
                                                             default -> {}
@@ -1625,8 +1628,10 @@ public class SpaceShip implements Serializable {
                                                         if (components[w][z] != null) {
                                                             switch(components[w][z]) {
                                                                 case Shield shield->{
-                                                                    if (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.SE)){
-                                                                        return true;
+                                                                    if(shield.getIsActive()){
+                                                                        if (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.SE)){
+                                                                            return true;
+                                                                        }
                                                                     }
                                                                 }
                                                                 default -> {}
@@ -1662,8 +1667,10 @@ public class SpaceShip implements Serializable {
                                                         if (components[w][z] != null) {
                                                             switch(components[w][z]) {
                                                                 case Shield shield->{
-                                                                    if(shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)){
-                                                                        return true;
+                                                                    if(shield.getIsActive()){
+                                                                        if(shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)){
+                                                                            return true;
+                                                                        }
                                                                     }
                                                                 }
                                                                 default -> {}
@@ -1698,8 +1705,10 @@ public class SpaceShip implements Serializable {
                                                         if (components[w][z] != null) {
                                                             switch(components[w][z]) {
                                                                 case Shield shield->{
-                                                                    if(shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)){
-                                                                        return true;
+                                                                    if(shield.getIsActive()){
+                                                                        if(shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)){
+                                                                            return true;
+                                                                        }
                                                                     }
                                                                 }
                                                                 default -> {}
@@ -1734,16 +1743,19 @@ public class SpaceShip implements Serializable {
                 if (components[i][j] != null) {
                     switch(components[i][j]){
                         case Shield shield->{
-                            if(
-                                    (direction == 0 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.NW)))
-                                            || (direction == 1 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.SE)))
-                                            || (direction == 2 && (shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)))
-                                            || (direction == 3 && (shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)))
-                            ){
-                                if(numOfBattery>0 && existsAnActiveShield){
-                                    return true;
+                            if(shield.getIsActive()){
+                                if(
+                                        (direction == 0 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.NW)))
+                                                || (direction == 1 && (shield.getDirection().equals(Direction.NE) || shield.getDirection().equals(Direction.SE)))
+                                                || (direction == 2 && (shield.getDirection().equals(Direction.SE) || shield.getDirection().equals(Direction.SW)))
+                                                || (direction == 3 && (shield.getDirection().equals(Direction.SW) || shield.getDirection().equals(Direction.NW)))
+                                ){
+                                    if(numOfBattery>0){
+                                        return true;
+                                    }
                                 }
                             }
+
                         }
                         default -> {}
                     }

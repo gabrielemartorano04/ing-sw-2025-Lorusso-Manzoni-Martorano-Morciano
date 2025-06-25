@@ -6,7 +6,6 @@ import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.BooleanDecision;
 import it.polimi.ingsw.net.events.serverevents.cardevents.CardFinished;
@@ -16,12 +15,8 @@ import it.polimi.ingsw.view.ParserState;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Class that manages the single card meteor shower
@@ -117,6 +112,7 @@ public class MeteorShower extends Card implements Serializable {
                 null,
                 null,
                 ParserState.ROLL_DICE,
+                null,
                 this
         );
     }
@@ -260,7 +256,7 @@ public class MeteorShower extends Card implements Serializable {
             if (ship.isHit(direction, roll)) {
                 if (isBig) {
 
-                    if (!ship.shootMeteor(direction, roll)) {
+                    if (!ship.blockBigMeteor(direction, roll)) {
                         ship.destroyComponent(roll, direction, Game.getIstance().getBank());
                     }
                 } else {

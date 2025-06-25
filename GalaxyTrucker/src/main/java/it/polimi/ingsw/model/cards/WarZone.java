@@ -185,6 +185,7 @@ public class WarZone extends Card implements Serializable {
                 this.conditionsOrder,
                 this.penalties,
                 ParserState.WARZONE,
+                null,
                 this
         );
     }

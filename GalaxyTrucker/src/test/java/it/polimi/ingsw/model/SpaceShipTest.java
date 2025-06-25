@@ -599,9 +599,9 @@ class SpaceShipTest {
     }
 
     @Test
-    void shootMeteor() {
-        assertTrue(spaceShip2.shootMeteor(0,7));
-        assertTrue(spaceShip2.shootMeteor(0,8));
+    void blockBigMeteor() {
+        assertTrue(spaceShip2.blockBigMeteor(0,7));
+        assertTrue(spaceShip2.blockBigMeteor(0,8));
     }
 
     @Test
