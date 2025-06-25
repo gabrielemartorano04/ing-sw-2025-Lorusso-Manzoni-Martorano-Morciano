@@ -1,7 +1,7 @@
 package it.polimi.ingsw.net.main;
 
-import it.polimi.ingsw.controller.ServerController;
-import it.polimi.ingsw.net.Client;
+import it.polimi.ingsw.net.control.ServerController;
+import it.polimi.ingsw.net.control.Client;
 import it.polimi.ingsw.net.rmi.server.RmiServer;
 import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 import it.polimi.ingsw.net.socket.server.NetworkServer;

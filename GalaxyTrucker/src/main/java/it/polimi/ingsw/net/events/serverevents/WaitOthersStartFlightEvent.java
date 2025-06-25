@@ -1,6 +1,6 @@
 package it.polimi.ingsw.net.events.serverevents;
 
-import it.polimi.ingsw.net.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.control.ServerEventHandlerVisitor;
 
 /**
  * This class represents a server event indicating the client is waiting for other participants

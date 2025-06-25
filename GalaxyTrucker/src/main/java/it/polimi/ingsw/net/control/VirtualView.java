@@ -1,12 +1,9 @@
-package it.polimi.ingsw.net;
+package it.polimi.ingsw.net.control;
 
-import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
-
-import java.util.ArrayList;
 
 public interface VirtualView {
 

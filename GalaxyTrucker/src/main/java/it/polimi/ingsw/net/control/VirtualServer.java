@@ -1,4 +1,4 @@
-package it.polimi.ingsw.net;
+package it.polimi.ingsw.net.control;
 
 
 import it.polimi.ingsw.controller.GameController;

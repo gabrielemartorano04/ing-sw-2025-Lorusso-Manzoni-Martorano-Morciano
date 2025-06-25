@@ -1,7 +1,6 @@
 package it.polimi.ingsw.net.socket.server;
 
-import it.polimi.ingsw.controller.ServerController;
-import it.polimi.ingsw.net.ClientHandler;
+import it.polimi.ingsw.net.control.ServerController;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 

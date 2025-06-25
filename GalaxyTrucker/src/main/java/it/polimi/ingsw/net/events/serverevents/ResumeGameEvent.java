@@ -3,7 +3,7 @@ package it.polimi.ingsw.net.events.serverevents;
 import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.net.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.control.ServerEventHandlerVisitor;
 
 import java.util.ArrayList;
 import java.util.Map;

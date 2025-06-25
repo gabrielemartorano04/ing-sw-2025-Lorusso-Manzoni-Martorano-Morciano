@@ -1,10 +1,10 @@
-package it.polimi.ingsw.net;
+package it.polimi.ingsw.net.control;
 
-import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.net.events.serverevents.PingEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
+import it.polimi.ingsw.net.socket.server.ClientHandler;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.net.events.serverevents;
 
-import it.polimi.ingsw.net.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.control.ServerEventHandlerVisitor;
 
 /**
  * Represents a ping event used for communication between the server and clients

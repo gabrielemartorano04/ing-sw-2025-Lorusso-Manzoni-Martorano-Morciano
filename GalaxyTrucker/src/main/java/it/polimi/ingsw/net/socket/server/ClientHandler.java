@@ -1,4 +1,4 @@
-package it.polimi.ingsw.net;
+package it.polimi.ingsw.net.socket.server;
 
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 

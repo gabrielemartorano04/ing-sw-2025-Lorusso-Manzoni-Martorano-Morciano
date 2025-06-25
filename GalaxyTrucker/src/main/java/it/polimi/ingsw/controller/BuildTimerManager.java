@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.net.control.ServerController;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent;
 
 /**

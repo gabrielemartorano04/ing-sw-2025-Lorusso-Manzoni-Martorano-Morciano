@@ -1,10 +1,8 @@
 package it.polimi.ingsw.net.rmi.server;
 
-import it.polimi.ingsw.controller.ServerController;
-import it.polimi.ingsw.net.Client;
-import it.polimi.ingsw.net.ClientHandler;
+import it.polimi.ingsw.net.control.ServerController;
+import it.polimi.ingsw.net.control.Client;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 
 import java.net.Inet4Address;

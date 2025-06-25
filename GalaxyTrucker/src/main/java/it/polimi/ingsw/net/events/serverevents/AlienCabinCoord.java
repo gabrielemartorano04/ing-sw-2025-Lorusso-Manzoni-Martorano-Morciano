@@ -1,6 +1,6 @@
 package it.polimi.ingsw.net.events.serverevents;
 
-import it.polimi.ingsw.net.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.control.ServerEventHandlerVisitor;
 
 import java.util.ArrayList;
 

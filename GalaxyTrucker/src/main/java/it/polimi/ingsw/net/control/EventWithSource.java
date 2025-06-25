@@ -1,6 +1,5 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.net.control;
 
-import it.polimi.ingsw.net.Client;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 
 /**

@@ -3,7 +3,7 @@ package it.polimi.ingsw.net.events.serverevents.buildingevents;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.net.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.control.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 import java.util.ArrayList;

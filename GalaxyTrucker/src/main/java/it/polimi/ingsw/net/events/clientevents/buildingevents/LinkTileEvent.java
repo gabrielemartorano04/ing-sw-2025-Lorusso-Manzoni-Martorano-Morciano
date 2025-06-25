@@ -1,9 +1,9 @@
 package it.polimi.ingsw.net.events.clientevents.buildingevents;
 
 import it.polimi.ingsw.model.components.Component;
-import it.polimi.ingsw.net.Client;
+import it.polimi.ingsw.net.control.Client;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
-import it.polimi.ingsw.net.VirtualServer;
+import it.polimi.ingsw.net.control.VirtualServer;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 /**

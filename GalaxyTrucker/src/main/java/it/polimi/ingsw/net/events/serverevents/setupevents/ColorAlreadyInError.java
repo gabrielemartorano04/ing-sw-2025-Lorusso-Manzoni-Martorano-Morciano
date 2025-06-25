@@ -1,7 +1,7 @@
 package it.polimi.ingsw.net.events.serverevents.setupevents;
 
 import it.polimi.ingsw.model.PlayerColors;
-import it.polimi.ingsw.net.ServerEventHandlerVisitor;
+import it.polimi.ingsw.net.control.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 import java.util.EnumSet;

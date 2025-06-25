@@ -1,11 +1,11 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.net.control;
 
 
+import it.polimi.ingsw.controller.BuildTimerManager;
+import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.net.Client;
-import it.polimi.ingsw.net.ClientHandler;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.EndGameEvent;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent;
@@ -14,8 +14,6 @@ import it.polimi.ingsw.net.events.serverevents.setupevents.AvailablePlayersEvent
 import it.polimi.ingsw.net.events.serverevents.setupevents.ChooseResumeEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
-import it.polimi.ingsw.net.ClientHandlerVisitor;
-import it.polimi.ingsw.net.socket.server.ClientHandlerSocket;
 
 import java.util.ArrayList;
 import java.util.HashMap;
