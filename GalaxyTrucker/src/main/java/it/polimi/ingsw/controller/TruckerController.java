@@ -83,11 +83,7 @@ public class TruckerController  {
      * @throws GeneralError if the stack is occupied by another trucker
      */
     public Stack showStack(int index, Game game) throws GeneralError {
-        try {
-            return trucker.showStack(index, game);
-        } catch (GeneralError e) {
-            throw new GeneralError(e.getMessage());
-        }
+        return trucker.showStack(index, game);
     }
 
     /**
@@ -120,20 +116,6 @@ public class TruckerController  {
     public void selectComponent(int index, AvailableComponents availableComponents) throws GeneralError {
         trucker.selectComponent(index, availableComponents);
         this.selectedComponentIndex = index;
-    }
-
-    /**
-     * @return component selected by the player
-     */
-    public Component getSelectedComponent() {
-        return trucker.getSelectedComponent();
-    }
-
-    /**
-     * @return index of the selected component
-     */
-    public int getSelectedComponentIndex() {
-        return selectedComponentIndex;
     }
 
     /**
