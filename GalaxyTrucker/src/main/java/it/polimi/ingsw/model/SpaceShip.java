@@ -1516,8 +1516,10 @@ public class SpaceShip implements Serializable {
                     if (components[i][num] != null) {
                         switch(components[i][num]){
                             case Cannon cannon->{
-                                if (cannon.getOrientation() == Orientation.N)
-                                    return true;
+                                if (cannon.getOrientation() == Orientation.N){
+                                    if(cannon.getIsDouble() && cannon.getIsActive()) return true;
+                                    else if(!cannon.getIsDouble()) return true;
+                                }
                             }default->{}
                         }
                     }
@@ -1528,8 +1530,8 @@ public class SpaceShip implements Serializable {
                     if (components[num][j] != null) {
                         switch(components[num][j]){
                             case Cannon cannon->{
-                                if (cannon.getOrientation() == Orientation.E)
-                                    return true;
+                                if(cannon.getIsDouble() && cannon.getIsActive()) return true;
+                                else if(!cannon.getIsDouble()) return true;
                             } default->{}
                         }
                     }
@@ -1540,8 +1542,8 @@ public class SpaceShip implements Serializable {
                     if (components[i][num] != null) {
                         switch(components[i][num]){
                             case Cannon cannon->{
-                                if (cannon.getOrientation() == Orientation.S)
-                                    return true;
+                                if(cannon.getIsDouble() && cannon.getIsActive()) return true;
+                                else if(!cannon.getIsDouble()) return true;
                             } default -> {}
                         }
                     }
@@ -1552,8 +1554,8 @@ public class SpaceShip implements Serializable {
                     if (components[num][j] != null) {
                         switch(components[num][j]){
                             case Cannon cannon->{
-                                if (cannon.getOrientation() == Orientation.W)
-                                    return true;
+                                if(cannon.getIsDouble() && cannon.getIsActive()) return true;
+                                else if(!cannon.getIsDouble()) return true;
                             } default -> {}
                         }
                     }
