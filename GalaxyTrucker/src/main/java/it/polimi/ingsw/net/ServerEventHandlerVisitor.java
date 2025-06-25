@@ -485,9 +485,14 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.buildingComplete(event);
     }
 
+
     // === PHASE 3: Flight ===
 
-
+    /**
+     * Initializes the flight phase by setting position, ship, track, and updating the UI
+     *
+     * @param event event containing initial flight data
+     */
     @Override
     public void visit(FlightStartEvent event){
         viewFlow.setPosition(event.getPosition());
@@ -501,6 +506,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     }
 
+    /**
+     * Updates the current condition of the warzone card, handles deaths, and shows relevant UI.
+     *
+     * @param event event containing current flight status and player info
+     */
     @Override
     public void visit(CurrentCondition event) {
         boolean isLeader = false;
@@ -528,6 +538,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showInputFormat(viewFlow.getParserFlightState());
     }
 
+    /**
+     * Displays the current decision that the player can take, updating flight info and UI accordingly.
+     *
+     * @param event event containing decision data and player info
+     */
     @Override
     public void visit(BooleanDecision event) {
 
@@ -543,6 +558,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Handles the completion of a single card, updates player state, and prompts input
+     *
+     * @param event event containing updated player and flight info
+     */
     @Override
     public void visit(CardFinished event) {
         handleDeath(event.getTruckersRemoved());
@@ -576,6 +596,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Handles drawing a new card event, updating parser state and UI accordingly
+     *
+     * @param event event containing leader info for drawing card
+     */
     @Override
     public void visit(DrawNewCardEvent event) {
         if (viewFlow.getNickname().equals(event.getLeaderNickname())) {
@@ -587,6 +612,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Handles the effect of an epidemic card by updating track, handling deaths,
+     * updating UI, and setting parser state
+     *
+     * @param event event containing epidemic and flight info
+     */
     @Override
     public void visit(EpidemicEvent event) {
         ui.showEpidemicCard(event);
@@ -610,6 +641,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Updates flight info and UI for human coordinates input event
+     *
+     * @param event event containing truckers and input info
+     */
     @Override
     public void visit(HumanCoordinates event) {
         updatesFromFlight(event.getTruckers());
@@ -625,6 +661,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Updates flight info and UI for planet decision input event
+     *
+     * @param event event containing truckers and input info
+     */
     @Override
     public void visit(PlanetDecision event) {
         updatesFromFlight(event.getTruckers());
@@ -641,6 +682,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Updates flight info and UI for plotting goods input event
+     *
+     * @param event event containing truckers and good info
+     */
     @Override
     public void visit(PlotGood event) {
         updatesFromFlight(event.getTruckers());
@@ -657,6 +703,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Updates flight info, shows dice roll results, and manages input states
+     *
+     * @param event event containing dice roll results and player info
+     */
     @Override
     public void visit(RollDiceResult event) {
         updatesFromFlight(event.getTruckers());
@@ -673,6 +724,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Handles stardust card effects, updates track, deaths, flight info, and UI.
+     *
+     * @param event event containing stardust card info and player data
+     */
     @Override
     public void visit(StarDustEvent event) {
         ui.showStardustCard(event);
@@ -697,6 +753,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     }
 
+    /**
+     * Handles the beginning of a new card, updates state, and prompts input format if player is leader
+     *
+     * @param event event containing card and leader information
+     */
     @Override
     public void visit(StartCardEvent event) {
         ui.showCardDrawn(event);
@@ -713,6 +774,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     }
 
+    /**
+     * Handles a rearrangement action, updating the flight state and prompting input if it's the player's turn
+     *
+     * @param event event containing rearrangement data and updated truckers
+     */
     @Override
     public void visit(RearrangeEvent event) {
         updatesFromFlight(event.getTruckers());
@@ -728,6 +794,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Informs the player of the possibility of gaining cosmic credits by losing flight days, then prompts input
+     *
+     * @param event event containing credit gain and parser state
+     */
     @Override
     public void visit(GainCosmicCredits event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
@@ -741,6 +812,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Shows an error related to invalid coordinates and prompts retry
+     *
+     * @param event event containing error message and parser state
+     */
     @Override
     public void visit(InvalidCoordinatesEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
@@ -753,6 +829,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Handles an error where the player hasn't selected enough batteries for the action and prompts retry
+     *
+     * @param event event containing error message and parser state
+     */
     @Override
     public void visit(NotEnoughBatterieEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
@@ -765,6 +846,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Handles an error caused by the selection of a not consistent component during a flight
+     * action and lets the player try again
+     *
+     * @param event event containing error message and parser state
+     */
     @Override
     public void visit(InvalidComponentsExceptionEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
@@ -777,6 +864,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Handles an error caused by selecting an invalid position of a Load in which insert a
+     * good and lets the player try again
+     *
+     * @param event event containing error message and parser state
+     */
     @Override
     public void visit(InvalidPositionExceptionEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
@@ -789,6 +882,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Handles an error when a player tries to land on an occupied planet
+     *
+     * @param event event containing error message and parser state
+     */
     @Override
     public void visit(PlanetNotFreeExceptionEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
@@ -801,6 +899,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Notifies the player of an invalid good selection and lets the player try again
+     *
+     * @param event event containing error message and next parser state
+     */
     @Override
     public void visit(InvalidGoodChosenEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
@@ -813,6 +916,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Notifies the player that not enough goods were selected and lets the player try again
+     *
+     * @param event event containing error message and next parser state
+     */
     @Override
     public void visit(NotEnoughGoodsChosenEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
@@ -825,6 +933,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Notifies the player that the selected number of batteries is incorrect and
+     * lets the player try again
+     *
+     * @param event event containing error message and next parser state
+     */
     @Override
     public void visit(WrongNumberOfBatteriesSelectedEvent event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
@@ -837,6 +951,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Confirms the remotion of batteries or goods and shows the updated ship layout
+     *
+     * @param event event containing updated ship state and parser state
+     */
     @Override
     public void visit(RemotionConfirmed event) {
 
@@ -852,7 +971,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
-
+    /**
+     * Notifies the client to select from which components he wants to remove the batteries he needs to remove
+     *
+     * @param event event containing updated ship state and parser state
+     */
     @Override
     public void visit(RemoveBatteries event) {
         updatesFromFlight(event.getTruckers());
@@ -869,6 +992,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * Notifies the client to select from which components he wants to remove the goods he needs to remove
+     *
+     * @param event event containing updated ship state and parser state
+     */
     @Override
     public void visit(RemoveGoods event) {
         updatesFromFlight(event.getTruckers());
@@ -885,17 +1013,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
-
-
-    // === PHASE 5: Fine Gioco ===
-    @Override
-    public void visit(EndGameEvent event) {
-        ui.showScores(event.getScores());
-        ui.showGameEnded();
-        viewFlow.setParserFlightState(ParserState.DO_NOTHING);
-        viewFlow.setViewState(ViewFlow.ViewState.END);
-    }
-
+    /**
+     * Manages the event where a trucker decides whether to withdraw from the game
+     *
+     * @param event event containing the trucker's choice and nickname
+     */
     @Override
     public void visit(TruckerWithdrawEvent event) {
         boolean choice=event.getChoice();
@@ -915,20 +1037,51 @@ public class ServerEventHandlerVisitor implements VirtualView {
     }
 
 
+    // === PHASE 5: Fine Gioco ===
+
+    /**
+     * Handles the end of the game by displaying final scores and updating state
+     *
+     * @param event event containing the final score map
+     */
+    @Override
+    public void visit(EndGameEvent event) {
+        ui.showScores(event.getScores());
+        ui.showGameEnded();
+        viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+        viewFlow.setViewState(ViewFlow.ViewState.END);
+    }
+
+
 
     // === ERRORI e MESSAGGI GENERICI ===
 
-
+    /**
+     * Displays a generic error message coming from the server to the user
+     *
+     * @param event event containing the error message
+     */
     @Override
     public void visit(GenericErrorEvent event){
         ui.showError(event.getMessage());
     }
 
+    /**
+     * Displays the ship layout of another player
+     *
+     * @param event event containing the nickname and ship to display
+     */
     @Override
     public void visit(ShowOtherShipResponse event) {
         ui.showOtherShipLayout(event.getNickname(), event.getSpaceship());
     }
 
+    /**
+     * handle the possible elimination of this client from the game, updating the state of the view
+     * and notifies the death
+     *
+     * @param truckersRemoved list of truckers eliminated from the game
+     */
     private void handleDeath(ArrayList<Trucker> truckersRemoved) {
         for (Trucker trucker : truckersRemoved) {
             if (trucker.getNickname().equalsIgnoreCase(viewFlow.getNickname())) {
@@ -947,6 +1100,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
+    /**
+     * updates the ship of this client with the ship coming from the server after that it has been modified
+     *
+     * @param truckers list of all the truckers of the game with their updated ships
+     */
     private void updatesFromFlight (ArrayList<Trucker> truckers){
         for(Trucker t:truckers){
             if(t.getNickname().equals(viewFlow.getNickname())){
@@ -958,7 +1116,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
     }
 
-
+    /**
+     * responds to the pingEvent to confirm the client is still active
+     *
+     * @param e pingEvent coming from the server
+     */
     @Override
     public void visit(PingEvent e){
         viewFlow.respondToPing();
