@@ -4,11 +4,13 @@ import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.net.ServerEventHandlerVisitor;
 import it.polimi.ingsw.view.ParserState;
 
+import java.util.ArrayList;
+
 public class RemotionConfirmed extends CardEvent{
-    private SpaceShip spaceShip;
+    private final SpaceShip spaceShip;
 
     public RemotionConfirmed(ParserState parserState , String nickname,SpaceShip spaceShip) {
-        super(true, parserState, nickname, null);
+        super(true, parserState, nickname, new ArrayList<>());
         this.spaceShip=spaceShip;
     }
 

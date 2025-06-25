@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class RemoveGoods extends CardEvent{
     private final ArrayList<Goods> goodsList;
-    private SpaceShip spaceShip;
+    private final SpaceShip spaceShip;
 
     public RemoveGoods(boolean forAll, String nickname,SpaceShip spaceShip, ArrayList<Goods> goodsList, ArrayList<Trucker> truckers) {
         super(forAll, ParserState.REMOVE_GOODS, nickname, truckers);
