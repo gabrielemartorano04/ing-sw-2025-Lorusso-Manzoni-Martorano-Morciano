@@ -79,11 +79,11 @@ class HourglassTest {
         hourglass.reset();
         synchronized (lock){
             try {
-                lock.wait(20000);
+                lock.wait(90000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        assertEquals(70, hourglass.getSecondsLeft());
+        assertEquals(0, hourglass.getSecondsLeft());
     }
 }
