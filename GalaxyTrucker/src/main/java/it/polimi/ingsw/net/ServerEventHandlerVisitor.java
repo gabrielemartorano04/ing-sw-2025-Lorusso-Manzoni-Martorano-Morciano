@@ -611,11 +611,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(RemotionConfirmed event) {
-        updatesFromFlight(event.getTruckers());
-
-        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
 
         if(event.getNickname().equals(viewFlow.getNickname())) {
+            updatesFromFlight(event.getTruckers());
+            ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         }else{
