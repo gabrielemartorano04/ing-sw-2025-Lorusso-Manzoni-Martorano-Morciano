@@ -8,6 +8,9 @@ import it.polimi.ingsw.view.ParserState;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Represents an event triggered by an epidemic card interaction in the game
+ */
 public class EpidemicEvent extends CardEvent {
 
     private final ArrayList<Trucker> truckers;
