@@ -1240,11 +1240,11 @@ public class FlightScene {
             goodView2.setPreserveRatio(true);
             goodView2.setMouseTransparent(true);
 
-            Label xLabel = new Label("X:");
+            Label xLabel = new Label("Row:");
             xLabel.setTextFill(Color.web("#FFDE69"));
             xLabel.setFont(Font.font("Bangers", 15));
 
-            Label yLabel = new Label("Y:");
+            Label yLabel = new Label("Col:");
             yLabel.setTextFill(Color.web("#FFDE69"));
             yLabel.setFont(Font.font("Bangers", 15));
 
@@ -1253,11 +1253,11 @@ public class FlightScene {
             posLabel.setFont(Font.font("Bangers", 15));
 
             TextField xField = new TextField();
-            xField.setPromptText("x");
+            xField.setPromptText("row");
             xField.setPrefWidth(50);
 
             TextField yField = new TextField();
-            yField.setPromptText("y");
+            yField.setPromptText("col");
             yField.setPrefWidth(50);
 
             TextField posField = new TextField();
@@ -2303,7 +2303,11 @@ public class FlightScene {
         for (Map.Entry<String, Integer> entry : viewFlow.getGoodsByColor().entrySet()) {
             String color = entry.getKey().toLowerCase();
             if (goodLabels.containsKey(color)) {
-                goodLabels.get(color).setText(": " + entry.getValue());
+                if(entry.getValue() > 0) {
+                    goodLabels.get(color).setText(": " + entry.getValue());
+                } else {
+                    goodLabels.get(color).setText(": 0");
+                }
             }
         }
     }
@@ -2348,6 +2352,9 @@ public class FlightScene {
         StringBuilder desc = new StringBuilder();
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[i].length; j++) {
+                if (i == 7 && j == 7){
+                    System.out.println("i = 7 j = 7");
+                }
                 Component c = layout[i][j];
                 if (c != null && !"Empty Space".equals(c.getType()) && ("Load".equals(c.getType()) || "Battery Storage".equals(c.getType()) || "Cabin".equals(c.getType()) || "Cannon".equals(c.getType()) || "Engine".equals(c.getType()) || "Shield".equals(c.getType()))) {
                     if(!formatComponent(c, i, j).isBlank()) {

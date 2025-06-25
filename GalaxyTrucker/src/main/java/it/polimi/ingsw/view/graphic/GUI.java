@@ -694,7 +694,10 @@ public class GUI implements UI {
      */
     @Override
     public void showStardustCard(StarDustEvent event) {
-        Platform.runLater(() -> this.flightScene.updateCardInScene(event.getCard()));
+        Platform.runLater(() -> {
+            this.flightScene.hideWaitForOthers();
+            this.flightScene.updateCardInScene(event.getCard());
+        });
     }
 
     /**
@@ -723,7 +726,10 @@ public class GUI implements UI {
      */
     @Override
     public void showEpidemicCard(EpidemicEvent event) {
-        Platform.runLater(() -> this.flightScene.updateCardInScene(event.getCard()));
+        Platform.runLater(() -> {
+            this.flightScene.hideWaitForOthers();
+            this.flightScene.updateCardInScene(event.getCard());
+        });
     }
 
     /**
