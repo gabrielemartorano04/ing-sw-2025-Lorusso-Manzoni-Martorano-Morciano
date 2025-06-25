@@ -645,10 +645,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     @Override
     public void visit(RemoveGoods event) {
+        updatesFromFlight(event.getTruckers());
+
+        ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
+
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
-            viewFlow.setShip(event.getShip());
-            ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
             ui.updateGoodsListToRemove(event.getGoodsList());
             ui.showInputFormat(event.getParserState());
         }else{
