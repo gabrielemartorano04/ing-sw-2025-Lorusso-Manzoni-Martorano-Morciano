@@ -23,9 +23,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
     // === PHASE 1: Lobby ===
 
     /**
-     * notifies that this game is already full
+     * Notifies that this game is already full
      *
-     * @param event error that states there is no more space in the game
+     * @param event error indicating no available space
      */
     @Override
     public void visit(NoAvailableSpaceError event) {
@@ -33,9 +33,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
     }
 
     /**
-     * notifies the client to
+     * Receives available colors and shows the welcome screen
      *
-     * @param event
+     * @param event contains available colors for the client
      */
     @Override
     public void visit(AvailableColorsEvent event) {
@@ -43,16 +43,31 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.welcomeScene(event);
     }
 
+    /**
+     * Notifies that the chosen nickname is already taken.
+     *
+     * @param event error indicating nickname conflict
+     */
     @Override
     public void visit(NicknameAlreadyInError event) {
         ui.nickNameAlreadyTaken(event);
     }
 
+    /**
+     * Notifies that the chosen color is already taken.
+     *
+     * @param event error indicating color conflict
+     */
     @Override
     public void visit(ColorAlreadyInError event) {
         ui.colorAlreadyTaken(event);
     }
 
+    /**
+     * Notifies a new player joined the game.
+     *
+     * @param event contains the joined player's info
+     */
     @Override
     public void visit(PlayerJoinedEvent event) {
         viewFlow.setAlreadyLogged();
@@ -66,31 +81,37 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     }
 
+    /**
+     * Handles the first connection and prompts for player count
+     *
+     * @param event first connection notification, which means this client is the first and will create the game
+     */
+
     @Override
     public void visit(FirstConnectionEvent event) {
         ui.showInsertNumPlayers();
         viewFlow.setViewState(ViewFlow.ViewState.FIRST);
     }
 
+    /**
+     * Resumes a previously started game by restoring the trucker's state,
+     * view state, and UI scene based on the saved game state
+     *
+     * @param event contains game state, player info, and components to resume the game
+     */
     @Override
     public void visit(ResumeGameEvent event) {
         Trucker trucker=null;
+
         if(viewFlow.getNickname()==null) {
             viewFlow.setNickname(event.getNickname());
         }
-        boolean isLeader = false;
-        if(viewFlow.getNickname().equalsIgnoreCase(event.getTruckers().getFirst().getNickname())) {
-            isLeader = true;
-        }
+        boolean isLeader = viewFlow.getNickname().equalsIgnoreCase(event.getTruckers().getFirst().getNickname());
+
         for(Trucker t: event.getTruckers()){
             if(t.getNickname().equals(viewFlow.getNickname())){
                 trucker=t;
             }
-        }
-
-        if(trucker == null){
-            // solo per debug, NON deve mai succedere
-            throw new RuntimeException("Trucker is null");
         }
 
         try {
@@ -142,17 +163,26 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 viewFlow.fillAvailableComponents(event.getComponents());
                 ui.resumeBuildingScene(event.getPlayerNames());
             }
-
         }
-
     }
 
+    /**
+     * Sets the view to allow the user to choose whether to resume a previous game
+     *
+     * @param chooseResumeEvent event signaling resume choice is available
+     */
     @Override
     public void visit(ChooseResumeEvent chooseResumeEvent) {
         viewFlow.setViewState(ViewFlow.ViewState.CHOOSE_OLD);
         ui.showChooseResume();
     }
 
+    /**
+     * Displays the welcome screen of the old game for returning players with available nicknames and colors,
+     * only if no nickname is currently set
+     *
+     * @param availablePlayersEvent event containing available nicknames and colors of the old game
+     */
     @Override
     public void visit(AvailablePlayersEvent availablePlayersEvent) {
         if(viewFlow.getNickname()==null) {
@@ -163,6 +193,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
 
     // === PHASE 2: Building ===
+
 
     @Override
     public void visit(StartBuildingEvent event) {
