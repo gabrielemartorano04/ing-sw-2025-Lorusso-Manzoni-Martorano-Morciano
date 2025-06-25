@@ -20,7 +20,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     }
 
 
-    // === PHASE 1: Login and game creation or entrance to a game ===
+    // === PHASE 1: Login and game creation or entrance to an old game ===
 
     /**
      * Notifies that this game is already full

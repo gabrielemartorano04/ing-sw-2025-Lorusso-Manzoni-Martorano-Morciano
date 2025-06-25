@@ -108,6 +108,11 @@ public class ClientHandlerVisitor implements VirtualServer {
      */
     public int getGameLevel(){return gameLevel;}
 
+
+
+    // === PHASE 1: Login and game creation or entrance to an old game ===
+
+
     /**
      * Handles the creation of a new game by storing the number of players and game level,
      * and returns the available colors for the first player.
@@ -252,7 +257,18 @@ public class ClientHandlerVisitor implements VirtualServer {
         }
     }
 
-
+    /**
+     * Handles the client's decision to resume a previously saved game or start a new one
+     * If the client chooses to resume:
+     * - Attempts to load the saved game from persistence.
+     * - Prepares the game state for resumption (sets SETUP, restores old nicknames and colors).
+     * - Returns an event with the list of old players for reconnection.
+     * If the client chooses not to resume:
+     * - Deletes any saved game data and signals the start of a new game
+     *
+     * @param event the resume decision sent by the client
+     * @return a ServerEvent indicating the next action (resume game or start new)
+     */
     @Override
     public ServerEvent visit(ChooseToResume event){
         ServerController.setOldGame(event.getChooseToResume());
@@ -282,12 +298,169 @@ public class ClientHandlerVisitor implements VirtualServer {
     }
 
 
+
+    // === PHASE 2: Building ===
+
+    /**
+     * Marks the selected component as unselected based on the given index, which is
+     * the index of the component in the available components list
+     *
+     * @param event the discard event containing the component index
+     * @param client the client performing the action
+     * @return confirmation event of successful discard
+     */
     @Override
     public ServerEvent visit(DiscardTileEvent event, Client client) {
         gameController.getGame().getComponents().setComponentAsUnselected(event.getIndex());
         return new DiscardSuccessEvent(event.getIndex(), client.getTruckerController().getNickname());
     }
 
+    /**
+     * Attempts to keep the selected component for the player
+     * Saves game state upon success
+     *
+     * @param event the event containing the component to keep
+     * @param client the client performing the action
+     * @return success event or error if the component is invalid
+     */
+    @Override
+    public ServerEvent visit(KeepTileEvent event, Client client) {
+        Component component = event.getComponent();
+        try {
+            client.getTruckerController().keep(component);
+            GamePersistence.saveGame(gameController);
+            return new KeptComponentEvent(component,gameController.getGame().getComponents().getComponents());
+        } catch (InvalidComponentsException e) {
+            return new GenericErrorEvent(e.getMessage(), false);
+        }
+    }
+
+    /**
+     * Attempts to link a component to the player's spaceship at a specified position
+     * Saves game state upon success
+     *
+     * @param event the event with component and coordinates
+     * @param client the client performing the action
+     * @return success event or error if coordinates are invalid
+     */
+    @Override
+    public ServerEvent visit(LinkTileEvent event, Client client) {
+        int x=event.getX();
+        int y=event.getY();
+        Component component=event.getComponent();
+        try {
+            client.getTruckerController().link(component,x,y);
+            GamePersistence.saveGame(gameController);
+            return new ComponentLinkedEvent(event.getComponent(), x, y, gameController.getGame().getComponents().getComponents());
+        }  catch (InvalidCoordinates e) {
+            return new InvalidCoordinatesError(client.getTruckerController().getNickname());
+        }
+    }
+
+    /**
+     * Handles the selection of a component from the pool
+     * Marks it as selected and uncovered if valid
+     *
+     * @param event the event containing the component index
+     * @param client the client performing the action
+     * @return success event or error if index is invalid
+     */
+    @Override
+    public ServerEvent visit(SelectTileEvent event, Client client) {
+        int index=event.getIndex();
+        System.out.println("\n" + index + "\n");
+        if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
+            return new ComponentNotAvailableError();
+        }
+        try {
+            client.getTruckerController().selectComponent(index,gameController.getGame().getComponents());
+            gameController.getGame().getComponents().setComponentAsSelected(index);
+            // probabilmente evitabile considerando che il fatto di essere covered o meno basta salvarlo lato view
+            // ma meglio tenere view e server completamente sincronizzati per ora
+            gameController.getGame().getComponents().setComponentAsUncovered(index);
+            return new ComponentSelectedEvent(index, client.getTruckerController().getNickname());
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), false);
+        }
+    }
+
+    /**
+     * Selects a previously kept component and removes it from the player's kept list
+     *
+     * @param event the event with the index of the kept component
+     * @param client the client performing the action
+     * @return event containing the selected component or error if invalid
+     */
+    @Override
+    public ServerEvent visit(SelectKeptTileEvent event, Client client) {
+        int index=event.getIndex();
+        try {
+            Component component=client.getTruckerController().getKeptComponent(index);
+            client.getTruckerController().getTrucker().removeKeptComponent(index);
+            return new SuccessSelectKept(component,index);
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), false);
+        }
+    }
+
+    /**
+     * Reveals the stack at the specified index to the player
+     * Marks the stack as selected on the server
+     *
+     * @param event the event with the stack index
+     * @param client the client requesting the view
+     * @return event with the stack contents or error if invalid
+     */
+    @Override
+    public ServerEvent visit(ShowStackEvent event, Client client) {
+        int index=event.getIndex();
+        TruckerController trucker=client.getTruckerController();
+        Stack stack;
+        try {
+            stack = trucker.showStack(index,gameController.getGame());
+            gameController.getGame().viewStacks()[event.getIndex()].setSelected();
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(), false);
+        }
+        return new ReturnStackEvent(stack);
+    }
+
+    /**
+     * Turns the hourglass, if it is turned for the second time and by the last player it ends the building phase
+     *
+     * @param event the hourglass turn request
+     * @param client the client performing the action
+     * @return success event, error if not allowed, or build complete if last player
+     */
+    @Override
+    public ServerEvent visit(TurnHourglassEvent event, Client client) {
+        ServerEvent tmp;
+        try {
+            tmp =gameController.getGame().turnHourglass();
+        } catch (CannotTurnHourglassException e) {
+            return new TurnHourglassError();
+        }
+        if (tmp != null) {
+            endBuilding++;
+            if(endBuilding == gameController.getGame().getNumPlayers()){
+                return new BuildCompleteEvent(gameController.getGame().getTruckerList());
+            }
+            ServerController.getIstance().startThreadHourglass();
+            return tmp;
+        }
+        return new HourglassTurnEvent(gameController.getGame().getHourglass().getSecondsLeft());
+    }
+
+    /**
+     * Handles the end of the spaceship building phase for a client
+     * Assigns a launch position based on the current game level and the number of players who have finished
+     * If all players are done, stops the build timer and notifies completion with an appropriate event
+     *
+     * @param event  the end-of-building event sent by the client
+     * @param client the client who finished building
+     * @return an event indicating to wait for others players if not all players are done,
+     *         otherwise the events that indicates the build phase is completed for all players
+     */
     @Override
     public ServerEvent visit(EndBuildingEvent event, Client client) {
         endBuilding++;
@@ -344,114 +517,28 @@ public class ClientHandlerVisitor implements VirtualServer {
         }
     }
 
-    @Override
-    public ServerEvent visit(KeepTileEvent event, Client client) {
-        Component component = event.getComponent();
-        try {
-            client.getTruckerController().keep(component);
-            GamePersistence.saveGame(gameController);
-            return new KeptComponentEvent(component,gameController.getGame().getComponents().getComponents());
-        } catch (InvalidComponentsException e) {
-            return new GenericErrorEvent(e.getMessage(), false);
-        }
-    }
-
-    @Override
-    public ServerEvent visit(LinkTileEvent event, Client client) {
-        int x=event.getX();
-        int y=event.getY();
-        Component component=event.getComponent();
-        try {
-            client.getTruckerController().link(component,x,y);
-            GamePersistence.saveGame(gameController);
-            return new ComponentLinkedEvent(event.getComponent(), x, y, gameController.getGame().getComponents().getComponents());
-        }  catch (InvalidCoordinates e) {
-            return new InvalidCoordinatesError(client.getTruckerController().getNickname());
-        }
-    }
-
-    @Override
-    public ServerEvent visit(SelectTileEvent event, Client client) {
-        int index=event.getIndex();
-        System.out.println("\n" + index + "\n");
-        if(index < 0 || index > gameController.getGame().getComponents().getComponents().size() - 1){
-            return new ComponentNotAvailableError();
-        }
-        try {
-            client.getTruckerController().selectComponent(index,gameController.getGame().getComponents());
-            gameController.getGame().getComponents().setComponentAsSelected(index);
-            // probabilmente evitabile considerando che il fatto di essere covered o meno basta salvarlo lato view
-            // ma meglio tenere view e server completamente sincronizzati per ora
-            gameController.getGame().getComponents().setComponentAsUncovered(index);
-            return new ComponentSelectedEvent(index, client.getTruckerController().getNickname());
-        } catch (GeneralError e) {
-            return new GenericErrorEvent(e.getMessage(), false);
-        }
-    }
-
-
-    @Override
-    public ServerEvent visit(SelectKeptTileEvent event, Client client) {
-        int index=event.getIndex();
-        try {
-            Component component=client.getTruckerController().getKeptComponent(index);
-            client.getTruckerController().getTrucker().removeKeptComponent(index);
-            return new SuccessSelectKept(component,index);
-        } catch (GeneralError e) {
-            return new GenericErrorEvent(e.getMessage(), false);
-        }
-    }
-
-    @Override
-    public ServerEvent visit(ShowStackEvent event, Client client) {
-        int index=event.getIndex();
-        TruckerController trucker=client.getTruckerController();
-        Stack stack;
-        try {
-            stack = trucker.showStack(index,gameController.getGame());
-            gameController.getGame().viewStacks()[event.getIndex()].setSelected();
-        } catch (GeneralError e) {
-            return new GenericErrorEvent(e.getMessage(), false);
-        }
-        return new ReturnStackEvent(stack);
-    }
-
-    @Override
-    public ServerEvent visit(TurnHourglassEvent event, Client client) {
-        ServerEvent tmp;
-        try {
-            tmp =gameController.getGame().turnHourglass();
-        } catch (CannotTurnHourglassException e) {
-            return new TurnHourglassError();
-        }
-        if (tmp != null) {
-            endBuilding++;
-            if(endBuilding == gameController.getGame().getNumPlayers()){
-                return new BuildCompleteEvent(gameController.getGame().getTruckerList());
-            }
-            ServerController.getIstance().startThreadHourglass();
-            return tmp;
-        }
-        return new HourglassTurnEvent(gameController.getGame().getHourglass().getSecondsLeft());
-    }
-
-    @Override
-    public ServerEvent visit(ShowOtherShipEvent event) {
-        for(Trucker t:gameController.getGame().getTruckerList()){
-            if(t.getNickname().equals(event.getNicknameRequested())){
-                return new ShowOtherShipResponse(t.getSpaceShip().getComponents(),event.getNicknameRequested());
-            }
-        }
-        return new GenericErrorEvent("No such trucker with that nickname",false);
-    }
-
-
+    /**
+     * Handles the request for retrieving the coordinates of the alien cabin from the client's spaceship
+     *
+     * @param event  the event requesting the alien cabin coordinates
+     * @param client the client making the request
+     * @return event containing the alien cabin coordinates
+     */
     @Override
     public ServerEvent visit(AlienCoordinatesRequest event, Client client) {
         ArrayList<int[]> alienCoord=client.getTruckerController().getSpaceShip().getAlienCabin();
         return new AlienCabinCoord(alienCoord);
     }
 
+    /**
+     * Handles the event where the client sends the coordinates of the aliens in the spaceship
+     * Updates the spaceship with the received alien coordinates, sets the number of humans and battery,
+     * updates lost components and exposed connectors, then starts the flight for this client
+     *
+     * @param event  the event containing the alien coordinates
+     * @param client the client sending the coordinates
+     * @return event with the updated spaceship and track information
+     */
     @Override
     public ServerEvent visit(SendAlienCoord event, Client client) {
         if(event.getCoord()!=null){
@@ -473,7 +560,14 @@ public class ClientHandlerVisitor implements VirtualServer {
         return new FlightStartEvent(position,gameController.getGame().getTrack(), spaceship, players);
     }
 
-
+    /**
+     * Handles the fact that the sender is ready for the flight phase.
+     * If all players are ready for the flight phase then it starts the first card of the deck
+     *
+     * @param event event stating that the sender is ready for the flight phase
+     * @return an event indicating to wait to the client if not all players have finished, otherwise
+     *          the event containing the information of the first card of the flight phase
+     */
     @Override
     public ServerEvent visit(OkStartFlight event) {
         startFlight++;
@@ -487,6 +581,14 @@ public class ClientHandlerVisitor implements VirtualServer {
         return cardController.startCard();
     }
 
+    /**
+     * Handles the event for drawing a new card from the deck.
+     * Only the first player in the list is allowed to draw. If the deck is empty,
+     * final scores are computed and the game ends.
+     *
+     * @param event the event requesting to draw a card
+     * @return an event to start the new card, an error if not the current player's turn, or an end game event
+     */
     @Override
     public ServerEvent visit(DrawCardEvent event) {
         Card card;
@@ -513,45 +615,95 @@ public class ClientHandlerVisitor implements VirtualServer {
 
     }
 
+    /**
+     * Handles the event to set the coordinates for the remotion of humans
+     * in the current card.
+     *
+     * @param event the event containing human coordinates
+     * @return the resulting event after setting the coordinates
+     */
     @Override
     public ServerEvent visit(HumanCoordEvent event) {
         return cardController.setHumansCoordinates(event);
     }
 
+    /**
+     * Handles the event to set the coordinates of the goods for the current card.
+     *
+     * @param event the event containing goods coordinates
+     * @return the resulting event after setting the coordinates
+     */
     @Override
     public ServerEvent visit(PlotGoodEvent event) {
         return cardController.setGoodsCoordinates(event);
     }
 
+    /**
+     * Handles the event where a player decides which planet to land on.
+     *
+     * @param event the event containing the planet landing decision
+     * @return the resulting event after processing the landing decision
+     */
     @Override
     public ServerEvent visit(PlanetDecisionEvent event) {
         return cardController.playerLandingPlanets(event);
     }
 
+    /**
+     * Handles the event to roll the dice for the current card.
+     *
+     * @param event the dice roll event
+     * @return the resulting event after the dice are rolled
+     */
     @Override
     public ServerEvent visit(RollDiceEvent event) {
         return cardController.rollDice();
     }
 
+    /**
+     * Handles the event to activate shields during the current card.
+     *
+     * @param event the event requesting shield activation
+     * @return the resulting event after activating the shields
+     */
     @Override
     public ServerEvent visit(ActivateShieldEvent event) {
         return cardController.activateShield(event);
     }
 
+    /**
+     * Handles the event to activate cannons during the current card.
+     *
+     * @param event the event requesting cannon activation
+     * @return the resulting event after activating the cannons
+     */
     @Override
     public ServerEvent visit(ActivateCannonsEvent event) {
         return cardController.activateCannons(event);
     }
 
+    /**
+     * Handles the event to activate engines during the current card.
+     *
+     * @param event the event requesting engine activation
+     * @return the resulting event after activating the engines
+     */
     @Override
     public ServerEvent visit(ActivateEnginesEvent event) {
         return cardController.activateEngines(event);
     }
 
+    /**
+     * Handles the event of a trucker landing on an Abandoned Station or Abandoned Ship.
+     *
+     * @param event the landing event
+     * @return the resulting event after processing the landing
+     */
     @Override
     public ServerEvent visit(TruckerLandingEvent event) {
         return cardController.truckerLanding(event);
     }
+
 
     @Override
     public ServerEvent visit(RearrangeEvent event) {
@@ -609,6 +761,15 @@ public class ClientHandlerVisitor implements VirtualServer {
 
     }
 
+    @Override
+    public ServerEvent visit(ShowOtherShipEvent event) {
+        for(Trucker t:gameController.getGame().getTruckerList()){
+            if(t.getNickname().equals(event.getNicknameRequested())){
+                return new ShowOtherShipResponse(t.getSpaceShip().getComponents(),event.getNicknameRequested());
+            }
+        }
+        return new GenericErrorEvent("No such trucker with that nickname",false);
+    }
 
 
     @Override
