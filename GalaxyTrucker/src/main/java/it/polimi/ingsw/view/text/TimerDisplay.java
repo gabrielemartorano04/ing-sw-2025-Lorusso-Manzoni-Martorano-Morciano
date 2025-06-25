@@ -9,16 +9,6 @@ import it.polimi.ingsw.view.UI;
 public class TimerDisplay {
 
     /**
-     * Represents the duration of the countdown timer in seconds
-     */
-    private int durationSeconds;
-
-    /**
-     * Represents the start time of the countdown timer in milliseconds
-     */
-    private long startTime;
-
-    /**
      * Tracks the number of times the countdown timer has completed and expired
      */
     private int expirationCount;
@@ -54,8 +44,6 @@ public class TimerDisplay {
      * @param durationSeconds the duration of the countdown timer in seconds
      */
     public void start(int durationSeconds) {
-        this.startTime = System.currentTimeMillis();
-        this.durationSeconds=durationSeconds;
         ui.turnHourGlass(durationSeconds);
 
         timerThread = new Thread(() -> {
