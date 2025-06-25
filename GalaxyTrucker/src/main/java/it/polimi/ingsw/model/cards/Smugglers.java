@@ -165,6 +165,7 @@ public class Smugglers extends Card implements Serializable {
                 null,
                 null,
                 ParserState.ACTIVATE_CANNONS,
+                null,
                 this
         );
     }
@@ -421,7 +422,9 @@ public class Smugglers extends Card implements Serializable {
 
         while (colorOfCurrGoodToRemove > 0 && goodsToLoseCurrTrucker > 0) {
             numGoodCurrType = getNumGoodsForColor(ship, colorOfCurrGoodToRemove);
-
+            System.out.println(nickname);
+            System.out.println("sto cercando " + colorOfCurrGoodToRemove);
+            System.out.println("numGoodCurrType: " + numGoodCurrType + " numGoodCurrType: " + goodsToLoseCurrTrucker);
             if (numGoodCurrType > 0 && numGoodCurrType <= goodsToLoseCurrTrucker) {
                 return removeWithoutDecision(goodsList);
             }
@@ -648,5 +651,17 @@ public class Smugglers extends Card implements Serializable {
 
     public void addGoodToRemove(Goods good){
         goodsToRemove.add(good);
+    }
+
+    public void setGoodsToLoseCurrTrucker(int goodsToLoseCurrTrucker) {
+        this.goodsToLoseCurrTrucker = goodsToLoseCurrTrucker;
+    }
+
+    public ArrayList<Goods> getGoodsToRemove() {
+        return goodsToRemove;
+    }
+
+    public void setIndexOfCurrentTrucker(int indexOfCurrentTrucker) {
+        this.indexOfCurrentTrucker = indexOfCurrentTrucker;
     }
 }
