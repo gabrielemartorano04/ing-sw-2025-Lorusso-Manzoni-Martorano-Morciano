@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Stack;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Goods;
@@ -257,10 +258,9 @@ public interface UI {
 
     /**
      * Updates the list of planets occupied based on a given planetary decision event
-     * @param event the PlanetDecision object containing details about the decision or action
-     *              that may affect the occupied status of planets
+     * @param planetsOccupied information about the planets occupied
      */
-    void updatePlanetsOccupied(PlanetDecision event);
+    void updatePlanetsOccupied(ArrayList<Trucker> planetsOccupied);
 
     /**
      * Displays the tracking details of truckers along with their associated level.
