@@ -1617,7 +1617,6 @@ public class SpaceShip implements Serializable {
                         }
                     }
                     break;
-                //if the meteor comes from est
                 case 1:
                     for (int j = 10; j > 3; j--) {
                         if (components[num][j] != null) {
