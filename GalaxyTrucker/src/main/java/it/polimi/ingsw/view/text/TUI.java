@@ -30,21 +30,29 @@ import java.util.List;
 public class TUI implements UI {
 
     /**
-     * A reference to an InputReader instance used in the TUI class to handle user input.
-     * The InputReader operates in a separate thread to continuously read and process
-     * input lines from the console, ensuring non-blocking input handling within the UI.
-     * It facilitates interaction by providing a thread-safe mechanism for retrieving user inputs.
+     * A reference to an InputReader instance used in the TUI class to handle user input
      */
     private final InputReader inputReader;
+
+    /**
+     * Represents the flow of views within the game. This variable manages the interactions
+     * between the user interface and the underlying game logic, facilitating the display
+     * and update of various game states and events to the user
+     */
     private final ViewFlow viewFlow;
 
+    /**
+     * Constructs a new TUI (Text User Interface) object.
+     * @param viewFlow the ViewFlow instance to manage the flow of scenes and events within the game.
+     */
     public TUI(ViewFlow viewFlow) {
         this.inputReader = new InputReader();
         this.viewFlow = viewFlow;
     }
 
-    // Metodi omolagati tra GUI e TUI
-
+    /**
+     *
+     */
     @Override
     public void welcomeScene(AvailableColorsEvent event){
         this.showWelcome();
