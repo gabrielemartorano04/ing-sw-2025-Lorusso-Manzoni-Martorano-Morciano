@@ -505,6 +505,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(GainCosmicCredits event) {
         if(event.getNickname().equals(viewFlow.getNickname())) {
+            viewFlow.setCosmicCreditsToGain(event.getCosmicCredits());
+            viewFlow.setDaysLost(event.getDaysLost());
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         }else{

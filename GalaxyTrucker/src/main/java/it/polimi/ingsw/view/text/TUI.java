@@ -392,7 +392,7 @@ public class TUI implements UI {
                             "Type 'y, <x1> <y1> - <value1>, <x2> <y2> - <value2>' or 'n'");
                 }
             }
-            case COSMIC_CREDITS -> System.out.println("Do you want to gain that cosmic credits? Type '<y/n>'.");
+            case COSMIC_CREDITS -> System.out.println("Do you want to gain " + viewFlow.getCosmicCreditsToGain() + " cosmic credits and lose " + viewFlow.getDaysLost() + " flight days? Type '<y/n>'.");
             case WARZONE -> System.out.println("Type 'warzone' to start warzone card");
             case ASK_WITHDRAW -> System.out.println("Do you want to withdraw? Type 'y' or 'n'");
         }

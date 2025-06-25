@@ -143,6 +143,16 @@ public class ViewFlow implements EventReceiver {
     private int numOfBatteriesToRemove;
 
     /**
+     * Current number of cosmic credits the client can gain
+     */
+    private int cosmicCreditsToGain;
+
+    /**
+     * Current number of days to lose
+     */
+    private int daysToLose;
+
+    /**
      * Number of cards to draw in the flight scene
      */
     private int cardsToGo;
@@ -192,6 +202,9 @@ public class ViewFlow implements EventReceiver {
      */
     private SpaceShip ship;
 
+    /**
+     * Map every type of good associated to a color to its number in the ship
+     */
     private Map<String, Integer> goodsByColor;
 
 
@@ -239,6 +252,9 @@ public class ViewFlow implements EventReceiver {
         this.serverEventVisitor = new ServerEventHandlerVisitor(this, ui);
         this.alreadyLogged=false;
         this.firstLinked=false;
+        this.numOfBatteriesToRemove = 0;
+        this.cosmicCreditsToGain = 0;
+        this.daysToLose = 0;
     }
 
     public void setFirstLinked(){
@@ -390,6 +406,21 @@ public class ViewFlow implements EventReceiver {
         return numOfBatteriesToRemove;
     }
 
+    public void setCosmicCreditsToGain(int cosmicCreditsToGain) {
+        this.cosmicCreditsToGain = cosmicCreditsToGain;
+    }
+
+    public int getCosmicCreditsToGain() {
+        return cosmicCreditsToGain;
+    }
+
+    public void setDaysLost(int daysLost) {
+        this.daysToLose = daysLost;
+    }
+
+    public int getDaysLost() {
+        return this.daysToLose;
+    }
 //    public boolean getEnd(){
 //        return end;
 //    }
