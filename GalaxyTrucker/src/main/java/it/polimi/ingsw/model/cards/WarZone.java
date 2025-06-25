@@ -186,6 +186,7 @@ public class WarZone extends Card implements Serializable {
                 this.penalties,
                 ParserState.WARZONE,
                 null,
+                Game.getIstance().getTrack(),
                 this
         );
     }
