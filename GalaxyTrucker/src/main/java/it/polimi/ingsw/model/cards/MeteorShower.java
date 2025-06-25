@@ -113,6 +113,7 @@ public class MeteorShower extends Card implements Serializable {
                 null,
                 ParserState.ROLL_DICE,
                 null,
+                Game.getIstance().getTrack(),
                 this
         );
     }

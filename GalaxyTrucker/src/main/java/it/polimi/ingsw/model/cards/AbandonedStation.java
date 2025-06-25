@@ -106,6 +106,7 @@ public class AbandonedStation extends Card implements Serializable {
                 null,
                 ParserState.LAND,
                 null,
+                Game.getIstance().getTrack(),
                 this
         );
     }
