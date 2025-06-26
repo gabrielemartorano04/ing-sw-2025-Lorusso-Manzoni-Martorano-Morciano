@@ -230,7 +230,7 @@ public class InputParser {
      * @param firstLinked specify if the component connected is the first
      * @return the client event that manages that input
      */
-    public ClientEvent parseBuilding(String input, Component component, int index, ArrayList<Component> kept, boolean isFromKept, int stackSelected, boolean firstLinked) {
+    public ClientEvent parseBuilding(String input, Component component, int index, ArrayList<Component> kept, boolean isFromKept, int stackSelected, boolean firstLinked,ArrayList<String> players) {
         if (input == null || input.isEmpty()) return null;
 
         String[] tokens = input.split("\\s+", 3);
@@ -240,18 +240,22 @@ public class InputParser {
             if (stackSelected == -1) {
                 if (component != null) {
                     return isFromKept
-                            ? handleFromKeptComponentCommand(command, tokens, component, index)
-                            : handleSelectedFromListComponentCommand(command, tokens, component, index);
+                            ? handleFromKeptComponentCommand(command, tokens, component, index,players)
+                            : handleSelectedFromListComponentCommand(command, tokens, component, index,players);
                 } else {
                     return firstLinked
-                            ? handleNoComponentSelectedCommand(command, tokens, kept)
-                            : handleNoComponentSelectedCommandFirst(command, tokens, kept);
+                            ? handleNoComponentSelectedCommand(command, tokens, kept,players)
+                            : handleNoComponentSelectedCommandFirst(command, tokens, kept,players);
                 }
             } else {
                 if(command.equals("help") && tokens.length == 1){
                     String message = "Commands:\n";
                     message+="- dropstack: to drop the stack\n";
                     System.out.println(message);
+                    System.out.println("Players in the game\n");
+                    for(String nickname: players){
+                        System.out.println(nickname);
+                    }
                     return null;
                 }
 
@@ -265,10 +269,10 @@ public class InputParser {
         } else {
             if (component != null) {
                 return isFromKept
-                        ? handleTrialModeCommandsFromKept(command, tokens, component, index)
-                        : handleTrialModeCommandsNotFromKept(command, tokens, component, index);
+                        ? handleTrialModeCommandsFromKept(command, tokens, component, index,players)
+                        : handleTrialModeCommandsNotFromKept(command, tokens, component, index,players);
             } else {
-                return handleTrialModeNoComponentCommands(command, tokens, kept);
+                return handleTrialModeNoComponentCommands(command, tokens, kept,players);
             }
         }
     }
@@ -278,9 +282,10 @@ public class InputParser {
      * @param command selected from the client
      * @param tokens the string inserted from the client
      * @param kept list of selected components
+     * @param players list of players nicknames
      * @return the client event that manages that input
      */
-    private ClientEvent handleNoComponentSelectedCommandFirst(String command, String[] tokens, ArrayList<Component> kept) {
+    private ClientEvent handleNoComponentSelectedCommandFirst(String command, String[] tokens, ArrayList<Component> kept,ArrayList<String> players) {
         switch (command) {
             case "help":
                 String message = "Commands:\n";
@@ -290,6 +295,10 @@ public class InputParser {
                 message+="- select <index> : to select a component\n";
                 message+="- selectkept <index> : to select one of your kept components\n";
                 System.out.println(message);
+                System.out.println("Players in the game\n");
+                for(String nickname: players){
+                    System.out.println(nickname);
+                }
                 return null;
             case "rules":
                 openRulesPdf();
@@ -338,8 +347,7 @@ public class InputParser {
     }
 
 
-
-    private ClientEvent handleFromKeptComponentCommand(String command, String[] tokens, Component component, int index) {
+    private ClientEvent handleFromKeptComponentCommand(String command, String[] tokens, Component component, int index,ArrayList<String> players) {
         switch (command) {
             case "help":
                 String message = "Commands:\n";
@@ -349,6 +357,10 @@ public class InputParser {
                 message+="- keep : to keep the selected component\n";
                 message+="- ship <nickname> : to see the ship of another player\n";
                 System.out.println(message);
+                System.out.println("Players in the game\n");
+                for(String nickname: players){
+                    System.out.println(nickname);
+                }
                 return null;
             case "rules":
                 openRulesPdf();
@@ -389,7 +401,7 @@ public class InputParser {
         }
     }
 
-    private ClientEvent handleSelectedFromListComponentCommand(String command, String[] tokens, Component component, int index) {
+    private ClientEvent handleSelectedFromListComponentCommand(String command, String[] tokens, Component component, int index,ArrayList<String> players) {
         switch (command) {
             case "help":
                 String message = "Commands:\n";
@@ -400,6 +412,10 @@ public class InputParser {
                 message+="- ship <nickname> : to see the ship of another player\n";
                 message+="- discard : to discard the selected component\n";
                 System.out.println(message);
+                System.out.println("Players in the game\n");
+                for(String nickname: players){
+                    System.out.println(nickname);
+                }
                 return null;
             case "rules":
                 openRulesPdf();
@@ -445,7 +461,7 @@ public class InputParser {
         }
     }
 
-    private ClientEvent handleNoComponentSelectedCommand(String command, String[] tokens, ArrayList<Component> kept) {
+    private ClientEvent handleNoComponentSelectedCommand(String command, String[] tokens, ArrayList<Component> kept,ArrayList<String> players) {
         switch (command) {
             case "help":
                 String message = "Commands:\n";
@@ -456,6 +472,10 @@ public class InputParser {
                 message+="- selectkept <index> : to select one of your kept components\n";
                 message+="- stack <index> : to see a stack\n";
                 System.out.println(message);
+                System.out.println("Players in the game\n");
+                for(String nickname: players){
+                    System.out.println(nickname);
+                }
                 return null;
             case "rules":
                 openRulesPdf();
@@ -540,7 +560,7 @@ public class InputParser {
         }
     }
 
-    private ClientEvent handleTrialModeCommandsFromKept(String command, String[] tokens, Component component, int index) {
+    private ClientEvent handleTrialModeCommandsFromKept(String command, String[] tokens, Component component, int index,ArrayList<String> players) {
         switch (command) {
             case "help":
                 String message = "Commands:\n";
@@ -550,6 +570,10 @@ public class InputParser {
                 message+="- keep : to keep the selected component\n";
                 message+="- ship <nickname> : to see the ship of another player\n";
                 System.out.println(message);
+                System.out.println("Players in the game\n");
+                for(String nickname: players){
+                    System.out.println(nickname);
+                }
                 return null;
             case "rules":
                 openRulesPdf();
@@ -590,7 +614,7 @@ public class InputParser {
         }
     }
 
-    private ClientEvent handleTrialModeCommandsNotFromKept(String command, String[] tokens, Component component, int index) {
+    private ClientEvent handleTrialModeCommandsNotFromKept(String command, String[] tokens, Component component, int index,ArrayList<String> players) {
         switch (command) {
             case "help":
                 String message = "Commands:\n";
@@ -601,6 +625,10 @@ public class InputParser {
                 message+="- ship <nickname> : to see the ship of another player\n";
                 message+="- discard : to discard the selected component\n";
                 System.out.println(message);
+                System.out.println("Players in the game\n");
+                for(String nickname: players){
+                    System.out.println(nickname);
+                }
                 return null;
             case "rules":
                 openRulesPdf();
@@ -646,7 +674,7 @@ public class InputParser {
         }
     }
 
-    private ClientEvent handleTrialModeNoComponentCommands(String command, String[] tokens, ArrayList<Component> kept) {
+    private ClientEvent handleTrialModeNoComponentCommands(String command, String[] tokens, ArrayList<Component> kept,ArrayList<String> players) {
         switch (command) {
             case "help":
                 String message = "Commands:\n";
@@ -655,6 +683,10 @@ public class InputParser {
                 message+="- select <index> : to select a component\n";
                 message+="- selectkept <index> : to select one of your kept components\n";
                 System.out.println(message);
+                System.out.println("Players in the game\n");
+                for(String nickname: players){
+                    System.out.println(nickname);
+                }
                 return null;
             case "rules":
                 openRulesPdf();
