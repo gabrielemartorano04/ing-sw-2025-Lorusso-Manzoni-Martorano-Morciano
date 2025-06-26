@@ -44,7 +44,7 @@ class WarZoneTest {
     }
 
     @Test
-    void setHumansCoordinates() {
+    void removeHumans() {
     }
 
     @Test

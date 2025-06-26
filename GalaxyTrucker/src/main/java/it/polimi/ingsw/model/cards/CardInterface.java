@@ -7,13 +7,20 @@ import java.util.ArrayList;
 
 public interface CardInterface {
 
+    /**
+     * Handles the landing of a player on an Abandoned ship or Abandoned Station
+     */
     default ServerEvent truckerLanding(boolean landing) throws GeneralError, WrongCallerException{
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-    default ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, GeneralError, WrongCallerException {
+    /**
+     * handle remotion of humans from the current player spaceShip
+     */
+    default ServerEvent removeHumans(ArrayList<int[]> coordinates) throws InvalidComponentsException, InvalidCoordinates, GeneralError, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
+
 
     default ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, WrongCallerException, InvalidPositionException {
         throw new WrongCallerException("This Card doesn't have this method");

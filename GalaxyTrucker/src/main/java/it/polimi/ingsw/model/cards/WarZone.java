@@ -117,11 +117,6 @@ public class WarZone extends Card implements Serializable {
      */
     private int numOfHumanToRemove;
 
-    /**
-     * coordinates of the cabins from which remove humans
-     */
-    private ArrayList<int[]> humanCoordinates;
-
 
 
     public WarZone(boolean trialFlight, int level, ArrayList<Condition> conditionsOrder, Map<Condition, Effect> penalties, ArrayList<int[]> shoots , String frontImage, String backImage, int id) {
@@ -139,8 +134,6 @@ public class WarZone extends Card implements Serializable {
         this.currShootIndex = 0;
         this.currCondition = null;
         this.numOfHumanToRemove = 0;
-        this.humanCoordinates = new ArrayList<>();
-
         this.initializeRemoveGoods = true;
         this.goodsToRemove = new ArrayList<>();
 
@@ -497,7 +490,7 @@ public class WarZone extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
+    public ServerEvent removeHumans(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
         if(state != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Can't call setCoordinates in the state: " + state);
         }
@@ -506,7 +499,7 @@ public class WarZone extends Card implements Serializable {
         }
         try{
             weakestTrucker.getSpaceShip().checkCabin(coordinates, numOfHumanToRemove);
-            this.humanCoordinates = coordinates;
+            weakestTrucker.getSpaceShip().removeNumHuman(coordinates, numOfHumanToRemove);
             state = CardState.ESECUZIONE;
             return cardEffect();
         }catch (InvalidCoordinates e){
@@ -629,6 +622,11 @@ public class WarZone extends Card implements Serializable {
             case LOSE_HUMANS:
                 state = CardState.HUMANSTOREMOVE;
                 numOfHumanToRemove = penalties.get(currCondition).getValue();
+                if(weakestTrucker.getSpaceShip().getNumCrew() <= numOfHumanToRemove){
+                    weakestTrucker.getSpaceShip().removeAllHumans();
+                    state = CardState.ESECUZIONE;
+                    return cardEffect();
+                }
                 return new HumanCoordinates(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(),Game.getIstance().getTruckerList());
             default:
                 throw new GeneralError("Unknown TypeOfEffect");
@@ -678,7 +676,7 @@ public class WarZone extends Card implements Serializable {
                 }
 
                 case LOSE_HUMANS -> {
-                    weakestTrucker.getSpaceShip().removeNumHuman(humanCoordinates,numOfHumanToRemove);
+
                     deactivateTruckersSpaceShip();
 
                     currConditionIndex++;
