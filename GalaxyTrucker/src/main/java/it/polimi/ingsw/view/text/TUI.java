@@ -555,6 +555,7 @@ public class TUI implements UI {
             case COSMIC_CREDITS -> System.out.println("Do you want to gain " + viewFlow.getCosmicCreditsToGain() + " cosmic credits and lose " + viewFlow.getDaysLost() + " flight days? Type '<y/n>'.");
             case WARZONE -> System.out.println("Type 'warzone' to start warzone card");
             case ASK_WITHDRAW -> System.out.println("Do you want to withdraw? Type 'y' or 'n'");
+            case DISPLAY_BIG_SHOOT -> System.out.println("Type 'continue' when you are ready for the big Shot");
         }
         System.out.print(">");
     }

@@ -799,6 +799,7 @@ public class GUI implements UI {
                     this.showWarzone = true;
                 }
                 case ASK_WITHDRAW -> this.flightScene.showAskWithdraw();
+                case DISPLAY_BIG_SHOOT -> this.flightScene.showBigShot();
 
             }
         });

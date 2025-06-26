@@ -2197,6 +2197,49 @@ public class FlightScene {
     }
 
     /**
+     * Show a message and a button to continue when ready for the big shot.
+     * Blocks interactions underneath using an overlay.
+     */
+    public void showBigShot() {
+        VBox container = new VBox(15);
+        container.setAlignment(Pos.CENTER);
+        container.setPadding(new Insets(10));
+
+        Label message = new Label("When ready for the big shot, press:");
+        message.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
+        message.setTextFill(Color.WHITE);
+        message.setWrapText(true);
+        message.setAlignment(Pos.CENTER);
+
+        Button continueBtn = new Button("Continue");
+        continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+        continueBtn.setTextFill(Color.BLACK);
+        continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        continueBtn.setCursor(Cursor.HAND);
+        continueBtn.setPadding(new Insets(10, 20, 10, 20));
+
+        container.getChildren().addAll(message, continueBtn);
+
+        AnchorPane popupContent = new AnchorPane(container);
+        AnchorPane.setBottomAnchor(container, 180.0);
+        AnchorPane.setLeftAnchor(container, 150.0);
+
+        overlayLayer.setMouseTransparent(false);
+        overlayLayer.getChildren().setAll(popupContent);
+
+        Runnable closePopup = () -> {
+            overlayLayer.getChildren().clear();
+            restoreInteractiveLayers();
+        };
+
+        continueBtn.setOnAction(e -> {
+            viewFlow.handleInput("warzone");
+            closePopup.run();
+        });
+    }
+
+
+    /**
      * scene for players who finished the game
      */
     public void showWaitForOthers() {
