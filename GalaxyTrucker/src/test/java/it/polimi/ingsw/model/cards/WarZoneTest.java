@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.CreateShipTest;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.components.Cabin;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
@@ -56,20 +57,19 @@ class WarZoneTest {
 
     @Test
     void testStartCard() {
-        // Act
         ServerEvent event = warZone.startCard();
 
-        // Assert: è del tipo corretto
-        assertTrue(event instanceof StartCardEvent);
-
+        switch (event){
+            case StartCardEvent sc-> assertTrue(true);
+            default -> fail();
+        }
         StartCardEvent startEvent = (StartCardEvent) event;
 
-        // Controllo contenuti principali
         assertEquals("War Zone", startEvent.getCardName());
         assertEquals("A dangerous conflict zone", startEvent.getCardDescription());
         assertEquals(ParserState.WARZONE, startEvent.getParserState());
 
-        // Controllo condizioni e penalità
+
         assertEquals(List.of(Condition.HUMANS, Condition.ENGINES, Condition.CANNONS), startEvent.getConditionsOrder());
         Map<Condition, Effect> expected = startEvent.getPenalties();
 
@@ -84,11 +84,11 @@ class WarZoneTest {
         Effect actual3 = warZone.getPenalties().get(Condition.CANNONS);
         assertEquals(expected3.getType(), actual3.getType());
 
-        // Traccia e giocatore iniziale
+
         assertEquals(Game.getIstance().getTruckerList().getFirst().getNickname(), startEvent.getFirstPlayerNickname());
         assertEquals(Game.getIstance().getTrack(), startEvent.getTrack());
 
-        // Riferimento alla carta
+
         assertSame(warZone, startEvent.getCard());
     }
 
@@ -194,7 +194,7 @@ class WarZoneTest {
 
     @Test
     void testActivateCannons_WrongState_ThrowsError() {
-        warZone.setState(CardState.WARZONE);  // stato errato
+        warZone.setState(CardState.WARZONE);
 
         assertThrows(GeneralError.class, () ->
                 warZone.activateCannons(true, new ArrayList<>(), new ArrayList<>())
@@ -204,7 +204,7 @@ class WarZoneTest {
     @Test
     void testActivateCannons_InvalidBatteryCoords_ThrowsException() {
         ArrayList<int[]> cannons = new ArrayList<>(List.of(new int[]{3, 3}));
-        ArrayList<int[]> invalidBatteryCoords = new ArrayList<>(List.of(new int[]{1, 1})); // non è batteria
+        ArrayList<int[]> invalidBatteryCoords = new ArrayList<>(List.of(new int[]{1, 1}));
         warZone.setState(CardState.ACTIVATE_CANNONS);
         assertThrows(InvalidComponentsException.class, () ->
                 warZone.activateCannons(true, cannons, invalidBatteryCoords)
@@ -213,7 +213,7 @@ class WarZoneTest {
 
     @Test
     void testActivateCannons_InvalidCannonCoords_ThrowsException() {
-        ArrayList<int[]> invalidCannons = new ArrayList<>(List.of(new int[]{1, 1})); // non cannone
+        ArrayList<int[]> invalidCannons = new ArrayList<>(List.of(new int[]{1, 1}));
         ArrayList<int[]> battery = new ArrayList<>(List.of(new int[]{4, 4}));
 
         warZone.setState(CardState.ACTIVATE_CANNONS);
@@ -251,7 +251,7 @@ class WarZoneTest {
         warZone.setCurrCondition();
         ServerEvent result = warZone.activateCannons(true, cannons, battery);
 
-        assertEquals(CardState.ROLL_DICE, warZone.getCardState()); //da handleCurrEffect
+        assertEquals(CardState.ROLL_DICE, warZone.getCardState());
         switch(result){
             case BooleanDecision bd-> {
                 assertEquals(warZone.getWeakestTrucker().getNickname(), bd.getNickname());
@@ -279,7 +279,7 @@ class WarZoneTest {
 
     @Test
     void testActivateEngines_WrongState_ThrowsError() {
-        warZone.setState(CardState.ACTIVATE_CANNONS); // stato sbagliato
+        warZone.setState(CardState.ACTIVATE_CANNONS);
 
         assertThrows(GeneralError.class, () ->
                 warZone.activateEngines(true, new ArrayList<>(), new ArrayList<>())
@@ -291,7 +291,7 @@ class WarZoneTest {
         warZone.setState(CardState.ACTIVATE_ENGINES);
 
         ArrayList<int[]> engines = new ArrayList<>(List.of(new int[]{5, 8}));
-        ArrayList<int[]> badBatteryCoords = new ArrayList<>(List.of(new int[]{1, 1})); // non batteria
+        ArrayList<int[]> badBatteryCoords = new ArrayList<>(List.of(new int[]{1, 1}));
 
         assertThrows(InvalidCoordinates.class, () ->
                 warZone.activateEngines(true, engines, badBatteryCoords)
@@ -357,7 +357,7 @@ class WarZoneTest {
         warZone.setCurrCondition();
         ServerEvent result = warZone.activateEngines(true, engines, battery);
 
-        assertEquals(CardState.HUMANSTOREMOVE, warZone.getCardState()); //da handleCurrEffect
+        assertEquals(CardState.HUMANSTOREMOVE, warZone.getCardState());
         switch(result){
             case HumanCoordinates hc-> {
                 assertEquals(warZone.getWeakestTrucker().getNickname(), hc.getNickname());
@@ -475,7 +475,7 @@ class WarZoneTest {
         g1.setY(9);
         g2.setX(8);
         g2.setY(9);
-        // Setup nave con 2 beni blu (color 3)
+
         Game.getIstance().getTrucker(0).getSpaceShip().addGood(g, new int[]{8,9}, 0, Game.getIstance().getBank());
         Game.getIstance().getTrucker(0).getSpaceShip().addGood(g1, new int[]{8,9}, 1, Game.getIstance().getBank());
         Game.getIstance().getTrucker(0).getSpaceShip().addGood(g1, new int[]{8,9}, 2, Game.getIstance().getBank());
@@ -515,7 +515,7 @@ class WarZoneTest {
         );
         warZone.setState(CardState.REMOVE_GOODS);
         warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
-        Game.getIstance().getTrucker(0).getSpaceShip().setBattery(); // Nessun bene, ma batterie presenti
+        Game.getIstance().getTrucker(0).getSpaceShip().setBattery();
 
         warZone.setGoodsToLose(2);
 
@@ -568,7 +568,7 @@ class WarZoneTest {
 
     @Test
     void testRemoveGoodsDecided_WrongState_Throws() {
-        warZone.setState(CardState.REMOVE_GOODS); // stato sbagliato
+        warZone.setState(CardState.REMOVE_GOODS);
 
         assertThrows(GeneralError.class, () ->
                 warZone.removeGoodsDecided(new ArrayList<>(List.of(0, 1)))
@@ -582,7 +582,7 @@ class WarZoneTest {
         warZone.addGoodsToRemove(new Goods(2));
 
         assertThrows(NotEnoughGoodsChosen.class, () ->
-                warZone.removeGoodsDecided(new ArrayList<>(List.of(0)) // solo uno invece di due
+                warZone.removeGoodsDecided(new ArrayList<>(List.of(0))
         ));
     }
 
@@ -635,6 +635,359 @@ class WarZoneTest {
         }
 
         assertEquals(0, Game.getIstance().getTrucker(0).getSpaceShip().getGoodsList().size());
+    }
+
+
+    @Test
+    void testRemoveBatteries_WrongState_ThrowsGeneralError() {
+        warZone.setState(CardState.REMOVE_GOODS);
+
+        assertThrows(GeneralError.class, () ->
+                warZone.removeBatteries(new ArrayList<>())
+        );
+    }
+
+    @Test
+    void testRemoveBatteries_InvalidCoords_ThrowsInvalidCoordinates() {
+        warZone.setState(CardState.REMOVE_BATTERIES);
+        try {
+            Game.initializeForTest(createShip.createShip1(new SpaceShip()), null);
+            Game.getIstance().getTrucker(0).getSpaceShip().setNumHuman();
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+
+
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+
+        ArrayList<int[]> coords = new ArrayList<>(List.of(new int[]{3, 3, 1}));
+
+        assertThrows(InvalidCoordinates.class, () ->
+                warZone.removeBatteries(coords)
+        );
+    }
+
+    @Test
+    void testRemoveBatteries_NotEnoughInStorage_Throws() {
+        warZone.setState(CardState.REMOVE_BATTERIES);
+        warZone.setGoodsToLose(3);
+
+
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+
+        ArrayList<int[]> coords = new ArrayList<>(List.of(new int[]{5, 6, 3}));
+
+        assertThrows(NotEnoughBatteries.class, () ->
+                warZone.removeBatteries(coords)
+        );
+    }
+
+    @Test
+    void testRemoveBatteries_CorrectFlow_ProceedsToEsecuzione() throws Exception {
+        warZone = new WarZone(
+                true, 1,
+                new ArrayList<>(List.of(Condition.HUMANS)),
+                Map.of(
+                        Condition.HUMANS, new Effect(TypeOfEffect.LOSE_GOODS, 2)
+                ),
+                null,
+                "/img/front.jpg",
+                "/img/back.jpg",
+                0
+        );
+        warZone.setState(CardState.REMOVE_BATTERIES);
+        warZone.setGoodsToLose(2);
+
+
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+
+        ArrayList<int[]> coords = new ArrayList<>(List.of(new int[]{5, 6, 2}));
+        warZone.setCurrConditionIndex(0);
+        warZone.setCurrCondition();
+        ServerEvent result = warZone.removeBatteries(coords);
+
+        assertEquals(CardState.ESECUZIONE, warZone.getCardState());
+        switch(result){
+            case CardFinished cf -> assertTrue(true);
+            default -> fail();
+        }
+    }
+
+    @Test
+    void testRemoveBatteries_WrongNumOfBatteries() throws Exception {
+        warZone = new WarZone(
+                true, 1,
+                new ArrayList<>(List.of(Condition.HUMANS)),
+                Map.of(
+                        Condition.HUMANS, new Effect(TypeOfEffect.LOSE_GOODS, 2)
+                ),
+                null,
+                "/img/front.jpg",
+                "/img/back.jpg",
+                0
+        );
+        warZone.setState(CardState.REMOVE_BATTERIES);
+        warZone.setGoodsToLose(2);
+
+
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+
+        ArrayList<int[]> coords = new ArrayList<>(List.of(new int[]{5, 6, 1}));
+        warZone.setCurrConditionIndex(0);
+        warZone.setCurrCondition();
+
+        assertThrows(WrongNumberOfBatteriesSelected .class, () ->warZone.removeBatteries(coords));
+    }
+
+    @Test
+    void testRemoveHumans_WrongState_ThrowsGeneralError() {
+        warZone.setState(CardState.REMOVE_GOODS);
+
+        assertThrows(GeneralError.class, () ->
+                warZone.removeHumans(new ArrayList<>(List.of(new int[]{1, 1})))
+        );
+    }
+
+    @Test
+    void testRemoveHumans_NullWeakestTrucker_ThrowsGeneralError() {
+        warZone.setState(CardState.HUMANSTOREMOVE);
+        warZone.setWeakestTrucker(null);
+
+        assertThrows(GeneralError.class, () ->
+                warZone.removeHumans(new ArrayList<>(List.of(new int[]{2, 2})))
+        );
+    }
+
+    @Test
+    void testRemoveHumans_InvalidCoordinates_Throws() {
+        warZone.setState(CardState.HUMANSTOREMOVE);
+
+
+        warZone.setNumOfHumanToRemove(1);
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+        ArrayList<int[]> invalidCoords = new ArrayList<>(List.of(new int[]{3, 3, 1}));
+
+        assertThrows(InvalidCoordinates.class, () ->
+                warZone.removeHumans(invalidCoords)
+        );
+    }
+
+    @Test
+    void testRemoveHumans_CorrectRemoval_UpdatesState() throws Exception {
+        warZone = new WarZone(
+                true, 1,
+                new ArrayList<>(List.of(Condition.HUMANS)),
+                Map.of(
+                        Condition.HUMANS, new Effect(TypeOfEffect.LOSE_GOODS, 2)
+                ),
+                null,
+                "/img/front.jpg",
+                "/img/back.jpg",
+                0
+        );
+        warZone.setState(CardState.REMOVE_BATTERIES);
+        warZone.setGoodsToLose(2);
+        warZone.setState(CardState.HUMANSTOREMOVE);
+        warZone.setCurrConditionIndex(0);
+        warZone.setCurrCondition();
+
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+        warZone.setNumOfHumanToRemove(1);
+
+        ArrayList<int[]> coords = new ArrayList<>(List.of(new int[]{7, 9, 1}));
+
+        ServerEvent result = warZone.removeHumans(coords);
+
+        assertEquals(CardState.ESECUZIONE, warZone.getCardState());
+        switch(result){
+            case CardFinished cf -> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckers());
+            default -> fail();
+        }
+        assertEquals(1, ((Cabin) Game.getIstance().getTrucker(0).getSpaceShip().getComponents()[7][9]).getQuantity());
+    }
+
+    @Test
+    void testRollDice_WrongState_ThrowsGeneralError() {
+        warZone.setState(CardState.REMOVE_GOODS);
+
+        assertThrows(GeneralError.class, () -> warZone.rollDice());
+    }
+
+    @Test
+    void testRollDice_NegativeIndex_ThrowsGeneralError() {
+        warZone.setState(CardState.ROLL_DICE);
+        warZone.setCurrShootIndex(-1); // fuori range
+
+        assertThrows(GeneralError.class, () -> warZone.rollDice());
+    }
+
+    @Test
+    void testRollDice_IndexTooLarge_ThrowsGeneralError() {
+        ArrayList<int[]> shoots = new ArrayList<>();
+        warZone = new WarZone(
+                true, 1,
+                new ArrayList<>(List.of(Condition.HUMANS)),
+                Map.of(
+                        Condition.HUMANS, new Effect(TypeOfEffect.GET_SHOT, 2)
+                ),
+                shoots
+                ,
+                "/img/front.jpg",
+                "/img/back.jpg",
+                0
+        );
+        warZone.setState(CardState.ROLL_DICE);
+        warZone.setCurrShootIndex(1); // 1 fuori range se lista vuota
+
+
+        assertThrows(GeneralError.class, () -> warZone.rollDice());
+    }
+
+    @Test
+    void testRollDice_BigShoot() throws Exception {
+        ArrayList<int[]> shoots = new ArrayList<>();
+        shoots.add(new int[]{1, 1});
+        warZone = new WarZone(
+                true, 1,
+                new ArrayList<>(List.of(Condition.HUMANS)),
+                Map.of(
+                        Condition.HUMANS, new Effect(TypeOfEffect.GET_SHOT, 2)
+                ),
+                shoots
+                ,
+                "/img/front.jpg",
+                "/img/back.jpg",
+                0
+        );
+        warZone.setCurrShootIndex(0);
+        warZone.setState(CardState.ROLL_DICE);
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+        ServerEvent result = warZone.rollDice();
+
+        assertEquals(CardState.ESECUZIONE, warZone.getCardState());
+        switch (result){
+            case RollDiceResult rd-> {
+                assertEquals(warZone.getWeakestTrucker().getNickname(), rd.getNickname());
+            }
+            default -> fail();
+        }
+    }
+
+    @Test
+    void testRollDice_NormalShoot() throws Exception {
+        ArrayList<int[]> shoots = new ArrayList<>();
+        shoots.add(new int[]{0, 1});
+        warZone = new WarZone(
+                true, 1,
+                new ArrayList<>(List.of(Condition.HUMANS)),
+                Map.of(
+                        Condition.HUMANS, new Effect(TypeOfEffect.GET_SHOT, 2)
+                ),
+                shoots
+                ,
+                "/img/front.jpg",
+                "/img/back.jpg",
+                0
+        );
+        warZone.setCurrShootIndex(0);
+        warZone.setState(CardState.ROLL_DICE);
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+        ServerEvent result = warZone.rollDice();
+
+        assertEquals(CardState.ACTIVATE_SHIELDS, warZone.getCardState());
+
+
+
+        RollDiceResult r = (RollDiceResult) result;
+        switch (result){
+            case RollDiceResult rd -> {
+                assertEquals(ParserState.ACTIVATE_SHIELD, r.getParserState());
+            }
+            default -> fail();
+        }
+
+    }
+
+    @Test
+    void testActivateShield_WrongState_ThrowsGeneralError() {
+        warZone.setState(CardState.ROLL_DICE);
+
+        assertThrows(GeneralError.class, () ->
+                warZone.activateShield(true, new int[]{1, 1}, new int[]{2, 2})
+        );
+    }
+
+    @Test
+    void testActivateShield_AnswerFalse() throws Exception {
+        warZone.setState(CardState.ACTIVATE_SHIELDS);
+
+        warZone.setCurrConditionIndex(0);
+        warZone.setCurrCondition();
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+
+        ServerEvent result = warZone.activateShield(false, new int[]{0, 0}, new int[]{0, 0});
+
+        assertEquals(CardState.WARZONE, warZone.getCardState()); //ce ne sono altre dopo
+        switch(result){
+            case CurrentCondition cc -> assertTrue(true);
+            default -> fail();
+        }
+    }
+
+    @Test
+    void testActivateShield_InvalidShieldCoord() {
+        warZone.setState(CardState.ACTIVATE_SHIELDS);
+
+        warZone.setCurrConditionIndex(0);
+        warZone.setCurrCondition();
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+
+        assertThrows(InvalidCoordinates.class, () ->
+                warZone.activateShield(true, new int[]{3, 3}, new int[]{1, 1})
+        );
+    }
+
+    @Test
+    void testActivateShield_NotEnoughBatteries_Throws() {
+        try {
+            Game.initializeForTest(createShip.createShip1(new SpaceShip()), null);
+            Game.getIstance().getTrucker(0).getSpaceShip().setNumHuman();
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        warZone.setState(CardState.ACTIVATE_SHIELDS);
+
+        warZone.setCurrConditionIndex(0);
+        warZone.setCurrCondition();
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+
+        assertThrows(NotEnoughBatteries.class, () ->
+                warZone.activateShield(true, new int[]{8, 8}, new int[]{5, 6})
+        );
+    }
+
+    @Test
+    void testActivateShield_CorrectFlow_UpdatesState() throws Exception {
+        try {
+            Game.initializeForTest(createShip.createShip1(new SpaceShip()), null);
+            Game.getIstance().getTrucker(0).getSpaceShip().setNumHuman();
+            Game.getIstance().getTrucker(0).getSpaceShip().setBattery();
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        warZone.setState(CardState.ACTIVATE_SHIELDS);
+
+        warZone.setCurrConditionIndex(0);
+        warZone.setCurrCondition();
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+
+        ServerEvent result = warZone.activateShield(true, new int[]{8, 8}, new int[]{5, 6});
+
+        assertEquals(CardState.WARZONE, warZone.getCardState());
+        switch(result){
+            case CurrentCondition cc -> assertTrue(true);
+            default -> fail();
+        }
     }
 
 
