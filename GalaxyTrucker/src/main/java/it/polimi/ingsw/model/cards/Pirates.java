@@ -332,10 +332,11 @@ public class Pirates extends Card implements Serializable {
 
         if(shoot[0] == 1){
             cardState = CardState.ESECUZIONE;
-            return cardEffect();
+            return new RollDiceResult(ParserState.DISPLAY_BIG_SHOOT, currShootIndex - 1, shoot, null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, Game.getIstance().getTruckerList());
+
         }else{
             cardState = CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,currShootIndex - 1,shoot,null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot", Game.getIstance().getTruckerList());
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,currShootIndex - 1,shoot,null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, Game.getIstance().getTruckerList());
         }
     }
 
@@ -377,7 +378,7 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex,shoot,null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot", Game.getIstance().getTruckerList());
+        return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex,shoot,null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, Game.getIstance().getTruckerList());
     }
 
     /**

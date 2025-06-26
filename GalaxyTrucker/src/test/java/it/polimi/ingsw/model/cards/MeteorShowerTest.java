@@ -96,7 +96,6 @@ class MeteorShowerTest {
                 //assertEquals();
                 assertEquals(Game.getIstance().getTrucker(meteorShower.getIndexOfCurrTrucker()).getNickname(), e.getNickname());
                 assertTrue(e.isForAll());
-                assertEquals("bigmeteor", e.getHitType());
             }else{
                 assertEquals(ParserState. ACTIVATE_CANNONS, e.getParserState());
                 assertEquals(meteorShower.getCurrMeteorIndex(), e.getCurrIndex());
@@ -105,7 +104,6 @@ class MeteorShowerTest {
                 //assertEquals();
                 assertEquals(Game.getIstance().getTrucker(meteorShower.getIndexOfCurrTrucker()).getNickname(), e.getNickname());
                 assertTrue(e.isForAll());
-                assertEquals("bigmeteor", e.getHitType());
             }
         } catch (GeneralError e) {
             throw new RuntimeException(e);

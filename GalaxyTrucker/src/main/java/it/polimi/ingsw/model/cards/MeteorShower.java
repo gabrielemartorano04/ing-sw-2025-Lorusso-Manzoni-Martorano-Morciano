@@ -139,10 +139,10 @@ public class MeteorShower extends Card implements Serializable {
 
         if (meteor[0]==1) {
             state=CardState.ACTIVATE_CANNONS;
-            return new RollDiceResult(ParserState.ACTIVATE_CANNONS, currMeteorIndex,null,meteor, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "bigmeteor", Game.getIstance().getTruckerList());
+            return new RollDiceResult(ParserState.ACTIVATE_CANNONS, currMeteorIndex,null,meteor, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, Game.getIstance().getTruckerList());
         }else{
             state=CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currMeteorIndex, null,meteor, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, "smallmeteor", Game.getIstance().getTruckerList());
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currMeteorIndex, null,meteor, roll, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(), true, Game.getIstance().getTruckerList());
         }
     }
 
