@@ -6,19 +6,41 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
 import java.io.IOException;
 
-public class ClientHandlerSocket implements ClientHandler {
-    private final NetworkServer network;
-    private final ServerController controller;
-    private int id;
-    private long lastPongTime = System.currentTimeMillis();
+/**
+ * Handles communication with a single client over a socket connection.
+ * Listens for incoming ClientEvents and forwards them to the ServerController.
+ * Also sends ServerEvents to the client and manages connection closure.
+ */
+public class ClientHandlerSocketInterfaceSocket implements ClientHandlerSocketInterface {
 
-    public ClientHandlerSocket(NetworkServer network, ServerController controller) {
+    /** NetworkServer instance managing socket communication with the client */
+    private final NetworkServer network;
+
+    /** ServerController that processes received client events */
+    private final ServerController controller;
+
+    /** Unique identifier for this client handler equals to the client id*/
+    private int id;
+
+    /**
+     * Constructs a ClientHandlerSocket with the given network and controller.
+     * Starts the listener thread immediately.
+     *
+     * @param network the NetworkServer handling socket I/O with the client
+     * @param controller the ServerController to dispatch received events to
+     */
+    public ClientHandlerSocketInterfaceSocket(NetworkServer network, ServerController controller) {
         this.network = network;
         this.controller = controller;
         this.id = -1;
         startListener();
     }
 
+    /**
+     * Starts a background thread that continuously listens for ClientEvents
+     * from the client and forwards them to the ServerController.
+     * Handles disconnection and resource cleanup.
+     */
     private void startListener() {
         Thread listenerThread = new Thread(() -> {
             try {
@@ -38,6 +60,11 @@ public class ClientHandlerSocket implements ClientHandler {
         listenerThread.start();
     }
 
+    /**
+     * Sets the unique client identifier if not already set.
+     *
+     * @param id the client ID to assign
+     */
     @Override
     public void setId(int id) {
         if(this.id==-1){
@@ -45,11 +72,21 @@ public class ClientHandlerSocket implements ClientHandler {
         }
     }
 
+    /**
+     * Returns the unique client identifier.
+     *
+     * @return the client ID
+     */
     @Override
     public int getId() {
         return id;
     }
 
+    /**
+     * Sends a ServerEvent to the client through the network.
+     *
+     * @param event the ServerEvent to send
+     */
     @Override
     public void sendEvent(ServerEvent event) {
         try {
@@ -59,7 +96,9 @@ public class ClientHandlerSocket implements ClientHandler {
         }
     }
 
-
+    /**
+     * Closes the network connection to the client, releasing resources.
+     */
     @Override
     public void close() {
         try {

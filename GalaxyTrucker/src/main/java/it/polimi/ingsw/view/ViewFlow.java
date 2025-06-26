@@ -84,7 +84,7 @@ public class ViewFlow implements EventReceiver {
     private String nickname;
 
     /**
-     * All players nicknames
+     * All players nickname
      */
     private ArrayList<String> players;
 
