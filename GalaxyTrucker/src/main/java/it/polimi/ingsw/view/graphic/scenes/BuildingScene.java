@@ -337,6 +337,8 @@ public class BuildingScene {
      */
     public void buildShipGrid(boolean buildNew, Component[][] ship) {
 
+        Image trasparent = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/transparent.png")).toExternalForm());
+
         if (grid != null) {
             root.getChildren().remove(grid);
         }
@@ -351,7 +353,7 @@ public class BuildingScene {
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {
                 StackPane cell = new StackPane();
-                cell.setPrefSize(136, 136);
+                cell.setPrefSize(134.5, 134.5);
 
                 if (validCells[row][col]) {
                     cell.setStyle("-fx-border-color: white; -fx-border-radius: 6px; -fx-background-radius: 6px;");
@@ -359,13 +361,23 @@ public class BuildingScene {
                     Component c = buildNew ? layout[row][col] : ship[row][col];
                     if (c != null) {
                         ImageView imageView = new ImageView(c.getFrontImage());
-                        imageView.setFitWidth(136);
-                        imageView.setFitHeight(136);
-                        Rectangle clip = new Rectangle(136, 136);
+                        imageView.setFitWidth(134.5);
+                        imageView.setFitHeight(134.5);
+                        Rectangle clip = new Rectangle(134.5, 134.5);
                         clip.setArcWidth(12);
                         clip.setArcHeight(12);
                         imageView.setClip(clip);
                         imageView.setRotate(c.getRotationAngle());
+                        cell.getChildren().add(imageView);
+                    } else {
+                        ImageView imageView = new ImageView(trasparent);
+                        imageView.setFitWidth(134.5);
+                        imageView.setFitHeight(134.5);
+                        imageView.setMouseTransparent(false);
+                        Rectangle clip = new Rectangle(134.5, 134.5);
+                        clip.setArcWidth(12);
+                        clip.setArcHeight(12);
+                        imageView.setClip(clip);
                         cell.getChildren().add(imageView);
                     }
                 } else {
@@ -1426,6 +1438,9 @@ public class BuildingScene {
      * @param nickname of the player
      */
     public void showOtherShip(Component[][] layout, String nickname) {
+
+        Image trasparent = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/transparent.png")).toExternalForm());
+
         disableAndSaveAllButtonStates();
 
         AnchorPane overlay = new AnchorPane();
@@ -1462,17 +1477,26 @@ public class BuildingScene {
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {
                 StackPane cell = new StackPane();
-                cell.setPrefSize(87.5, 87.5);
+                cell.setPrefSize(87, 87);
 
                 if (validCells[row][col]) {
                     cell.setStyle("-fx-border-color: white; -fx-border-radius: 4px; -fx-background-radius: 4px;");
                     Component c = layout[row][col];
                     if (c != null) {
                         ImageView iv = new ImageView(c.getFrontImage());
-                        iv.setFitWidth(87.5);
-                        iv.setFitHeight(87.5);
+                        iv.setFitWidth(87);
+                        iv.setFitHeight(87);
                         iv.setRotate(c.getRotationAngle());
-                        Rectangle r = new Rectangle(87.5, 87.5);
+                        Rectangle r = new Rectangle(87, 87);
+                        r.setArcWidth(8);
+                        r.setArcHeight(8);
+                        iv.setClip(r);
+                        cell.getChildren().add(iv);
+                    } else {
+                        ImageView iv = new ImageView(trasparent);
+                        iv.setFitWidth(87);
+                        iv.setFitHeight(87);
+                        Rectangle r = new Rectangle(87, 87);
                         r.setArcWidth(8);
                         r.setArcHeight(8);
                         iv.setClip(r);
@@ -1491,7 +1515,8 @@ public class BuildingScene {
         shipPopup.setMaxSize(679, 500);
         shipPopup.setMouseTransparent(false);
 
-        Label nameLabel = new Label(nickname + "'s Ship");
+        String displayName = nickname.endsWith("s") ? nickname + "'" : nickname + "'s";
+        Label nameLabel = new Label(displayName + " spaceship");
         nameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
         nameLabel.setTextFill(Color.web("#FFDE69"));
         nameLabel.setAlignment(Pos.CENTER);
