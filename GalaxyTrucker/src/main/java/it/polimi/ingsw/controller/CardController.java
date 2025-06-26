@@ -76,7 +76,7 @@ public class CardController implements Serializable {
      * @param event received Client Event
      * @return Server Event to send to client
      */
-    public ServerEvent setGoodsCoordinates(PlotGoodEvent event) {
+    public ServerEvent addGood(PlotGoodEvent event) {
         try {
             return currCard.addGood(event.getDecision(), event.getCoordinates(), event.getPositionInLoad());
         } catch (GeneralError | WrongCallerException e) {

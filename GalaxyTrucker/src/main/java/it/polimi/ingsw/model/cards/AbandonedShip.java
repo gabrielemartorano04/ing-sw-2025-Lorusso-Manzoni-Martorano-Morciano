@@ -45,12 +45,7 @@ public class AbandonedShip extends Card implements Serializable {
     /**
      * player that has decided to land if exists a client that has decided to land
      */
-    private Trucker truckerThatHasDecided;
-
-    /**
-     * coordinates of all the cabins the player has decided to remove humans or aliens from
-     */
-    private ArrayList<int[]> coordinates = null;
+    private Trucker truckerLanding;
 
     /**
      * current state of the card, helper for debug and checking consistency
@@ -78,7 +73,7 @@ public class AbandonedShip extends Card implements Serializable {
         this.numHuman = numHuman;
         this.credits = credits;
         this.days = days;
-        this.truckerThatHasDecided = null;
+        this.truckerLanding = null;
         this.indexOfCurrTrucker = 0;
         this.state = CardState.LAND;
     }
@@ -124,10 +119,18 @@ public class AbandonedShip extends Card implements Serializable {
             throw new GeneralError("SetTruckerThatHasDecided not callable in state: " + state);
         }
         if(landing) {
-            truckerThatHasDecided = Game.getIstance().getTrucker(indexOfCurrTrucker);
-            state = CardState.HUMANSTOREMOVE;
-            return new HumanCoordinates(true, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(),Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip(),Game.getIstance().getTruckerList());
-        }else{
+            truckerLanding = Game.getIstance().getTrucker(indexOfCurrTrucker);
+
+            if(truckerLanding.getSpaceShip().getNumCrew() < numHuman) {
+                truckerLanding.getSpaceShip().removeAllHumans();
+                state = CardState.ESECUZIONE;
+                return cardEffect();
+            }else{
+                state = CardState.HUMANSTOREMOVE;
+                return new HumanCoordinates(true, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(),Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip(),Game.getIstance().getTruckerList());
+            }
+        }
+        else{
             if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()-1){
                 state = CardState.ESECUZIONE;
                 return cardEffect();
@@ -149,12 +152,12 @@ public class AbandonedShip extends Card implements Serializable {
         if(state != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Can't call setCoordinates in the state: " + state);
         }
-        if(truckerThatHasDecided ==null){
+        if(truckerLanding ==null){
             throw new GeneralError("Tried to set coordinates when truckerThatHasDecided is null");
         }
         try{
-            truckerThatHasDecided.getSpaceShip().checkCabin(coordinates, numHuman);
-            this.coordinates = coordinates;
+            truckerLanding.getSpaceShip().checkCabin(coordinates, numHuman);
+            truckerLanding.getSpaceShip().removeNumHuman(coordinates,numHuman);
             state = CardState.ESECUZIONE;
             return cardEffect();
         }catch (InvalidCoordinates e){
@@ -184,10 +187,9 @@ public class AbandonedShip extends Card implements Serializable {
         if(state != CardState.ESECUZIONE) {
             throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }
-        if (truckerThatHasDecided != null) {
-            truckerThatHasDecided.getSpaceShip().removeNumHuman(coordinates,numHuman);
-            Game.getIstance().moveBackward(truckerThatHasDecided,days);
-            truckerThatHasDecided.addCosmicCredit(credits);
+        if (truckerLanding != null) {
+            Game.getIstance().moveBackward(truckerLanding,days);
+            truckerLanding.addCosmicCredit(credits);
         }
 
         deactivateTruckersSpaceShip();
@@ -221,7 +223,7 @@ public class AbandonedShip extends Card implements Serializable {
         this.state = state;
     }
 
-    public void setTruckerThatHasDecided(Trucker truckerThatHasDecided) {
-        this.truckerThatHasDecided = truckerThatHasDecided;
+    public void setTruckerLanding(Trucker truckerLanding) {
+        this.truckerLanding = truckerLanding;
     }
 }
