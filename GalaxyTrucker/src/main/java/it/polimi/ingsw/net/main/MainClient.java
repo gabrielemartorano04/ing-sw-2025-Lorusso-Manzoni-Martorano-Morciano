@@ -3,17 +3,15 @@ package it.polimi.ingsw.net.main;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 import it.polimi.ingsw.net.rmi.server.RmiServerInterface;
 import it.polimi.ingsw.net.rmi.client.RmiClient;
-import it.polimi.ingsw.net.socket.client.ClientEventSender;
+import it.polimi.ingsw.net.socket.client.ClientSocketSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.view.ViewFlow;
 import it.polimi.ingsw.view.graphic.GUIApplication;
 
 import java.io.IOException;
-import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 /**
@@ -75,7 +73,7 @@ public class MainClient {
             NetworkClient networkClient = new NetworkClient(serverAddress, SERVER_PORT);
             try {
                 networkClient.connect();
-                ClientEventSender sender = new ClientEventSender(networkClient);
+                ClientSocketSender sender = new ClientSocketSender(networkClient);
                 ViewFlow view = new ViewFlow(sender,false);
 
                 NetworkListenerClient listenerClient = new NetworkListenerClient(networkClient.getSocket(), view);

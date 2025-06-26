@@ -4,24 +4,17 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
-import it.polimi.ingsw.net.socket.client.ClientEventSender;
+import it.polimi.ingsw.net.socket.client.ClientSocketSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.view.ViewFlow;
-import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
 import it.polimi.ingsw.view.graphic.scenes.FlightScene;
-import it.polimi.ingsw.view.graphic.scenes.LoginScene;
-import it.polimi.ingsw.view.graphic.scenes.ResultScene;
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-
-import static java.awt.Color.red;
 
 public class AppPerTest extends Application {
 
@@ -36,7 +29,7 @@ public class AppPerTest extends Application {
 
     @Override
     public void start(Stage primaryStage) throws InvalidCoordinates {
-        ViewFlow viewFlow = new ViewFlow(new ClientEventSender(new NetworkClient("localhost", 12346)), true);
+        ViewFlow viewFlow = new ViewFlow(new ClientSocketSender(new NetworkClient("localhost", 12346)), true);
         availableComponents = new AvailableComponents();
         ArrayList<String> playersNames = new ArrayList<>();
         playersNames.add("Luca");
