@@ -286,7 +286,7 @@ public class GUI implements UI {
     @Override
     public void resumeBuildingScene(ArrayList<String> playerNames){
         Platform.runLater(() -> {
-            buildingScene=new BuildingScene(viewFlow.getNickname(),viewFlow.getShip().getComponents(),viewFlow, new StackPane());
+            buildingScene=new BuildingScene(viewFlow.getShip().getComponents(),viewFlow, new StackPane());
             stage.setScene(this.buildingScene.createScene(playerNames, viewFlow.getLevel()));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
@@ -402,7 +402,7 @@ public class GUI implements UI {
         Platform.runLater(() -> {
             this.loginScene.hideWaitForOthers();
 
-            buildingScene=new BuildingScene(viewFlow.getNickname(),viewFlow.getShip().getComponents(),viewFlow, new StackPane());
+            buildingScene=new BuildingScene(viewFlow.getShip().getComponents(),viewFlow, new StackPane());
             stage.setScene(this.buildingScene.createScene(event.getPlayers(), viewFlow.getLevel()));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
