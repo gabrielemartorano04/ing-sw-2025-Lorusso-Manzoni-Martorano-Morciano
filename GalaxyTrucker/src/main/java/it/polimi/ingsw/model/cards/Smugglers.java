@@ -465,7 +465,6 @@ public class Smugglers extends Card implements Serializable {
                 cardState = CardState.ESECUZIONE;
                 return cardEffect();
             } else {
-                System.out.println("Remotion Confirmed in handleBatteryOrNextTrucker");
                 return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED, nickname, ship);
             }
         } else {
