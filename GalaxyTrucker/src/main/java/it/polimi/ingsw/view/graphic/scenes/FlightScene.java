@@ -17,7 +17,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -2458,7 +2457,7 @@ public class FlightScene {
                         int count = 0;
                         for (Goods g : load.getGoods()) {
                             count++;
-                            details.append(g.getColor()).append(" (").append(count).append(")");
+                            details.append(g.getColor()).append(" {").append(count).append("}");
                             if (count < load.getGoods().size()) {
                                 details.append(", ");
                             }
@@ -2473,7 +2472,7 @@ public class FlightScene {
                         int count = 0;
                         for (Goods g : load.getGoods()) {
                             count++;
-                            details.append(g.getColor()).append(" (").append(count).append(")");
+                            details.append(g.getColor()).append(" {").append(count).append("}");
                             if (count < load.getGoods().size()) {
                                 details.append(", ");
                             }
