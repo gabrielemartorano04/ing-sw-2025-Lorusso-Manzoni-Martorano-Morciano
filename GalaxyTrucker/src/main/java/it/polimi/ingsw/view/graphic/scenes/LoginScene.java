@@ -24,28 +24,83 @@ import javafx.util.Duration;
 
 import java.util.*;
 
+/**
+ * The LoginScene class is responsible for managing the login and setup screen for a multiplayer game
+ */
 public class LoginScene {
-    private final EnumSet<PlayerColors> availableColors;
-    private final Map<PlayerColors, StackPane> colorBoxes = new HashMap<>();
-    private final PlayerColors[] selectedColor = {null};
+
+    /**
+     * A map associating each player's color with a corresponding StackPane box
+     */
+    private final Map<PlayerColors, StackPane> colorBoxes;
+
+    /**
+     * Array of already selected colors
+     */
+    private final PlayerColors[] selectedColor;
+
+    /**
+     * A TextField used for entering or displaying the player's nickname
+     */
     private TextField nicknameField;
+
+    /**
+     * Bbutton used to complete or finalize an action within the login process
+     */
     private Button doneButton;
+
+    /**
+     * Represents an instance of ViewFlow used to manage and control the navigation
+     * and transitions between different views or scenes in the application
+     */
     private final ViewFlow viewFlow;
+
+    /**
+     * The root of the layout for the scene
+     */
     private StackPane root;
+
+    /**
+     * Set of player's colors representing colors that are not available
+     * for selection in the login process
+     */
     private final Set<PlayerColors> unavailableColors;
 
+    /**
+     * Represents the main container for organizing and arranging the graphical components
+     * within the login scene
+     */
     private VBox content;
 
+    /**
+     * A graphical overlay component displayed to the user to indicate a waiting state
+     */
     private StackPane waitOverlay;
+
+    /**
+     * A private Timeline object responsible for managing the animation
+     * that indicates a waiting state in the login scene
+     */
     private Timeline waitAnimation;
 
-
-    public LoginScene(EnumSet<PlayerColors> availableColors, ViewFlow viewFlow) {
-        this.availableColors = availableColors;
+    /**
+     * Event constructor
+     * @param viewFlow represents the flow control mechanism allowing navigation between different scenes
+     */
+    public LoginScene(ViewFlow viewFlow) {
         this.viewFlow = viewFlow;
         this.unavailableColors = EnumSet.noneOf(PlayerColors.class);
+        colorBoxes = new HashMap<>();
+        selectedColor = new PlayerColors[]{null};
     }
 
+    /**
+     * Creates a new scene for the login process based on the provided configuration
+     * @param resume a boolean value indicating whether to resume a game (true) or start a new game (false)
+     * @param nicknames a list of player nicknames to be used when resuming a game
+     * @param colors a list of player colors to be used when resuming a game
+     * @return a Scene object representing the generated scene for the login or game setup
+     */
     public Scene createScene(boolean resume, List<String> nicknames, List<PlayerColors> colors) {
         if (resume) {
             return createResumeGameScene(nicknames, colors);
@@ -54,11 +109,15 @@ public class LoginScene {
         }
     }
 
+    /**
+     * Creates a new game scene where the user can input a nickname and select a player color
+     * @return a Scene object representing the new game setup screen
+     */
     private Scene createNewGameScene(){
         double width = 1600;
         double height = 900;
 
-        ImageView backgroundView = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm()));
+        ImageView backgroundView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg")).toExternalForm()));
         backgroundView.setFitWidth(width);
         backgroundView.setFitHeight(height);
         backgroundView.setPreserveRatio(true);
@@ -152,11 +211,17 @@ public class LoginScene {
         return new Scene(root, width, height);
     }
 
+    /**
+     * Creates a new scene for resuming a game, where users can select their profiles based on provided nicknames and colors
+     * @param nicknames a list of player nicknames available for selection when resuming a game
+     * @param colors a list of corresponding player colors associated with the nicknames
+     * @return a Scene object representing the generated UI for profile selection to resume the game
+     */
     private Scene createResumeGameScene(List<String> nicknames, List<PlayerColors> colors) {
         double width = 1600;
         double height = 900;
 
-        ImageView backgroundView = new ImageView(new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm()));
+        ImageView backgroundView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg")).toExternalForm()));
         backgroundView.setFitWidth(width);
         backgroundView.setFitHeight(height);
         backgroundView.setPreserveRatio(true);
@@ -189,7 +254,6 @@ public class LoginScene {
                 case GREEN -> Color.LIMEGREEN;
                 case BLUE -> Color.DODGERBLUE;
                 case YELLOW -> Color.GOLD;
-                default -> Color.GRAY;
             });
 
             Rectangle overlay = new Rectangle(180, 70);
@@ -251,22 +315,29 @@ public class LoginScene {
         return new Scene(root, width, height);
     }
 
-
+    /**
+     * @param color the player's color representing the selected player color
+     * @return the color corresponding to the given player's color
+     */
     private Color getColorForEnum(PlayerColors color) {
         return switch (color) {
             case RED -> Color.RED;
             case GREEN -> Color.LIMEGREEN;
             case BLUE -> Color.DODGERBLUE;
             case YELLOW -> Color.GOLD;
-            default -> Color.GRAY;
         };
     }
 
+    /**
+     * Marks a specific player color as unavailable, visually indicating its unavailability
+     * on the UI and disabling its selection.
+     * @param color the player color to be marked as unavailable
+     */
     public void markColorAsUnavailable(PlayerColors color) {
         unavailableColors.add(color);
 
         StackPane box = colorBoxes.get(color);
-        if (box != null && box.getChildren().size() >= 1) {
+        if (box != null && !box.getChildren().isEmpty()) {
             Rectangle grayOverlay = new Rectangle(80, 80);
             grayOverlay.setArcWidth(20);
             grayOverlay.setArcHeight(20);
@@ -289,6 +360,9 @@ public class LoginScene {
         }
     }
 
+    /**
+     * Displays a popup message indicating that the chosen nickname is already taken
+     */
     public void showNicknameTakenPopup() {
         double width = root.getWidth();
         double height = root.getHeight();
@@ -318,6 +392,9 @@ public class LoginScene {
         });
     }
 
+    /**
+     * Displays a popup message indicating that the selected color is already taken
+     */
     public void showColorTakenPopup() {
         double width = root.getWidth();
         double height = root.getHeight();
@@ -347,6 +424,10 @@ public class LoginScene {
         });
     }
 
+    /**
+     * Displays a wait overlay with an animated message indicating that the user is waiting
+     * for other players to join
+     */
     public void showWaitForOthers() {
         Label message = new Label("Waiting for other truckers to join");
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
@@ -384,6 +465,9 @@ public class LoginScene {
         });
     }
 
+    /**
+     * Removes the wait overlay and stops any associated wait animation in the application
+     */
     public void hideWaitForOthers() {
         Platform.runLater(() -> {
             if (waitOverlay != null) {
@@ -397,6 +481,10 @@ public class LoginScene {
         });
     }
 
+    /**
+     * Displays a popup notification indicating that a player has joined
+     * @param nickname the nickname of the player who joined
+     */
     public void showPlayerJoined(String nickname) {
         Label message = new Label(nickname + " has joined");
         message.setStyle(
@@ -422,6 +510,10 @@ public class LoginScene {
         });
     }
 
+    /**
+     * Displays an error message as a popup overlay on the current scene
+     * @param message the error message to be displayed in the popup
+     */
     public void showError(String message) {
         double width = root.getWidth();
         double height = root.getHeight();
@@ -450,6 +542,4 @@ public class LoginScene {
             }
         });
     }
-
-
 }
