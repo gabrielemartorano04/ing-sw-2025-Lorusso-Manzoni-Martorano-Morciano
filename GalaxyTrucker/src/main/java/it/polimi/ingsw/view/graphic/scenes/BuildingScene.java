@@ -1,9 +1,7 @@
 package it.polimi.ingsw.view.graphic.scenes;
 
-import it.polimi.ingsw.model.AvailableComponents;
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.components.Cannon;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.view.ViewFlow;
 import javafx.animation.*;
@@ -31,7 +29,6 @@ import javafx.util.Duration;
 
 import java.util.*;
 
-
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,57 +36,202 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
-
+/**
+ * Represents a configurable scene for managing the game interface
+ * where players can build and manage components of a ship in a grid-based layout
+ */
 public class BuildingScene {
+
+    /**
+     * Manages the transitions and flow between different views
+     */
     private final ViewFlow viewFlow;
+
+    /**
+     * Represents the Scene object used to define the visual
+     * composition and layout of the BuildingScene user interface
+     */
     private Scene scene;
+
+    /**
+     * Root graphical container for the class. The StackPane serves as the base element
+     * for managing and organizing the layout of the scene's user interface components
+     */
     private final StackPane root;
+
+    /**
+     * Level of the game
+     */
     private int level;
 
-    private final String nickname;
+    /**
+     * A 2D array representing the layout of the spaceship or grid in the building scene
+     */
     private final Component[][] layout;
+
+    /**
+     * A 2D boolean array representing the validity of cells within the grid
+     */
     private final boolean[][] validCells;
+
+    /**
+     * A 2D matrix of StackPane used to represent the cells of a grid
+     */
     private final StackPane[][] cellMatrix;
+
+    /**
+     * Represents a graphical grid structure of the ship layout.
+     */
     private GridPane grid;
 
+    /**
+     * A list of StackPane references representing the visual slots
+     * where the components kept by the player are displayed
+     */
     private final ArrayList<StackPane> keptSlotsRef;
+
+    /**
+     * A list of ImageView that are kept for further use
+     */
     private final ArrayList<ImageView> keptImages;
+
+    /**
+     * A horizontal container that holds the slots for components
+     * that have been kept during the building process
+     */
     private HBox keptSlots;
+
+    /**
+     * Represents the level of fill or occupancy maintained in a specific context
+     */
     private int keptFillLevel;
 
+    /**
+     * Represents the Finish button that allows the user to finalize their actions
+     * and proceed to the next step in the application's workflow
+     */
     private Button finishBtn;
+
+    /**
+     * Represents the rules button that allows the user to finalize their actions
+     * and proceed to the next step in the application's workflow
+     */
     private Button stackBtn;
+
+    /**
+     * Represents the rule button that allows the user to open th PDF rules
+     */
     private Button rulesBtn;
+
+    /**
+     * Represents the show other ship button that allows the user to see other players' spaceship
+     */
     private Button otherBtn;
+
+    /**
+     * Represents the hourglass button that allows the user to turn the hourglass
+     */
     private Button hourglassBtn;
+
+    /**
+     * Represents the select new component button that allows the user to choose a component
+     * from the list of available components
+     */
     private Button selectBtn;
+
+    /**
+     * Represents the select kept component button that allows the user to choose a component
+     * from the list of kept components
+     */
     private Button selectKeptBtn;
 
+    /**
+     * Number of turns done to the component
+     */
     private int turnToDo;
+
+    /**
+     * Represents the turn button that allows the user to graphically turn the component
+     */
     private Button turnBtn;
+
+    /**
+     * Represents the keep button that allows the user to move the component to the kept list
+     */
     private Button keepBtn;
+
+    /**
+     * Represents the discard button that allows the user to discard the component and put it
+     * back in the available components list
+     */
     private Button discardBtn;
+
+    /**
+     * Represents the link button that allows the user to attach the component to the spaceship grid
+     */
     private Button linkBtn;
 
+    /**
+     * Represents the list of graphical content elements displayed in the ship screen
+     */
     private List<Node> shipScreenContent;
+
+    /**
+     * A boolean flag indicating whether the ship view is currently active or displayed
+     */
     private boolean inShipView;
+
+    /**
+     * Represents whether the component view is currently visible in the building scene
+     */
     private boolean isComponentViewVisible;
 
-    private Map<Button, Boolean> previousButtonStates = new HashMap<>();
+    /**
+     * A map that keeps track of the previous states of buttons
+     */
+    private final Map<Button, Boolean> previousButtonStates;
 
+    /**
+     * A VBox instance representing the container for display or selection of components
+     */
     private VBox componentSelectedBox;
+
+    /**
+     * Indicates whether a component has been selected to determine the current state of
+     * component selection, such as enabling or disabling certain actions
+     */
     private boolean componentSelectedExists;
 
+    /**
+     * Represents an overlay displayed on the screen while waiting for
+     * an important action to complete or for other players in the game to
+     * perform their actions
+     */
     private StackPane waitOverlay;
+
+    /**
+     * Represents a timeline animation used for displaying a "waiting" overlay
+     */
     private Timeline waitAnimation;
 
+    /**
+     * Represents the current overlay displayed on the stack pane
+     */
     private StackPane currentStackOverlay;
+
+    /**
+     * List of coordinates alien cabins
+     */
     private ArrayList<int[]> alienCoords;
 
-    public BuildingScene(String nickname, Component[][] layout, ViewFlow viewFlow, StackPane root) {
-        this.nickname = nickname;
+    /**
+     * Event constructor
+     * @param layout a 2D array representing the ship grid
+     * @param viewFlow an instance of viewFlow used for managing scene transitions
+     * @param root the root stackPane serving as the parent container for the scene elements
+     */
+    public BuildingScene(Component[][] layout, ViewFlow viewFlow, StackPane root) {
         this.layout = layout;
         this.cellMatrix = new StackPane[10][11];
         this.keptSlotsRef = new ArrayList<>();
@@ -102,7 +244,6 @@ public class BuildingScene {
         this.keptFillLevel = 0;
         this.previousButtonStates = new HashMap<>();
         this.turnToDo = 0;
-
         this.validCells = new boolean[11][12];
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[0].length; j++) {
@@ -112,17 +253,22 @@ public class BuildingScene {
         }
     }
 
+    /**
+     * Creates and returns a new scene configured for the specified gameplay state
+     * @param playersNames a list of player names to be displayed or used in the scene
+     * @param level of the game
+     * @return a Scene object configured with the appropriate layout, controls, and style for the specified level and players
+     */
     public Scene createScene(ArrayList<String> playersNames, int level) {
         double width = 1600;
         double height = 900;
 
-        // Sfondo
         this.level = level;
         Image backgroundImage;
         if(level == 0){
-            backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1.jpeg").toExternalForm());
+            backgroundImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cardboard-1.jpeg")).toExternalForm());
         } else {
-            backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpeg").toExternalForm());
+            backgroundImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cardboard-1b.jpeg")).toExternalForm());
         }
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(width);
@@ -132,13 +278,11 @@ public class BuildingScene {
 
         buildShipGrid(true, null);
 
-        // Slot vuoti per i kept
         keptSlots = new HBox(15);
         keptSlots.setMaxWidth(200);
         keptSlots.setAlignment(Pos.TOP_RIGHT);
         keptSlotsRef.clear();
         keptImages.clear();
-
 
         for (int i = 0; i < 2; i++) {
             StackPane slot = new StackPane();
@@ -154,9 +298,7 @@ public class BuildingScene {
 
             slot.getChildren().add(border);
             int index = i;
-            slot.setOnMouseClicked(e -> {
-                viewFlow.handleInput("selectKept " + index);
-            });
+            slot.setOnMouseClicked(e -> viewFlow.handleInput("selectKept " + index));
             keptSlots.getChildren().add(slot);
             keptSlotsRef.add(slot);
             keptImages.add(null);
@@ -165,11 +307,9 @@ public class BuildingScene {
         StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
         StackPane.setMargin(keptSlots, new Insets(0, 235, 590, 0));
 
-
         root.getChildren().setAll(backgroundView, grid, keptSlots);
         scene = new Scene(root, width, height);
         Consumer<Button> styleButton = createDefaultButtonStyler();
-
 
         addFinishButtonToScene(viewFlow, styleButton);
         addStackButtonToScene(viewFlow, styleButton);
@@ -189,6 +329,12 @@ public class BuildingScene {
         return scene;
     }
 
+    /**
+     * Builds and displays a ship grid on the scene
+     * @param buildNew a boolean indicating whether to construct a new ship grid (true) or use
+     *                 an existing ship grid layout (false)
+     * @param ship     a 2D array representing the ship layout
+     */
     public void buildShipGrid(boolean buildNew, Component[][] ship) {
 
         if (grid != null) {
@@ -219,7 +365,7 @@ public class BuildingScene {
                         clip.setArcWidth(12);
                         clip.setArcHeight(12);
                         imageView.setClip(clip);
-                        imageView.setRotate(c.getRotationAngle()); // Per uniformità con l’altro metodo
+                        imageView.setRotate(c.getRotationAngle());
                         cell.getChildren().add(imageView);
                     }
                 } else {
@@ -237,9 +383,10 @@ public class BuildingScene {
         }
     }
 
-
-
-
+    /**
+     * Disables or enables the select buttons and adjusts their appearance based on the provided parameter
+     * @param disable a boolean indicating whether to disable (true) or enable (false) the select buttons
+     */
     private void disableSelectButtons(boolean disable) {
         double opacity = disable ? 0.5 : 1.0;
 
@@ -256,12 +403,18 @@ public class BuildingScene {
         keepBtn.setOpacity(opacity);
     }
 
-
-
+    /**
+     * @return the current Scene object
+     */
     public Scene getScene() {
         return scene;
     }
 
+    /**
+     * Inserts a component into the kept components list, updating the related
+     * UI elements to reflect the change
+     * @param component the Component object to be added to the kept components
+     */
     public void insertComponentToKepts(Component component) {
         if (keptFillLevel >= keptImages.size()) {
             return;
@@ -309,14 +462,16 @@ public class BuildingScene {
         this.selectKeptBtn.setOpacity(1.0);
     }
 
+    /**
+     * Selects a kept component from the specified index and inserts it into the selected component slot
+     * @param index of the component selected from the kept component list
+     */
     public void selectKeptComponent(int index) {
         if (index < 0 || index >= keptImages.size()) return;
         ImageView keptView = keptImages.get(index);
-        // Solo se c'è un kept valido e lo slot di selezione è vuoto
         if (keptView != null) {
             keptFillLevel--;
             this.insertSelectedComponent(keptView,false);
-            // Rimuovi dallo slot kept
             this.disableSelectButtons(false);
             keptImages.set(index, null);
             keptSlotsRef.get(index).getChildren().clear();
@@ -336,9 +491,19 @@ public class BuildingScene {
 
     }
 
+    /**
+     * Sets the number of turns done to the component
+     * @param turn an integer representing the turn number to be set
+     */
     public void setTurnToDo(int turn) {
         this.turnToDo = turn;
     }
+
+    /**
+     * Inserts a selected component into the UI and adjusts its appearance based on the provided parameters
+     * @param componentView the ImageView representing the selected component to be inserted
+     * @param toTurn a boolean indicating whether to rotate the component (true) or leave it unrotated (false)
+     */
     public void insertSelectedComponent(ImageView componentView, boolean toTurn) {
         if (!inShipView && shipScreenContent != null) {
             isComponentViewVisible = false;
@@ -369,11 +534,17 @@ public class BuildingScene {
         componentView.setClip(clip);
 
 
-        StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
+        StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().getFirst();
         imageContainer.getChildren().add(componentView);
 
     }
 
+    /**
+     * Inserts a specified component into the grid at a given row and column
+     * @param component the Component to be inserted into the grid
+     * @param row the row index of the grid where the component should be placed
+     * @param col the column index of the grid where the component should be placed
+     */
     public void insertComponentInGrid(Component component, int row, int col) {
 
         this.componentSelectedExists = false;
@@ -395,37 +566,19 @@ public class BuildingScene {
 
         cell.getChildren().add(imageView);
 
-        layout[row][col] = component; // aggiorna anche il model
+        layout[row][col] = component;
     }
 
     /**
-     * Rimuove qualsiasi componente grafico dalla cella specificata
+     * Resets the component selection box to its default state by clearing its children,
+     * disabling relevant selection buttons, and adding a placeholder image container
      */
-    public void clearCell(int row, int col) {
-        if (!validCells[row][col]) return;
-        StackPane cell = cellMatrix[row][col];
-        if (cell != null) {
-            cell.getChildren().clear();
-        }
-    }
-
-    /**
-     * Restituisce la `StackPane` di una cella, utile se devi settare eventi
-     */
-    public StackPane getCell(int row, int col) {
-        return validCells[row][col] ? cellMatrix[row][col] : null;
-    }
-
-    public ArrayList<StackPane> getKeptSlotsRef() {
-        return keptSlotsRef;
-    }
-
     public void resetComponentSelectedBox() {
         turnToDo = 0;
 
         componentSelectedBox.getChildren().clear();
         this.componentSelectedExists = false;
-        this.disableSelectButtons(true); // non hai piu un componente in mano
+        this.disableSelectButtons(true);
 
         Rectangle border = new Rectangle(178, 178);
         border.setArcWidth(16);
@@ -442,22 +595,23 @@ public class BuildingScene {
         componentSelectedBox.getChildren().add(imageContainer);
     }
 
+    /**
+     * Displays a popup error message over the scene
+     * @param message the error message to be displayed in the popup.
+     */
     public void showPopUpError(String message) {
         double width = root.getWidth();
         double height = root.getHeight();
 
-        // Overlay grigio trasparente
         Rectangle overlay = new Rectangle(width, height);
         overlay.setFill(Color.rgb(0, 0, 0, 0.4));
         overlay.setMouseTransparent(true);
 
-        // Etichetta con il messaggio
         Label messageLabel = new Label(message);
         messageLabel.setTextFill(Color.RED);
         messageLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
         messageLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
 
-        // Contenitore del popup
         StackPane popup = new StackPane(overlay, messageLabel);
         popup.setMouseTransparent(true);
         StackPane.setAlignment(messageLabel, Pos.CENTER);
@@ -472,6 +626,10 @@ public class BuildingScene {
         });
     }
 
+    /**
+     * Displays a popup message indicating that a component is unavailable because it has
+     * been selected by another player
+     */
     public void showComponentUnavailablePopup() {
         if (!isComponentViewVisible) return;
 
@@ -492,7 +650,7 @@ public class BuildingScene {
         StackPane popup = new StackPane(overlay, messageLabel);
         popup.setMouseTransparent(true);
         StackPane.setAlignment(messageLabel, Pos.BOTTOM_CENTER);
-        StackPane.setMargin(messageLabel, new Insets(0, 0, 50, 0)); // margine dal basso
+        StackPane.setMargin(messageLabel, new Insets(0, 0, 50, 0));
 
         Platform.runLater(() -> {
             if (!root.getChildren().contains(popup)) {
@@ -504,16 +662,20 @@ public class BuildingScene {
         });
     }
 
+    /**
+     * Refreshes the components view if it is currently visible
+     */
     public void refreshComponentsViewIfVisible() {
         if (isComponentViewVisible) {
             loadComponentsView(viewFlow.getAvailableComponents());
         }
     }
 
-
-
-
-
+    /**
+     * Attaches an options' box to the specified scene with buttons configured based on the given game level
+     * @param scene to which the options' box will be attached
+     * @param level of the game
+     */
     private void attachOptionsBoxToScene(Scene scene, int level) {
         VBox optionsBox = new VBox(10);
         optionsBox.setPadding(new Insets(10));
@@ -536,6 +698,10 @@ public class BuildingScene {
         });
     }
 
+    /**
+     * Creates and returns a default button styler
+     * @return a Consumer<Button> that applies predefined styling to a given button
+     */
     private Consumer<Button> createDefaultButtonStyler() {
         return (btn) -> {
             btn.setFont(Font.font("Bangers", 18));
@@ -546,6 +712,12 @@ public class BuildingScene {
         };
     }
 
+    /**
+     * Adds a finish button to the scene, which allows the user to confirm the completion
+     * of their spaceship
+     * @param viewFlow an instance of ViewFlow used for managing scene transitions
+     * @param styleButton a Consumer<Button> function to apply specific styling to the button
+     */
     private void addFinishButtonToScene(ViewFlow viewFlow, Consumer<Button> styleButton) {
         Button finishBtn = new Button("Finish spaceship");
         styleButton.accept(finishBtn);
@@ -599,6 +771,11 @@ public class BuildingScene {
         this.finishBtn = finishBtn;
     }
 
+    /**
+     * Adds a show stack button to the scene, which allows the user to see the stacks of cards
+     * @param viewFlow an instance of ViewFlow used for managing scene transitions
+     * @param styleButton a Consumer<Button> function to apply specific styling to the button
+     */
     private void addStackButtonToScene(ViewFlow viewFlow, Consumer<Button> styleButton) {
         Button stackBtn = new Button("Show stack");
         styleButton.accept(stackBtn);
@@ -636,6 +813,10 @@ public class BuildingScene {
         this.stackBtn = stackBtn;
     }
 
+    /**
+     * Adds a rule button to the scene, which allows the user to open PDF rules
+     * @param styleButton a Consumer<Button> function to apply specific styling to the button
+     */
     private void addRulesButtonToScene(Consumer<Button> styleButton) {
         Button rulesBtn = new Button("Rules");
         styleButton.accept(rulesBtn);
@@ -668,6 +849,12 @@ public class BuildingScene {
         this.rulesBtn = rulesBtn;
     }
 
+    /**
+     * Adds a show others spaceship button to the scene, which allows the user to see other truckers' spaceship
+     * @param viewFlow an instance of ViewFlow used for managing scene transitions
+     * @param styleButton a Consumer<Button> function to apply specific styling to the button
+     * @param playersNames a list of players' nicknames
+     */
     private void addShowOtherButtonToScene(ViewFlow viewFlow, Consumer<Button> styleButton, ArrayList<String> playersNames) {
         Button otherBtn = new Button("Show others ship");
         styleButton.accept(otherBtn);
@@ -702,6 +889,10 @@ public class BuildingScene {
         this.otherBtn = otherBtn;
     }
 
+    /**
+     * Adds an hourglass button to the scene, which allows the user to turn the hourglass
+     * @param viewFlow an instance of ViewFlow used for managing scene transitions
+     */
     private void addHourglassButtonToScene(ViewFlow viewFlow) {
         Button hourglassBtn = new Button("⏳");
         hourglassBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
@@ -712,13 +903,15 @@ public class BuildingScene {
         hourglassBtn.setBackground(new Background(new BackgroundFill(
                 Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
 
-        hourglassBtn.setOnAction(e -> {
-            viewFlow.handleInput("hourglass");
-        });
+        hourglassBtn.setOnAction(e -> viewFlow.handleInput("hourglass"));
 
         this.hourglassBtn = hourglassBtn;
     }
 
+    /**
+     * Starts the hourglass countdown timer and visually updates the corresponding button to reflect
+     * the timer state
+     */
     public void startHourglassTimer() {
         hourglassBtn.setDisable(true);
 
@@ -736,14 +929,18 @@ public class BuildingScene {
             } else {
                 hourglassBtn.setText("⏳");
                 hourglassBtn.setDisable(false);
-                hourglassBtn.setEffect(null); // remove overlay
+                hourglassBtn.setEffect(null);
             }
         }));
         countdown.setCycleCount(90);
         countdown.play();
     }
 
-
+    /**
+     * Adds a Select component button to the scene, which allows the user to select a new component
+     * from the available components list
+     * @param styleButton a Consumer<Button> function to apply specific styling to the button
+     */
     private void addSelectComponentButton(Consumer<Button> styleButton) {
         Button selectComponentBtn = new Button("Select component");
         styleButton.accept(selectComponentBtn);
@@ -757,19 +954,23 @@ public class BuildingScene {
         this.selectBtn = selectComponentBtn;
     }
 
+    /**
+     * Adds a keep button to the scene, which allows the user to select a kept component
+     * from the kept component list
+     * @param viewFlow an instance of ViewFlow used for managing scene transitions
+     * @param styleButton a Consumer<Button> function to apply specific styling to the button
+     */
     private void addSelectKeptButton(ViewFlow viewFlow, Consumer<Button> styleButton) {
         this.selectKeptBtn = new Button("SelectKept");
         styleButton.accept(selectKeptBtn);
         selectKeptBtn.setOnAction(e -> {
             if (componentSelectedExists) {
-                // Overlay grigio trasparente a tutto schermo
                 Rectangle fullOverlay = new Rectangle();
                 fullOverlay.widthProperty().bind(root.widthProperty());
                 fullOverlay.heightProperty().bind(root.heightProperty());
                 fullOverlay.setFill(Color.rgb(0, 0, 0, 0.5));
-                fullOverlay.setMouseTransparent(false); // blocca interazione
+                fullOverlay.setMouseTransparent(false);
 
-                // Messaggio di avviso
                 Label warningLabel = new Label("You have already selected a component!");
                 warningLabel.setTextFill(Color.RED);
                 warningLabel.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 35));
@@ -777,15 +978,12 @@ public class BuildingScene {
                 warningLabel.setWrapText(true);
                 warningLabel.setTextAlignment(TextAlignment.CENTER);
 
-                // Contenitore overlay + messaggio
                 StackPane overlayLayer = new StackPane(fullOverlay, warningLabel);
                 overlayLayer.setAlignment(Pos.CENTER);
-                overlayLayer.setPickOnBounds(true); // riceve eventi sullo sfondo
+                overlayLayer.setPickOnBounds(true);
 
-                // Aggiungi overlay al root principale
                 root.getChildren().add(overlayLayer);
 
-                // Rimuovi overlay dopo 3 secondi
                 PauseTransition delay = new PauseTransition(Duration.seconds(3));
                 delay.setOnFinished(event -> root.getChildren().remove(overlayLayer));
                 delay.play();
@@ -800,7 +998,6 @@ public class BuildingScene {
             popup.setAlignment(Pos.CENTER);
             popup.setPadding(new Insets(20));
             popup.setPrefSize(230, 200);
-//            popup.setBackground(new Background(new BackgroundFill(Color.web("#333333"), new CornerRadii(15), Insets.EMPTY)));
 
             Label messageLabel = new Label();
             messageLabel.setTextFill(Color.web("#FFDE69"));
@@ -811,7 +1008,7 @@ public class BuildingScene {
             TextField indexField = new TextField();
             indexField.setPromptText("Index (0 or 1)");
             indexField.setPrefWidth(100);
-            indexField.setVisible(false);  // Mostrato solo se ci sono due kept
+            indexField.setVisible(false);
             indexField.textProperty().addListener((obs, oldVal, newVal) -> {
                 if (!newVal.matches("[01]?")) {
                     indexField.setText(oldVal);
@@ -860,7 +1057,7 @@ public class BuildingScene {
                 messageLabel.setText("No kept found!");
                 sendBtn.setDisable(true);
             } else if (countKept == 1) {
-                int onlyIndex = availableIndices.get(0);
+                int onlyIndex = availableIndices.getFirst();
                 messageLabel.setText("You have only 1 kept, it will be automatically selected");
                 messageLabel.setWrapText(true);
                 indexField.setVisible(false);
@@ -893,13 +1090,16 @@ public class BuildingScene {
 
     }
 
-
+    /**
+     * Displays a view of multiple components in a grid with interactive buttons for each component
+     * @param components the list of available components to be displayed in the view
+     */
     public void loadComponentsView(ArrayList<Component> components) {
         this.isComponentViewVisible = true;
         double width = 1600;
         double height = 900;
 
-        Image backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg").toExternalForm());
+        Image backgroundImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/EmptyWallpaper.jpeg")).toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(width);
         backgroundView.setFitHeight(height);
@@ -935,22 +1135,18 @@ public class BuildingScene {
                 overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
                 overlay.setPickOnBounds(true);
 
-                // === Contenitore popup (senza sfondo) ===
-                VBox popup = new VBox(18); // più spaziatura
+                VBox popup = new VBox(18);
                 popup.setAlignment(Pos.CENTER);
                 popup.setPadding(new Insets(15));
-                popup.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE); // altezza dinamica
-                // Niente background: niente riquadro colorato
+                popup.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 
-                // === Testo centrale ===
                 Label confirmLabel = new Label("Select this component?");
                 confirmLabel.setTextFill(Color.web("#FFDE69"));
-                confirmLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 28)); // ingrandito
+                confirmLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 28));
                 confirmLabel.setWrapText(true);
                 confirmLabel.setTextAlignment(TextAlignment.CENTER);
                 confirmLabel.setAlignment(Pos.CENTER);
 
-                // === Immagine del componente ===
                 ImageView componentImage;
                 if(component.getCovered()){
                     componentImage = new ImageView(component.getBackImage());
@@ -962,7 +1158,6 @@ public class BuildingScene {
                 componentImage.setPreserveRatio(true);
                 componentImage.setMouseTransparent(true);
 
-                // Bordo bianco attorno all'immagine
                 Rectangle border = new Rectangle(200, 200);
                 border.setArcWidth(20);
                 border.setArcHeight(20);
@@ -971,37 +1166,32 @@ public class BuildingScene {
                 border.setStrokeWidth(1);
                 border.setMouseTransparent(true);
 
-                // Contenitore immagine + bordo
                 StackPane imageWithBorder = new StackPane(componentImage, border);
                 imageWithBorder.setAlignment(Pos.CENTER);
 
-                // === Pulsanti ===
                 Button undoBtn = new Button("Undo");
-                undoBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18)); // ingrandito
+                undoBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
                 undoBtn.setCursor(Cursor.HAND);
                 undoBtn.setTextFill(Color.WHITE);
                 undoBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(8), Insets.EMPTY)));
 
                 Button selectBtnComponentsView = new Button("Select");
-                selectBtnComponentsView.setFont(Font.font("Bangers", FontWeight.BOLD, 18)); // ingrandito
+                selectBtnComponentsView.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
                 selectBtnComponentsView.setCursor(Cursor.HAND);
                 selectBtnComponentsView.setTextFill(Color.WHITE);
                 selectBtnComponentsView.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(8), Insets.EMPTY))); // verde
 
-                HBox buttons = new HBox(20, undoBtn, selectBtnComponentsView); // più spazio
+                HBox buttons = new HBox(20, undoBtn, selectBtnComponentsView);
                 buttons.setAlignment(Pos.CENTER);
 
-                // === Composizione finale ===
                 popup.getChildren().addAll(confirmLabel, imageWithBorder, buttons);
 
-                // === Posizionamento centrato sullo schermo ===
-                AnchorPane.setTopAnchor(popup, (root.getHeight() - 300) / 2); // più altezza ora
+                AnchorPane.setTopAnchor(popup, (root.getHeight() - 300) / 2);
                 AnchorPane.setLeftAnchor(popup, (root.getWidth() - 250) / 2);
 
                 overlay.getChildren().add(popup);
                 root.getChildren().add(overlay);
 
-                // === Gestione click ===
                 Runnable removePopup = () -> root.getChildren().remove(overlay);
 
                 undoBtn.setOnAction(ev -> removePopup.run());
@@ -1050,6 +1240,9 @@ public class BuildingScene {
         root.getChildren().setAll(componentView);
     }
 
+    /**
+     * Creates and adds a visual slot for the currently selected component to the scene
+     */
     private void addComponentSelectedSlot() {
         double borderSize = 178;
 
@@ -1075,6 +1268,11 @@ public class BuildingScene {
         root.getChildren().add(componentSelectedBox);
     }
 
+    /**
+     * Creates and initializes the component selection buttons, applies styling to them,
+     * and sets their event handlers for specific actions
+     * @param styleButton a Consumer<Button> function to apply specific styling to the button
+     */
     private void createComponentSelectedButtons(Consumer<Button> styleButton) {
         this.turnBtn = new Button("Turn");
         this.keepBtn = new Button("Keep");
@@ -1093,9 +1291,7 @@ public class BuildingScene {
 
         this.disableSelectButtons(true);
 
-        turnBtn.setOnAction(e -> {
-                viewFlow.handleInput("Turn");
-            }
+        turnBtn.setOnAction(e -> viewFlow.handleInput("Turn")
         );
         keepBtn.setOnAction(e -> viewFlow.handleInput("Keep"));
         discardBtn.setOnAction(e -> {
@@ -1110,8 +1306,7 @@ public class BuildingScene {
             VBox popup = new VBox(12);
             popup.setAlignment(Pos.CENTER);
             popup.setPadding(new Insets(15));
-            popup.setPrefSize(200, 250); // quadrato e più piccolo
-            //popup.setBackground(new Background(new BackgroundFill(Color.web("#333333"), new CornerRadii(15), Insets.EMPTY)));
+            popup.setPrefSize(200, 250);
 
             Label insertLabel = new Label("Choose the coordinates to link the component");
             insertLabel.setTextFill(Color.web("#FFDE69"));
@@ -1119,7 +1314,6 @@ public class BuildingScene {
             insertLabel.setWrapText(true);
             insertLabel.setTextAlignment(TextAlignment.CENTER);
 
-            // Due campi affiancati per x e y
             TextField xField = new TextField();
             xField.setPromptText("row");
             xField.setPrefWidth(50);
@@ -1158,9 +1352,8 @@ public class BuildingScene {
 
             popup.getChildren().addAll(insertLabel, coordBox, errorLabel, buttons);
 
-            // Allinea il popup: verticale centro, orizzontale destra
             AnchorPane.setTopAnchor(popup, (root.getHeight() - 250) / 2);
-            AnchorPane.setRightAnchor(popup, 10.0); // più vicino al bordo destro
+            AnchorPane.setRightAnchor(popup, 10.0);
 
             overlay.getChildren().add(popup);
             root.getChildren().add(overlay);
@@ -1198,12 +1391,15 @@ public class BuildingScene {
                 }
             });
 
-            // ENTER = invia (se focus su yField)
             yField.setOnAction(e -> sendBtn.fire());
         });
 
     }
 
+    /**
+     * Attaches a set of component selection buttons to the provided scene
+     * @param scene  to which the component selection buttons will be added
+     */
     private void attackselectComponentButtons(Scene scene) {
         VBox componentBox = new VBox(10);
         componentBox.setPadding(new Insets(0, 0, 50, 15));
@@ -1224,14 +1420,14 @@ public class BuildingScene {
 
     }
 
-    public void loadShipView() {
-        root.getChildren().setAll(shipScreenContent);
-    }
-
+    /**
+     * Displays another ship layout on the screen
+     * @param layout a 2D array representing the layout of the ship
+     * @param nickname of the player
+     */
     public void showOtherShip(Component[][] layout, String nickname) {
         disableAndSaveAllButtonStates();
 
-        // === Immagine della nave ===
         AnchorPane overlay = new AnchorPane();
         overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
         overlay.setPickOnBounds(true);
@@ -1257,7 +1453,6 @@ public class BuildingScene {
         clip.setArcHeight(20);
         backgroundView.setClip(clip);
 
-        // === Griglia componenti ===
         GridPane grid = new GridPane();
         grid.setHgap(1.5);
         grid.setVgap(1.5);
@@ -1291,19 +1486,16 @@ public class BuildingScene {
             }
         }
 
-        // === Contenitore nave + griglia ===
         StackPane shipPopup = new StackPane(backgroundView, grid);
         shipPopup.setAlignment(Pos.CENTER);
         shipPopup.setMaxSize(679, 500);
         shipPopup.setMouseTransparent(false);
 
-        // === Label con nickname ===
         Label nameLabel = new Label(nickname + "'s Ship");
         nameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
         nameLabel.setTextFill(Color.web("#FFDE69"));
         nameLabel.setAlignment(Pos.CENTER);
 
-        // === Contenitore verticale: label sopra + nave sotto ===
         VBox popupWithLabel = new VBox(10, nameLabel, shipPopup);
         popupWithLabel.setAlignment(Pos.CENTER);
 
@@ -1317,10 +1509,12 @@ public class BuildingScene {
             }
         });
 
-        // === Aggiunta sopra la UI ===
         root.getChildren().add(popupWithLabel);
     }
 
+    /**
+     * Restores the state of all buttons that were previously saved in the `previousButtonStates` map
+     */
     private void restoreAllButtonStates() {
         for (Map.Entry<Button, Boolean> entry : previousButtonStates.entrySet()) {
             Button btn = entry.getKey();
@@ -1328,9 +1522,13 @@ public class BuildingScene {
             btn.setDisable(!wasEnabled);
             btn.setOpacity(wasEnabled ? 1.0 : 0.5);
         }
-        previousButtonStates.clear(); // reset per evitare conflitti futuri
+        previousButtonStates.clear();
     }
 
+    /**
+     * Disables a predefined set of buttons in the scene and saves their current enabled/disabled states
+     * in the `previousButtonStates` map for potential restoration later
+     */
     private void disableAndSaveAllButtonStates() {
         List<Button> buttons = Arrays.asList(
                 finishBtn, stackBtn, rulesBtn, otherBtn, hourglassBtn,
@@ -1340,12 +1538,16 @@ public class BuildingScene {
         previousButtonStates.clear();
 
         for (Button btn : buttons) {
-            previousButtonStates.put(btn, !btn.isDisabled()); // true se era abilitato
+            previousButtonStates.put(btn, !btn.isDisabled());
             btn.setDisable(true);
             btn.setOpacity(0.5);
         }
     }
 
+    /**
+     * Displays a wait overlay indicating that the application is waiting for other users
+     * to complete an action
+     */
     public void showWaitForOthers() {
         Label message = new Label("Waiting for other truckers to finish");
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
@@ -1384,6 +1586,9 @@ public class BuildingScene {
         });
     }
 
+    /**
+     * Removes the wait overlay and stops the associated animation, ensuring a clean state in the UI
+     */
     public void hideWaitForOthers() {
         Platform.runLater(() -> {
             if (waitOverlay != null) {
@@ -1397,13 +1602,15 @@ public class BuildingScene {
         });
     }
 
+    /**
+     * Displays a styled message box in the top-right corner of the application window
+     * @param message  text to display within the message box
+     */
     public void showMessage(String message) {
-        // Titolo (bold)
         Label title = new Label("New message:");
         title.setTextFill(Color.WHITE);
         title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
-        // Messaggio (normale)
         Label content = new Label(message);
         content.setTextFill(Color.WHITE);
         content.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
@@ -1418,27 +1625,24 @@ public class BuildingScene {
                         "-fx-background-radius: 10px;"
         );
 
-        // Assicura dimensione del VBox
         messageBox.setMaxWidth(Region.USE_PREF_SIZE);
         messageBox.setMaxHeight(Region.USE_PREF_SIZE);
 
         Platform.runLater(() -> {
-            Node rootNode = scene.getRoot();
+            StackPane.setAlignment(messageBox, Pos.TOP_RIGHT);
+            StackPane.setMargin(messageBox, new Insets(20, 20, 0, 0));
+            root.getChildren().add(messageBox);
 
-            if (rootNode instanceof StackPane root) {
-                // Posiziona il messaggio in alto a destra
-                StackPane.setAlignment(messageBox, Pos.TOP_RIGHT);
-                StackPane.setMargin(messageBox, new Insets(20, 20, 0, 0));
-                root.getChildren().add(messageBox);
-
-                // Rimozione automatica dopo 10 secondi
-                PauseTransition delay = new PauseTransition(Duration.seconds(10));
-                delay.setOnFinished(e -> root.getChildren().remove(messageBox));
-                delay.play();
-            }
+            PauseTransition delay = new PauseTransition(Duration.seconds(10));
+            delay.setOnFinished(e -> root.getChildren().remove(messageBox));
+            delay.play();
         });
     }
 
+    /**
+     * Displays a visual representation of a stack of cards as an overlay over the current scene
+     * @param stack the stack of cards to be displayed
+     */
     public void showStack(Stack stack) {
         StackPane overlay = new StackPane();
         overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6);");
@@ -1446,7 +1650,7 @@ public class BuildingScene {
         overlay.setMouseTransparent(false);
 
         HBox cardBox = new HBox(20);
-        cardBox.setAlignment(Pos.CENTER_LEFT); // allineamento a sinistra per lo scroll
+        cardBox.setAlignment(Pos.CENTER_LEFT);
 
         for (Card card : stack.getStack()) {
             ImageView cardView = new ImageView(card.getFrontImage());
@@ -1456,15 +1660,13 @@ public class BuildingScene {
             cardBox.getChildren().add(cardView);
         }
 
-        // ScrollPane che contiene le carte
         ScrollPane scrollPane = new ScrollPane(cardBox);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setFitToHeight(true);
         scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
-        scrollPane.setPadding(new Insets(100, 50, 50, 50)); // spazio intorno alle carte
+        scrollPane.setPadding(new Insets(100, 50, 50, 50));
 
-        // Pulsante "←" sempre visibile in alto a sinistra
         Button backBtn = new Button("←");
         backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
         backBtn.setTextFill(Color.BLACK);
@@ -1475,9 +1677,7 @@ public class BuildingScene {
         StackPane.setAlignment(backBtn, Pos.TOP_LEFT);
         StackPane.setMargin(backBtn, new Insets(30));
 
-        backBtn.setOnAction(e -> {
-            viewFlow.handleInput("dropStack");
-        });
+        backBtn.setOnAction(e -> viewFlow.handleInput("dropStack"));
 
         overlay.getChildren().addAll(scrollPane, backBtn);
 
@@ -1487,6 +1687,9 @@ public class BuildingScene {
         });
     }
 
+    /**
+     * Hides the current stack overlay and restores the ship screen content if applicable
+     */
     public void hideStackOverlay() {
         if (currentStackOverlay != null) {
             Platform.runLater(() -> {
@@ -1502,10 +1705,17 @@ public class BuildingScene {
         }
     }
 
+    /**
+     * Updates the coordinates of the alien cabin using the provided list of coordinates.
+     * @param alienCoords a list alien cabins' coordinates
+     */
     public void updateAlienCabinCoord(ArrayList<int[]> alienCoords) {
         this.alienCoords = alienCoords;
     }
 
+    /**
+     * Displays a user interface element where the user can place aliens and confirm their placement
+     */
     public void showAlienCabin() {
         disableAndSaveAllButtonStates();
         VBox alienBox = new VBox(10);
@@ -1540,10 +1750,8 @@ public class BuildingScene {
             placeBtn.setPrefWidth(70);
 
             placeBtn.setOnAction(e -> {
-                // Disabilita e oscura il bottone
                 placeBtn.setDisable(true);
                 placeBtn.setStyle("-fx-background-color: #999999;");
-                // Aggiungi le coordinate al comando
                 commandBuilder.append(" ").append(x).append(" ").append(y).append(" ").append(colorName);
             });
 
@@ -1552,7 +1760,6 @@ public class BuildingScene {
             alienListBox.getChildren().add(line);
         }
 
-        // Pulsante finale di conferma
         Button confirmBtn = new Button("Confirm");
         confirmBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 14));
         confirmBtn.setTextFill(Color.BLACK);
@@ -1571,17 +1778,19 @@ public class BuildingScene {
         root.getChildren().add(alienBox);
     }
 
-
+    /**
+     * Displays a "TIME EXPIRED" message with a blinking effect, with a count
+     * indicating how many times the timer has expired
+     * @param expirationCount the number of times the expiration event has occurred.
+     */
     public void showTimeExpired(int expirationCount) {
         if (scene == null || root == null) return;
 
-        // Crea la scritta TIME EXPIRED + count
         Label message = new Label("TIME EXPIRED\n(" + "For " + expirationCount + " times)");
         message.setTextFill(Color.RED);
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 80));
         message.setTextAlignment(TextAlignment.CENTER);
 
-        // Effetto lampeggiante
         FadeTransition blink = new FadeTransition(Duration.seconds(0.4), message);
         blink.setFromValue(1.0);
         blink.setToValue(0.0);
@@ -1589,10 +1798,9 @@ public class BuildingScene {
         blink.setAutoReverse(true);
         blink.play();
 
-        // Timeline per fermare il lampeggio dopo 3 secondi
         Timeline stopBlink = new Timeline(new KeyFrame(Duration.seconds(2), e -> {
             blink.stop();
-            message.setOpacity(1.0); // assicurati che resti visibile dopo il blink
+            message.setOpacity(1.0);
         }));
         stopBlink.play();
 
@@ -1612,23 +1820,23 @@ public class BuildingScene {
         wait.play();
     }
 
-
+    /**
+     * Displays an error message centered on the screen
+     * @param message the error message to display
+     */
     public void showError(String message) {
         double width = root.getWidth();
         double height = root.getHeight();
 
-        // Sfondo trasparente NON interattivo
         Rectangle overlay = new Rectangle(width, height);
         overlay.setFill(Color.rgb(0, 0, 0, 0.4));
         overlay.setMouseTransparent(true);
 
-        // Testo di errore visibile
         Label errorLabel = new Label(message);
         errorLabel.setTextFill(Color.RED);
         errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
         errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
 
-        // Contenitore popup
         StackPane popup = new StackPane(overlay, errorLabel);
         popup.setMouseTransparent(true);
         StackPane.setAlignment(errorLabel, Pos.CENTER);
@@ -1643,7 +1851,5 @@ public class BuildingScene {
             }
         });
     }
-
-
 }
 

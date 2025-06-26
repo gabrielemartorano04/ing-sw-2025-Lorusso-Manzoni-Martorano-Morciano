@@ -163,7 +163,6 @@ public class LoginScene {
                     return;
                 }
 
-                // Deseleziona tutte le checkmark
                 colorBoxes.values().forEach(box -> {
                     for (javafx.scene.Node node : box.getChildren()) {
                         if (node.getClass() == Label.class) {
@@ -175,7 +174,6 @@ public class LoginScene {
                     }
                 });
 
-                // Mostra la checkmark selezionata
                 checkmark.setVisible(true);
                 selectedColor[0] = color;
 
@@ -367,12 +365,10 @@ public class LoginScene {
         double width = root.getWidth();
         double height = root.getHeight();
 
-        // Overlay grigio trasparente
         Rectangle overlay = new Rectangle(width, height);
         overlay.setFill(Color.rgb(0, 0, 0, 0.4));
         overlay.setMouseTransparent(true);
 
-        // Messaggio di errore
         Label errorLabel = new Label("ERROR! Nickname already taken");
         errorLabel.setTextFill(Color.RED);
         errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
@@ -399,12 +395,10 @@ public class LoginScene {
         double width = root.getWidth();
         double height = root.getHeight();
 
-        // Overlay grigio trasparente
         Rectangle overlay = new Rectangle(width, height);
         overlay.setFill(Color.rgb(0, 0, 0, 0.4));
         overlay.setMouseTransparent(true);
 
-        // Messaggio di errore
         Label errorLabel = new Label("ERROR! Color already taken");
         errorLabel.setTextFill(Color.RED);
         errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
@@ -518,12 +512,10 @@ public class LoginScene {
         double width = root.getWidth();
         double height = root.getHeight();
 
-        // Overlay grigio trasparente
         Rectangle overlay = new Rectangle(width, height);
         overlay.setFill(Color.rgb(0, 0, 0, 0.4));
         overlay.setMouseTransparent(true);
 
-        // Messaggio di errore
         Label errorLabel = new Label(message);
         errorLabel.setTextFill(Color.RED);
         errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
