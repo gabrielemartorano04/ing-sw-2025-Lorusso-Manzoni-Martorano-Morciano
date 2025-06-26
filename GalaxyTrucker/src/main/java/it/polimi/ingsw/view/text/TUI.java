@@ -53,6 +53,7 @@ public class TUI implements UI {
     public void welcomeScene(AvailableColorsEvent event){
         this.showWelcome();
         this.showChooseColor(event.getColors());
+
     }
 
     /**
@@ -120,8 +121,10 @@ public class TUI implements UI {
     @Override
     public void startBuildingScene(StartBuildingEvent event){
         this.showPlayers(event.getPlayers());
+        viewFlow.setPlayers(event.getPlayers());
         this.showBuildPhaseStart(event.getComponents());
         this.showBuildOptions();
+        System.out.print("\n>");
     }
 
     /**
@@ -228,6 +231,8 @@ public class TUI implements UI {
     public void componentLinked(ComponentLinkedEvent event){
         this.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
         this.showAvailableComponent(event.getAvComponents());
+        System.out.print("\n>");
+
     }
 
     /**
@@ -240,6 +245,7 @@ public class TUI implements UI {
         this.showError(event.getMessage());
         this.showAvailableComponent(this.viewFlow.getAvailableComponents());
         this.showMessage("Please select a component between 0 and " + (this.viewFlow.getAvailableComponents().size()-1)+"\n");
+        System.out.print("\n>");
     }
 
     /**
@@ -252,6 +258,7 @@ public class TUI implements UI {
     public void componentSelected (ComponentSelectedEvent event){
         this.showComponentSelected(this.viewFlow.getSelectedComponent());
         this.showComponentOptions();
+        System.out.print("\n>");
     }
 
     /**
@@ -263,6 +270,7 @@ public class TUI implements UI {
     public void invalidCoordinates(InvalidCoordinatesError event){
         this.showError(event.getMessage());
         this.askCoordinates();
+        System.out.print("\n>");
     }
 
     /**
@@ -278,6 +286,7 @@ public class TUI implements UI {
                 System.out.println("- " + component.getType());
             }
         }
+        System.out.print("\n>");
     }
 
     /**
@@ -288,6 +297,7 @@ public class TUI implements UI {
     @Override
     public void turnHourGlassError(TurnHourglassError event){
         this.showError(event.getMessage());
+        System.out.print("\n>");
     }
 
     /**
@@ -297,6 +307,7 @@ public class TUI implements UI {
     @Override
     public void turnHourGlass(int durationSeconds){
         System.out.println("Timer started! Duration: " + durationSeconds + " seconds.");
+        System.out.print("\n>");
     }
 
     /**
@@ -328,6 +339,7 @@ public class TUI implements UI {
     @Override
     public void keptComponent(KeptComponentEvent event){
         this.showAvailableComponent(event.getAvComponents());
+        System.out.print("\n>");
     }
 
     /**
@@ -338,6 +350,7 @@ public class TUI implements UI {
     @Override
     public void componentTurned(TurnedComponentSuccessEvent event){
         this.showComponentSelected(event.getComponent());
+        System.out.print("\n>");
     }
 
     /**
@@ -347,6 +360,7 @@ public class TUI implements UI {
     @Override
     public void keptSelected(SuccessSelectKept event){
         this.showComponentSelected(viewFlow.getSelectedComponent());
+        System.out.print("\n>");
     }
 
     /**
@@ -360,6 +374,7 @@ public class TUI implements UI {
 
         if(event.getAlienCabinCoord().isEmpty()){
             this.showMessage("you can't place any alien. Please type 'coord' to go on\n");
+            System.out.print(">");
         }
         else {
             StringBuilder message= new StringBuilder();
@@ -373,7 +388,8 @@ public class TUI implements UI {
                 }
             }
             this.showMessage("\nList of cabin available for aliens:\n" + message);
-            this.showMessage("Insert coordinates to add aliens (coord <x1> <y1> <color> <x2> <y2> <color>...), otherwise just 'coord':\n");
+            this.showMessage("Insert coordinates to add aliens (coord <x1> <y1> <color> <x2> <y2> <color>...), otherwise just 'coord'.");
+            System.out.print("\n>");
         }
     }
 
@@ -385,6 +401,7 @@ public class TUI implements UI {
     @Override
     public void dropStack(StackDropOk event){
         this.showMessage(event.getMessage());
+        System.out.print("\n>");
     }
 
     /**
@@ -420,6 +437,7 @@ public class TUI implements UI {
         System.out.println("Current condition:" + condition);
         if(isLeader){
             System.out.println("Type warzone to proceed");
+            System.out.print(">");
         }
     }
 
@@ -442,6 +460,7 @@ public class TUI implements UI {
         }
         this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         System.out.println(message);
+        System.out.print(">");
     }
 
     /**
@@ -452,9 +471,6 @@ public class TUI implements UI {
     @Override
     public  void epidemic(EpidemicEvent event){
         System.out.println("Card effect:");
-        for (Trucker t: event.getTruckers()) {
-            System.out.println(t.getNickname() + " has lost ");
-        }
         for(Trucker trucker: event.getTruckersRemoved()){
             System.out.println(trucker.getNickname() + " died");
         }
@@ -466,6 +482,7 @@ public class TUI implements UI {
             i++;
         }
         System.out.println(message);
+        System.out.print(">");
     }
 
     /**
@@ -491,6 +508,7 @@ public class TUI implements UI {
             i++;
         }
         System.out.println(message);
+        System.out.print(">");
     }
 
     /**
@@ -538,6 +556,7 @@ public class TUI implements UI {
             case WARZONE -> System.out.println("Type 'warzone' to start warzone card");
             case ASK_WITHDRAW -> System.out.println("Do you want to withdraw? Type 'y' or 'n'");
         }
+        System.out.print(">");
     }
 
     /**
@@ -553,6 +572,7 @@ public class TUI implements UI {
         else if(event.getMeteor()!=null){
             System.out.println(this.getMeteoriteDescription(event.getMeteor(),event.getCurrIndex()));
         }
+        System.out.print(">");
     }
 
     /**
@@ -588,7 +608,8 @@ public class TUI implements UI {
      */
     private void showChooseColor(EnumSet<PlayerColors> availableColors) {
         System.out.println("Colours available: " + String.join(", ", availableColors.toString()));
-        System.out.print("Insert nickname and choose a colour: ");
+        System.out.println("Insert nickname and choose a colour.");
+        System.out.print(">");
     }
 
     /**

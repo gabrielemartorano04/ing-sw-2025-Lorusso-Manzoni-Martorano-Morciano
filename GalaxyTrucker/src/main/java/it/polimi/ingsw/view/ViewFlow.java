@@ -84,6 +84,11 @@ public class ViewFlow implements EventReceiver {
     private String nickname;
 
     /**
+     * All players nicknames
+     */
+    private ArrayList<String> players;
+
+    /**
      * States in which the view can be
      */
     public enum ViewState {
@@ -268,6 +273,14 @@ public class ViewFlow implements EventReceiver {
     }
 
     /**
+     * This method sets all players nicknames to display during building phase
+     * @param players all players nicknames
+     */
+    public void setPlayers(ArrayList<String> players) {
+        this.players=players;
+    }
+
+    /**
      * Retrieves the current state of the view
      * @return the current ViewState of the view, representing the phase or state
      *         in which the view is operating.
@@ -325,7 +338,7 @@ public class ViewFlow implements EventReceiver {
             }
             case BULDING-> {
                 if (!this.endBuildingPhase) {
-                    event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected,firstLinked);
+                    event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected,firstLinked, players);
                 }
                 else {
                     ui.showWaitForOthers();
