@@ -159,7 +159,7 @@ public class WarZone extends Card implements Serializable {
      * @return an event containing all the card details
      */
     @Override
-    public ServerEvent startCard() {
+    public synchronized ServerEvent startCard() {
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
@@ -191,7 +191,7 @@ public class WarZone extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent handleCurrentCondition() throws GeneralError{
+    public synchronized ServerEvent handleCurrentCondition() throws GeneralError{
         if(state != CardState.WARZONE){
             throw new GeneralError("CombatZone not callable in the state " + state);
         }
@@ -241,7 +241,7 @@ public class WarZone extends Card implements Serializable {
      * @throws NotEnoughBatteries not enoughBatteries indicated to activate the doubleCannons selected
      */
     @Override
-    public ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
+    public synchronized ServerEvent activateCannons(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws GeneralError, InvalidComponentsException, NotEnoughBatteries {
         if (this.state != CardState.ACTIVATE_CANNONS) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
@@ -283,7 +283,7 @@ public class WarZone extends Card implements Serializable {
      * @throws NotEnoughBatteries: not enoughBatteries indicated
      */
     @Override
-    public ServerEvent activateEngines(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws InvalidCoordinates, GeneralError, NotEnoughBatteries {
+    public synchronized ServerEvent activateEngines(Boolean activate, ArrayList<int[]> coord, ArrayList<int[]> batteryCoord) throws InvalidCoordinates, GeneralError, NotEnoughBatteries {
         if (this.state != CardState.ACTIVATE_ENGINES) {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
@@ -335,7 +335,7 @@ public class WarZone extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent removeGoods() throws GeneralError{
+    public synchronized ServerEvent removeGoods() throws GeneralError{
         if(state != CardState.REMOVE_GOODS){
             throw new GeneralError("removeGoods not callable in the state " + state);
         }
@@ -429,7 +429,7 @@ public class WarZone extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent removeGoodsDecided(ArrayList<Integer> indexesToRemove) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
+    public synchronized ServerEvent removeGoodsDecided(ArrayList<Integer> indexesToRemove) throws InvalidGoodChosen, NotEnoughGoodsChosen, GeneralError {
         if (state != CardState.REMOVE_ASKING){
             throw new GeneralError("Can't call removeAsking in the state " + state);
         }
@@ -460,7 +460,7 @@ public class WarZone extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
+    public synchronized ServerEvent removeBatteries(ArrayList<int[]> coordinatesToRemoveBatteries) throws GeneralError,InvalidCoordinates, WrongNumberOfBatteriesSelected, NotEnoughBatteries {
         if(state!= CardState.REMOVE_BATTERIES){
             throw new GeneralError("Can't call removeBatteries in the state " + state);
         }
@@ -489,7 +489,7 @@ public class WarZone extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent removeHumans(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
+    public synchronized ServerEvent removeHumans(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
         if(state != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Can't call setCoordinates in the state: " + state);
         }
@@ -512,7 +512,7 @@ public class WarZone extends Card implements Serializable {
      * @return the event containing the roll dice result and the current meteor
      */
     @Override
-    public ServerEvent rollDice() throws GeneralError {
+    public synchronized ServerEvent rollDice() throws GeneralError {
         if(state != CardState.ROLL_DICE) {
             throw new GeneralError("Non si può girare i dadi nello stato " + this.state);
         }
@@ -541,7 +541,7 @@ public class WarZone extends Card implements Serializable {
      * @throws NotEnoughBatteries: not enough batteries to remove were indicated by the plauer
      */
     @Override
-    public ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
+    public synchronized ServerEvent activateShield(boolean answer, int[] shieldCoord , int[] batteryCoord) throws GeneralError, InvalidCoordinates, NotEnoughBatteries {
         if (state != CardState.ACTIVATE_SHIELDS) {
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
@@ -649,7 +649,7 @@ public class WarZone extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent cardEffect() throws GeneralError {
+    public synchronized ServerEvent cardEffect() throws GeneralError {
         if(state != CardState.ESECUZIONE){
             throw new GeneralError("Card effect not callable in the state " + state);
         }
