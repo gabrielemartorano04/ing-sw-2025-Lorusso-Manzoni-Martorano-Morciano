@@ -6,14 +6,48 @@ import it.polimi.ingsw.view.ParserState;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the result of rolling a dice during a player's turn in the game.
+ */
 public class RollDiceResult extends CardEvent {
 
+    /**
+     * Index of the current meteor of shoot
+     */
     private final int currIndex;
+
+    /**
+     * Result of the roll
+     */
     private final int diceResult;
+
+    /**
+     * Specify the type of hit, big or small, shoot or meteor
+     */
     private final String hitType;
+
+    /**
+     * Specify the dimension and the direction of the shoot
+     */
     private final int[] shoot;
+
+    /**
+     * Specify the dimension and the direction of the meteor
+     */
     private final int[] meteor;
 
+    /**
+     * Event constructor
+     * @param parserState state of the parser
+     * @param currIndex index of the shoot or meteor
+     * @param shoot specify the dimension and the direction of the shoot
+     * @param meteor specify the dimension and the direction of the meteor
+     * @param diceResult result of the roll
+     * @param nickname of the player
+     * @param forAll specify if the message is for a player or everyone
+     * @param hitType specify the type of hit, big or small, shoot or meteor
+     * @param truckers list of players
+     */
     public RollDiceResult(ParserState parserState, int currIndex, int[] shoot, int [] meteor, int diceResult, String nickname, boolean forAll, String hitType, ArrayList<Trucker> truckers){
         super(forAll, parserState, nickname, truckers);
         this.currIndex = currIndex;
@@ -23,28 +57,50 @@ public class RollDiceResult extends CardEvent {
         this.hitType = hitType;
     }
 
+    /**
+     * @return the current index of shoot or meteor
+     */
     public int getCurrIndex() {return currIndex;}
 
+    /**
+     * @return the specific dimension and direction of the shoot
+     */
     public int[] getShoot(){
         return this.shoot;
     }
 
+    /**
+     * @return the specific dimension and direction of the meteor
+     */
     public int[] getMeteor(){
         return meteor;
     }
 
+    /**
+     * @return the result of the roll
+     */
     public int getDiceResult() {return diceResult;}
 
-    @Override
-    public void call(ServerEventHandlerVisitor visitor) {
-        visitor.visit(this);
-    }
+    /**
+     * @return the specific type of hit, big or small, shoot or meteor
+     */
+    public String getHitType() {return hitType;}
 
+    /**
+     * @return a string message describing the player's current activity
+     */
     public String getInfoForOthers(){
         return getNickname()+" got "+diceResult+ " from the dice\n";
     }
 
-    public String getHitType() {return hitType;}
+    /**
+     * This method calls the client method that manages this event reception
+     * @param visitor client class that manages server events
+     */
+    @Override
+    public void call(ServerEventHandlerVisitor visitor) {
+        visitor.visit(this);
+    }
 }
 
 
