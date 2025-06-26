@@ -2039,8 +2039,8 @@ public class FlightScene {
     public void showRollDiceResult(int result) {
         // === Overlay grigio trasparente ===
         Rectangle overlay = new Rectangle();
-        overlay.setWidth(scene.getWidth());
-        overlay.setHeight(scene.getHeight());
+        overlay.setWidth(1600);
+        overlay.setHeight(900);
         overlay.setFill(Color.rgb(0, 0, 0, 0.5));
         overlay.setMouseTransparent(false); // blocca interazioni sotto
 
