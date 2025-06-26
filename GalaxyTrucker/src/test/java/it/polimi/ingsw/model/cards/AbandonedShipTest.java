@@ -122,7 +122,7 @@ class AbandonedShipTest {
     @Test
     void setHumansCoordinates() {
         abandonedShip.setState(CardState.HUMANSTOREMOVE);
-        abandonedShip.setTruckerThatHasDecided(Game.getIstance().getTruckerList().get(0));
+        abandonedShip.setTruckerLanding(Game.getIstance().getTruckerList().get(0));
         ArrayList<int[]> coordinates = new ArrayList<>();
         coordinates.add(new int[]{7,7, 1});
         coordinates.add(new int[]{6,5, 1});
@@ -167,7 +167,7 @@ class AbandonedShipTest {
         coordinates.add(new int[]{6,5, 1});
         try {
             abandonedShip.setState(CardState.HUMANSTOREMOVE);
-            abandonedShip.setTruckerThatHasDecided(Game.getIstance().getTruckerList().get(0));
+            abandonedShip.setTruckerLanding(Game.getIstance().getTruckerList().get(0));
             abandonedShip.removeHumans(coordinates);
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
