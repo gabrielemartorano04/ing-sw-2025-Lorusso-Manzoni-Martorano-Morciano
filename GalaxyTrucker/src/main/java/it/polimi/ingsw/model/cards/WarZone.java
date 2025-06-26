@@ -377,6 +377,7 @@ public class WarZone extends Card implements Serializable {
                 this.state = CardState.ESECUZIONE;
                 return cardEffect();
             }else{
+                System.out.println(weakestTrucker.getSpaceShip().getNumBatteries());
                 this.state = CardState.REMOVE_BATTERIES;
                 return new RemoveBatteries(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(), goodsToLose, Game.getIstance().getTruckerList());
             }
@@ -744,7 +745,6 @@ public class WarZone extends Card implements Serializable {
      */
     private ServerEvent handleEndTurn() {
         ArrayList<Trucker> truckerRemoved = Game.getIstance().endTurn();
-
         GamePersistence.saveGame(GameController.getIstance());
         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
@@ -787,5 +787,9 @@ public class WarZone extends Card implements Serializable {
 
     public void setInitializeRemoveGoods(boolean initializeRemoveGoods) {
         this.initializeRemoveGoods = initializeRemoveGoods;
+    }
+
+    public void addGoodsToRemove(Goods good){
+        goodsToRemove.add(good);
     }
 }

@@ -125,7 +125,7 @@ class WarZoneTest {
         ServerEvent result = warZone.handleCurrentCondition();
 
         switch (result){
-            case HumanCoordinates hc-> assertTrue(true);
+            case CurrentCondition cc-> assertEquals(Condition.ENGINES, cc.getCondition());
             default -> fail();
         }
     }
@@ -400,9 +400,242 @@ class WarZoneTest {
         warZone.setState(CardState.HUMANSTOREMOVE);
         warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
 
-        warZone.setPenalties(penalties);
-        warZone.setCurrCondition(Condition.HUMANS);
+        warZone.setCurrConditionIndex(0);
+        warZone.setCurrCondition();
 
         assertThrows(GeneralError.class, () -> warZone.removeGoods());
     }
+
+    @Test
+    void testRemoveGoods_AutoRemoveWithoutDecision() throws Exception {
+        warZone = new WarZone(
+                true, 1,
+                new ArrayList<>(List.of(Condition.HUMANS, Condition.ENGINES)),
+                Map.of(
+                        Condition.HUMANS, new Effect(TypeOfEffect.LOSE_GOODS, 2),
+                        Condition.ENGINES, new Effect(TypeOfEffect.LOSE_HUMANS, 2)
+                ),
+                null,
+                "/img/front.jpg",
+                "/img/back.jpg",
+                0
+        );
+        warZone.setState(CardState.REMOVE_GOODS);
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+
+        Goods g = new Goods(3);
+        Goods g1 = new Goods(3);
+        g.setX(8);
+        g.setY(9);
+        g1.setX(8);
+        g1.setY(9);
+        // Setup nave con 2 beni blu (color 3)
+        Game.getIstance().getTrucker(0).getSpaceShip().addGood(g, new int[]{8,9}, 0, Game.getIstance().getBank());
+        Game.getIstance().getTrucker(0).getSpaceShip().addGood(g1, new int[]{8,9}, 1, Game.getIstance().getBank());
+        Game.getIstance().getTrucker(0).getSpaceShip().addGoodsList(g);
+        Game.getIstance().getTrucker(0).getSpaceShip().addGoodsList(g1);
+        warZone.setColorOfCurrGoodToRemove(3);
+        warZone.setGoodsToLose(2);
+        warZone.setInitializeRemoveGoods(true);
+
+        warZone.setCurrConditionIndex(0);
+        warZone.setCurrCondition();
+        ServerEvent result = warZone.removeGoods();
+
+        switch(result){
+            case CurrentCondition cc -> assertEquals(warZone.getWeakestTrucker().getNickname(), cc.getNickname());
+            default -> fail();
+        }
+    }
+
+    @Test
+    void testRemoveGoods_ManualChoiceRequested() throws Exception {
+
+        warZone = new WarZone(
+                true, 1,
+                new ArrayList<>(List.of(Condition.HUMANS, Condition.ENGINES)),
+                Map.of(
+                        Condition.HUMANS, new Effect(TypeOfEffect.LOSE_GOODS, 2),
+                        Condition.ENGINES, new Effect(TypeOfEffect.LOSE_HUMANS, 2)
+                ),
+                null,
+                "/img/front.jpg",
+                "/img/back.jpg",
+                0
+        );
+        warZone.setState(CardState.REMOVE_GOODS);
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+
+        Goods g = new Goods(3);
+        Goods g1 = new Goods(3);
+        Goods g2 = new Goods(3);
+        g.setX(8);
+        g.setY(9);
+        g1.setX(8);
+        g1.setY(9);
+        g2.setX(8);
+        g2.setY(9);
+        // Setup nave con 2 beni blu (color 3)
+        Game.getIstance().getTrucker(0).getSpaceShip().addGood(g, new int[]{8,9}, 0, Game.getIstance().getBank());
+        Game.getIstance().getTrucker(0).getSpaceShip().addGood(g1, new int[]{8,9}, 1, Game.getIstance().getBank());
+        Game.getIstance().getTrucker(0).getSpaceShip().addGood(g1, new int[]{8,9}, 2, Game.getIstance().getBank());
+        Game.getIstance().getTrucker(0).getSpaceShip().addGoodsList(g);
+        Game.getIstance().getTrucker(0).getSpaceShip().addGoodsList(g1);
+        Game.getIstance().getTrucker(0).getSpaceShip().addGoodsList(g2);
+
+
+        warZone.setGoodsToLose(2);
+        warZone.setInitializeRemoveGoods(true);
+
+        warZone.setCurrConditionIndex(0);
+        warZone.setCurrCondition();
+
+        ServerEvent result = warZone.removeGoods();
+
+        assertEquals(CardState.REMOVE_ASKING, warZone.getCardState());
+        switch (result){
+            case RemoveGoods rg -> assertEquals(warZone.getWeakestTrucker().getNickname(), rg.getNickname());
+            default -> fail();
+        }
+    }
+
+    @Test
+    void testRemoveGoods_NoGoods_PassesToRemoveBatteries() throws Exception {
+        warZone = new WarZone(
+                true, 1,
+                new ArrayList<>(List.of(Condition.HUMANS, Condition.ENGINES)),
+                Map.of(
+                        Condition.HUMANS, new Effect(TypeOfEffect.LOSE_GOODS, 2),
+                        Condition.ENGINES, new Effect(TypeOfEffect.LOSE_HUMANS, 2)
+                ),
+                null,
+                "/img/front.jpg",
+                "/img/back.jpg",
+                0
+        );
+        warZone.setState(CardState.REMOVE_GOODS);
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+        Game.getIstance().getTrucker(0).getSpaceShip().setBattery(); // Nessun bene, ma batterie presenti
+
+        warZone.setGoodsToLose(2);
+
+        warZone.setCurrConditionIndex(0);
+        warZone.setCurrCondition();
+
+        ServerEvent result = warZone.removeGoods();
+
+        assertEquals(CardState.REMOVE_BATTERIES, warZone.getCardState());
+        switch (result){
+            case RemoveBatteries rb -> assertEquals(warZone.getWeakestTrucker().getNickname(), rb.getNickname());
+            default -> fail();
+        }
+    }
+
+    @Test
+    void testRemoveGoods_NoGoodsNoBatteries_ProceedsToEsecuzione() throws Exception {
+        try {
+            Game.initializeForTest(createShip.createShip1(new SpaceShip()), null);
+            Game.getIstance().getTrucker(0).getSpaceShip().setNumHuman();
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        warZone = new WarZone(
+                true, 1,
+                new ArrayList<>(List.of(Condition.HUMANS)),
+                Map.of(
+                        Condition.HUMANS, new Effect(TypeOfEffect.LOSE_GOODS, 2)
+                ),
+                null,
+                "/img/front.jpg",
+                "/img/back.jpg",
+                0
+        );
+        warZone.setState(CardState.REMOVE_GOODS);
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+        warZone.setGoodsToLose(2);
+        warZone.setCurrConditionIndex(0);
+        warZone.setCurrCondition();
+
+        ServerEvent result = warZone.removeGoods();
+
+        assertEquals(CardState.ESECUZIONE, warZone.getCardState());
+        switch (result){
+            case CardFinished cf -> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckers());
+            default -> fail();
+        }
+
+    }
+
+    @Test
+    void testRemoveGoodsDecided_WrongState_Throws() {
+        warZone.setState(CardState.REMOVE_GOODS); // stato sbagliato
+
+        assertThrows(GeneralError.class, () ->
+                warZone.removeGoodsDecided(new ArrayList<>(List.of(0, 1)))
+        );
+    }
+
+    @Test
+    void testRemoveGoodsDecided_WrongNumberOfGoods_Throws() {
+        warZone.setState(CardState.REMOVE_ASKING);
+        warZone.setGoodsToLose(2);
+        warZone.addGoodsToRemove(new Goods(2));
+
+        assertThrows(NotEnoughGoodsChosen.class, () ->
+                warZone.removeGoodsDecided(new ArrayList<>(List.of(0)) // solo uno invece di due
+        ));
+    }
+
+    @Test
+    void testRemoveGoodsDecided_CorrectRemoval_ProceedsToEsecuzione() throws Exception {
+        warZone = new WarZone(
+                true, 1,
+                new ArrayList<>(List.of(Condition.HUMANS)),
+                Map.of(
+                        Condition.HUMANS, new Effect(TypeOfEffect.LOSE_GOODS, 2)
+                ),
+                null,
+                "/img/front.jpg",
+                "/img/back.jpg",
+                0
+        );
+        warZone.setState(CardState.REMOVE_ASKING);
+        warZone.setGoodsToLose(2);
+
+        warZone.setWeakestTrucker(Game.getIstance().getTrucker(0));
+
+        Goods rg = new Goods(2);
+        Goods rg1 = new Goods(3);
+        rg.setX(8);
+        rg.setY(9);
+        rg1.setX(8);
+        rg1.setY(9);
+        warZone.addGoodsToRemove(rg);
+        warZone.addGoodsToRemove(rg1);
+
+
+        Goods g = new Goods(2);
+        Goods g1 = new Goods(3);
+        g.setX(8);
+        g.setY(9);
+        g1.setX(8);
+        g1.setY(9);
+        Game.getIstance().getTrucker(0).getSpaceShip().addGood(g, new int[]{8,9}, 0, Game.getIstance().getBank());
+        Game.getIstance().getTrucker(0).getSpaceShip().addGood(g1, new int[]{8,9}, 1, Game.getIstance().getBank());
+
+
+        warZone.setCurrConditionIndex(0);
+        warZone.setCurrCondition();
+        ServerEvent result = warZone.removeGoodsDecided(new ArrayList<>(List.of(0, 1)));
+
+        assertEquals(CardState.ESECUZIONE, warZone.getCardState());
+        switch(result){
+            case CardFinished cf -> assertTrue(true);
+            default -> fail();
+        }
+
+        assertEquals(0, Game.getIstance().getTrucker(0).getSpaceShip().getGoodsList().size());
+    }
+
+
 }
