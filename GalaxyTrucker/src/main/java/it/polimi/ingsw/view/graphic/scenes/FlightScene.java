@@ -412,6 +412,8 @@ public class FlightScene {
 
     public void showOtherShip(Component[][] layout, String nickname) {
 
+        Image trasparent = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/transparent.png")).toExternalForm());
+
         // === Immagine della nave ===
         AnchorPane overlay = new AnchorPane();
         overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
@@ -448,17 +450,26 @@ public class FlightScene {
         for (int row = 5; row < 10; row++) {
             for (int col = 4; col < 11; col++) {
                 StackPane cell = new StackPane();
-                cell.setPrefSize(87.5, 87.5);
+                cell.setPrefSize(87, 87);
 
                 if (validCells[row][col]) {
                     cell.setStyle("-fx-border-color: white; -fx-border-radius: 4px; -fx-background-radius: 4px;");
                     Component c = layout[row][col];
                     if (c != null) {
                         ImageView iv = new ImageView(c.getFrontImage());
-                        iv.setFitWidth(87.5);
-                        iv.setFitHeight(87.5);
+                        iv.setFitWidth(87);
+                        iv.setFitHeight(87);
                         iv.setRotate(c.getRotationAngle());
-                        Rectangle r = new Rectangle(87.5, 87.5);
+                        Rectangle r = new Rectangle(87, 87);
+                        r.setArcWidth(8);
+                        r.setArcHeight(8);
+                        iv.setClip(r);
+                        cell.getChildren().add(iv);
+                    } else {
+                        ImageView iv = new ImageView(trasparent);
+                        iv.setFitWidth(87);
+                        iv.setFitHeight(87);
+                        Rectangle r = new Rectangle(87, 87);
                         r.setArcWidth(8);
                         r.setArcHeight(8);
                         iv.setClip(r);
@@ -479,7 +490,8 @@ public class FlightScene {
         shipPopup.setMouseTransparent(false);
 
         // === Label con nickname ===
-        Label nameLabel = new Label(nickname + "'s Ship");
+        String displayName = nickname.endsWith("s") ? nickname + "'" : nickname + "'s";
+        Label nameLabel = new Label(displayName + " spaceship");
         nameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
         nameLabel.setTextFill(Color.web("#FFDE69"));
         nameLabel.setAlignment(Pos.CENTER);
@@ -580,6 +592,8 @@ public class FlightScene {
      */
     public void updateShipLayout() {
         // se grid esiste già, la rimuovo dal root
+        Image trasparent = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/transparent.png")).toExternalForm());
+
         if (grid != null) {
             root.getChildren().remove(grid);
         }
@@ -612,6 +626,15 @@ public class FlightScene {
                         clip.setArcHeight(12);
                         imageView.setClip(clip);
                         imageView.setRotate(c.getRotationAngle());
+                        cell.getChildren().add(imageView);
+                    } else {
+                        ImageView imageView = new ImageView(trasparent);
+                        imageView.setFitWidth(107);
+                        imageView.setFitHeight(107);
+                        Rectangle clip = new Rectangle(107, 107);
+                        clip.setArcWidth(12);
+                        clip.setArcHeight(12);
+                        imageView.setClip(clip);
                         cell.getChildren().add(imageView);
                     }
                 } else {
