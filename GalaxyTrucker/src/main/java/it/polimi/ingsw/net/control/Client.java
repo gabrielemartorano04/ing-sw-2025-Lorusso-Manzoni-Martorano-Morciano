@@ -152,6 +152,9 @@ public class Client {
         return now - lastPongTime > 10000;
     }
 
+    /**
+     * closes the connection with the current client
+     */
     public void closeConnection(){
         if(clientHandler != null){
             clientHandler.close();
