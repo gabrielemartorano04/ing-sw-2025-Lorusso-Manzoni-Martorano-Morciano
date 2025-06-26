@@ -288,7 +288,7 @@ public class Pirates extends Card implements Serializable {
      * @throws GeneralError: not in the right state
      */
     @Override
-    public synchronized ServerEvent setWinDecision(boolean answer)throws GeneralError{
+    public synchronized ServerEvent gainCredits(boolean answer)throws GeneralError{
         if(cardState!=CardState.COSMIC_CREDITS){
             throw new GeneralError("Card state is not COSMIC_CREDITS");
         }

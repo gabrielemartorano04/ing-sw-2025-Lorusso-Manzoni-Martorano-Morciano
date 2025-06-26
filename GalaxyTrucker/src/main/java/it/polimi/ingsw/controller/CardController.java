@@ -178,7 +178,7 @@ public class CardController implements Serializable {
      */
     public ServerEvent setWinDecision(GainCosmicCreditsResponseEvent event) {
         try {
-            return currCard.setWinDecision(event.getAnswer());
+            return currCard.gainCredits(event.getAnswer());
         } catch (GeneralError | WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), false);
         }

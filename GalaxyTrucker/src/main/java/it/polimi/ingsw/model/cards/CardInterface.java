@@ -66,7 +66,7 @@ public interface CardInterface {
     /**
      * Handles the decision of the winner against smugglers, slavers or pirates
      */
-    default ServerEvent setWinDecision(boolean answer)throws GeneralError, WrongCallerException {
+    default ServerEvent gainCredits(boolean answer)throws GeneralError, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
