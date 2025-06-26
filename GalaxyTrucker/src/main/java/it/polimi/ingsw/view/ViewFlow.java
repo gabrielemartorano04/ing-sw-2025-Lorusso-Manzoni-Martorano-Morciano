@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.components.Shield;
 import it.polimi.ingsw.net.events.clientevents.PongEvent;
 import it.polimi.ingsw.net.events.clientevents.cardevents.DeadTrucker;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
-import it.polimi.ingsw.net.socket.client.ClientEventSender;
+import it.polimi.ingsw.net.socket.client.ClientSocketSender;
 import it.polimi.ingsw.net.control.ServerEventHandlerVisitor;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.clientevents.cardevents.OkStartFlight;
@@ -31,7 +31,7 @@ public class ViewFlow implements EventReceiver {
     /**
      * Socket Sender if the client has chosen SOCKET
      */
-    private final ClientEventSender sender;
+    private final ClientSocketSender sender;
 
     /**
      * Rmi client if the client has chosen RMI
@@ -221,7 +221,7 @@ public class ViewFlow implements EventReceiver {
      * @param sender the ClientEventSender used to send events from the view to the server
      * @param useGui a boolean indicating whether to use the graphical user interface (GUI) or the textual user interface (TUI)
      */
-    public ViewFlow(ClientEventSender sender, boolean useGui) {
+    public ViewFlow(ClientSocketSender sender, boolean useGui) {
         this.sender = sender;
         this.inputReader = new InputReader();
         this.nickname = null;

@@ -22,11 +22,6 @@ public class RollDiceResult extends CardEvent {
     private final int diceResult;
 
     /**
-     * Specify the type of hit, big or small, shoot or meteor
-     */
-    private final String hitType;
-
-    /**
      * Specify the dimension and the direction of the shoot
      */
     private final int[] shoot;
@@ -45,16 +40,14 @@ public class RollDiceResult extends CardEvent {
      * @param diceResult result of the roll
      * @param nickname of the player
      * @param forAll specify if the message is for a player or everyone
-     * @param hitType specify the type of hit, big or small, shoot or meteor
      * @param truckers list of players
      */
-    public RollDiceResult(ParserState parserState, int currIndex, int[] shoot, int [] meteor, int diceResult, String nickname, boolean forAll, String hitType, ArrayList<Trucker> truckers){
+    public RollDiceResult(ParserState parserState, int currIndex, int[] shoot, int [] meteor, int diceResult, String nickname, boolean forAll, ArrayList<Trucker> truckers){
         super(forAll, parserState, nickname, truckers);
         this.currIndex = currIndex;
         this.shoot=shoot;
         this.meteor=meteor;
         this.diceResult = diceResult;
-        this.hitType = hitType;
     }
 
     /**
@@ -80,11 +73,6 @@ public class RollDiceResult extends CardEvent {
      * @return the result of the roll
      */
     public int getDiceResult() {return diceResult;}
-
-    /**
-     * @return the specific type of hit, big or small, shoot or meteor
-     */
-    public String getHitType() {return hitType;}
 
     /**
      * @return a string message describing the player's current activity

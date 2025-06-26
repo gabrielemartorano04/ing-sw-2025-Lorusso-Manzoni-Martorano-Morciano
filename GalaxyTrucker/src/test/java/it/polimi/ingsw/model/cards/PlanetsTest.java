@@ -70,34 +70,34 @@ public class PlanetsTest {
     }
 
     @Test
-    void testSetGoodsCoordinatesAccept() throws Exception {
+    void testAddGoodAccept() throws Exception {
         card.playerLandingPlanets(0);
         card.playerLandingPlanets(-1);
         card.setCurrGood(new Goods(2));
         card.setState(CardState.GOODSTOADD);
         int[] coord = {9, 8};
-        ServerEvent ev = card.setGoodsCoordinates(true, coord, 0);
+        ServerEvent ev = card.addGood(true, coord, 0);
         assertNotNull(ev);
     }
 
     @Test
-    void testSetGoodsCoordinatesReject() throws Exception {
+    void testAddGoodReject() throws Exception {
         card.playerLandingPlanets(0);
         card.playerLandingPlanets(-1);
         card.setCurrGood(new Goods(2));
         card.setState(CardState.GOODSTOADD);
-        ServerEvent ev = card.setGoodsCoordinates(false, null, 0);
+        ServerEvent ev = card.addGood(false, null, 0);
         assertNotNull(ev);
     }
 
     @Test
-    void testSetGoodsCoordinatesInvalid() throws Exception {
+    void testAddGoodInvalid() throws Exception {
         card.playerLandingPlanets(0);
         card.playerLandingPlanets(-1);
         card.setCurrGood(new Goods(2));
         card.setState(CardState.GOODSTOADD);
         int[] invalidCoord = {1, 1};
-        assertThrows(InvalidCoordinates.class, () -> card.setGoodsCoordinates(true, invalidCoord, 0));
+        assertThrows(InvalidCoordinates.class, () -> card.addGood(true, invalidCoord, 0));
     }
 
     @Test
@@ -145,7 +145,7 @@ public class PlanetsTest {
         card.setCurrGood(new Goods(4));
         ServerEvent ev = null;
         try {
-            ev = card.setGoodsCoordinates(false, null, 0);
+            ev = card.addGood(false, null, 0);
         } catch (GeneralError e) {
             throw new RuntimeException(e);
         } catch (InvalidCoordinates e) {
@@ -180,10 +180,10 @@ public class PlanetsTest {
     }
 
     @Test
-    void test_setGoodsCoordinates_invalidCoords() {
+    void test_addGood_invalidCoords() {
         card.setState(CardState.GOODSTOADD);
         card.setTruckersLanded(Game.getIstance().getTruckerList());
-        assertThrows(InvalidCoordinates.class, () -> card.setGoodsCoordinates(true, new int[]{0, 0}, 0));
+        assertThrows(InvalidCoordinates.class, () -> card.addGood(true, new int[]{0, 0}, 0));
     }
 
     @Test

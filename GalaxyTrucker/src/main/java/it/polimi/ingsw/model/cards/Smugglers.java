@@ -276,7 +276,7 @@ public class Smugglers extends Card implements Serializable {
 
     /**
      *
-     * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
+     * Adds the current good to the current trucker spaceship or handles the evolution of the card
      *
      * @param answer true if the current player wants this good false otherwise
      * @param goodsCoordinates list of coordinatest
@@ -286,7 +286,7 @@ public class Smugglers extends Card implements Serializable {
      * @throws InvalidPositionException not a special load but that good was special
      */
     @Override
-    public synchronized ServerEvent setGoodsCoordinates(Boolean answer, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public synchronized ServerEvent addGood(Boolean answer, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
@@ -465,7 +465,6 @@ public class Smugglers extends Card implements Serializable {
                 cardState = CardState.ESECUZIONE;
                 return cardEffect();
             } else {
-                System.out.println("Remotion Confirmed in handleBatteryOrNextTrucker");
                 return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED, nickname, ship);
             }
         } else {
@@ -618,6 +617,17 @@ public class Smugglers extends Card implements Serializable {
 
 
     /**
+     * deactivate every type of component from every player's ship
+     */
+    private void deactivateTruckersSpaceShip(){
+        for(Trucker trucker: Game.getIstance().getTruckerList()){
+            trucker.getSpaceShip().deactivateDoubleCannons();
+            trucker.getSpaceShip().deactivateDoubleEngines();
+            trucker.getSpaceShip().deActivateShields();
+        }
+    }
+
+    /**
      * Applies the changes provided by the card
      *
      * @return serverEvent to send to clients
@@ -633,6 +643,8 @@ public class Smugglers extends Card implements Serializable {
         }
         ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
+
+        deactivateTruckersSpaceShip();
 
         GamePersistence.saveGame(GameController.getIstance());
         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());

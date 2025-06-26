@@ -11,7 +11,7 @@ import java.io.IOException;
  * Listens for incoming ClientEvents and forwards them to the ServerController.
  * Also sends ServerEvents to the client and manages connection closure.
  */
-public class ClientHandlerSocketInterfaceSocket implements ClientHandlerSocketInterface {
+public class ClientHandlerSocket implements ClientHandlerSocketInterface {
 
     /** NetworkServer instance managing socket communication with the client */
     private final NetworkServer network;
@@ -29,7 +29,7 @@ public class ClientHandlerSocketInterfaceSocket implements ClientHandlerSocketIn
      * @param network the NetworkServer handling socket I/O with the client
      * @param controller the ServerController to dispatch received events to
      */
-    public ClientHandlerSocketInterfaceSocket(NetworkServer network, ServerController controller) {
+    public ClientHandlerSocket(NetworkServer network, ServerController controller) {
         this.network = network;
         this.controller = controller;
         this.id = -1;

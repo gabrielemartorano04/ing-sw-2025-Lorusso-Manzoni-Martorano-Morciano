@@ -150,7 +150,7 @@ public class AbandonedStation extends Card implements Serializable {
 
     /**
      *
-     * Sets the coordinates of the loads where the winner trucker wants to add the goods gained
+     * Adds the current good to the current trucker spaceship or handles the evolution of the card
      *
      * @param answer true if the current player wants this good false otherwise
      * @param goodsCoordinates list of coordinatest
@@ -160,7 +160,7 @@ public class AbandonedStation extends Card implements Serializable {
      * @throws InvalidPositionException not a special load but that good was special
      */
     @Override
-    public synchronized ServerEvent setGoodsCoordinates(Boolean answer, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
+    public synchronized ServerEvent addGood(Boolean answer, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, InvalidPositionException {
         if (cardState != CardState.GOODSTOADD) {
             throw new GeneralError("Card state is not GOODSTOADD");
         }
@@ -252,6 +252,18 @@ public class AbandonedStation extends Card implements Serializable {
     }
 
     /**
+     * deactivate every type of component from every player's ship
+     */
+    private void deactivateTruckersSpaceShip(){
+        for(Trucker trucker: Game.getIstance().getTruckerList()){
+            trucker.getSpaceShip().deactivateDoubleCannons();
+            trucker.getSpaceShip().deactivateDoubleEngines();
+            trucker.getSpaceShip().deActivateShields();
+        }
+    }
+
+
+    /**
      * Applies the changes provided by the card:
      * makes the player landed move backwards
      *
@@ -265,6 +277,9 @@ public class AbandonedStation extends Card implements Serializable {
         if(truckerThatHasDecided != null) {
             Game.getIstance().moveBackward(truckerThatHasDecided, days);
         }
+
+        deactivateTruckersSpaceShip();
+
         ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
 

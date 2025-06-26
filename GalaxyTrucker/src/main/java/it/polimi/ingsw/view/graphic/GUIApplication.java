@@ -3,7 +3,7 @@ package it.polimi.ingsw.view.graphic;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 import it.polimi.ingsw.net.rmi.client.RmiClient;
 import it.polimi.ingsw.net.rmi.server.RmiServerInterface;
-import it.polimi.ingsw.net.socket.client.ClientEventSender;
+import it.polimi.ingsw.net.socket.client.ClientSocketSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.net.socket.client.NetworkListenerClient;
 import it.polimi.ingsw.view.ViewFlow;
@@ -59,7 +59,7 @@ public class GUIApplication extends Application {
 
             try {
                 networkClient.connect();
-                ClientEventSender sender = new ClientEventSender(networkClient);
+                ClientSocketSender sender = new ClientSocketSender(networkClient);
                 this.viewFlow = new ViewFlow(sender, useGui);
                 viewFlow.getGUI().initGui(primaryStage);
                 primaryStage.setOnCloseRequest(e -> {

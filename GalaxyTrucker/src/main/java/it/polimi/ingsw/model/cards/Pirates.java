@@ -332,10 +332,11 @@ public class Pirates extends Card implements Serializable {
 
         if(shoot[0] == 1){
             cardState = CardState.ESECUZIONE;
-            return cardEffect();
+            return new RollDiceResult(ParserState.DISPLAY_BIG_SHOOT, currShootIndex - 1, shoot, null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, Game.getIstance().getTruckerList());
+
         }else{
             cardState = CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,currShootIndex - 1,shoot,null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot", Game.getIstance().getTruckerList());
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD,currShootIndex - 1,shoot,null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, Game.getIstance().getTruckerList());
         }
     }
 
@@ -377,9 +378,19 @@ public class Pirates extends Card implements Serializable {
             return cardEffect();
         }
         indexOfCurrentTrucker++;
-        return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex,shoot,null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, "smallshot", Game.getIstance().getTruckerList());
+        return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex,shoot,null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, Game.getIstance().getTruckerList());
     }
 
+    /**
+     * deactivate every type of component from every player's ship
+     */
+    private void deactivateTruckersSpaceShip(){
+        for(Trucker trucker: Game.getIstance().getTruckerList()){
+            trucker.getSpaceShip().deactivateDoubleCannons();
+            trucker.getSpaceShip().deactivateDoubleEngines();
+            trucker.getSpaceShip().deActivateShields();
+        }
+    }
 
     /**
      * Applies the changes provided by the card:
@@ -404,6 +415,8 @@ public class Pirates extends Card implements Serializable {
             ArrayList<Trucker> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
 
+            deactivateTruckersSpaceShip();
+
             GamePersistence.saveGame(GameController.getIstance());
 
             return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved,Game.getIstance().getTrack());
@@ -425,12 +438,16 @@ public class Pirates extends Card implements Serializable {
                         }
                     }
                 }
+                trucker.getSpaceShip().deactivateDoubleCannons();
+                trucker.getSpaceShip().deActivateShields();
             }
         }
 
         if (shoots.size()==(currShootIndex)) {
             ArrayList<Trucker> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
+
+            deactivateTruckersSpaceShip();
 
             GamePersistence.saveGame(GameController.getIstance());
 
@@ -446,6 +463,8 @@ public class Pirates extends Card implements Serializable {
             else {
                 ArrayList<Trucker> truckerRemoved;
                 truckerRemoved = Game.getIstance().endTurn();
+
+                deactivateTruckersSpaceShip();
 
                 GamePersistence.saveGame(GameController.getIstance());
 

@@ -117,12 +117,6 @@ public class WarZone extends Card implements Serializable {
      */
     private int numOfHumanToRemove;
 
-    /**
-     * coordinates of the cabins from which remove humans
-     */
-    private ArrayList<int[]> humanCoordinates;
-
-
 
     public WarZone(boolean trialFlight, int level, ArrayList<Condition> conditionsOrder, Map<Condition, Effect> penalties, ArrayList<int[]> shoots , String frontImage, String backImage, int id) {
         super("War Zone", "A dangerous conflict zone", trialFlight, level, frontImage, backImage, id);
@@ -139,7 +133,6 @@ public class WarZone extends Card implements Serializable {
         this.currShootIndex = 0;
         this.currCondition = null;
         this.numOfHumanToRemove = 0;
-        this.humanCoordinates = new ArrayList<>();
 
         this.initializeRemoveGoods = true;
         this.goodsToRemove = new ArrayList<>();
@@ -491,13 +484,12 @@ public class WarZone extends Card implements Serializable {
     }
 
     /**
-     * Sets the coordinates of the cabins from which the player that decided to land wants to
-     * remove the crew members required, after checking if they are consistent
+     * handle remotion of humans from the current player spaceShip
      * @param coordinates list of arrays of coordinates of the cabins
      * @return serverEvent to send to clients
      */
     @Override
-    public ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
+    public ServerEvent removeHumans(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
         if(state != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Can't call setCoordinates in the state: " + state);
         }
@@ -506,7 +498,7 @@ public class WarZone extends Card implements Serializable {
         }
         try{
             weakestTrucker.getSpaceShip().checkCabin(coordinates, numOfHumanToRemove);
-            this.humanCoordinates = coordinates;
+            weakestTrucker.getSpaceShip().removeNumHuman(coordinates,numOfHumanToRemove);
             state = CardState.ESECUZIONE;
             return cardEffect();
         }catch (InvalidCoordinates e){
@@ -534,7 +526,7 @@ public class WarZone extends Card implements Serializable {
             return cardEffect();
         }else{
             state=CardState.ACTIVATE_SHIELDS;
-            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex,shoot,null, roll, weakestTrucker.getNickname(), true, "smallmeteor", Game.getIstance().getTruckerList());
+            return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex,shoot,null, roll, weakestTrucker.getNickname(), true, Game.getIstance().getTruckerList());
         }
     }
 
@@ -629,6 +621,12 @@ public class WarZone extends Card implements Serializable {
             case LOSE_HUMANS:
                 state = CardState.HUMANSTOREMOVE;
                 numOfHumanToRemove = penalties.get(currCondition).getValue();
+
+                if(weakestTrucker.getSpaceShip().getNumCrew() < numOfHumanToRemove){
+                    weakestTrucker.getSpaceShip().removeAllHumans();
+                    state = CardState.ESECUZIONE;
+                    return cardEffect();
+                }
                 return new HumanCoordinates(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(),Game.getIstance().getTruckerList());
             default:
                 throw new GeneralError("Unknown TypeOfEffect");
@@ -678,7 +676,7 @@ public class WarZone extends Card implements Serializable {
                 }
 
                 case LOSE_HUMANS -> {
-                    weakestTrucker.getSpaceShip().removeNumHuman(humanCoordinates,numOfHumanToRemove);
+
                     deactivateTruckersSpaceShip();
 
                     currConditionIndex++;
@@ -751,6 +749,43 @@ public class WarZone extends Card implements Serializable {
         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
+    public void setState(CardState state) {
+        this.state = state;
+    }
 
+    public Map<Condition, Effect> getPenalties() {
+        return penalties;
+    }
 
+    public void setCurrConditionIndex(int currConditionIndex) {
+        this.currConditionIndex = currConditionIndex;
+    }
+
+    public void setIndexOfCurrTrucker(int indexOfCurrTrucker) {
+        this.indexOfCurrTrucker = indexOfCurrTrucker;
+    }
+
+    public void setCurrCondition() {
+        this.currCondition = conditionsOrder.get(currConditionIndex);
+    }
+
+    public Trucker getWeakestTrucker() {
+        return weakestTrucker;
+    }
+
+    public void setWeakestTrucker(Trucker weakestTrucker) {
+        this.weakestTrucker = weakestTrucker;
+    }
+
+    public void setColorOfCurrGoodToRemove(int colorOfCurrGoodToRemove) {
+        this.colorOfCurrGoodToRemove = colorOfCurrGoodToRemove;
+    }
+
+    public void setGoodsToLose(int goodsToLose) {
+        this.goodsToLose = goodsToLose;
+    }
+
+    public void setInitializeRemoveGoods(boolean initializeRemoveGoods) {
+        this.initializeRemoveGoods = initializeRemoveGoods;
+    }
 }

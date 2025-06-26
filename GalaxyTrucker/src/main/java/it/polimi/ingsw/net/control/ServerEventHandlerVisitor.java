@@ -525,7 +525,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             updatesFromFlight(event.getTruckers());
         }
 
-        if(event.getNickname().equals(viewFlow.getNickname())){
+        if(event.getTruckers().getFirst().getNickname().equals(viewFlow.getNickname())){
             viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
             isLeader = true;
         }
@@ -548,6 +548,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(BooleanDecision event) {
 
         updatesFromFlight(event.getTruckers());
+
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
 
         if (event.getNickname().equals(viewFlow.getNickname())){
             viewFlow.setParserFlightState(event.getParserState());

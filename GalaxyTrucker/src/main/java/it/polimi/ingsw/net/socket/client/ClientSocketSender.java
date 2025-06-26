@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * Receives client events from the view and sends them to the server via the network.
  */
-public class ClientEventSender {
+public class ClientSocketSender {
 
     /**
      * The network client used for communication.
@@ -19,7 +19,7 @@ public class ClientEventSender {
      *
      * @param network the network client used to send messages
      */
-    public ClientEventSender(NetworkClient network) {
+    public ClientSocketSender(NetworkClient network) {
         this.network = network;
     }
 
