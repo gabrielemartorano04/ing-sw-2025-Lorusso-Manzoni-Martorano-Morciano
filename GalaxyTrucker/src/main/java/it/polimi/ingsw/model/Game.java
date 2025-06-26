@@ -156,17 +156,19 @@ public class Game implements Serializable {
         Game testGame = new Game(2, 2);
 
         Trucker t1 = new Trucker("Alice", PlayerColors.RED);
-        Trucker t2 = new Trucker("Bob", PlayerColors.BLUE);
-
-            t1.setSpaceShip(ship1);
-            t2.setSpaceShip(ship2);
+        t1.setSpaceShip(ship1);
 
         // Aggiungi i trucker al gioco
         try {
             testGame.addTrucker(t1);
-            testGame.addTrucker(t2);
         } catch (Exception e) {
             throw new RuntimeException("Errore durante addTrucker nel test", e);
+        }
+
+        if(ship2 != null) {
+            Trucker t2 = new Trucker("Bob", PlayerColors.BLUE);
+            t2.setSpaceShip(ship2);
+            testGame.addTrucker(t2);
         }
 
         // Imposta il game come stato di volo se serve bypassare la build
