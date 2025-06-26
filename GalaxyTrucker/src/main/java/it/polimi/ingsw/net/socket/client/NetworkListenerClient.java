@@ -60,6 +60,7 @@ public class NetworkListenerClient {
             } catch (IOException | ClassNotFoundException e) {
                 if (running) {
                     System.err.println("Error in listener client: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
         });

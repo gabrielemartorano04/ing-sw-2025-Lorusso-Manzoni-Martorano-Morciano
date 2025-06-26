@@ -44,6 +44,9 @@ public class NetworkServer {
      * @throws IOException if an I/O error occurs while sending
      */
     public void sendMessage(ServerEvent event) throws IOException {
+        System.out.println("Received event of type: " + event.getClass().getName());
+        System.out.println("Received event: " + event);
+
         outputStream.reset();
         outputStream.writeObject(event);
         outputStream.flush();
