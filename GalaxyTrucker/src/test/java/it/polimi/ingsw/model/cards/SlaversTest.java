@@ -62,7 +62,7 @@ class SlaversTest {
     @Test
     void testActivateCannonsWrongState() {
         assertThrows(GeneralError.class, () -> {
-            slavers.setWinDecision(true);
+            slavers.gainCredits(true);
         });
     }
 
@@ -110,16 +110,16 @@ class SlaversTest {
     }
 
     @Test
-    void testSetWinDecisionTrueAndDefeatedEmpty() throws Exception {
+    void testGainCreditsTrueAndDefeatedEmpty() throws Exception {
         slavers.activateCannons(false, new ArrayList<>(), new ArrayList<>());
-        ServerEvent e = slavers.setWinDecision(true);
+        ServerEvent e = slavers.gainCredits(true);
         assertEquals(CardFinished.class, e.getClass());
     }
 
     @Test
     void testRemoveHumansTooFewCrew() throws Exception {
         slavers.activateCannons(false, new ArrayList<>(), new ArrayList<>());
-        slavers.setWinDecision(true);
+        slavers.gainCredits(true);
         Game.getIstance().getTrucker(1).getSpaceShip().removeAllHumans();
         ArrayList<int[]> empty = new ArrayList<>();
         slavers.setState(CardState.HUMANSTOREMOVE);
@@ -131,7 +131,7 @@ class SlaversTest {
     @Test
     void testRemoveHumansValid() throws Exception {
         slavers.activateCannons(false, new ArrayList<>(), new ArrayList<>());
-        slavers.setWinDecision(true);
+        slavers.gainCredits(true);
         ArrayList<int[]> coords = new ArrayList<>();
         coords.add(new int[]{6, 5, 2});
         coords.add(new int[]{7, 6, 1});
@@ -144,7 +144,7 @@ class SlaversTest {
     @Test
     void testRemoveHumansInvalidCoords() throws Exception {
         slavers.activateCannons(false, new ArrayList<>(), new ArrayList<>());
-        slavers.setWinDecision(true);
+        slavers.gainCredits(true);
         ArrayList<int[]> wrong = new ArrayList<>();
         wrong.add(new int[]{9, 9, 0});
         slavers.setState(CardState.HUMANSTOREMOVE);
@@ -162,7 +162,7 @@ class SlaversTest {
     @Test
     void testCardEffectCorrect() throws Exception {
         slavers.activateCannons(false, new ArrayList<>(), new ArrayList<>());
-        slavers.setWinDecision(true);
+        slavers.gainCredits(true);
         ServerEvent e = slavers.cardEffect();
         assertEquals(CardFinished.class, e.getClass());
     }

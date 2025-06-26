@@ -65,24 +65,19 @@ public class StarDust extends Card implements Serializable {
         if(cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Not callable in the state " + cardState);
         }
-        List<Trucker> truckers = Game.getIstance().getTruckerList();
-        Collections.reverse(truckers);
-        for (int i = 0; i < truckers.size(); i++) {
-            System.out.println(truckers.get(i).getNickname());
+        ArrayList<Trucker> truckers = Game.getIstance().getTruckerList();
+        for (int i = truckers.size() - 1; i >= 0; i--) {
             Trucker trucker = truckers.get(i);
             int exposedConnectors = trucker.getSpaceShip().countExposedConnectors();
-            System.out.println("exposed connectors" + exposedConnectors);
             Game.getIstance().moveBackward(trucker, exposedConnectors);
         }
-        Collections.reverse(truckers); //rigiro i Truckers così ritorno all'ordine originale della lista
+
         ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
-        Map<String, Integer> track = new HashMap<>();
-        for (Trucker t : Game.getIstance().getTruckerList()) {
-            track.put(t.getNickname(), t.getPosition());
-        }
+
         GamePersistence.saveGame(GameController.getIstance());
-        return new StarDustEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved, track, this);
+
+        return new StarDustEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved, Game.getIstance().getTrack(), this);
     }
 
     public void setState(CardState state){
