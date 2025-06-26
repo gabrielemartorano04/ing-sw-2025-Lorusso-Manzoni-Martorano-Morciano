@@ -1,22 +1,18 @@
 
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.CreateShipTest;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
-import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.model.components.Load;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
-import it.polimi.ingsw.view.ParserState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -133,10 +129,10 @@ class SmugglersTest {
 
 
     @Test
-    void testSetGoodsCoordinatesAccepted() throws Exception {
+    void testAddGoodAccepted() throws Exception {
         testActivateCannonsVictory();
         int[] coords = new int[]{7, 8};
-        ServerEvent e = smugglers.setGoodsCoordinates(true, coords, 0);
+        ServerEvent e = smugglers.addGood(true, coords, 0);
         switch(e){
             case PlotGood bl -> assertTrue(true);
             case RearrangeEvent re -> assertTrue(true);
@@ -145,9 +141,9 @@ class SmugglersTest {
     }
 
     @Test
-    void testSetGoodsCoordinatesRefused() throws Exception {
+    void testAddGoodRefused() throws Exception {
         testActivateCannonsVictory();
-        ServerEvent e = smugglers.setGoodsCoordinates(false, null, 0);
+        ServerEvent e = smugglers.addGood(false, null, 0);
         switch(e){
             case PlotGood pg -> assertTrue(true);
             case RearrangeEvent re -> assertTrue(true);
@@ -157,7 +153,7 @@ class SmugglersTest {
 
     @Test
     void testRearrangeAndStop() throws Exception {
-        testSetGoodsCoordinatesAccepted();
+        testAddGoodAccepted();
         smugglers.setCardState(CardState.REARRANGE);
         ServerEvent e = smugglers.rearrange(null, null, 0, 0, true);
         switch(e){

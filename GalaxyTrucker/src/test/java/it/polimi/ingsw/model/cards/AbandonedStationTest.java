@@ -163,14 +163,14 @@ class AbandonedStationTest {
     }
 
     @Test
-    void setGoodsCoordinates() {
+    void addGood() {
         int[] goodsCoord = new int[2];
         goodsCoord[0] = 7;
         goodsCoord[1] = 8;
         abandonedStation.setCardState(CardState.GOODSTOADD);
         abandonedStation.setTruckerThatHasDecided(Game.getIstance().getTruckerList().getFirst());
         try {
-            ServerEvent sEvent = abandonedStation.setGoodsCoordinates(true, goodsCoord, 0);
+            ServerEvent sEvent = abandonedStation.addGood(true, goodsCoord, 0);
             if(abandonedStation.getCurrGood()==abandonedStation.getGoods().size()){
                 RearrangeEvent event = (RearrangeEvent) sEvent;
                 assertFalse(event.isForAll());
@@ -198,13 +198,13 @@ class AbandonedStationTest {
     }
 
     @Test
-    void setGoodsCoordinates_stop() {
+    void addGood_stop() {
         abandonedStation.setCardState(CardState.GOODSTOADD);
         abandonedStation.setTruckerThatHasDecided(Game.getIstance().getTruckerList().getFirst());
         try {
             ServerEvent sEvent = null;
             try {
-                sEvent = abandonedStation.setGoodsCoordinates(false, null, -1);
+                sEvent = abandonedStation.addGood(false, null, -1);
             } catch (InvalidCoordinates e) {
                 throw new RuntimeException(e);
             } catch (InvalidPositionException e) {

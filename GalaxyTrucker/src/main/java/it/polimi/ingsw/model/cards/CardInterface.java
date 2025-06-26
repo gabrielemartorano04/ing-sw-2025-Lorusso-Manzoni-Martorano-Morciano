@@ -21,8 +21,10 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
-
-    default ServerEvent setGoodsCoordinates(Boolean stop, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, WrongCallerException, InvalidPositionException {
+    /**
+     * Adds the current good to the current trucker spaceship or handles the evolution of the card
+     */
+    default ServerEvent addGood(Boolean stop, int[] goodsCoordinates, int positionInLoad) throws GeneralError, InvalidCoordinates, WrongCallerException, InvalidPositionException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 

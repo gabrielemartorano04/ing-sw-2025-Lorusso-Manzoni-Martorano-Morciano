@@ -78,7 +78,7 @@ public class CardController implements Serializable {
      */
     public ServerEvent setGoodsCoordinates(PlotGoodEvent event) {
         try {
-            return currCard.setGoodsCoordinates(event.getDecision(), event.getCoordinates(), event.getPositionInLoad());
+            return currCard.addGood(event.getDecision(), event.getCoordinates(), event.getPositionInLoad());
         } catch (GeneralError | WrongCallerException e) {
             return new GenericErrorEvent(e.getMessage(), false);
         } catch (InvalidCoordinates e) {
