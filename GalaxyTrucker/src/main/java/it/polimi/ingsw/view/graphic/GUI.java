@@ -926,7 +926,7 @@ public class GUI implements UI {
     public void showScores(Map<String, Integer> finalScores) {
         Platform.runLater(() -> {
 
-            resultScene=new ResultScene(viewFlow, new StackPane());
+            resultScene=new ResultScene(new StackPane());
             stage.setScene(this.resultScene.createScene(finalScores));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
