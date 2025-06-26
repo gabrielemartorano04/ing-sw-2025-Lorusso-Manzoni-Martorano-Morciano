@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.graphic.scenes;
 
 import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.Trucker;
-import it.polimi.ingsw.model.cards.AbandonedShip;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
 import it.polimi.ingsw.model.components.*;
@@ -13,6 +12,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -44,10 +44,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public class FlightScene {
-    private final String nickname;
     private Component[][] layout;
     private final boolean[][] validCells;
-    private final StackPane[][] cellMatrix;
     private Scene scene;
     private GridPane grid;
     private final StackPane root;
@@ -61,14 +59,14 @@ public class FlightScene {
     private VBox optionsBox;
     private VBox rollDiceResultBox;
 
-    private GoodsImagesGetter goodsImagesGetter;
+    private final GoodsImagesGetter goodsImagesGetter;
     private Image goodImage;
     private ArrayList<Trucker> planets;
     private ArrayList<Goods> goodsList;
-    private int level;
+    private final int level;
 
     private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel, lostLabel;
-    private Map<String, Label> goodLabels = new HashMap<>();
+    private final Map<String, Label> goodLabels = new HashMap<>();
     private VBox statusBar;
 
     private final StackPane overlayLayer = new StackPane(); // sopra tutto
@@ -79,18 +77,15 @@ public class FlightScene {
 
     /**
      * constructor of the flight scene
-     * @param nickname name of the trucker
      * @param layout matrix of the ship
      * @param viewFlow logic of the game
      * @param root principal pane of the scene
      */
-    public FlightScene(String nickname, Component[][] layout, ViewFlow viewFlow, StackPane root) {
-        this.nickname = nickname;
+    public FlightScene(Component[][] layout, ViewFlow viewFlow, StackPane root) {
         this.layout = layout;
         this.root = root;
         this.viewFlow = viewFlow;
         this.level = viewFlow.getLevel();
-        this.cellMatrix = new StackPane[10][11];
         this.validCells = new boolean[11][12];
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[0].length; j++) {
@@ -114,9 +109,9 @@ public class FlightScene {
 
         Image backgroundImage;
         if (level == 0) {
-            backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-2.jpeg").toExternalForm());
+            backgroundImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cardboard-2.jpeg")).toExternalForm());
         } else {
-            backgroundImage = new Image(getClass().getResource("/it/polimi/ingsw/view/cardboard-2b.jpeg").toExternalForm());
+            backgroundImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cardboard-2b.jpeg")).toExternalForm());
         }
 
         ImageView backgroundView = new ImageView(backgroundImage);
@@ -158,17 +153,6 @@ public class FlightScene {
         overlayLayer.setMouseTransparent(true);
         root.getChildren().removeAll(optionsBox, statusBar);
         root.getChildren().addAll(optionsBox, statusBar);
-    }
-
-    public void printNodeTree(Node node, int level) {
-        String indent = "  ".repeat(level);
-        System.out.println(indent + "- " + node + " | id: " + node.getId() + " | class: " + node.getClass().getSimpleName());
-
-        if (node instanceof Parent) {
-            for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
-                printNodeTree(child, level + 1);
-            }
-        }
     }
 
 
@@ -533,7 +517,6 @@ public class FlightScene {
             case HUMANS -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
             case ENGINES -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/engine.png")).toExternalForm());
             case CANNONS -> new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
-            default -> throw new IllegalArgumentException("Condizione sconosciuta: " + condition);
         };
 
         ImageView conditionView = new ImageView(conditionImage);
@@ -637,7 +620,6 @@ public class FlightScene {
                 }
 
                 grid.add(cell, col - 4, row - 5);
-                cellMatrix[row][col] = cell;
             }
         }
         root.getChildren().add(grid);
@@ -665,7 +647,7 @@ public class FlightScene {
         cardView.setClip(clip);
 
         // Conserva il bordo esistente (primo elemento) e aggiungi la carta sopra
-        Node border = cardImageContainer.getChildren().isEmpty() ? null : cardImageContainer.getChildren().get(0);
+        Node border = cardImageContainer.getChildren().isEmpty() ? null : cardImageContainer.getChildren().getFirst();
         cardImageContainer.getChildren().setAll(border, cardView);
 
         restoreInteractiveLayers();
@@ -2061,15 +2043,11 @@ public class FlightScene {
 
         for (int i = 0; i < 15; i++) {
             int delay = i * 100;
-            rollAnimation.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> {
-                resultLabel.setText(String.valueOf(rand.nextInt(6) + 1));
-            }));
+            rollAnimation.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> resultLabel.setText(String.valueOf(rand.nextInt(6) + 1))));
         }
 
         // === Mostra il risultato reale ===
-        rollAnimation.getKeyFrames().add(new KeyFrame(Duration.millis(1500), e -> {
-            resultLabel.setText(String.valueOf(result));
-        }));
+        rollAnimation.getKeyFrames().add(new KeyFrame(Duration.millis(1500), e -> resultLabel.setText(String.valueOf(result))));
 
         // === Dopo 3s: rimuove overlay e mostra risultato fisso ===
         rollAnimation.getKeyFrames().add(new KeyFrame(Duration.millis(4500), e -> {
@@ -2134,19 +2112,14 @@ public class FlightScene {
         messageBox.setMaxHeight(Region.USE_PREF_SIZE);
 
         Platform.runLater(() -> {
-            Node rootNode = scene.getRoot();
 
-            if (rootNode instanceof StackPane root) {
-                // Posiziona il messaggio in alto a destra
-                StackPane.setAlignment(messageBox, Pos.TOP_RIGHT);
-                StackPane.setMargin(messageBox, new Insets(20, 20, 0, 0));
-                root.getChildren().add(messageBox);
+            StackPane.setAlignment(messageBox, Pos.TOP_RIGHT);
+            StackPane.setMargin(messageBox, new Insets(20, 20, 0, 0));
+            root.getChildren().add(messageBox);
 
-                // Rimozione automatica dopo 10 secondi
-                PauseTransition delay = new PauseTransition(Duration.seconds(10));
-                delay.setOnFinished(e -> root.getChildren().remove(messageBox));
-                delay.play();
-            }
+            PauseTransition delay = new PauseTransition(Duration.seconds(10));
+            delay.setOnFinished(e -> root.getChildren().remove(messageBox));
+            delay.play();
         });
     }
 
@@ -2323,16 +2296,13 @@ public class FlightScene {
      * connected with shipStatus that show the specific status of the single components
      */
     private void showMore() {
-        // Rimuove overlay precedente
         root.getChildren().removeIf(n -> "moreOverlay".equals(n.getId()));
 
-        // Overlay scuro trasparente
         Rectangle overlay = new Rectangle();
         overlay.widthProperty().bind(root.getScene().widthProperty());
         overlay.heightProperty().bind(root.getScene().heightProperty());
         overlay.setFill(Color.rgb(0, 0, 0, 0.7));
 
-        // === TITOLO CENTRATO ===
         Label title = new Label("Components details:");
         title.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
         title.setTextAlignment(TextAlignment.LEFT);
@@ -2341,20 +2311,15 @@ public class FlightScene {
         VBox titleBox = new VBox(title);
         titleBox.setAlignment(Pos.CENTER_LEFT);
 
-        // === CONTENUTO SINISTRA ===
         VBox textBox = new VBox(10);
         textBox.setAlignment(Pos.TOP_LEFT);
 
-        // Componenti della nave
         Trucker t = new Trucker("n", PlayerColors.BLUE);
         t.initSpaceShip(2);
         Component[][] layout = viewFlow.getShip().getComponents();
         StringBuilder desc = new StringBuilder();
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[i].length; j++) {
-                if (i == 7 && j == 7){
-                    System.out.println("i = 7 j = 7");
-                }
                 Component c = layout[i][j];
                 if (c != null && !"Empty Space".equals(c.getType()) && ("Load".equals(c.getType()) || "Battery Storage".equals(c.getType()) || "Cabin".equals(c.getType()) || "Cannon".equals(c.getType()) || "Engine".equals(c.getType()) || "Shield".equals(c.getType()))) {
                     if(!formatComponent(c, i, j).isBlank()) {
@@ -2370,7 +2335,6 @@ public class FlightScene {
         l.setWrapText(true);
         textBox.getChildren().add(l);
 
-        // === CREA E POSIZIONA LA GRIGLIA NELLO STESSO MODO ===
         GridPane overlayGrid = new GridPane();
         overlayGrid.setHgap(2);
         overlayGrid.setVgap(2);
@@ -2405,13 +2369,11 @@ public class FlightScene {
             }
         }
 
-        // === BOX COMPLETO ===
         VBox descriptionBox = new VBox(20, titleBox, textBox);
         descriptionBox.setMaxWidth(600);
         descriptionBox.setAlignment(Pos.TOP_CENTER); // centra solo verticalmente
         descriptionBox.setPadding(new Insets(20));
 
-        // ScrollPane trasparente
         ScrollPane scroll = new ScrollPane(descriptionBox);
         scroll.setFitToWidth(true);
         scroll.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
@@ -2428,7 +2390,7 @@ public class FlightScene {
         StackPane.setAlignment(overlayGrid, Pos.TOP_RIGHT);
 
         root.setOnMouseClicked(e -> root.getChildren().remove(overlayContainer));
-        scroll.setOnMouseClicked(e -> e.consume());
+        scroll.setOnMouseClicked(Event::consume);
 
         root.getChildren().add(overlayContainer);
     }
@@ -2438,7 +2400,7 @@ public class FlightScene {
      * @param c component
      * @param i position x
      * @param j position y
-     * @return
+     * @return null
      */
     private String formatComponent(Component c, int i, int j) {
         if (c == null) return "";
@@ -2450,8 +2412,13 @@ public class FlightScene {
                     details.append("[").append(i).append(",").append(j).append("] SPECIAL LOAD ");
                     if (!load.isEmpty()) {
                         details.append(" contains: ");
+                        int count = 0;
                         for (Goods g : load.getGoods()) {
-                            details.append(g.getColor()).append(" ");
+                            count++;
+                            details.append(g.getColor()).append(" (").append(count).append(")");
+                            if (count < load.getGoods().size()) {
+                                details.append(", ");
+                            }
                         }
                     } else {
                         details.append(" is empty");
@@ -2460,8 +2427,13 @@ public class FlightScene {
                     details.append("[").append(i).append(",").append(j).append("] LOAD ");
                     if (!load.isEmpty()) {
                         details.append(" contains: ");
+                        int count = 0;
                         for (Goods g : load.getGoods()) {
-                            details.append(g.getColor()).append(" ");
+                            count++;
+                            details.append(g.getColor()).append(" (").append(count).append(")");
+                            if (count < load.getGoods().size()) {
+                                details.append(", ");
+                            }
                         }
                     } else {
                         details.append(" is empty");
@@ -2517,15 +2489,6 @@ public class FlightScene {
             }
         }
 
-        if(i == 7 && j == 7){
-            switch(c){
-                case Cabin cabin -> {
-                    details.append("[").append(i).append(",").append(j).append("] CABIN contains ").append(cabin.getQuantity()).append(cabin.getQuantity() == 1 ? " human" : " humans");
-                }
-                default -> {}
-            }
-        }
-
         return details.toString();
     }
 
@@ -2543,18 +2506,15 @@ public class FlightScene {
         double width = root.getWidth();
         double height = root.getHeight();
 
-        // Sfondo trasparente NON interattivo
         Rectangle overlay = new Rectangle(width, height);
         overlay.setFill(Color.rgb(0, 0, 0, 0.4));
         overlay.setMouseTransparent(true);
 
-        // Testo di errore visibile
         Label errorLabel = new Label(message);
         errorLabel.setTextFill(Color.RED);
         errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
         errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
 
-        // Contenitore popup
         StackPane popup = new StackPane(overlay, errorLabel);
         popup.setMouseTransparent(true);
         StackPane.setAlignment(errorLabel, Pos.CENTER);
@@ -2569,6 +2529,4 @@ public class FlightScene {
             }
         });
     }
-
-
 }
