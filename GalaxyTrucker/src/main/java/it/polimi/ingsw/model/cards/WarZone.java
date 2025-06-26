@@ -749,6 +749,43 @@ public class WarZone extends Card implements Serializable {
         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
     }
 
+    public void setState(CardState state) {
+        this.state = state;
+    }
 
+    public Map<Condition, Effect> getPenalties() {
+        return penalties;
+    }
 
+    public void setCurrConditionIndex(int currConditionIndex) {
+        this.currConditionIndex = currConditionIndex;
+    }
+
+    public void setIndexOfCurrTrucker(int indexOfCurrTrucker) {
+        this.indexOfCurrTrucker = indexOfCurrTrucker;
+    }
+
+    public void setCurrCondition() {
+        this.currCondition = conditionsOrder.get(currConditionIndex);
+    }
+
+    public Trucker getWeakestTrucker() {
+        return weakestTrucker;
+    }
+
+    public void setWeakestTrucker(Trucker weakestTrucker) {
+        this.weakestTrucker = weakestTrucker;
+    }
+
+    public void setColorOfCurrGoodToRemove(int colorOfCurrGoodToRemove) {
+        this.colorOfCurrGoodToRemove = colorOfCurrGoodToRemove;
+    }
+
+    public void setGoodsToLose(int goodsToLose) {
+        this.goodsToLose = goodsToLose;
+    }
+
+    public void setInitializeRemoveGoods(boolean initializeRemoveGoods) {
+        this.initializeRemoveGoods = initializeRemoveGoods;
+    }
 }
