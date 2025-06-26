@@ -242,6 +242,8 @@ class Deck implements Serializable {
         );
 
         //TODO: riportare piratesPower a 5 e slaversPower a 6 e smugglersPower a 4
+        cards.addLast(new Planets(true, 2, 1, planets2, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0113.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",7));
+
 
         cards.addLast(new StarDust(true, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 4));
         cards.addLast(new Pirates( false, 1, 4, 1,2, shoots1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_013.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",10));

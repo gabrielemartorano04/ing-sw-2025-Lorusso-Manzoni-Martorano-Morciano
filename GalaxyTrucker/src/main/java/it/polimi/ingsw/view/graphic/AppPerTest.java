@@ -160,6 +160,7 @@ public class AppPerTest extends Application {
         truckers.add(null);
         flightScene.updatePlanetsOccupied(truckers);
         flightScene.showPlanetDecisionInput();
+        flightScene.showRemainingCards(3);
 //        flightScene.updateGoodsListToRemove(new ArrayList<>(){
 //            {
 //                add(new Goods(2));
