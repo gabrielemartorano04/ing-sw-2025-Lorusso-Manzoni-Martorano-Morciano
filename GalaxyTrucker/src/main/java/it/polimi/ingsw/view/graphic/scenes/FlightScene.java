@@ -2233,7 +2233,7 @@ public class FlightScene {
         };
 
         continueBtn.setOnAction(e -> {
-            viewFlow.handleInput("warzone");
+            viewFlow.handleInput("continue");
             closePopup.run();
         });
     }
