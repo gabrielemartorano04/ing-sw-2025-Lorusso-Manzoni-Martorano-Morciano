@@ -147,7 +147,7 @@ public class AppPerTest extends Application {
 //
 
         StackPane stackPane = new StackPane();
-        FlightScene flightScene = new FlightScene(trucker.getNickname(), createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
+        FlightScene flightScene = new FlightScene(createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
         primaryStage.setScene(flightScene.createScene(playersNames, 2));
 
         primaryStage.setResizable(true);        // ← abilita ridimensionamento

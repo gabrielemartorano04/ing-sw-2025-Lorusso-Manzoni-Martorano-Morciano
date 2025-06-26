@@ -313,7 +313,7 @@ public class GUI implements UI {
     @Override
     public void resumeFlightScene(ArrayList<String> playerNames) {
         Platform.runLater(() -> {
-            this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip().getComponents(), viewFlow, new StackPane());
+            this.flightScene = new FlightScene(viewFlow.getShip().getComponents(), viewFlow, new StackPane());
             stage.setScene(this.flightScene.createScene(playerNames, viewFlow.getLevel()));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
@@ -607,7 +607,7 @@ public class GUI implements UI {
         Platform.runLater(() -> {
             this.buildingScene.hideWaitForOthers();
 
-            this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip().getComponents(), viewFlow, new StackPane());
+            this.flightScene = new FlightScene(viewFlow.getShip().getComponents(), viewFlow, new StackPane());
             stage.setScene(this.flightScene.createScene(event.getPlayers(), viewFlow.getLevel()));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
