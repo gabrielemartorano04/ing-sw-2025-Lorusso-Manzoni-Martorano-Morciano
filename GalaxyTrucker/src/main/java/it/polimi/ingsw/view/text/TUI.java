@@ -1120,8 +1120,13 @@ public class TUI implements UI {
                             details.append("[").append(i).append(",").append(j).append("] SPECIAL LOAD (Capacity: ").append(load.getCapacity()).append(")");
                             if (!load.isEmpty()) {
                                 details.append(" contains: ");
+                                int count = 0;
                                 for (Goods g : load.getGoods()) {
-                                    details.append(g.getColor()).append(" ");
+                                    count++;
+                                    details.append(g.getColor()).append(" {").append(count).append("}");
+                                    if (count < load.getGoods().size()) {
+                                        details.append(", ");
+                                    }
                                 }
                             } else {
                                 details.append(" is empty");
@@ -1130,8 +1135,13 @@ public class TUI implements UI {
                             details.append("[").append(i).append(",").append(j).append("] LOAD (Capacity: ").append(load.getCapacity()).append(")");
                             if (!load.isEmpty()) {
                                 details.append(" contains: ");
+                                int count = 0;
                                 for (Goods g : load.getGoods()) {
-                                    details.append(g.getColor()).append(" ");
+                                    count++;
+                                    details.append(g.getColor()).append(" {").append(count).append("}");
+                                    if (count < load.getGoods().size()) {
+                                        details.append(", ");
+                                    }
                                 }
                             } else {
                                 details.append(" is empty");
