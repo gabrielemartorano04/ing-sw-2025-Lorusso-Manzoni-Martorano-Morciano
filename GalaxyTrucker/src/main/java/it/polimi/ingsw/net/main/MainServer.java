@@ -13,9 +13,24 @@ import java.rmi.server.UnicastRemoteObject;
 
 
 /**
- * Main server application
+ * Main server application that initializes and starts the server.
+ * It sets up both the RMI server and the socket server,
+ * listens for incoming client connections, and manages client sessions.
+ * It also registers a shutdown hook to cleanly stop the server.
  */
 public class MainServer {
+
+    /**
+     * Entry point of the server application.
+     * Initializes ServerController, binds the RMI server, and
+     * opens a ServerSocket to accept client connections.
+     * For each accepted socket connection, a ClientHandlerSocket
+     * and Client instance are created and registered with the ServerController.
+     * Registers a shutdown hook to properly unexport the RMI server
+     * and shut down the ServerController on JVM termination.
+     *
+     * @param args command line arguments (not used)
+     */
     public static void main(String[] args) {
         final int PORT = 12346;
         ServerController serverController = new ServerController();

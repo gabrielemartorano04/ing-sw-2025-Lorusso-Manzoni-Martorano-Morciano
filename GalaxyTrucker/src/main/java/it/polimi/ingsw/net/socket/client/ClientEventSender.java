@@ -5,16 +5,29 @@ import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import java.io.IOException;
 
 /**
- * riceve eventi dalla view e li invia al server
+ * Receives client events from the view and sends them to the server via the network.
  */
-
 public class ClientEventSender {
+
+    /**
+     * The network client used for communication.
+     */
     private final NetworkClient network;
 
+    /**
+     * Constructs the sender with the given network client.
+     *
+     * @param network the network client used to send messages
+     */
     public ClientEventSender(NetworkClient network) {
         this.network = network;
     }
 
+    /**
+     * Sends a client event to the server, handling any I/O errors.
+     *
+     * @param event the client event to send
+     */
     public void handleEvent(ClientEvent event) {
         try {
             network.sendMessage(event);
