@@ -313,7 +313,7 @@ public class GUI implements UI {
     @Override
     public void resumeFlightScene(ArrayList<String> playerNames) {
         Platform.runLater(() -> {
-            this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip().getComponents(), viewFlow, new StackPane());
+            this.flightScene = new FlightScene(viewFlow.getShip().getComponents(), viewFlow, new StackPane());
             stage.setScene(this.flightScene.createScene(playerNames, viewFlow.getLevel()));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
@@ -607,7 +607,7 @@ public class GUI implements UI {
         Platform.runLater(() -> {
             this.buildingScene.hideWaitForOthers();
 
-            this.flightScene = new FlightScene(viewFlow.getNickname(), viewFlow.getShip().getComponents(), viewFlow, new StackPane());
+            this.flightScene = new FlightScene(viewFlow.getShip().getComponents(), viewFlow, new StackPane());
             stage.setScene(this.flightScene.createScene(event.getPlayers(), viewFlow.getLevel()));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
@@ -716,7 +716,7 @@ public class GUI implements UI {
     @Override
     public void updateGoodsListToRemove(ArrayList<Goods> goodsList) {
         Platform.runLater(() -> {
-            // this.flightScene.updateGoodsListToRemove(goodsList);
+            this.flightScene.updateGoodsListToRemove(goodsList);
         });
     }
 
@@ -799,6 +799,7 @@ public class GUI implements UI {
                     this.showWarzone = true;
                 }
                 case ASK_WITHDRAW -> this.flightScene.showAskWithdraw();
+                case DISPLAY_BIG_SHOOT -> this.flightScene.showBigShot();
 
             }
         });

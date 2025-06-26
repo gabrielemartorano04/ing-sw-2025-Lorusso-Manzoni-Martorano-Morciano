@@ -183,6 +183,11 @@ public interface VirtualServer {
     ServerEvent visit(RemotionSeenEvent event, Client client);
 
     /**
+     * Applies the big Shoot in the current card
+     */
+    ServerEvent visit(ApplyBigShoot event);
+
+    /**
      * Handles a DeadTrucker event.
      */
     ServerEvent visit(DeadTrucker event);
