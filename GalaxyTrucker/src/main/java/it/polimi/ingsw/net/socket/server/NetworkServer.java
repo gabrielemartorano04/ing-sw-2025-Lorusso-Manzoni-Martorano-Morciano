@@ -32,8 +32,8 @@ public class NetworkServer {
      */
     public NetworkServer(Socket socket) throws IOException {
         this.socket = socket;
-        this.outputStream = new ObjectOutputStream(socket.getOutputStream());
         this.inputStream = new ObjectInputStream(socket.getInputStream());
+        this.outputStream = new ObjectOutputStream(socket.getOutputStream());
     }
 
     /**
@@ -45,7 +45,7 @@ public class NetworkServer {
      */
     public void sendMessage(ServerEvent event) throws IOException {
         outputStream.reset();
-        outputStream.writeObject(event);
+        outputStream.writeUnshared(event);
         outputStream.flush();
     }
 
