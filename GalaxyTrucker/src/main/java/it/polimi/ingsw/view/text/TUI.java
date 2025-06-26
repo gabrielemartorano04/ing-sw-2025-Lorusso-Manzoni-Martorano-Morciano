@@ -471,9 +471,6 @@ public class TUI implements UI {
     @Override
     public  void epidemic(EpidemicEvent event){
         System.out.println("Card effect:");
-        for (Trucker t: event.getTruckers()) {
-            System.out.println(t.getNickname() + " has lost ");
-        }
         for(Trucker trucker: event.getTruckersRemoved()){
             System.out.println(trucker.getNickname() + " died");
         }
