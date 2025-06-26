@@ -9,6 +9,7 @@ import it.polimi.ingsw.net.socket.server.NetworkServer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.server.UnicastRemoteObject;
 
 
 /**
@@ -19,7 +20,25 @@ public class MainServer {
         final int PORT = 12346;
         ServerController serverController = new ServerController();
 
-        RmiServer.bind(serverController);
+        RmiServer rmiServer = RmiServer.bind(serverController);
+
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("[MainServer] Shutdown hook triggered.");
+
+            if (rmiServer != null) {
+                try {
+                    UnicastRemoteObject.unexportObject(rmiServer, true);
+                    System.out.println("[MainServer] RMI server unexported.");
+                } catch (Exception e) {
+                    System.err.println("Error unexporting RMI server: " + e.getMessage());
+                }
+            }
+
+            serverController.shutdown();
+            System.out.println("[MainServer] ServerController shut down.");
+        }));
+
 
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server listening on port " + PORT + "...");

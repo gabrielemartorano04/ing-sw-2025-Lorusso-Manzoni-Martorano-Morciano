@@ -27,7 +27,7 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
         this.controller.addClient(new Client(null, client));
     }
 
-    public static void bind(ServerController serverController) {
+    public static RmiServer bind(ServerController serverController) {
         try {
             String localIp = getLocalIPAddress();
             System.setProperty("java.rmi.server.hostname", localIp);
@@ -38,9 +38,11 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerInterface
             registry.rebind("GalaxyTrucker", server);
             System.out.println("RMI Server bound under name 'GalaxyTrucker' on " + localIp);
 
+            return server;
         } catch (RemoteException e) {
             System.err.println("Error starting RMI server: " + e.getMessage());
             e.printStackTrace();
+            return null;
         }
     }
 
