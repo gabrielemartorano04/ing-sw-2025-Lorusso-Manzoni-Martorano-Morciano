@@ -668,7 +668,7 @@ public class ClientHandlerVisitor implements VirtualServer {
      */
     @Override
     public ServerEvent visit(PlotGoodEvent event) {
-        return cardController.setGoodsCoordinates(event);
+        return cardController.addGood(event);
     }
 
     /**
