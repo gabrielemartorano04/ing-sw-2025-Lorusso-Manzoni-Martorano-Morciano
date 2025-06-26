@@ -52,7 +52,7 @@ public class InputParser {
     /**
      * Manages the connection of the first player for the creation of the game
      * @param input from the client
-     * @return the client event that manages that input
+     * @return the corresponding event to the given command
      */
     public ClientEvent parseFirstConnection(String input) {
     if (input == null || input.isEmpty()) {
@@ -90,7 +90,7 @@ public class InputParser {
     /**
      * Manages the login of the other players for the creation of the game
      * @param input from the client
-     * @return the client event that manages that input
+     * @return the corresponding event to the given command
      */
     public ClientEvent parseLogin(String input){
         if (input == null || input.isEmpty()) {
@@ -123,7 +123,7 @@ public class InputParser {
     /**
      * Manages the fill of the ship
      * @param input from the client
-     * @return the client event that manages that input
+     * @return the corresponding event to the given command
      */
     public ClientEvent parseFillTheShip(String input){
         if (input == null || input.isEmpty()) {
@@ -196,7 +196,7 @@ public class InputParser {
     /**
      * Manages the resumption of an old game
      * @param input from the client
-     * @return the client event that manages that input
+     * @return the corresponding event to the given command
      */
     public ClientEvent parseOld(String input){
         if(input == null || input.isEmpty()) {
@@ -228,7 +228,7 @@ public class InputParser {
      * @param isFromKept specify if the component is from the list of kept or all available
      * @param stackSelected index of the selected stack to show
      * @param firstLinked specify if the component connected is the first
-     * @return the client event that manages that input
+     * @return the corresponding event to the given command
      */
     public ClientEvent parseBuilding(String input, Component component, int index, ArrayList<Component> kept, boolean isFromKept, int stackSelected, boolean firstLinked,ArrayList<String> players) {
         if (input == null || input.isEmpty()) return null;
@@ -279,11 +279,11 @@ public class InputParser {
 
     /**
      * Manages all the commands that don't require a component to be selected
-     * @param command selected from the client
-     * @param tokens the string inserted from the client
+     * @param command the command entered by the client
+     * @param tokens an array of strings containing the parsed command input
      * @param kept list of selected components
-     * @param players list of players nicknames
-     * @return the client event that manages that input
+     * @param players list of players' nicknames
+     * @return the corresponding event to the given command
      */
     private ClientEvent handleNoComponentSelectedCommandFirst(String command, String[] tokens, ArrayList<Component> kept,ArrayList<String> players) {
         switch (command) {
@@ -346,7 +346,15 @@ public class InputParser {
         }
     }
 
-
+    /**
+     * Manages all the commands that require a component to be selected from the kept list
+     * @param command the command entered by the client
+     * @param tokens an array of strings containing the parsed command input
+     * @param component the currently selected component from the kept components list
+     * @param index the index of the component in the list of kept components
+     * @param players list of players' nicknames
+     * @return the corresponding event to the given command
+     */
     private ClientEvent handleFromKeptComponentCommand(String command, String[] tokens, Component component, int index,ArrayList<String> players) {
         switch (command) {
             case "help":
@@ -401,6 +409,15 @@ public class InputParser {
         }
     }
 
+    /**
+     * Manages all the command that require a component to be selected from the available components list
+     * @param command the command entered by the client
+     * @param tokens an array of strings containing the parsed command input
+     * @param component the currently selected component from the provided list
+     * @param index the index of the selected component within the list
+     * @param players the list of players' nicknames currently in the game
+     * @return the corresponding ClientEvent for the given command
+     */
     private ClientEvent handleSelectedFromListComponentCommand(String command, String[] tokens, Component component, int index,ArrayList<String> players) {
         switch (command) {
             case "help":
@@ -461,6 +478,14 @@ public class InputParser {
         }
     }
 
+    /**
+     * Manages all the command that don't require a component to be selected
+     * @param command the command entered by the client
+     * @param tokens an array of strings containing the parsed command input
+     * @param kept a list of components that are currently marked as kept
+     * @param players a list of players' nicknames currently in the game
+     * @return the corresponding ClientEvent based on the command or null if the command is not executable
+     */
     private ClientEvent handleNoComponentSelectedCommand(String command, String[] tokens, ArrayList<Component> kept,ArrayList<String> players) {
         switch (command) {
             case "help":
@@ -535,6 +560,9 @@ public class InputParser {
         }
     }
 
+    /**
+     * Opens and displays the Galaxy Trucker game rules PDF in the default PDF viewer
+     */
     private void openRulesPdf() {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
             if (is == null) {
@@ -560,6 +588,16 @@ public class InputParser {
         }
     }
 
+    /**
+     * Manages all the commands that require a component to be selected from the kept list
+     * in the specific case of the trial flight
+     * @param command the command entered by the client
+     * @param tokens an array of strings containing the parsed command input
+     * @param component the currently selected component from the kept components list
+     * @param index the index of the component in the list of kept components
+     * @param players list of players' nicknames
+     * @return the corresponding event to the given command
+     */
     private ClientEvent handleTrialModeCommandsFromKept(String command, String[] tokens, Component component, int index,ArrayList<String> players) {
         switch (command) {
             case "help":
@@ -614,6 +652,16 @@ public class InputParser {
         }
     }
 
+    /**
+     * Manages all the command that require a component to be selected from the available components list
+     * in the specific case of the trial flight
+     * @param command the command entered by the client
+     * @param tokens an array of strings containing the parsed command input
+     * @param component the currently selected component from the provided list
+     * @param index the index of the selected component within the list
+     * @param players the list of players' nicknames currently in the game
+     * @return the corresponding ClientEvent for the given command
+     */
     private ClientEvent handleTrialModeCommandsNotFromKept(String command, String[] tokens, Component component, int index,ArrayList<String> players) {
         switch (command) {
             case "help":
@@ -674,6 +722,15 @@ public class InputParser {
         }
     }
 
+    /**
+     * Manages all the command that don't require a component to be selected
+     * in the specific case of the trial flight
+     * @param command the command entered by the client
+     * @param tokens an array of strings containing the parsed command input
+     * @param kept a list of components that are currently marked as kept
+     * @param players a list of players' nicknames currently in the game
+     * @return the corresponding ClientEvent based on the command or null if the command is not executable
+     */
     private ClientEvent handleTrialModeNoComponentCommands(String command, String[] tokens, ArrayList<Component> kept,ArrayList<String> players) {
         switch (command) {
             case "help":
@@ -727,9 +784,5 @@ public class InputParser {
                 return null;
         }
     }
-
-    // fine metodi per parse Building
-
-
 }
 
