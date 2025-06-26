@@ -66,7 +66,7 @@ public class StarDust extends Card implements Serializable {
             throw new GeneralError("Not callable in the state " + cardState);
         }
         ArrayList<Trucker> truckers = Game.getIstance().getTruckerList();
-        for (int i = truckers.size() - 1; i > 0; i--) {
+        for (int i = truckers.size() - 1; i >= 0; i--) {
             System.out.println("Current trucker " + truckers.get(i).getNickname());
             Trucker trucker = truckers.get(i);
             int exposedConnectors = trucker.getSpaceShip().countExposedConnectors();
