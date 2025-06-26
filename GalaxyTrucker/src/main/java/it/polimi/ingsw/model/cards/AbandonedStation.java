@@ -252,6 +252,18 @@ public class AbandonedStation extends Card implements Serializable {
     }
 
     /**
+     * deactivate every type of component from every player's ship
+     */
+    private void deactivateTruckersSpaceShip(){
+        for(Trucker trucker: Game.getIstance().getTruckerList()){
+            trucker.getSpaceShip().deactivateDoubleCannons();
+            trucker.getSpaceShip().deactivateDoubleEngines();
+            trucker.getSpaceShip().deActivateShields();
+        }
+    }
+
+
+    /**
      * Applies the changes provided by the card:
      * makes the player landed move backwards
      *
@@ -265,6 +277,9 @@ public class AbandonedStation extends Card implements Serializable {
         if(truckerThatHasDecided != null) {
             Game.getIstance().moveBackward(truckerThatHasDecided, days);
         }
+
+        deactivateTruckersSpaceShip();
+
         ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
 

@@ -618,6 +618,17 @@ public class Smugglers extends Card implements Serializable {
 
 
     /**
+     * deactivate every type of component from every player's ship
+     */
+    private void deactivateTruckersSpaceShip(){
+        for(Trucker trucker: Game.getIstance().getTruckerList()){
+            trucker.getSpaceShip().deactivateDoubleCannons();
+            trucker.getSpaceShip().deactivateDoubleEngines();
+            trucker.getSpaceShip().deActivateShields();
+        }
+    }
+
+    /**
      * Applies the changes provided by the card
      *
      * @return serverEvent to send to clients
@@ -633,6 +644,8 @@ public class Smugglers extends Card implements Serializable {
         }
         ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
+
+        deactivateTruckersSpaceShip();
 
         GamePersistence.saveGame(GameController.getIstance());
         return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());

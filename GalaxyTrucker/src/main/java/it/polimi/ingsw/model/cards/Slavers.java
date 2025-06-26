@@ -332,6 +332,16 @@ public class Slavers extends Card implements Serializable {
         }
     }
 
+    /**
+     * deactivate every type of component from every player's ship
+     */
+    private void deactivateTruckersSpaceShip(){
+        for(Trucker trucker: Game.getIstance().getTruckerList()){
+            trucker.getSpaceShip().deactivateDoubleCannons();
+            trucker.getSpaceShip().deactivateDoubleEngines();
+            trucker.getSpaceShip().deActivateShields();
+        }
+    }
 
     /**
      * Applies the changes provided by the card
@@ -343,6 +353,9 @@ public class Slavers extends Card implements Serializable {
         if (cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Card state is not ESECUZIONE");
         }
+
+        deactivateTruckersSpaceShip();
+
         ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
 

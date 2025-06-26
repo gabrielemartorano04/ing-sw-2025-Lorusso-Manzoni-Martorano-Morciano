@@ -163,6 +163,17 @@ public class AbandonedShip extends Card implements Serializable {
     }
 
     /**
+     * deactivate every type of component from every player's ship
+     */
+    private void deactivateTruckersSpaceShip(){
+        for(Trucker trucker: Game.getIstance().getTruckerList()){
+            trucker.getSpaceShip().deactivateDoubleCannons();
+            trucker.getSpaceShip().deactivateDoubleEngines();
+            trucker.getSpaceShip().deActivateShields();
+        }
+    }
+
+    /**
      * Applies the changes provided by the card:
      * adds cosmic credits to the player landed and make him/her lose crew members and flight days
      *
@@ -178,6 +189,9 @@ public class AbandonedShip extends Card implements Serializable {
             Game.getIstance().moveBackward(truckerThatHasDecided,days);
             truckerThatHasDecided.addCosmicCredit(credits);
         }
+
+        deactivateTruckersSpaceShip();
+
         ArrayList<Trucker> truckerRemoved;
         truckerRemoved = Game.getIstance().endTurn();
 
