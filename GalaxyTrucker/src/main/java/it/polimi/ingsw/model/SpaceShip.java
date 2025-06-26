@@ -572,6 +572,12 @@ public class SpaceShip implements Serializable {
      */
     private boolean isValid(int x, int y) {
         Component com = components[x][y];
+        switch (com) {
+            case Engine e->{
+                if(e.getOrientation()!=Orientation.S) return false;
+            }
+            default -> {}
+        }
         Component comU = null;
         Component comR = null;
         Component comD = null;
@@ -586,6 +592,11 @@ public class SpaceShip implements Serializable {
         if(comU!=null){
             switch(comU){
                 case EmptySpace e->{}
+                case Cannon c->{
+                    if(c.getOrientation()==Orientation.S) return false;
+                    linkU= comU.getLink()[2];
+                }
+                case Engine e->{return false;}
                 default -> {
                     linkU= comU.getLink()[2];
                 }
@@ -594,6 +605,10 @@ public class SpaceShip implements Serializable {
         if(comR!=null){
             switch(comR){
                 case EmptySpace e->{}
+                case Cannon c->{
+                    if(c.getOrientation()==Orientation.W) return false;
+                    linkR = comR.getLink()[3];
+                }
                 default -> {
                     linkR = comR.getLink()[3];
                 }
@@ -602,6 +617,10 @@ public class SpaceShip implements Serializable {
         if(comD!=null){
             switch (comD){
                 case EmptySpace e->{}
+                case Cannon c->{
+                    if(c.getOrientation()==Orientation.N) return false;
+                    linkD = comD.getLink()[0];
+                }
                 default -> {
                     linkD = comD.getLink()[0];
                 }
@@ -610,95 +629,16 @@ public class SpaceShip implements Serializable {
         if(comL!=null){
             switch (comL){
                 case EmptySpace e->{}
+                case Cannon c->{
+                    if(c.getOrientation()==Orientation.E) return false;
+                    linkL = comL.getLink()[1];
+                }
                 default -> {
                     linkL = comL.getLink()[1];
                 }
             }
         }
-        switch (com) {
-            case Cannon c->{
-                switch (c.getOrientation()) {
-                    case N:
-                        if (components[x - 1][y] != null) {
-                            switch(components[x - 1][y]) {
-                                case EmptySpace e->{}
-                                default -> {
-                                    return false;}
-                            }
-                        }
-                        break;
-                    case E:
-                        if (components[x][y + 1] != null) {
-                            switch (components[x][y+1]){
-                                case EmptySpace e->{}
-                                default -> {
-                                    return false;}
-                            }
-                        }
-                        break;
-                    case S:
-                        if (components[x + 1][y] != null) {
-                            switch (components[x + 1][y]){
-                                case EmptySpace e->{}
-                                default -> {
-                                    return false;}
-                            }
-                        }
-                        break;
-                    case W:
-                        if (components[x][y - 1] != null && !components[x][y - 1].getType().equalsIgnoreCase("Empty Space")) {
-                            switch(components[x][y - 1]){
-                                case EmptySpace e->{}
-                                default -> {
-                                    return false;}
-                            }
-                        }
-                        break;
-                    }
-            }
-            case Engine e->{
-                switch (e.getOrientation()) {
-                    case N:
-                        if (components[x - 1][y] != null) {
-                            switch(components[x - 1][y]) {
-                                case EmptySpace c->{}
-                                default -> {  return false;}
-                            }
-                        }
-                        break;
-                    case E:
-                        if (components[x][y + 1] != null) {
-                            switch (components[x][y+1]){
-                                case EmptySpace c->{}
-                                default -> {
-                                    return false;}
-                            }
-                        }
-                        break;
-                    case S:
-                        if (components[x + 1][y] != null) {
-                            switch (components[x + 1][y]){
-                                case EmptySpace c->{}
-                                default -> {
-                                    return false;}
-                            }
-                        }
-                        break;
-                    case W:
-                        if (components[x][y - 1] != null && !components[x][y - 1].getType().equalsIgnoreCase("Empty Space")) {
-                            switch(components[x][y - 1]){
-                                case EmptySpace c->{}
-                                default -> {
-                                    return false;}
-                            }
-                        }
-                        break;
-                }
-            }
-            default -> {}
 
-
-        }
         if (linkU!=-1 && !compatibleLinks(link[0], linkU) && !(linkU==0 && link[0]==0)){
             return false;
         }
