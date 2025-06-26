@@ -61,7 +61,7 @@ public class CardController implements Serializable {
      */
     public ServerEvent setHumansCoordinates(HumanCoordEvent event) {
         try {
-            return currCard.removeHumans(event.getHumanCoord());
+            return currCard.setHumansCoordinates(event.getHumanCoord());
         } catch (InvalidComponentsException e) {
             return new InvalidComponentsExceptionEvent(e.getMessage(), false, ParserState.HUMAN_COORD,event.getNickname() );
         } catch (InvalidCoordinates e) {

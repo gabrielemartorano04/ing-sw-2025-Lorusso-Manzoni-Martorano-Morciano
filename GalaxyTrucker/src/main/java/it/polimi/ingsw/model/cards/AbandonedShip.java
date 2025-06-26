@@ -48,6 +48,11 @@ public class AbandonedShip extends Card implements Serializable {
     private Trucker truckerThatHasDecided;
 
     /**
+     * coordinates of all the cabins the player has decided to remove humans or aliens from
+     */
+    private ArrayList<int[]> coordinates = null;
+
+    /**
      * current state of the card, helper for debug and checking consistency
      */
     private CardState state;
@@ -120,16 +125,9 @@ public class AbandonedShip extends Card implements Serializable {
         }
         if(landing) {
             truckerThatHasDecided = Game.getIstance().getTrucker(indexOfCurrTrucker);
-            if(truckerThatHasDecided.getSpaceShip().getNumCrew() < numHuman) {
-                truckerThatHasDecided.getSpaceShip().removeAllHumans();
-                state = CardState.ESECUZIONE;
-                return cardEffect();
-            } else{
-                state = CardState.HUMANSTOREMOVE;
-                return new HumanCoordinates(true, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(),Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip(),Game.getIstance().getTruckerList());
-            }
-        }
-        else{
+            state = CardState.HUMANSTOREMOVE;
+            return new HumanCoordinates(true, Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname(),Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip(),Game.getIstance().getTruckerList());
+        }else{
             if (indexOfCurrTrucker == Game.getIstance().getTruckerList().size()-1){
                 state = CardState.ESECUZIONE;
                 return cardEffect();
@@ -147,7 +145,7 @@ public class AbandonedShip extends Card implements Serializable {
      * @return serverEvent to send to all clients
      */
     @Override
-    public synchronized ServerEvent removeHumans(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
+    public synchronized ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
         if(state != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Can't call setCoordinates in the state: " + state);
         }
@@ -156,7 +154,7 @@ public class AbandonedShip extends Card implements Serializable {
         }
         try{
             truckerThatHasDecided.getSpaceShip().checkCabin(coordinates, numHuman);
-            truckerThatHasDecided.getSpaceShip().removeNumHuman(coordinates,numHuman);
+            this.coordinates = coordinates;
             state = CardState.ESECUZIONE;
             return cardEffect();
         }catch (InvalidCoordinates e){
@@ -187,6 +185,7 @@ public class AbandonedShip extends Card implements Serializable {
             throw new GeneralError("Non puoi settare fare CardEffect nello stato: " + state);
         }
         if (truckerThatHasDecided != null) {
+            truckerThatHasDecided.getSpaceShip().removeNumHuman(coordinates,numHuman);
             Game.getIstance().moveBackward(truckerThatHasDecided,days);
             truckerThatHasDecided.addCosmicCredit(credits);
         }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.exceptions.InvalidComponentsException;
 import it.polimi.ingsw.exceptions.InvalidCoordinates;
@@ -7,6 +9,7 @@ import it.polimi.ingsw.exceptions.NotEnoughBatteries;
 import it.polimi.ingsw.model.CreateShipTest;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.view.ParserState;
@@ -117,19 +120,19 @@ class SlaversTest {
     }
 
     @Test
-    void testRemoveHumansTooFewCrew() throws Exception {
+    void testSetHumansCoordinatesTooFewCrew() throws Exception {
         slavers.activateCannons(false, new ArrayList<>(), new ArrayList<>());
         slavers.setWinDecision(true);
         Game.getIstance().getTrucker(1).getSpaceShip().removeAllHumans();
         ArrayList<int[]> empty = new ArrayList<>();
         slavers.setState(CardState.HUMANSTOREMOVE);
         slavers.addDefeatedTruckers(Game.getIstance().getTrucker(1));
-        ServerEvent e = slavers.removeHumans(empty);
+        ServerEvent e = slavers.setHumansCoordinates(empty);
         assertNotNull(e);
     }
 
     @Test
-    void testRemoveHumansValid() throws Exception {
+    void testSetHumansCoordinatesValid() throws Exception {
         slavers.activateCannons(false, new ArrayList<>(), new ArrayList<>());
         slavers.setWinDecision(true);
         ArrayList<int[]> coords = new ArrayList<>();
@@ -137,12 +140,12 @@ class SlaversTest {
         coords.add(new int[]{7, 6, 1});
         slavers.setState(CardState.HUMANSTOREMOVE);
         slavers.addDefeatedTruckers(Game.getIstance().getTruckerList().get(1));
-        ServerEvent e = slavers.removeHumans(coords);
+        ServerEvent e = slavers.setHumansCoordinates(coords);
         assertNotNull(e);
     }
 
     @Test
-    void testRemoveHumansInvalidCoords() throws Exception {
+    void testSetHumansCoordinatesInvalidCoords() throws Exception {
         slavers.activateCannons(false, new ArrayList<>(), new ArrayList<>());
         slavers.setWinDecision(true);
         ArrayList<int[]> wrong = new ArrayList<>();
@@ -150,7 +153,7 @@ class SlaversTest {
         slavers.setState(CardState.HUMANSTOREMOVE);
         slavers.addDefeatedTruckers(Game.getIstance().getTrucker(0));
         assertThrows(InvalidCoordinates.class, () -> {
-            slavers.removeHumans(wrong);
+            slavers.setHumansCoordinates(wrong);
         });
     }
 
