@@ -297,7 +297,7 @@ public class Slavers extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     @Override
-    public synchronized ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws GeneralError, InvalidCoordinates {
+    public synchronized ServerEvent removeHumans(ArrayList<int[]> coordinates) throws GeneralError, InvalidCoordinates {
         if (cardState != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Card state in not HUMANSTOREMOVE");
         }

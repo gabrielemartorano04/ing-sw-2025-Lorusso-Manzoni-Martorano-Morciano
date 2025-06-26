@@ -657,7 +657,7 @@ public class ClientHandlerVisitor implements VirtualServer {
      */
     @Override
     public ServerEvent visit(HumanCoordEvent event) {
-        return cardController.setHumansCoordinates(event);
+        return cardController.removeHumans(event);
     }
 
     /**

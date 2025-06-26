@@ -145,7 +145,7 @@ public class AbandonedShip extends Card implements Serializable {
      * @return serverEvent to send to all clients
      */
     @Override
-    public synchronized ServerEvent setHumansCoordinates(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
+    public synchronized ServerEvent removeHumans(ArrayList<int[]> coordinates) throws InvalidCoordinates, GeneralError {
         if(state != CardState.HUMANSTOREMOVE) {
             throw new GeneralError("Can't call setCoordinates in the state: " + state);
         }
