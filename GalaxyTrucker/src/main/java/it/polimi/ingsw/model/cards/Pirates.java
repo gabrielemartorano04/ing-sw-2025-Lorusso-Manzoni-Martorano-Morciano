@@ -90,12 +90,6 @@ public class Pirates extends Card implements Serializable {
     private final ArrayList<Trucker> defeatedTruckers;
 
     /**
-     * decision taken by the potential winner if there is one
-     */
-    private boolean winDecision;
-
-
-    /**
      * Pirates constructor, initialise the attributes of this class
      * @param trialFlight specify if truckers are playing trial flight
      * @param level level of the game
@@ -117,7 +111,6 @@ public class Pirates extends Card implements Serializable {
         this.indexOfCurrentTrucker = 0;
         this.defeatedTruckers = new ArrayList<>();
         this.currShootIndex = 0;
-        this.winDecision = false;
         this.winnerTrucker = null;
     }
 
@@ -300,7 +293,12 @@ public class Pirates extends Card implements Serializable {
             throw new GeneralError("Card state is not COSMIC_CREDITS");
         }
         winnerTrucker = Game.getIstance().getTrucker(indexOfCurrentTrucker);
-        winDecision = answer;
+
+        if(answer){
+            winnerTrucker.addCosmicCredit(credits);
+            Game.getIstance().moveBackward(winnerTrucker, days);
+        }
+
         if(defeatedTruckers.isEmpty()){
             cardState = CardState.ESECUZIONE;
             return cardEffect();
@@ -404,11 +402,6 @@ public class Pirates extends Card implements Serializable {
 
         if (cardState != CardState.ESECUZIONE) {
             throw new GeneralError("Card state is not ESECUZIONE");
-        }
-        if (winnerTrucker != null && winDecision) {
-            winDecision = false;
-            winnerTrucker.addCosmicCredit(credits);
-            Game.getIstance().moveBackward(winnerTrucker, days);
         }
 
         if(defeatedTruckers.isEmpty()){
