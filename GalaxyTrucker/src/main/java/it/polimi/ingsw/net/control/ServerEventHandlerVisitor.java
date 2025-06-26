@@ -716,8 +716,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(RollDiceResult event) {
         updatesFromFlight(event.getTruckers());
 
-        ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
-
         ui.showResult(event);
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());

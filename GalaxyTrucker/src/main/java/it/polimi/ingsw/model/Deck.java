@@ -241,15 +241,12 @@ class Deck implements Serializable {
                 0
         );
 
-        //TODO: riportare piratesPower a 5 e slaversPower a 6 e smugglersPower a 4
-
+        //TODO: riportare piratesPower a 5 e slaversPower a 6 e smugglersPower a 4 e togliere il doppione prima card pirates
+        cards.addLast(new MeteorShower(true, direction1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_019.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",6));        cards.addLast(warZone1);
         cards.addLast(new StarDust(true, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_014.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 4));
-        cards.addLast(new Pirates( false, 1, 4, 1,2, shoots1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_013.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",10));
         cards.addLast(new Planets(true, 2, 1, planets2, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0113.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",7));
         cards.addLast(new Smugglers(true, 6, 2, 1, goodsGained1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_012.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 1));
-        cards.addLast(new MeteorShower(true, direction1, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_019.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",6));
         cards.addLast(new AbandonedStation(true, 1, goods1, 1,5, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0119.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 3));
-        cards.addLast(warZone1);
         cards.addLast(new AbandonedShip(true, 1, 3, 4, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0118.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 2));
         cards.addLast(new OpenSpace(true, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_015.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",5 ));
 
@@ -269,7 +266,7 @@ class Deck implements Serializable {
 
             );
             cards.addLast(new Slavers(false, 1, 5, 1, 3,2, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_01.jpg",  "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",9));
-            cards.addLast(new Pirates( false, 1, 4, 1,2, shoots1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_013.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",10));
+            cards.addLast(new Pirates( false, 1, 4, 1,5, shoots1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_013.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",10));
             cards.addLast(new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",11));
             cards.addLast(new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",12));
             cards.addLast(new OpenSpace(false, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_018.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",13));

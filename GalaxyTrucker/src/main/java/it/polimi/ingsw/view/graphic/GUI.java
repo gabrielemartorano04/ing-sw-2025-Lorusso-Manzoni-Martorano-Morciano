@@ -811,6 +811,7 @@ public class GUI implements UI {
      */
     @Override
     public void showResult(RollDiceResult event){
+        System.out.println("Chiamo roll dice result");
         Platform.runLater(() -> {
             this.flightScene.clearRollDiceResult();
             this.flightScene.showRollDiceResult(event.getDiceResult());
