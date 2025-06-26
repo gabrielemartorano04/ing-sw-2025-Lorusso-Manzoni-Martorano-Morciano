@@ -332,7 +332,7 @@ public class Pirates extends Card implements Serializable {
 
         if(shoot[0] == 1){
             cardState = CardState.ESECUZIONE;
-            return new RollDiceResult(ParserState.DISPLAY_BIG_SHOOT, currShootIndex - 1, shoot, null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, Game.getIstance().getTruckerList());
+            return new RollDiceResult(ParserState.DISPLAY_BIG_SHOOT, currShootIndex - 1, shoot, null, roll, defeatedTruckers.getFirst().getNickname(), true, Game.getIstance().getTruckerList());
 
         }else{
             cardState = CardState.ACTIVATE_SHIELDS;
