@@ -28,6 +28,9 @@ public interface CardInterface {
         throw new WrongCallerException("This Card doesn't have this method");
     }
 
+    /**
+     * Handles the rearrangement of a pair of goods in the current player spaceship
+     */
     default ServerEvent rearrange(int[] coord1, int[] coord2, int value1, int value2, boolean stop) throws GeneralError, InvalidCoordinates, InvalidPositionException, WrongCallerException {
         throw new WrongCallerException("This Card doesn't have this method");
     }
