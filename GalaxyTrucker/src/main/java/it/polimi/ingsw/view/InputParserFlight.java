@@ -90,6 +90,7 @@ public class InputParserFlight {
             case CURRENT_CONDITION -> parseCurrentCondition(input);
             case REMOVE_BATTERIES -> parseRemoveBatteries(input, nickname);
             case REMOVE_GOODS -> parseRemoveGoods(input, nickname);
+            case DISPLAY_BIG_SHOOT -> parseDisplayBigShoot(input);
             case DEAD -> parseDead();
             case ASK_WITHDRAW -> parseWithdraw(input,nickname);
             default -> {
@@ -610,6 +611,20 @@ public class InputParserFlight {
             return null;
         }
         return new RemotionSeenEvent();
+    }
+
+    /**
+     * Manage the confirmation of the received of the big shoot
+     * @param input command, which is expected to be "continue"
+     * @return the corresponding event to the given command
+     */
+    private ClientEvent parseDisplayBigShoot(String input){
+        String[] remotion=input.split("\\s+");
+        if(remotion.length!=1 || !remotion[0].trim().equals("continue")){
+            ui.showError("Error: invalid command, please type 'continue'");
+            return null;
+        }
+        return new ApplyBigShoot();
     }
 
     /**

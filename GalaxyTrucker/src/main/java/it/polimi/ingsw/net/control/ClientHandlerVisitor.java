@@ -805,6 +805,20 @@ public class ClientHandlerVisitor implements VirtualServer {
         return cardController.handleCurrentCondition();
     }
 
+    /**
+     * Applies the current big Shot in the current card
+     * @param event event that means client are ready for the big shot
+     * @return serverEvent for clients
+     */
+    @Override
+    public ServerEvent visit(ApplyBigShoot event){
+        try {
+            return this.cardController.getCurrCard().cardEffect();
+        } catch (GeneralError e) {
+            return new GenericErrorEvent(e.getMessage(),true);
+        }
+    }
+
 
     /**
      * Handles the event indicating that the player has seen the remotion of goods or batteries from his/her ship.
