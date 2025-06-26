@@ -266,7 +266,7 @@ class PiratesTest {
         pirates.activateShield(false, new int[]{0,0}, new int[]{0,0});
         pirates.setDefeatedTrucker(Game.getIstance().getTruckerList().get(1));
         pirates.setState(CardState.ESECUZIONE);
-        pirates.cardEffect(); // triggers blockLightCannonShot or destroyComponent
+        pirates.cardEffect();
     }
 
     @Test

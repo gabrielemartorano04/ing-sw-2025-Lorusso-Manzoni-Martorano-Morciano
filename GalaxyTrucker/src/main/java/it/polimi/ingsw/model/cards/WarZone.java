@@ -792,4 +792,12 @@ public class WarZone extends Card implements Serializable {
     public void addGoodsToRemove(Goods good){
         goodsToRemove.add(good);
     }
+
+    public void setNumOfHumanToRemove(int numOfHumanToRemove) {
+        this.numOfHumanToRemove = numOfHumanToRemove;
+    }
+
+    public void setCurrShootIndex(int currShootIndex) {
+        this.currShootIndex = currShootIndex;
+    }
 }

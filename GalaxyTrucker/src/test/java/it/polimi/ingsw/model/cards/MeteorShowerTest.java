@@ -97,7 +97,7 @@ class MeteorShowerTest {
                 assertEquals(Game.getIstance().getTrucker(meteorShower.getIndexOfCurrTrucker()).getNickname(), e.getNickname());
                 assertTrue(e.isForAll());
             }else{
-                assertEquals(ParserState. ACTIVATE_CANNONS, e.getParserState());
+                assertEquals(ParserState. ACTIVATE_SHIELD, e.getParserState());
                 assertEquals(meteorShower.getCurrMeteorIndex(), e.getCurrIndex());
                 assertNull(e.getShoot());
                 assertEquals(meteorShower.getMeteors().get(meteorShower.getCurrMeteorIndex()-1), e.getMeteor());
