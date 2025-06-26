@@ -98,6 +98,12 @@ public class ServerController {
     private final Map<Integer, Object> userLocks = new ConcurrentHashMap<>();
 
     /**
+     * hearbeat scheduler to implement the ping pong verification of clients' connections
+     */
+    private ScheduledExecutorService heartbeatScheduler;
+
+
+    /**
      * constructor of the class
      */
     public ServerController() {
@@ -389,8 +395,8 @@ public class ServerController {
      * If any client is removed, the game is ended and scores are computed.
      */
     private void startHeartbeat() {
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(() -> {
+        heartbeatScheduler = Executors.newSingleThreadScheduledExecutor();
+        heartbeatScheduler.scheduleAtFixedRate(() -> {
             long now = System.currentTimeMillis();
             ArrayList<Client> toRemove = new ArrayList<>();
             for (Client client : new ArrayList<>(clients)) {
@@ -431,6 +437,31 @@ public class ServerController {
             }
 
             this.broadcastEvent(new EndGameEvent(playersScores));
+        }
+    }
+
+    /**
+     * Gracefully shuts down the server controller, closing all clients,
+     * stopping heartbeat monitoring and thread executors.
+     */
+    public void shutdown() {
+        System.out.println("[ServerController] Shutting down ServerController...");
+
+        synchronized (clients) {
+            for (Client c : clients) {
+                c.closeConnection();
+            }
+            clients.clear();
+        }
+
+        if (heartbeatScheduler != null && !heartbeatScheduler.isShutdown()) {
+            heartbeatScheduler.shutdownNow();
+        }
+
+        executorService.shutdownNow();
+
+        if (gameCreated && gameRunning && gameController != null) {
+            GamePersistence.saveGame(gameController);
         }
     }
 

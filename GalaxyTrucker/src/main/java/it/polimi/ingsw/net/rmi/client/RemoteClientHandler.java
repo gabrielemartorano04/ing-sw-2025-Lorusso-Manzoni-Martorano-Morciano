@@ -13,4 +13,5 @@ public interface RemoteClientHandler extends Remote {
     void setId(int id) throws RemoteException;
     int getId() throws RemoteException;
     void respondToPing(PingEvent event) throws RemoteException;
+    void close() throws RemoteException;
 }

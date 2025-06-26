@@ -9,6 +9,7 @@ import it.polimi.ingsw.view.ViewFlow;
 
 
 import javax.swing.text.View;
+import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -38,6 +39,14 @@ public class RmiClient extends UnicastRemoteObject implements RemoteClientHandle
 
     public void respondToPing(PingEvent event) throws RemoteException{
         view.onEventReceived(event);
+    }
+
+    public void close() throws RemoteException {
+        try {
+            UnicastRemoteObject.unexportObject(this, true);
+        } catch (NoSuchObjectException e) {
+            System.err.println("Failed to unexport RMI client: " + e.getMessage());
+        }
     }
 
     @Override
