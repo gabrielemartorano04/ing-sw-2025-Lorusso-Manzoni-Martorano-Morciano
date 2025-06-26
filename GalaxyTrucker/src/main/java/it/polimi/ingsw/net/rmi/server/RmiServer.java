@@ -20,6 +20,10 @@ import java.util.Enumeration;
  * Retrieves the local IP address to properly configure the RMI hostname.
  */
 public class RmiServer extends UnicastRemoteObject implements RmiServerInterface {
+
+    /**
+     * controller of the Server that handles all clients
+     */
     private final ServerController controller;
 
     /**

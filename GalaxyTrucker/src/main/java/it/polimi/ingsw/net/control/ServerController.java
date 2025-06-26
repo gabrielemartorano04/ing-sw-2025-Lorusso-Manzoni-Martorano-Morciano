@@ -204,7 +204,6 @@ public class ServerController {
      */
     public synchronized void removeClient(ArrayList<Client> toRemove) {
         clients.removeAll(toRemove);
-        //TODO: da verificare se rimuove bene cosi
         System.out.println("Client disconnected and removed from the game.");
     }
 

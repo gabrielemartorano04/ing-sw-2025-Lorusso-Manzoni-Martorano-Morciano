@@ -22,8 +22,20 @@ import java.rmi.server.UnicastRemoteObject;
  *
  */
 public class RmiClient extends UnicastRemoteObject implements RemoteClientHandler  {
+
+    /**
+     * rmi Server stub
+     */
     private final RmiServerInterface server;
+
+    /**
+     * client's view
+     */
     private final ViewFlow view;
+
+    /**
+     * client's id
+     */
     private int id;
 
     /**
