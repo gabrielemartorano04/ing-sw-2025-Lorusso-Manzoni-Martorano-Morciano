@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.TruckerController;
 import it.polimi.ingsw.net.events.serverevents.PingEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
-import it.polimi.ingsw.net.socket.server.ClientHandler;
+import it.polimi.ingsw.net.socket.server.ClientHandlerSocketInterface;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class Client {
     /**
      * socket client handler if the client chose socket
      */
-    private final ClientHandler clientHandler;
+    private final ClientHandlerSocketInterface clientHandlerSocketInterface;
 
     /**
      * rmi client handler if the client chose rmi
@@ -44,11 +44,11 @@ public class Client {
     /**
      * constructor of the class
      *
-     * @param clientHandler client handler socket if the client chose socket, null otherwise
+     * @param clientHandlerSocketInterface client handler socket if the client chose socket, null otherwise
      * @param remoteClientHandler client rmi handler if the client chose rmi, null otherwise
      */
-    public Client(ClientHandler clientHandler, RemoteClientHandler remoteClientHandler) {
-        this.clientHandler = clientHandler;
+    public Client(ClientHandlerSocketInterface clientHandlerSocketInterface, RemoteClientHandler remoteClientHandler) {
+        this.clientHandlerSocketInterface = clientHandlerSocketInterface;
         this.remoteClientHandler = remoteClientHandler;
         this.id = -1;
         this.lastPongTime = System.currentTimeMillis();
@@ -62,8 +62,8 @@ public class Client {
     public void setId(int id) {
         if(this.id == -1){
             this.id = id;
-            if(clientHandler != null){
-                clientHandler.setId(id);
+            if(clientHandlerSocketInterface != null){
+                clientHandlerSocketInterface.setId(id);
             }else{
                 try {
                     remoteClientHandler.setId(id);
@@ -102,8 +102,8 @@ public class Client {
      * whether the client is still active or not
      */
     public void notifyPing(){
-        if(clientHandler != null){
-            clientHandler.sendEvent(new PingEvent());
+        if(clientHandlerSocketInterface != null){
+            clientHandlerSocketInterface.sendEvent(new PingEvent());
         }else {
             try {
                 remoteClientHandler.respondToPing(new PingEvent());
@@ -122,8 +122,8 @@ public class Client {
      * @param event generic event that is needed by the view
      */
     public void updateClient(ServerEvent event){
-        if(clientHandler != null){
-            clientHandler.sendEvent(event);
+        if(clientHandlerSocketInterface != null){
+            clientHandlerSocketInterface.sendEvent(event);
         }else if (remoteClientHandler != null){
             try {
                 remoteClientHandler.handleIncomingEvent(event);
@@ -156,8 +156,8 @@ public class Client {
      * closes the connection with the current client
      */
     public void closeConnection(){
-        if(clientHandler != null){
-            clientHandler.close();
+        if(clientHandlerSocketInterface != null){
+            clientHandlerSocketInterface.close();
         }else if(remoteClientHandler != null){
             try {
                 this.remoteClientHandler.close();
