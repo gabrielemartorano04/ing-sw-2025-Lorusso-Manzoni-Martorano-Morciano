@@ -1427,8 +1427,8 @@ public class FlightScene {
         container.getChildren().add(continueBtn);
 
         AnchorPane popupContent = new AnchorPane(container);
-        AnchorPane.setBottomAnchor(container, 180.0);
-        AnchorPane.setLeftAnchor(container, 150.0);
+        AnchorPane.setBottomAnchor(container, 200.0);
+        AnchorPane.setLeftAnchor(container, 180.0);
 
         // Abilita overlay (blocca il mouse dietro)
         overlayLayer.setMouseTransparent(false);
@@ -2039,8 +2039,8 @@ public class FlightScene {
     public void showRollDiceResult(int result) {
         // === Overlay grigio trasparente ===
         Rectangle overlay = new Rectangle();
-        overlay.setWidth(scene.getWidth());
-        overlay.setHeight(scene.getHeight());
+        overlay.setWidth(1600);
+        overlay.setHeight(900);
         overlay.setFill(Color.rgb(0, 0, 0, 0.5));
         overlay.setMouseTransparent(false); // blocca interazioni sotto
 
@@ -2592,6 +2592,30 @@ public class FlightScene {
                 delay.setOnFinished(e -> root.getChildren().remove(popup));
                 delay.play();
             }
+        });
+    }
+
+    public void showRemainingCards(int remainingCards) {
+        Label label = new Label("Remaining\ncards");
+        label.setFont(Font.font("Bangers", FontWeight.BOLD, 24));
+        label.setTextFill(Color.web("#FFDE69"));
+        label.setTextAlignment(TextAlignment.CENTER);
+
+        Label count = new Label(String.valueOf(remainingCards));
+        count.setFont(Font.font("Bangers", FontWeight.BOLD, 30));
+        count.setTextFill(Color.WHITE);
+        count.setTextAlignment(TextAlignment.CENTER);
+
+        VBox box = new VBox(5, label, count);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
+        box.setMaxWidth(Region.USE_PREF_SIZE);
+        box.setMaxHeight(Region.USE_PREF_SIZE);
+
+        Platform.runLater(() -> {
+            StackPane.setAlignment(box, Pos.CENTER);
+            StackPane.setMargin(box, new Insets(-430, 0, 0, -830));
+            root.getChildren().add(box);
         });
     }
 }

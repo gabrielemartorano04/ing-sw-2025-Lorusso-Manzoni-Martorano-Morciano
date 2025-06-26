@@ -388,7 +388,7 @@ public class TUI implements UI {
                 }
             }
             this.showMessage("\nList of cabin available for aliens:\n" + message);
-            this.showMessage("Insert coordinates to add aliens (coord <x1> <y1> <color> <x2> <y2> <color>...), otherwise just 'coord'.");
+            this.showMessage("Insert coordinates to add aliens (coord <row1> <col1> <color> <row2> <col2> <color>...), otherwise just 'coord'.");
             System.out.print("\n>");
         }
     }
@@ -520,36 +520,36 @@ public class TUI implements UI {
         switch (parserState){
             case ACTIVATE_ENGINES -> {
                 if(viewFlow.shipHasDoubleEngines()) {
-                    System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
+                    System.out.println("Choose if you want to activate the double engines. If yes type the coordinates of the engines then 'battery' and battery storage(s) coordinates . Type 'y, <row1> <col1>, <row2> <col2>,..., battery, <rows1> <cols1> - <numofbatteries>,...' or 'n': ");
                 }
             }
             case ACTIVATE_CANNONS -> {
                 if(viewFlow.shipHasDoubleCannons()){
-                    System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ");
+                    System.out.println("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <row1> <col1>, <row2> <col2>,..., battery, <rows1> <cols1> - <numofbatteries>,...' or 'n': ");
                 }
             }
             case ACTIVATE_SHIELD -> {
                 if(viewFlow.shipHasShields()){
-                    System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <x1> <y1>, <xB1> <yB1>>' or 'n': ");
+                    System.out.println("Choose if you want to activate the shield. If yes type the coordinates of the shield and the coordinates of the battery storage. Type 'y, <row1> <col1>, <rowB1> <colB1>' or 'n': ");
                 }
             }
             case LAND -> System.out.println("Type 'y' if you want to land, else 'n'.");
-            case HUMAN_COORD -> System.out.println("Insert the coordinates of the cabins to remove the number of human indicated in the card description. Type '<x1> <y1> - <number of crew>, <x2> <y2> - <number of crew>,...' : ");
+            case HUMAN_COORD -> System.out.println("Insert the coordinates of the cabins to remove the number of human indicated in the card description. Type '<row1> <col1> - <number of crew>, <row2> <col2> - <number of crew>,...' : ");
             case PLOT_GOOD ->{
                  if(viewFlow.shipHasLoad()){
-                     System.out.println("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <x> <y>, <position>' or 'n': ");
+                     System.out.println("Choose if you want the good, if yes type the coordinates of the load and the position in the load. Type 'y, <row> <col>, <position>' or 'n': ");
                  }
             }
             case ROLL_DICE -> System.out.println("Type 'roll' to roll the dices when yu're ready.");
             case PLANET_DECISION->System.out.println("Choose the planet you want to fly to. Type '<index>': ");
             case DRAW_CARD ->System.out.println("Type 'draw' when you're ready to draw the next card.");
             case REMOTION_CONFIRMED, HUMAN_REMOVED -> System.out.println("Remotion confirmed. Type 'continue' when you're ready to go on.");
-            case REMOVE_BATTERIES -> System.out.println("You have to remove " + viewFlow.getNumOfBatteriesToRemove() + " batteries." + "\n" + "Choose from where you  want to remove batteries. Type '<x1> <y1> - <quantity>,<x2> <y2> - <quantity>...");
+            case REMOVE_BATTERIES -> System.out.println("You have to remove " + viewFlow.getNumOfBatteriesToRemove() + " batteries." + "\n" + "Choose from where you  want to remove batteries. Type '<row1> <col1> - <quantity>,<row2> <col2> - <quantity>...");
             case REMOVE_GOODS -> System.out.println("Choose goods you want to remove. Type '<index1>,<index2>...'.");
             case REARRANGE ->{
                 if(viewFlow.shipHasGoods()){
                     System.out.println("Choose if you want to rearrange your goods. If yes, insert coordinates.\n" +
-                            "Type 'y, <x1> <y1> - <value1>, <x2> <y2> - <value2>' or 'n'");
+                            "Type 'y, <row1> <col1> - <value1>, <row2> <col2> - <value2>' or 'n'");
                 }
             }
             case COSMIC_CREDITS -> System.out.println("Do you want to gain " + viewFlow.getCosmicCreditsToGain() + " cosmic credits and lose " + viewFlow.getDaysLost() + " flight days? Type '<y/n>'.");
@@ -651,7 +651,7 @@ public class TUI implements UI {
      * Displays the available options for interacting with a component
      */
     private void showComponentOptions() {
-        System.out.println("Options: [Link <row> <column> (to link the component in the position x,y of your spaceship)] [Keep] [Discard]");
+        System.out.println("Options: [Link <row> <column> (to link the component in the position row,col of your spaceship)] [Keep] [Discard]");
         System.out.print("Choose your action: ");
     }
 
@@ -675,8 +675,8 @@ public class TUI implements UI {
     /**
      * Displays information about the placement of a given component at specified coordinates.
      * @param component the component being placed, containing its type information
-     * @param x the x-coordinate where the component is placed
-     * @param y the y-coordinate where the component is placed
+     * @param x the row coordinate where the component is placed
+     * @param y the column coordinate where the component is placed
      */
     public void showComponentPlaced(Component component, int x, int y) {
         System.out.println("Component " + component.getType() + " linked in [" + x + "," + y + "]");
@@ -1346,10 +1346,10 @@ public class TUI implements UI {
     }
 
     /**
-     * Prompts the user to insert coordinates in the format "x y"
+     * Prompts the user to insert coordinates in the format "row col"
      */
     public void askCoordinates() {
-        System.out.print("Insert coordinates (x y): ");
+        System.out.print("Insert coordinates (row col): ");
     }
 
     /**
