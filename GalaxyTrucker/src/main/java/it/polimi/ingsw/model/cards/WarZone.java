@@ -523,7 +523,7 @@ public class WarZone extends Card implements Serializable {
         this.roll = Game.getIstance().rollDice();
         if (shoot[0]==1) {
             state = CardState.ESECUZIONE;
-            return cardEffect();
+            return new RollDiceResult(ParserState.DISPLAY_BIG_SHOOT, currShootIndex - 1, shoot, null, roll, weakestTrucker.getNickname(), true, Game.getIstance().getTruckerList());
         }else{
             state=CardState.ACTIVATE_SHIELDS;
             return new RollDiceResult(ParserState.ACTIVATE_SHIELD, currShootIndex,shoot,null, roll, weakestTrucker.getNickname(), true, Game.getIstance().getTruckerList());
