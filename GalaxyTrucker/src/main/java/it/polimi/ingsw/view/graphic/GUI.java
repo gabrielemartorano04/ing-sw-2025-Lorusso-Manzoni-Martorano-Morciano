@@ -716,7 +716,7 @@ public class GUI implements UI {
     @Override
     public void updateGoodsListToRemove(ArrayList<Goods> goodsList) {
         Platform.runLater(() -> {
-            // this.flightScene.updateGoodsListToRemove(goodsList);
+            this.flightScene.updateGoodsListToRemove(goodsList);
         });
     }
 
