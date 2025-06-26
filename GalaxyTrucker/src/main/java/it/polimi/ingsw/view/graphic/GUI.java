@@ -332,7 +332,7 @@ public class GUI implements UI {
     @Override
     public void welcomeOldScene(ArrayList<PlayerColors> colors, ArrayList<String> nicknames) {
         Platform.runLater(() -> {
-            this.loginScene = new LoginScene(null, viewFlow);
+            this.loginScene = new LoginScene(viewFlow);
             stage.setScene(this.loginScene.createScene(true, nicknames,colors));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
@@ -350,7 +350,7 @@ public class GUI implements UI {
     @Override
     public void welcomeScene(AvailableColorsEvent event){
         Platform.runLater(() -> {
-            this.loginScene = new LoginScene(event.getColors(), viewFlow);
+            this.loginScene = new LoginScene(viewFlow);
             stage.setScene(this.loginScene.createScene(false, null,null));
             stage.setTitle("Galaxy Trucker");
             stage.setResizable(false);
