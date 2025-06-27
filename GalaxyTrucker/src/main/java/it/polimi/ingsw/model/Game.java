@@ -480,13 +480,17 @@ public class Game implements Serializable {
         }
 
         if (gameState!= GameState.FLIGHT && gameState!= GameState.ENDED) {
+            System.out.println("Entro dialo stra il ");
             return scores;
         }
 
         int i=0;
         for(Trucker t: truckers) {
             scores[i] = t.getCosmicCredit();
+            System.out.println(t.getCosmicCredit() + " Cosmic credits");
             scores[i] = scores[i] - t.getSpaceShip().getLost();
+            System.out.println(t.getSpaceShip().getLost() + " Cosmic credits");
+
 
             if(gameLevel == 2){
                 switch (i){
@@ -503,6 +507,8 @@ public class Game implements Serializable {
                     case 3 ->  scores[i] = scores[i] + 1;
                 }
             }
+
+            System.out.println("score del current dopo aggiunta posizione " + scores[i]);
 
             ArrayList<Goods> goodsList = t.getSpaceShip().getGoodsList();
 
