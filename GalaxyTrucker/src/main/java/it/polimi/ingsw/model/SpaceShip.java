@@ -2253,6 +2253,7 @@ public class SpaceShip implements Serializable {
         }
     }
 
+
     public boolean isChanged(SpaceShip oldShip){
         for(int i=0; i<components.length; i++){
             for(int j=0; j<components[i].length; j++){
