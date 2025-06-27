@@ -769,7 +769,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
         ui.showPlayerShipStatus();
-        //
         ui.showNumCardLeft();
         if (event.getFirstPlayerNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
