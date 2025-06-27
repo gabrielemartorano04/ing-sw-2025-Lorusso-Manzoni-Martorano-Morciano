@@ -443,8 +443,6 @@ public class ServerController {
      * stopping heartbeat monitoring and thread executors.
      */
     public void shutdown() {
-        System.out.println("[ServerController] Shutting down ServerController...");
-
         synchronized (clients) {
             for (Client c : clients) {
                 c.closeConnection();

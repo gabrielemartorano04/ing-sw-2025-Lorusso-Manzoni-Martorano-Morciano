@@ -849,7 +849,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     public ServerEvent visit(WithdrawRequest event) {
         String nickname=event.getNickname();
         boolean choice=event.getChoice();
-        withdrawChoice++;
+
         if(withdrawChoice<gameController.getGame().getTruckerList().size()){
             if(choice){
                 for(Trucker t: gameController.getGame().getTruckerList()){
@@ -860,11 +860,37 @@ public class ClientHandlerVisitor implements VirtualServer {
                     }
                 }
             }
-            return new TruckerWithdrawEvent(nickname,choice);
+            withdrawChoice++;
+
+            if(Game.getIstance().getTruckerList().isEmpty()){
+                int[] scores;
+                Map<String, Integer> playersScores = new HashMap<>();
+                scores = gameController.getGame().computeScores();
+                for(int i=0; i<numOfPlayers; i++){
+                    playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
+                }
+                GamePersistence.saveGame(gameController);
+                GamePersistence.deleteSave();
+                return new EndGameEvent(playersScores);
+            }else{
+                return new TruckerWithdrawEvent(nickname,choice);
+            }
         }
         else {
             withdrawChoice=0;
-            return new DrawNewCardEvent(gameController.getGame().getTruckerList().getFirst().getNickname());
+            if(!Game.getIstance().getTruckerList().isEmpty()){
+                return new DrawNewCardEvent(gameController.getGame().getTruckerList().getFirst().getNickname());
+            }else{
+                int[] scores;
+                Map<String, Integer> playersScores = new HashMap<>();
+                scores = gameController.getGame().computeScores();
+                for(int i=0; i<numOfPlayers; i++){
+                    playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
+                }
+                GamePersistence.saveGame(gameController);
+                GamePersistence.deleteSave();
+                return new EndGameEvent(playersScores);
+            }
         }
     }
 
