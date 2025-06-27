@@ -144,7 +144,8 @@ public class FlightScene {
     /**
      * Represents a label that likely displays information related to spaceship status
      */
-    private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel, lostLabel;
+    private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel, lostLabel,
+                  battLabelForOther, humanLabelForOther, cannonLabelForOther, engineLabelForOther;
 
     /**
      * A map that associates a good with its corresponding label
@@ -531,10 +532,10 @@ public class FlightScene {
         Image human = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
         Image battery = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/battery.png")).toExternalForm());
 
-        battLabel = createStyledLabel();
-        humanLabel = createStyledLabel();
-        cannonLabel = createStyledLabel();
-        engineLabel = createStyledLabel();
+        battLabelForOther = createStyledLabel();
+        humanLabelForOther = createStyledLabel();
+        cannonLabelForOther = createStyledLabel();
+        engineLabelForOther = createStyledLabel();
 
         ImageView batteryIcon = new ImageView(battery);
         batteryIcon.setFitWidth(30);
@@ -553,10 +554,10 @@ public class FlightScene {
         engineIcon.setFitWidth(16);
         engineIcon.setPreserveRatio(true);
 
-        HBox battBox = new HBox(0, batteryIcon, battLabel);
-        HBox humanBox = new HBox(0, humanIcon, humanLabel);
-        HBox cannonBox = new HBox(0, cannonIcon, cannonLabel);
-        HBox engineBox = new HBox(5, engineIcon, engineLabel);
+        HBox battBox = new HBox(0, batteryIcon, battLabelForOther);
+        HBox humanBox = new HBox(0, humanIcon, humanLabelForOther);
+        HBox cannonBox = new HBox(0, cannonIcon, cannonLabelForOther);
+        HBox engineBox = new HBox(5, engineIcon, engineLabelForOther);
 
         for (HBox box : List.of(battBox, humanBox, cannonBox, engineBox)) {
             for (Node n : box.getChildren()) {
@@ -591,12 +592,12 @@ public class FlightScene {
         HBox valuesRow = new HBox(25, battBox, humanBox, cannonBox, engineBox);
         valuesRow.setAlignment(Pos.CENTER);
 
-        VBox statusBar = new VBox(10, valuesRow, goodsBox);
-        statusBar.setAlignment(Pos.CENTER);
-        statusBar.setPadding(new Insets(15));
-        statusBar.setMaxWidth(800);
+        VBox statusBarForOther = new VBox(10, valuesRow, goodsBox);
+        statusBarForOther.setAlignment(Pos.CENTER);
+        statusBarForOther.setPadding(new Insets(15));
+        statusBarForOther.setMaxWidth(800);
 
-        return statusBar;
+        return statusBarForOther;
     }
 
     private void printNodeTree(Node node, String indent) {
@@ -614,36 +615,26 @@ public class FlightScene {
      * @param nickname of the player
      */
     public void showOtherShip(SpaceShip ship, String nickname) {
+
         Component[][] layout = ship.getComponents();
 
-        Image transparent = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/transparent.png")).toExternalForm());
+        Image trasparent = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/transparent.png")).toExternalForm());
 
-        // Overlay semi-trasparente
-        Region overlay = new Region();
+        AnchorPane overlay = new AnchorPane();
         overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
-        overlay.prefWidthProperty().bind(root.widthProperty());
-        overlay.prefHeightProperty().bind(root.heightProperty());
+        overlay.setPickOnBounds(true);
 
-        System.out.println("==== Scene Graph starting from root ====");
-        for (Node node : root.getChildren()) {
-            printNodeTree(node, "  ");
+        root.getChildren().add(overlay);
+
+        ImageView backgroundView;
+        if (level == 0) {
+            backgroundView = new ImageView(new Image(Objects.requireNonNull(
+                    getClass().getResource("/it/polimi/ingsw/view/cardboard-3.jpeg")).toExternalForm()));
+        } else {
+            backgroundView = new ImageView(new Image(Objects.requireNonNull(
+                    getClass().getResource("/it/polimi/ingsw/view/cardboard-3b.jpeg")).toExternalForm()));
         }
-        System.out.println("========================================");
 
-
-        // Rimuovi temporaneamente la status bar
-        root.getChildren().remove(statusBar);
-
-        System.out.println("==== Scene Graph starting from root ====");
-        for (Node node : root.getChildren()) {
-            printNodeTree(node, "  ");
-        }
-        System.out.println("========================================");
-
-        // Background del popup
-        ImageView backgroundView = new ImageView(new Image(Objects.requireNonNull(
-                        getClass().getResource(level == 0 ? "/it/polimi/ingsw/view/cardboard-3.jpeg" : "/it/polimi/ingsw/view/cardboard-3b.jpeg"))
-                .toExternalForm()));
         backgroundView.setFitWidth(679);
         backgroundView.setFitHeight(492);
         backgroundView.setPreserveRatio(true);
@@ -654,7 +645,6 @@ public class FlightScene {
         clip.setArcHeight(20);
         backgroundView.setClip(clip);
 
-        // Grid con i componenti della nave
         GridPane grid = new GridPane();
         grid.setHgap(1.5);
         grid.setVgap(1.5);
@@ -669,15 +659,26 @@ public class FlightScene {
                 if (validCells[row][col]) {
                     cell.setStyle("-fx-border-color: white; -fx-border-radius: 4px; -fx-background-radius: 4px;");
                     Component c = layout[row][col];
-                    ImageView iv = new ImageView(c != null ? c.getFrontImage() : transparent);
-                    iv.setFitWidth(87);
-                    iv.setFitHeight(87);
-                    if (c != null) iv.setRotate(c.getRotationAngle());
-                    Rectangle r = new Rectangle(87, 87);
-                    r.setArcWidth(8);
-                    r.setArcHeight(8);
-                    iv.setClip(r);
-                    cell.getChildren().add(iv);
+                    if (c != null) {
+                        ImageView iv = new ImageView(c.getFrontImage());
+                        iv.setFitWidth(87);
+                        iv.setFitHeight(87);
+                        iv.setRotate(c.getRotationAngle());
+                        Rectangle r = new Rectangle(87, 87);
+                        r.setArcWidth(8);
+                        r.setArcHeight(8);
+                        iv.setClip(r);
+                        cell.getChildren().add(iv);
+                    } else {
+                        ImageView iv = new ImageView(trasparent);
+                        iv.setFitWidth(87);
+                        iv.setFitHeight(87);
+                        Rectangle r = new Rectangle(87, 87);
+                        r.setArcWidth(8);
+                        r.setArcHeight(8);
+                        iv.setClip(r);
+                        cell.getChildren().add(iv);
+                    }
                 } else {
                     cell.setStyle("-fx-background-color: transparent;");
                 }
@@ -689,6 +690,7 @@ public class FlightScene {
         StackPane shipPopup = new StackPane(backgroundView, grid);
         shipPopup.setAlignment(Pos.CENTER);
         shipPopup.setMaxSize(679, 500);
+        shipPopup.setMouseTransparent(false);
 
         String displayName = nickname.endsWith("s") ? nickname + "'" : nickname + "'s";
         Label nameLabel = new Label(displayName + " spaceship");
@@ -699,23 +701,13 @@ public class FlightScene {
         VBox statusBarForShip = createStatusBarForOtherShip(ship);
         VBox popupWithLabel = new VBox(20, nameLabel, shipPopup, statusBarForShip);
         popupWithLabel.setAlignment(Pos.CENTER);
-        popupWithLabel.setStyle("-fx-background-color: transparent;");
 
-        // Contenitore centrale che include overlay e popup
-        StackPane popupContainer = new StackPane(overlay, popupWithLabel);
-        popupContainer.setAlignment(Pos.CENTER);
-        popupContainer.prefWidthProperty().bind(root.widthProperty());
-        popupContainer.prefHeightProperty().bind(root.heightProperty());
-
-        popupContainer.setPickOnBounds(true);
-
-        // Chiude cliccando ovunque
-        popupContainer.setOnMouseClicked(e -> {
-            root.getChildren().remove(popupContainer);
-            restoreInteractiveLayers(); // <-- Ripristina overlay, status bar e opzioni
+        root.setOnMouseClicked(e -> {
+            root.getChildren().remove(overlay);
+            root.getChildren().remove(popupWithLabel);
         });
 
-        root.getChildren().add(popupContainer);
+        root.getChildren().add(popupWithLabel);
     }
 
 
