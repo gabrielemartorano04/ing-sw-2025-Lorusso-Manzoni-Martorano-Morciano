@@ -52,6 +52,9 @@ public interface VirtualView {
     /** Handles a BuildCompleteEvent. */
     void visit(BuildCompleteEvent event);
 
+    /** Handles the illegal ship status of the client*/
+    void visit(ShipNotLegal event);
+
     /** Handles a KeptComponentEvent. */
     void visit(KeptComponentEvent event);
 

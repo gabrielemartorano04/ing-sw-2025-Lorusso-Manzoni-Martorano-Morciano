@@ -914,11 +914,12 @@ public class GUI implements UI {
            if(viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
                this.flightScene.setShip(viewFlow.getShip().getComponents());
                this.flightScene.updateShipLayout();
+           }else if (viewFlow.getViewState() == ViewFlow.ViewState.REMOVE){
+               this.buildingScene.buildShipGrid(false, layout);
            }
         });
     }
 
-    // TODO DISPLAY IL NUMERO DI CARTE DA GIRARE DA VIEWFLOW.GETCARDSTOGO
     /**
      * Displays the number of cards left to draw in the GUI
      */
