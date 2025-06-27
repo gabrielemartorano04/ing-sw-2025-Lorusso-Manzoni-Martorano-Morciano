@@ -410,7 +410,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
     /**
      * Indicates that the player must wait for others to complete building
-     *
      * @param event event signaling wait state for others building
      */
     @Override
@@ -419,6 +418,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showWaitForOthers();
     }
 
+    /**
+     * Indicates that the player must wait for others to complete building
+     * if they turned the hourglass for the last time
+     * @param event
+     */
     @Override
     public void visit(WaitOthersHourglassEvent event){
         if(event.getNickname().equals(viewFlow.getNickname())){

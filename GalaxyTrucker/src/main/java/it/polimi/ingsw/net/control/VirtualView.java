@@ -91,6 +91,7 @@ public interface VirtualView {
     /** Handles a GenericErrorEvent. */
     void visit(GenericErrorEvent event);
 
+    /** Handles a WaitOthersHourglassEvent. */
     void visit(WaitOthersHourglassEvent event);
 
     /** Handles a WaitOthersStartFlightEvent. */
