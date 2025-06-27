@@ -37,7 +37,7 @@ public class AppPerTest extends Application {
         playersNames.add("Gabri");
 
         c = new Cannon(3, 0, 0, "Cannon", "/it/polimi/ingsw/model/components/tiles/GT-new_tiles_16_for web129.jpg", true);
-        Trucker trucker = new Trucker("luca", PlayerColors.BLUE);
+        Trucker trucker = new Trucker("lucas", PlayerColors.BLUE);
         kept = new ArrayList<>();
         kept2 = new ArrayList<>();
         //stack = new Stack();
@@ -158,7 +158,7 @@ public class AppPerTest extends Application {
         truckers.add(null);
         truckers.add(null);
         truckers.add(null);
-        flightScene.showRollDiceResult(4);
+        flightScene.showOtherShip(createShip1(trucker.getSpaceShip()), trucker.getNickname());
 //        flightScene.updateGoodsListToRemove(new ArrayList<>(){
 //            {
 //                add(new Goods(2));

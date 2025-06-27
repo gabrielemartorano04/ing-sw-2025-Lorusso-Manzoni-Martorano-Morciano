@@ -519,6 +519,74 @@ public class FlightScene {
         this.otherBtn = otherBtn;
     }
 
+    private VBox createStatusBarForShip(SpaceShip ship) {
+        // Immagini icone
+        Image engine = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/engine.png")).toExternalForm());
+        Image cannon = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
+        Image human = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
+        Image battery = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/battery.png")).toExternalForm());
+
+        // Crea label locali
+        Label battLabel = createStyledLabel();
+        Label humanLabel = createStyledLabel();
+        Label cannonLabel = createStyledLabel();
+        Label engineLabel = createStyledLabel();
+
+        // Popola valori dalle API della nave
+        battLabel.setText(": " + ship.getNumBatteries());
+        humanLabel.setText(": " + ship.getNumCrew());
+        cannonLabel.setText(": " + ship.getSingleCannonPower());
+        engineLabel.setText(": " + ship.getSingleEnginePower());
+
+        // Crea Box individuali
+        HBox battBox = new HBox(5, new ImageView(battery), battLabel);
+        HBox humanBox = new HBox(5, new ImageView(human), humanLabel);
+        HBox cannonBox = new HBox(5, new ImageView(cannon), cannonLabel);
+        HBox engineBox = new HBox(5, new ImageView(engine), engineLabel);
+
+        for (HBox box : List.of(battBox, humanBox, cannonBox, engineBox)) {
+            for (Node n : box.getChildren()) {
+                if (n instanceof ImageView iv) {
+                    iv.setFitWidth(25);
+                    iv.setPreserveRatio(true);
+                }
+            }
+            box.setAlignment(Pos.CENTER);
+        }
+
+        // GOODS
+        HBox goodsBox = new HBox(10);
+        goodsBox.setAlignment(Pos.CENTER);
+        Map<String, Integer> goods = ship.getGoodsByColor();
+        Map<String, String> colorToImg = Map.of(
+                "red", "/it/polimi/ingsw/view/redgood.png",
+                "yellow", "/it/polimi/ingsw/view/yellowgood.png",
+                "green", "/it/polimi/ingsw/view/greengood.png",
+                "blue", "/it/polimi/ingsw/view/bluegood.png"
+        );
+        for (String color : List.of("red", "yellow", "green", "blue")) {
+            ImageView icon = new ImageView(new Image(Objects.requireNonNull(getClass().getResource(colorToImg.get(color))).toExternalForm()));
+            icon.setFitWidth(35);
+            icon.setPreserveRatio(true);
+            Label qty = createStyledLabel();
+            qty.setText(": " + goods.getOrDefault(color, 0));
+            HBox g = new HBox(5, icon, qty);
+            g.setAlignment(Pos.CENTER);
+            goodsBox.getChildren().add(g);
+        }
+
+        // Layout finale
+        HBox valuesRow = new HBox(25, battBox, humanBox, cannonBox, engineBox);
+        valuesRow.setAlignment(Pos.CENTER);
+
+        VBox statusBar = new VBox(10, valuesRow, goodsBox);
+        statusBar.setAlignment(Pos.CENTER);
+        statusBar.setPadding(new Insets(15));
+        statusBar.setMaxWidth(800);
+
+        return statusBar;
+    }
+
     /**
      * Displays another ship layout on the screen
      * @param ship of the player
@@ -608,7 +676,8 @@ public class FlightScene {
         nameLabel.setTextFill(Color.web("#FFDE69"));
         nameLabel.setAlignment(Pos.CENTER);
 
-        VBox popupWithLabel = new VBox(10, nameLabel, shipPopup);
+        VBox statusBarForShip = createStatusBarForShip(ship);
+        VBox popupWithLabel = new VBox(20, nameLabel, shipPopup, statusBarForShip);
         popupWithLabel.setAlignment(Pos.CENTER);
 
         root.setOnMouseClicked(e -> {
