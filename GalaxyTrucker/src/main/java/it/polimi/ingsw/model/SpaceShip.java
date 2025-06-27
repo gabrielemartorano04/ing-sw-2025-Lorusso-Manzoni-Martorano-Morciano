@@ -2207,4 +2207,24 @@ public class SpaceShip implements Serializable {
             }
         }
     }
+
+    /**
+     * This method removes all the batteries from the spaceship
+     */
+    public void removeAllBatteries(){
+        numOfBattery=0;
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++){
+                if(components[i][j]!=null){
+                    switch(components[i][j]){
+                        case BatteryStorage c->{
+                            int quantity=c.getQuantity();
+                            c.removeNumOfBatteries(quantity);
+                        }
+                        default -> {}
+                    }
+                }
+            }
+        }
+    }
 }
