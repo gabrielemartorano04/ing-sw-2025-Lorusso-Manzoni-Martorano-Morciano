@@ -539,10 +539,10 @@ public class FlightScene {
         cannonLabelForOther = createStyledLabel();
         engineLabelForOther = createStyledLabel();
 
-        ImageView batteryIcon = new ImageView(batteryForOther);
-        batteryIcon.setFitWidth(30);
-        batteryIcon.setFitHeight(50);
-        batteryIcon.setPreserveRatio(false);
+        ImageView batteryIconForOther = new ImageView(batteryForOther);
+        batteryIconForOther.setFitWidth(30);
+        batteryIconForOther.setFitHeight(50);
+        batteryIconForOther.setPreserveRatio(false);
 
         ImageView humanIconForOther = new ImageView(humanForOther);
         humanIconForOther.setFitWidth(40);
@@ -556,7 +556,7 @@ public class FlightScene {
         engineIconForOther.setFitWidth(16);
         engineIconForOther.setPreserveRatio(true);
 
-        HBox battForOtherBox = new HBox(0, batteryIcon, battLabelForOther);
+        HBox battForOtherBox = new HBox(0, batteryIconForOther, battLabelForOther);
         HBox humanForOtherBox = new HBox(0, humanIconForOther, humanLabelForOther);
         HBox cannonForOtherBox = new HBox(0, cannonIconForOther, cannonLabelForOther);
         HBox engineForOtherBox = new HBox(5, engineIconForOther, engineLabelForOther);
