@@ -420,7 +420,6 @@ public class Game implements Serializable {
     public Map<String, Integer> getTrack() {
         for (Trucker p : truckers) {
             track.put(p.getNickname(), p.getPosition());
-            System.out.println(p.getNickname() + ": " + p.getPosition());
         }
         return track;
     }
@@ -430,7 +429,6 @@ public class Game implements Serializable {
      */
     public void moveForward(Trucker trucker, int days){
         int finalPos = trucker.getPosition();
-        System.out.println("startPos of " + trucker.getNickname() + ": " + finalPos);
         for (int i=0; i<days; i++){
             finalPos ++;
             for(Trucker t: truckers){
@@ -439,7 +437,6 @@ public class Game implements Serializable {
                 }
             }
         }
-        System.out.println("finalPos of " + trucker.getNickname() + ": " + finalPos);
         trucker.setPosition(finalPos);
         this.sortTruckers();
     }
@@ -461,16 +458,6 @@ public class Game implements Serializable {
         this.sortTruckers();
     }
 
-//    /**
-//     * Checks if a trucker's spaceship is ready.
-//     * @param trucker the trucker to check
-//     * @return false (to be implemented)
-//     */
-//    public boolean ready(Trucker trucker){
-//        return false;
-//    } //trucker's ship is ready
-
-
 
     /**
      * Sets the game level.
@@ -481,42 +468,65 @@ public class Game implements Serializable {
     }
 
 
-
     /**
      * Computes the scores for each player at the end of the game.
      * @return an array of scores
      */
     public int[] computeScores(){
         int[] scores = new int[numPlayers];
-        if (gameState!= GameState.FLIGHT && gameState!= GameState.ENDED) {
-            for(int j=0; j<numPlayers; j++){
-                scores[j]=0;
-            }
-            return scores;
-        }
+
         for(int i=0; i<numPlayers; i++){
             scores[i]=0;
         }
+
+        if (gameState!= GameState.FLIGHT && gameState!= GameState.ENDED) {
+            return scores;
+        }
+
         int i=0;
-        ArrayList<Goods> goodsList;
         for(Trucker t: truckers) {
-            if(t.getCosmicCredit()<t.getSpaceShip().getLost()) {
-                scores[i] -= (t.getSpaceShip().getLost()-t.getCosmicCredit());
+            scores[i] = t.getCosmicCredit();
+            scores[i] = scores[i] - t.getSpaceShip().getLost();
+
+            if(gameLevel == 2){
+                switch (i){
+                    case 0 -> scores[i] = scores[i] + 8;
+                    case 1 ->  scores[i] = scores[i] + 6;
+                    case 2 ->  scores[i] = scores[i] + 4;
+                    case 3 ->  scores[i] = scores[i] + 2;
+                }
+            }else {
+                switch (i){
+                    case 0 -> scores[i] = scores[i] + 4;
+                    case 1 ->  scores[i] = scores[i] + 3;
+                    case 2 ->  scores[i] = scores[i] + 2;
+                    case 3 ->  scores[i] = scores[i] + 1;
+                }
             }
-            goodsList = t.getSpaceShip().getGoodsList();
+
+            ArrayList<Goods> goodsList = t.getSpaceShip().getGoodsList();
+
             for(Goods g: goodsList) {
                 scores[i] += g.getValue();
             }
+
             if (bestSpaceShip(t)){
-                scores[i]+=4;
+                if(gameLevel == 2){
+                    scores[i]+=4;
+                }else{
+                    scores[i]+=2;
+                }
             }
-            scores[i] += 8-(2*i);
+
             i++;
         }
-        //non sicuro
+
+        i = 0;
         for (Trucker t: truckersOut) {
-            scores[i] -= (t.getSpaceShip().getLost()-t.getCosmicCredit());
-            goodsList = t.getSpaceShip().getGoodsList();
+            scores[i] = t.getCosmicCredit();
+            scores[i] = scores[i] - t.getSpaceShip().getLost();
+
+            ArrayList<Goods> goodsList = t.getSpaceShip().getGoodsList();
             for(Goods g: goodsList) {
                 scores[i] += g.getValue()/2;
             }
@@ -524,6 +534,7 @@ public class Game implements Serializable {
         }
         return scores;
     }
+
 
     /**
      * Determines if a trucker has the best spaceship.
