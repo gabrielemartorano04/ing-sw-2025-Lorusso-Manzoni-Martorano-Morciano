@@ -173,6 +173,11 @@ public class BuildingScene {
     private Button linkBtn;
 
     /**
+     * Represents the link button that allows the user to remove the invalid component from the spaceship
+     */
+    private Button removeBtn;
+
+    /**
      * Represents the list of graphical content elements displayed in the ship screen
      */
     private List<Node> shipScreenContent;
@@ -193,9 +198,19 @@ public class BuildingScene {
     private final Map<Button, Boolean> previousButtonStates;
 
     /**
-     * A VBox instance representing the container for display or selection of components
+     * A VBox instance representing the container for display of components
      */
     private VBox componentSelectedBox;
+
+    /**
+     * A VBox layout container that is used to arrange UI components vertically
+     */
+    private VBox componentBox;
+
+    /**
+     * A VBox instance representing the container for remotion of a component
+     */
+    private VBox removeBox;
 
     /**
      * Indicates whether a component has been selected to determine the current state of
@@ -331,7 +346,7 @@ public class BuildingScene {
 
         addComponentSelectedSlot();
         createComponentSelectedButtons(styleButton);
-        attackselectComponentButtons(scene);
+        attackSelectComponentButtons(scene);
 
         return scene;
     }
@@ -1435,21 +1450,21 @@ public class BuildingScene {
      * Attaches a set of component selection buttons to the provided scene
      * @param scene  to which the component selection buttons will be added
      */
-    private void attackselectComponentButtons(Scene scene) {
-        VBox componentBox = new VBox(10);
-        componentBox.setPadding(new Insets(0, 0, 50, 15));
-        componentBox.setAlignment(Pos.BOTTOM_LEFT);
+    private void attackSelectComponentButtons(Scene scene) {
+        this.componentBox = new VBox(10);
+        this.componentBox.setPadding(new Insets(0, 0, 50, 15));
+        this.componentBox.setAlignment(Pos.BOTTOM_LEFT);
 
-        componentBox.getChildren().addAll(turnBtn, linkBtn, keepBtn, discardBtn);
+        this.componentBox.getChildren().addAll(turnBtn, linkBtn, keepBtn, discardBtn);
 
         Platform.runLater(() -> {
             StackPane root = (StackPane) scene.getRoot();
-            if (!root.getChildren().contains(componentBox)) {
-                StackPane.setAlignment(componentBox, Pos.BOTTOM_LEFT);
-                StackPane.setMargin(componentBox, new Insets(0, 0, 0, 0));
-                root.getChildren().add(componentBox);
+            if (!root.getChildren().contains(this.componentBox)) {
+                StackPane.setAlignment(this.componentBox, Pos.BOTTOM_LEFT);
+                StackPane.setMargin(this.componentBox, new Insets(0, 0, 0, 0));
+                root.getChildren().add(this.componentBox);
             }
-            componentBox.setPickOnBounds(false);
+            this.componentBox.setPickOnBounds(false);
 
         });
 
@@ -1901,6 +1916,169 @@ public class BuildingScene {
                 delay.play();
             }
         });
+    }
+
+    private void removeSelectedComponentBox() {
+        root.getChildren().remove(componentSelectedBox);
+        root.getChildren().remove(componentBox);
+        disableSelectButtons(true);
+        linkBtn.setOpacity(0);
+        discardBtn.setOpacity(0);
+        turnBtn.setOpacity(0);
+        keepBtn.setOpacity(0);
+        finishBtn.setOpacity(0.5);
+        finishBtn.setDisable(true);
+        hourglassBtn.setOpacity(0);
+        hourglassBtn.setDisable(true);
+        selectBtn.setOpacity(0.5);
+        selectBtn.setDisable(true);
+        selectKeptBtn.setOpacity(0.5);
+        selectKeptBtn.setDisable(true);
+        stackBtn.setOpacity(0.5);
+        stackBtn.setDisable(true);
+    }
+
+    public void remove() {
+        removeSelectedComponentBox();
+
+        removeBox = new VBox(10);
+        removeBox.setAlignment(Pos.CENTER);
+        removeBox.setPadding(new Insets(15));
+        removeBox.setPrefWidth(180);
+
+        Label title = new Label("INVALID COMPONENT POSITION!");
+        title.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+        title.setTextFill(Color.RED);
+        title.setPrefWidth(180);
+        title.setWrapText(true);
+        title.setTextAlignment(TextAlignment.CENTER);
+        title.setAlignment(Pos.CENTER);
+
+        Label subtitle = new Label("Remove it to make the spaceship correct");
+        subtitle.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+        subtitle.setTextFill(Color.WHITE);
+        subtitle.setPrefWidth(180);
+        subtitle.setWrapText(true);
+        subtitle.setTextAlignment(TextAlignment.CENTER);
+        subtitle.setAlignment(Pos.CENTER);
+
+        VBox textBox = new VBox(0, title, subtitle);
+        textBox.setAlignment(Pos.CENTER);
+        textBox.setPadding(new Insets(15));
+        textBox.setPrefWidth(180);
+
+        this.removeBtn = new Button("Remove");
+
+        removeBtn.setFont(Font.font("Bangers", 18));
+        removeBtn.setTextFill(Color.BLACK);
+        removeBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
+        removeBtn.setCursor(Cursor.HAND);
+        removeBtn.setPrefWidth(180);
+
+        removeBox.getChildren().addAll(textBox, removeBtn);
+
+        removeBox.setTranslateX(-615);
+        removeBox.setTranslateY(150);
+
+        removeBtn.setOnAction(ev -> {
+            removeBtn.setDisable(true);
+            removeBtn.setOpacity(0.5);
+            AnchorPane overlay = new AnchorPane();
+            overlay.setPickOnBounds(true);
+
+            VBox popup = new VBox(12);
+            popup.setAlignment(Pos.CENTER);
+            popup.setPadding(new Insets(15));
+            popup.setPrefSize(200, 250);
+
+            Label insertLabel = new Label("Remove invalid component");
+            insertLabel.setTextFill(Color.web("#FFDE69"));
+            insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+            insertLabel.setWrapText(true);
+            insertLabel.setTextAlignment(TextAlignment.CENTER);
+
+            TextField xField = new TextField();
+            xField.setPromptText("row");
+            xField.setPrefWidth(50);
+            xField.textProperty().addListener((obs, oldVal, newVal) -> {
+                if (!newVal.matches("\\d*")) xField.setText(newVal.replaceAll("[^\\d]", ""));
+            });
+
+            TextField yField = new TextField();
+            yField.setPromptText("col");
+            yField.setPrefWidth(50);
+            yField.textProperty().addListener((obs, oldVal, newVal) -> {
+                if (!newVal.matches("\\d*")) yField.setText(newVal.replaceAll("[^\\d]", ""));
+            });
+
+            HBox coordBox = new HBox(10, xField, yField);
+            coordBox.setAlignment(Pos.CENTER);
+
+            Label errorLabel = new Label("Invalid coordinates");
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setVisible(false);
+
+            Button cancelBtn = new Button("Undo");
+            cancelBtn.setFont(Font.font("Bangers", 14));
+            cancelBtn.setCursor(Cursor.HAND);
+            cancelBtn.setTextFill(Color.BLACK);
+            cancelBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(8), Insets.EMPTY)));
+
+            Button sendBtn = new Button("Remove");
+            sendBtn.setFont(Font.font("Bangers", 14));
+            sendBtn.setCursor(Cursor.HAND);
+            sendBtn.setTextFill(Color.WHITE);
+            sendBtn.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(8), Insets.EMPTY))); // verde
+
+            HBox buttons = new HBox(15, cancelBtn, sendBtn);
+            buttons.setAlignment(Pos.CENTER);
+
+            popup.getChildren().addAll(insertLabel, coordBox, errorLabel, buttons);
+
+            AnchorPane.setTopAnchor(popup, (root.getHeight() - 240) / 2);
+            AnchorPane.setRightAnchor(popup, 10.0);
+
+            overlay.getChildren().add(popup);
+            root.getChildren().add(overlay);
+
+            Runnable removePopup = () -> root.getChildren().remove(overlay);
+
+            cancelBtn.setOnAction(e -> removePopup.run());
+
+            sendBtn.setOnAction(e -> {
+                String xText = xField.getText().trim();
+                String yText = yField.getText().trim();
+
+                try {
+                    int row = Integer.parseInt(xText);
+                    int col = Integer.parseInt(yText);
+
+                    if(viewFlow.getLevel() == 2) {
+                        if (row < 5 || row > 9 || col < 4 || col > 10) {
+                            errorLabel.setVisible(true);
+                            return;
+                        }
+                    }else{
+                        if(row < 5 || row > 9 || col < 5 || col > 9){
+                            errorLabel.setVisible(true);
+                            return;
+                        }
+                    }
+
+
+                    errorLabel.setVisible(false);
+                    viewFlow.handleInput("remove " + row + " " + col);
+                    removePopup.run();
+                    removeBtn.setDisable(false);
+                    removeBtn.setOpacity(1);
+                } catch (NumberFormatException ex) {
+                    errorLabel.setVisible(true);
+                }
+            });
+
+            yField.setOnAction(e -> sendBtn.fire());
+        });
+        root.getChildren().add(removeBox);
     }
 }
 
