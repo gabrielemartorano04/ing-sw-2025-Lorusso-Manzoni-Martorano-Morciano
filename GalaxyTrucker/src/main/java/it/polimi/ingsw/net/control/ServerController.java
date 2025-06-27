@@ -392,7 +392,7 @@ public class ServerController {
             int[] scores;
             Map<String, Integer> playersScores = new HashMap<>();
             scores = Game.getIstance().computeScores();
-            for (int i = 0; i < Game.getIstance().getTruckerList().size() - 1; i++) {
+            for (int i = 0; i < Game.getIstance().getTruckerList().size(); i++) {
                 if (Game.getIstance().getTrucker(i).getNickname() != null) {
                     playersScores.put(Game.getIstance().getTrucker(i).getNickname(), scores[i]);
                 } else {
