@@ -972,4 +972,178 @@ class SpaceShipTest {
         spaceShip3.removeAllBatteries();
         assertEquals(0,spaceShip3.getNumBatteries());
     }
+
+    @Test
+    void testIsChanged_NoDifference() {
+        CreateShipTest createShip = new CreateShipTest();
+        SpaceShip s1 = new SpaceShip();
+        SpaceShip s2 = new SpaceShip();
+        try {
+            s1 = createShip.createShip1(s1);
+            s2 = createShip.createShip1(s2);
+            s1.setBattery();
+            s2.setBattery();
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+
+        Goods g = new Goods(3);
+        Goods g1 = new Goods(3);
+        g.setX(8);
+        g.setY(9);
+        g1.setX(8);
+        g1.setY(9);
+        try {
+            s1.addGood(g, new int[]{8, 9}, 0, new Bank());
+            s2.addGood(g, new int[]{8, 9}, 0, new Bank());
+            s1.addGood(g1, new int[]{8, 9}, 1, new Bank());
+            s2.addGood(g1, new int[]{8, 9}, 1, new Bank());
+            ArrayList<int[]> alienCoord = new ArrayList<>();
+            alienCoord.add(new int[]{6, 5, 1});
+            s1.setNumAlien(alienCoord);
+            s2.setNumAlien(alienCoord);
+            s1.setNumHuman();
+            s2.setNumHuman();
+        } catch (InvalidPositionException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertFalse(s1.isChanged(s2));
+    }
+
+    @Test
+    void testIsChanged_DifferentAliens() {
+        CreateShipTest createShip = new CreateShipTest();
+        SpaceShip s1 = new SpaceShip();
+        SpaceShip s2 = new SpaceShip();
+        try {
+            s1 = createShip.createShip1(s1);
+            s2 = createShip.createShip1(s2);
+            s1.setBattery();
+            s2.setBattery();
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+
+        Goods g = new Goods(3);
+        Goods g1 = new Goods(3);
+        g.setX(8);
+        g.setY(9);
+        g1.setX(8);
+        g1.setY(9);
+        try {
+            s1.addGood(g, new int[]{8, 9}, 0, new Bank());
+            s2.addGood(g, new int[]{8, 9}, 0, new Bank());
+            s1.addGood(g1, new int[]{8, 9}, 1, new Bank());
+            s2.addGood(g1, new int[]{8, 9}, 1, new Bank());
+            ArrayList<int[]> alienCoord = new ArrayList<>();
+            alienCoord.add(new int[]{6, 5, 1});
+            s1.setNumAlien(alienCoord);
+            s1.setNumHuman();
+            s2.setNumHuman();
+            System.out.println(((Cabin)s1.getComponents()[6][5]).getAlien().getColor());
+        } catch (InvalidPositionException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertTrue(s1.isChanged(s2));
+    }
+
+    @Test
+    void testIsChanged_DifferentGoods() {
+        CreateShipTest createShip = new CreateShipTest();
+        SpaceShip s1 = new SpaceShip();
+        SpaceShip s2 = new SpaceShip();
+        try {
+            s1 = createShip.createShip1(s1);
+            s2 = createShip.createShip1(s2);
+            s1.setBattery();
+            s2.setBattery();
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+
+        Goods g = new Goods(3);
+        Goods g1 = new Goods(3);
+        g.setX(8);
+        g.setY(9);
+        g1.setX(8);
+        g1.setY(9);
+        try {
+            s1.addGood(g, new int[]{8, 9}, 0, new Bank());
+            s2.addGood(g, new int[]{8, 9}, 0, new Bank());
+            s1.addGood(g1, new int[]{8, 9}, 1, new Bank());
+            ArrayList<int[]> alienCoord = new ArrayList<>();
+            alienCoord.add(new int[]{6, 5, 1});
+            s1.setNumAlien(alienCoord);
+            s2.setNumAlien(alienCoord);
+            s1.setNumHuman();
+            s2.setNumHuman();
+        } catch (InvalidPositionException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertTrue(s1.isChanged(s2));
+    }
+
+    @Test
+    void testIsChanged_DifferentBatteries() {
+        CreateShipTest createShip = new CreateShipTest();
+        SpaceShip s1 = new SpaceShip();
+        SpaceShip s2 = new SpaceShip();
+        try {
+            s1 = createShip.createShip1(s1);
+            s2 = createShip.createShip1(s2);
+            s2.setBattery();
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+
+        Goods g = new Goods(3);
+        Goods g1 = new Goods(3);
+        g.setX(8);
+        g.setY(9);
+        g1.setX(8);
+        g1.setY(9);
+        try {
+            s1.addGood(g, new int[]{8, 9}, 0, new Bank());
+            s2.addGood(g, new int[]{8, 9}, 0, new Bank());
+            s1.addGood(g1, new int[]{8, 9}, 1, new Bank());
+            s2.addGood(g1, new int[]{8, 9}, 1, new Bank());
+            ArrayList<int[]> alienCoord = new ArrayList<>();
+            alienCoord.add(new int[]{6, 5, 1});
+            s1.setNumAlien(alienCoord);
+            s2.setNumAlien(alienCoord);
+            s1.setNumHuman();
+            s2.setNumHuman();
+        } catch (InvalidPositionException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertTrue(s1.isChanged(s2));
+    }
+
+    @Test
+    void testIsChanged_DifferentComponents() {
+        CreateShipTest createShip = new CreateShipTest();
+        SpaceShip s1 = new SpaceShip();
+        SpaceShip s2 = new SpaceShip();
+        try {
+            s1 = createShip.createShip1(s1);
+            s2 = createShip.createShip2(s2);
+            s2.setBattery();
+            s1.setBattery();
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+
+        s1.setNumHuman();
+        s2.setNumHuman();
+
+
+        assertTrue(s1.isChanged(s2));
+    }
+
+
+
 }

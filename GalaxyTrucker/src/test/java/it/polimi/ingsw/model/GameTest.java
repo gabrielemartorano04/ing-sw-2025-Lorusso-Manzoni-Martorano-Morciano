@@ -313,7 +313,7 @@ class GameTest {
     void turnHourglass(){
         Object lock=new Object();
         game2.startHourglass();
-        assertThrows(CannotTurnHourglassException.class,()->{game2.turnHourglass();});
+        assertThrows(CannotTurnHourglassException.class,()->{game2.turnHourglass("luca");});
         synchronized (lock){
             try {
                 lock.wait(90000);
@@ -322,7 +322,7 @@ class GameTest {
             }
         }
         try {
-            game2.turnHourglass();
+            game2.turnHourglass("luca");
         } catch (CannotTurnHourglassException e) {
             throw new RuntimeException(e);
         }
@@ -334,7 +334,7 @@ class GameTest {
             }
         }
         try {
-            game2.turnHourglass();
+            game2.turnHourglass("luca");
         } catch (CannotTurnHourglassException e) {
             throw new RuntimeException(e);
         }
@@ -345,7 +345,7 @@ class GameTest {
                 e.printStackTrace();
             }
         }
-        assertThrows(CannotTurnHourglassException.class,()->{game2.turnHourglass();});
+        assertThrows(CannotTurnHourglassException.class,()->{game2.turnHourglass("luca");});
 
     }
 

@@ -2269,7 +2269,15 @@ public class SpaceShip implements Serializable {
                         case Cabin cabin->{
                             switch (oldShip.getComponents()[i][j]){
                                 case Cabin oldCabin->{
-                                    if ((cabin.getAlien() != oldCabin.getAlien()) || cabin.getQuantity()!= oldCabin.getQuantity()) return true;
+                                    if (cabin.getAlien() != null) {
+                                        if (!cabin.getAlien().getColor().equals(oldCabin.getAlien().getColor()) || oldCabin.getAlien()==null) {
+                                            return true;
+                                        }
+                                    } else {
+                                        if (cabin.getQuantity() != oldCabin.getQuantity()) {
+                                            return true;
+                                        }
+                                    }
                                 }
                                 default -> {return true;}
                             }
@@ -2286,7 +2294,7 @@ public class SpaceShip implements Serializable {
                         case LifeSupport lifeSupport->{
                             switch (oldShip.getComponents()[i][j]){
                                 case LifeSupport oldLifeSupport->{
-                                    if(lifeSupport.getColor()!=oldLifeSupport.getColor()) return true;
+                                    if(!lifeSupport.getColor().equals(oldLifeSupport.getColor())) return true;
                                 }
                                 default -> {return true;}
                             }
@@ -2295,7 +2303,7 @@ public class SpaceShip implements Serializable {
                         case Shield shield->{
                             switch (oldShip.getComponents()[i][j]){
                                 case Shield oldShield->{
-                                    if(shield.getDirection() != oldShield.getDirection()) return true;
+                                    if(!shield.getDirection().equals(oldShield.getDirection())) return true;
                                 }
                                 default -> {return true;}
                             }
@@ -2314,7 +2322,7 @@ public class SpaceShip implements Serializable {
                             switch (oldShip.getComponents()[i][j]){
                                 case Load oldLoad->{
                                     for(int x=0; x<load.getGoods().size(); x++){
-                                        if(load.getGoods().get(x)!=oldLoad.getGoods().get(x)) return true;
+                                        if(load.getGoods().get(x).getValue() != oldLoad.getGoods().get(x).getValue()) return true;
                                     }
                                 }
                                 default -> {return true;}
