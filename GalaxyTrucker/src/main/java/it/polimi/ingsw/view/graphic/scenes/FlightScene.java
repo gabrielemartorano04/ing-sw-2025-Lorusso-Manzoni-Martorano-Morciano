@@ -111,6 +111,8 @@ public class FlightScene {
      */
     private VBox rollDiceResultBox;
 
+    private VBox remainingcardsBox;
+
     /**
      * A field which is used to fetch images of goods based on their associated value or color
      */
@@ -2836,6 +2838,10 @@ public class FlightScene {
      * @param remainingCards the number of cards left to be displayed
      */
     public void showRemainingCards(int remainingCards) {
+        if(remainingcardsBox != null) {
+            root.getChildren().remove(remainingcardsBox);
+        }
+
         Label label = new Label("Remaining\ncards");
         label.setFont(Font.font("Bangers", FontWeight.BOLD, 24));
         label.setTextFill(Color.web("#FFDE69"));
@@ -2846,16 +2852,16 @@ public class FlightScene {
         count.setTextFill(Color.WHITE);
         count.setTextAlignment(TextAlignment.CENTER);
 
-        VBox box = new VBox(5, label, count);
-        box.setAlignment(Pos.CENTER);
-        box.setPadding(new Insets(10));
-        box.setMaxWidth(Region.USE_PREF_SIZE);
-        box.setMaxHeight(Region.USE_PREF_SIZE);
+        VBox remainingCardsBox = new VBox(5, label, count);
+        remainingCardsBox.setAlignment(Pos.CENTER);
+        remainingCardsBox.setPadding(new Insets(10));
+        remainingCardsBox.setMaxWidth(Region.USE_PREF_SIZE);
+        remainingCardsBox.setMaxHeight(Region.USE_PREF_SIZE);
 
         Platform.runLater(() -> {
-            StackPane.setAlignment(box, Pos.CENTER);
-            StackPane.setMargin(box, new Insets(-430, 0, 0, -830));
-            root.getChildren().add(box);
+            StackPane.setAlignment(remainingCardsBox, Pos.CENTER);
+            StackPane.setMargin(remainingCardsBox, new Insets(-430, 0, 0, -830));
+            root.getChildren().add(remainingCardsBox);
         });
     }
 }

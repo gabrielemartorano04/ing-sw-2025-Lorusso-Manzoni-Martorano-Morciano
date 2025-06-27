@@ -2252,4 +2252,106 @@ public class SpaceShip implements Serializable {
             }
         }
     }
+
+    /**
+     * Compares the current spaceship components with the components of another spaceship to determine if any
+     * changes have been made. The method evaluates differences.
+     *
+     * @param oldShip the spaceship against which the current spaceship's components are compared
+     * @return true if there is any change in the components between the two spaceships, otherwise false
+     */
+    public boolean isChanged(SpaceShip oldShip){
+        for(int i=0; i<components.length; i++){
+            for(int j=0; j<components[i].length; j++){
+                if(components[i][j]!=null){
+                    switch (components[i][j]){
+
+                        case Cabin cabin->{
+                            switch (oldShip.getComponents()[i][j]){
+                                case Cabin oldCabin->{
+                                    if ((cabin.getAlien() != oldCabin.getAlien()) || cabin.getQuantity()!= oldCabin.getQuantity()) return true;
+                                }
+                                default -> {return true;}
+                            }
+                        }
+                        case Cannon cannon->{
+                            switch (oldShip.getComponents()[i][j]){
+                                case Cannon oldCannon->{
+                                    if (cannon.getIsDouble() != oldCannon.getIsDouble()) return true;
+                                }
+                                default -> {return true;}
+                            }
+                        }
+
+                        case LifeSupport lifeSupport->{
+                            switch (oldShip.getComponents()[i][j]){
+                                case LifeSupport oldLifeSupport->{
+                                    if(lifeSupport.getColor()!=oldLifeSupport.getColor()) return true;
+                                }
+                                default -> {return true;}
+                            }
+                        }
+
+                        case Shield shield->{
+                            switch (oldShip.getComponents()[i][j]){
+                                case Shield oldShield->{
+                                    if(shield.getDirection() != oldShield.getDirection()) return true;
+                                }
+                                default -> {return true;}
+                            }
+                        }
+
+                        case Engine engine -> {
+                            switch (oldShip.getComponents()[i][j]){
+                                case Engine oldEngine->{
+                                    if(engine.getIsDouble() != oldEngine.getIsDouble()) return true;
+                                }
+                                default -> {return true;}
+                            }
+                        }
+
+                        case Load load->{
+                            switch (oldShip.getComponents()[i][j]){
+                                case Load oldLoad->{
+                                    for(int x=0; x<load.getGoods().size(); x++){
+                                        if(load.getGoods().get(x)!=oldLoad.getGoods().get(x)) return true;
+                                    }
+                                }
+                                default -> {return true;}
+                            }
+                        }
+
+                        case EmptySpace emptySpace->{
+                            switch (oldShip.getComponents()[i][j]){
+                                case EmptySpace oldEmptySpace->{}
+                                default -> {return true;}
+                            }
+                        }
+
+                        case Pipes pipes -> {
+                            switch (oldShip.getComponents()[i][j]){
+                                case Pipes oldPipes->{}
+                                default -> {return true;}
+                            }
+                        }
+
+                        case BatteryStorage batteryStorage -> {
+                            switch (oldShip.getComponents()[i][j]){
+                                case BatteryStorage oldBatteryStorage->{
+                                    if(batteryStorage.getQuantity()!=oldBatteryStorage.getQuantity()) return true;
+                                }
+                                default -> {return true;}
+                            }
+                        }
+
+                    }
+                }else{
+                    if(oldShip.getComponents()[i][j]!=null){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

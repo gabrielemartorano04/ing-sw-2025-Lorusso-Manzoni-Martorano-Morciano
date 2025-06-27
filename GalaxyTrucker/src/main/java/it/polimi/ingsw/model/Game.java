@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.WaitOthersBuildingEvent;
 import it.polimi.ingsw.exceptions.CannotTurnHourglassException;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.WaitOthersHourglassEvent;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -640,13 +641,13 @@ public class Game implements Serializable {
      * @return a server event for the player to wait others to finish building if it's the last hourglass turn
      * @throws CannotTurnHourglassException if the hourglass can't be turned in the current phase
      */
-    public ServerEvent turnHourglass() throws CannotTurnHourglassException {
+    public ServerEvent turnHourglass(String nickname) throws CannotTurnHourglassException {
         ServerEvent event=null;
         if(hourglass.getTimeTurns()==0 && hourglass.timeIsUp()){
             hourglass.reset();
         } else if (hourglass.getTimeTurns()==1 && hourglass.timeIsUp()){
             hourglass.reset();
-            event= new WaitOthersBuildingEvent();
+            event= new WaitOthersHourglassEvent(nickname);
 
         } else
             throw new CannotTurnHourglassException("You can't turn the hourglass now!");

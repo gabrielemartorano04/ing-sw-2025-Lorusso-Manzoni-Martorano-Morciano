@@ -463,7 +463,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     public ServerEvent visit(TurnHourglassEvent event, Client client) {
         ServerEvent tmp;
         try {
-            tmp =gameController.getGame().turnHourglass();
+            tmp =gameController.getGame().turnHourglass(client.getTruckerController().getNickname());
         } catch (CannotTurnHourglassException e) {
             return new TurnHourglassError();
         }
@@ -877,6 +877,22 @@ public class ClientHandlerVisitor implements VirtualServer {
                 GamePersistence.deleteSave();
                 return new EndGameEvent(playersScores);
             }else{
+                if(withdrawChoice==Game.getIstance().getTruckerList().size()){
+                    withdrawChoice=0;
+                    if(!Game.getIstance().getTruckerList().isEmpty()){
+                        return new DrawNewCardEvent(gameController.getGame().getTruckerList().getFirst().getNickname());
+                    }else{
+                        int[] scores;
+                        Map<String, Integer> playersScores = new HashMap<>();
+                        scores = gameController.getGame().computeScores();
+                        for(int i=0; i<numOfPlayers; i++){
+                            playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
+                        }
+                        GamePersistence.saveGame(gameController);
+                        GamePersistence.deleteSave();
+                        return new EndGameEvent(playersScores);
+                    }
+                }
                 return new TruckerWithdrawEvent(nickname,choice);
             }
         }

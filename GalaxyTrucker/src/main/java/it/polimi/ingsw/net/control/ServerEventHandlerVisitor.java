@@ -419,6 +419,15 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showWaitForOthers();
     }
 
+    @Override
+    public void visit(WaitOthersHourglassEvent event){
+        if(event.getNickname().equals(viewFlow.getNickname())){
+            viewFlow.setEnd();
+            ui.showWaitForOthers();
+        }
+        viewFlow.getTimerDisplay().start(90);
+    }
+
     /**
      * Indicates that the player must wait for others to start flight
      *
@@ -512,17 +521,21 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(CurrentCondition event) {
         boolean isLeader = false;
-
-        if(event.getTrack()!=null){
-            viewFlow.setTrack(event.getTrack());
-            ui.showTrack(event.getTrack(), viewFlow.getLevel());
-        }
-
         handleDeath(event.getTruckersRemoved());
 
         if(!viewFlow.isOut()){
             updatesFromFlight(event.getTruckers());
         }
+
+        if(event.getTrack()!=null){
+            viewFlow.setTrack(event.getTrack());
+            if (event.getTrack().containsKey(viewFlow.getNickname())) {
+                int position = event.getTrack().get(viewFlow.getNickname());
+                viewFlow.setPosition(position);
+            }
+            ui.showTrack(event.getTrack(), viewFlow.getLevel());
+        }
+
 
         if(event.getTruckers().getFirst().getNickname().equals(viewFlow.getNickname())){
             viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
@@ -586,6 +599,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setPosition(trucker.getPosition());
 
             viewFlow.setTrack(event.getTrack());
+            if (event.getTrack().containsKey(viewFlow.getNickname())) {
+                int position = event.getTrack().get(viewFlow.getNickname());
+                viewFlow.setPosition(position);
+            }
             viewFlow.setShip(trucker.getSpaceShip());
 
             ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
@@ -627,6 +644,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
         handleDeath(event.getTruckersRemoved());
 
         viewFlow.setTrack(event.getTrack());
+        if (event.getTrack().containsKey(viewFlow.getNickname())) {
+            int position = event.getTrack().get(viewFlow.getNickname());
+            viewFlow.setPosition(position);
+        }
         if(!viewFlow.isOut()) {
             updatesFromFlight(event.getTruckers());
 
@@ -735,7 +756,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(StarDustEvent event) {
         ui.showStardustCard(event);
         viewFlow.setTrack(event.getTrack());
-
+        if (event.getTrack().containsKey(viewFlow.getNickname())) {
+            int position = event.getTrack().get(viewFlow.getNickname());
+            viewFlow.setPosition(position);
+        }
         handleDeath(event.getTruckersRemoved());
 
         if(!viewFlow.isOut()){
@@ -766,6 +790,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showCardDrawn(event);
         viewFlow.decreaseCardsToGo();
         viewFlow.setTrack(event.getTrack());
+        if (event.getTrack().containsKey(viewFlow.getNickname())) {
+            int position = event.getTrack().get(viewFlow.getNickname());
+            viewFlow.setPosition(position);
+        }
         ui.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
         ui.showPlayerShipStatus();
@@ -1074,9 +1102,17 @@ public class ServerEventHandlerVisitor implements VirtualView {
     private void updatesFromFlight (ArrayList<Trucker> truckers){
         for(Trucker t:truckers){
             if(t.getNickname().equals(viewFlow.getNickname())){
-                viewFlow.setCredits(t.getCosmicCredit());
-                viewFlow.setPosition(t.getPosition());
-                viewFlow.setShip(t.getSpaceShip());
+
+                if(viewFlow.getCredits()!=t.getCosmicCredit()) {
+                    viewFlow.setCredits(t.getCosmicCredit());
+                }
+
+                if(t.getSpaceShip().isChanged(viewFlow.getShip())) {
+
+                    viewFlow.setShip(t.getSpaceShip());
+                    ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+                    ui.showPlayerShipStatus();
+                }
                 break;
             }
         }
