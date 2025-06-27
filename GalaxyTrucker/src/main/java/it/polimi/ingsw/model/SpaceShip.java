@@ -960,6 +960,7 @@ public class SpaceShip implements Serializable {
      * This method checks and corrects the spaceship for level 2
      * @return true if all the components are correctly linked
      */
+    @Deprecated
     public boolean wellDone() {
         boolean wellDone=true;
         for (int i = 5; i <= 9; i++) {
@@ -995,6 +996,7 @@ public class SpaceShip implements Serializable {
      * This method checks and corrects the spaceship for level 2
      * @return true if all the components are correctly linked
      */
+    @Deprecated
     public boolean wellDoneForTrialFlight() {
         boolean wellDone=true;
         for (int i = 5; i <= 9; i++) {
@@ -2368,4 +2370,52 @@ public class SpaceShip implements Serializable {
         }
         return false;
     }
+
+    /**
+     * Checks if the components within the specified range of indices pass the validation criteria.
+     *
+     * @return true if all components within the specified range are either null, an instance
+     *         of EmptySpace, or satisfy the validation criteria; false otherwise.
+     */
+    public boolean wellDoneCheck() {
+        boolean wellDone=true;
+        for (int i = 5; i <= 9; i++) {
+            for (int j = 4; j <= 10; j++) {
+                if (components[i][j]!=null){
+                    switch(components[i][j]){
+                        case EmptySpace emptySpace->{}
+                        default -> {
+                            if(!isValid(i, j)){
+                                if(wellDone) wellDone=false;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        return wellDone;
+    }
+
+    /**
+     * Determines whether the ship is legal after removing a component
+     * at the specified coordinates. If the game level is 2, the number of lost components increases.
+     *
+     * @param x the x-coordinate of the component to remove
+     * @param y the y-coordinate of the component to remove
+     * @return true if the game state is in a valid condition after the removal; false otherwise
+     */
+    public boolean isLegalAfterRemove( int x, int y){
+        try {
+            removeComponent(x, y);
+            if(Game.getIstance().getGameLevel()==2) {
+                lost++;
+            }
+        } catch (InvalidCoordinates e) {
+            throw new RuntimeException(e);
+        }
+        return wellDoneCheck();
+    }
+
+
 }
