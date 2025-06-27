@@ -410,4 +410,9 @@ public interface UI {
      */
     void resumeBuildingScene(ArrayList<String> playerNames);
 
+    /**
+     * shows client's view to let him remove a component from the ship
+      */
+    void showRemove();
+
 }

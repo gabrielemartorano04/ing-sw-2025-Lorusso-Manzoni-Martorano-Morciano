@@ -193,6 +193,46 @@ public class InputParser {
 
     }
 
+    public ClientEvent parseRemove(String input) {
+        if (input == null || input.isEmpty()) {
+            return null;
+        }
+
+        String[] tokens = input.trim().split("\\s+");
+        String command = tokens[0].toLowerCase();
+
+        if (command.equals("remove")) {
+            if (tokens.length != 3) {
+                System.out.println("Error: illegal command. Type 'remove <x> <y>'.");
+                return null;
+            }
+
+            try {
+                int x = Integer.parseInt(tokens[1].trim());
+                int y = Integer.parseInt(tokens[2].trim());
+                if(level == 2){
+                    if (x < 5 || x > 9 || y < 4 || y > 10) {
+                        System.out.println("Error: illegal coordinates. Type 'remove <x> <y>'.");
+                        return null;
+                    }
+                }else{
+                    if (x < 5 || x > 9 || y < 5 || y > 10) {
+                        System.out.println("Error: illegal coordinates. Type 'remove <x> <y>'.");
+                        return null;
+                    }
+                }
+
+                return new RemoveTile(x, y);
+            } catch (NumberFormatException e) {
+                System.out.println("Error: coordinates must be integers. Type 'remove <x> <y>'.");
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+
     /**
      * Manages the resumption of an old game
      * @param input from the client

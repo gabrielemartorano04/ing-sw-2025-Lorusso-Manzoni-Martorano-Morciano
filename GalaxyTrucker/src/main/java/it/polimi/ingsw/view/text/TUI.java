@@ -312,6 +312,15 @@ public class TUI implements UI {
     }
 
     /**
+     * shows client's view to let him remove a component from the ship
+     */
+    @Override
+    public void showRemove(){
+        System.out.println("Your ship is illegal, untill all illegal components won't be removed you cannot proceed");
+        System.out.println("type 'remove <x> <y>' to remove a component");
+    }
+
+    /**
      * Notifies the user upon completion of the building phase, displaying appropriate messages
      * and instructions based on the current game level.
      * @param event the event indicating the completion of the building phase, containing
@@ -320,13 +329,20 @@ public class TUI implements UI {
     @Override
     public void buildingComplete(BuildCompleteEvent event){
         this.showBuildComplete();
-
-        if(viewFlow.getLevel()==2){
-            viewFlow.handleInput("alien");
-
+        for(String s: event.getNickNamesOfIllegalShips()){
+            if(viewFlow.getNickname().equals(s)){
+                this.viewFlow.setViewState(ViewFlow.ViewState.REMOVE);
+                this.showRemove();
+            }
         }
-        else{
-            viewFlow.handleInput("continue");
+        if(viewFlow.getViewState() != ViewFlow.ViewState.REMOVE){
+            if(viewFlow.getLevel()==2){
+                viewFlow.handleInput("alien");
+
+            }
+            else{
+                viewFlow.handleInput("continue");
+            }
         }
     }
 

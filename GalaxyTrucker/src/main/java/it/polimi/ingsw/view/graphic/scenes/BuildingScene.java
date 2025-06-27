@@ -1918,6 +1918,9 @@ public class BuildingScene {
         });
     }
 
+    /**
+     * remove the selectedComponentBox setting it as not visible and not able
+     */
     private void removeSelectedComponentBox() {
         root.getChildren().remove(componentSelectedBox);
         root.getChildren().remove(componentBox);
@@ -1938,7 +1941,12 @@ public class BuildingScene {
         stackBtn.setDisable(true);
     }
 
-    public void remove() {
+    /**
+     * adds the remove btn with its title to the scene to let the client remove a component
+     */
+    public void showRemove() {
+        if (removeBtn != null) return;
+
         removeSelectedComponentBox();
 
         removeBox = new VBox(10);
@@ -2079,6 +2087,16 @@ public class BuildingScene {
             yField.setOnAction(e -> sendBtn.fire());
         });
         root.getChildren().add(removeBox);
+    }
+
+    /**
+     * removes the removeBox from the scene
+     */
+    private void removeRemoveBox() {
+        if (removeBox != null && root.getChildren().contains(removeBox)) {
+            root.getChildren().remove(removeBox);
+        }
+        removeBox = null;
     }
 }
 

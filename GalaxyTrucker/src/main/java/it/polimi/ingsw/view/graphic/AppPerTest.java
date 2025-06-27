@@ -8,7 +8,6 @@ import it.polimi.ingsw.net.socket.client.ClientSocketSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.view.ViewFlow;
 import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
-import it.polimi.ingsw.view.graphic.scenes.FlightScene;
 import javafx.application.Application;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -137,7 +136,7 @@ public class AppPerTest extends Application {
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
-        buildingScene.remove();
+        buildingScene.showRemove();
 //        buildingScene.showOtherShip(createShip1(trucker.getSpaceShip()).getComponents(), trucker.getNickname());
 //
 ////        ArrayList<Trucker> planets = new ArrayList<>(){

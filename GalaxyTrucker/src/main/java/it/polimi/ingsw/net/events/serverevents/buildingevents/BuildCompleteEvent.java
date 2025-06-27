@@ -19,12 +19,19 @@ public class BuildCompleteEvent extends ServerEvent {
     private final ArrayList<Trucker> truckers;
 
     /**
-     * Event constructor
-     * @param truckers list mof all the trucker
+     * nicknames of all truckers that have an illegal ship
      */
-    public BuildCompleteEvent(ArrayList<Trucker> truckers) {
+    private final ArrayList<String> nickNamesOfIllegalShips;
+
+    /**
+     * Event constructor
+     * @param truckers list of all the trucker
+     * @param nickNamesOfIllegalShips nicknames of all truckers that have an illegal ship
+     */
+    public BuildCompleteEvent(ArrayList<Trucker> truckers,  ArrayList<String> nickNamesOfIllegalShips) {
         super(true);
         this.truckers = truckers;
+        this.nickNamesOfIllegalShips = nickNamesOfIllegalShips;
     }
 
     /**
@@ -32,6 +39,13 @@ public class BuildCompleteEvent extends ServerEvent {
      */
     public ArrayList<Trucker> getTruckers() {
         return truckers;
+    }
+
+    /**
+     * @return list of nicknames of truckers with an illegal ship
+     */
+    public ArrayList<String> getNickNamesOfIllegalShips() {
+        return nickNamesOfIllegalShips;
     }
 
     /**

@@ -104,6 +104,7 @@ public class BuildTimerManager {
     private void handleFinalTimeout() {
         ArrayList<Trucker> truckers = Game.getIstance().getTruckerList();
         boolean[] pos = new boolean[]{false, false, false, false};
+        ArrayList<String> nickNamesIllegalShip = new ArrayList<>();
 
         for (Trucker t : truckers) {
             if (t.getPosition() != -1) {
@@ -132,18 +133,15 @@ public class BuildTimerManager {
                 }
             }
 
-            int gameLevel = Game.getIstance().getGameLevel();
-            if (gameLevel == 2)
-                t.getSpaceShip().wellDone();
-            else
-                t.getSpaceShip().wellDoneForTrialFlight();
         }
+
+        //TODO TOGLI
 
         for (Trucker t : truckers) {
             System.out.println("Trucker " + t.getNickname() + " pos " + t.getPosition());
         }
 
-        ServerController.getIstance().broadcastEvent(new BuildCompleteEvent(truckers));
+        ServerController.getIstance().broadcastEvent(new BuildCompleteEvent(truckers, GameController.getIstance().getIllegalShipNames()));
     }
 
 }

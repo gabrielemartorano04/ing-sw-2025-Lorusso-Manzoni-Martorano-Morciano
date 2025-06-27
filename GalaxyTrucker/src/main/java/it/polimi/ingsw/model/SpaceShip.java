@@ -2377,7 +2377,7 @@ public class SpaceShip implements Serializable {
      * @return true if all components within the specified range are either null, an instance
      *         of EmptySpace, or satisfy the validation criteria; false otherwise.
      */
-    public boolean wellDoneCheck() {
+    public boolean isShipLegal() {
         boolean wellDone=true;
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
@@ -2414,7 +2414,7 @@ public class SpaceShip implements Serializable {
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }
-        return wellDoneCheck();
+        return isShipLegal();
     }
 
 

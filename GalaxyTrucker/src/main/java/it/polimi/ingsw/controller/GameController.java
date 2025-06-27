@@ -234,4 +234,11 @@ public class GameController implements Serializable {
     public CardController getCardController() {
         return cardController;
     }
+
+    /**
+     * @return truckers in the game with an illegal ship
+     */
+    public ArrayList<String> getIllegalShipNames() {
+        return game.getIllegalShipNames();
+    }
 }

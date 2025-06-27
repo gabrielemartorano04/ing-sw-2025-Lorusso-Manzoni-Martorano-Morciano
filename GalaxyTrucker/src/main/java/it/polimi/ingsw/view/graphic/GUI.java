@@ -580,12 +580,32 @@ public class GUI implements UI {
             this.buildingScene.stopHourglassTimer();
             this.buildingScene.hideWaitForOthers();
             this.buildingScene.buildShipGrid(false, viewFlow.getShip().getComponents());
-            if(viewFlow.getLevel() == 2){
-                viewFlow.handleInput("alien");
-            }else{
-                viewFlow.handleInput("continue");
+            for(String s: event.getNickNamesOfIllegalShips()){
+                if(viewFlow.getNickname().equals(s)){
+                    this.viewFlow.setViewState(ViewFlow.ViewState.REMOVE);
+                    this.showRemove();
+                }
+            }
+            if(viewFlow.getViewState() != ViewFlow.ViewState.REMOVE){
+                if(viewFlow.getLevel()==2){
+                    viewFlow.handleInput("alien");
+
+                }
+                else{
+                    viewFlow.handleInput("continue");
+                }
             }
         });
+    }
+
+    /**
+     * shows client's view to let him remove a component from the ship
+     */
+    @Override
+    public void showRemove(){
+       Platform.runLater(() -> {
+           this.buildingScene.showRemove();
+       });
     }
 
     /**

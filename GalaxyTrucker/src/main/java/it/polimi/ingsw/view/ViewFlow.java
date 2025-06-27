@@ -96,6 +96,7 @@ public class ViewFlow implements EventReceiver {
         CHOOSE_OLD,
         START,
         BULDING,
+        REMOVE,
         FILL,
         FLIGTH,
         END
@@ -344,6 +345,7 @@ public class ViewFlow implements EventReceiver {
                 }
 
             }
+            case REMOVE -> event = inputParser.parseRemove(input);
             case FILL-> event= inputParser.parseFillTheShip(input);
             case FLIGTH-> {
                 if(!out) {
@@ -430,7 +432,7 @@ public class ViewFlow implements EventReceiver {
     /**
      * Marks the end of the building phase in the current ViewFlow instance
      */
-    public void setEnd() {
+    public void setEndBuildingPhase() {
         this.endBuildingPhase = true;
     }
 

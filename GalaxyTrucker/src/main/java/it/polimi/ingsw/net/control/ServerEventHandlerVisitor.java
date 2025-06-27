@@ -7,7 +7,6 @@ import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
-import it.polimi.ingsw.view.text.TimerDisplay;
 
 import java.util.ArrayList;
 
@@ -164,7 +163,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             case FLIGHT -> {
                 viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
                 viewFlow.setStartFlightForAll();
-                viewFlow.setEnd();
+                viewFlow.setEndBuildingPhase();
                 ui.resumeFlightScene(event.getPlayerNames());
 
                 if(isLeader){
@@ -431,7 +430,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
      */
     @Override
     public void visit(WaitOthersBuildingEvent event){
-        viewFlow.setEnd();
+        viewFlow.setEndBuildingPhase();
         ui.showWaitForOthers();
     }
 
@@ -443,7 +442,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(WaitOthersHourglassEvent event){
         if(event.getNickname().equals(viewFlow.getNickname())){
-            viewFlow.setEnd();
+            viewFlow.setEndBuildingPhase();
             ui.showWaitForOthers();
         }
         viewFlow.getTimerDisplay().start(90);
@@ -508,7 +507,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 viewFlow.setPosition(t.getPosition());
             }
         }
-
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
         ui.buildingComplete(event);
     }

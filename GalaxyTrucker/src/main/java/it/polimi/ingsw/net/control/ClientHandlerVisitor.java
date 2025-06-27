@@ -451,7 +451,6 @@ public class ClientHandlerVisitor implements VirtualServer {
         return new StackDropOk(false);
     }
 
-
     /**
      * Turns the hourglass, if it is turned for the second time and by the last player it ends the building phase
      *
@@ -471,10 +470,12 @@ public class ClientHandlerVisitor implements VirtualServer {
             endBuilding++;
             setPositionToTrucker(client);
             if(endBuilding == gameController.getGame().getNumPlayers()){
-                return new BuildCompleteEvent(gameController.getGame().getTruckerList());
+                return new BuildCompleteEvent(gameController.getGame().getTruckerList(), gameController.getIllegalShipNames());
+            }else{
+                ServerController.getIstance().startThreadHourglass();
+                return tmp;
             }
-            ServerController.getIstance().startThreadHourglass();
-            return tmp;
+
         }
         return new HourglassTurnEvent(gameController.getGame().getHourglass().getSecondsLeft());
     }
@@ -541,18 +542,7 @@ public class ClientHandlerVisitor implements VirtualServer {
             return new WaitOthersBuildingEvent();
         }else{
             BuildTimerManager.getInstance().stop();
-            if(gameLevel==2){
-                for(Trucker t: gameController.getGame().getTruckerList()){
-                    t.getSpaceShip().wellDone();
-                }
-            }
-            else{
-                for(Trucker t: gameController.getGame().getTruckerList()){
-                    t.getSpaceShip().wellDoneForTrialFlight();
-                }
-            }
-
-            return new BuildCompleteEvent(gameController.getGame().getTruckerList());
+            return new BuildCompleteEvent(gameController.getGame().getTruckerList(),  gameController.getIllegalShipNames());
 
         }
     }

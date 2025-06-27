@@ -738,5 +738,20 @@ public class Game implements Serializable {
      * @param nickname nickname to remove
      */
     public void removeOldNicknames(String nickname) {oldNicknames.remove(nickname);}
+
+    /**
+     * @return names of trucker in the game with an illegal ship
+     */
+    public ArrayList<String> getIllegalShipNames(){
+        ArrayList<String> names = new ArrayList<>();
+        for(Trucker t: truckers){
+            if(!t.getSpaceShip().isShipLegal()){
+                names.add(t.getNickname());
+                //TODO TOGLI
+                System.out.println(t.getNickname() + " has an illegal ship");
+            }
+        }
+        return names;
+    }
 }
 
