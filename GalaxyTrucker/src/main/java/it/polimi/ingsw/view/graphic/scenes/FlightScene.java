@@ -2532,14 +2532,9 @@ public class FlightScene {
         creditLabel.setText(": " + viewFlow.getCredits());
         lostLabel.setText(": " + viewFlow.getLostComponents());
 
-        for (Map.Entry<String, Integer> entry : viewFlow.getGoodsByColor().entrySet()) {
-            String color = entry.getKey().toLowerCase();
-            if (goodLabels.containsKey(color)) {
-                goodLabels.get(color).setText(": 0");
-                if(entry.getValue() > 0) {
-                    goodLabels.get(color).setText(": " + entry.getValue());
-                }
-            }
+        for (String color : goodLabels.keySet()) {
+            int value = viewFlow.getGoodsByColor().getOrDefault(color, 0);
+            goodLabels.get(color).setText(": " + value);
         }
     }
 
