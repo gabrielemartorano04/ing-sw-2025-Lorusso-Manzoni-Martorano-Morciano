@@ -53,7 +53,10 @@ class SmugglersTest {
         batteries.add(new int[]{5, 6, 1});
         ServerEvent e = smugglers.activateCannons(true, cannons, batteries);
         assertTrue(smugglers.getPower()<Game.getIstance().getTruckerList().get(smugglers.getIndexOfCurrentTrucker()).getSpaceShip().getTotalCannonPower());
-        assertTrue(e instanceof PlotGood);
+        switch(e){
+            case PlotGood pg -> assertTrue(true);
+            default -> fail();
+        }
     }
 
     @Test
@@ -213,7 +216,10 @@ class SmugglersTest {
         testActivateCannonsVictory();
         smugglers.setCardState(CardState.ESECUZIONE);
         ServerEvent e = smugglers.cardEffect();
-        assertTrue(e instanceof CardFinished);
+        switch(e){
+            case CardFinished cf -> assertTrue(true);
+            default -> fail();
+        }
     }
 
     @Test
