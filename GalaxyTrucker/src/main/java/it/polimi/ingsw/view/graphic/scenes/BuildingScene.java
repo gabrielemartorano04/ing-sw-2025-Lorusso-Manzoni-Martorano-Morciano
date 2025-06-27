@@ -965,6 +965,7 @@ public class BuildingScene {
      * Stops the hourglass timer and resets the related UI state
      */
     public void stopHourglassTimer() {
+        hourglassBtn.setText("⏳");
         hourglassBtn.setDisable(false);
         isHourglassTimerStarted = false;
         hourglassBtn.setEffect(null);
