@@ -56,7 +56,7 @@ public class BuildTimerManager {
      * @param seconds timer duration is seconds
      */
     public void start(int seconds) {
-        if (running) return; // one timer at the time
+        if (running) return;
 
         running = true;
         timerThread = new Thread(() -> {
@@ -66,7 +66,7 @@ public class BuildTimerManager {
                     expiractionCount++;
                     System.out.println("[TIMER] Tempo scaduto (" + expiractionCount + "° volta)");
 
-                    if (expiractionCount == 3) {
+                    if (expiractionCount == 2) {
                         stop();
                         handleFinalTimeout();
                     }
