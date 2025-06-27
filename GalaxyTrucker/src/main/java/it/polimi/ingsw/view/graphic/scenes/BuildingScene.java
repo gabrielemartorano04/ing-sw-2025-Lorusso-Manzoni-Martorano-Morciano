@@ -961,6 +961,9 @@ public class BuildingScene {
         countdown.play();
     }
 
+    /**
+     * Stops the hourglass timer and resets the related UI state
+     */
     public void stopHourglassTimer() {
         hourglassBtn.setDisable(false);
         isHourglassTimerStarted = false;
