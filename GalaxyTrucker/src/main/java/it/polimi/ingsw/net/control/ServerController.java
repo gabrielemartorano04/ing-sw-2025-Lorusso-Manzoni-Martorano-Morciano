@@ -399,7 +399,7 @@ public class ServerController {
                     playersScores.put("giocatore " + i, scores[i]);
                 }
             }
-            for (int i = 0; i < Game.getIstance().getTruckerOut().size() - 1; i++) {
+            for (int i = 0; i < Game.getIstance().getTruckerOut().size(); i++) {
                 playersScores.put(Game.getIstance().getTruckerOut().get(i).getNickname(), scores[i]);
             }
 
