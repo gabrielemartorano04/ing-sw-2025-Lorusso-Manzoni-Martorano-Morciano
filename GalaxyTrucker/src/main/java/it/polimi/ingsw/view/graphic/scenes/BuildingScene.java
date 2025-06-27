@@ -203,7 +203,7 @@ public class BuildingScene {
     private VBox componentSelectedBox;
 
     /**
-     * A VBox layout container that is used to arrange UI components vertically
+     * A VBox layout container that contains button to handle the selected component
      */
     private VBox componentBox;
 
@@ -211,6 +211,11 @@ public class BuildingScene {
      * A VBox instance representing the container for remotion of a component
      */
     private VBox removeBox;
+
+    /**
+     * A Vbox that contains options buttons
+     */
+    private VBox optionsBox;
 
     /**
      * Indicates whether a component has been selected to determine the current state of
@@ -711,7 +716,7 @@ public class BuildingScene {
      * @param level of the game
      */
     private void attachOptionsBoxToScene(Scene scene, int level) {
-        VBox optionsBox = new VBox(10);
+        this.optionsBox = new VBox(10);
         optionsBox.setPadding(new Insets(10));
         optionsBox.setAlignment(Pos.TOP_LEFT);
 
@@ -1939,6 +1944,8 @@ public class BuildingScene {
         selectKeptBtn.setDisable(true);
         stackBtn.setOpacity(0.5);
         stackBtn.setDisable(true);
+        otherBtn.setDisable(false);
+        rulesBtn.setDisable(false);
     }
 
     /**
@@ -2088,7 +2095,9 @@ public class BuildingScene {
 
             yField.setOnAction(e -> sendBtn.fire());
         });
-        root.getChildren().add(removeBox);
+
+        root.getChildren().removeAll(removeBox, optionsBox);
+        root.getChildren().addAll(removeBox, optionsBox);
     }
 
     /**
