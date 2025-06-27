@@ -10,10 +10,27 @@ import it.polimi.ingsw.view.*;
 
 import java.util.ArrayList;
 
-
+/**
+ * The ServerEventHandlerVisitor class serves as a visitor for handling various server events
+ * by processing and updating UI and view flow states accordingly
+ */
 public class ServerEventHandlerVisitor implements VirtualView {
+
+    /**
+     * Represents the user interface component of the application
+     */
     private final UI ui;
+
+    /**
+     * Represents the flow or sequence of views being managed within a specific context
+     */
     private final ViewFlow viewFlow;
+
+    /**
+     * Constructs a ServerEventHandlerVisitor with the specified ViewFlow and UI
+     * @param viewFlow the ViewFlow instance used for managing the view transitions
+     * @param ui the UI instance used for interacting with the user interface
+     */
     public ServerEventHandlerVisitor(ViewFlow viewFlow, UI ui){
         this.viewFlow = viewFlow;
         this.ui = ui;
@@ -419,9 +436,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
     }
 
     /**
-     * Indicates that the player must wait for others to complete building
-     * if they turned the hourglass for the last time
-     * @param event
+     * Handles by checking the nickname in the event and updating
+     * the view flow and UI appropriately
+     * @param event containing details of the event to be handled
      */
     @Override
     public void visit(WaitOthersHourglassEvent event){
@@ -490,6 +507,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         for(Trucker t: event.getTruckers()){
             if(t.getNickname().equals(viewFlow.getNickname())){
                 viewFlow.setShip(t.getSpaceShip());
+                viewFlow.setPosition(t.getPosition());
             }
         }
 

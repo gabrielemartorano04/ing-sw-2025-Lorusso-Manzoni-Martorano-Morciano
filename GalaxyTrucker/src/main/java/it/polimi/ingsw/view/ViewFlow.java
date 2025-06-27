@@ -716,7 +716,7 @@ public class ViewFlow implements EventReceiver {
         this.inputParser.setLevel(level);
         if(level == 2) {
             this.cardsToGo = 12;
-        }else this.cardsToGo = 9;
+        }else this.cardsToGo = 8;
     }
 
     /**
