@@ -520,29 +520,37 @@ public class FlightScene {
     }
 
     private VBox createStatusBarForShip(SpaceShip ship) {
-        // Immagini icone
         Image engine = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/engine.png")).toExternalForm());
         Image cannon = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
         Image human = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
         Image battery = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/battery.png")).toExternalForm());
 
-        // Crea label locali
-        Label battLabel = createStyledLabel();
-        Label humanLabel = createStyledLabel();
-        Label cannonLabel = createStyledLabel();
-        Label engineLabel = createStyledLabel();
+        battLabel = createStyledLabel();
+        humanLabel = createStyledLabel();
+        cannonLabel = createStyledLabel();
+        engineLabel = createStyledLabel();
 
-        // Popola valori dalle API della nave
-        battLabel.setText(": " + ship.getNumBatteries());
-        humanLabel.setText(": " + ship.getNumCrew());
-        cannonLabel.setText(": " + ship.getSingleCannonPower());
-        engineLabel.setText(": " + ship.getSingleEnginePower());
+        ImageView batteryIcon = new ImageView(battery);
+        batteryIcon.setFitWidth(30);
+        batteryIcon.setFitHeight(50);
+        batteryIcon.setPreserveRatio(false);
 
-        // Crea Box individuali
-        HBox battBox = new HBox(5, new ImageView(battery), battLabel);
-        HBox humanBox = new HBox(5, new ImageView(human), humanLabel);
-        HBox cannonBox = new HBox(5, new ImageView(cannon), cannonLabel);
-        HBox engineBox = new HBox(5, new ImageView(engine), engineLabel);
+        ImageView humanIcon = new ImageView(human);
+        humanIcon.setFitWidth(40);
+        humanIcon.setPreserveRatio(true);
+
+        ImageView cannonIcon = new ImageView(cannon);
+        cannonIcon.setFitWidth(20);
+        cannonIcon.setPreserveRatio(true);
+
+        ImageView engineIcon = new ImageView(engine);
+        engineIcon.setFitWidth(16);
+        engineIcon.setPreserveRatio(true);
+
+        HBox battBox = new HBox(0, batteryIcon, battLabel);
+        HBox humanBox = new HBox(0, humanIcon, humanLabel);
+        HBox cannonBox = new HBox(0, cannonIcon, cannonLabel);
+        HBox engineBox = new HBox(5, engineIcon, engineLabel);
 
         for (HBox box : List.of(battBox, humanBox, cannonBox, engineBox)) {
             for (Node n : box.getChildren()) {

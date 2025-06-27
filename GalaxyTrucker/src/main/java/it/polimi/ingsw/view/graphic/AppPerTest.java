@@ -153,11 +153,11 @@ public class AppPerTest extends Application {
         primaryStage.setResizable(true);        // ← abilita ridimensionamento
         primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
         primaryStage.show();
-        ArrayList<Trucker> truckers = new ArrayList<>();
-        truckers.add(null);
-        truckers.add(null);
-        truckers.add(null);
-        truckers.add(null);
+//        ArrayList<Trucker> truckers = new ArrayList<>();
+//        truckers.add(null);
+//        truckers.add(null);
+//        truckers.add(null);
+//        truckers.add(null);
         flightScene.showOtherShip(createShip1(trucker.getSpaceShip()), trucker.getNickname());
 //        flightScene.updateGoodsListToRemove(new ArrayList<>(){
 //            {
