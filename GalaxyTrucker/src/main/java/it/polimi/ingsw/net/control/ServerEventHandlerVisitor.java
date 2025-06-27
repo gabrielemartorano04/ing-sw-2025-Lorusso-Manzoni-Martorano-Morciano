@@ -465,6 +465,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
      */
     @Override
     public void visit(AlienCabinCoord event) {
+        viewFlow.setViewState(ViewFlow.ViewState.FILL);
+        viewFlow.setShip(event.getSpaceShip());
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
         ui.askAlienCabin(event);
     }
 
@@ -514,9 +517,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
     /** Handles the imposition to the client of removing a component to make the ship legal*/
     @Override
     public void visit(ShipNotLegal event){
-        if(viewFlow.getViewState() != ViewFlow.ViewState.REMOVE){
-            viewFlow.setViewState(ViewFlow.ViewState.REMOVE);
-        }
         viewFlow.setShip(event.getShip());
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
         ui.showRemove();

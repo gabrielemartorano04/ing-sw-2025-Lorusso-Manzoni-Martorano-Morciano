@@ -193,6 +193,12 @@ public class InputParser {
 
     }
 
+    /**
+     * parse the remotion action
+     *
+     * @param input input containing the remove coordinates
+     * @return clientEvent with information for the server
+     */
     public ClientEvent parseRemove(String input) {
         if (input == null || input.isEmpty()) {
             return null;

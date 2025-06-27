@@ -1,5 +1,7 @@
 package it.polimi.ingsw.net.events.serverevents;
 
+import it.polimi.ingsw.model.SpaceShip;
+import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.control.ServerEventHandlerVisitor;
 
 import java.util.ArrayList;
@@ -11,6 +13,11 @@ import java.util.ArrayList;
 public class AlienCabinCoord extends ServerEvent {
 
     /**
+     * ship layout of the player
+     */
+    private final SpaceShip spaceShip;
+
+    /**
      * List of available positions for aliens
      */
     private final ArrayList<int[]> AlienCabinCoord;
@@ -18,10 +25,12 @@ public class AlienCabinCoord extends ServerEvent {
     /**
      * Event constructor
      * @param alienCabinCoord list of available positions for aliens
+     * @param spaceShip layout of player's ship
      */
-    public AlienCabinCoord(ArrayList<int[]> alienCabinCoord) {
+    public AlienCabinCoord(ArrayList<int[]> alienCabinCoord, SpaceShip spaceShip) {
         super(false);
         this.AlienCabinCoord = alienCabinCoord;
+        this.spaceShip = spaceShip;
     }
 
     /**
@@ -29,6 +38,13 @@ public class AlienCabinCoord extends ServerEvent {
      */
     public ArrayList<int[]> getAlienCabinCoord() {
         return AlienCabinCoord;
+    }
+
+    /**
+     * @return player's ship layout
+     */
+    public SpaceShip getSpaceShip() {
+        return spaceShip;
     }
 
     /**

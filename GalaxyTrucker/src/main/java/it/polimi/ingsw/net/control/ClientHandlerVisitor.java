@@ -552,7 +552,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     public ServerEvent visit(RemoveTile event, Client client){
         if(client.getTruckerController().getSpaceShip().isLegalAfterRemove(event.getX(), event.getY())){
             ArrayList<int[]> alienCoord = client.getTruckerController().getSpaceShip().getAlienCabin();
-            return new AlienCabinCoord(alienCoord);
+            return new AlienCabinCoord(alienCoord, client.getTruckerController().getSpaceShip());
         }else{
             return new ShipNotLegal(client.getTruckerController().getSpaceShip());
         }
@@ -568,7 +568,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     @Override
     public ServerEvent visit(AlienCoordinatesRequest event, Client client) {
         ArrayList<int[]> alienCoord=client.getTruckerController().getSpaceShip().getAlienCabin();
-        return new AlienCabinCoord(alienCoord);
+        return new AlienCabinCoord(alienCoord, client.getTruckerController().getSpaceShip());
     }
 
     /**
