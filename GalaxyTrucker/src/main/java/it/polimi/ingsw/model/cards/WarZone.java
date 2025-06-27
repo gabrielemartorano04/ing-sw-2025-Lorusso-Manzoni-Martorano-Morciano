@@ -414,7 +414,7 @@ public class WarZone extends Card implements Serializable {
             state = CardState.REMOVE_GOODS;
             return removeGoods();
         }else if (goodsToLose > 0 && weakestTrucker.getSpaceShip().getNumBatteries() <= goodsToLose){
-            weakestTrucker.getSpaceShip().removeALlBatteries();
+            weakestTrucker.getSpaceShip().removeAllBatteries();
             state = CardState.ESECUZIONE;
             return cardEffect();
         }
