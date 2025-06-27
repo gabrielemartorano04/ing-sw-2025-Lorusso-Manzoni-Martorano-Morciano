@@ -505,7 +505,6 @@ public class FlightScene {
 
                 nickBtn.setOnAction(ev -> {
                     viewFlow.handleInput("ship " + nickname);
-                    //TODO aggiungere che una volta premuto si mostrino le navi degli altri
                     ((StackPane) scene.getRoot()).getChildren().remove(nicknameChoices.getParent());
                 });
 
@@ -599,15 +598,6 @@ public class FlightScene {
         statusBarForOther.setMaxWidth(800);
 
         return statusBarForOther;
-    }
-
-    private void printNodeTree(Node node, String indent) {
-        System.out.println(indent + node.getClass().getSimpleName() + " -> " + node);
-        if (node instanceof Parent) {
-            for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
-                printNodeTree(child, indent + "  ");
-            }
-        }
     }
 
     /**
@@ -993,7 +983,7 @@ public class FlightScene {
             insertLabel.setTextFill(Color.web("#FFDE69"));
             insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
 
-            Label hintLabel = new Label("Type '<x1> <y1>, <x2> <y2>, ..., battery, <xs1> <ys1> - <num>, ...'");
+            Label hintLabel = new Label("Type '<row> <col>, ..., battery, <row> <col> - <num>, ...'");
             hintLabel.setTextFill(Color.LIGHTGRAY);
             hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
@@ -1019,7 +1009,7 @@ public class FlightScene {
                     viewFlow.handleInput("y, " + text);
                     closePopup.run();
                 } else {
-                    errorLabel.setText("Invalid input! Format: '<x1> <y1>, ..., battery, <xb1> <yb1> - <n>'");
+                    errorLabel.setText("Invalid input! Format: '<row> <col>, ..., battery, <row> <col> - <num>'");
                     errorLabel.setVisible(true);
                 }
             };
@@ -1090,7 +1080,7 @@ public class FlightScene {
             insertLabel.setTextFill(Color.web("#FFDE69"));
             insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
 
-            Label hintLabel = new Label("Type '<x1> <y1>, <x2> <y2>, ..., battery, <xb1> <yb1> - <num>, ...'");
+            Label hintLabel = new Label("Type '<row> <col>, ..., battery, <row> <col> - <num>, ...'");
             hintLabel.setTextFill(Color.LIGHTGRAY);
             hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
@@ -1115,7 +1105,7 @@ public class FlightScene {
                     viewFlow.handleInput("y, " + text);
                     closePopup.run();
                 } else {
-                    errorLabel.setText("Invalid input! Format: '<x> <y>, ..., battery, <xb> <yb> - <n>'");
+                    errorLabel.setText("Invalid input! Format: '<row> <col>, ..., battery, <row> <col> - <num>'");
                     errorLabel.setVisible(true);
                 }
             };
@@ -1237,7 +1227,7 @@ public class FlightScene {
             insertLabel.setTextFill(Color.web("#FFDE69"));
             insertLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 20));
 
-            Label hintLabel = new Label("Type '<x> <y>, <xB> <yB>'");
+            Label hintLabel = new Label("Type '<row> <col>, <rowBatt> <colBatt>'");
             hintLabel.setTextFill(Color.LIGHTGRAY);
             hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
@@ -1262,7 +1252,7 @@ public class FlightScene {
                     viewFlow.handleInput("y, " + text);
                     closePopup.run();
                 } else {
-                    errorLabel.setText("Invalid input! Use format: '<x> <y>, <xB> <yB>' with numbers");
+                    errorLabel.setText("Invalid input! Use format: '<row> <col>, <rowBatt> <colBatt>' with numbers");
                     errorLabel.setVisible(true);
                 }
             };
@@ -1759,7 +1749,7 @@ public class FlightScene {
         insertLabel.setTextAlignment(TextAlignment.CENTER);
         insertLabel.setWrapText(true);
 
-        Label hintLabel = new Label("Type '<x> <y> - <quantity>, <x2> <y2> - <quantity>, ...'");
+        Label hintLabel = new Label("Type '<row> <col> - <num>, ...'");
         hintLabel.setTextFill(Color.LIGHTGRAY);
         hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
@@ -1767,7 +1757,7 @@ public class FlightScene {
         inputField.setPromptText("Ex. 2 3 - 1, 4 5 - 2");
         inputField.setPrefWidth(300);
 
-        Label errorLabel = new Label("Invalid input. Format: <x> <y> - <qty>, ... (all ≥ 0)");
+        Label errorLabel = new Label("Invalid input. Format: <row> <col> - <num>, ... (all ≥ 0)");
         errorLabel.setTextFill(Color.RED);
         errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         errorLabel.setVisible(false);
@@ -2001,7 +1991,7 @@ public class FlightScene {
             insertLabel.setMaxWidth(500);
             insertLabel.setWrapText(true);
 
-            Label hintLabel = new Label("Type '<x1> <y1> - <val1>, <x2> <y2> - <val2>'");
+            Label hintLabel = new Label("Type '<rowOld> <colOld> - <posOld>, <rowNew> <colNew> - <posNew>'");
             hintLabel.setTextFill(Color.LIGHTGRAY);
             hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
 
@@ -2009,7 +1999,7 @@ public class FlightScene {
             inputField.setPromptText("Ex. 1 2 - 3, 5 6 - 1");
             inputField.setPrefWidth(250);
 
-            Label errorLabel = new Label("Invalid format. Try: 'x y - val, x y - val'");
+            Label errorLabel = new Label("Invalid format. Try: '<rowOld> <colOld> - <posOld>, <rowNew> <colNew> - <posNew>'");
             errorLabel.setTextFill(Color.RED);
             errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
             errorLabel.setVisible(false);
@@ -2368,7 +2358,7 @@ public class FlightScene {
         root.getChildren().removeIf(node -> node.getId() != null && node.getId().equals("trackBox"));
 
         List<Map.Entry<String, Integer>> sorted = new ArrayList<>(truckers.entrySet());
-        sorted.sort((a, b) -> b.getValue().compareTo(a.getValue())); // ordine decrescente
+        sorted.sort((a, b) -> b.getValue().compareTo(a.getValue()));
 
         int maxPosition = sorted.getFirst().getValue();
 
@@ -2430,7 +2420,7 @@ public class FlightScene {
         container.setAlignment(Pos.CENTER);
         container.setPadding(new Insets(10));
 
-        Label message = new Label("When ready for the big shot, press:");
+        Label message = new Label("Ready for the big shot?");
         message.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
         message.setTextFill(Color.WHITE);
         message.setWrapText(true);
@@ -2609,11 +2599,6 @@ public class FlightScene {
                         default -> {}
                     }
                 }
-//                if (c != null && !"Empty Space".equals(c.getType()) && ("Load".equals(c.getType()) || "Battery Storage".equals(c.getType()) || "Cabin".equals(c.getType()) || "Cannon".equals(c.getType()) || "Engine".equals(c.getType()) || "Shield".equals(c.getType()))) {
-//                    if(!formatComponent(c, i, j).isBlank()) {
-//                        desc.append(formatComponent(c, i, j)).append("\n");
-//                    }
-//                }
             }
         }
         Label l = new Label(desc.toString());
@@ -2782,8 +2767,7 @@ public class FlightScene {
                     details.append("[").append(i).append(",").append(j).append("] SHIELD is inactive");
                 }
             }
-            default -> {
-            }
+            default -> {}
         }
 
         return details.toString();
