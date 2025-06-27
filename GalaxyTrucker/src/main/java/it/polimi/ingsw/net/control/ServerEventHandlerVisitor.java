@@ -490,6 +490,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         for(Trucker t: event.getTruckers()){
             if(t.getNickname().equals(viewFlow.getNickname())){
                 viewFlow.setShip(t.getSpaceShip());
+                viewFlow.setPosition(t.getPosition());
             }
         }
 
