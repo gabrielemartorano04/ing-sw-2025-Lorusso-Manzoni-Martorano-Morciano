@@ -39,19 +39,16 @@ public class MainServer {
 
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("[MainServer] Shutdown hook triggered.");
 
             if (rmiServer != null) {
                 try {
                     UnicastRemoteObject.unexportObject(rmiServer, true);
-                    System.out.println("[MainServer] RMI server unexported.");
                 } catch (Exception e) {
                     System.err.println("Error unexporting RMI server: " + e.getMessage());
                 }
             }
 
             serverController.shutdown();
-            System.out.println("[MainServer] ServerController shut down.");
         }));
 
 

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Methods to manage TCP socket communication with a single client on the server side.
@@ -23,6 +25,12 @@ public class NetworkServer {
     /** Input stream to receive serialized ClientEvent objects */
     private final ObjectInputStream inputStream;
 
+    /** Queue of events to be sent to client */
+    private final BlockingQueue<ServerEvent> eventQueue = new LinkedBlockingQueue<>();
+
+    /** Dedicated thread for writing events */
+    private Thread writerThread;
+
     /**
      * Constructs a NetworkServer instance wrapping the given client socket,
      * initializing the input and output streams.
@@ -34,6 +42,30 @@ public class NetworkServer {
         this.socket = socket;
         this.inputStream = new ObjectInputStream(socket.getInputStream());
         this.outputStream = new ObjectOutputStream(socket.getOutputStream());
+        startWriterThread();
+    }
+
+    /**
+     * Starts the dedicated thread that sends ServerEvents asynchronously
+     * from the eventQueue to the client.
+     */
+    private void startWriterThread() {
+        writerThread = new Thread(() -> {
+            try {
+                while (!Thread.currentThread().isInterrupted() && !socket.isClosed()) {
+                    ServerEvent event = eventQueue.take();
+                    outputStream.reset();
+                    outputStream.writeUnshared(event);
+                    outputStream.flush();
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } catch (IOException e) {
+                System.err.println("Error sending event to client: " + e.getMessage());
+            }
+        }, "NetworkServer-WriterThread");
+        writerThread.setDaemon(true);
+        writerThread.start();
     }
 
     /**
@@ -44,9 +76,7 @@ public class NetworkServer {
      * @throws IOException if an I/O error occurs while sending
      */
     public void sendMessage(ServerEvent event) throws IOException {
-        outputStream.reset();
-        outputStream.writeUnshared(event);
-        outputStream.flush();
+        eventQueue.offer(event);
     }
 
     /**
