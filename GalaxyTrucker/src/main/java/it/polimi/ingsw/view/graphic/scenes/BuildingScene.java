@@ -120,7 +120,7 @@ public class BuildingScene {
     private Button stackBtn;
 
     /**
-     * Represents the rule button that allows the user to open th PDF rules
+     * Represents the rule button that allows the user to open the PDF rules
      */
     private Button rulesBtn;
 
@@ -1742,6 +1742,9 @@ public class BuildingScene {
      * Displays a user interface element where the user can place aliens and confirm their placement
      */
     public void showAlienCabin() {
+        if (isComponentViewVisible && shipScreenContent != null) {
+            root.getChildren().setAll(shipScreenContent);
+        }
         disableAndSaveAllButtonStates();
         VBox alienBox = new VBox(10);
         alienBox.setAlignment(Pos.CENTER_RIGHT);
