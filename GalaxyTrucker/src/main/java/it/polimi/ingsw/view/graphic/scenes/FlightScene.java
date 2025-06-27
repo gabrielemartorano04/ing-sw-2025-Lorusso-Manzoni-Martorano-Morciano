@@ -529,39 +529,39 @@ public class FlightScene {
      * @return a VBox containing the spaceship's status bar
      */
     private VBox createStatusBarForOtherShip(SpaceShip ship) {
-        Image engine = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/engine.png")).toExternalForm());
-        Image cannon = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
-        Image human = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
-        Image battery = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/battery.png")).toExternalForm());
+        Image engineForOther = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/engine.png")).toExternalForm());
+        Image cannonForOther = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
+        Image humanForOther = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
+        Image batteryForOther = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/battery.png")).toExternalForm());
 
         battLabelForOther = createStyledLabel();
         humanLabelForOther = createStyledLabel();
         cannonLabelForOther = createStyledLabel();
         engineLabelForOther = createStyledLabel();
 
-        ImageView batteryIcon = new ImageView(battery);
+        ImageView batteryIcon = new ImageView(batteryForOther);
         batteryIcon.setFitWidth(30);
         batteryIcon.setFitHeight(50);
         batteryIcon.setPreserveRatio(false);
 
-        ImageView humanIcon = new ImageView(human);
-        humanIcon.setFitWidth(40);
-        humanIcon.setPreserveRatio(true);
+        ImageView humanIconForOther = new ImageView(humanForOther);
+        humanIconForOther.setFitWidth(40);
+        humanIconForOther.setPreserveRatio(true);
 
-        ImageView cannonIcon = new ImageView(cannon);
-        cannonIcon.setFitWidth(20);
-        cannonIcon.setPreserveRatio(true);
+        ImageView cannonIconForOther = new ImageView(cannonForOther);
+        cannonIconForOther.setFitWidth(20);
+        cannonIconForOther.setPreserveRatio(true);
 
-        ImageView engineIcon = new ImageView(engine);
-        engineIcon.setFitWidth(16);
-        engineIcon.setPreserveRatio(true);
+        ImageView engineIconForOther = new ImageView(engineForOther);
+        engineIconForOther.setFitWidth(16);
+        engineIconForOther.setPreserveRatio(true);
 
-        HBox battBox = new HBox(0, batteryIcon, battLabelForOther);
-        HBox humanBox = new HBox(0, humanIcon, humanLabelForOther);
-        HBox cannonBox = new HBox(0, cannonIcon, cannonLabelForOther);
-        HBox engineBox = new HBox(5, engineIcon, engineLabelForOther);
+        HBox battForOtherBox = new HBox(0, batteryIcon, battLabelForOther);
+        HBox humanForOtherBox = new HBox(0, humanIconForOther, humanLabelForOther);
+        HBox cannonForOtherBox = new HBox(0, cannonIconForOther, cannonLabelForOther);
+        HBox engineForOtherBox = new HBox(5, engineIconForOther, engineLabelForOther);
 
-        for (HBox box : List.of(battBox, humanBox, cannonBox, engineBox)) {
+        for (HBox box : List.of(battForOtherBox, humanForOtherBox, cannonForOtherBox, engineForOtherBox)) {
             for (Node n : box.getChildren()) {
                 if (n instanceof ImageView iv) {
                     iv.setFitWidth(25);
@@ -591,7 +591,7 @@ public class FlightScene {
             goodsBox.getChildren().add(g);
         }
 
-        HBox valuesRow = new HBox(25, battBox, humanBox, cannonBox, engineBox);
+        HBox valuesRow = new HBox(25, battForOtherBox, humanForOtherBox, cannonForOtherBox, engineForOtherBox);
         valuesRow.setAlignment(Pos.CENTER);
 
         VBox statusBarForOther = new VBox(10, valuesRow, goodsBox);
