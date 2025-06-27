@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.text;
 
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
@@ -1200,11 +1201,13 @@ public class TUI implements UI {
     /**
      * Displays the layout of another ship, including detailed information about its components.
      * @param nickname the nickname of the ship owner
-     * @param layout a 2D array representing the ship's layout, where each cell contains a specific component or is empty
+     * @param ship of the player
      */
     @Override
-    public void showOtherShipLayout(String nickname, Component[][] layout) {
+    public void showOtherShipLayout(String nickname, SpaceShip ship) {
         System.out.println("\nShip layout of " + nickname + ":\n");
+
+        Component[][] layout = ship.getComponents();
 
         // Calcolo dinamico celle valide
         boolean[][] validCells = new boolean[11][12];

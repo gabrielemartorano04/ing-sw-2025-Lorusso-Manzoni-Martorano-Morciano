@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.graphic;
 
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Condition;
@@ -862,14 +863,14 @@ public class GUI implements UI {
     /**
      * Displays the layout of the other ship on the appropriate scene based on the current view state
      * @param nickname the nickname of the other ship's owner
-     * @param layout the 2D array representing the ship's layout
+     * @param ship of the player
      */
     @Override
-    public void showOtherShipLayout(String nickname, Component[][] layout) {
+    public void showOtherShipLayout(String nickname, SpaceShip ship) {
         if (viewFlow.getViewState() == ViewFlow.ViewState.BULDING) {
-            Platform.runLater(() -> this.buildingScene.showOtherShip(layout, nickname));
+            Platform.runLater(() -> this.buildingScene.showOtherShip(ship.getComponents(), nickname));
         } else if (viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH) {
-            Platform.runLater(() -> this.flightScene.showOtherShip(layout, nickname));
+            Platform.runLater(() -> this.flightScene.showOtherShip(ship, nickname));
         }
     }
 

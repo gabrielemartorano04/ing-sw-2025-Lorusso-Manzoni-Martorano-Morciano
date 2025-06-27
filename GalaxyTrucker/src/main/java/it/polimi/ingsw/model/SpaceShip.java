@@ -205,7 +205,6 @@ public class SpaceShip implements Serializable {
      * the cabin with 2 astronauts
      */
     public void setNumHuman() {
-
         for (int i = 5; i <= 9; i++) {
             for (int j = 4; j <= 10; j++) {
                 if (components[i][j] != null) {
@@ -215,7 +214,6 @@ public class SpaceShip implements Serializable {
                                 numHuman += 2;
                                 c.setQuantity(2);
                             }
-
                         }
                         default -> {}
                     }
@@ -310,7 +308,7 @@ public class SpaceShip implements Serializable {
                                 for (int[] selectedCoord : coord) {
                                     if (selectedCoord[0] == currentCoord[0] && selectedCoord[1] == currentCoord[1]) {
                                         if(selectedCoord[2]==0) alien = new Alien(AlienColor.PURPLE);
-                                        else alien =new Alien(AlienColor.BROWN);
+                                        else if(selectedCoord[2]==1) alien =new Alien(AlienColor.BROWN);
                                         c.setAlien(alien);
                                         numAlien++;
                                     }
@@ -358,8 +356,13 @@ public class SpaceShip implements Serializable {
                 switch (components[c[0]][c[1]]){
                     case Cabin cabin -> {
                             if(c[2]==1){
-                                cabin.removeHumans(1);
-                                numHuman --;
+                                if(cabin.getAlien()!=null){
+                                    cabin.setAlien(null);
+                                    numAlien--;
+                                }else{
+                                    cabin.removeHumans(1);
+                                    numHuman --;
+                                }
                                 numMax--;
                             }
                              else {
@@ -372,7 +375,6 @@ public class SpaceShip implements Serializable {
                     default -> { }
                 }
             }else return;
-
         }
     }
 
@@ -1226,28 +1228,40 @@ public class SpaceShip implements Serializable {
                     if(components[x+1][y]!=null){
                         switch(components[x+1][y]){
                             case Cabin cabin->{
-                                if(cabin.getAlien() != null) { numAlien--;}
+                                if(cabin.getAlien() != null) {
+                                    cabin.setAlien(null);
+                                    numAlien--;
+                                }
                             }default -> {}
                         }
                     }
                     if(components[x-1][y]!=null){
                         switch(components[x-1][y]){
                             case Cabin cabin->{
-                                if(cabin.getAlien() != null) { numAlien--;}
+                                if(cabin.getAlien() != null) {
+                                    cabin.setAlien(null);
+                                    numAlien--;
+                                }
                             }default -> {}
                         }
                     }
                     if(components[x][y+1]!=null){
                         switch(components[x][y+1]){
                             case Cabin cabin->{
-                                if(cabin.getAlien() != null) { numAlien--;}
+                                if(cabin.getAlien() != null) {
+                                    cabin.setAlien(null);
+                                    numAlien--;
+                                }
                             }default -> {}
                         }
                     }
                     if(components[x][y-1]!=null){
                         switch(components[x][y-1]){
                             case Cabin cabin->{
-                                if(cabin.getAlien() != null) { numAlien--;}
+                                if(cabin.getAlien() != null) {
+                                    cabin.setAlien(null);
+                                    numAlien--;
+                                }
                             }default -> {}
                         }
                     }
@@ -1397,14 +1411,16 @@ public class SpaceShip implements Serializable {
                 case Load load->{
                     goodsCapacity-= load.getCapacity();
                     if(load.getQuantity()>0){
+                        Iterator<Goods> iterator = goodsList.iterator();
+                        while (iterator.hasNext()) {
+                            Goods g = iterator.next();
+                            if (g.getX() == x && g.getY() == y) {
+                                if (g.getValue() == 4) redGoods--;
+                                else if (g.getValue() == 3) yellowGoods--;
+                                else if (g.getValue() == 2) greenGoods--;
+                                else if (g.getValue() == 1) blueGoods--;
 
-                        for(Goods g:goodsList){
-                            if(g.getX()==x && g.getY()==y){
-                                if(g.getValue()==4) redGoods--;
-                                else if(g.getValue()==3) yellowGoods--;
-                                else if(g.getValue()==2) greenGoods--;
-                                else if(g.getValue()==1) blueGoods--;
-                                goodsList.remove(g);
+                                iterator.remove();
                                 bank.addGoodsInBank(g.getValue());
                             }
                         }
@@ -1418,22 +1434,31 @@ public class SpaceShip implements Serializable {
                 case LifeSupport lifeSupport->{
                     switch(components[x+1][y]){
                         case Cabin cabin->{
-                            if(cabin.getAlien() != null) { numAlien--;}
+                            if(cabin.getAlien() != null) {
+                                cabin.setAlien(null);
+                                numAlien--;}
                         }default -> {}
                     }
                     switch(components[x-1][y]){
                         case Cabin cabin->{
-                            if(cabin.getAlien() != null) { numAlien--;}
+                            if(cabin.getAlien() != null) {
+                                cabin.setAlien(null);
+                                numAlien--;}
                         }default -> {}
                     }
                     switch(components[x][y+1]){
                         case Cabin cabin->{
-                            if(cabin.getAlien() != null) { numAlien--;}
+                            if(cabin.getAlien() != null) {
+                                cabin.setAlien(null);
+                                numAlien--;
+                            }
                         }default -> {}
                     }
                     switch(components[x][y-1]){
                         case Cabin cabin->{
-                            if(cabin.getAlien() != null) { numAlien--;}
+                            if(cabin.getAlien() != null) {
+                                cabin.setAlien(null);
+                                numAlien--;}
                         }default -> {}
                     }
 
