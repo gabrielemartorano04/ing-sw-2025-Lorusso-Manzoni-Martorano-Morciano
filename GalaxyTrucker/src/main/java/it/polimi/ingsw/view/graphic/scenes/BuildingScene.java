@@ -226,6 +226,11 @@ public class BuildingScene {
     private ArrayList<int[]> alienCoords;
 
     /**
+     * True if the hourglass Timer has started
+     */
+    private boolean isHourglassTimerStarted;
+
+    /**
      * Event constructor
      * @param layout a 2D array representing the ship grid
      * @param viewFlow an instance of viewFlow used for managing scene transitions
@@ -251,6 +256,8 @@ public class BuildingScene {
                 validCells[i][j] = c == null || !c.getType().equals("Empty Space");
             }
         }
+
+        this.isHourglassTimerStarted = false;
     }
 
     /**
@@ -925,7 +932,12 @@ public class BuildingScene {
      * the timer state
      */
     public void startHourglassTimer() {
+        if(isHourglassTimerStarted){
+            return;
+        }
+
         hourglassBtn.setDisable(true);
+        isHourglassTimerStarted =true;
 
         ColorAdjust grayOverlay = new ColorAdjust();
         grayOverlay.setBrightness(-0.5);
@@ -942,6 +954,7 @@ public class BuildingScene {
                 hourglassBtn.setText("⏳");
                 hourglassBtn.setDisable(false);
                 hourglassBtn.setEffect(null);
+                isHourglassTimerStarted = false;
             }
         }));
         countdown.setCycleCount(90);

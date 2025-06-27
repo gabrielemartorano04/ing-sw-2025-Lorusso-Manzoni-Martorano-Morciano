@@ -603,100 +603,43 @@ public class FlightScene {
      * @param ship of the player
      * @param nickname of the player
      */
-    public void showOtherShip(SpaceShip ship, String nickname) {
-
-        Component[][] layout = ship.getComponents();
-
-        Image trasparent = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/transparent.png")).toExternalForm());
-
-        AnchorPane overlay = new AnchorPane();
-        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
-        overlay.setPickOnBounds(true);
-
-        root.getChildren().add(overlay);
-
-        ImageView backgroundView;
-        if (level == 0) {
-            backgroundView = new ImageView(new Image(Objects.requireNonNull(
-                    getClass().getResource("/it/polimi/ingsw/view/cardboard-3.jpeg")).toExternalForm()));
-        } else {
-            backgroundView = new ImageView(new Image(Objects.requireNonNull(
-                    getClass().getResource("/it/polimi/ingsw/view/cardboard-3b.jpeg")).toExternalForm()));
-        }
-
-        backgroundView.setFitWidth(679);
-        backgroundView.setFitHeight(492);
-        backgroundView.setPreserveRatio(true);
-        backgroundView.setMouseTransparent(true);
-
-        Rectangle clip = new Rectangle(679, 492);
-        clip.setArcWidth(20);
-        clip.setArcHeight(20);
-        backgroundView.setClip(clip);
-
-        GridPane grid = new GridPane();
-        grid.setHgap(1.5);
-        grid.setVgap(1.5);
-        grid.setAlignment(Pos.CENTER);
-        grid.setTranslateY(-1);
-
-        for (int row = 5; row < 10; row++) {
-            for (int col = 4; col < 11; col++) {
-                StackPane cell = new StackPane();
-                cell.setPrefSize(87, 87);
-
-                if (validCells[row][col]) {
-                    cell.setStyle("-fx-border-color: white; -fx-border-radius: 4px; -fx-background-radius: 4px;");
-                    Component c = layout[row][col];
-                    if (c != null) {
-                        ImageView iv = new ImageView(c.getFrontImage());
-                        iv.setFitWidth(87);
-                        iv.setFitHeight(87);
-                        iv.setRotate(c.getRotationAngle());
-                        Rectangle r = new Rectangle(87, 87);
-                        r.setArcWidth(8);
-                        r.setArcHeight(8);
-                        iv.setClip(r);
-                        cell.getChildren().add(iv);
-                    } else {
-                        ImageView iv = new ImageView(trasparent);
-                        iv.setFitWidth(87);
-                        iv.setFitHeight(87);
-                        Rectangle r = new Rectangle(87, 87);
-                        r.setArcWidth(8);
-                        r.setArcHeight(8);
-                        iv.setClip(r);
-                        cell.getChildren().add(iv);
-                    }
-                } else {
-                    cell.setStyle("-fx-background-color: transparent;");
-                }
-
-                grid.add(cell, col - 4, row - 5);
-            }
-        }
-
-        StackPane shipPopup = new StackPane(backgroundView, grid);
-        shipPopup.setAlignment(Pos.CENTER);
-        shipPopup.setMaxSize(679, 500);
-        shipPopup.setMouseTransparent(false);
-
+    public void showOtherShip(SpaceShip spaceShip, String nickname) {
+        // Label con il nome del giocatore
         String displayName = nickname.endsWith("s") ? nickname + "'" : nickname + "'s";
-        Label nameLabel = new Label(displayName + " spaceship");
-        nameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
-        nameLabel.setTextFill(Color.web("#FFDE69"));
-        nameLabel.setAlignment(Pos.CENTER);
+        Label label = new Label(displayName + " spaceship");
+        label.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
+        label.setTextFill(Color.web("#FFDE69"));
+        label.setAlignment(Pos.CENTER);
 
-        VBox statusBarForShip = createStatusBarForOtherShip(ship);
-        VBox popupWithLabel = new VBox(20, nameLabel, shipPopup, statusBarForShip);
-        popupWithLabel.setAlignment(Pos.CENTER);
+        // Contenuto del popup (status bar e nave)
+        VBox shipStatus = createStatusBarForOtherShip(spaceShip);
+        VBox popupContent = new VBox(20, label, shipStatus);
+        popupContent.setAlignment(Pos.CENTER);
+        popupContent.setStyle("-fx-background-color: #2e2e2e; -fx-padding: 30; -fx-background-radius: 20;");
+        popupContent.setMaxWidth(800);
 
-        root.setOnMouseClicked(e -> {
-            root.getChildren().remove(overlay);
-            root.getChildren().remove(popupWithLabel);
+        // Overlay scuro
+        Region overlay = new Region();
+        overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6);");
+        overlay.prefWidthProperty().bind(root.widthProperty());
+        overlay.prefHeightProperty().bind(root.heightProperty());
+
+        // Contenitore unificato
+        StackPane popupContainer = new StackPane(overlay, popupContent);
+        popupContainer.setAlignment(Pos.CENTER);
+        popupContainer.prefWidthProperty().bind(root.widthProperty());
+        popupContainer.prefHeightProperty().bind(root.heightProperty());
+        popupContainer.setPickOnBounds(true);
+        popupContainer.setMouseTransparent(false);
+
+        // Chiusura al click sullo sfondo
+        overlay.setOnMouseClicked(e -> {
+            root.getChildren().remove(popupContainer);
+            restoreInteractiveLayers();
         });
 
-        root.getChildren().add(popupWithLabel);
+        // Aggiunge tutto alla root
+        root.getChildren().add(popupContainer);
     }
 
     /**

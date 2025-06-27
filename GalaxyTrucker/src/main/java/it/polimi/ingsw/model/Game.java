@@ -647,6 +647,7 @@ public class Game implements Serializable {
         } else if (hourglass.getTimeTurns()==1 && hourglass.timeIsUp()){
             hourglass.reset();
             event= new WaitOthersBuildingEvent();
+
         } else
             throw new CannotTurnHourglassException("You can't turn the hourglass now!");
         return event;
