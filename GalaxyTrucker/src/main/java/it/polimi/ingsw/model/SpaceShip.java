@@ -2276,7 +2276,7 @@ public class SpaceShip implements Serializable {
                             switch (oldShip.getComponents()[i][j]){
                                 case Cabin oldCabin->{
                                     if (cabin.getAlien() != null) {
-                                        if (!cabin.getAlien().getColor().equals(oldCabin.getAlien().getColor()) || oldCabin.getAlien()==null) {
+                                        if (oldCabin.getAlien()==null || !cabin.getAlien().getColor().equals(oldCabin.getAlien().getColor())) {
                                             return true;
                                         }
                                     } else {

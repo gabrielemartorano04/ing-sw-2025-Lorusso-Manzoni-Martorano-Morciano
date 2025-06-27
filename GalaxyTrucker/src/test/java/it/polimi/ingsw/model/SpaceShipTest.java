@@ -999,7 +999,7 @@ class SpaceShipTest {
             s1.addGood(g1, new int[]{8, 9}, 1, new Bank());
             s2.addGood(g1, new int[]{8, 9}, 1, new Bank());
             ArrayList<int[]> alienCoord = new ArrayList<>();
-            alienCoord.add(new int[]{6, 5, 1});
+            alienCoord.add(new int[]{7, 6, 1});
             s1.setNumAlien(alienCoord);
             s2.setNumAlien(alienCoord);
             s1.setNumHuman();
@@ -1037,11 +1037,10 @@ class SpaceShipTest {
             s1.addGood(g1, new int[]{8, 9}, 1, new Bank());
             s2.addGood(g1, new int[]{8, 9}, 1, new Bank());
             ArrayList<int[]> alienCoord = new ArrayList<>();
-            alienCoord.add(new int[]{6, 5, 1});
+            alienCoord.add(new int[]{7, 6, 1});
             s1.setNumAlien(alienCoord);
             s1.setNumHuman();
             s2.setNumHuman();
-            System.out.println(((Cabin)s1.getComponents()[6][5]).getAlien().getColor());
         } catch (InvalidPositionException e) {
             throw new RuntimeException(e);
         }
@@ -1074,7 +1073,7 @@ class SpaceShipTest {
             s2.addGood(g, new int[]{8, 9}, 0, new Bank());
             s1.addGood(g1, new int[]{8, 9}, 1, new Bank());
             ArrayList<int[]> alienCoord = new ArrayList<>();
-            alienCoord.add(new int[]{6, 5, 1});
+            alienCoord.add(new int[]{7, 6, 1});
             s1.setNumAlien(alienCoord);
             s2.setNumAlien(alienCoord);
             s1.setNumHuman();
@@ -1111,7 +1110,7 @@ class SpaceShipTest {
             s1.addGood(g1, new int[]{8, 9}, 1, new Bank());
             s2.addGood(g1, new int[]{8, 9}, 1, new Bank());
             ArrayList<int[]> alienCoord = new ArrayList<>();
-            alienCoord.add(new int[]{6, 5, 1});
+            alienCoord.add(new int[]{7, 6, 1});
             s1.setNumAlien(alienCoord);
             s2.setNumAlien(alienCoord);
             s1.setNumHuman();
