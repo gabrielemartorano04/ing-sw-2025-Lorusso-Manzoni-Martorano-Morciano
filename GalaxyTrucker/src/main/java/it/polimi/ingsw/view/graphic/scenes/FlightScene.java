@@ -42,41 +42,137 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+/**
+ * The FlightScene class represents the graphical user interface component for the flight
+ * scene in the game. It manages the layout, components, and user interactions during gameplay
+ */
 public class FlightScene {
+
+    /**
+     * A 2D array representing the layout of components in the ship
+     */
     private Component[][] layout;
+
+    /**
+     * Represents a 2D boolean matrix indicating the validity state of cells in a ship layout
+     */
     private final boolean[][] validCells;
+
+    /**
+     * Represents the main graphical scene which serves as the root
+     * of the graphical user interface
+     */
     private Scene scene;
+
+    /**
+     * Represents the layout grid for the flight scene
+     */
     private GridPane grid;
+
+    /**
+     * Represents the principal pane that serves as the root container for the user interface elements
+     */
     private final StackPane root;
+
+    /**
+     * Represents the flow logic of the game
+     */
     private final ViewFlow viewFlow;
+
+    /**
+     * Represents the rule button that allows the user to open th PDF rules
+     */
     private Button rulesBtn;
+
+    /**
+     * Represents the show other ship button that allows the user to see other players' spaceship
+     */
     private Button otherBtn;
+
+    /**
+     * Represents the more button that allows the user to see a detailed description of player's spaceship
+     */
     private Button moreButton;
 
+    /**
+     * A StackPane that serves as a container for displaying card images
+     */
     private StackPane cardImageContainer;
 
+    /**
+     * A VBox container used to hold and organize the game's option buttons
+     */
     private VBox optionsBox;
+
+    /**
+     * A VBox element used to display the result of a roll dice
+     */
     private VBox rollDiceResultBox;
 
+    /**
+     * A field which is used to fetch images of goods based on their associated value or color
+     */
     private final GoodsImagesGetter goodsImagesGetter;
+
+    /**
+     * Holds the image representation of a good in the game
+     */
     private Image goodImage;
+
+    /**
+     * A list of planets  used to manage and display information about the current card's planets
+     */
     private ArrayList<Trucker> planets;
+
+    /**
+     * Represents a list of goods associated with the remotion
+     */
     private ArrayList<Goods> goodsList;
+
+    /**
+     * Level of the game
+     */
     private final int level;
+
+    /**
+     * This variable determines whether the roll dice overlay is currently visible on the screen
+     */
     private boolean isRollDiceOverlayVisible;
 
+    /**
+     * Represents a label that likely displays information related to spaceship status
+     */
     private Label posLabel, battLabel, humanLabel, cannonLabel, engineLabel, creditLabel, lostLabel;
-    private final Map<String, Label> goodLabels = new HashMap<>();
+
+    /**
+     * A map that associates a good with its corresponding label
+     */
+    private final Map<String, Label> goodLabels;
+
+    /**
+     * A VBox container representing the status bar
+     */
     private VBox statusBar;
 
-    private final StackPane overlayLayer = new StackPane(); // sopra tutto
+    /**
+     * A graphical layer that overlays the primary content and is shown always on top
+     */
+    private final StackPane overlayLayer;
 
-
+    /**
+     * Represents an overlay displayed on the screen while waiting for
+     * an important action to complete or for other players in the game to
+     * perform their actions
+     */
     private StackPane waitOverlay;
+
+    /**
+     * Represents a timeline animation used for displaying a "waiting" overlay
+     */
     private Timeline waitAnimation;
 
     /**
-     * constructor of the flight scene
+     * Constructor of the flight scene
      * @param layout matrix of the ship
      * @param viewFlow logic of the game
      * @param root principal pane of the scene
@@ -96,12 +192,14 @@ public class FlightScene {
         this.goodsImagesGetter = new GoodsImagesGetter();
         this.planets = new ArrayList<>();
         isRollDiceOverlayVisible = false;
+        goodLabels = new HashMap<>();
+        overlayLayer = new StackPane();
     }
 
     /**
-     * create the scene in its principal elements
-     * @param playersNames list of players' name
-     * @param level level of the game
+     * Create the scene in its principal elements
+     * @param playersNames list of players' nickname
+     * @param level of the game
      * @return the actual scene to show
      */
     public Scene createScene(ArrayList<String> playersNames, int level) {
@@ -124,7 +222,7 @@ public class FlightScene {
         root.getChildren().clear();
         root.getChildren().addAll(
                 backgroundView,
-                overlayLayer // container per popup/overlay (inizialmente vuoto)
+                overlayLayer
         );
 
         overlayLayer.setMouseTransparent(true);
@@ -146,20 +244,26 @@ public class FlightScene {
         return scene;
     }
 
+    /**
+     * Sets the ship layout for the current scene.
+     * @param ship a 2D array representing the components of the ship's layout
+     */
     public void setShip(Component[][] ship){
         this.layout = ship;
     }
 
+    /**
+     * Restores the interactive components of the scene, reordering their accessibility and functionality
+     */
     private void restoreInteractiveLayers() {
         overlayLayer.setMouseTransparent(true);
         root.getChildren().removeAll(optionsBox, statusBar);
         root.getChildren().addAll(optionsBox, statusBar);
     }
 
-
     /**
-     * box with the options button of the game
-     * @param scene scene where to add the buttons
+     * Box with the options button of the game
+     * @param scene where to add the buttons
      */
     private void attachOptionsBoxToScene(Scene scene) {
         optionsBox = new VBox(10);
@@ -181,8 +285,8 @@ public class FlightScene {
     }
 
     /**
-     * style used equal for every button in the scene
-     * @return the button
+     * Creates and returns a default button styler
+     * @return a Consumer<Button> that applies predefined styling to a given button
      */
     private Consumer<Button> createDefaultButtonStyler() {
         return (btn) -> {
@@ -194,6 +298,9 @@ public class FlightScene {
         };
     }
 
+    /**
+     * Initializes a card placeholder in the scene
+     */
     public void initCardPlaceholder() {
         if (scene == null || scene.getRoot() == null) return;
 
@@ -220,7 +327,7 @@ public class FlightScene {
     }
 
     /**
-     * show the general status of the ship and the possibility to see the specific component status
+     * Initializes the status bar by setting up the visual elements, including labels, icons, and containers
      */
     private void initializeStatusBar() {
         Image engine = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/engine.png")).toExternalForm());
@@ -281,7 +388,6 @@ public class FlightScene {
             box.setAlignment(Pos.CENTER_RIGHT);
         }
 
-        // Goods
         HBox goodsBox = new HBox(10);
         goodsBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -295,13 +401,13 @@ public class FlightScene {
         List<String> orderedColors = List.of("red", "yellow", "green", "blue");
 
         for (String color : orderedColors) {
-            Image image = goodImages.get(color); // accedi in modo sicuro e ordinato
+            Image image = goodImages.get(color);
             ImageView goodIcon = new ImageView(image);
             goodIcon.setFitWidth(35);
             goodIcon.setPreserveRatio(true);
 
             Label qtyLabel = createStyledLabel();
-            goodLabels.put(color, qtyLabel); // salva riferimento
+            goodLabels.put(color, qtyLabel);
 
             HBox singleGood = new HBox(0, goodIcon, qtyLabel);
             singleGood.setAlignment(Pos.CENTER_RIGHT);
@@ -337,8 +443,8 @@ public class FlightScene {
     }
 
     /**
-     * button to open rules
-     * @param styleButton to make all the buttons be equal
+     * Adds a rule button to the scene, which allows the user to open PDF rules
+     * @param styleButton a Consumer<Button> function to apply specific styling to the button
      */
     private void addRulesButtonToScene(Consumer<Button> styleButton) {
         Button rulesBtn = new Button("Rules");
@@ -373,10 +479,10 @@ public class FlightScene {
     }
 
     /**
-     * to see other players ship
-     * @param viewFlow to call handleInput
-     * @param styleButton to make all the buttons equal
-     * @param playersNames list of all players' name
+     * Adds a show others spaceship button to the scene, which allows the user to see other truckers' spaceship
+     * @param viewFlow an instance of ViewFlow used for managing scene transitions
+     * @param styleButton a Consumer<Button> function to apply specific styling to the button
+     * @param playersNames a list of players' nicknames
      */
     private void addShowOtherButtonToScene(ViewFlow viewFlow, Consumer<Button> styleButton, ArrayList<String> playersNames) {
         Button otherBtn = new Button("Show others ship");
@@ -412,11 +518,15 @@ public class FlightScene {
         this.otherBtn = otherBtn;
     }
 
+    /**
+     * Displays another ship layout on the screen
+     * @param layout a 2D array representing the layout of the ship
+     * @param nickname of the player
+     */
     public void showOtherShip(Component[][] layout, String nickname) {
 
         Image trasparent = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/transparent.png")).toExternalForm());
 
-        // === Immagine della nave ===
         AnchorPane overlay = new AnchorPane();
         overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
         overlay.setPickOnBounds(true);
@@ -442,7 +552,6 @@ public class FlightScene {
         clip.setArcHeight(20);
         backgroundView.setClip(clip);
 
-        // === Griglia componenti ===
         GridPane grid = new GridPane();
         grid.setHgap(1.5);
         grid.setVgap(1.5);
@@ -485,20 +594,17 @@ public class FlightScene {
             }
         }
 
-        // === Contenitore nave + griglia ===
         StackPane shipPopup = new StackPane(backgroundView, grid);
         shipPopup.setAlignment(Pos.CENTER);
         shipPopup.setMaxSize(679, 500);
         shipPopup.setMouseTransparent(false);
 
-        // === Label con nickname ===
         String displayName = nickname.endsWith("s") ? nickname + "'" : nickname + "'s";
         Label nameLabel = new Label(displayName + " spaceship");
         nameLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 32));
         nameLabel.setTextFill(Color.web("#FFDE69"));
         nameLabel.setAlignment(Pos.CENTER);
 
-        // === Contenitore verticale: label sopra + nave sotto ===
         VBox popupWithLabel = new VBox(10, nameLabel, shipPopup);
         popupWithLabel.setAlignment(Pos.CENTER);
 
@@ -507,15 +613,13 @@ public class FlightScene {
             root.getChildren().remove(popupWithLabel);
         });
 
-        // === Aggiunta sopra la UI ===
         root.getChildren().add(popupWithLabel);
     }
 
     /**
-     * Mostra un popup con la condizione corrente e, se il giocatore è il leader, anche un pulsante per continuare.
-     *
-     * @param condition la condizione da mostrare
-     * @param isLeader  true se il giocatore può avviare la condizione
+     * Displays the current condition to the user in an overlay popup
+     * @param condition the current condition to display, such as HUMANS, ENGINES, or CANNONS
+     * @param isLeader  a boolean indicating whether the user is the leader
      */
     public void showCurrCondition(Condition condition, boolean isLeader) {
         VBox box = new VBox(15);
@@ -548,11 +652,9 @@ public class FlightScene {
         AnchorPane popupContent = new AnchorPane(box);
         AnchorPane.setLeftAnchor(box, 200.0);
 
-        // Attiva overlay e blocca i layer sotto
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
-        // Definizione anticipata per evitare errori di riferimento
         Runnable closePopup = () -> {
             overlayLayer.getChildren().clear();
             restoreInteractiveLayers();
@@ -578,22 +680,25 @@ public class FlightScene {
         }
     }
 
+    /**
+     * Returns the current scene
+     * @return the current Scene object
+     */
     public Scene getScene() {
         return scene;
     }
 
     /**
-     * button to start the flight, equals to 'state' in TUI
+     * Displays an input prompt to the user that collects the "state" input
      */
     public void showStateInput() {
         viewFlow.handleInput("state");
     }
 
     /**
-     * used to create the first ship matrix, but also to modify it based on what happened during flight
+     * Updates the layout of the ship's grid displayed
      */
     public void updateShipLayout() {
-        // se grid esiste già, la rimuovo dal root
         Image trasparent = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/transparent.png")).toExternalForm());
 
         if (grid != null) {
@@ -647,15 +752,16 @@ public class FlightScene {
             }
         }
         if (!isRollDiceOverlayVisible) {
-            root.getChildren().add(grid); // solo se il dado NON è visibile
+            root.getChildren().add(grid);
         } else {
             root.getChildren().add(root.getChildren().indexOf(overlayLayer), grid);
         }
     }
 
     /**
-     * Inserisce l'immagine della carta nel contenitore già esistente.
-     * @param card Carta da visualizzare
+     * Updates the visual representation of a card in the scene by replacing or adding the card image
+     * to the designated container
+     * @param card the card object containing details and images to be displayed
      */
     public void updateCardInScene(Card card) {
         if (cardImageContainer == null || card == null) return;
@@ -674,7 +780,6 @@ public class FlightScene {
         clip.setArcHeight(16);
         cardView.setClip(clip);
 
-        // Conserva il bordo esistente (primo elemento) e aggiungi la carta sopra
         Node border = cardImageContainer.getChildren().isEmpty() ? null : cardImageContainer.getChildren().getFirst();
         cardImageContainer.getChildren().setAll(border, cardView);
 
@@ -682,7 +787,7 @@ public class FlightScene {
     }
 
     /**
-     * ask if you want to land on an abandoned card
+     * Displays a confirmation popup asking the user if they want to land
      */
     public void showLandInput() {
         VBox box = new VBox(10);
@@ -715,11 +820,9 @@ public class FlightScene {
         AnchorPane.setBottomAnchor(box, 180.0);
         AnchorPane.setLeftAnchor(box, 170.0);
 
-        // Attiva overlay per disabilitare temporaneamente i layer interattivi
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
-        // Gestione click dei pulsanti
         Runnable closePopup = () -> {
             overlayLayer.getChildren().clear();
             restoreInteractiveLayers();
@@ -737,7 +840,8 @@ public class FlightScene {
     }
 
     /**
-     * Ask if you want to activate engines and then ask for the coordinates.
+     * Displays a popup interface allowing the user to activate double engines
+     * with an option to input specific coordinates for the operation
      */
     public void showActivateEngineInput() {
         VBox box = new VBox(10);
@@ -770,23 +874,19 @@ public class FlightScene {
         AnchorPane.setBottomAnchor(box, 180.0);
         AnchorPane.setLeftAnchor(box, 70.0);
 
-        // Attiva overlay
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
-        // Funzione per chiudere e ripristinare interattività
         Runnable closePopup = () -> {
             overlayLayer.getChildren().clear();
             restoreInteractiveLayers();
         };
 
-        // "NO" => invia n
         no.setOnAction(ev -> {
             viewFlow.handleInput("n");
             closePopup.run();
         });
 
-        // "YES" => chiede coordinate
         yes.setOnAction(ev -> {
             box.getChildren().clear();
 
@@ -837,7 +937,8 @@ public class FlightScene {
     }
 
     /**
-     * Ask if you want to activate cannons and then ask for the coordinates.
+     * Displays a popup interface allowing the user to activate double cannons
+     * with an option to input specific coordinates for the operation
      */
     public void showActivateCannonsInput() {
         VBox box = new VBox(10);
@@ -931,7 +1032,12 @@ public class FlightScene {
         });
     }
 
-    // used by both activateEngine and Cannons
+    /**
+     * Validates an input string to determine if it follows the required format for activation
+     * with battery coordinates and data
+     * @param input the string to be validated
+     * @return if the input is valid, according to the specified format or not
+     */
     private boolean isValidActivateWithBattery(String input) {
         String[] parts = input.split("\\s*,\\s*");
         if (parts.length < 3) return false;
@@ -947,7 +1053,6 @@ public class FlightScene {
 
         if (batteryIndex == -1 || batteryIndex == parts.length - 1) return false;
 
-        // Check coords before 'battery'
         for (int i = 0; i < batteryIndex; i++) {
             String[] coords = parts[i].trim().split("\\s+");
             if (coords.length != 2) return false;
@@ -959,7 +1064,6 @@ public class FlightScene {
             }
         }
 
-        // Check batteries after 'battery'
         for (int i = batteryIndex + 1; i < parts.length; i++) {
             String[] batteryParts = parts[i].trim().split("\\s*-\\s*");
             if (batteryParts.length != 2) return false;
@@ -980,7 +1084,8 @@ public class FlightScene {
     }
 
     /**
-     * Ask if you want to activate shields and then ask for the coordinates.
+     * Displays a popup interface allowing the user to activate shields
+     * with an option to input specific coordinates for the operation
      */
     public void showActivateShieldInput() {
         VBox box = new VBox(10);
@@ -1074,6 +1179,12 @@ public class FlightScene {
         });
     }
 
+    /**
+     * Validates the given input string to determine whether it conforms to the expected format
+     * for activating a shield
+     * @param input the string to be validated
+     * @return if the input matches the required format and contains valid integer coordinates or not
+     */
     private boolean isValidActivateShield(String input) {
         String[] parts = input.split("\\s*,\\s*");
         if (parts.length != 2) return false;
@@ -1097,8 +1208,9 @@ public class FlightScene {
     }
 
     /**
-     * Ask you to put the coordinates of the cabins to remove Humans.
-     * */
+     * Displays a user input popup that allows the user to enter coordinates and corresponding numbers
+     * for defining specific cabin configurations
+     */
     public void showHumanCoordInput() {
         VBox box = new VBox(10);
         box.setAlignment(Pos.CENTER);
@@ -1120,7 +1232,6 @@ public class FlightScene {
         inputField.setPromptText("Ex. 2 3 - 1, 4 5 - 2");
         inputField.setPrefWidth(300);
 
-        // Errore visibile solo se serve
         Label errorLabel = new Label();
         errorLabel.setTextFill(Color.RED);
         errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
@@ -1166,6 +1277,12 @@ public class FlightScene {
         confirmBtn.setOnAction(e -> sendInput.run());
     }
 
+    /**
+     * Validates the given input string to determine whether it represents valid human coordinates
+     * based on the required format
+     * @param input the string to validate
+     * @return if the input string follows the expected format and contains valid integers or not
+     */
     private boolean isValidHumanCoord(String input) {
         String[] groups = input.split("\\s*,\\s*");
         for (String group : groups) {
@@ -1187,7 +1304,7 @@ public class FlightScene {
     }
 
     /**
-     * Show the good and ask if you want to gain it and where.
+     * Displays a pop-up overlay for user input related to gaining a good
      */
     public void showPlotGoodInput() {
         VBox box = new VBox(10);
@@ -1320,6 +1437,13 @@ public class FlightScene {
         });
     }
 
+    /**
+     * Validates the given input strings to determine if they represent valid coordinates and position values
+     * @param xText the string representing the row-coordinate
+     * @param yText the string representing the column-coordinate
+     * @param posText the string representing the position value
+     * @return if all inputs are valid non-negative integers or not
+     */
     private boolean isValidPlotGoodInput(String xText, String yText, String posText) {
         try {
             int x = Integer.parseInt(xText.trim());
@@ -1333,7 +1457,7 @@ public class FlightScene {
     }
 
     /**
-     * Make player decide on which planet to land.
+     * Displays a popup interface for selecting a planet to land on or choosing not to land
      */
     public void showPlanetDecisionInput() {
         VBox mainBox = new VBox(15);
@@ -1377,7 +1501,7 @@ public class FlightScene {
             selectBtn.setTextFill(Color.BLACK);
             selectBtn.setCursor(Cursor.HAND);
             selectBtn.setPrefWidth(80);
-            selectBtn.setDisable(t != null); // disable if occupied
+            selectBtn.setDisable(t != null);
 
             int finalI = i;
             selectBtn.setOnAction(e -> {
@@ -1390,7 +1514,6 @@ public class FlightScene {
             planetListBox.getChildren().add(line);
         }
 
-        // === Bottone "Don't land" ===
         Button dontLandBtn = new Button("Don't land");
         dontLandBtn.setFont(Font.font("Bangers", 16));
         dontLandBtn.setTextFill(Color.BLACK);
@@ -1402,7 +1525,6 @@ public class FlightScene {
             closePopup.run();
         });
 
-        // === Composizione finale ===
         mainBox.getChildren().addAll(chooseLabel, planetListBox, dontLandBtn);
         mainBox.setTranslateX(55);
         if(planets.size() == 2) {
@@ -1412,16 +1534,15 @@ public class FlightScene {
         } else {
             mainBox.setTranslateY(130);
         }
-
     }
 
     /**
-     * Show the button to draw the next card with blocking overlay.
+     * Displays a pop-up input interface for the "Draw Card" action
      */
     public void showDrawCardInput() {
         VBox container = new VBox(10);
         container.setAlignment(Pos.CENTER);
-        container.setPadding(new Insets(10)); // evita padding negativo, usa ancore
+        container.setPadding(new Insets(10));
 
         Button continueBtn = new Button("Draw next card");
         continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
@@ -1436,7 +1557,6 @@ public class FlightScene {
         AnchorPane.setBottomAnchor(container, 200.0);
         AnchorPane.setLeftAnchor(container, 180.0);
 
-        // Abilita overlay (blocca il mouse dietro)
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
@@ -1452,12 +1572,12 @@ public class FlightScene {
     }
 
     /**
-     * Show the button to start the warzone card with blocking overlay.
+     * Displays a popup to initiate warzone card
      */
     public void showWarzoneInput() {
         VBox container = new VBox(10);
         container.setAlignment(Pos.CENTER);
-        container.setPadding(new Insets(10)); // padding standard, niente negativo
+        container.setPadding(new Insets(10));
 
         Button continueBtn = new Button("Start warzone");
         continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
@@ -1469,10 +1589,9 @@ public class FlightScene {
         container.getChildren().add(continueBtn);
 
         AnchorPane popupContent = new AnchorPane(container);
-        AnchorPane.setBottomAnchor(container, 180.0); // regola la posizione come preferisci
+        AnchorPane.setBottomAnchor(container, 180.0);
         AnchorPane.setLeftAnchor(container, 150.0);
 
-        // Abilita overlay per bloccare interazioni sotto
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
@@ -1488,7 +1607,7 @@ public class FlightScene {
     }
 
     /**
-     * Show a confirmation of the remotion with a continue button.
+     * Displays a confirmation popup indicating that a remotion action has been confirmed
      */
     public void showRemotionConfirmedInput() {
         VBox box = new VBox(10);
@@ -1512,11 +1631,9 @@ public class FlightScene {
         AnchorPane.setBottomAnchor(box, 180.0);
         AnchorPane.setLeftAnchor(box, 100.0);
 
-        // Blocca interazioni sottostanti
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
-        // Chiusura popup e ripristino interazione
         Runnable closePopup = () -> {
             overlayLayer.getChildren().clear();
             restoreInteractiveLayers();
@@ -1529,7 +1646,8 @@ public class FlightScene {
     }
 
     /**
-     * Ask for coordinates from where to remove batteries.
+     * Displays a popup input dialogue for the user to specify the coordinates and quantities
+     * of batteries to be removed
      */
     public void showRemoveBatteriesInput() {
         VBox box = new VBox(10);
@@ -1593,6 +1711,11 @@ public class FlightScene {
         confirmBtn.setOnAction(e -> sendInput.run());
     }
 
+    /**
+     * Validates if the input string is properly formatted for removing batteries
+     * @param input the input string to validate
+     * @return if the input string has the expected format and contains valid numerical values or not
+     */
     private boolean isValidRemoveBatteriesInput(String input) {
         if (input == null || input.trim().isEmpty()) return false;
 
@@ -1618,31 +1741,31 @@ public class FlightScene {
         return true;
     }
 
+    /**
+     * Updates the goods list with the provided list of goods to remove.
+     * @param goodsList list of goods representing the goods to be updated in the list.
+     */
     public void updateGoodsListToRemove(ArrayList<Goods> goodsList) {
         this.goodsList = goodsList;
     }
 
     /**
-     * Ask from where to remove the good.
+     * Displays a popup window allowing the user to remove goods from a list
      */
     public void showRemoveGoodsInput() {
-        // === Titolo fisso ===
         Label chooseLabel = new Label("Select the goods you want to remove:");
         chooseLabel.setTextFill(Color.web("#FFDE69"));
         chooseLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 22));
 
-        // === Griglia dei goods (2 colonne) ===
         GridPane goodsGrid = new GridPane();
         goodsGrid.setAlignment(Pos.CENTER);
         goodsGrid.setHgap(30);
         goodsGrid.setVgap(12);
 
-        // === Scroll pane che contiene la griglia ===
         ScrollPane scrollPane = new ScrollPane(goodsGrid);
         scrollPane.setFitToWidth(true);
         scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 
-        // === Bottone di conferma ===
         Button confirmBtn = new Button("Confirm");
         confirmBtn.setFont(Font.font("Bangers", 16));
         confirmBtn.setTextFill(Color.BLACK);
@@ -1650,14 +1773,12 @@ public class FlightScene {
         confirmBtn.setCursor(Cursor.HAND);
         confirmBtn.setPrefWidth(160);
 
-        // === VBox centrale con scroll e bottone ===
         VBox centerBox = new VBox(15, chooseLabel, scrollPane, confirmBtn);
         centerBox.setAlignment(Pos.TOP_CENTER);
         centerBox.setPadding(new Insets(0));
 
-        // === Overlay principale ===
         AnchorPane popupContent = new AnchorPane();
-        AnchorPane.setTopAnchor(centerBox, 610.0);   // Titolo fisso in alto
+        AnchorPane.setTopAnchor(centerBox, 610.0);
         AnchorPane.setLeftAnchor(centerBox, 100.0);
 
         popupContent.getChildren().add(centerBox);
@@ -1665,13 +1786,11 @@ public class FlightScene {
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
-        // === Chiusura popup ===
         Runnable closePopup = () -> {
             overlayLayer.getChildren().clear();
             restoreInteractiveLayers();
         };
 
-        // === Costruzione della lista dei beni ===
         StringBuilder selectedIndexes = new StringBuilder();
 
         for (int i = 0; i < goodsList.size(); i++) {
@@ -1717,7 +1836,6 @@ public class FlightScene {
             goodsGrid.add(line, col, row);
         }
 
-        // === Azione del bottone di conferma ===
         confirmBtn.setOnAction(e -> {
             if (!selectedIndexes.isEmpty()) {
                 String result = selectedIndexes.toString().replaceAll(",\\s*$", "");
@@ -1728,7 +1846,7 @@ public class FlightScene {
     }
 
     /**
-     * Let the player rearrange goods with confirmation and coordinate input.
+     * Displays a rearrange input popup to let user change good arrangement
      */
     public void showRearrangeInput() {
         VBox box = new VBox(10);
@@ -1826,6 +1944,13 @@ public class FlightScene {
         });
     }
 
+    /**
+     * Validates the input string to ensure it adheres to a specific format
+     * necessary for rearrangement operations
+     * @param input the string to validate
+     * @return if the input string meets the expected format and contains
+     *         valid, non-negative integers for coordinates and values or not
+     */
     private boolean isValidRearrangeInput(String input) {
         if (input == null || input.trim().isEmpty()) return false;
 
@@ -1849,12 +1974,12 @@ public class FlightScene {
                 return false;
             }
         }
-
         return true;
     }
 
     /**
-     * Asks if player wants to gain cosmic credits and lose days.
+     * Displays a popup that prompts the user to gain a specified number of cosmic credits
+     * at the cost of a certain number of days
      */
     public void showCosmicCreditsInput() {
         VBox box = new VBox(10);
@@ -1888,10 +2013,9 @@ public class FlightScene {
         box.getChildren().addAll(confirm, buttons);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 160.0); // Stessa posizione del popup "rearrange"
+        AnchorPane.setBottomAnchor(box, 160.0);
         AnchorPane.setLeftAnchor(box, 105.0);
 
-        // Applica overlay che blocca l’interazione
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
@@ -1912,7 +2036,7 @@ public class FlightScene {
     }
 
     /**
-     * Ask if the player wants to withdraw, with confirmation required.
+     * Displays a popup dialog that prompts the user to confirm if they want to withdraw
      */
     public void showAskWithdraw() {
         VBox box = new VBox(10);
@@ -1937,10 +2061,6 @@ public class FlightScene {
         no.setCursor(Cursor.HAND);
         no.setPrefWidth(100);
 
-//        Label currentSelection = new Label("Please select YES or NO");
-//        currentSelection.setFont(Font.font("Bangers", FontWeight.BOLD, 16));
-//        currentSelection.setTextFill(Color.RED);
-
         Button confirm = new Button("Confirm");
         confirm.setFont(Font.font("Bangers", 16));
         confirm.setTextFill(Color.BLACK);
@@ -1952,7 +2072,7 @@ public class FlightScene {
         HBox buttons = new HBox(10, yes, no);
         buttons.setAlignment(Pos.CENTER);
 
-        VBox popupBox = new VBox(15, title, buttons, /*currentSelection,*/ confirm);
+        VBox popupBox = new VBox(15, title, buttons, confirm);
         popupBox.setAlignment(Pos.CENTER);
         popupBox.setPadding(new Insets(15));
 
@@ -1960,7 +2080,6 @@ public class FlightScene {
         AnchorPane.setBottomAnchor(popupBox, 140.0);
         AnchorPane.setLeftAnchor(popupBox, 150.0);
 
-        // Overlay setup
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
 
@@ -1973,8 +2092,6 @@ public class FlightScene {
 
         yes.setOnAction(e -> {
             response.set("y");
-//            currentSelection.setText("Current selection: YES");
-//            currentSelection.setTextFill(Color.GREEN);
             confirm.setOpacity(1);
             yes.setOpacity(1.0);
             no.setOpacity(0.4);
@@ -1982,17 +2099,12 @@ public class FlightScene {
 
         no.setOnAction(e -> {
             response.set("n");
-//            currentSelection.setText("Current selection: NO");
-//            currentSelection.setTextFill(Color.RED);
-            confirm.setOpacity(1.0);
             no.setOpacity(1.0);
             yes.setOpacity(0.4);
         });
 
         confirm.setOnAction(e -> {
             if (response.get() == null) {
-//                currentSelection.setText("Please select YES or NO");
-//                currentSelection.setTextFill(Color.RED);
                 return;
             }
             viewFlow.handleInput(response.get());
@@ -2001,7 +2113,7 @@ public class FlightScene {
     }
 
     /**
-     * Show the button to roll the dice in the standard popup position.
+     * Displays a popup window prompting the user to roll the dice
      */
     public void showRollDiceInput() {
         VBox box = new VBox(20);
@@ -2039,19 +2151,17 @@ public class FlightScene {
     }
 
     /**
-     * Show the roll dice result with animation and fixed display.
-     * @param result result of the dice roll
+     * Displays the result of rolling a dice using a graphical animation
+     * @param result of the dice roll to be displayed after the animation
      */
     public void showRollDiceResult(int result) {
         isRollDiceOverlayVisible = true;
-        // === Overlay grigio trasparente ===
         Rectangle overlay = new Rectangle();
         overlay.setWidth(1600);
         overlay.setHeight(900);
         overlay.setFill(Color.rgb(0, 0, 0, 0.5));
-        overlay.setMouseTransparent(false); // blocca interazioni sotto
+        overlay.setMouseTransparent(false);
 
-        // === Testo iniziale ===
         Label diceLabel = new Label("🎲 Rolling...");
         diceLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 35));
         diceLabel.setTextFill(Color.web("#FFDE69"));
@@ -2066,7 +2176,6 @@ public class FlightScene {
         StackPane overlayPane = new StackPane(overlay, box);
         root.getChildren().add(overlayPane);
 
-        // === Animazione numeri casuali per 1.5s ===
         Timeline rollAnimation = new Timeline();
         Random rand = new Random();
 
@@ -2075,15 +2184,12 @@ public class FlightScene {
             rollAnimation.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> resultLabel.setText(String.valueOf(rand.nextInt(6) + 1))));
         }
 
-        // === Mostra il risultato reale ===
         rollAnimation.getKeyFrames().add(new KeyFrame(Duration.millis(1500), e -> resultLabel.setText(String.valueOf(result))));
 
-        // === Dopo 3s: rimuove overlay e mostra risultato fisso ===
         rollAnimation.getKeyFrames().add(new KeyFrame(Duration.millis(4500), e -> {
             isRollDiceOverlayVisible = false;
             root.getChildren().remove(overlayPane);
 
-            // Rimuove il precedente risultato se presente
             if (rollDiceResultBox != null) {
                 root.getChildren().remove(rollDiceResultBox);
             }
@@ -2113,16 +2219,15 @@ public class FlightScene {
     }
 
     /**
-     * show in the top-right corner a popup with the message
-     * @param message message to show
+     * Displays a message on the screen with a title and content in a styled message box
+     * positioned at the top-right corner
+     * @param message the text content to be displayed in the message box
      */
     public void showMessage(String message) {
-        // Titolo (bold)
         Label title = new Label("New message:");
         title.setTextFill(Color.WHITE);
         title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 
-        // Messaggio (normale)
         Label content = new Label(message);
         content.setTextFill(Color.WHITE);
         content.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
@@ -2137,7 +2242,6 @@ public class FlightScene {
                         "-fx-background-radius: 10px;"
         );
 
-        // Assicura dimensione del VBox
         messageBox.setMaxWidth(Region.USE_PREF_SIZE);
         messageBox.setMaxHeight(Region.USE_PREF_SIZE);
 
@@ -2154,38 +2258,32 @@ public class FlightScene {
     }
 
     /**
-     * show on screen the positions of the truckers and the relative days distance
-     * @param truckers map of nickname and related position
+     * Updates the track position rankings
+     * @param truckers map of truckers' positions
      */
     public void updateTrack(Map<String, Integer> truckers) {
         if (scene == null || scene.getRoot() == null) return;
 
         StackPane root = (StackPane) scene.getRoot();
 
-        // Rimuove eventuale trackBox precedente
         root.getChildren().removeIf(node -> node.getId() != null && node.getId().equals("trackBox"));
 
-        // Ordina per posizione decrescente
         List<Map.Entry<String, Integer>> sorted = new ArrayList<>(truckers.entrySet());
         sorted.sort((a, b) -> b.getValue().compareTo(a.getValue())); // ordine decrescente
 
-        // Salva la posizione massima (del primo)
         int maxPosition = sorted.getFirst().getValue();
 
-        // Contenitore verticale
         VBox trackBox = new VBox(10);
         trackBox.setId("trackBox");
         trackBox.setAlignment(Pos.CENTER_LEFT);
         trackBox.setPadding(new Insets(10));
         trackBox.setMouseTransparent(true);
 
-        // Titolo
         Label title = new Label("Track Position");
         title.setFont(Font.font("Bangers", FontWeight.BOLD, 24));
         title.setTextFill(Color.web("#FFDE69"));
         trackBox.getChildren().add(title);
 
-        // Aggiungi righe in ordine
         for (int i = 0; i < sorted.size(); i++) {
             int pos = i + 1;
             String name = sorted.get(i).getKey();
@@ -2211,7 +2309,6 @@ public class FlightScene {
             trackBox.getChildren().add(line);
         }
 
-        // Posiziona a sinistra al centro
         StackPane.setAlignment(trackBox, Pos.CENTER_LEFT);
         StackPane.setMargin(trackBox, new Insets(0, 0, 0, 20));
 
@@ -2219,16 +2316,15 @@ public class FlightScene {
     }
 
     /**
-     * updates the planet to show in planetDecision
-     * @param planets list of planets of the card
+     * Updates the list of planets occupied
+     * @param planets the list of the planets to be updated
      */
     public void updatePlanetsOccupied(ArrayList<Trucker> planets) {
         this.planets = planets;
     }
 
     /**
-     * Show a message and a button to continue when ready for the big shot.
-     * Blocks interactions underneath using an overlay.
+     * Displays a popup encouraging the user to take the big shot
      */
     public void showBigShot() {
         VBox container = new VBox(15);
@@ -2270,7 +2366,7 @@ public class FlightScene {
 
 
     /**
-     * scene for players who finished the game
+     * Displays a wait overlay to indicate that the user needs to wait for other participants or processes
      */
     public void showWaitForOthers() {
         createWaitOverlayIfAbsent();
@@ -2283,6 +2379,9 @@ public class FlightScene {
         });
     }
 
+    /**
+     * Hides the "wait for others" overlay and stops any associated animations
+     */
     public void hideWaitForOthers() {
         Platform.runLater(() -> {
             if (waitOverlay != null) {
@@ -2296,6 +2395,10 @@ public class FlightScene {
         });
     }
 
+    /**
+     * Creates a wait overlay displaying a message indicating the application is waiting
+     * for other truckers to finish
+     */
     private void createWaitOverlayIfAbsent() {
         if (waitOverlay != null) return;
 
@@ -2330,13 +2433,16 @@ public class FlightScene {
     }
 
     /**
-     * updates the curr good to show in showPlotGoodInput
-     * @param good good to show
+     * Updates the current good image based on the provided good
+     * @param good the good whose value is used to fetch and update the image
      */
     public void updateCurrGood(Goods good) {
         this.goodImage = goodsImagesGetter.getGoodImage(good.getValue());
     }
 
+    /**
+     * Updates the status bar with the latest information provided by the view flow
+     */
     public void updateStatusBar() {
         posLabel.setText(": " + viewFlow.getPosition());
         battLabel.setText(": " + viewFlow.getBatteryCount());
@@ -2349,15 +2455,18 @@ public class FlightScene {
         for (Map.Entry<String, Integer> entry : viewFlow.getGoodsByColor().entrySet()) {
             String color = entry.getKey().toLowerCase();
             if (goodLabels.containsKey(color)) {
+                goodLabels.get(color).setText(": 0");
                 if(entry.getValue() > 0) {
                     goodLabels.get(color).setText(": " + entry.getValue());
-                } else {
-                    goodLabels.get(color).setText(": 0");
                 }
             }
         }
     }
 
+    /**
+     * Creates and returns a styled Label with predefined font, size, and color
+     * @return a styled Label
+     */
     private Label createStyledLabel() {
         Label l = new Label();
         l.setFont(Font.font("Arial", FontWeight.BOLD, 16));
@@ -2366,7 +2475,8 @@ public class FlightScene {
     }
 
     /**
-     * connected with shipStatus that show the specific status of the single components
+     * Displays additional detailed information about the components on the scene
+     * by overlaying the existing interface
      */
     private void showMore() {
         root.getChildren().removeIf(n -> "moreOverlay".equals(n.getId()));
@@ -2444,7 +2554,7 @@ public class FlightScene {
 
         VBox descriptionBox = new VBox(20, titleBox, textBox);
         descriptionBox.setMaxWidth(600);
-        descriptionBox.setAlignment(Pos.TOP_CENTER); // centra solo verticalmente
+        descriptionBox.setAlignment(Pos.TOP_CENTER);
         descriptionBox.setPadding(new Insets(20));
 
         ScrollPane scroll = new ScrollPane(descriptionBox);
@@ -2469,11 +2579,12 @@ public class FlightScene {
     }
 
     /**
-     * connected to showMore that create the string to show for every single component
-     * @param c component
-     * @param i position x
-     * @param j position y
-     * @return null
+     * Formats and returns a detailed description of a given component based on its type
+     * and other specific properties
+     * @param c the component
+     * @param i the row index for the component's position
+     * @param j the column index for the component's position
+     * @return a formatted string describing the component
      */
     private String formatComponent(Component c, int i, int j) {
         if (c == null) return "";
@@ -2488,7 +2599,11 @@ public class FlightScene {
                         int count = 0;
                         for (Goods g : load.getGoods()) {
                             count++;
-                            details.append(g.getColor()).append(" {").append(count).append("}");
+                            if(g.getColor() != null) {
+                                details.append(g.getColor()).append(" {").append(count).append("}");
+                            } else {
+                                details.append("empty {").append(count).append("}");
+                            }
                             if (count < load.getGoods().size()) {
                                 details.append(", ");
                             }
@@ -2503,7 +2618,11 @@ public class FlightScene {
                         int count = 0;
                         for (Goods g : load.getGoods()) {
                             count++;
-                            details.append(g.getColor()).append(" {").append(count).append("}");
+                            if(g.getColor() != null) {
+                                details.append(g.getColor()).append(" {").append(count).append("}");
+                            } else {
+                                details.append("empty {").append(count).append("}");
+                            }
                             if (count < load.getGoods().size()) {
                                 details.append(", ");
                             }
@@ -2566,7 +2685,8 @@ public class FlightScene {
     }
 
     /**
-     * Removes the fixed dice result box from the screen, if present.
+     * Clears the result of the dice roll by removing the result display box
+     * from the parent container and resetting its reference to null
      */
     public void clearRollDiceResult() {
         if (rollDiceResultBox != null) {
@@ -2575,6 +2695,10 @@ public class FlightScene {
         }
     }
 
+    /**
+     * Displays an error message as a popup overlay on the screen with a specified message
+     * @param message the error message to be displayed in the popup
+     */
     public void showError(String message) {
         double width = root.getWidth();
         double height = root.getHeight();
@@ -2603,6 +2727,10 @@ public class FlightScene {
         });
     }
 
+    /**
+     * Displays the remaining number of cards
+     * @param remainingCards the number of cards left to be displayed
+     */
     public void showRemainingCards(int remainingCards) {
         Label label = new Label("Remaining\ncards");
         label.setFont(Font.font("Bangers", FontWeight.BOLD, 24));

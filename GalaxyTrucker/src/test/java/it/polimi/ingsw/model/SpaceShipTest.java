@@ -965,4 +965,11 @@ class SpaceShipTest {
         assertEquals(1, goodsByColor.get("green"));
         assertEquals(2, goodsByColor.size());
     }
+
+    @Test
+    void removeAllBatteries(){
+        spaceShip3.setBattery();
+        spaceShip3.removeAllBatteries();
+        assertEquals(0,spaceShip3.getNumBatteries());
+    }
 }

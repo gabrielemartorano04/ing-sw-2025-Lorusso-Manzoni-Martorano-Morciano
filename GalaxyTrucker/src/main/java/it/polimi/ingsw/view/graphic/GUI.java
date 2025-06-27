@@ -784,7 +784,11 @@ public class GUI implements UI {
                 case PLANET_DECISION-> this.flightScene.showPlanetDecisionInput();
                 case DRAW_CARD -> this.flightScene.showDrawCardInput();
                 case REMOTION_CONFIRMED -> this.flightScene.showRemotionConfirmedInput();
-                case REMOVE_BATTERIES -> this.flightScene.showRemoveBatteriesInput();
+                case REMOVE_BATTERIES -> {
+                    if(viewFlow.getShip().getNumBatteries()>0){
+                        this.flightScene.showRemoveBatteriesInput();
+                    }
+                }
                 case REMOVE_GOODS -> this.flightScene.showRemoveGoodsInput();
                 case REARRANGE -> {
                     if(viewFlow.shipHasGoods()) {
@@ -888,7 +892,6 @@ public class GUI implements UI {
            if(viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
                this.flightScene.setShip(viewFlow.getShip().getComponents());
                this.flightScene.updateShipLayout();
-               this.flightScene.updateStatusBar();
            }
         });
     }
