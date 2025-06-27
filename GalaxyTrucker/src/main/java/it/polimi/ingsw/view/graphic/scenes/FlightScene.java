@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.graphic.scenes;
 
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Condition;
@@ -520,10 +521,12 @@ public class FlightScene {
 
     /**
      * Displays another ship layout on the screen
-     * @param layout a 2D array representing the layout of the ship
+     * @param ship of the player
      * @param nickname of the player
      */
-    public void showOtherShip(Component[][] layout, String nickname) {
+    public void showOtherShip(SpaceShip ship, String nickname) {
+
+        Component[][] layout = ship.getComponents();
 
         Image trasparent = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/transparent.png")).toExternalForm());
 

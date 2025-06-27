@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.PlayerColors;
+import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Stack;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Condition;
@@ -382,9 +383,9 @@ public interface UI {
     /**
      * Displays the layout of another ship based on provided information
      * @param nickname a string representing the nickname of the ship's owner or identifier
-     * @param layout a 2D array of Component objects representing the ship's layout
+     * @param ship of the player
      */
-    void showOtherShipLayout(String nickname, Component[][] layout);
+    void showOtherShipLayout(String nickname, SpaceShip ship);
 
     /**
      * Updates the goods list to mark specific items for removal

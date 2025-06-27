@@ -1,5 +1,6 @@
 package it.polimi.ingsw.net.events.serverevents;
 
+import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.control.ServerEventHandlerVisitor;
 
@@ -12,7 +13,7 @@ public class ShowOtherShipResponse extends ServerEvent {
     /**
      * Grid of components composing the spaceship
      */
-    private final Component[][] spaceship;
+    private final SpaceShip spaceship;
 
     /**
      * Nickname of the player
@@ -24,7 +25,7 @@ public class ShowOtherShipResponse extends ServerEvent {
      * @param spaceship of the player
      * @param nickname of the player
      */
-    public ShowOtherShipResponse(Component[][] spaceship, String nickname) {
+    public ShowOtherShipResponse(SpaceShip spaceship, String nickname) {
         super(false);
         this.spaceship = spaceship;
         this.nickname = nickname;
@@ -33,7 +34,7 @@ public class ShowOtherShipResponse extends ServerEvent {
     /**
      * @return the grid of components composing the spaceship
      */
-    public Component[][] getSpaceship() {
+    public SpaceShip getSpaceship() {
         return spaceship;
     }
 

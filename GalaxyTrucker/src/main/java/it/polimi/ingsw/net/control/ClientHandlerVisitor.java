@@ -905,7 +905,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     public ServerEvent visit(ShowOtherShipEvent event) {
         for(Trucker t:gameController.getGame().getTruckerList()){
             if(t.getNickname().equals(event.getNicknameRequested())){
-                return new ShowOtherShipResponse(t.getSpaceShip().getComponents(),event.getNicknameRequested());
+                return new ShowOtherShipResponse(t.getSpaceShip(),event.getNicknameRequested());
             }
         }
         return new GenericErrorEvent("No such trucker with that nickname",false);
