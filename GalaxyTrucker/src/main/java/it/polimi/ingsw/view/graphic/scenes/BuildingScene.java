@@ -961,6 +961,12 @@ public class BuildingScene {
         countdown.play();
     }
 
+    public void stopHourglassTimer() {
+        hourglassBtn.setDisable(false);
+        isHourglassTimerStarted = false;
+        hourglassBtn.setEffect(null);
+    }
+
     /**
      * Adds a Select component button to the scene, which allows the user to select a new component
      * from the available components list
