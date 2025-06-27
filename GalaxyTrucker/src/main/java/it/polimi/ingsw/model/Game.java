@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.BuildTimerManager;
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
+import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.WaitOthersBuildingEvent;
 import it.polimi.ingsw.exceptions.CannotTurnHourglassException;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.WaitOthersHourglassEvent;
@@ -649,8 +651,9 @@ public class Game implements Serializable {
             hourglass.reset();
             event= new WaitOthersHourglassEvent(nickname);
 
-        } else
+        } else {
             throw new CannotTurnHourglassException("You can't turn the hourglass now!");
+        }
         return event;
     }
 

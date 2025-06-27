@@ -163,7 +163,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
             case FLIGHT -> {
                 viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
                 viewFlow.setStartFlightForAll();
-                viewFlow.setStartFlight(false);
                 viewFlow.setEnd();
                 ui.resumeFlightScene(event.getPlayerNames());
 
@@ -456,8 +455,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
      */
     @Override
     public void visit(WaitOthersStartFlightEvent event) {
-        //viewFlow.setStartFlight();
-        System.out.println("WaitOthersStartFlight");
         ui.showWaitForOthers();
     }
 

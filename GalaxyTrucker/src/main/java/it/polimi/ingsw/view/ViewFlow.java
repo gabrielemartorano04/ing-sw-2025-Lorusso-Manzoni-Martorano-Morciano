@@ -813,13 +813,6 @@ public class ViewFlow implements EventReceiver {
         return cardsToGo;
     }
 
-    /**
-     * Sets the start flight status
-     * @param startFlight a boolean indicating whether the flight should be started or not
-     */
-    public void setStartFlight(boolean startFlight) {
-        this.startFlight = startFlight;
-    }
 
     /**
      * @return the number of lost components as an integer
