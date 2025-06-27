@@ -617,6 +617,7 @@ public class FlightScene {
      * @param nickname of the player
      */
     public void showOtherShip(SpaceShip ship, String nickname) {
+        statusBar.setOpacity(0);
 
         Component[][] layout = ship.getComponents();
 
@@ -707,6 +708,8 @@ public class FlightScene {
         root.setOnMouseClicked(e -> {
             root.getChildren().remove(overlay);
             root.getChildren().remove(popupWithLabel);
+            statusBar.setOpacity(1);
+            restoreInteractiveLayers();
         });
 
         root.getChildren().add(popupWithLabel);

@@ -2253,7 +2253,13 @@ public class SpaceShip implements Serializable {
         }
     }
 
-
+    /**
+     * Compares the current spaceship components with the components of another spaceship to determine if any
+     * changes have been made. The method evaluates differences.
+     *
+     * @param oldShip the spaceship against which the current spaceship's components are compared
+     * @return true if there is any change in the components between the two spaceships, otherwise false
+     */
     public boolean isChanged(SpaceShip oldShip){
         for(int i=0; i<components.length; i++){
             for(int j=0; j<components[i].length; j++){
