@@ -519,7 +519,12 @@ public class FlightScene {
         this.otherBtn = otherBtn;
     }
 
-    private VBox createStatusBarForShip(SpaceShip ship) {
+    /**
+     * Creates and returns a status bar for the given spaceship
+     * @param ship the spaceship for which the status bar is to be created
+     * @return a VBox containing the spaceship's status bar
+     */
+    private VBox createStatusBarForOtherShip(SpaceShip ship) {
         Image engine = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/engine.png")).toExternalForm());
         Image cannon = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/cannon.png")).toExternalForm());
         Image human = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/human.png")).toExternalForm());
@@ -562,7 +567,6 @@ public class FlightScene {
             box.setAlignment(Pos.CENTER);
         }
 
-        // GOODS
         HBox goodsBox = new HBox(10);
         goodsBox.setAlignment(Pos.CENTER);
         Map<String, Integer> goods = ship.getGoodsByColor();
@@ -583,7 +587,6 @@ public class FlightScene {
             goodsBox.getChildren().add(g);
         }
 
-        // Layout finale
         HBox valuesRow = new HBox(25, battBox, humanBox, cannonBox, engineBox);
         valuesRow.setAlignment(Pos.CENTER);
 
@@ -684,7 +687,7 @@ public class FlightScene {
         nameLabel.setTextFill(Color.web("#FFDE69"));
         nameLabel.setAlignment(Pos.CENTER);
 
-        VBox statusBarForShip = createStatusBarForShip(ship);
+        VBox statusBarForShip = createStatusBarForOtherShip(ship);
         VBox popupWithLabel = new VBox(20, nameLabel, shipPopup, statusBarForShip);
         popupWithLabel.setAlignment(Pos.CENTER);
 
@@ -1303,7 +1306,7 @@ public class FlightScene {
         insertLabel.setTextAlignment(TextAlignment.CENTER);
         insertLabel.setWrapText(true);
 
-        Label hintLabel = new Label("Type '<x1> <y1> - <number>, ...'");
+        Label hintLabel = new Label("Type '<row> <col> - <number>, ...'");
         hintLabel.setTextFill(Color.LIGHTGRAY);
         hintLabel.setFont(Font.font("Arial", FontPosture.ITALIC, 14));
         hintLabel.setWrapText(true);
@@ -2328,7 +2331,7 @@ public class FlightScene {
         Platform.runLater(() -> {
 
             StackPane.setAlignment(messageBox, Pos.TOP_RIGHT);
-            StackPane.setMargin(messageBox, new Insets(20, 20, 0, 0));
+            StackPane.setMargin(messageBox, new Insets(20, 30, 0, 0));
             root.getChildren().add(messageBox);
 
             PauseTransition delay = new PauseTransition(Duration.seconds(10));
@@ -2579,11 +2582,22 @@ public class FlightScene {
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[i].length; j++) {
                 Component c = layout[i][j];
-                if (c != null && !"Empty Space".equals(c.getType()) && ("Load".equals(c.getType()) || "Battery Storage".equals(c.getType()) || "Cabin".equals(c.getType()) || "Cannon".equals(c.getType()) || "Engine".equals(c.getType()) || "Shield".equals(c.getType()))) {
-                    if(!formatComponent(c, i, j).isBlank()) {
-                        desc.append(formatComponent(c, i, j)).append("\n");
+                if (c != null && !formatComponent(c, i, j).isBlank()) {
+                    switch(c) {
+                        case Load ignored -> desc.append(formatComponent(c, i, j)).append("\n");
+                        case BatteryStorage ignored -> desc.append(formatComponent(c, i, j)).append("\n");
+                        case Cabin ignored -> desc.append(formatComponent(c, i, j)).append("\n");
+                        case Cannon ignored -> desc.append(formatComponent(c, i, j)).append("\n");
+                        case Engine ignored -> desc.append(formatComponent(c, i, j)).append("\n");
+                        case Shield ignored -> desc.append(formatComponent(c, i, j)).append("\n");
+                        default -> {}
                     }
                 }
+//                if (c != null && !"Empty Space".equals(c.getType()) && ("Load".equals(c.getType()) || "Battery Storage".equals(c.getType()) || "Cabin".equals(c.getType()) || "Cannon".equals(c.getType()) || "Engine".equals(c.getType()) || "Shield".equals(c.getType()))) {
+//                    if(!formatComponent(c, i, j).isBlank()) {
+//                        desc.append(formatComponent(c, i, j)).append("\n");
+//                    }
+//                }
             }
         }
         Label l = new Label(desc.toString());
