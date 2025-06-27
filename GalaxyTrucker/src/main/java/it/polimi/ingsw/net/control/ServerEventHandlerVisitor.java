@@ -7,6 +7,7 @@ import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
+import it.polimi.ingsw.view.text.TimerDisplay;
 
 import java.util.ArrayList;
 
