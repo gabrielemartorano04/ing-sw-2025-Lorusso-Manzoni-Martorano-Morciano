@@ -561,13 +561,12 @@ public class FlightScene {
         HBox cannonForOtherBox = new HBox(0, cannonIconForOther, cannonLabelForOther);
         HBox engineForOtherBox = new HBox(5, engineIconForOther, engineLabelForOther);
 
+        battLabelForOther.setText(": " + ship.getNumBatteries());
+        humanLabelForOther.setText(": " + ship.getNumCrew());
+        cannonLabelForOther.setText(": " + ship.getSingleCannonPower());
+        engineLabelForOther.setText(": " + ship.getSingleEnginePower());
+
         for (HBox box : List.of(battForOtherBox, humanForOtherBox, cannonForOtherBox, engineForOtherBox)) {
-            for (Node n : box.getChildren()) {
-                if (n instanceof ImageView iv) {
-                    iv.setFitWidth(25);
-                    iv.setPreserveRatio(true);
-                }
-            }
             box.setAlignment(Pos.CENTER);
         }
 
