@@ -373,11 +373,11 @@ public class WarZone extends Card implements Serializable {
         }
 
         if(colorOfCurrGoodToRemove == 0 && goodsToLose > 0){
-            if(weakestTrucker.getSpaceShip().getNumBatteries() == 0){
+            if(weakestTrucker.getSpaceShip().getNumBatteries() <= goodsToLose){
+                weakestTrucker.getSpaceShip().removeAllBatteries();
                 this.state = CardState.ESECUZIONE;
                 return cardEffect();
             }else{
-                System.out.println(weakestTrucker.getSpaceShip().getNumBatteries());
                 this.state = CardState.REMOVE_BATTERIES;
                 return new RemoveBatteries(true, weakestTrucker.getNickname(),weakestTrucker.getSpaceShip(), goodsToLose, Game.getIstance().getTruckerList());
             }
@@ -413,7 +413,8 @@ public class WarZone extends Card implements Serializable {
         } else if((goodsToLose > 0 && !weakestTrucker.getSpaceShip().getGoodsList().isEmpty())){
             state = CardState.REMOVE_GOODS;
             return removeGoods();
-        }else if (goodsToLose > 0 && weakestTrucker.getSpaceShip().getNumBatteries() == 0){
+        }else if (goodsToLose > 0 && weakestTrucker.getSpaceShip().getNumBatteries() <= goodsToLose){
+            weakestTrucker.getSpaceShip().removeALlBatteries();
             state = CardState.ESECUZIONE;
             return cardEffect();
         }

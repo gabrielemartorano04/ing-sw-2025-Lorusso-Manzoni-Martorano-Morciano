@@ -423,9 +423,7 @@ public class Smugglers extends Card implements Serializable {
 
         while (colorOfCurrGoodToRemove > 0 && goodsToLoseCurrTrucker > 0) {
             numGoodCurrType = getNumGoodsForColor(ship, colorOfCurrGoodToRemove);
-            System.out.println(nickname);
-            System.out.println("sto cercando " + colorOfCurrGoodToRemove);
-            System.out.println("numGoodCurrType: " + numGoodCurrType + " numGoodCurrType: " + goodsToLoseCurrTrucker);
+
             if (numGoodCurrType > 0 && numGoodCurrType <= goodsToLoseCurrTrucker) {
                 return removeWithoutDecision(goodsList);
             }
@@ -442,7 +440,7 @@ public class Smugglers extends Card implements Serializable {
             colorOfCurrGoodToRemove--;
         }
 
-        if (colorOfCurrGoodToRemove == 0 && goodsToLoseCurrTrucker > 0) {
+        if (ship.getGoodsList().isEmpty() && goodsToLoseCurrTrucker > 0) {
             return handleBatteryOrNextTrucker(ship, nickname);
         }
 
@@ -458,7 +456,9 @@ public class Smugglers extends Card implements Serializable {
      * @return serverEvent to send to clients
      */
     private ServerEvent handleBatteryOrNextTrucker(SpaceShip ship, String nickname) throws GeneralError {
-        if (ship.getNumBatteries() == 0) {
+        if (ship.getNumBatteries() <= goodsToLoseCurrTrucker) {
+            ship.removeAllBatteries();
+
             defeatedTruckers.removeFirst();
             goodsToLoseCurrTrucker = goodsLost;
             if (defeatedTruckers.isEmpty()) {
@@ -516,11 +516,14 @@ public class Smugglers extends Card implements Serializable {
         SpaceShip spaceShip = defeatedTruckers.getFirst().getSpaceShip();
         String nickname = defeatedTruckers.getFirst().getNickname();
 
-        if (goodsToLoseCurrTrucker == 0 || (goodsToLoseCurrTrucker > 0 && spaceShip.getNumBatteries() == 0)) {
+        if (goodsToLoseCurrTrucker == 0 || (goodsToLoseCurrTrucker > 0 && spaceShip.getNumBatteries() <= goodsToLoseCurrTrucker)) {
+            if(goodsToLoseCurrTrucker>0){
+                spaceShip.removeAllBatteries();
+            }
+
             defeatedTruckers.removeFirst();
             goodsToLoseCurrTrucker = goodsLost;
             cardState = CardState.REMOVE_GOODS;
-            System.out.println("Remotion Confirmed in remove without decision");
             return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED,nickname,spaceShip);
 
         } else if((goodsToLoseCurrTrucker > 0 && !spaceShip.getGoodsList().isEmpty())){
@@ -611,7 +614,6 @@ public class Smugglers extends Card implements Serializable {
         defeatedTruckers.removeFirst();
         goodsToLoseCurrTrucker = goodsLost;
         cardState = CardState.REMOVE_GOODS;
-        System.out.println("Remotion Confirm removeBatteries");
         return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED,nickname,spaceShip);
     }
 
