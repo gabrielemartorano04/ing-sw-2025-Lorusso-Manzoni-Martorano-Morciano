@@ -521,6 +521,11 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(CurrentCondition event) {
         boolean isLeader = false;
+        handleDeath(event.getTruckersRemoved());
+
+        if(!viewFlow.isOut()){
+            updatesFromFlight(event.getTruckers());
+        }
 
         if(event.getTrack()!=null){
             viewFlow.setTrack(event.getTrack());
@@ -531,11 +536,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
             ui.showTrack(event.getTrack(), viewFlow.getLevel());
         }
 
-        handleDeath(event.getTruckersRemoved());
-
-        if(!viewFlow.isOut()){
-            updatesFromFlight(event.getTruckers());
-        }
 
         if(event.getTruckers().getFirst().getNickname().equals(viewFlow.getNickname())){
             viewFlow.setParserFlightState(ParserState.CURRENT_CONDITION);
@@ -1102,13 +1102,16 @@ public class ServerEventHandlerVisitor implements VirtualView {
     private void updatesFromFlight (ArrayList<Trucker> truckers){
         for(Trucker t:truckers){
             if(t.getNickname().equals(viewFlow.getNickname())){
+
                 if(viewFlow.getCredits()!=t.getCosmicCredit()) {
                     viewFlow.setCredits(t.getCosmicCredit());
                 }
 
                 if(t.getSpaceShip().isChanged(viewFlow.getShip())) {
-                    System.out.println("ho cambiato la ship");
+
                     viewFlow.setShip(t.getSpaceShip());
+                    ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+                    ui.showPlayerShipStatus();
                 }
                 break;
             }
