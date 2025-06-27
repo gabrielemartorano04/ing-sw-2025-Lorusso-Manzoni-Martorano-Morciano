@@ -330,7 +330,6 @@ public class Pirates extends Card implements Serializable {
 
         if(shoot[0] == 1){
             cardState = CardState.ESECUZIONE;
-            System.out.println("Entrato con indice " + currShootIndex);
             System.out.println("ROLL DICE PIRATES BIG SHOT, roll dice Method");
             return new RollDiceResult(ParserState.DISPLAY_BIG_SHOOT, currShootIndex - 1, shoot, null, roll, defeatedTruckers.getFirst().getNickname(), true, Game.getIstance().getTruckerList());
 
@@ -492,4 +491,5 @@ public class Pirates extends Card implements Serializable {
     public int getIndexOfCurrentTrucker() {
         return indexOfCurrentTrucker;
     }
+
 }

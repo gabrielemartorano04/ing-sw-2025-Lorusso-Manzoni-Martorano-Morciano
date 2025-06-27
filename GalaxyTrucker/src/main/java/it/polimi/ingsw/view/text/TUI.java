@@ -1191,6 +1191,14 @@ public class TUI implements UI {
     }
 
     /**
+     * Displays the number of cards left to draw in TUI
+     */
+    @Override
+    public void showNumCardLeft() {
+        System.out.println("Number of cards to draw: " + viewFlow.getCardsToGo());
+    }
+
+    /**
      * Displays the layout of another ship, including detailed information about its components.
      * @param nickname the nickname of the ship owner
      * @param ship of the player
