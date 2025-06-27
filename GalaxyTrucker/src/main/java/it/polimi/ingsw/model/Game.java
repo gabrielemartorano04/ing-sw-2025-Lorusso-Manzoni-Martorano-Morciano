@@ -488,9 +488,7 @@ public class Game implements Serializable {
         int i=0;
         for(Trucker t: truckers) {
             scores[i] = t.getCosmicCredit();
-            System.out.println(t.getCosmicCredit() + " Cosmic credits");
             scores[i] = scores[i] - t.getSpaceShip().getLost();
-            System.out.println(t.getSpaceShip().getLost() + " Cosmic credits");
 
 
             if(gameLevel == 2){
@@ -508,8 +506,6 @@ public class Game implements Serializable {
                     case 3 ->  scores[i] = scores[i] + 1;
                 }
             }
-
-            System.out.println("score del current dopo aggiunta posizione " + scores[i]);
 
             ArrayList<Goods> goodsList = t.getSpaceShip().getGoodsList();
 
@@ -537,6 +533,11 @@ public class Game implements Serializable {
             for(Goods g: goodsList) {
                 scores[i] += g.getValue()/2;
             }
+            i++;
+        }
+        i = 0;
+        for(Trucker t: truckers){
+            System.out.println("NickName " + t.getNickname() + " SCORE " + scores[i]);
             i++;
         }
         return scores;
