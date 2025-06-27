@@ -547,6 +547,17 @@ public class ClientHandlerVisitor implements VirtualServer {
         }
     }
 
+    /** handles the remotion of a tile from a player ship */
+    @Override
+    public ServerEvent visit(RemoveTile event, Client client){
+        if(client.getTruckerController().getSpaceShip().isLegalAfterRemove(event.getX(), event.getY())){
+            ArrayList<int[]> alienCoord = client.getTruckerController().getSpaceShip().getAlienCabin();
+            return new AlienCabinCoord(alienCoord);
+        }else{
+            return new ShipNotLegal(client.getTruckerController().getSpaceShip());
+        }
+    }
+
     /**
      * Handles the request for retrieving the coordinates of the alien cabin from the client's spaceship
      *

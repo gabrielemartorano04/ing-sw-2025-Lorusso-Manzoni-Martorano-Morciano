@@ -14,35 +14,35 @@ public class RemoveTile extends ClientEvent {
     /**
      * row of the component to be removed
      */
-    private final int row;
+    private final int x;
 
     /**
      * column of the component to be removed
      */
-    private final int column;
+    private final int y;
 
     /**
      * constructs the class
-     * @param row row decided by the client
-     * @param column column decided by the client
+     * @param x row decided by the client
+     * @param y column decided by the client
      */
-    public RemoveTile(int row, int column) {
-        this.row = row;
-        this.column = column;
+    public RemoveTile(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     /**
      * @return the column decided by the client
      */
-    public int getColumn() {
-        return column;
+    public int getY() {
+        return y;
     }
 
     /**
      * @return the row decided by the client
      */
-    public int getRow() {
-        return row;
+    public int getX() {
+        return x;
     }
 
     /**

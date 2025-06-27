@@ -78,6 +78,11 @@ public interface VirtualServer {
     ServerEvent visit(ShowOtherShipEvent event);
 
     /**
+     * Handles a RemoveTile action from a client
+     */
+    ServerEvent visit(RemoveTile event, Client client);
+
+    /**
      * Handles an AlienCoordinatesRequest from a client.
      */
     ServerEvent visit(AlienCoordinatesRequest event,Client client);

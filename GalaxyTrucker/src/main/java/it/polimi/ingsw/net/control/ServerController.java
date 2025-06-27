@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.events.clientevents.ClientEvent;
 import it.polimi.ingsw.net.events.serverevents.EndGameEvent;
-import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailableColorsEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.AvailablePlayersEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.ChooseResumeEvent;
