@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public interface CardInterface {
 
-    /**
+    /**as
      * Handles the landing of a player on an Abandoned ship or Abandoned Station
      */
     default ServerEvent truckerLanding(boolean landing) throws GeneralError, WrongCallerException{
