@@ -914,7 +914,7 @@ public class GUI implements UI {
            if(viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
                this.flightScene.setShip(viewFlow.getShip().getComponents());
                this.flightScene.updateShipLayout();
-           }else if (viewFlow.getViewState() == ViewFlow.ViewState.REMOVE){
+           }else if (viewFlow.getViewState() == ViewFlow.ViewState.REMOVE || viewFlow.getViewState() == ViewFlow.ViewState.FILL){
                this.buildingScene.buildShipGrid(false, layout);
            }
         });

@@ -1877,7 +1877,7 @@ public class BuildingScene {
 
         StackPane overlay = new StackPane(dimBackground, message);
         overlay.setAlignment(Pos.CENTER);
-        overlay.setMouseTransparent(true);
+        overlay.setMouseTransparent(false);
 
         root.getChildren().add(overlay);
 
@@ -1945,7 +1945,9 @@ public class BuildingScene {
      * adds the remove btn with its title to the scene to let the client remove a component
      */
     public void showRemove() {
-        if (removeBtn != null) return;
+        if (removeBtn != null) {
+            removeRemoveBox();
+        }
 
         removeSelectedComponentBox();
 
