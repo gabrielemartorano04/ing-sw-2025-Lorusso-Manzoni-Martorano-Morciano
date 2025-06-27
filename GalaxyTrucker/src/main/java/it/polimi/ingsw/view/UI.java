@@ -344,6 +344,11 @@ public interface UI {
      */
     void showShipLayout(String nickname, Component[][] layout);
 
+    /**
+     * Displays the number of cards left to draw
+     */
+    void showNumCardLeft();
+
     //FLIGTH
 
     /**
@@ -403,4 +408,5 @@ public interface UI {
      * @param playerNames a list of player names involved in the scene building process
      */
     void resumeBuildingScene(ArrayList<String> playerNames);
+
 }

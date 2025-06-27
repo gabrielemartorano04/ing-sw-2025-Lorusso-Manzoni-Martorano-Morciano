@@ -897,6 +897,15 @@ public class GUI implements UI {
         });
     }
 
+    // TODO DISPLAY IL NUMERO DI CARTE DA GIRARE DA VIEWFLOW.GETCARDSTOGO
+    /**
+     * Displays the number of cards left to draw in the GUI
+     */
+    @Override
+    public void showNumCardLeft() {
+
+    }
+
     /**
      * Displays a message indicating that a trucker has withdrawn.
      * @param nickname the nickname of the trucker who has withdrawn

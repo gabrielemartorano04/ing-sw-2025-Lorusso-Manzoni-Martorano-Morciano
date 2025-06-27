@@ -499,7 +499,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
         viewFlow.setStartFlightForAll();
         viewFlow.setTrack(event.getTrack());
-        viewFlow.setShip(event.getSpaceShip());
 
         ui.flightScene(event);
 
@@ -534,7 +533,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
 
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-
+        ui.showPlayerShipStatus();
         ui.showCurrCondition(event.getCondition(), isLeader);
         ui.showInputFormat(viewFlow.getParserFlightState());
     }
@@ -550,7 +549,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         updatesFromFlight(event.getTruckers());
 
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-
+        ui.showPlayerShipStatus();
         if (event.getNickname().equals(viewFlow.getNickname())){
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(viewFlow.getParserFlightState());
@@ -637,6 +636,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
 
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+        ui.showPlayerShipStatus();
         ui.epidemic(event);
 
         if(!viewFlow.getParserFlightState().equals(ParserState.DO_NOTHING)){
@@ -654,7 +654,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         updatesFromFlight(event.getTruckers());
 
         ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
-
+        ui.showPlayerShipStatus();
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.HUMAN_COORD);
             ui.showInputFormat(ParserState.HUMAN_COORD);
@@ -674,7 +674,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         updatesFromFlight(event.getTruckers());
 
         ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
-
+        ui.showPlayerShipStatus();
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLANET_DECISION);
             System.out.println(event.getPlanetsOccupied().size());
@@ -696,7 +696,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         updatesFromFlight(event.getTruckers());
 
         ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
-
+        ui.showPlayerShipStatus();
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLOT_GOOD);
             ui.updateCurrGood(event.getGood());
@@ -747,6 +747,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         }
 
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+        ui.showPlayerShipStatus();
         ui.stardust(event);
 
         if(!viewFlow.getParserFlightState().equals(ParserState.DO_NOTHING)){
@@ -766,7 +767,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.decreaseCardsToGo();
         viewFlow.setTrack(event.getTrack());
         ui.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
-        System.out.println("Number of cards to draw: " + viewFlow.getCardsToGo());
+        ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
+        ui.showPlayerShipStatus();
+        //
+        ui.showNumCardLeft();
         if (event.getFirstPlayerNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
@@ -774,8 +778,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
             viewFlow.setParserFlightState(ParserState.DO_NOTHING);
             ui.showMessage(event.getInfoForOthers());
         }
-
-
     }
 
     /**
@@ -788,7 +790,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         updatesFromFlight(event.getTruckers());
 
         ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
-
+        ui.showPlayerShipStatus();
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
@@ -966,7 +968,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         if(event.getNickname().equals(viewFlow.getNickname())) {
             updatesFromFlight(event.getTruckers());
             ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-
+            ui.showPlayerShipStatus();
             viewFlow.setParserFlightState(event.getParserState());
             ui.showInputFormat(event.getParserState());
         }else{
@@ -985,7 +987,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         updatesFromFlight(event.getTruckers());
 
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-
+        ui.showPlayerShipStatus();
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
             viewFlow.setNumOfBatteriesToRemove(event.getBatteriesToRemove());
@@ -1006,7 +1008,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         updatesFromFlight(event.getTruckers());
 
         ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
-
+        ui.showPlayerShipStatus();
         if(event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(event.getParserState());
             ui.updateGoodsListToRemove(event.getGoodsList());
@@ -1057,6 +1059,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 viewFlow.setParserFlightState(ParserState.DEAD);
 
                 ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
+                ui.showPlayerShipStatus();
                 ui.showDead();
 
                 break;
