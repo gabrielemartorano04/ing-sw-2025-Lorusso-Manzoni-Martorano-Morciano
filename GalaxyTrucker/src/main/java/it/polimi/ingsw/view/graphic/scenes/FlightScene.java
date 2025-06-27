@@ -600,7 +600,7 @@ public class FlightScene {
 
     /**
      * Displays another ship layout on the screen
-     * @param ship of the player
+     * @param spaceShip of the player
      * @param nickname of the player
      */
     public void showOtherShip(SpaceShip spaceShip, String nickname) {
