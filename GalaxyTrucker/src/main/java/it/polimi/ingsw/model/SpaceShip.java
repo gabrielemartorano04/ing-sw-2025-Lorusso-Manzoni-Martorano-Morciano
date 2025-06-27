@@ -307,10 +307,16 @@ public class SpaceShip implements Serializable {
                                 int[] currentCoord = {i, j};
                                 for (int[] selectedCoord : coord) {
                                     if (selectedCoord[0] == currentCoord[0] && selectedCoord[1] == currentCoord[1]) {
-                                        if(selectedCoord[2]==0) alien = new Alien(AlienColor.PURPLE);
-                                        else if(selectedCoord[2]==1) alien =new Alien(AlienColor.BROWN);
-                                        c.setAlien(alien);
-                                        numAlien++;
+                                        if(selectedCoord[2]==0 && l.getColor()==AlienColor.PURPLE){
+                                            alien = new Alien(AlienColor.PURPLE);
+                                            c.setAlien(alien);
+                                            numAlien++;
+                                        }
+                                        else if(selectedCoord[2]==1 && l.getColor()==AlienColor.BROWN){
+                                            alien =new Alien(AlienColor.BROWN);
+                                            c.setAlien(alien);
+                                            numAlien++;
+                                        }
                                     }
                                 }
                             }
