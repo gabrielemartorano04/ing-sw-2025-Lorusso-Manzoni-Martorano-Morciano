@@ -577,6 +577,7 @@ public class GUI implements UI {
     @Override
     public void buildingComplete(BuildCompleteEvent event){
         Platform.runLater(() -> {
+            this.buildingScene.stopHourglassTimer();
             this.buildingScene.hideWaitForOthers();
             this.buildingScene.buildShipGrid(false, viewFlow.getShip().getComponents());
             if(viewFlow.getLevel() == 2){
