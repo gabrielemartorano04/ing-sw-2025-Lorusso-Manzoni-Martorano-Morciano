@@ -419,6 +419,15 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showWaitForOthers();
     }
 
+    @Override
+    public void visit(WaitOthersHourglassEvent event){
+        if(event.getNickname().equals(viewFlow.getNickname())){
+            viewFlow.setEnd();
+            ui.showWaitForOthers();
+        }
+        viewFlow.getTimerDisplay().start(90);
+    }
+
     /**
      * Indicates that the player must wait for others to start flight
      *

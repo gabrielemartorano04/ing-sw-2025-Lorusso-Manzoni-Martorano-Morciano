@@ -463,7 +463,7 @@ public class ClientHandlerVisitor implements VirtualServer {
     public ServerEvent visit(TurnHourglassEvent event, Client client) {
         ServerEvent tmp;
         try {
-            tmp =gameController.getGame().turnHourglass();
+            tmp =gameController.getGame().turnHourglass(client.getTruckerController().getNickname());
         } catch (CannotTurnHourglassException e) {
             return new TurnHourglassError();
         }
