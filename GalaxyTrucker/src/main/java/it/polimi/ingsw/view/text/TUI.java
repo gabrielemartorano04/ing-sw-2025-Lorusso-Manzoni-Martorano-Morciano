@@ -322,13 +322,11 @@ public class TUI implements UI {
         this.showBuildComplete();
 
         if(viewFlow.getLevel()==2){
-            this.showMessage("Type 'alien' to see where you can place aliens\n" +
-                    "> ");
+            viewFlow.handleInput("alien");
 
         }
         else{
-            this.showMessage("Type 'continue' to start flight phase\n" +
-                    "> ");
+            viewFlow.handleInput("continue");
         }
     }
 

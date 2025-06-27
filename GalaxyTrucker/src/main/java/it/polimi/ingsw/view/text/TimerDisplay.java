@@ -67,8 +67,16 @@ public class TimerDisplay {
      * This method interrupts the timer thread to cease its execution prematurely.
      */
     public void stop() {
+
         if (timerThread != null && timerThread.isAlive()) {
             timerThread.interrupt();
         }
+    }
+
+    /**
+     * @return expiration count
+     */
+    public int getExpirationCount(){
+        return expirationCount;
     }
 }

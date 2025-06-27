@@ -469,6 +469,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         }
         if (tmp != null) {
             endBuilding++;
+            setPositionToTrucker(client);
             if(endBuilding == gameController.getGame().getNumPlayers()){
                 return new BuildCompleteEvent(gameController.getGame().getTruckerList());
             }
@@ -482,18 +483,11 @@ public class ClientHandlerVisitor implements VirtualServer {
     // === PHASE 2.1: Filling the ship  ===
 
     /**
-     * Handles the end of the spaceship building phase for a client
-     * Assigns a launch position based on the current game level and the number of players who have finished
-     * If all players are done, stops the build timer and notifies completion with an appropriate event
+     * assigns position to the current client for the flight phase
      *
-     * @param event  the end-of-building event sent by the client
-     * @param client the client who finished building
-     * @return an event indicating to wait for others players if not all players are done,
-     *         otherwise the events that indicates the build phase is completed for all players
+     * @param client current client
      */
-    @Override
-    public ServerEvent visit(EndBuildingEvent event, Client client) {
-        endBuilding++;
+    private void setPositionToTrucker(Client client){
         if(gameController.getGame().getGameLevel()==2){
             switch(endBuilding) {
                 case 1-> {
@@ -526,6 +520,22 @@ public class ClientHandlerVisitor implements VirtualServer {
                 }
             }
         }
+    }
+
+    /**
+     * Handles the end of the spaceship building phase for a client
+     * Assigns a launch position based on the current game level and the number of players who have finished
+     * If all players are done, stops the build timer and notifies completion with an appropriate event
+     *
+     * @param event  the end-of-building event sent by the client
+     * @param client the client who finished building
+     * @return an event indicating to wait for others players if not all players are done,
+     *         otherwise the events that indicates the build phase is completed for all players
+     */
+    @Override
+    public ServerEvent visit(EndBuildingEvent event, Client client) {
+        endBuilding++;
+        setPositionToTrucker(client);
 
         if(endBuilding< gameController.getGame().getNumPlayers()) {
             return new WaitOthersBuildingEvent();

@@ -352,38 +352,7 @@ public class ServerController {
      * then broadcasts a BuildCompleteEvent to all clients.
      */
     public void startThreadHourglass(){
-        BuildTimerManager.getInstance().start(this, 90);
-        if(!BuildTimerManager.getInstance().isRunning()){
-            boolean[] pos=new boolean[]{false, false, false, false};
-            for(Trucker t: gameController.getGame().getTruckerList()){
-                if(t.getPosition()!=-1){
-                    switch (t.getPosition()){
-                        case 6: pos[0]=true;break;
-                        case 3: pos[1]=true;break;
-                        case 1: pos[2]=true;break;
-                        case 0: pos[3]=true;break;
-                    }
-                }
-            }
-            for(Trucker t: gameController.getGame().getTruckerList()){
-                if(t.getPosition()==-1){
-                    for(int i=0;i<pos.length;i++){
-                        if(!pos[i]){
-                            switch (i){
-                                case 0: t.setPosition(6);pos[i]=true;break;
-                                case 1: t.setPosition(3);pos[i]=true;break;
-                                case 2: t.setPosition(1);pos[i]=true;break;
-                                case 3: t.setPosition(0);pos[i]=true;break;
-                            }
-                        }
-                    }
-                }
-                if(gameController.getGame().getGameLevel()==2)
-                    t.getSpaceShip().wellDone();
-                else t.getSpaceShip().wellDoneForTrialFlight();
-            }
-            broadcastEvent(new BuildCompleteEvent(gameController.getGame().getTruckerList()));
-        }
+        BuildTimerManager.getInstance().start(90);
     }
 
     /**

@@ -575,8 +575,9 @@ public class GUI implements UI {
      * @param event the event indicating that the building phase is complete
      */
     @Override
-    public void  buildingComplete(BuildCompleteEvent event){
+    public void buildingComplete(BuildCompleteEvent event){
         Platform.runLater(() -> {
+            this.buildingScene.stopHourglassTimer();
             this.buildingScene.hideWaitForOthers();
             this.buildingScene.buildShipGrid(false, viewFlow.getShip().getComponents());
             if(viewFlow.getLevel() == 2){

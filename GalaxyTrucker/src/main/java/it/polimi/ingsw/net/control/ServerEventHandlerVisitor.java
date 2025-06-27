@@ -7,6 +7,7 @@ import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.net.events.serverevents.setupevents.*;
 import it.polimi.ingsw.view.*;
+import it.polimi.ingsw.view.text.TimerDisplay;
 
 import java.util.ArrayList;
 
@@ -163,7 +164,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
             case FLIGHT -> {
                 viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
                 viewFlow.setStartFlightForAll();
-                viewFlow.setStartFlight(false);
                 viewFlow.setEnd();
                 ui.resumeFlightScene(event.getPlayerNames());
 
@@ -456,8 +456,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
      */
     @Override
     public void visit(WaitOthersStartFlightEvent event) {
-        //viewFlow.setStartFlight();
-        System.out.println("WaitOthersStartFlight");
         ui.showWaitForOthers();
     }
 

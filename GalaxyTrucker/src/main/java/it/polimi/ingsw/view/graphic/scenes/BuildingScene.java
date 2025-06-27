@@ -962,6 +962,16 @@ public class BuildingScene {
     }
 
     /**
+     * Stops the hourglass timer and resets the related UI state
+     */
+    public void stopHourglassTimer() {
+        hourglassBtn.setText("⏳");
+        hourglassBtn.setDisable(false);
+        isHourglassTimerStarted = false;
+        hourglassBtn.setEffect(null);
+    }
+
+    /**
      * Adds a Select component button to the scene, which allows the user to select a new component
      * from the available components list
      * @param styleButton a Consumer<Button> function to apply specific styling to the button

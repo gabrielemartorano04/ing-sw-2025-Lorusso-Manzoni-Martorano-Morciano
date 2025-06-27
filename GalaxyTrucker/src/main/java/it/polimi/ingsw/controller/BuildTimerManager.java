@@ -1,8 +1,11 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.net.control.ServerController;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.BuildCompleteEvent;
+
+import java.util.ArrayList;
 
 /**
  * This class is used to manage the timer that controls the building time.
@@ -25,11 +28,17 @@ public class BuildTimerManager {
     private boolean running = false;
 
     /**
+     * times the timer has ended
+     */
+    private int expiractionCount;
+
+    /**
      * The class constructor
      */
     private BuildTimerManager() {
         this.instance=null;
         this.timerThread = null;
+        this.expiractionCount = 0;
     }
 
     /**
@@ -44,19 +53,23 @@ public class BuildTimerManager {
 
     /**
      * This method manages the timer start
-     * @param controller Server Controller
      * @param seconds timer duration is seconds
      */
-    public void start(ServerController controller, int seconds) {
-        if (running) return; // one timer at the time
+    public void start(int seconds) {
+        if (running) return;
 
         running = true;
         timerThread = new Thread(() -> {
             try {
                 Thread.sleep(seconds * 1000L);
                 if (running) {
-                    System.out.println("[TIMER] Tempo scaduto. Invia BuildCompleteEvent");
-                    controller.broadcastEvent(new BuildCompleteEvent(Game.getIstance().getTruckerList()));
+                    expiractionCount++;
+                    System.out.println("[TIMER] Tempo scaduto (" + expiractionCount + "° volta)");
+
+                    if (expiractionCount == 2) {
+                        stop();
+                        handleFinalTimeout();
+                    }
                 }
             } catch (InterruptedException e) {
                 System.out.println("[TIMER] Interrotto prima del termine");
@@ -84,4 +97,53 @@ public class BuildTimerManager {
     public boolean isRunning() {
         return running;
     }
+
+    /**
+     * Handles the case when the timer is ended for the third time
+     */
+    private void handleFinalTimeout() {
+        ArrayList<Trucker> truckers = Game.getIstance().getTruckerList();
+        boolean[] pos = new boolean[]{false, false, false, false};
+
+        for (Trucker t : truckers) {
+            if (t.getPosition() != -1) {
+                switch (t.getPosition()) {
+                    case 6 -> pos[0] = true;
+                    case 3 -> pos[1] = true;
+                    case 1 -> pos[2] = true;
+                    case 0 -> pos[3] = true;
+                }
+            }
+        }
+
+        for (Trucker t : truckers) {
+            if (t.getPosition() == -1) {
+                for (int i = 0; i < pos.length; i++) {
+                    if (!pos[i]) {
+                        switch (i) {
+                            case 0 -> t.setPosition(6);
+                            case 1 -> t.setPosition(3);
+                            case 2 -> t.setPosition(1);
+                            case 3 -> t.setPosition(0);
+                        }
+                        pos[i] = true;
+                        break;
+                    }
+                }
+            }
+
+            int gameLevel = Game.getIstance().getGameLevel();
+            if (gameLevel == 2)
+                t.getSpaceShip().wellDone();
+            else
+                t.getSpaceShip().wellDoneForTrialFlight();
+        }
+
+        for (Trucker t : truckers) {
+            System.out.println("Trucker " + t.getNickname() + " pos " + t.getPosition());
+        }
+
+        ServerController.getIstance().broadcastEvent(new BuildCompleteEvent(truckers));
+    }
+
 }
