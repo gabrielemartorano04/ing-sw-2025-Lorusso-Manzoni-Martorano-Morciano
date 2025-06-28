@@ -495,14 +495,6 @@ public class GUI implements UI {
         Platform.runLater(() -> this.buildingScene.showTimeExpired(expirationCount));
     }
 
-    /**
-     * Handles the event triggered when a component is kept by a player.
-     * @param event an instance of containing details about the kept component
-     */
-    @Override
-    public void keptComponent(KeptComponentEvent event){
-        Platform.runLater(() -> this.buildingScene.buildKeptBox());
-    }
 
     /**
      * Handles the event triggered when a component has been successfully rotated.
@@ -549,7 +541,7 @@ public class GUI implements UI {
      */
     @Override
     public void showKeptComponents(ArrayList<Component> kept) {
-        // nella gui non deve fare nulla forse c'è un modo migliore di unificare ma per ora tengo cosi
+        Platform.runLater(() -> this.buildingScene.buildKeptBox());
     }
 
     /**
