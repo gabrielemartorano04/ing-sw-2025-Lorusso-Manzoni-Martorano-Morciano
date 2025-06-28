@@ -910,7 +910,6 @@ public class BuildingScene {
 
                 nickBtn.setOnAction(ev -> {
                     viewFlow.handleInput("ship " + nickname);
-                    //TODO aggiungere che una volta premuto si mostrino le navi degli altri
                     ((StackPane) scene.getRoot()).getChildren().remove(nicknameChoices.getParent());
                 });
 
