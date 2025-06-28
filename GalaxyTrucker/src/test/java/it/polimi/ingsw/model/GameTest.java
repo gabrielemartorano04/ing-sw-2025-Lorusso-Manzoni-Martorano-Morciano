@@ -23,7 +23,8 @@ class GameTest {
     void setupGame(){
         game1.setupGame();
         assertNotNull(game1.viewStacks());
-        assertNotNull(game1.drawCard());
+        game2.setupGame();
+        assertNotNull(game2.drawCard());
     }
 
     @Test
