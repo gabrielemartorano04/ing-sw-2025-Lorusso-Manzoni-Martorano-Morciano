@@ -394,13 +394,12 @@ public class Game implements Serializable {
             for (Stack cardStack: cardStacks ) {
                 gameDeck.addAll(cardStack.getStack());
             }
-        do{
+            do{
 
-            Collections.shuffle(gameDeck);
-            System.out.println("sto mescolando");
-        }while(gameDeck.getFirst().getLevel() != gameLevel);
-        }
-        else{
+                //Collections.shuffle(gameDeck);
+                System.out.println("sto mescolando");
+            }while(gameDeck.getFirst().getLevel() != gameLevel);
+        }else{
             gameDeck.addAll(deck.getDeck());
         }
 
