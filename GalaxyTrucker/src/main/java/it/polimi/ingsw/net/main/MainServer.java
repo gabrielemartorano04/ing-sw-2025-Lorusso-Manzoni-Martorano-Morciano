@@ -34,6 +34,7 @@ public class MainServer {
     public static void main(String[] args) {
         final int PORT = 12346;
         ServerController serverController = new ServerController();
+        ServerSocket serverSocket = null;
 
         RmiServer rmiServer = RmiServer.bind(serverController);
 
@@ -52,10 +53,12 @@ public class MainServer {
         }));
 
 
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+        try  {
+            serverSocket = new ServerSocket(PORT);
+
             System.out.println("Server listening on port " + PORT + "...");
 
-            while (true) {
+            while (!serverController.isShuttingDown()) {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("New client connected: " + clientSocket.getInetAddress());
 
@@ -66,6 +69,16 @@ public class MainServer {
             }
         } catch (IOException e) {
             System.err.println("Error in server: " + e.getMessage());
+        }
+        finally {
+            try {
+                if (serverSocket != null && !serverSocket.isClosed()) {
+                    serverSocket.close();
+                    System.out.println("Server socket closed.");
+                }
+            } catch (IOException e) {
+                System.err.println("Errore nella chiusura del server socket: " + e.getMessage());
+            }
         }
     }
 
