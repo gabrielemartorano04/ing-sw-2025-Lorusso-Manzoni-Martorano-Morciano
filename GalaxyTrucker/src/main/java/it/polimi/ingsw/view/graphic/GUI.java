@@ -684,10 +684,10 @@ public class GUI implements UI {
                 if(event.getTruckers() == null){
                     System.out.println("truckers null");
                 }
-                if(event.getTruckers().getFirst() == null){
+                if(event.getTruckers().get(0) == null){
                     System.out.println("first trucker null");
                 }
-                boolean isLeader = viewFlow.getNickname().equals(event.getTruckers().getFirst().getNickname());
+                boolean isLeader = viewFlow.getNickname().equals(event.getTruckers().get(0).getNickname());
                 this.flightScene.showCurrCondition(event.getConditionsOrder().getFirst(), isLeader);
             }
         });
