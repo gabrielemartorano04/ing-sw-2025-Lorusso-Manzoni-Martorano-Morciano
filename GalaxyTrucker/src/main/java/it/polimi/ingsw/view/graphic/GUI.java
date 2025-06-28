@@ -293,9 +293,7 @@ public class GUI implements UI {
             stage.setResizable(false);
             stage.setFullScreen(true);
             stage.show();
-            if(viewFlow.getSelectedComponent()!=null){
-                this.buildingScene.insertSelectedComponent(viewFlow.getSelectedComponent());
-            }
+            viewFlow.deleteSelectedComponent();
             this.buildingScene.buildKeptBox();
             viewFlow.getTimerDisplay().start(90);
         });
@@ -855,7 +853,6 @@ public class GUI implements UI {
             this.buildingScene.showWaitForOthers();
         }
         else if (viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
-            //TODO: ricordati di inserire l'hide del showWaitForOthers per flight quando finisce lo showWaitForOthers
             this.flightScene.showWaitForOthers();
         }
     }

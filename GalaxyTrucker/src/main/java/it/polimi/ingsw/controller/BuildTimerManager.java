@@ -124,12 +124,6 @@ public class BuildTimerManager {
 
         }
 
-        //TODO TOGLI
-
-        for (Trucker t : truckers) {
-            System.out.println("Trucker " + t.getNickname() + " pos " + t.getPosition());
-        }
-
         ServerController.getIstance().broadcastEvent(new BuildCompleteEvent(truckers, GameController.getIstance().getIllegalShipNames()));
     }
 
