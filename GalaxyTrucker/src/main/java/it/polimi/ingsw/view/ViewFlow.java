@@ -299,10 +299,6 @@ public class ViewFlow implements EventReceiver {
      */
     @Override
     public void onEventReceived(ServerEvent event) {
-        //TODO: da togliere sta print
-        if(! (event instanceof PingEvent)){
-            System.out.println(event.getMessage() + " from: " + event.getClass().getName());
-        }
         event.call(serverEventVisitor);
     }
 
@@ -664,6 +660,7 @@ public class ViewFlow implements EventReceiver {
     public void componentAsUncovered(int index){
         availableComponents.get(index).setCovered(false);
     }
+
 
     /**
      * Sets the 'startFlightForAll' flag to true, indicating that all flights

@@ -539,6 +539,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setPosition(event.getPosition());
         viewFlow.setShip(event.getSpaceShip());
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
+
         viewFlow.setTrack(event.getTrack());
 
         ui.flightScene(event);
@@ -670,9 +671,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
      */
     @Override
     public void visit(EpidemicEvent event) {
-        if(viewFlow.getViewState()!= ViewFlow.ViewState.FLIGTH){
-            viewFlow.setStartFlightForAll();
-        }
+        viewFlow.setStartFlightForAll();
 
         ui.showEpidemicCard(event);
 
@@ -789,9 +788,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
      */
     @Override
     public void visit(StarDustEvent event) {
-        if(viewFlow.getViewState()!= ViewFlow.ViewState.FLIGTH){
-            viewFlow.setStartFlightForAll();
-        }
+        viewFlow.setStartFlightForAll();
 
         ui.showStardustCard(event);
         viewFlow.setTrack(event.getTrack());
@@ -826,9 +823,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
      */
     @Override
     public void visit(StartCardEvent event) {
-        if(viewFlow.getViewState()!= ViewFlow.ViewState.FLIGTH){
-            viewFlow.setStartFlightForAll();
-        }
+        viewFlow.setStartFlightForAll();
 
         ui.showCardDrawn(event);
         viewFlow.decreaseCardsToGo();
