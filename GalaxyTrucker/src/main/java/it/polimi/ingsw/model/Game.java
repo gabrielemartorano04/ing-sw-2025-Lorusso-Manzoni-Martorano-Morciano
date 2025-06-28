@@ -310,7 +310,6 @@ public class Game implements Serializable {
             if (t.getNickname().equalsIgnoreCase(trucker.getNickname())){
                 truckersOut.add(trucker);
                 truckers.remove(trucker);
-                System.out.println("trucker out: " + trucker.getNickname());
                 break;
             }
         }
@@ -483,7 +482,6 @@ public class Game implements Serializable {
         }
 
         if (gameState!= GameState.FLIGHT && gameState!= GameState.ENDED) {
-            System.out.println("Entro dialo stra il ");
             return scores;
         }
 
@@ -539,7 +537,6 @@ public class Game implements Serializable {
         }
         i = 0;
         for(Trucker t: truckers){
-            System.out.println("NickName " + t.getNickname() + " SCORE " + scores[i]);
             i++;
         }
         return scores;

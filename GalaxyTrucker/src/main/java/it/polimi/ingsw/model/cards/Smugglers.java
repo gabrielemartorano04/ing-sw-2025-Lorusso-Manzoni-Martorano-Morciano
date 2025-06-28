@@ -500,7 +500,7 @@ public class Smugglers extends Card implements Serializable {
             throw new GeneralError("Remove without asking: goodsList is null");
         }
         if(goodsListFromShip.isEmpty()){
-            System.out.println("Remove without asking: goodsList is empty");
+            throw new GeneralError("Remove without asking: goodsList is empty");
         }
 
         ArrayList<Goods> list = new ArrayList<>();
@@ -555,7 +555,6 @@ public class Smugglers extends Card implements Serializable {
         }
         for(Integer index : indexesToRemove){
             if(index < 0 || index >= goodsToRemove.size()){
-                System.out.println("goodsToRemove: " + goodsToRemove + ", index: " + index);
                 throw new InvalidGoodChosen("A good with an index out of range has been chosen");
             }
         }
@@ -577,7 +576,6 @@ public class Smugglers extends Card implements Serializable {
         defeatedTruckers.removeFirst();
         goodsToLoseCurrTrucker = goodsLost;
         cardState = CardState.REMOVE_GOODS;
-        System.out.println("RemotionConfirmed in removeGoodsDecided");
         return new RemotionConfirmed(ParserState.REMOTION_CONFIRMED,nickname,ship);
     }
 
