@@ -218,6 +218,11 @@ public class BuildingScene {
     private VBox optionsBox;
 
     /**
+     * A Vbox that contains link coordinates request popup
+     */
+    private VBox popupLink;
+
+    /**
      * Indicates whether a component has been selected to determine the current state of
      * component selection, such as enabling or disabling certain actions
      */
@@ -1123,6 +1128,7 @@ public class BuildingScene {
                 int onlyIndex = availableIndices.getFirst();
                 messageLabel.setText("You have only 1 kept, it will be automatically selected");
                 messageLabel.setWrapText(true);
+                messageLabel.setPrefWidth(180);
                 indexField.setVisible(false);
                 sendBtn.setOnAction(ev -> {
                     viewFlow.handleInput("selectkept " + onlyIndex);
@@ -1369,10 +1375,10 @@ public class BuildingScene {
             overlay.setStyle("-fx-background-color: rgba(0,0,0,0.6);");
             overlay.setPickOnBounds(true);
 
-            VBox popup = new VBox(12);
-            popup.setAlignment(Pos.CENTER);
-            popup.setPadding(new Insets(15));
-            popup.setPrefSize(200, 250);
+            popupLink = new VBox(12);
+            popupLink.setAlignment(Pos.CENTER);
+            popupLink.setPadding(new Insets(15));
+            popupLink.setPrefSize(200, 250);
 
             Label insertLabel = new Label("Choose the coordinates to link the component");
             insertLabel.setTextFill(Color.web("#FFDE69"));
@@ -1416,12 +1422,12 @@ public class BuildingScene {
             HBox buttons = new HBox(15, cancelBtn, sendBtn);
             buttons.setAlignment(Pos.CENTER);
 
-            popup.getChildren().addAll(insertLabel, coordBox, errorLabel, buttons);
+            popupLink.getChildren().addAll(insertLabel, coordBox, errorLabel, buttons);
 
-            AnchorPane.setTopAnchor(popup, (root.getHeight() - 250) / 2);
-            AnchorPane.setRightAnchor(popup, 10.0);
+            AnchorPane.setTopAnchor(popupLink, (root.getHeight() - 250) / 2);
+            AnchorPane.setRightAnchor(popupLink, 10.0);
 
-            overlay.getChildren().add(popup);
+            overlay.getChildren().add(popupLink);
             root.getChildren().add(overlay);
 
             Runnable removePopup = () -> root.getChildren().remove(overlay);
@@ -1798,6 +1804,10 @@ public class BuildingScene {
      * Displays a user interface element where the user can place aliens and confirm their placement
      */
     public void showAlienCabin() {
+        if(popupLink != null) {
+            popupLink.setOpacity(0);
+        }
+
         if (isComponentViewVisible && shipScreenContent != null) {
             root.getChildren().setAll(shipScreenContent);
         }
@@ -1870,7 +1880,7 @@ public class BuildingScene {
     public void showTimeExpired(int expirationCount) {
         if (scene == null || root == null) return;
 
-        Label message = new Label("TIME EXPIRED!\n" + "For the" + expirationCount + " time");
+        Label message = new Label("TIME EXPIRED!\n" + "For the " + expirationCount + " time");
         message.setTextFill(Color.RED);
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 80));
         message.setTextAlignment(TextAlignment.CENTER);
