@@ -99,6 +99,8 @@ public class ResultScene {
             String name = entry.getKey();
             int score = entry.getValue();
 
+            String displayName = name.length() > 9 ? name.substring(0, 8) + "…" : name;
+
             VBox scoreBox = new VBox(5);
             scoreBox.setAlignment(Pos.CENTER);
             scoreBox.setTranslateX(positions[i][0]);
@@ -108,7 +110,7 @@ public class ResultScene {
             scoreLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 48));
             scoreLabel.setTextFill(Color.web("#FFDE69"));
 
-            Label nameLabel = new Label(name);
+            Label nameLabel = new Label(displayName);
             nameLabel.setFont(Font.font("Bangers", FontWeight.NORMAL, 28));
             nameLabel.setTextFill(Color.WHITE);
 
