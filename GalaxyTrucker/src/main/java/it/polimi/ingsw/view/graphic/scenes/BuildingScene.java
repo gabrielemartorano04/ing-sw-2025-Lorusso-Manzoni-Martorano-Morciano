@@ -1628,6 +1628,8 @@ public class BuildingScene {
      * to complete an action
      */
     public void showWaitForOthers() {
+        disableAndSaveAllButtonStates();
+
         Label message = new Label("Waiting for other truckers to finish");
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 32));
         message.setTextFill(Color.web("#FFDE69"));
@@ -1868,7 +1870,7 @@ public class BuildingScene {
     public void showTimeExpired(int expirationCount) {
         if (scene == null || root == null) return;
 
-        Label message = new Label("TIME EXPIRED\n(" + "For " + expirationCount + " times)");
+        Label message = new Label("TIME EXPIRED!\n" + "For the" + expirationCount + " time");
         message.setTextFill(Color.RED);
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 80));
         message.setTextAlignment(TextAlignment.CENTER);
