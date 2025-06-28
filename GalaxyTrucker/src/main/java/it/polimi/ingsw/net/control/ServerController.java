@@ -324,6 +324,7 @@ public class ServerController {
         }
 
         if (response != null) {
+            System.out.println(response.getClass());
             if (response.isForAll()) {
                 broadcastEvent(response);
             } else {

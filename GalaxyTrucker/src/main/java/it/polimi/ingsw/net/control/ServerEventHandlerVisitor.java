@@ -539,6 +539,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setPosition(event.getPosition());
         viewFlow.setShip(event.getSpaceShip());
         viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
+
         viewFlow.setTrack(event.getTrack());
 
         ui.flightScene(event);
