@@ -278,6 +278,7 @@ public class InputParser {
     public ClientEvent parseBuilding(String input, Component component, int index, ArrayList<Component> kept, boolean isFromKept, int stackSelected, boolean firstLinked,ArrayList<String> players) {
         if (input == null || input.isEmpty()) return null;
 
+        System.out.println("Entro in parse Building");
         String[] tokens = input.split("\\s+", 3);
         String command = tokens[0].toLowerCase();
 
@@ -383,7 +384,7 @@ public class InputParser {
                 if (tokens.length != 1) {
                     System.out.println("Error: illegal command. Type 'end' if you want to end building phase.");
                     return null;
-                }// il client finisce e aspetta o che tutti finiscono o che il timer
+                }
                 return new EndBuildingEvent();
             default:
                 System.out.println("Error: unknown command: " + command + ". Please select a valid command");
