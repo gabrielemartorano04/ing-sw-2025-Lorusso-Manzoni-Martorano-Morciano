@@ -571,6 +571,7 @@ public class ViewFlow implements EventReceiver {
         if(this.keptComponent.size()<2) {
             this.keptComponent.add(keptComponent);
             System.out.println("\n");
+            System.out.println("IN ADD KEPT");
             for(Component c: this.keptComponent){
                 System.out.println(c);
             }
@@ -586,11 +587,13 @@ public class ViewFlow implements EventReceiver {
      * @throws IllegalArgumentException if the kept components list already contains two components.
      */
     public void removeKept(int index){
-        if(index> 0 && index<this.keptComponent.size()) {
+        System.out.println("index " +  index);
+
+        if(index >= 0 && index<this.keptComponent.size()) {
             this.keptComponent.remove(index);
         }
         System.out.println("\n");
-
+        System.out.println("IN REMOVE KEPT");
         for(Component c: this.keptComponent){
             System.out.println(c);
         }

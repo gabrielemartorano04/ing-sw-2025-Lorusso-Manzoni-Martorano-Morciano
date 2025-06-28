@@ -409,8 +409,9 @@ public class BuildingScene {
      * Builds or rebuilds the kept components box and displays it on the scene.
      */
     public void buildKeptBox() {
-        if (keptBox != null) {
-            root.getChildren().remove(keptBox);
+        Node oldBox = root.lookup("#keptBox");
+        if (oldBox != null) {
+            root.getChildren().remove(oldBox);
         }
 
         keptFillLevel = viewFlow.getKeptComponent().size();
@@ -426,19 +427,24 @@ public class BuildingScene {
         }
 
         keptBox = new HBox(15);
+        keptBox.setId("keptBox");
         keptBox.setMaxWidth(200);
         keptBox.setAlignment(Pos.TOP_RIGHT);
 
         ArrayList<Component> keptComponents = viewFlow.getKeptComponent();
 
-
+        System.out.println("\nIN BUILD KEPT");
+        for (Component c : keptComponents) {
+            System.out.println(c);
+        }
+        System.out.println();
 
         for (int i = 0; i < 2; i++) {
             StackPane slot = new StackPane();
             slot.setPrefSize(110, 110);
             slot.setStyle("-fx-background-color: transparent;");
 
-            if (i < keptComponents.size() && keptComponents.get(i) != null) {
+            if (i < keptComponents.size()) {
                 Component component = keptComponents.get(i);
                 ImageView componentView = new ImageView(component.getFrontImage());
                 componentView.setFitWidth(110);
@@ -470,11 +476,14 @@ public class BuildingScene {
         root.getChildren().add(keptBox);
     }
 
+
     /**
      * Selects a kept component from the specified index and inserts it into the selected component slot
      * @param index of the component selected from the kept component list
      */
     public void selectKeptComponent(int index) {
+
+        System.out.println("Index : " + index);
         if (index < 0 || index >= keptFillLevel) {
             return;
         }
@@ -493,7 +502,6 @@ public class BuildingScene {
         }
 
         buildKeptBox();
-
     }
 
     /**

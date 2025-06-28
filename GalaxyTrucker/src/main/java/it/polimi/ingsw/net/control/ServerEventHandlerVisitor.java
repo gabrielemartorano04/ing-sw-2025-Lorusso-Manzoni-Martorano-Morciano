@@ -238,6 +238,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setFirstLinked();
         viewFlow.getShip().getComponents()[event.getX()][event.getY()]=event.getComponent();
         viewFlow.deleteSelectedComponent();
+
+        System.out.println("Linked");
+
         ui.componentLinked(event);
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
         ui.showKeptComponents(viewFlow.getKeptComponent());
@@ -377,6 +380,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(SuccessSelectKept event){
         viewFlow.setSelectedComponent(event.getComponent(), true);
         viewFlow.removeKept(event.getIndex());
+
+        System.out.println("Kept");
+
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
 
         ui.keptSelected(event);
