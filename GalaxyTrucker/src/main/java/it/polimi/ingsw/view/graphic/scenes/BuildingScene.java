@@ -623,6 +623,9 @@ public class BuildingScene {
 
         componentSelectedBox.getChildren().clear();
         this.componentSelectedExists = false;
+        this.hourglassBtn.setDisable(false);
+        this.hourglassBtn.setOpacity(1);
+
         this.disableSelectButtons(true);
 
         Rectangle border = new Rectangle(178, 178);
@@ -1356,6 +1359,9 @@ public class BuildingScene {
         keepBtn.setOnAction(e -> viewFlow.handleInput("Keep"));
         discardBtn.setOnAction(e -> {
             componentSelectedExists = false;
+            this.hourglassBtn.setDisable(false);
+            this.hourglassBtn.setOpacity(1);
+
             viewFlow.handleInput("Discard");
         });
         linkBtn.setOnAction(ev -> {
