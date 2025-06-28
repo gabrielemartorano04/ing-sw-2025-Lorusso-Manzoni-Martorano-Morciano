@@ -858,7 +858,6 @@ public class SpaceShip implements Serializable {
                 }
             }
         }
-        this.existsAnActiveShield=false;
     }
 
 
