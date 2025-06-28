@@ -47,7 +47,6 @@ public class Hourglass implements Serializable {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Timer: " + secondsLeft);
                 if (secondsLeft > 0) {
                     secondsLeft--;
                 } else {
