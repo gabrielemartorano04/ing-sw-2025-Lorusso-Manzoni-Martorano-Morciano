@@ -413,16 +413,18 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(SuccessSelectKept event){
         viewFlow.setSelectedComponent(event.getComponent(), true);
+        viewFlow.getKeptComponent().remove(event.getIndex());
+
+        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
+
         ui.keptSelected(event);
 
-        viewFlow.getKeptComponent().remove(event.getIndex());
         if (!viewFlow.getKeptComponent().isEmpty()) {
             ui.showKeptComponents(viewFlow.getKeptComponent());
         }
         if (viewFlow.getKeptComponent() == null) {
             ui.showBuildOptions();
         }
-        ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
 
     }
 

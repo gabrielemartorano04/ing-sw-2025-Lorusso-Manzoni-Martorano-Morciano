@@ -294,9 +294,7 @@ public class GUI implements UI {
             stage.setFullScreen(true);
             stage.show();
             if(viewFlow.getSelectedComponent()!=null){
-                this.buildingScene.setTurnToDo((viewFlow.getSelectedComponent().getRotationAngle()/90));
-                ImageView component = new ImageView(viewFlow.getSelectedComponent().getFrontImage());
-                this.buildingScene.insertSelectedComponent(component, true);
+                this.buildingScene.insertSelectedComponent(viewFlow.getSelectedComponent());
             }
             for(int i = 0; i < viewFlow.getKeptComponent().size(); i++){
                 Component c = viewFlow.getKeptComponent().get(i);
@@ -461,8 +459,7 @@ public class GUI implements UI {
     @Override
     public void componentSelected(ComponentSelectedEvent event){
         Platform.runLater(() -> {
-            ImageView component = new ImageView(this.viewFlow.getSelectedComponent().getFrontImage());
-            this.buildingScene.insertSelectedComponent(component, false);
+            this.buildingScene.insertSelectedComponent(this.viewFlow.getSelectedComponent());
         });
     }
 
@@ -519,8 +516,7 @@ public class GUI implements UI {
     @Override
     public void componentTurned(TurnedComponentSuccessEvent event){
         Platform.runLater(() -> {
-            ImageView component = new ImageView(this.viewFlow.getSelectedComponent().getFrontImage());
-            this.buildingScene.insertSelectedComponent(component, true);
+            this.buildingScene.insertSelectedComponent(this.viewFlow.getSelectedComponent());
         });
     }
 

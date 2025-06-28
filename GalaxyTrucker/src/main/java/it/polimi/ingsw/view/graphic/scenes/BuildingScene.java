@@ -86,21 +86,10 @@ public class BuildingScene {
     private GridPane grid;
 
     /**
-     * A list of StackPane references representing the visual slots
-     * where the components kept by the player are displayed
-     */
-    private final ArrayList<StackPane> keptSlotsRef;
-
-    /**
-     * A list of ImageView that are kept for further use
-     */
-    private final ArrayList<ImageView> keptImages;
-
-    /**
      * A horizontal container that holds the slots for components
      * that have been kept during the building process
      */
-    private HBox keptSlots;
+    private HBox keptBox;
 
     /**
      * Represents the level of fill or occupancy maintained in a specific context
@@ -145,11 +134,6 @@ public class BuildingScene {
      * from the list of kept components
      */
     private Button selectKeptBtn;
-
-    /**
-     * Number of turns done to the component
-     */
-    private int turnToDo;
 
     /**
      * Represents the turn button that allows the user to graphically turn the component
@@ -259,8 +243,6 @@ public class BuildingScene {
     public BuildingScene(Component[][] layout, ViewFlow viewFlow, StackPane root) {
         this.layout = layout;
         this.cellMatrix = new StackPane[10][11];
-        this.keptSlotsRef = new ArrayList<>();
-        this.keptImages = new ArrayList<>();
         this.viewFlow = viewFlow;
         this.componentSelectedExists = false;
         this.root = root;
@@ -268,7 +250,6 @@ public class BuildingScene {
         this.isComponentViewVisible = false;
         this.keptFillLevel = 0;
         this.previousButtonStates = new HashMap<>();
-        this.turnToDo = 0;
         this.validCells = new boolean[11][12];
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[0].length; j++) {
@@ -305,36 +286,9 @@ public class BuildingScene {
 
         buildShipGrid(true, null);
 
-        keptSlots = new HBox(15);
-        keptSlots.setMaxWidth(200);
-        keptSlots.setAlignment(Pos.TOP_RIGHT);
-        keptSlotsRef.clear();
-        keptImages.clear();
+        buildKeptBox();
 
-        for (int i = 0; i < 2; i++) {
-            StackPane slot = new StackPane();
-            slot.setPrefSize(110, 110);
-            slot.setStyle("-fx-background-color: transparent;");
-
-            Rectangle border = new Rectangle(110, 110);
-            border.setArcWidth(6);
-            border.setArcHeight(6);
-            border.setFill(Color.TRANSPARENT);
-            border.setStroke(Color.TRANSPARENT);
-            border.setStrokeWidth(1);
-
-            slot.getChildren().add(border);
-            int index = i;
-            slot.setOnMouseClicked(e -> viewFlow.handleInput("selectKept " + index));
-            keptSlots.getChildren().add(slot);
-            keptSlotsRef.add(slot);
-            keptImages.add(null);
-        }
-
-        StackPane.setAlignment(keptSlots, Pos.TOP_RIGHT);
-        StackPane.setMargin(keptSlots, new Insets(0, 235, 590, 0));
-
-        root.getChildren().setAll(backgroundView, grid, keptSlots);
+        root.getChildren().setAll(backgroundView, grid, keptBox);
         scene = new Scene(root, width, height);
         Consumer<Button> styleButton = createDefaultButtonStyler();
 
@@ -450,100 +404,97 @@ public class BuildingScene {
     }
 
     /**
-     * Inserts a component into the kept components list, updating the related
-     * UI elements to reflect the change
-     * @param component the Component object to be added to the kept components
+     * Builds or rebuilds the kept components box and displays it on the scene.
      */
-    public void insertComponentToKepts(Component component) {
-        if (keptFillLevel >= keptImages.size()) {
-            return;
+    public void buildKeptBox() {
+        if (keptBox != null) {
+            root.getChildren().remove(keptBox);
         }
 
-        this.resetComponentSelectedBox();
+        keptFillLevel = viewFlow.getKeptComponent().size();
 
-        ImageView componentView = new ImageView(component.getFrontImage());
-        componentView.setFitWidth(110);
-        componentView.setPreserveRatio(true);
-        componentView.setMouseTransparent(true);
+        if(keptFillLevel == 2){
+            this.keepBtn.setDisable(true);
+            this.keepBtn.setOpacity(0.5);
+        }
 
-        Rectangle clip = new Rectangle(110, 110);
-        clip.setArcWidth(12);
-        clip.setArcHeight(12);
-        componentView.setClip(clip);
+        keptBox = new HBox(15);
+        keptBox.setMaxWidth(200);
+        keptBox.setAlignment(Pos.TOP_RIGHT);
 
-        int indexToInsert = -1;
-        for (int i = 0; i < keptImages.size(); i++) {
-            if (keptImages.get(i) == null) {
-                indexToInsert = i;
-                break;
+        ArrayList<Component> keptComponents = viewFlow.getKeptComponent();
+
+        for (int i = 0; i < 2; i++) {
+            StackPane slot = new StackPane();
+            slot.setPrefSize(110, 110);
+            slot.setStyle("-fx-background-color: transparent;");
+
+            if (i < keptComponents.size() && keptComponents.get(i) != null) {
+                Component component = keptComponents.get(i);
+                ImageView componentView = new ImageView(component.getFrontImage());
+                componentView.setFitWidth(110);
+                componentView.setPreserveRatio(true);
+                componentView.setMouseTransparent(true);
+                componentView.setRotate(component.getRotationAngle());
+
+                Rectangle clip = new Rectangle(110, 110);
+                clip.setArcWidth(12);
+                clip.setArcHeight(12);
+                componentView.setClip(clip);
+
+                slot.getChildren().add(componentView);
             }
+
+            Rectangle border = new Rectangle(110, 110);
+            border.setArcWidth(6);
+            border.setArcHeight(6);
+            border.setFill(Color.TRANSPARENT);
+            border.setStroke(Color.WHITE);
+            border.setStrokeWidth(1);
+            slot.getChildren().add(border);
+
+            int index = i;
+            slot.setOnMouseClicked(e -> viewFlow.handleInput("selectKept " + index));
+
+            keptBox.getChildren().add(slot);
         }
 
-        if (indexToInsert == -1) {
-            return;
-        }
-
-        StackPane slot = keptSlotsRef.get(indexToInsert);
-        slot.getChildren().clear();
-        slot.getChildren().add(componentView);
-
-        Rectangle border = new Rectangle(110, 110);
-        border.setArcWidth(6);
-        border.setArcHeight(6);
-        border.setFill(Color.TRANSPARENT);
-        border.setStroke(Color.WHITE);
-        border.setStrokeWidth(1);
-        slot.getChildren().add(border);
-
-        keptImages.set(indexToInsert, componentView);
-        keptFillLevel++;
-        this.selectKeptBtn.setDisable(false);
-        this.selectKeptBtn.setOpacity(1.0);
+        StackPane.setAlignment(keptBox, Pos.TOP_RIGHT);
+        StackPane.setMargin(keptBox, new Insets(0, 235, 590, 0));
+        root.getChildren().add(keptBox);
     }
+
+
 
     /**
      * Selects a kept component from the specified index and inserts it into the selected component slot
      * @param index of the component selected from the kept component list
      */
     public void selectKeptComponent(int index) {
-        if (index < 0 || index >= keptImages.size()) return;
-        ImageView keptView = keptImages.get(index);
-        if (keptView != null) {
-            keptFillLevel--;
-            this.insertSelectedComponent(keptView,false);
-            this.disableSelectButtons(false);
-            keptImages.set(index, null);
-            keptSlotsRef.get(index).getChildren().clear();
-            Rectangle border = new Rectangle(110, 110);
-            border.setArcWidth(6);
-            border.setArcHeight(6);
-            border.setFill(Color.TRANSPARENT);
-            border.setStroke(Color.TRANSPARENT);
-            border.setStrokeWidth(1);
+        if (index < 0 || index >= keptFillLevel) return;
 
-            keptSlotsRef.get(index).getChildren().add(border);
-            if(keptFillLevel== 0){
-                this.selectKeptBtn.setDisable(true);
-                this.selectKeptBtn.setOpacity(0.5);
-            }
+        keptFillLevel--;
+
+        this.insertSelectedComponent(viewFlow.getSelectedComponent());
+
+        this.disableSelectButtons(false);
+        this.discardBtn.setOpacity(0.5);
+        this.discardBtn.setDisable(true);
+
+        buildKeptBox();
+
+        if(keptFillLevel== 0){
+            this.selectKeptBtn.setDisable(true);
+            this.selectKeptBtn.setOpacity(0.5);
         }
 
     }
 
     /**
-     * Sets the number of turns done to the component
-     * @param turn an integer representing the turn number to be set
-     */
-    public void setTurnToDo(int turn) {
-        this.turnToDo = turn;
-    }
-
-    /**
      * Inserts a selected component into the UI and adjusts its appearance based on the provided parameters
-     * @param componentView the ImageView representing the selected component to be inserted
-     * @param toTurn a boolean indicating whether to rotate the component (true) or leave it unrotated (false)
+     * @param component the selected component to be inserted
      */
-    public void insertSelectedComponent(ImageView componentView, boolean toTurn) {
+    public void insertSelectedComponent(Component component) {
         if (!inShipView && shipScreenContent != null) {
             isComponentViewVisible = false;
             root.getChildren().setAll(shipScreenContent);
@@ -560,15 +511,11 @@ public class BuildingScene {
             this.keepBtn.setOpacity(0.5);
         }
 
+        ImageView componentView = new ImageView(component.getFrontImage());
         componentView.setFitWidth(176);
         componentView.setPreserveRatio(true);
         componentView.setMouseTransparent(true);
-
-        if (toTurn) {
-            turnToDo = (turnToDo + 1) % 4;
-            componentView.setRotate(90 * turnToDo);
-        }
-
+        componentView.setRotate(component.getRotationAngle());
 
         Rectangle clip = new Rectangle(176, 176);
         clip.setArcWidth(18);
@@ -619,7 +566,6 @@ public class BuildingScene {
      * disabling relevant selection buttons, and adding a placeholder image container
      */
     public void resetComponentSelectedBox() {
-        turnToDo = 0;
 
         componentSelectedBox.getChildren().clear();
         this.componentSelectedExists = false;
@@ -1109,8 +1055,8 @@ public class BuildingScene {
 
             int countKept = 0;
             List<Integer> availableIndices = new ArrayList<>();
-            for (int i = 0; i < keptImages.size(); i++) {
-                if (keptImages.get(i) != null) {
+            for (int i = 0; i < viewFlow.getKeptComponent().size(); i++) {
+                if (viewFlow.getKeptComponent().get(i) != null) {
                     countKept++;
                     availableIndices.add(i);
                 }
@@ -1139,7 +1085,7 @@ public class BuildingScene {
                         return;
                     }
                     int idx = Integer.parseInt(input);
-                    if (keptImages.get(idx) == null) {
+                    if (viewFlow.getKeptComponent().get(idx) == null) {
                         errorLabel.setText("No component in that slot");
                         errorLabel.setVisible(true);
                         return;
