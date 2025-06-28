@@ -679,7 +679,13 @@ public class GUI implements UI {
             }
             if(event.getConditionsOrder() != null){
                 this.showWarzone = false;
-                boolean isLeader = viewFlow.getNickname().equals(event.getTruckers().get(0).getNickname());
+                if(event.getTruckers() == null){
+                    System.out.println("truckers null");
+                }
+                if(event.getTruckers().getFirst() == null){
+                    System.out.println("first trucker null");
+                }
+                boolean isLeader = viewFlow.getNickname().equals(event.getTruckers().getFirst().getNickname());
                 this.flightScene.showCurrCondition(event.getConditionsOrder().getFirst(), isLeader);
             }
         });
