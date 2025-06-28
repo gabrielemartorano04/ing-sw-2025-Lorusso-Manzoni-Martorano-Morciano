@@ -346,16 +346,6 @@ public class TUI implements UI {
         }
     }
 
-    /**
-     * Handles the event triggered when the player(s) has kept a set of components.
-     * @param event the event containing details about the kept components,
-     *              including the list of components that were kept by the player(s).
-     */
-    @Override
-    public void keptComponent(KeptComponentEvent event){
-        this.showAvailableComponent(event.getAvComponents());
-        System.out.print("\n> ");
-    }
 
     /**
      * Handles the event triggered when a component is successfully turned.

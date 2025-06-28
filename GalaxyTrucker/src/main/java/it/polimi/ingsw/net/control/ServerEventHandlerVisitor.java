@@ -377,11 +377,12 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(KeptComponentEvent event){
         viewFlow.addKeptComponent(event.getKept());
         viewFlow.deleteSelectedComponent();
-        ui.keptComponent(event);
+
+        ui.showAvailableComponent(event.getAvComponents());
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
-        if (!viewFlow.getKeptComponent().isEmpty()) {
-            ui.showKeptComponents(viewFlow.getKeptComponent());
-        }
+
+        ui.showKeptComponents(viewFlow.getKeptComponent());
+
         if (viewFlow.getKeptComponent() == null) {
             ui.showBuildOptions();
         }
