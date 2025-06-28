@@ -278,7 +278,7 @@ public class LoginScene {
                     boxToOverlay.get(otherBox).setVisible(true);
                 }
 
-                box.setStyle("-fx-border-color: transparent; -fx-border-width: 3px;");
+                box.setStyle("-fx-border-color: white; -fx-border-width: 3px;");
                 boxToOverlay.get(box).setVisible(false);
 
                 selectedBox[0] = box;
@@ -300,6 +300,7 @@ public class LoginScene {
             if (selectedNickname[0] != null && selectedColor[0] != null) {
                 String input = selectedNickname[0] + " " + selectedColor[0];
                 viewFlow.handleInput(input);
+                root.getChildren().remove(content);
             }
         });
 

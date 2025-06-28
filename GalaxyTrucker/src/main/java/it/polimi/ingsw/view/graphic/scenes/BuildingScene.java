@@ -300,9 +300,7 @@ public class BuildingScene {
         addStackButtonToScene(viewFlow, styleButton);
         addRulesButtonToScene(styleButton);
         addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
-        if(level == 2){
-            addHourglassButtonToScene(viewFlow);
-        }
+        addHourglassButtonToScene(viewFlow);
         addSelectComponentButton(styleButton);
         addSelectKeptButton(viewFlow,styleButton);
         attachOptionsBoxToScene(scene, level);
@@ -509,6 +507,7 @@ public class BuildingScene {
 
         this.componentSelectedExists = true;
         this.hourglassBtn.setDisable(true);
+        this.hourglassBtn.setOpacity(0.5);
         this.hourglassBtn.setOpacity(0.5);
 
         disableSelectButtons(false);
@@ -1073,7 +1072,7 @@ public class BuildingScene {
                 sendBtn.setDisable(true);
             } else if (countKept == 1) {
                 int onlyIndex = availableIndices.getFirst();
-                messageLabel.setText("You have only 1 kept, it will be automatically selected");
+                messageLabel.setText("Select the only kept?");
                 messageLabel.setWrapText(true);
                 messageLabel.setPrefWidth(180);
                 indexField.setVisible(false);
@@ -1774,6 +1773,8 @@ public class BuildingScene {
         if(popupLink != null) {
             popupLink.setOpacity(0);
         }
+
+        removeRemoveBox();
 
         if (isComponentViewVisible && shipScreenContent != null) {
             root.getChildren().setAll(shipScreenContent);
