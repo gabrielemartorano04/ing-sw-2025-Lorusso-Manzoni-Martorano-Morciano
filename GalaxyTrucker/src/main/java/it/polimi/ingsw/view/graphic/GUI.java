@@ -296,7 +296,7 @@ public class GUI implements UI {
             if(viewFlow.getSelectedComponent()!=null){
                 this.buildingScene.insertSelectedComponent(viewFlow.getSelectedComponent());
             }
-            this.showKeptComponents(viewFlow.getKeptComponent());
+            this.buildingScene.buildKeptBox();
         });
     }
 
