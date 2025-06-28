@@ -132,6 +132,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
             }
         }
 
+        if(trucker == null){
+            return;
+        }
+
         if(!trucker.getKeptComponents().isEmpty()){
             for(Component c: trucker.getKeptComponents()){
                 viewFlow.addKeptComponent(c);
