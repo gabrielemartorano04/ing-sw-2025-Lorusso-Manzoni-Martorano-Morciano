@@ -251,7 +251,6 @@ public class ClientHandlerVisitor implements VirtualServer {
 
                 if (gameController.getGame().getGameState() == GameState.BUILDING &&  gameController.getGame().getHourglass() != null) {
                     gameController.getGame().getHourglass().setTimeTurns(0);
-                    gameController.getGame().getHourglass().reactivateTimer();
                 }
 
                 return new ResumeGameEvent(gameController.getGame().getComponents().getComponents(), nickname, allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), gameController.getGame().getTrack(), players);

@@ -104,13 +104,11 @@ public class Hourglass implements Serializable {
         return secondsLeft;
     }
 
-    public void reactivateTimer() {
-        if (timer == null) {
-            timer = new Timer();
-            startTimer();
-        }
-    }
-
+    /**
+     * Sets the number of times the hourglass has been turned.
+     *
+     * @param timeTurns the number of time turns to set
+     */
     public void setTimeTurns(int timeTurns) {
         this.timeTurns = timeTurns;
     }
