@@ -154,7 +154,11 @@ public class Game implements Serializable {
 
     }
 
-    //todo da togliere dopo test o mettere in test
+    /**
+     * Method used to test Game class
+     * @param ship1 first player's spaceship
+     * @param ship2 second player's spaceship
+     */
     public static void initializeForTest(SpaceShip ship1, SpaceShip ship2) {
         Game testGame = new Game(2, 2);
 
@@ -337,23 +341,6 @@ public class Game implements Serializable {
      */
     public void makeStacks() {
         List<Card> mainDeck = deck.getDeck();
-
-//        //TODO: da togliere, messo per debug
-//        int totalCards = mainDeck.size();
-//        int perStack = totalCards / 4;
-//        int remaining = totalCards % 4;
-//        int index = 0;
-//
-//        for (int i = 0; i < 4; i++) {
-//            int cardsInThisStack = perStack + (i < remaining ? 1 : 0);
-//            for (int j = 0; j < cardsInThisStack; j++) {
-//                cardStacks[i].addCardInStack(mainDeck.get(index));
-//                index++;
-//            }
-//        }
-
-
-            //TODO: da rimettere, tolto per debug
         if (gameLevel==2 && mainDeck.size() < 39) {
             throw new IllegalStateException("Il mazzo non contiene abbastanza carte (almeno 39 richieste).");
         }
@@ -744,8 +731,6 @@ public class Game implements Serializable {
         for(Trucker t: truckers){
             if(!t.getSpaceShip().isShipLegal()){
                 names.add(t.getNickname());
-                //TODO TOGLI
-                System.out.println(t.getNickname() + " has an illegal ship");
             }
         }
         return names;
