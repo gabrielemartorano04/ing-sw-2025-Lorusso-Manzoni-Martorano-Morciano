@@ -329,6 +329,9 @@ public class ViewFlow implements EventReceiver {
      * Method called by viewFlow and GUI's handlers to generate and send events to the server
      */
     public void handleInput(String input){
+
+        System.out.println(this.getViewState());
+
         ClientEvent event=null;
         switch (viewState) {
             case CHOOSE_OLD -> event=inputParser.parseOld(input);
