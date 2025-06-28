@@ -62,15 +62,10 @@ public class BuildTimerManager {
         timerThread = new Thread(() -> {
             try {
                 Thread.sleep(seconds * 1000L);
-                if (running) {
-                    expiractionCount++;
-                    System.out.println("[TIMER] Tempo scaduto (" + expiractionCount + "° volta)");
+                System.out.println("[TIMER] Tempo scaduto terza volta");
+                stop();
+                handleFinalTimeout();
 
-                    if (expiractionCount == 2) {
-                        stop();
-                        handleFinalTimeout();
-                    }
-                }
             } catch (InterruptedException e) {
                 System.out.println("[TIMER] Interrotto prima del termine");
                 Thread.currentThread().interrupt();
