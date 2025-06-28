@@ -283,6 +283,7 @@ public class InputParser {
     public ClientEvent parseBuilding(String input, Component component, int index, ArrayList<Component> kept, boolean isFromKept, int stackSelected, boolean firstLinked,ArrayList<String> players) {
         if (input == null || input.isEmpty()) return null;
 
+        System.out.println("Entro in parse Building");
         String[] tokens = input.split("\\s+", 3);
         String command = tokens[0].toLowerCase();
 

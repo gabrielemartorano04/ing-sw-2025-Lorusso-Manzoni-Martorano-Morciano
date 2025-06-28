@@ -18,7 +18,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -2387,7 +2386,8 @@ public class FlightScene {
             posText.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
             posText.setFill(Color.WHITE);
 
-            Text nameText = new Text(name);
+            String displayName = name.length() > 10 ? name.substring(0, 9) + "…" : name;
+            Text nameText = new Text(displayName);
             nameText.setFont(Font.font("Bangers", FontWeight.NORMAL, 18));
             nameText.setFill(Color.WHITE);
 

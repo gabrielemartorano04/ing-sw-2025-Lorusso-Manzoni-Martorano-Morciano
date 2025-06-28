@@ -942,35 +942,35 @@ public class ClientHandlerVisitor implements VirtualServer {
         return new GenericErrorEvent("No such trucker with that nickname",false);
     }
 
-    /**
-     * Handles the event confirming that the player has seen his/her death.
-     * If there are still players remaining, a new card is drawn and the game continues.
-     * If not, final scores are computed and the game ends.
-     *
-     * @param event the event that confirms the set of the view of the client in Dead status
-     * @return an event to start the next card or an end game event if the game is over
-     */
-    @Override
-    public ServerEvent visit(DeadTrucker event){
-        Card card;
-        if (!gameController.getGame().getTruckerList().isEmpty()) {
-            cardController.setCurrCard(gameController.pickCardFromDeck());
-            card = cardController.getCurrCard();
-            if (card != null) {
-                GamePersistence.saveGame(gameController);
-                return cardController.startCard();
-            }
-        }
-        int[] scores;
-        Map<String, Integer> playersScores = new HashMap<>();
-        scores = gameController.getGame().computeScores();
-        for(int i=0; i<numOfPlayers; i++){
-            playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
-        }
-        GamePersistence.saveGame(gameController);
-        GamePersistence.deleteSave();
-        return new EndGameEvent(playersScores);
-    }
+//    /**
+//     * Handles the event confirming that the player has seen his/her death.
+//     * If there are still players remaining, a new card is drawn and the game continues.
+//     * If not, final scores are computed and the game ends.
+//     *
+//     * @param event the event that confirms the set of the view of the client in Dead status
+//     * @return an event to start the next card or an end game event if the game is over
+//     */
+//    @Override
+//    public ServerEvent visit(DeadTrucker event){
+//        Card card;
+//        if (!gameController.getGame().getTruckerList().isEmpty()) {
+//            cardController.setCurrCard(gameController.pickCardFromDeck());
+//            card = cardController.getCurrCard();
+//            if (card != null) {
+//                GamePersistence.saveGame(gameController);
+//                return cardController.startCard();
+//            }
+//        }
+//        int[] scores;
+//        Map<String, Integer> playersScores = new HashMap<>();
+//        scores = gameController.getGame().computeScores();
+//        for(int i=0; i<numOfPlayers; i++){
+//            playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
+//        }
+//        GamePersistence.saveGame(gameController);
+//        GamePersistence.deleteSave();
+//        return new EndGameEvent(playersScores);
+//    }
 
     /**
      * Handles a pong response from a client, used to monitor client connectivity.
