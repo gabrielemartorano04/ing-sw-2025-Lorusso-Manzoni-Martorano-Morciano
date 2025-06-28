@@ -340,10 +340,6 @@ public class ViewFlow implements EventReceiver {
                 if (!this.endBuildingPhase) {
                     event = inputParser.parseBuilding(input, this.selectedComponent, selectedComponentIndex, keptComponent, isFromKept, stackSelected,firstLinked, players);
                 }
-                else {
-                    ui.showWaitForOthers();
-                }
-
             }
             case REMOVE -> event = inputParser.parseRemove(input);
             case FILL-> event= inputParser.parseFillTheShip(input);
