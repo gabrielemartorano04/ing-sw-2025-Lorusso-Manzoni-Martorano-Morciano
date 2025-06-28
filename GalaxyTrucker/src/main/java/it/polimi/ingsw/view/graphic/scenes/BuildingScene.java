@@ -421,6 +421,11 @@ public class BuildingScene {
             this.keepBtn.setOpacity(0.5);
         }
 
+        if(keptFillLevel>0){
+            this.selectKeptBtn.setDisable(false);
+            this.selectKeptBtn.setOpacity(1;
+        }
+
         keptBox = new HBox(15);
         keptBox.setMaxWidth(200);
         keptBox.setAlignment(Pos.TOP_RIGHT);
