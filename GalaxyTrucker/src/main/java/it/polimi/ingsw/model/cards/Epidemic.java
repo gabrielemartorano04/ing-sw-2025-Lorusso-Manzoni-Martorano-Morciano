@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GamePersistence;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.net.events.serverevents.EndGameEvent;
 import it.polimi.ingsw.net.events.serverevents.GenericErrorEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.EpidemicEvent;
@@ -84,6 +85,16 @@ public class Epidemic extends Card implements Serializable {
             track.put(t.getNickname(), t.getPosition());
         }
         GamePersistence.saveGame(GameController.getIstance());
+        if (Game.getIstance().getTruckerList().isEmpty()){
+            int[] scores;
+            Map<String, Integer> playersScores = new HashMap<>();
+            scores = Game.getIstance().computeScores();
+            for(int i=0; i<Game.getIstance().getNumPlayers(); i++){
+                playersScores.put(Game.getIstance().getTruckerOut().get(i).getNickname(), scores[i]);
+            }
+            GamePersistence.deleteSave();
+            return new EndGameEvent(playersScores);
+        }
         return new EpidemicEvent(this.getName(), this.getDescription(), true, Game.getIstance().getTruckerList(), null, truckerRemoved, track, this);
     }
 

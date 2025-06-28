@@ -920,7 +920,7 @@ public class ClientHandlerVisitor implements VirtualServer {
                 }
                 GamePersistence.saveGame(gameController);
                 GamePersistence.deleteSave();
-                return new EndGameEvent(playersScores);
+                    return new EndGameEvent(playersScores);
             }
         }
     }
