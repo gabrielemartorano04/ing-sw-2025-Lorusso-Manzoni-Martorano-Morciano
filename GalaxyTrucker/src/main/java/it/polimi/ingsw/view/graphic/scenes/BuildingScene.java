@@ -1123,6 +1123,7 @@ public class BuildingScene {
                 int onlyIndex = availableIndices.getFirst();
                 messageLabel.setText("You have only 1 kept, it will be automatically selected");
                 messageLabel.setWrapText(true);
+                messageLabel.setPrefWidth(180);
                 indexField.setVisible(false);
                 sendBtn.setOnAction(ev -> {
                     viewFlow.handleInput("selectkept " + onlyIndex);

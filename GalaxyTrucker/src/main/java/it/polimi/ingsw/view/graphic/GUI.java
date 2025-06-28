@@ -583,10 +583,12 @@ public class GUI implements UI {
             for(String s: event.getNickNamesOfIllegalShips()){
                 if(viewFlow.getNickname().equals(s)){
                     this.viewFlow.setViewState(ViewFlow.ViewState.REMOVE);
+                    System.out.println("1e");
                     this.showRemove();
                 }
             }
             if(viewFlow.getViewState() != ViewFlow.ViewState.REMOVE){
+                System.out.println("2");
                 if(viewFlow.getLevel()==2){
                     viewFlow.handleInput("alien");
 
