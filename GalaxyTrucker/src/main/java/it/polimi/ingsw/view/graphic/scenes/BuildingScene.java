@@ -1804,7 +1804,9 @@ public class BuildingScene {
      * Displays a user interface element where the user can place aliens and confirm their placement
      */
     public void showAlienCabin() {
-        popupLink.setOpacity(0);
+        if(popupLink != null) {
+            popupLink.setOpacity(0);
+        }
 
         if (isComponentViewVisible && shipScreenContent != null) {
             root.getChildren().setAll(shipScreenContent);
