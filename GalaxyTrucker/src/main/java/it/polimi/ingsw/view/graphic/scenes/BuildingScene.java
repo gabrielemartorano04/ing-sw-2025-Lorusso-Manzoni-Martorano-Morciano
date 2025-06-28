@@ -27,6 +27,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
+import java.awt.event.MouseEvent;
 import java.util.*;
 
 import java.awt.*;
@@ -1701,6 +1702,13 @@ public class BuildingScene {
         StackPane.setMargin(backBtn, new Insets(30));
 
         backBtn.setOnAction(e -> viewFlow.handleInput("dropStack"));
+
+        overlay.setOnMouseClicked(e -> {
+            if (e.getTarget() == overlay) {
+                viewFlow.handleInput("dropStack");
+                root.getChildren().remove(overlay);
+            }
+        });
 
         overlay.getChildren().addAll(scrollPane, backBtn);
 
