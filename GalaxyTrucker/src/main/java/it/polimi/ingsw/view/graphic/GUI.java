@@ -855,7 +855,6 @@ public class GUI implements UI {
             this.buildingScene.showWaitForOthers();
         }
         else if (viewFlow.getViewState() == ViewFlow.ViewState.FLIGTH){
-            //TODO: ricordati di inserire l'hide del showWaitForOthers per flight quando finisce lo showWaitForOthers
             this.flightScene.showWaitForOthers();
         }
     }

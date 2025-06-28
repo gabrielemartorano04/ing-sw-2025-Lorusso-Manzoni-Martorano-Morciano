@@ -683,16 +683,6 @@ class SpaceShipTest {
     }
 
     @Test
-    void blockLightCannonShot() {
-        spaceShip2.setBattery();
-//        //todo assertTrue(spaceShip2.blockLightCannonShot(0));
-//        //todo assertTrue(spaceShip2.blockLightCannonShot(1));
-//        assertTrue(spaceShip2.blockLightCannonShot(2));
-//        assertFalse(spaceShip2.blockLightCannonShot(3));
-//        assertFalse(spaceShip2.blockLightCannonShot(3));
-    }
-
-    @Test
     void epidemic() {
         spaceShip2.setNumHuman();
         assertEquals(6,spaceShip2.getNumCrew());
