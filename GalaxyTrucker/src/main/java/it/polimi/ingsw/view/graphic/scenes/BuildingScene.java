@@ -376,9 +376,6 @@ public class BuildingScene {
         }
 
         root.getChildren().add(grid);
-        if(!buildNew){
-            this.showMessage("Ship checked by the Server, invalid components may have been removed");
-        }
     }
 
     /**
