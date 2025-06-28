@@ -1673,7 +1673,7 @@ public class BuildingScene {
         overlay.setMouseTransparent(false);
 
         HBox cardBox = new HBox(20);
-        cardBox.setAlignment(Pos.CENTER_LEFT);
+        cardBox.setAlignment(Pos.CENTER);
 
         for (Card card : stack.getStack()) {
             ImageView cardView = new ImageView(card.getFrontImage());
