@@ -1274,6 +1274,25 @@ public class BuildingScene {
     }
 
     /**
+     * Rimuove l'immagine del componente selezionato da componentSelectedBox,
+     * preservando il bordo, se non c'è componente selezionato in viewFlow.
+     */
+    public void clearSelectedComponentImageIfNone() {
+        if (viewFlow.getSelectedComponent() == null && componentSelectedBox != null) {
+            StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
+
+            while (imageContainer.getChildren().size() > 1) {
+                imageContainer.getChildren().remove(1);
+            }
+
+            componentSelectedExists = false;
+            disableSelectButtons(true);
+            this.hourglassBtn.setDisable(true);
+            this.hourglassBtn.setOpacity(0.5);
+        }
+    }
+
+    /**
      * Creates and initializes the component selection buttons, applies styling to them,
      * and sets their event handlers for specific actions
      * @param styleButton a Consumer<Button> function to apply specific styling to the button
