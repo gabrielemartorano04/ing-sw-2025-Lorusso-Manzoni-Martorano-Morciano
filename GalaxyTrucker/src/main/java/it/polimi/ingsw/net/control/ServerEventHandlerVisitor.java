@@ -171,7 +171,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
             }
             case ENDED -> viewFlow.setViewState(ViewFlow.ViewState.END);
             case BUILDING -> {
-                viewFlow.getTimerDisplay().start(90);
                 viewFlow.setViewState(ViewFlow.ViewState.BULDING);
                 viewFlow.fillAvailableComponents(event.getComponents());
                 ui.resumeBuildingScene(event.getPlayerNames());
