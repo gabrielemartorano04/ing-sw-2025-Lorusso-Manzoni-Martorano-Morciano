@@ -2160,7 +2160,7 @@ public class FlightScene {
         confirm.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
         confirm.setCursor(Cursor.HAND);
         confirm.setPrefWidth(100);
-        confirm.setOpacity(0.4);
+        confirm.setOpacity(0.5);
 
         HBox buttons = new HBox(10, yes, no);
         buttons.setAlignment(Pos.CENTER);
@@ -2185,15 +2185,16 @@ public class FlightScene {
 
         yes.setOnAction(e -> {
             response.set("y");
-            confirm.setOpacity(1);
+            confirm.setOpacity(1.0);
             yes.setOpacity(1.0);
-            no.setOpacity(0.4);
+            no.setOpacity(0.5);
         });
 
         no.setOnAction(e -> {
             response.set("n");
+            confirm.setOpacity(1.0);
             no.setOpacity(1.0);
-            yes.setOpacity(0.4);
+            yes.setOpacity(0.5);
         });
 
         confirm.setOnAction(e -> {
@@ -2839,7 +2840,7 @@ public class FlightScene {
      */
     public void showRemainingCards(int remainingCards) {
         if(remainingcardsBox != null) {
-            root.getChildren().remove(remainingcardsBox);
+            remainingcardsBox.setOpacity(0);
         }
 
         Label label = new Label("Remaining\ncards");
