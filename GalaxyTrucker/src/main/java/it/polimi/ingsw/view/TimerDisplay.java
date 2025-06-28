@@ -1,6 +1,4 @@
-package it.polimi.ingsw.view.text;
-
-import it.polimi.ingsw.view.UI;
+package it.polimi.ingsw.view;
 
 /**
  * The TimerDisplay class is responsible for managing a countdown timer with

@@ -297,6 +297,7 @@ public class GUI implements UI {
                 this.buildingScene.insertSelectedComponent(viewFlow.getSelectedComponent());
             }
             this.buildingScene.buildKeptBox();
+            viewFlow.getTimerDisplay().start(90);
         });
     }
 

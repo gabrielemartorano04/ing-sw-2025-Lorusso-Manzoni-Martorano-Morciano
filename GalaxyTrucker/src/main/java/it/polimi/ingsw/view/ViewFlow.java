@@ -5,8 +5,6 @@ import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.model.components.Load;
 import it.polimi.ingsw.model.components.Shield;
 import it.polimi.ingsw.net.events.clientevents.PongEvent;
-import it.polimi.ingsw.net.events.clientevents.cardevents.DeadTrucker;
-import it.polimi.ingsw.net.events.serverevents.PingEvent;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 import it.polimi.ingsw.net.socket.client.ClientSocketSender;
 import it.polimi.ingsw.net.control.ServerEventHandlerVisitor;
@@ -15,7 +13,6 @@ import it.polimi.ingsw.net.events.clientevents.cardevents.OkStartFlight;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.view.graphic.GUI;
 import it.polimi.ingsw.view.text.TUI;
-import it.polimi.ingsw.view.text.TimerDisplay;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;

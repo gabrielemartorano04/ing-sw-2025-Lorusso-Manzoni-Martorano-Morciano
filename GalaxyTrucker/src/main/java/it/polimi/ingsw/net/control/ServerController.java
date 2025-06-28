@@ -14,6 +14,7 @@ import it.polimi.ingsw.net.events.serverevents.setupevents.ChooseResumeEvent;
 import it.polimi.ingsw.net.events.serverevents.setupevents.FirstConnectionEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -101,6 +102,10 @@ public class ServerController {
      */
     private ScheduledExecutorService heartbeatScheduler;
 
+    /**
+     *
+     */
+    private boolean shuttingDown;
 
     /**
      * constructor of the class
@@ -112,6 +117,7 @@ public class ServerController {
         this.clients = new ArrayList<>();
         this.gameCreated = false;
         this.idToSet = 0;
+        this.shuttingDown = false;
         setIstance(this);
         startHeartbeat();
     }
@@ -403,7 +409,16 @@ public class ServerController {
             }
 
             this.broadcastEvent(new EndGameEvent(playersScores));
+
+            shutdown();
         }
+    }
+
+    /**
+     * @return true if the server is closing
+     */
+    public boolean isShuttingDown() {
+        return shuttingDown;
     }
 
     /**
@@ -411,22 +426,10 @@ public class ServerController {
      * stopping heartbeat monitoring and thread executors.
      */
     public void shutdown() {
-        synchronized (clients) {
-            for (Client c : clients) {
-                c.closeConnection();
-            }
-            clients.clear();
-        }
-
-        if (heartbeatScheduler != null && !heartbeatScheduler.isShutdown()) {
-            heartbeatScheduler.shutdownNow();
-        }
-
+        shuttingDown = true;
         executorService.shutdownNow();
-
-        if (gameCreated && gameRunning && gameController != null) {
-            GamePersistence.saveGame(gameController);
-        }
+        if (heartbeatScheduler != null) heartbeatScheduler.shutdownNow();
+        System.out.println("ServerController shutdown complete.");
     }
 
 }

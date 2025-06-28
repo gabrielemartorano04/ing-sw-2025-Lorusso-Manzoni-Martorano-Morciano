@@ -101,6 +101,9 @@ public class TUI implements UI {
         this.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
         this.showKeptComponents(viewFlow.getKeptComponent());
         this.showComponentSelected(viewFlow.getSelectedComponent());
+
+        viewFlow.getTimerDisplay().start(90);
+
     }
 
     /**

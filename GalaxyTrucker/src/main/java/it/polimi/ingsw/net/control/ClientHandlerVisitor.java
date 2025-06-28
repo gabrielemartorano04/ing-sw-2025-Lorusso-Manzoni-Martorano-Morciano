@@ -249,6 +249,10 @@ public class ClientHandlerVisitor implements VirtualServer {
                     players.add(t.getNickname());
                 }
 
+                if (gameController.getGame().getGameState() == GameState.BUILDING &&  gameController.getGame().getHourglass() != null) {
+                    gameController.getGame().getHourglass().setTimeTurns(0);
+                }
+
                 return new ResumeGameEvent(gameController.getGame().getComponents().getComponents(), nickname, allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), gameController.getGame().getTrack(), players);
             }else{
                 numLog--;
@@ -274,6 +278,7 @@ public class ClientHandlerVisitor implements VirtualServer {
         ServerController.setOldGame(event.getChooseToResume());
         if(event.getChooseToResume()){
             gameController = GamePersistence.loadGame();
+
             if (gameController == null) {
                 return new GenericErrorEvent("gameController nullo, impossibile ripristinare partita!", true);
             }
