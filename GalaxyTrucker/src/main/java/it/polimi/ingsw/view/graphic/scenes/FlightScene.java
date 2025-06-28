@@ -1022,6 +1022,7 @@ public class FlightScene {
             inputBox.setAlignment(Pos.CENTER);
             box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
             box.setTranslateX(-20);
+            box.setTranslateY(30);
         });
     }
 
@@ -1118,6 +1119,7 @@ public class FlightScene {
 
             box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
             box.setTranslateX(-20);
+            box.setTranslateY(30);
         });
     }
 
@@ -1265,6 +1267,7 @@ public class FlightScene {
 
             box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
             box.setTranslateX(-50);
+            box.setTranslateY(30);
         });
     }
 
@@ -1338,8 +1341,8 @@ public class FlightScene {
         box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 150.0);
-        AnchorPane.setLeftAnchor(box, 80.0);
+        AnchorPane.setBottomAnchor(box, 130.0);
+        AnchorPane.setLeftAnchor(box, 100.0);
 
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
@@ -1428,7 +1431,7 @@ public class FlightScene {
         box.getChildren().addAll(confirm, goodView, buttons);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 150.0);
+        AnchorPane.setBottomAnchor(box, 180.0);
         AnchorPane.setLeftAnchor(box, 120.0);
 
         overlayLayer.setMouseTransparent(false);
@@ -1643,8 +1646,8 @@ public class FlightScene {
         container.getChildren().add(continueBtn);
 
         AnchorPane popupContent = new AnchorPane(container);
-        AnchorPane.setBottomAnchor(container, 200.0);
-        AnchorPane.setLeftAnchor(container, 180.0);
+        AnchorPane.setBottomAnchor(container, 210.0);
+        AnchorPane.setLeftAnchor(container, 215.0);
 
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
@@ -1678,8 +1681,8 @@ public class FlightScene {
         container.getChildren().add(continueBtn);
 
         AnchorPane popupContent = new AnchorPane(container);
-        AnchorPane.setBottomAnchor(container, 180.0);
-        AnchorPane.setLeftAnchor(container, 150.0);
+        AnchorPane.setBottomAnchor(container, 210.0);
+        AnchorPane.setLeftAnchor(container, 215.0);
 
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
@@ -1708,7 +1711,7 @@ public class FlightScene {
         title.setTextFill(Color.web("#FFDE69"));
 
         Button continueBtn = new Button("Continue");
-        continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+        continueBtn.setFont(Font.font("Bangers", 18));
         continueBtn.setTextFill(Color.BLACK);
         continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
         continueBtn.setCursor(Cursor.HAND);
@@ -1718,7 +1721,7 @@ public class FlightScene {
 
         AnchorPane popupContent = new AnchorPane(box);
         AnchorPane.setBottomAnchor(box, 180.0);
-        AnchorPane.setLeftAnchor(box, 100.0);
+        AnchorPane.setLeftAnchor(box, 195.0);
 
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
@@ -1755,7 +1758,7 @@ public class FlightScene {
 
         TextField inputField = new TextField();
         inputField.setPromptText("Ex. 2 3 - 1, 4 5 - 2");
-        inputField.setPrefWidth(300);
+        inputField.setPrefWidth(250);
 
         Label errorLabel = new Label("Invalid input. Format: <row> <col> - <num>, ... (all ≥ 0)");
         errorLabel.setTextFill(Color.RED);
@@ -1774,8 +1777,8 @@ public class FlightScene {
         box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 170.0);
-        AnchorPane.setLeftAnchor(box, 60.0);
+        AnchorPane.setBottomAnchor(box, 150.0);
+        AnchorPane.setLeftAnchor(box, 100.0);
 
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
@@ -1867,7 +1870,7 @@ public class FlightScene {
         centerBox.setPadding(new Insets(0));
 
         AnchorPane popupContent = new AnchorPane();
-        AnchorPane.setTopAnchor(centerBox, 610.0);
+        AnchorPane.setTopAnchor(centerBox, 620.0);
         AnchorPane.setLeftAnchor(centerBox, 100.0);
 
         popupContent.getChildren().add(centerBox);
@@ -1965,7 +1968,7 @@ public class FlightScene {
         box.getChildren().addAll(confirm, buttons);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setBottomAnchor(box, 190.0);
         AnchorPane.setLeftAnchor(box, 105.0);
 
         overlayLayer.setMouseTransparent(false);
@@ -2028,8 +2031,8 @@ public class FlightScene {
             inputBox.setAlignment(Pos.CENTER);
 
             box.getChildren().addAll(insertLabel, hintLabel, inputBox, errorLabel);
-            box.setTranslateX(-50);
-            box.setTranslateY(40);
+            box.setTranslateX(-100);
+            box.setTranslateY(70);
         });
     }
 
@@ -2079,7 +2082,7 @@ public class FlightScene {
         confirm.setTextFill(Color.web("#FFDE69"));
         confirm.setFont(Font.font("Bangers", FontWeight.BOLD, 25));
         confirm.setTextAlignment(TextAlignment.CENTER);
-        confirm.setMaxWidth(400);
+        confirm.setMaxWidth(350);
         confirm.setWrapText(true);
 
         Button yes = new Button("YES");
@@ -2103,7 +2106,7 @@ public class FlightScene {
 
         AnchorPane popupContent = new AnchorPane(box);
         AnchorPane.setBottomAnchor(box, 160.0);
-        AnchorPane.setLeftAnchor(box, 105.0);
+        AnchorPane.setLeftAnchor(box, 115.0);
 
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
@@ -2222,7 +2225,7 @@ public class FlightScene {
         box.getChildren().addAll(diceLabel, rollButton);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 120.0);
+        AnchorPane.setBottomAnchor(box, 180.0);
         AnchorPane.setLeftAnchor(box, 200.0);
 
         overlayLayer.setMouseTransparent(false);
@@ -2337,10 +2340,10 @@ public class FlightScene {
         Platform.runLater(() -> {
 
             StackPane.setAlignment(messageBox, Pos.TOP_RIGHT);
-            StackPane.setMargin(messageBox, new Insets(20, 30, 0, 0));
+            StackPane.setMargin(messageBox, new Insets(20, 20, 0, 0));
             root.getChildren().add(messageBox);
 
-            PauseTransition delay = new PauseTransition(Duration.seconds(10));
+            PauseTransition delay = new PauseTransition(Duration.seconds(6));
             delay.setOnFinished(e -> root.getChildren().remove(messageBox));
             delay.play();
         });
@@ -2427,7 +2430,7 @@ public class FlightScene {
         message.setAlignment(Pos.CENTER);
 
         Button continueBtn = new Button("Continue");
-        continueBtn.setFont(Font.font("Bangers", FontWeight.BOLD, 18));
+        continueBtn.setFont(Font.font("Bangers", 18));
         continueBtn.setTextFill(Color.BLACK);
         continueBtn.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
         continueBtn.setCursor(Cursor.HAND);
@@ -2437,7 +2440,7 @@ public class FlightScene {
 
         AnchorPane popupContent = new AnchorPane(container);
         AnchorPane.setBottomAnchor(container, 180.0);
-        AnchorPane.setLeftAnchor(container, 150.0);
+        AnchorPane.setLeftAnchor(container, 185.0);
 
         overlayLayer.setMouseTransparent(false);
         overlayLayer.getChildren().setAll(popupContent);
@@ -2789,8 +2792,8 @@ public class FlightScene {
      * @param message the error message to be displayed in the popup
      */
     public void showError(String message) {
-        double width = root.getWidth();
-        double height = root.getHeight();
+        double width = 1600;
+        double height = 900;
 
         Rectangle overlay = new Rectangle(width, height);
         overlay.setFill(Color.rgb(0, 0, 0, 0.4));

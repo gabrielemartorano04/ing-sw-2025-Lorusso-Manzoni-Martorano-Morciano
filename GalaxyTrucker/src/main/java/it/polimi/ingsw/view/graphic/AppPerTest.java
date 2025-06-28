@@ -8,6 +8,7 @@ import it.polimi.ingsw.net.socket.client.ClientSocketSender;
 import it.polimi.ingsw.net.socket.client.NetworkClient;
 import it.polimi.ingsw.view.ViewFlow;
 import it.polimi.ingsw.view.graphic.scenes.BuildingScene;
+import it.polimi.ingsw.view.graphic.scenes.FlightScene;
 import javafx.application.Application;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -104,9 +105,9 @@ public class AppPerTest extends Application {
 
 
 
-        StackPane stackPane = new StackPane();
-        BuildingScene buildingScene = new BuildingScene(createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
-        primaryStage.setScene(buildingScene.createScene(playersNames, 2));
+//        StackPane stackPane = new StackPane();
+//        BuildingScene buildingScene = new BuildingScene(createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
+//        primaryStage.setScene(buildingScene.createScene(playersNames, 2));
 //        buildingScene.showTimeExpired(2);
 //        primaryStage.setResizable(true);        // ← abilita ridimensionamento
 //        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
@@ -133,10 +134,10 @@ public class AppPerTest extends Application {
 //        primaryStage.setScene(scene);
 //
 //
-        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-        primaryStage.show();
-        buildingScene.showRemove();
+//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+//        primaryStage.show();
+//        buildingScene.showRemove();
 //        buildingScene.showOtherShip(createShip1(trucker.getSpaceShip()).getComponents(), trucker.getNickname());
 //
 ////        ArrayList<Trucker> planets = new ArrayList<>(){
@@ -148,18 +149,31 @@ public class AppPerTest extends Application {
 //
 //
 
-//        StackPane stackPane = new StackPane();
-//        FlightScene flightScene = new FlightScene(createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
-//        primaryStage.setScene(flightScene.createScene(playersNames, 2));
-//
-//        primaryStage.setResizable(true);        // ← abilita ridimensionamento
-//        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
-//        primaryStage.show();
+        StackPane stackPane = new StackPane();
+        FlightScene flightScene = new FlightScene(createShip1(trucker.getSpaceShip()).getComponents(), viewFlow, stackPane);
+        primaryStage.setScene(flightScene.createScene(playersNames, 2));
+
+        primaryStage.setResizable(true);        // ← abilita ridimensionamento
+        primaryStage.setFullScreenExitHint(""); // ← facoltativo, se in fullscreen
+        primaryStage.show();
+        flightScene.showError("ciao");
+//        ArrayList<Goods> goods = new ArrayList<>();
+//        goods.add(new Goods(1));
+//        goods.add(new Goods(2));
+//        goods.add(new Goods(3));
+//        goods.add(new Goods(4));
+//        goods.add(new Goods(2));
+//        goods.add(new Goods(3));
+//        goods.add(new Goods(4));
+//        flightScene.updateGoodsListToRemove(goods);
+//        flightScene.showRemoveGoodsInput();
 //        ArrayList<Trucker> truckers = new ArrayList<>();
 //        truckers.add(null);
 //        truckers.add(null);
 //        truckers.add(null);
 //        truckers.add(null);
+//        flightScene.updatePlanetsOccupied(truckers);
+//        flightScene.showPlanetDecisionInput();
 //        flightScene.showOtherShip(createShip1(trucker.getSpaceShip()), trucker.getNickname());
 //        flightScene.updateGoodsListToRemove(new ArrayList<>(){
 //            {
