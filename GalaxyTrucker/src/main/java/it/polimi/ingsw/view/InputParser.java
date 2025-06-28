@@ -70,8 +70,7 @@ public class InputParser {
     try {
         int numOfPlayers = Integer.parseInt(tokens[0]);
         level = Integer.parseInt(tokens[1]);
-        //TODO: CAMBIARE NUMERO GIOCATORI DA 2 A 4 DOPO DEBUG
-        if (numOfPlayers < 1 || numOfPlayers > 4) {
+        if (numOfPlayers < 2 || numOfPlayers > 4) {
             System.out.println("Error: invalid number of players (2-4)");
             return null;
         }
