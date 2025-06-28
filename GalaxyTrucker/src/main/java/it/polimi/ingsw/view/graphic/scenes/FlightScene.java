@@ -2860,7 +2860,7 @@ public class FlightScene {
 
         Platform.runLater(() -> {
             StackPane.setAlignment(remainingCardsBox, Pos.CENTER);
-            StackPane.setMargin(remainingCardsBox, new Insets(-430, 0, 0, -830));
+            StackPane.setMargin(remainingCardsBox, new Insets(-430, 0, 0, -840));
             root.getChildren().add(remainingCardsBox);
         });
     }
