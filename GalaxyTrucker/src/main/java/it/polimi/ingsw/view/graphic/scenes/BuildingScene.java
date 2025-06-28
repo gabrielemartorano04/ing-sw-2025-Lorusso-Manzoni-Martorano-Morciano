@@ -393,6 +393,7 @@ public class BuildingScene {
 
         keepBtn.setDisable(disable);
         keepBtn.setOpacity(opacity);
+        System.out.println("Is discard disable? " + discardBtn.isDisable());
     }
 
     /**
@@ -507,7 +508,6 @@ public class BuildingScene {
 
         this.componentSelectedExists = true;
         this.hourglassBtn.setDisable(true);
-        this.hourglassBtn.setOpacity(0.5);
         this.hourglassBtn.setOpacity(0.5);
 
         disableSelectButtons(false);

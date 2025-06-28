@@ -293,9 +293,7 @@ public class GUI implements UI {
             stage.setResizable(false);
             stage.setFullScreen(true);
             stage.show();
-            if(viewFlow.getSelectedComponent()!=null){
-                this.buildingScene.insertSelectedComponent(viewFlow.getSelectedComponent());
-            }
+            viewFlow.deleteSelectedComponent();
             this.buildingScene.buildKeptBox();
             viewFlow.getTimerDisplay().start(90);
         });
