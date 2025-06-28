@@ -1684,13 +1684,6 @@ public class BuildingScene {
             cardBox.getChildren().add(cardView);
         }
 
-        ScrollPane scrollPane = new ScrollPane(cardBox);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setFitToHeight(true);
-        scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
-        scrollPane.setPadding(new Insets(100, 50, 50, 50));
-
         Button backBtn = new Button("←");
         backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
         backBtn.setTextFill(Color.BLACK);
@@ -1703,14 +1696,9 @@ public class BuildingScene {
 
         backBtn.setOnAction(e -> viewFlow.handleInput("dropStack"));
 
-        overlay.setOnMouseClicked(e -> {
-            if (e.getTarget() == overlay) {
-                viewFlow.handleInput("dropStack");
-                root.getChildren().remove(overlay);
-            }
-        });
+        overlay.setOnMouseClicked(e -> {});
 
-        overlay.getChildren().addAll(scrollPane, backBtn);
+        overlay.getChildren().addAll(cardBox, backBtn);
 
         Platform.runLater(() -> {
             root.getChildren().add(overlay);
