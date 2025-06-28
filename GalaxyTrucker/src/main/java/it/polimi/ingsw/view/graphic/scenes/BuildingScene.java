@@ -300,9 +300,7 @@ public class BuildingScene {
         addStackButtonToScene(viewFlow, styleButton);
         addRulesButtonToScene(styleButton);
         addShowOtherButtonToScene(viewFlow, styleButton, playersNames);
-        if(level == 2){
-            addHourglassButtonToScene(viewFlow);
-        }
+        addHourglassButtonToScene(viewFlow);
         addSelectComponentButton(styleButton);
         addSelectKeptButton(viewFlow,styleButton);
         attachOptionsBoxToScene(scene, level);
@@ -509,6 +507,7 @@ public class BuildingScene {
 
         this.componentSelectedExists = true;
         this.hourglassBtn.setDisable(true);
+        this.hourglassBtn.setOpacity(0.5);
         this.hourglassBtn.setOpacity(0.5);
 
         disableSelectButtons(false);

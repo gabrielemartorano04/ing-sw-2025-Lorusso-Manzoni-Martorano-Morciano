@@ -498,8 +498,10 @@ public class InputParser {
                 message+="- discard : to discard the selected component\n";
                 System.out.println(message);
                 System.out.println("Players in the game\n");
-                for(String nickname: players){
-                    System.out.println(nickname);
+                if(players!= null){
+                    for(String nickname: players) {
+                        System.out.println(nickname);
+                    }
                 }
                 return null;
             case "rules":
