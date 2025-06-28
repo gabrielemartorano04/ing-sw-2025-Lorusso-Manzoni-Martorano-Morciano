@@ -1298,8 +1298,8 @@ public class BuildingScene {
 
             componentSelectedExists = false;
             disableSelectButtons(true);
-            this.hourglassBtn.setDisable(true);
-            this.hourglassBtn.setOpacity(0.5);
+            this.hourglassBtn.setDisable(false);
+            this.hourglassBtn.setOpacity(1);
         }
     }
 
