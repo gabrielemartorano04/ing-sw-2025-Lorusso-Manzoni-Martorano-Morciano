@@ -27,7 +27,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
-import java.awt.event.MouseEvent;
 import java.util.*;
 
 import java.awt.*;
@@ -1298,7 +1297,7 @@ public class BuildingScene {
      */
     public void clearSelectedComponentImageIfNone() {
         if (viewFlow.getSelectedComponent() == null && componentSelectedBox != null) {
-            StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
+            StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().getFirst();
 
             while (imageContainer.getChildren().size() > 1) {
                 imageContainer.getChildren().remove(1);
@@ -1321,6 +1320,8 @@ public class BuildingScene {
         this.keepBtn = new Button("Keep");
         this.discardBtn = new Button("Discard");
         this.linkBtn = new Button("Link");
+        this.linkBtn.setDisable(true);
+        this.linkBtn.setOpacity(0.5);
 
         styleButton.accept(turnBtn);
         styleButton.accept(keepBtn);
@@ -1432,6 +1433,10 @@ public class BuildingScene {
                     errorLabel.setVisible(false);
                     viewFlow.handleInput("link " + row + " " + col);
                     removePopup.run();
+                    if(viewFlow.getFirstLinked()) {
+                        this.linkBtn.setDisable(false);
+                        this.linkBtn.setOpacity(1);
+                    }
                 } catch (NumberFormatException ex) {
                     errorLabel.setVisible(true);
                 }
@@ -2096,7 +2101,7 @@ public class BuildingScene {
      * Removes the removeBox from the scene
      */
     private void removeRemoveBox() {
-        if (removeBox != null && root.getChildren().contains(removeBox)) {
+        if (removeBox != null) {
             root.getChildren().remove(removeBox);
         }
         removeBox = null;

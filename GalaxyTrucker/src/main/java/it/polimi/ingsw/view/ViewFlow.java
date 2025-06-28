@@ -932,5 +932,12 @@ public class ViewFlow implements EventReceiver {
         }
         return true;
     }
+
+    /**
+     * @return true if the component is the first to be linked or not
+     */
+    public boolean getFirstLinked() {
+        return firstLinked;
+    }
 }
 

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.graphic.scenes;
 
-import it.polimi.ingsw.model.PlayerColors;
 import it.polimi.ingsw.model.SpaceShip;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.cards.Card;
@@ -1444,7 +1443,7 @@ public class FlightScene {
         box.getChildren().addAll(confirm, goodView, buttons);
 
         AnchorPane popupContent = new AnchorPane(box);
-        AnchorPane.setBottomAnchor(box, 180.0);
+        AnchorPane.setBottomAnchor(box, 150.0);
         AnchorPane.setLeftAnchor(box, 120.0);
 
         overlayLayer.setMouseTransparent(false);
