@@ -285,8 +285,8 @@ public class TUI implements UI {
             for (Component component : kept) {
                 System.out.println("- " + component.getType());
             }
+            System.out.print("\n> ");
         }
-        System.out.print("\n> ");
     }
 
     /**

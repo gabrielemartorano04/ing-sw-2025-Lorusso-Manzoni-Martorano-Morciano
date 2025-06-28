@@ -570,9 +570,12 @@ public class ViewFlow implements EventReceiver {
     public void addKeptComponent(Component keptComponent) throws IllegalArgumentException{
         if(this.keptComponent.size()<2) {
             this.keptComponent.add(keptComponent);
+            System.out.println("\n");
             for(Component c: this.keptComponent){
                 System.out.println(c);
             }
+            System.out.println("\n");
+
         }else throw new IllegalArgumentException("no more space to keep components");
     }
 
@@ -586,9 +589,14 @@ public class ViewFlow implements EventReceiver {
         if(index> 0 && index<this.keptComponent.size()) {
             this.keptComponent.remove(index);
         }
+        System.out.println("\n");
+
         for(Component c: this.keptComponent){
             System.out.println(c);
         }
+        System.out.println("\n");
+
+
     }
 
 
