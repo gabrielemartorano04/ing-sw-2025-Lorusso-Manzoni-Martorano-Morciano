@@ -55,34 +55,34 @@ public class InputParser {
      * @return the corresponding event to the given command
      */
     public ClientEvent parseFirstConnection(String input) {
-    if (input == null || input.isEmpty()) {
-        return null;
-    }
-
-    input = input.trim();
-    String[] tokens = input.split("\\s+");
-
-    if (tokens.length != 2) {
-        System.out.println("Error: insert number of players (1-4) and level (0 o 2) divided by space");
-        return null;
-    }
-
-    try {
-        int numOfPlayers = Integer.parseInt(tokens[0]);
-        level = Integer.parseInt(tokens[1]);
-        if (numOfPlayers < 2 || numOfPlayers > 4) {
-            System.out.println("Error: invalid number of players (2-4)");
-            return null;
-        }
-        if (level != 0 && level != 2) {
-            System.out.println("Error: invalid level (0 o 2)");
+        if (input == null || input.isEmpty()) {
             return null;
         }
 
-        return new CreateGameEvent(numOfPlayers, level);
+        input = input.trim();
+        String[] tokens = input.split("\\s+");
+
+        if (tokens.length != 2) {
+            System.out.println("Error: insert number of players (2-4) and level (0 o 2) divided by space");
+            return null;
+        }
+
+        try {
+            int numOfPlayers = Integer.parseInt(tokens[0]);
+            level = Integer.parseInt(tokens[1]);
+            if (numOfPlayers < 2 || numOfPlayers > 4) {
+                System.out.println("Error: invalid number of players (2-4)");
+                return null;
+            }
+            if (level != 0 && level != 2) {
+                System.out.println("Error: invalid level (0 o 2)");
+                return null;
+            }
+
+            return new CreateGameEvent(numOfPlayers, level);
         } catch (NumberFormatException e) {
-            System.out.println("Error: both value needs to be integer numbers");
-            return null;
+                System.out.println("Error: both value needs to be numbers");
+                return null;
         }
     }
 
@@ -162,21 +162,26 @@ public class InputParser {
                 }
                 return new AlienCoordinatesRequest();
             case "coord":
-                if(tokens.length%3 ==1){
-                    ArrayList<int[]> coord=new ArrayList<>();
-                    for(int i=1;i<tokens.length-2;i+=3){
-                        if(tokens[i]!=null && tokens[i+1]!=null){
-                            if(tokens[i+2].trim().equalsIgnoreCase("purple")) {
-                                coord.add(new int[]{Integer.parseInt(tokens[i]), Integer.parseInt(tokens[i + 1]),0});
-                            }
-                            else if(tokens[i+2].trim().equalsIgnoreCase("brown")){
-                                coord.add(new int[]{Integer.parseInt(tokens[i]), Integer.parseInt(tokens[i + 1]),1});
+                try{
+                    if(tokens.length%3 ==1){
+                        ArrayList<int[]> coord=new ArrayList<>();
+                        for(int i=1;i<tokens.length-2;i+=3){
+                            if(tokens[i]!=null && tokens[i+1]!=null){
+                                if(tokens[i+2].trim().equalsIgnoreCase("purple")) {
+                                    coord.add(new int[]{Integer.parseInt(tokens[i]), Integer.parseInt(tokens[i + 1]),0});
+                                }
+                                else if(tokens[i+2].trim().equalsIgnoreCase("brown")){
+                                    coord.add(new int[]{Integer.parseInt(tokens[i]), Integer.parseInt(tokens[i + 1]),1});
+                                }
                             }
                         }
+                        return new SendAlienCoord(coord);
+                    }else {
+                        System.out.println("Error: illegal command. Type 'coord <x1> <y1> <color> <x2> <y2> <color>...' .");
+                        return null;
                     }
-                    return new SendAlienCoord(coord);
-                }else {
-                    System.out.println("Error: illegal command. Type 'coord <x1> <y1> <color> <x2> <y2> <color>...' .");
+                }catch (NumberFormatException e){
+                    System.out.println("Error: coord must be numbers");
                     return null;
                 }
             case "continue":
@@ -250,11 +255,11 @@ public class InputParser {
         input = input.trim();
         String[] tokens = input.split("\\s+");
         if (tokens.length != 1) {
-            System.out.println("please write y or n");
+            ui.showError("Error: write y or n");
             return null;
         }
         if (tokens[0].equalsIgnoreCase("y") && tokens[0].equalsIgnoreCase( "n")){
-            System.out.println("please write y or n");
+            ui.showError("Error: write y or n");
             return null;
         }
         if(tokens[0].equalsIgnoreCase("y")) {
@@ -366,7 +371,13 @@ public class InputParser {
                     System.out.println("Error: illegal command. Type 'select <index>'.");
                     return null;
                 }
-                return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
+                try {
+                    return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
+                }catch (NumberFormatException e){
+                    System.out.println("Error: index must be a number");
+                    return null;
+                }
+
 
             case "selectkept":
 
@@ -374,7 +385,13 @@ public class InputParser {
                     System.out.println("Error: illegal command. Type 'selectkept <index>'.");
                     return null;
                 }
-                int ind = Integer.parseInt(tokens[1].trim());
+                int ind;
+                try {
+                    ind = Integer.parseInt(tokens[1].trim());
+                }catch (NumberFormatException e){
+                    System.out.println("Error: index must be a number");
+                    return null;
+                }
                 if (ind < 0 || ind > kept.size() - 1) {
                     System.out.println("Please type a valid index. Type 'selectkept <index>'.");
                     return null;
@@ -430,8 +447,14 @@ public class InputParser {
                     System.out.println("Error: illegal command. Type 'link <x> <y>'.");
                     return null;
                 }
-                int x=Integer.parseInt(tokens[1].trim());
-                int y=Integer.parseInt(tokens[2].trim());
+                int x,y;
+                try{
+                    x=Integer.parseInt(tokens[1].trim());
+                    y=Integer.parseInt(tokens[2].trim());
+                }catch (NumberFormatException e){
+                    System.out.println("Error: coord must be numbers");
+                    return null;
+                }
                 if(x<5 || x>9 || y<4 || y>10){
                     System.out.println("Error: illegal coordinates. Type 'link <x> <y>'.");
                     return null;
@@ -497,15 +520,21 @@ public class InputParser {
                 return new ShowOtherShipEvent(tokens[1].trim());
 
             case "link":
-                if (tokens.length != 3) {
-                    System.out.println("Error: illegal command. Type 'link <x> <y>'.");
+                try{
+                    if (tokens.length != 3) {
+                        System.out.println("Error: illegal command. Type 'link <x> <y>'.");
+                        return null;
+                    }
+                    if((Integer.parseInt(tokens[1])<5 || Integer.parseInt(tokens[1])>9) && (Integer.parseInt(tokens[2])<4 || Integer.parseInt(tokens[2])>10)){
+                        System.out.println("Error: illegal command. Please set a valiid index\n");
+                        return null;
+                    }
+                    return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
+                }catch (NumberFormatException e){
+                    System.out.println("Error: coord must be numbers");
                     return null;
                 }
-                if((Integer.parseInt(tokens[1])<5 || Integer.parseInt(tokens[1])>9) && (Integer.parseInt(tokens[2])<4 || Integer.parseInt(tokens[2])>10)){
-                    System.out.println("Error: illegal command. Please set a valiid index\n");
-                    return null;
-                }
-                return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
+
             case "keep":
                 if (tokens.length != 1) {
                     System.out.println("Error: illegal command. Type 'keep' if you want to keep the selected component.");
@@ -568,7 +597,12 @@ public class InputParser {
                     System.out.println("Error: illegal command. Type 'select <index>'.");
                     return null;
                 }
-                return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
+                try{
+                    return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
+                }catch (NumberFormatException e){
+                    System.out.println("Error: index must be a number");
+                    return null;
+                }
 
             case "selectkept":
 
@@ -576,7 +610,13 @@ public class InputParser {
                     System.out.println("Error: illegal command. Type 'selectkept <index>'.");
                     return null;
                 }
-                int ind = Integer.parseInt(tokens[1].trim());
+                int ind;
+                try{
+                    ind = Integer.parseInt(tokens[1].trim());
+                }catch (NumberFormatException e){
+                    System.out.println("Error: index must be a number");
+                    return null;
+                }
                 if (ind < 0 || ind > kept.size() - 1) {
                     System.out.println("Please type a valid index. Type 'selectkept <index>'.");
                     return null;
@@ -588,17 +628,23 @@ public class InputParser {
                     System.out.println("Error: illegal command. Type 'stack <index>'.");
                     return null;
                 }
-                if (Integer.parseInt(tokens[1].trim()) >= 1 && Integer.parseInt(tokens[1].trim()) <= 3) {
-                    return new ShowStackEvent(Integer.parseInt(tokens[1].trim()) - 1);
-                } else {
-                    System.out.println("Error: illegal stack number. Please select a stack between 1 and 3 or choose another command");
+                try {
+                    if (Integer.parseInt(tokens[1].trim()) >= 1 && Integer.parseInt(tokens[1].trim()) <= 3) {
+                        return new ShowStackEvent(Integer.parseInt(tokens[1].trim()) - 1);
+                    } else {
+                        System.out.println("Error: illegal stack number. Please select a stack between 1 and 3 or choose another command");
+                        return null;
+                    }
+                }catch (NumberFormatException e){
+                    System.out.println("Error: index must be a number between 1 and 3");
+                    return null;
                 }
-                return null;
+
             case "end":
                 if (tokens.length != 1) {
                     System.out.println("Error: illegal command. Type 'end' if you want to end building phase.");
                     return null;
-                }// il client finisce e aspetta o che tutti finiscono o che il timer
+                }
                 return new EndBuildingEvent();
             default:
                 System.out.println("Error: unknown command: " + command + ". Please select a valid command");
@@ -669,17 +715,23 @@ public class InputParser {
                 }
                 return new TurnComponentEvent(component);
             case "link":
-                if (tokens.length != 3) {
-                    System.out.println("Error: illegal command. Type 'link <x> <y>'.");
+                try{
+                    if (tokens.length != 3) {
+                        System.out.println("Error: illegal command. Type 'link <x> <y>'.");
+                        return null;
+                    }
+                    int x=Integer.parseInt(tokens[1].trim());
+                    int y=Integer.parseInt(tokens[2].trim());
+                    if(x<5 || x>9 || y<4 || y>10){
+                        System.out.println("Error: illegal coordinates. Type 'link <x> <y>'.");
+                        return null;
+                    }
+                    return new LinkTileEvent(index, x, y, component);
+                }catch (NumberFormatException e){
+                    System.out.println("Error: coord must be a numbers");
                     return null;
                 }
-                int x=Integer.parseInt(tokens[1].trim());
-                int y=Integer.parseInt(tokens[2].trim());
-                if(x<5 || x>9 || y<4 || y>10){
-                    System.out.println("Error: illegal coordinates. Type 'link <x> <y>'.");
-                    return null;
-                }
-                return new LinkTileEvent(index, x, y, component);
+
             case "keep":
                 if (tokens.length != 1) {
                     System.out.println("Error: illegal command. Type 'keep <index>'.");
@@ -741,15 +793,21 @@ public class InputParser {
                 return new ShowOtherShipEvent(tokens[1].trim());
 
             case "link":
-                if (tokens.length != 3) {
-                    System.out.println("Error: illegal command. Type 'link <x> <y>'.");
+                try{
+                    if (tokens.length != 3) {
+                        System.out.println("Error: illegal command. Type 'link <x> <y>'.");
+                        return null;
+                    }
+                    if((Integer.parseInt(tokens[1])<5 || Integer.parseInt(tokens[1])>9) && (Integer.parseInt(tokens[2])<4 || Integer.parseInt(tokens[2])>10)){
+                        System.out.println("Error: illegal command. Please set a valiid index\n");
+                        return null;
+                    }
+                    return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
+                }catch (NumberFormatException e){
+                    System.out.println("Error: coord must be numbers");
                     return null;
                 }
-                if((Integer.parseInt(tokens[1])<5 || Integer.parseInt(tokens[1])>9) && (Integer.parseInt(tokens[2])<4 || Integer.parseInt(tokens[2])>10)){
-                    System.out.println("Error: illegal command. Please set a valiid index\n");
-                    return null;
-                }
-                return new LinkTileEvent(index, Integer.parseInt(tokens[1].trim()), Integer.parseInt(tokens[2].trim()), component);
+
             case "keep":
                 if (tokens.length != 1) {
                     System.out.println("Error: illegal command. Type 'keep' if you want to keep the selected component.");
@@ -805,14 +863,26 @@ public class InputParser {
                     System.out.println("Error: illegal command. Type 'select <index>'.");
                     return null;
                 }
-                return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
+                try{
+                    return new SelectTileEvent(Integer.parseInt(tokens[1].trim()));
+                }catch (NumberFormatException e){
+                    System.out.println("Error: index must be a number");
+                    return null;
+                }
+
 
             case "selectkept":
                 if (tokens.length != 2) {
                     System.out.println("Error: illegal command. Type 'selectkept <index>'.");
                     return null;
                 }
-                int ind = Integer.parseInt(tokens[1].trim());
+                int ind=-1;
+                try{
+                    ind = Integer.parseInt(tokens[1].trim());
+                } catch (NumberFormatException e) {
+                    ui.showError("Error: index must be a number");
+                    return null;
+                }
 
                 if (ind < 0 || ind > kept.size() - 1) {
                     System.out.println("Please type a valid index. Type 'selectkept <index>'.");
@@ -823,7 +893,7 @@ public class InputParser {
                 if (tokens.length != 1) {
                     System.out.println("Error: illegal command. Type 'end' if you want to end building phase.");
                     return null;
-                }// il client finisce e aspetta o che tutti finiscono o che il timer
+                }
                 return new EndBuildingEvent();
             default:
                 System.out.println("Error: unknown command: " + command + ". Please select a valid command");
