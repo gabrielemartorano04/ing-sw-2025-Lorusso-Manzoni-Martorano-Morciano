@@ -432,12 +432,6 @@ public class BuildingScene {
 
         ArrayList<Component> keptComponents = viewFlow.getKeptComponent();
 
-        System.out.println("\nIN BUILD KEPT");
-        for (Component c : keptComponents) {
-            System.out.println(c);
-        }
-        System.out.println();
-
         for (int i = 0; i < 2; i++) {
             StackPane slot = new StackPane();
             slot.setPrefSize(110, 110);
@@ -482,7 +476,6 @@ public class BuildingScene {
      */
     public void selectKeptComponent(int index) {
 
-        System.out.println("Index : " + index);
         if (index < 0 || index >= keptFillLevel) {
             return;
         }
@@ -831,7 +824,7 @@ public class BuildingScene {
         rulesBtn.setOnAction(e -> {
             try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
                 if (is == null) {
-                    System.out.println("File not found");
+                    this.showError("File not found");
                     return;
                 }
 
@@ -849,7 +842,7 @@ public class BuildingScene {
                 Desktop.getDesktop().open(tempPdf);
 
             } catch (IOException e1) {
-                System.out.println("Error in file opening");
+                this.showError("Error in file opening");
             }
         });
 
