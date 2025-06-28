@@ -354,7 +354,7 @@ public class Game implements Serializable {
 
 
             //TODO: da rimettere, tolto per debug
-        if (mainDeck == null || mainDeck.size() < 39) {
+        if (gameLevel==2 && mainDeck.size() < 39) {
             throw new IllegalStateException("Il mazzo non contiene abbastanza carte (almeno 39 richieste).");
         }
 
@@ -596,7 +596,9 @@ public class Game implements Serializable {
         if (gameState!= GameState.SETUP){
             throw new IllegalStateException("Game has already been started");
         }
-        makeStacks();
+        if(gameLevel==2) {
+            makeStacks();
+        }
         makeGameDeck();
         System.out.println("game created");
         gameState = GameState.BUILDING;
