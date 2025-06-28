@@ -296,12 +296,7 @@ public class GUI implements UI {
             if(viewFlow.getSelectedComponent()!=null){
                 this.buildingScene.insertSelectedComponent(viewFlow.getSelectedComponent());
             }
-            for(int i = 0; i < viewFlow.getKeptComponent().size(); i++){
-                Component c = viewFlow.getKeptComponent().get(i);
-                if(c!=null){
-                    this.buildingScene.insertComponentToKepts(c);
-                }
-            }
+            this.buildingScene.buildKeptBox();
         });
     }
 
@@ -506,7 +501,7 @@ public class GUI implements UI {
      */
     @Override
     public void keptComponent(KeptComponentEvent event){
-        Platform.runLater(() -> this.buildingScene.insertComponentToKepts(event.getKept()));
+        Platform.runLater(() -> this.buildingScene.buildKeptBox());
     }
 
     /**
