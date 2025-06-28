@@ -159,6 +159,11 @@ public class FlightScene {
     private VBox statusBar;
 
     /**
+     * A VBox container representing the track
+     */
+    private VBox trackBox;
+
+    /**
      * A graphical layer that overlays the primary content and is shown always on top
      */
     private final StackPane overlayLayer;
@@ -424,7 +429,10 @@ public class FlightScene {
         moreButton.setTextFill(Color.BLACK);
         moreButton.setBackground(new Background(new BackgroundFill(Color.web("#FFDE69"), new CornerRadii(10), Insets.EMPTY)));
         moreButton.setCursor(Cursor.HAND);
-        moreButton.setOnAction(e -> showMore());
+        moreButton.setOnAction(e -> {
+            trackBox.setOpacity(0.5);
+            showMore();
+        });
 
         HBox resourceBox = new HBox(20, posBox, battBox, humanBox, cannonBox, engineBox, goodsBox, creditBox, lostBox);
         resourceBox.setAlignment(Pos.CENTER);
@@ -2367,7 +2375,7 @@ public class FlightScene {
 
         int maxPosition = sorted.getFirst().getValue();
 
-        VBox trackBox = new VBox(10);
+        trackBox = new VBox(10);
         trackBox.setId("trackBox");
         trackBox.setAlignment(Pos.CENTER_LEFT);
         trackBox.setPadding(new Insets(10));
@@ -2590,8 +2598,6 @@ public class FlightScene {
         VBox textBox = new VBox(10);
         textBox.setAlignment(Pos.TOP_LEFT);
 
-        Trucker t = new Trucker("n", PlayerColors.BLUE);
-        t.initSpaceShip(2);
         Component[][] layout = viewFlow.getShip().getComponents();
         StringBuilder desc = new StringBuilder();
         for (int i = 0; i < layout.length; i++) {
@@ -2680,7 +2686,10 @@ public class FlightScene {
         StackPane.setMargin(scroll, new Insets(0, 0, 0, 120));
         StackPane.setAlignment(overlayGrid, Pos.TOP_RIGHT);
 
-        root.setOnMouseClicked(e -> root.getChildren().remove(overlayContainer));
+        root.setOnMouseClicked(e -> {
+            root.getChildren().remove(overlayContainer);
+            trackBox.setOpacity(1.0);
+        });
         scroll.setOnMouseClicked(Event::consume);
 
         root.getChildren().add(overlayContainer);

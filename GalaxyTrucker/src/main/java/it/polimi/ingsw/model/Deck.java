@@ -276,7 +276,7 @@ class Deck implements Serializable {
             cards.addLast(new MeteorShower(false, direction3, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0111.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",15));
             cards.addLast(new Planets(false, 3, 1, planets1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0112.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",16));
             cards.addLast(new Planets(false, 3, 1, planets3, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0114.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",17));
-            cards.addLast(new Planets(false, 1, 1, planets4, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0114.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",18));
+            cards.addLast(new Planets(false, 1, 1, planets4, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0115.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",18));
             cards.addLast(new AbandonedShip(false, 1, 2, 3, 1, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0117.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",19));
             cards.addLast(new AbandonedStation(false, 1, goods2, 1,6, "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0120.jpg", "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg",20));
             cards.addLast(new Slavers(false, 2, 8, 2, 4,7, "/it/polimi/ingsw/model/cards/GT-cards_II_IT_01.jpg",  "/it/polimi/ingsw/model/cards/GT-cards_II_IT_0121.jpg",21));
