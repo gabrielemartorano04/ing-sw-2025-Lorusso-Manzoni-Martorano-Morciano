@@ -637,6 +637,7 @@ public class GUI implements UI {
             stage.show();
 
             this.flightScene.showStateInput();
+
         });
     }
 

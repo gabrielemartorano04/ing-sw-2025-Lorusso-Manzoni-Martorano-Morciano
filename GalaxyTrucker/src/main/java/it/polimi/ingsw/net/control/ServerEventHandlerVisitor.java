@@ -816,6 +816,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
      */
     @Override
     public void visit(StartCardEvent event) {
+        if(viewFlow.getViewState()!= ViewFlow.ViewState.FLIGTH){
+            viewFlow.setStartFlightForAll();
+        }
+
         ui.showCardDrawn(event);
         viewFlow.decreaseCardsToGo();
         viewFlow.setTrack(event.getTrack());
@@ -1117,6 +1121,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
                 ui.showShipLayout(viewFlow.getNickname(),viewFlow.getShip().getComponents());
                 ui.showPlayerShipStatus();
                 ui.showDead();
+                viewFlow.handleInput("dead");
 
                 break;
             }

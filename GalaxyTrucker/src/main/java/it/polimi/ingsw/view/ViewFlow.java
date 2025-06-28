@@ -112,10 +112,6 @@ public class ViewFlow implements EventReceiver {
      */
     private boolean endBuildingPhase;
 
-    /**
-     * Boolean value that is true if this client is ready for the flight phase
-     */
-    private boolean startFlight;
 
     /**
      * Boolean value that is true if all clients are in the flight phase and therefore the flight phase can start
@@ -246,7 +242,6 @@ public class ViewFlow implements EventReceiver {
                 put("BLUE",0);
             }
         };
-        this.startFlight=true;
         this.startFlightForAll=false;
         this.selectedComponent=null;
         this.out=false;
@@ -345,20 +340,15 @@ public class ViewFlow implements EventReceiver {
             case FILL-> event= inputParser.parseFillTheShip(input);
             case FLIGTH-> {
                 if(!out) {
-                    if (this.startFlight) {
-                        if(input.trim().equals("state")){
-                            event = new OkStartFlight();
-                            this.startFlight = false;
-                        }
-
+                    if(input.trim().equals("state")){
+                        event = new OkStartFlight();
                     } else if (startFlightForAll) {
                         event = inputParserFlight.parseFlight(input, nickname);
                     } else {
                         ui.showWaitForOthers();
                     }
                 }else{
-                    event = new DeadTrucker();
-                    System.out.println("You are out of the flight, please wait for others to finish it and see the results");
+                    event = inputParserFlight.parseFlight(input, nickname);
                 }
             }
         }
