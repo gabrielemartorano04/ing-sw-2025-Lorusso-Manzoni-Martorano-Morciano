@@ -551,6 +551,9 @@ public class BuildingScene {
         }
 
         this.componentSelectedExists = true;
+        this.hourglassBtn.setDisable(true);
+        this.hourglassBtn.setOpacity(0.5);
+
         disableSelectButtons(false);
         if(keptFillLevel==2){
             this.keepBtn.setDisable(true);
@@ -587,6 +590,9 @@ public class BuildingScene {
     public void insertComponentInGrid(Component component, int row, int col) {
 
         this.componentSelectedExists = false;
+        this.hourglassBtn.setDisable(false);
+        this.hourglassBtn.setOpacity(1);
+
         if (component == null || !validCells[row][col]) return;
         resetComponentSelectedBox();
 
