@@ -124,7 +124,7 @@ public class TUI implements UI {
         this.showPlayers(event.getPlayers());
         this.showBuildPhaseStart(event.getComponents());
         this.showBuildOptions();
-        System.out.print("\n>");
+        System.out.print("\n> ");
     }
 
     /**
@@ -141,7 +141,7 @@ public class TUI implements UI {
         int colCount = 0;
 
         List<StringBuilder> lines = new ArrayList<>();
-        for (int i = 0; i < 7; i++) lines.add(new StringBuilder()); // ogni componente ha 7 righe di output
+        for (int i = 0; i < 7; i++) lines.add(new StringBuilder());
 
         int i = 0;
 
@@ -231,7 +231,7 @@ public class TUI implements UI {
     public void componentLinked(ComponentLinkedEvent event){
         this.showComponentPlaced(event.getComponent(), event.getX(), event.getY());
         this.showAvailableComponent(event.getAvComponents());
-        System.out.print("\n>");
+        System.out.print("\n> ");
 
     }
 
@@ -245,7 +245,7 @@ public class TUI implements UI {
         this.showError(event.getMessage());
         this.showAvailableComponent(this.viewFlow.getAvailableComponents());
         this.showMessage("Please select a component between 0 and " + (this.viewFlow.getAvailableComponents().size()-1)+"\n");
-        System.out.print("\n>");
+        System.out.print("\n>" );
     }
 
     /**
@@ -258,7 +258,7 @@ public class TUI implements UI {
     public void componentSelected (ComponentSelectedEvent event){
         this.showComponentSelected(this.viewFlow.getSelectedComponent());
         this.showComponentOptions();
-        System.out.print("\n>");
+        System.out.print("\n> ");
     }
 
     /**
@@ -270,7 +270,7 @@ public class TUI implements UI {
     public void invalidCoordinates(InvalidCoordinatesError event){
         this.showError(event.getMessage());
         this.askCoordinates();
-        System.out.print("\n>");
+        System.out.print("\n> ");
     }
 
     /**
@@ -286,7 +286,7 @@ public class TUI implements UI {
                 System.out.println("- " + component.getType());
             }
         }
-        System.out.print("\n>");
+        System.out.print("\n> ");
     }
 
     /**
@@ -297,7 +297,7 @@ public class TUI implements UI {
     @Override
     public void turnHourGlassError(TurnHourglassError event){
         this.showError(event.getMessage());
-        System.out.print("\n>");
+        System.out.print("\n> ");
     }
 
     /**
@@ -307,7 +307,7 @@ public class TUI implements UI {
     @Override
     public void turnHourGlass(int durationSeconds){
         System.out.println("Timer started! Duration: " + durationSeconds + " seconds.");
-        System.out.print("\n>");
+        System.out.print("\n> ");
     }
 
     /**
@@ -317,6 +317,7 @@ public class TUI implements UI {
     public void showRemove(){
         System.out.println("Your ship is illegal, untill all illegal components won't be removed you cannot proceed");
         System.out.println("type 'remove <x> <y>' to remove a component");
+        System.out.println("\n> ");
     }
 
     /**
@@ -353,7 +354,7 @@ public class TUI implements UI {
     @Override
     public void keptComponent(KeptComponentEvent event){
         this.showAvailableComponent(event.getAvComponents());
-        System.out.print("\n>");
+        System.out.print("\n> ");
     }
 
     /**
@@ -364,7 +365,7 @@ public class TUI implements UI {
     @Override
     public void componentTurned(TurnedComponentSuccessEvent event){
         this.showComponentSelected(event.getComponent());
-        System.out.print("\n>");
+        System.out.print("\n> ");
     }
 
     /**
@@ -374,7 +375,7 @@ public class TUI implements UI {
     @Override
     public void keptSelected(SuccessSelectKept event){
         this.showComponentSelected(viewFlow.getSelectedComponent());
-        System.out.print("\n>");
+        System.out.print("\n> ");
     }
 
     /**
@@ -388,7 +389,7 @@ public class TUI implements UI {
 
         if(event.getAlienCabinCoord().isEmpty()){
             this.showMessage("you can't place any alien. Please type 'coord' to go on\n");
-            System.out.print(">");
+            System.out.print("> ");
         }
         else {
             StringBuilder message= new StringBuilder();
@@ -403,7 +404,7 @@ public class TUI implements UI {
             }
             this.showMessage("\nList of cabin available for aliens:\n" + message);
             this.showMessage("Insert coordinates to add aliens (coord <row1> <col1> <color> <row2> <col2> <color>...), otherwise just 'coord'.");
-            System.out.print("\n>");
+            System.out.print("\n> ");
         }
     }
 
@@ -422,9 +423,7 @@ public class TUI implements UI {
      * Refreshes the available components in the user interface.
      */
     @Override
-    public void refreshAvailableComponents(){
-        // serve per la GUI, non so se si riesce a integrare anche nella tui al massimo lo lasciamo vuoto
-    }
+    public void refreshAvailableComponents(){}
 
     /**
      * Handles the flight scene process for the given flight start event.
@@ -451,7 +450,7 @@ public class TUI implements UI {
         System.out.println("Current condition:" + condition);
         if(isLeader){
             System.out.println("Type warzone to proceed");
-            System.out.print(">");
+            System.out.print("> ");
         }
     }
 
@@ -474,7 +473,7 @@ public class TUI implements UI {
         }
         this.showTrack(viewFlow.getTrack(), viewFlow.getLevel());
         System.out.println(message);
-        System.out.print(">");
+        System.out.print("> ");
     }
 
     /**
@@ -496,7 +495,7 @@ public class TUI implements UI {
             i++;
         }
         System.out.println(message);
-        System.out.print(">");
+        System.out.print("> ");
     }
 
     /**
@@ -522,7 +521,7 @@ public class TUI implements UI {
             i++;
         }
         System.out.println(message);
-        System.out.print(">");
+        System.out.print("> ");
     }
 
     /**
@@ -571,7 +570,7 @@ public class TUI implements UI {
             case ASK_WITHDRAW -> System.out.println("Do you want to withdraw? Type 'y' or 'n'");
             case DISPLAY_BIG_SHOOT -> System.out.println("Type 'continue' when you are ready for the big Shot");
         }
-        System.out.print(">");
+        System.out.print("> ");
     }
 
     /**
@@ -587,7 +586,7 @@ public class TUI implements UI {
         else if(event.getMeteor()!=null){
             System.out.println(this.getMeteoriteDescription(event.getMeteor(),event.getCurrIndex()));
         }
-        System.out.print(">");
+        System.out.print("> ");
     }
 
     /**
@@ -624,7 +623,7 @@ public class TUI implements UI {
     private void showChooseColor(EnumSet<PlayerColors> availableColors) {
         System.out.println("Colours available: " + String.join(", ", availableColors.toString()));
         System.out.println("Insert nickname and choose a colour.");
-        System.out.print(">");
+        System.out.print("> ");
     }
 
     /**
