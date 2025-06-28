@@ -200,17 +200,6 @@ public class WarZone extends Card implements Serializable {
             ArrayList<Trucker> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
 
-            if(Game.getIstance().getTruckerList().isEmpty()){
-                int[] scores;
-                Map<String, Integer> playersScores = new HashMap<>();
-                scores = Game.getIstance().computeScores();
-                for(int i=0; i<Game.getIstance().getNumPlayers(); i++){
-                    playersScores.put(Game.getIstance().getTruckerOut().get(i).getNickname(), scores[i]);
-                }
-                GamePersistence.deleteSave();
-                return new EndGameEvent(playersScores);
-            }
-
             return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
         }
         if(currConditionIndex == conditionsOrder.size()){
