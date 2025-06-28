@@ -135,14 +135,6 @@ public interface UI {
     void buildingComplete(BuildCompleteEvent event);
 
     /**
-     * Handles the event triggered when a specific component is kept by a player
-     * from the available components.
-     * @param event An instance of KeptComponentEvent containing details about
-     *              the kept component and the list of available components.
-     */
-    void keptComponent(KeptComponentEvent event);
-
-    /**
      * Handles the event triggered when a component is successfully rotated.
      * @param event An instance of TurnedComponentSuccessEvent containing details
      *              about the rotated component.
