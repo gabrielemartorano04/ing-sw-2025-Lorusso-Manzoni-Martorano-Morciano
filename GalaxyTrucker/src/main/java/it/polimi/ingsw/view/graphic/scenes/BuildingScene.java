@@ -431,6 +431,8 @@ public class BuildingScene {
 
         ArrayList<Component> keptComponents = viewFlow.getKeptComponent();
 
+
+
         for (int i = 0; i < 2; i++) {
             StackPane slot = new StackPane();
             slot.setPrefSize(110, 110);
@@ -473,9 +475,13 @@ public class BuildingScene {
      * @param index of the component selected from the kept component list
      */
     public void selectKeptComponent(int index) {
-        if (index < 0 || index >= keptFillLevel) return;
+        if (index < 0 || index >= keptFillLevel) {
+            return;
+        }
 
         keptFillLevel--;
+
+        buildKeptBox();
 
         this.insertSelectedComponent(viewFlow.getSelectedComponent());
 
@@ -487,8 +493,6 @@ public class BuildingScene {
             this.selectKeptBtn.setDisable(true);
             this.selectKeptBtn.setOpacity(0.5);
         }
-
-        buildKeptBox();
 
     }
 

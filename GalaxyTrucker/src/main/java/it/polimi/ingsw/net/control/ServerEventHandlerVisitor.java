@@ -2,6 +2,7 @@ package it.polimi.ingsw.net.control;
 
 import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.model.Trucker;
+import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.events.serverevents.*;
 import it.polimi.ingsw.net.events.serverevents.buildingevents.*;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
@@ -415,7 +416,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(SuccessSelectKept event){
         viewFlow.setSelectedComponent(event.getComponent(), true);
         viewFlow.getKeptComponent().remove(event.getIndex());
-
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
 
         ui.keptSelected(event);
