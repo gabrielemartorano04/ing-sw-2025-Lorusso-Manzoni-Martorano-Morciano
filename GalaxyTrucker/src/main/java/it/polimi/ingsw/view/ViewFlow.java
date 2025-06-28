@@ -89,6 +89,11 @@ public class ViewFlow implements EventReceiver {
     private ArrayList<String> players;
 
     /**
+     *
+     */
+    private boolean stateNotSended;
+
+    /**
      * States in which the view can be
      */
     public enum ViewState {
@@ -244,6 +249,8 @@ public class ViewFlow implements EventReceiver {
         };
         this.startFlightForAll=false;
         this.selectedComponent=null;
+        this.stateNotSended=true;
+
         this.out=false;
         this.level=0;
         if(useGui){
@@ -340,12 +347,14 @@ public class ViewFlow implements EventReceiver {
             case FILL-> event= inputParser.parseFillTheShip(input);
             case FLIGTH-> {
                 if(!out) {
-                    if(input.trim().equals("state")){
-                        event = new OkStartFlight();
-                    } else if (startFlightForAll) {
+                    if(stateNotSended){
+                        if(input.trim().equals("state")){
+                            event = new OkStartFlight();
+                        }
+                        stateNotSended = false;
+                    }
+                    else if (startFlightForAll) {
                         event = inputParserFlight.parseFlight(input, nickname);
-                    } else {
-                        ui.showWaitForOthers();
                     }
                 }else{
                     event = inputParserFlight.parseFlight(input, nickname);
