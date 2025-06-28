@@ -538,8 +538,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setTrack(event.getTrack());
 
         ui.flightScene(event);
-        ui.showWaitForOthers();
-
     }
 
     /**
