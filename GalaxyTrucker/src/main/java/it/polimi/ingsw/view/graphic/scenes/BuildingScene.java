@@ -421,6 +421,11 @@ public class BuildingScene {
             this.keepBtn.setOpacity(0.5);
         }
 
+        if(keptFillLevel>0){
+            this.selectKeptBtn.setDisable(false);
+            this.selectKeptBtn.setOpacity(1);
+        }
+
         keptBox = new HBox(15);
         keptBox.setMaxWidth(200);
         keptBox.setAlignment(Pos.TOP_RIGHT);
@@ -1272,6 +1277,25 @@ public class BuildingScene {
         StackPane.setAlignment(componentSelectedBox, Pos.CENTER);
         StackPane.setMargin(componentSelectedBox, new Insets(0, 0, 0, 0));
         root.getChildren().add(componentSelectedBox);
+    }
+
+    /**
+     * Rimuove l'immagine del componente selezionato da componentSelectedBox,
+     * preservando il bordo, se non c'è componente selezionato in viewFlow.
+     */
+    public void clearSelectedComponentImageIfNone() {
+        if (viewFlow.getSelectedComponent() == null && componentSelectedBox != null) {
+            StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
+
+            while (imageContainer.getChildren().size() > 1) {
+                imageContainer.getChildren().remove(1);
+            }
+
+            componentSelectedExists = false;
+            disableSelectButtons(true);
+            this.hourglassBtn.setDisable(true);
+            this.hourglassBtn.setOpacity(0.5);
+        }
     }
 
     /**

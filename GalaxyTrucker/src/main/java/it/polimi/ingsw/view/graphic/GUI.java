@@ -541,7 +541,10 @@ public class GUI implements UI {
      */
     @Override
     public void showKeptComponents(ArrayList<Component> kept) {
-        Platform.runLater(() -> this.buildingScene.buildKeptBox());
+        Platform.runLater(() -> {
+            this.buildingScene.buildKeptBox();
+            this.buildingScene.clearSelectedComponentImageIfNone();
+        });
     }
 
     /**
