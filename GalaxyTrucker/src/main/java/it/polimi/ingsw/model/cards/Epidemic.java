@@ -76,7 +76,6 @@ public class Epidemic extends Card implements Serializable {
         }
         List <Trucker> truckers = Game.getIstance().getTruckerList();
         for(Trucker trucker : truckers) {
-            System.out.println(trucker.getNickname());
             trucker.getSpaceShip().epidemic();
         }
         truckerRemoved = Game.getIstance().endTurn();

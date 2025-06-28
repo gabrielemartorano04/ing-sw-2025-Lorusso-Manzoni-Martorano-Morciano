@@ -85,7 +85,6 @@ public class Hourglass implements Serializable {
      */
     public void reset() {
         if (secondsLeft > 0) {
-            System.out.println(secondsLeft);
             return;
         }
         increaseTimeTurns();

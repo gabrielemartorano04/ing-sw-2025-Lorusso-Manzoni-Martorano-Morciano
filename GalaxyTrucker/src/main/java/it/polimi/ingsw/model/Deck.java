@@ -26,7 +26,7 @@ class Deck implements Serializable {
     public Deck(int gameLevel) {
         cards = new ArrayList<>();
         fillDeck(gameLevel);
-        //shuffleDeck(); todo togli commento dopo debug
+        shuffleDeck();
     }
 
     /**
