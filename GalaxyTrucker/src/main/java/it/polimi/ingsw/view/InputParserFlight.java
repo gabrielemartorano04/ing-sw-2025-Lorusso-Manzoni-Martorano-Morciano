@@ -106,8 +106,9 @@ public class InputParserFlight {
      * @return the corresponding event to the given command
      */
     private ClientEvent parseDead(){
-        setParserState(ParserState.DO_NOTHING);
-        return new DeadTrucker();
+        setParserState(ParserState.DEAD);
+        ui.showMessage("you are dead");
+        return null;
     }
 
     /**

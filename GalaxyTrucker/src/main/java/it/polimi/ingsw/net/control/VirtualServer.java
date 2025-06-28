@@ -195,7 +195,7 @@ public interface VirtualServer {
     /**
      * Handles a DeadTrucker event.
      */
-    ServerEvent visit(DeadTrucker event);
+//    ServerEvent visit(DeadTrucker event);
 
     /**
      * Handles a PongEvent from a client.
