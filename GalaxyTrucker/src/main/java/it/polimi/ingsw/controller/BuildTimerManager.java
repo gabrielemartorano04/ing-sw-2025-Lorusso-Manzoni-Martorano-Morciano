@@ -28,17 +28,11 @@ public class BuildTimerManager {
     private boolean running = false;
 
     /**
-     * times the timer has ended
-     */
-    private int expiractionCount;
-
-    /**
      * The class constructor
      */
     private BuildTimerManager() {
         this.instance=null;
         this.timerThread = null;
-        this.expiractionCount = 0;
     }
 
     /**
