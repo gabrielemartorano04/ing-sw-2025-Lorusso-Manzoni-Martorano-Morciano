@@ -247,6 +247,7 @@ public class ClientHandlerVisitor implements VirtualServer {
                 ArrayList<String> players = new ArrayList<>();
                 for (Trucker t : gameController.getGame().getTruckerList()) {
                     players.add(t.getNickname());
+                    t.removeSelectedComponent();
                 }
 
                 if (gameController.getGame().getGameState() == GameState.BUILDING &&  gameController.getGame().getHourglass() != null) {
