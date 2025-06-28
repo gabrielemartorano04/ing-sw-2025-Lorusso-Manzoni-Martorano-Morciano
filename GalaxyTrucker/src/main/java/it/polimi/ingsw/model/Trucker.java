@@ -40,11 +40,6 @@ public class Trucker implements Serializable {
     private int cosmicCredit;
 
     /**
-     * Player's building state in building phase
-     */
-    private BuildingState buildingState;
-
-    /**
      * List of kept component during building phase
      */
     private final ArrayList<Component> keptComponents;
@@ -64,7 +59,6 @@ public class Trucker implements Serializable {
         this.color = color;
         this.spaceShip = new SpaceShip();
         this.cosmicCredit = 0;
-        buildingState=BuildingState.BUILDING;
         keptComponents = new ArrayList<>();
         this.position=-1;
     }
