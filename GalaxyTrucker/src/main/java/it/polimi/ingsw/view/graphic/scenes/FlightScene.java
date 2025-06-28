@@ -169,6 +169,11 @@ public class FlightScene {
     private final StackPane overlayLayer;
 
     /**
+     * A graphical label component used to display a count of remaining cards
+     */
+    private Label countLabel;
+
+    /**
      * Represents an overlay displayed on the screen while waiting for
      * an important action to complete or for other players in the game to
      * perform their actions
@@ -707,7 +712,6 @@ public class FlightScene {
             root.getChildren().remove(popupWithLabel);
             statusBar.setOpacity(1);
             moreButton.setDisable(false);
-            restoreInteractiveLayers();
         });
 
         root.getChildren().add(popupWithLabel);
@@ -2849,7 +2853,8 @@ public class FlightScene {
      */
     public void showRemainingCards(int remainingCards) {
         if(remainingcardsBox != null) {
-            remainingcardsBox.setOpacity(0);
+            Platform.runLater(() -> countLabel.setText(String.valueOf(viewFlow.getCardsToGo())));
+            return;
         }
 
         Label label = new Label("Remaining\ncards");
@@ -2857,12 +2862,12 @@ public class FlightScene {
         label.setTextFill(Color.web("#FFDE69"));
         label.setTextAlignment(TextAlignment.CENTER);
 
-        Label count = new Label(String.valueOf(remainingCards));
-        count.setFont(Font.font("Bangers", FontWeight.BOLD, 30));
-        count.setTextFill(Color.WHITE);
-        count.setTextAlignment(TextAlignment.CENTER);
+        this.countLabel = new Label(String.valueOf(viewFlow.getCardsToGo()));
+        this.countLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 30));
+        this.countLabel.setTextFill(Color.WHITE);
+        this.countLabel.setTextAlignment(TextAlignment.CENTER);
 
-        VBox remainingCardsBox = new VBox(5, label, count);
+        VBox remainingCardsBox = new VBox(5, label, this.countLabel);
         remainingCardsBox.setAlignment(Pos.CENTER);
         remainingCardsBox.setPadding(new Insets(10));
         remainingCardsBox.setMaxWidth(Region.USE_PREF_SIZE);
@@ -2874,4 +2879,5 @@ public class FlightScene {
             root.getChildren().add(remainingCardsBox);
         });
     }
+
 }
