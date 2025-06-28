@@ -79,7 +79,7 @@ public class ResultScene {
         Image podiumImage = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/podium.png")).toExternalForm());
         ImageView podiumView = new ImageView(podiumImage);
         podiumView.setPreserveRatio(true);
-        podiumView.setFitWidth(700); // adatta la larghezza a tuo piacere
+        podiumView.setFitWidth(700);
         StackPane.setAlignment(podiumView, Pos.CENTER);
         StackPane.setMargin(podiumView, new Insets(250, 0, 0, 0));
         root.getChildren().add(podiumView);
@@ -136,7 +136,7 @@ public class ResultScene {
         overlay.setMouseTransparent(true);
 
         Label errorLabel = new Label("Game ended, thanks for playing!");
-        errorLabel.setTextFill(Color.RED);
+        errorLabel.setTextFill(Color.web("#FFDE69"));
         errorLabel.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 35));
         errorLabel.setStyle("-fx-effect: dropshadow(one-pass-box, black, 4, 0.5, 0, 0);");
 
