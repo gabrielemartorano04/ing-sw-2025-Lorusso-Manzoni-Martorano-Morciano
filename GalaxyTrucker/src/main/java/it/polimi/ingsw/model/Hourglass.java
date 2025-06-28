@@ -47,6 +47,7 @@ public class Hourglass implements Serializable {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                System.out.println("Timer: " + secondsLeft);
                 if (secondsLeft > 0) {
                     secondsLeft--;
                 } else {
@@ -103,5 +104,14 @@ public class Hourglass implements Serializable {
         return secondsLeft;
     }
 
+    public void reactivateTimer() {
+        if (timer == null) {
+            timer = new Timer();
+            startTimer();
+        }
+    }
 
+    public void setTimeTurns(int timeTurns) {
+        this.timeTurns = timeTurns;
+    }
 }
