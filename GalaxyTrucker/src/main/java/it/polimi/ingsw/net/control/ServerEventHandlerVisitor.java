@@ -420,9 +420,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
         ui.keptSelected(event);
 
-        if (!viewFlow.getKeptComponent().isEmpty()) {
-            ui.showKeptComponents(viewFlow.getKeptComponent());
-        }
+        ui.showKeptComponents(viewFlow.getKeptComponent());
+
         if (viewFlow.getKeptComponent() == null) {
             ui.showBuildOptions();
         }

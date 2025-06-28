@@ -478,8 +478,6 @@ public class BuildingScene {
         this.discardBtn.setOpacity(0.5);
         this.discardBtn.setDisable(true);
 
-        buildKeptBox();
-
         if(keptFillLevel== 0){
             this.selectKeptBtn.setDisable(true);
             this.selectKeptBtn.setOpacity(0.5);
