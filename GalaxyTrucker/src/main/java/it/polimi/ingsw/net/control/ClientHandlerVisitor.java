@@ -867,9 +867,6 @@ public class ClientHandlerVisitor implements VirtualServer {
         String nickname=event.getNickname();
         boolean choice=event.getChoice();
 
-
-        System.out.println("Withdraw number " + withdrawChoice);
-
         if(withdrawChoice<gameController.getGame().getTruckerList().size()){
             if(choice){
                 for(Trucker t: gameController.getGame().getTruckerList()){
@@ -889,9 +886,11 @@ public class ClientHandlerVisitor implements VirtualServer {
                 scores = gameController.getGame().computeScores();
                 for(int i=0; i<numOfPlayers; i++){
                     playersScores.put(gameController.getGame().getTruckerOut().get(i).getNickname(), scores[i]);
+                    System.out.println(scores[i] + " score di " + gameController.getGame().getTruckerOut().get(i).getNickname());
                 }
                 GamePersistence.saveGame(gameController);
                 GamePersistence.deleteSave();
+
                 return new EndGameEvent(playersScores);
             }else{
                 if(withdrawChoice==Game.getIstance().getTruckerList().size()){
