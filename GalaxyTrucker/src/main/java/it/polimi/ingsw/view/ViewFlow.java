@@ -298,6 +298,8 @@ public class ViewFlow implements EventReceiver {
      */
     @Override
     public void onEventReceived(ServerEvent event) {
+        //TODO: da togliere sta print
+        System.out.println(event.getMessage() + " from: " + event.getClass().getName());
         event.call(serverEventVisitor);
     }
 
