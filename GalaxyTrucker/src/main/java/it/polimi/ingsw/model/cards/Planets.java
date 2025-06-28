@@ -117,7 +117,6 @@ public class Planets extends Card implements Serializable {
      */
     @Override
     public synchronized ServerEvent startCard() {
-        System.out.println(Arrays.toString(Game.getIstance().getBank().getGoods()));
         StartCardEvent startCardEvent =
                 new StartCardEvent(
                         this.getName(),
@@ -183,7 +182,6 @@ public class Planets extends Card implements Serializable {
             }
         }
         indexOfTrucker++;
-        System.out.println("trucker " + Game.getIstance().getTrucker(indexOfTrucker).getNickname());
         return new PlanetDecision(true, planetsOccupied, Game.getIstance().getTrucker(indexOfTrucker).getNickname(),Game.getIstance().getTrucker(indexOfTrucker).getSpaceShip(), Game.getIstance().getTruckerList());
     }
 
@@ -345,7 +343,6 @@ public class Planets extends Card implements Serializable {
 
         for(int i = truckersLanded.size() - 1; i>=0; i--){
             Game.getIstance().moveBackward(truckersLanded.get(i), daysLoss);
-            System.out.println("beni di trucker " + truckersLanded.get(i).getNickname() + ": " + truckersLanded.get(i).getSpaceShip().getGoodsList());
         }
 
         ArrayList<Trucker> truckerRemoved;

@@ -163,7 +163,6 @@ public class MeteorShower extends Card implements Serializable {
             throw new GeneralError("Non si può settare le decisioni nello stato" + this.state);
         }
 
-        System.out.println(Game.getIstance().getTrucker(indexOfCurrTrucker).getNickname() + " has decidec to activate? " + answer);
         if(answer) {
             if (!Game.getIstance().getTrucker(indexOfCurrTrucker).getSpaceShip().checkShield(shieldCoord)) {
                 throw new InvalidCoordinates("Not a shield");
@@ -240,7 +239,6 @@ public class MeteorShower extends Card implements Serializable {
      */
     @Override
     public synchronized ServerEvent cardEffect() throws GeneralError {
-        System.out.println("Entrato in cardEffect");
 
         if (this.state != CardState.ESECUZIONE) {
             throw new GeneralError("Non è possibile eseguire card effect nello stato " + this.state);

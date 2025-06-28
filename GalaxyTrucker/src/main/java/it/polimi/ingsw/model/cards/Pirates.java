@@ -330,12 +330,10 @@ public class Pirates extends Card implements Serializable {
 
         if(shoot[0] == 1){
             cardState = CardState.ESECUZIONE;
-            System.out.println("ROLL DICE PIRATES BIG SHOT, roll dice Method");
             return new RollDiceResult(ParserState.DISPLAY_BIG_SHOOT, currShootIndex - 1, shoot, null, roll, defeatedTruckers.getFirst().getNickname(), true, Game.getIstance().getTruckerList());
 
         }else{
             cardState = CardState.ACTIVATE_SHIELDS;
-            System.out.println("ROLL DICE PIRATES, SMALL SHOT, roll dice Method");
             return new RollDiceResult(ParserState.ACTIVATE_SHIELD,currShootIndex - 1,shoot,null, roll, Game.getIstance().getTrucker(indexOfCurrentTrucker).getNickname(), true, Game.getIstance().getTruckerList());
         }
     }
