@@ -607,6 +607,7 @@ public class FlightScene {
      */
     public void showOtherShip(SpaceShip ship, String nickname) {
         statusBar.setOpacity(0);
+        moreButton.setDisable(true);
 
         Component[][] layout = ship.getComponents();
 
@@ -698,6 +699,7 @@ public class FlightScene {
             root.getChildren().remove(overlay);
             root.getChildren().remove(popupWithLabel);
             statusBar.setOpacity(1);
+            moreButton.setDisable(false);
             restoreInteractiveLayers();
         });
 
@@ -2566,6 +2568,9 @@ public class FlightScene {
      * by overlaying the existing interface
      */
     private void showMore() {
+
+        Image transparent = new Image(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/transparent.png")).toExternalForm());
+
         root.getChildren().removeIf(n -> "moreOverlay".equals(n.getId()));
 
         Rectangle overlay = new Rectangle();
@@ -2635,6 +2640,15 @@ public class FlightScene {
                         clip.setArcHeight(12);
                         imageView.setClip(clip);
                         imageView.setRotate(c.getRotationAngle());
+                        cell.getChildren().add(imageView);
+                    } else {
+                        ImageView imageView = new ImageView(transparent);
+                        imageView.setFitWidth(107);
+                        imageView.setFitHeight(107);
+                        Rectangle clip = new Rectangle(107, 107);
+                        clip.setArcWidth(12);
+                        clip.setArcHeight(12);
+                        imageView.setClip(clip);
                         cell.getChildren().add(imageView);
                     }
                 } else {
