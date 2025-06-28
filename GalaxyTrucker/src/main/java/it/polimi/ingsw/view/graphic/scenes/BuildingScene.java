@@ -488,6 +488,8 @@ public class BuildingScene {
             this.selectKeptBtn.setOpacity(0.5);
         }
 
+        buildKeptBox();
+
     }
 
     /**
