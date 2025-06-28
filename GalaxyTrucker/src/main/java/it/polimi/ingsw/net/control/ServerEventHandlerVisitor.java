@@ -227,6 +227,8 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setViewState(ViewFlow.ViewState.BULDING);
         viewFlow.fillAvailableComponents(event.getComponents());
 
+        viewFlow.setPlayers(event.getPlayers());
+
         ui.startBuildingScene(event);
 
         if(viewFlow.getLevel()==2) {

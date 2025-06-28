@@ -122,7 +122,6 @@ public class TUI implements UI {
     @Override
     public void startBuildingScene(StartBuildingEvent event){
         this.showPlayers(event.getPlayers());
-        viewFlow.setPlayers(event.getPlayers());
         this.showBuildPhaseStart(event.getComponents());
         this.showBuildOptions();
         System.out.print("\n>");
