@@ -27,6 +27,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
+import java.awt.event.MouseEvent;
 import java.util.*;
 
 import java.awt.*;
@@ -418,6 +419,11 @@ public class BuildingScene {
         if(keptFillLevel == 2){
             this.keepBtn.setDisable(true);
             this.keepBtn.setOpacity(0.5);
+        }
+
+        if(keptFillLevel>0){
+            this.selectKeptBtn.setDisable(false);
+            this.selectKeptBtn.setOpacity(1);
         }
 
         keptBox = new HBox(15);
@@ -1274,6 +1280,25 @@ public class BuildingScene {
     }
 
     /**
+     * Rimuove l'immagine del componente selezionato da componentSelectedBox,
+     * preservando il bordo, se non c'è componente selezionato in viewFlow.
+     */
+    public void clearSelectedComponentImageIfNone() {
+        if (viewFlow.getSelectedComponent() == null && componentSelectedBox != null) {
+            StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
+
+            while (imageContainer.getChildren().size() > 1) {
+                imageContainer.getChildren().remove(1);
+            }
+
+            componentSelectedExists = false;
+            disableSelectButtons(true);
+            this.hourglassBtn.setDisable(true);
+            this.hourglassBtn.setOpacity(0.5);
+        }
+    }
+
+    /**
      * Creates and initializes the component selection buttons, applies styling to them,
      * and sets their event handlers for specific actions
      * @param styleButton a Consumer<Button> function to apply specific styling to the button
@@ -1683,13 +1708,6 @@ public class BuildingScene {
             cardBox.getChildren().add(cardView);
         }
 
-        ScrollPane scrollPane = new ScrollPane(cardBox);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setFitToHeight(true);
-        scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
-        scrollPane.setPadding(new Insets(100, 50, 50, 50));
-
         Button backBtn = new Button("←");
         backBtn.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 30));
         backBtn.setTextFill(Color.BLACK);
@@ -1702,7 +1720,9 @@ public class BuildingScene {
 
         backBtn.setOnAction(e -> viewFlow.handleInput("dropStack"));
 
-        overlay.getChildren().addAll(scrollPane, backBtn);
+        overlay.setOnMouseClicked(e -> {});
+
+        overlay.getChildren().addAll(cardBox, backBtn);
 
         Platform.runLater(() -> {
             root.getChildren().add(overlay);
