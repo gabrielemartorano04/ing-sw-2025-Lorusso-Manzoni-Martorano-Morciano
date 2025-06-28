@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Goods;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SpaceShip;
+import it.polimi.ingsw.net.events.serverevents.EndGameEvent;
 import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 import it.polimi.ingsw.net.events.serverevents.cardevents.*;
 import it.polimi.ingsw.exceptions.*;
@@ -198,11 +199,19 @@ public class WarZone extends Card implements Serializable {
         if(Game.getIstance().getTruckerList().size() == 1){
             ArrayList<Trucker> truckerRemoved;
             truckerRemoved = Game.getIstance().endTurn();
-            Map<String, Integer> track = new HashMap<>();
-            for (Trucker t : Game.getIstance().getTruckerList()) {
-                track.put(t.getNickname(), t.getPosition());
+
+            if(Game.getIstance().getTruckerList().isEmpty()){
+                int[] scores;
+                Map<String, Integer> playersScores = new HashMap<>();
+                scores = Game.getIstance().computeScores();
+                for(int i=0; i<Game.getIstance().getNumPlayers(); i++){
+                    playersScores.put(Game.getIstance().getTruckerOut().get(i).getNickname(), scores[i]);
+                }
+                GamePersistence.deleteSave();
+                return new EndGameEvent(playersScores);
             }
-            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, track);
+
+            return new CardFinished(true, Game.getIstance().getTruckerList(), truckerRemoved, Game.getIstance().getTrack());
         }
         if(currConditionIndex == conditionsOrder.size()){
             throw new GeneralError("All conditions have been verified");
