@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.components.Load;
 import it.polimi.ingsw.model.components.Shield;
 import it.polimi.ingsw.net.events.clientevents.PongEvent;
 import it.polimi.ingsw.net.events.clientevents.cardevents.DeadTrucker;
+import it.polimi.ingsw.net.events.serverevents.PingEvent;
 import it.polimi.ingsw.net.rmi.client.RemoteClientHandler;
 import it.polimi.ingsw.net.socket.client.ClientSocketSender;
 import it.polimi.ingsw.net.control.ServerEventHandlerVisitor;
@@ -299,7 +300,9 @@ public class ViewFlow implements EventReceiver {
     @Override
     public void onEventReceived(ServerEvent event) {
         //TODO: da togliere sta print
-        System.out.println(event.getMessage() + " from: " + event.getClass().getName());
+        if(! (event instanceof PingEvent)){
+            System.out.println(event.getMessage() + " from: " + event.getClass().getName());
+        }
         event.call(serverEventVisitor);
     }
 
