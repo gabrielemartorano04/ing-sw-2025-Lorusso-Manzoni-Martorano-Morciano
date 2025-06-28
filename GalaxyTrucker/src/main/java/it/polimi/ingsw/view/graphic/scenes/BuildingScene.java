@@ -1871,7 +1871,7 @@ public class BuildingScene {
     public void showTimeExpired(int expirationCount) {
         if (scene == null || root == null) return;
 
-        Label message = new Label("TIME EXPIRED!\n" + "For the" + expirationCount + " time");
+        Label message = new Label("TIME EXPIRED!\n" + "For the " + expirationCount + " time");
         message.setTextFill(Color.RED);
         message.setFont(Font.font("Bangers", FontWeight.EXTRA_BOLD, 80));
         message.setTextAlignment(TextAlignment.CENTER);
