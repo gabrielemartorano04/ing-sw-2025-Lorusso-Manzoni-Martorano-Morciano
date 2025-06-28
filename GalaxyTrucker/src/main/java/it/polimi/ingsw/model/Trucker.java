@@ -228,5 +228,11 @@ public class Trucker implements Serializable {
     public void initSpaceShip(int level) {
         this.spaceShip.initSpaceShip(level, color);
     }
+
+    public void removeSelectedComponent(){
+        if(selectedComponent!=null){
+            this.selectedComponent = null;
+        }
+    }
 }
 
