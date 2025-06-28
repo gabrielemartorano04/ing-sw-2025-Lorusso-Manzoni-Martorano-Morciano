@@ -120,6 +120,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(ResumeGameEvent event) {
         Trucker trucker=null;
+        viewFlow.setLevel(event.getLevel());
 
         if(viewFlow.getNickname()==null) {
             viewFlow.setNickname(event.getNickname());
@@ -142,12 +143,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             }
         }
 
-        if(trucker.getSelectedComponent() != null) {
-            viewFlow.setSelectedComponent(trucker.getSelectedComponent());
-        }
-
         viewFlow.setParserFlightState(ParserState.STATE);
-        viewFlow.setLevel(event.getLevel());
         if(event.getTrack()!=null) {
             viewFlow.setTrack(event.getTrack());
         }
