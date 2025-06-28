@@ -132,6 +132,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
             }
         }
 
+        if(trucker == null){
+            return;
+        }
+
         if(!trucker.getKeptComponents().isEmpty()){
             for(Component c: trucker.getKeptComponents()){
                 viewFlow.addKeptComponent(c);
@@ -167,6 +171,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             }
             case ENDED -> viewFlow.setViewState(ViewFlow.ViewState.END);
             case BUILDING -> {
+                viewFlow.getTimerDisplay().start(90);
                 viewFlow.setViewState(ViewFlow.ViewState.BULDING);
                 viewFlow.fillAvailableComponents(event.getComponents());
                 ui.resumeBuildingScene(event.getPlayerNames());
