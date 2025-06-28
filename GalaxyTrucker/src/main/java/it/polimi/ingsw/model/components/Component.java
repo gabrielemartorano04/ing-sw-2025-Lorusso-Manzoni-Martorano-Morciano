@@ -74,7 +74,7 @@ public abstract sealed class Component implements Serializable  permits BatteryS
     public Component(int linkU, int linkR, int linkD, int linkL, String type, String frontImagePath) {
         this.link = new Integer[] {linkU, linkR, linkD, linkL};
         this.selected = false;
-        this.covered = false;
+        this.covered = true;
         this.visited = false;
         this.type = type;
         this.frontImagePath = frontImagePath;
