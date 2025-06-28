@@ -1313,6 +1313,8 @@ public class BuildingScene {
         this.keepBtn = new Button("Keep");
         this.discardBtn = new Button("Discard");
         this.linkBtn = new Button("Link");
+        this.linkBtn.setDisable(true);
+        this.linkBtn.setOpacity(0.5);
 
         styleButton.accept(turnBtn);
         styleButton.accept(keepBtn);
@@ -1424,6 +1426,10 @@ public class BuildingScene {
                     errorLabel.setVisible(false);
                     viewFlow.handleInput("link " + row + " " + col);
                     removePopup.run();
+                    if(viewFlow.getFirstLinked()) {
+                        this.linkBtn.setDisable(false);
+                        this.linkBtn.setOpacity(1);
+                    }
                 } catch (NumberFormatException ex) {
                     errorLabel.setVisible(true);
                 }
