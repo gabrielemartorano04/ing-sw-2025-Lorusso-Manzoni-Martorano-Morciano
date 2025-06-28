@@ -757,13 +757,15 @@ public class SpaceShip implements Serializable {
         for(int[] c:coord){
             switch(components[c[0]][c[1]]){
                 case Engine engine->{
-                    engine.setIsActive(true);
-                    numOfBattery--;
                     for(int[] bat:batteriesCoord){
                         if(components[bat[0]][bat[1]]!=null){
                             switch(components[bat[0]][bat[1]]){
                                 case BatteryStorage bs->{
-                                    if(bs.getQuantity()>0) bs.removeNumOfBatteries(1);
+                                    if(bs.getQuantity()>0){
+                                        engine.setIsActive(true);
+                                        numOfBattery--;
+                                        bs.removeNumOfBatteries(1);
+                                    }
                                 }
                                 default -> {}
                             }
@@ -790,13 +792,15 @@ public class SpaceShip implements Serializable {
         for(int[] c:coord){
             switch(components[c[0]][c[1]]){
                 case Cannon cannon->{
-                    cannon.setIsActive(true);
-                    numOfBattery--;
                     for(int[] bat:batteriesCoord){
                         if(components[bat[0]][bat[1]]!=null){
                             switch(components[bat[0]][bat[1]]){
                                 case BatteryStorage bs->{
-                                    if(bs.getQuantity()>0) bs.removeNumOfBatteries(1);
+                                    if(bs.getQuantity()>0){
+                                        cannon.setIsActive(true);
+                                        numOfBattery--;
+                                        bs.removeNumOfBatteries(1);
+                                    }
                                 }
                                 default -> {}
                             }

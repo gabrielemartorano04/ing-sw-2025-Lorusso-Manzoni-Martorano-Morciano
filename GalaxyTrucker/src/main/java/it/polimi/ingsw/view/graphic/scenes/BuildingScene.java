@@ -291,6 +291,7 @@ public class BuildingScene {
         backgroundView.setMouseTransparent(true);
 
         buildShipGrid(true, null);
+        buildKeptBox();
 
         root.getChildren().setAll(backgroundView, grid, keptBox);
         scene = new Scene(root, width, height);
@@ -310,8 +311,6 @@ public class BuildingScene {
         addComponentSelectedSlot();
         createComponentSelectedButtons(styleButton);
         attackSelectComponentButtons(scene);
-
-        buildKeptBox();
 
         return scene;
     }
@@ -416,14 +415,14 @@ public class BuildingScene {
 
         keptFillLevel = viewFlow.getKeptComponent().size();
 
-        if(keptFillLevel == 2){
-            this.keepBtn.setDisable(true);
-            this.keepBtn.setOpacity(0.5);
+        if (keepBtn != null && keptFillLevel == 2) {
+            keepBtn.setDisable(true);
+            keepBtn.setOpacity(0.5);
         }
 
-        if(keptFillLevel>0){
-            this.selectKeptBtn.setDisable(false);
-            this.selectKeptBtn.setOpacity(1);
+        if (selectKeptBtn != null && keptFillLevel > 0) {
+            selectKeptBtn.setDisable(false);
+            selectKeptBtn.setOpacity(1);
         }
 
         keptBox = new HBox(15);
