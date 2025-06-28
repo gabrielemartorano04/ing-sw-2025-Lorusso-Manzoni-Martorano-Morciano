@@ -662,6 +662,7 @@ public class ViewFlow implements EventReceiver {
         availableComponents.get(index).setCovered(false);
     }
 
+
     /**
      * Sets the 'startFlightForAll' flag to true, indicating that all flights
      * are ready to start
