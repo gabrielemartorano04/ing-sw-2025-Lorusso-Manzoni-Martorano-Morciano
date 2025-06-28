@@ -132,19 +132,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
             }
         }
 
-        try {
-            if (trucker.getKeptComponent(0) != null) {
-                viewFlow.addKeptComponent(trucker.getKeptComponent(0));
+        if(!trucker.getKeptComponents().isEmpty()){
+            for(Component c: trucker.getKeptComponents()){
+                viewFlow.addKeptComponent(c);
             }
-        }catch (GeneralError e){
-            ui.showError(e.getMessage());
-        }
-        try {
-            if(trucker.getKeptComponent(1)!=null) {
-                viewFlow.addKeptComponent(trucker.getKeptComponent(1));
-            }
-        }catch (GeneralError e){
-            ui.showError(e.getMessage());
         }
 
         if(trucker.getSelectedComponent() != null) {
@@ -415,7 +406,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     @Override
     public void visit(SuccessSelectKept event){
         viewFlow.setSelectedComponent(event.getComponent(), true);
-        viewFlow.getKeptComponent().remove(event.getIndex());
+        viewFlow.removeKept(event.getIndex());
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
 
         ui.keptSelected(event);

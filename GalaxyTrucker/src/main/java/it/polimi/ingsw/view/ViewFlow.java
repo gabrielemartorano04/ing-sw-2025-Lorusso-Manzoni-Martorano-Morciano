@@ -570,8 +570,27 @@ public class ViewFlow implements EventReceiver {
     public void addKeptComponent(Component keptComponent) throws IllegalArgumentException{
         if(this.keptComponent.size()<2) {
             this.keptComponent.add(keptComponent);
+            for(Component c: this.keptComponent){
+                System.out.println(c);
+            }
         }else throw new IllegalArgumentException("no more space to keep components");
     }
+
+    /**
+     * Removes a component from the kept components list if it exists.
+     * The list can hold a maximum of two components
+     * @param index index of the component to be eliminated
+     * @throws IllegalArgumentException if the kept components list already contains two components.
+     */
+    public void removeKept(int index){
+        if(index> 0 && index<this.keptComponent.size()) {
+            this.keptComponent.remove(index);
+        }
+        for(Component c: this.keptComponent){
+            System.out.println(c);
+        }
+    }
+
 
     /**
      * @return an ArrayList of Component objects representing the components

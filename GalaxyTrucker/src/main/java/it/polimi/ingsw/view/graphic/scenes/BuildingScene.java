@@ -481,8 +481,6 @@ public class BuildingScene {
 
         keptFillLevel--;
 
-        buildKeptBox();
-
         this.insertSelectedComponent(viewFlow.getSelectedComponent());
 
         this.disableSelectButtons(false);
@@ -493,6 +491,8 @@ public class BuildingScene {
             this.selectKeptBtn.setDisable(true);
             this.selectKeptBtn.setOpacity(0.5);
         }
+
+        buildKeptBox();
 
     }
 
