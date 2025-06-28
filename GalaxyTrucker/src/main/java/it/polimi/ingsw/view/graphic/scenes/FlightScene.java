@@ -2706,8 +2706,7 @@ public class FlightScene {
                         details.append(" contains: ");
                         int count = 0;
                         for (Goods g : load.getGoods()) {
-                            count++;
-                            if(g.getColor() != null) {
+                            if(g.getValue() == -1) {
                                 details.append(g.getColor()).append(" {").append(count).append("}");
                             } else {
                                 details.append("empty {").append(count).append("}");
@@ -2715,6 +2714,7 @@ public class FlightScene {
                             if (count < load.getGoods().size()) {
                                 details.append(", ");
                             }
+                            count++;
                         }
                     } else {
                         details.append(" is empty");
@@ -2725,8 +2725,7 @@ public class FlightScene {
                         details.append(" contains: ");
                         int count = 0;
                         for (Goods g : load.getGoods()) {
-                            count++;
-                            if(g.getColor() != null) {
+                            if(g.getValue() == -1) {
                                 details.append(g.getColor()).append(" {").append(count).append("}");
                             } else {
                                 details.append("empty {").append(count).append("}");
@@ -2734,6 +2733,7 @@ public class FlightScene {
                             if (count < load.getGoods().size()) {
                                 details.append(", ");
                             }
+                            count++;
                         }
                     } else {
                         details.append(" is empty");
