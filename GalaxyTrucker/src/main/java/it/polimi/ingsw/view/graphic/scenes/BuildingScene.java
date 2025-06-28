@@ -1924,7 +1924,7 @@ public class BuildingScene {
     }
 
     /**
-     * remove the selectedComponentBox setting it as not visible and not able
+     * Remove the selectedComponentBox setting it as not visible and not able
      */
     private void removeSelectedComponentBox() {
         root.getChildren().remove(componentSelectedBox);
@@ -1949,7 +1949,7 @@ public class BuildingScene {
     }
 
     /**
-     * adds the remove btn with its title to the scene to let the client remove a component
+     * Adds the remove button with its title to the scene to let the client remove a component
      */
     public void showRemove() {
         if (removeBtn != null) {
@@ -2101,7 +2101,7 @@ public class BuildingScene {
     }
 
     /**
-     * removes the removeBox from the scene
+     * Removes the removeBox from the scene
      */
     private void removeRemoveBox() {
         if (removeBox != null && root.getChildren().contains(removeBox)) {
