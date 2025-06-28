@@ -916,7 +916,7 @@ public class GUI implements UI {
      */
     @Override
     public void showNumCardLeft() {
-        flightScene.showRemainingCards(viewFlow.getCardsToGo());
+        flightScene.showRemainingCards();
     }
 
     /**

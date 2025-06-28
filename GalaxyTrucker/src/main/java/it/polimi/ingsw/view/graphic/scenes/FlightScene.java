@@ -2849,10 +2849,9 @@ public class FlightScene {
 
     /**
      * Displays the remaining number of cards
-     * @param remainingCards the number of cards left to be displayed
      */
-    public void showRemainingCards(int remainingCards) {
-        if(remainingcardsBox != null) {
+    public void showRemainingCards() {
+        if (remainingcardsBox != null) {
             Platform.runLater(() -> countLabel.setText(String.valueOf(viewFlow.getCardsToGo())));
             return;
         }
@@ -2862,22 +2861,21 @@ public class FlightScene {
         label.setTextFill(Color.web("#FFDE69"));
         label.setTextAlignment(TextAlignment.CENTER);
 
-        this.countLabel = new Label(String.valueOf(viewFlow.getCardsToGo()));
-        this.countLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 30));
-        this.countLabel.setTextFill(Color.WHITE);
-        this.countLabel.setTextAlignment(TextAlignment.CENTER);
+        countLabel = new Label(String.valueOf(viewFlow.getCardsToGo()));
+        countLabel.setFont(Font.font("Bangers", FontWeight.BOLD, 30));
+        countLabel.setTextFill(Color.WHITE);
+        countLabel.setTextAlignment(TextAlignment.CENTER);
 
-        VBox remainingCardsBox = new VBox(5, label, this.countLabel);
-        remainingCardsBox.setAlignment(Pos.CENTER);
-        remainingCardsBox.setPadding(new Insets(10));
-        remainingCardsBox.setMaxWidth(Region.USE_PREF_SIZE);
-        remainingCardsBox.setMaxHeight(Region.USE_PREF_SIZE);
+        remainingcardsBox = new VBox(5, label, countLabel);
+        remainingcardsBox.setAlignment(Pos.CENTER);
+        remainingcardsBox.setPadding(new Insets(10));
+        remainingcardsBox.setMaxWidth(Region.USE_PREF_SIZE);
+        remainingcardsBox.setMaxHeight(Region.USE_PREF_SIZE);
 
         Platform.runLater(() -> {
-            StackPane.setAlignment(remainingCardsBox, Pos.CENTER);
-            StackPane.setMargin(remainingCardsBox, new Insets(-430, 0, 0, -840));
-            root.getChildren().add(remainingCardsBox);
+            StackPane.setAlignment(remainingcardsBox, Pos.CENTER);
+            StackPane.setMargin(remainingcardsBox, new Insets(-430, 0, 0, -840));
+            root.getChildren().add(remainingcardsBox);
         });
     }
-
 }
