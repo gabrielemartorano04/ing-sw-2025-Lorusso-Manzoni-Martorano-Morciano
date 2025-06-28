@@ -8,21 +8,21 @@ import it.polimi.ingsw.net.events.serverevents.ServerEvent;
 /**
  * Represents a specific event sent from a client to the server to indicate the death of a trucker
  */
-public class DeadTrucker extends ClientEvent {
-
+public class DeadTrucker //extends ClientEvent {
+{
     /**
      * Event constructor
      */
-    public DeadTrucker() {
-    }
+//    public DeadTrucker() {
+//    }
 
     /**
      * @return the message associated with death
      */
-    @Override
-    public String getMessage() {
-        return "Dead Trucker";
-    }
+//    @Override
+//    public String getMessage() {
+//        return "Dead Trucker";
+//    }
 
     /**
      * This method calls the server method that manages this event reception
@@ -30,8 +30,8 @@ public class DeadTrucker extends ClientEvent {
      * @param client client that sent the event
      * @return server event response based on client event reception
      */
-    @Override
-    public ServerEvent call(VirtualServer visitor, Client client) {
-        return visitor.visit(this);
-    }
+    //@Override
+//    public ServerEvent call(VirtualServer visitor, Client client) {
+//        return visitor.visit(this);
+//    }
 }

@@ -106,8 +106,9 @@ public class InputParserFlight {
      * @return the corresponding event to the given command
      */
     private ClientEvent parseDead(){
-        setParserState(ParserState.DO_NOTHING);
-        return new DeadTrucker();
+        setParserState(ParserState.DEAD);
+        ui.showMessage("you are dead");
+        return null;
     }
 
     /**
@@ -164,25 +165,31 @@ public class InputParserFlight {
      * @return the corresponding event to the given command
      */
     private ClientEvent parseHumanCoord(String input, String nickname) {
-        String[] groups= input.split("\\s*,\\s*");
-        ArrayList<int[]> humanCoord=new ArrayList<>();
-        for(String group: groups){
-            String[] parts = group.split("\\s*-\\s*");
-            if(parts.length!=2){
-                ui.showError("Error: invalid command");
-                return null;
+        try{
+            String[] groups= input.split("\\s*,\\s*");
+            ArrayList<int[]> humanCoord=new ArrayList<>();
+            for(String group: groups){
+                String[] parts = group.split("\\s*-\\s*");
+                if(parts.length!=2){
+                    ui.showError("Error: invalid command");
+                    return null;
+                }
+                String[] coord=parts[0].trim().split("\\s+");
+                if(coord.length!=2){
+                    ui.showError("Error: invalid command");
+                    return null;
+                }
+                int num=Integer.parseInt(parts[1].trim());
+                int x=Integer.parseInt(coord[0].trim());
+                int y=Integer.parseInt(coord[1].trim());
+                humanCoord.add(new int[]{x,y,num});
             }
-            String[] coord=parts[0].trim().split("\\s+");
-            if(coord.length!=2){
-                ui.showError("Error: invalid command");
-                return null;
-            }
-            int num=Integer.parseInt(parts[1].trim());
-            int x=Integer.parseInt(coord[0].trim());
-            int y=Integer.parseInt(coord[1].trim());
-            humanCoord.add(new int[]{x,y,num});
+            return new HumanCoordEvent(humanCoord,nickname);
+        }catch(NumberFormatException e){
+            ui.showError("Error: coord must be numbers");
+            return null;
         }
-        return new HumanCoordEvent(humanCoord,nickname);
+
     }
 
     /**
@@ -294,7 +301,7 @@ public class InputParserFlight {
                 return new ActivateShieldEvent(true, new int[]{x, y}, new int[]{xB, yB}, nickname);
 
             } catch (NumberFormatException e) {
-                ui.showError("Error: coordinates must be numeric");
+                ui.showError("Error: coordinates must be numbers");
                 return null;
             }
         }
@@ -432,7 +439,7 @@ public class InputParserFlight {
                     int cont = Integer.parseInt(part[1].trim());
                     coordBattery.add(new int[]{x, y, cont});
                 } catch (NumberFormatException e) {
-                    ui.showError("Error: battery values must be numbers");
+                    ui.showError("Error: engine values must be numbers");
                     return null;
                 }
             }
@@ -477,7 +484,7 @@ public class InputParserFlight {
             int choice = Integer.parseInt(planetDecision[0].trim());
             return new PlanetDecisionEvent(choice, nickname);
         } catch (NumberFormatException e) {
-            ui.showError("Error: input must be a valid number");
+            ui.showError("Error: index must be a number");
             return null;
         }
     }
