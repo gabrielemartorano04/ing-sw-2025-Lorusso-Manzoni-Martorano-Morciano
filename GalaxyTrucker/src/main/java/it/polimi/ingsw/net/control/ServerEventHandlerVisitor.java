@@ -1150,10 +1150,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
      */
     @Override
     public void visit(EndGameEvent event) {
-        ui.showScores(event.getScores());
-        ui.showGameEnded();
         viewFlow.setParserFlightState(ParserState.DO_NOTHING);
         viewFlow.setViewState(ViewFlow.ViewState.END);
+        ui.showScores(event.getScores());
+        ui.showGameEnded();
     }
 
 

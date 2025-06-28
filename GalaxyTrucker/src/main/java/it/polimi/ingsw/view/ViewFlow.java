@@ -390,7 +390,7 @@ public class ViewFlow implements EventReceiver {
             try {
                 rmiClient.handleOutgoingEvent(event);
             } catch (RemoteException e) {
-                ui.showGameEnded();
+                ui.showMessage("Game is ended due to disconnection");
                 try {
                     rmiClient.close();
                 } catch (RemoteException ex) {
@@ -782,7 +782,7 @@ public class ViewFlow implements EventReceiver {
                 try {
                     rmiClient.handleOutgoingEvent(new PongEvent());
                 } catch (RemoteException e) {
-                    ui.showGameEnded();
+                    ui.showMessage("Game is ended due to disconnection");
                     try {
                         rmiClient.close();
                     } catch (RemoteException ex) {
