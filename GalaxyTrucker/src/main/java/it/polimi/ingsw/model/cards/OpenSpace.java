@@ -103,7 +103,7 @@ public class OpenSpace extends Card implements Serializable {
             throw new GeneralError("Non è possibile inserire le informazioni nello stato " + this.state);
         }
         if(activate){
-            if(!Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkBatteryStorage(batteryCoord)){
+            if(!Game.getIstance().getTrucker(indexOfCurrentTrucker).getSpaceShip().checkBatteryStorage(batteryCoord, coord.size())){
                 throw new InvalidCoordinates("Not all coordinates are battery storage");
             }
             if(!Game.getIstance().getTruckerList().get(indexOfCurrentTrucker).getSpaceShip().checkDoubleEngine(coord)){

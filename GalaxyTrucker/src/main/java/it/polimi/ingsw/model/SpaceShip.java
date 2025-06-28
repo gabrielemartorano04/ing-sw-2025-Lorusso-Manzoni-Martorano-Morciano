@@ -1999,7 +1999,7 @@ public class SpaceShip implements Serializable {
      * @param coord coordinates to check
      * @return true if every component with given coordinates is a Battery Storages, false otherwise
      */
-    public boolean checkBatteryStorage(ArrayList<int[]> coord){
+    public boolean checkBatteryStorage(ArrayList<int[]> coord, int sum){
         for (int[] c : coord) {
             if (components[c[0]][c[1]] != null) {
                 switch (components[c[0]][c[1]]){
