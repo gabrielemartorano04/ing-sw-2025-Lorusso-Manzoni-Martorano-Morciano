@@ -603,9 +603,7 @@ public class GUI implements UI {
      */
     @Override
     public void showRemove(){
-       Platform.runLater(() -> {
-           this.buildingScene.showRemove();
-       });
+       Platform.runLater(() -> this.buildingScene.showRemove());
     }
 
     /**
@@ -696,8 +694,8 @@ public class GUI implements UI {
             }
             if(event.getConditionsOrder() != null){
                 this.showWarzone = false;
-                this.flightScene.showCurrCondition(event.getConditionsOrder().getFirst(), true);
-
+                boolean isLeader = viewFlow.getNickname().equals(event.getTruckers().getFirst().getNickname());
+                this.flightScene.showCurrCondition(event.getConditionsOrder().getFirst(), isLeader);
             }
         });
     }
@@ -738,9 +736,7 @@ public class GUI implements UI {
      */
     @Override
     public void updateGoodsListToRemove(ArrayList<Goods> goodsList) {
-        Platform.runLater(() -> {
-            this.flightScene.updateGoodsListToRemove(goodsList);
-        });
+        Platform.runLater(() -> this.flightScene.updateGoodsListToRemove(goodsList));
     }
 
     /**
