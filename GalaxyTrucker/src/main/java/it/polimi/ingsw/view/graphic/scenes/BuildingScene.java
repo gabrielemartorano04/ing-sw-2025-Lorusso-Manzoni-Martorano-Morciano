@@ -27,7 +27,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
-import java.awt.event.MouseEvent;
 import java.util.*;
 
 import java.awt.*;
@@ -409,8 +408,9 @@ public class BuildingScene {
      * Builds or rebuilds the kept components box and displays it on the scene.
      */
     public void buildKeptBox() {
-        if (keptBox != null) {
-            root.getChildren().remove(keptBox);
+        Node oldBox = root.lookup("#keptBox");
+        if (oldBox != null) {
+            root.getChildren().remove(oldBox);
         }
 
         keptFillLevel = viewFlow.getKeptComponent().size();
@@ -426,19 +426,18 @@ public class BuildingScene {
         }
 
         keptBox = new HBox(15);
+        keptBox.setId("keptBox");
         keptBox.setMaxWidth(200);
         keptBox.setAlignment(Pos.TOP_RIGHT);
 
         ArrayList<Component> keptComponents = viewFlow.getKeptComponent();
-
-
 
         for (int i = 0; i < 2; i++) {
             StackPane slot = new StackPane();
             slot.setPrefSize(110, 110);
             slot.setStyle("-fx-background-color: transparent;");
 
-            if (i < keptComponents.size() && keptComponents.get(i) != null) {
+            if (i < keptComponents.size()) {
                 Component component = keptComponents.get(i);
                 ImageView componentView = new ImageView(component.getFrontImage());
                 componentView.setFitWidth(110);
@@ -470,11 +469,13 @@ public class BuildingScene {
         root.getChildren().add(keptBox);
     }
 
+
     /**
      * Selects a kept component from the specified index and inserts it into the selected component slot
      * @param index of the component selected from the kept component list
      */
     public void selectKeptComponent(int index) {
+
         if (index < 0 || index >= keptFillLevel) {
             return;
         }
@@ -493,7 +494,6 @@ public class BuildingScene {
         }
 
         buildKeptBox();
-
     }
 
     /**
@@ -824,7 +824,7 @@ public class BuildingScene {
         rulesBtn.setOnAction(e -> {
             try (InputStream is = getClass().getClassLoader().getResourceAsStream("it/polimi/ingsw/view/galaxy-trucker-rules-en.pdf")) {
                 if (is == null) {
-                    System.out.println("File not found");
+                    this.showError("File not found");
                     return;
                 }
 
@@ -842,7 +842,7 @@ public class BuildingScene {
                 Desktop.getDesktop().open(tempPdf);
 
             } catch (IOException e1) {
-                System.out.println("Error in file opening");
+                this.showError("Error in file opening");
             }
         });
 
@@ -1290,7 +1290,7 @@ public class BuildingScene {
      */
     public void clearSelectedComponentImageIfNone() {
         if (viewFlow.getSelectedComponent() == null && componentSelectedBox != null) {
-            StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().get(0);
+            StackPane imageContainer = (StackPane) componentSelectedBox.getChildren().getFirst();
 
             while (imageContainer.getChildren().size() > 1) {
                 imageContainer.getChildren().remove(1);
@@ -1313,6 +1313,8 @@ public class BuildingScene {
         this.keepBtn = new Button("Keep");
         this.discardBtn = new Button("Discard");
         this.linkBtn = new Button("Link");
+        this.linkBtn.setDisable(true);
+        this.linkBtn.setOpacity(0.5);
 
         styleButton.accept(turnBtn);
         styleButton.accept(keepBtn);
@@ -1424,6 +1426,10 @@ public class BuildingScene {
                     errorLabel.setVisible(false);
                     viewFlow.handleInput("link " + row + " " + col);
                     removePopup.run();
+                    if(viewFlow.getFirstLinked()) {
+                        this.linkBtn.setDisable(false);
+                        this.linkBtn.setOpacity(1);
+                    }
                 } catch (NumberFormatException ex) {
                     errorLabel.setVisible(true);
                 }
@@ -2088,7 +2094,7 @@ public class BuildingScene {
      * Removes the removeBox from the scene
      */
     private void removeRemoveBox() {
-        if (removeBox != null && root.getChildren().contains(removeBox)) {
+        if (removeBox != null) {
             root.getChildren().remove(removeBox);
         }
         removeBox = null;

@@ -390,7 +390,12 @@ public class ViewFlow implements EventReceiver {
             try {
                 rmiClient.handleOutgoingEvent(event);
             } catch (RemoteException e) {
-                System.out.println("RemoteException: " + e);
+                ui.showMessage("Game is ended due to disconnection");
+                try {
+                    rmiClient.close();
+                } catch (RemoteException ex) {
+                    System.err.println("Failed to close RMI client after RemoteException: " + ex.getMessage());
+                }
             }
         }
     }
@@ -570,12 +575,6 @@ public class ViewFlow implements EventReceiver {
     public void addKeptComponent(Component keptComponent) throws IllegalArgumentException{
         if(this.keptComponent.size()<2) {
             this.keptComponent.add(keptComponent);
-            System.out.println("\n");
-            for(Component c: this.keptComponent){
-                System.out.println(c);
-            }
-            System.out.println("\n");
-
         }else throw new IllegalArgumentException("no more space to keep components");
     }
 
@@ -586,17 +585,9 @@ public class ViewFlow implements EventReceiver {
      * @throws IllegalArgumentException if the kept components list already contains two components.
      */
     public void removeKept(int index){
-        if(index> 0 && index<this.keptComponent.size()) {
+        if(index >= 0 && index<this.keptComponent.size()) {
             this.keptComponent.remove(index);
         }
-        System.out.println("\n");
-
-        for(Component c: this.keptComponent){
-            System.out.println(c);
-        }
-        System.out.println("\n");
-
-
     }
 
 
@@ -791,7 +782,12 @@ public class ViewFlow implements EventReceiver {
                 try {
                     rmiClient.handleOutgoingEvent(new PongEvent());
                 } catch (RemoteException e) {
-                    System.out.println("RemoteException: " + e);
+                    ui.showMessage("Game is ended due to disconnection");
+                    try {
+                        rmiClient.close();
+                    } catch (RemoteException ex) {
+                        System.err.println("Failed to close RMI client after RemoteException: " + ex.getMessage());
+                    }
                 }
             }
     }
@@ -928,6 +924,13 @@ public class ViewFlow implements EventReceiver {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return true if the component is the first to be linked or not
+     */
+    public boolean getFirstLinked() {
+        return firstLinked;
     }
 }
 

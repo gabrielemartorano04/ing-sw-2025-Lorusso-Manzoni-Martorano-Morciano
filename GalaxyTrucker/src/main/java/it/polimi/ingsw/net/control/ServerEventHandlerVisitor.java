@@ -238,6 +238,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
         viewFlow.setFirstLinked();
         viewFlow.getShip().getComponents()[event.getX()][event.getY()]=event.getComponent();
         viewFlow.deleteSelectedComponent();
+
         ui.componentLinked(event);
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
         ui.showKeptComponents(viewFlow.getKeptComponent());
@@ -377,6 +378,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
     public void visit(SuccessSelectKept event){
         viewFlow.setSelectedComponent(event.getComponent(), true);
         viewFlow.removeKept(event.getIndex());
+
         ui.showShipLayout(viewFlow.getNickname(), viewFlow.getShip().getComponents());
 
         ui.keptSelected(event);
@@ -690,7 +692,6 @@ public class ServerEventHandlerVisitor implements VirtualView {
         ui.showPlayerShipStatus();
         if (event.getNickname().equals(viewFlow.getNickname())) {
             viewFlow.setParserFlightState(ParserState.PLANET_DECISION);
-            System.out.println(event.getPlanetsOccupied().size());
             ui.updatePlanetsOccupied(event.getPlanetsOccupied());
             ui.showInputFormat(ParserState.PLANET_DECISION);
         } else {
@@ -1149,10 +1150,10 @@ public class ServerEventHandlerVisitor implements VirtualView {
      */
     @Override
     public void visit(EndGameEvent event) {
-        ui.showScores(event.getScores());
-        ui.showGameEnded();
         viewFlow.setParserFlightState(ParserState.DO_NOTHING);
         viewFlow.setViewState(ViewFlow.ViewState.END);
+        ui.showScores(event.getScores());
+        ui.showGameEnded();
     }
 
 
