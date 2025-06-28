@@ -338,52 +338,52 @@ public class Game implements Serializable {
     public void makeStacks() {
         List<Card> mainDeck = deck.getDeck();
 
-        //TODO: da togliere, messo per debug
-        int totalCards = mainDeck.size();
-        int perStack = totalCards / 4;
-        int remaining = totalCards % 4;
-        int index = 0;
-
-        for (int i = 0; i < 4; i++) {
-            int cardsInThisStack = perStack + (i < remaining ? 1 : 0);
-            for (int j = 0; j < cardsInThisStack; j++) {
-                cardStacks[i].addCardInStack(mainDeck.get(index));
-                index++;
-            }
-        }
+//        //TODO: da togliere, messo per debug
+//        int totalCards = mainDeck.size();
+//        int perStack = totalCards / 4;
+//        int remaining = totalCards % 4;
+//        int index = 0;
+//
+//        for (int i = 0; i < 4; i++) {
+//            int cardsInThisStack = perStack + (i < remaining ? 1 : 0);
+//            for (int j = 0; j < cardsInThisStack; j++) {
+//                cardStacks[i].addCardInStack(mainDeck.get(index));
+//                index++;
+//            }
+//        }
 
 
             //TODO: da rimettere, tolto per debug
-//        if (mainDeck == null || mainDeck.size() < 39) {
-//            throw new IllegalStateException("Il mazzo non contiene abbastanza carte (almeno 39 richieste).");
-//        }
-//
-//
-//        List<Card> zone1 = new ArrayList<>(mainDeck.subList(0, 19));   // [0–18]
-//        List<Card> zone2 = new ArrayList<>(mainDeck.subList(20, 39));  // [20–38]
-//
-//        Random rand = new Random();
-//
-//        for (int j = 0; j < 4; j++) {
-//            ArrayList<Card> cardStack = cardStacks[j];
-//
-//
-//            int i1 = rand.nextInt(zone1.size());
-//            cardStack.add(0, zone1.remove(i1));
-//
-//
-//            for (int i = 0; i < 2; i++) {
-//                int i2 = rand.nextInt(zone2.size());
-//                cardStack.add(0, zone2.remove(i2));
-//           }
-//        }
-//
-//        // Ricostruisci il mazzo togliendo le carte usate da zone1 e zone2
-//
-//        mainDeck.subList(0, 39).clear();
-//        // Reinserisci le carte rimaste
-//        mainDeck.addAll(zone1);
-//        mainDeck.addAll(zone2);
+        if (mainDeck == null || mainDeck.size() < 39) {
+            throw new IllegalStateException("Il mazzo non contiene abbastanza carte (almeno 39 richieste).");
+        }
+
+
+        List<Card> zone1 = new ArrayList<>(mainDeck.subList(0, 19));   // [0–18]
+        List<Card> zone2 = new ArrayList<>(mainDeck.subList(20, 39));  // [20–38]
+
+        Random rand = new Random();
+
+        for (int j = 0; j < 4; j++) {
+            ArrayList<Card> cardStack = cardStacks[j].getStack();
+
+
+            int i1 = rand.nextInt(zone1.size());
+            cardStack.add(0, zone1.remove(i1));
+
+
+            for (int i = 0; i < 2; i++) {
+                int i2 = rand.nextInt(zone2.size());
+                cardStack.add(0, zone2.remove(i2));
+           }
+        }
+
+        // Ricostruisci il mazzo togliendo le carte usate da zone1 e zone2
+
+        mainDeck.subList(0, 39).clear();
+        // Reinserisci le carte rimaste
+        mainDeck.addAll(zone1);
+        mainDeck.addAll(zone2);
     }
 
     /**
@@ -394,12 +394,11 @@ public class Game implements Serializable {
             for (Stack cardStack: cardStacks ) {
                 gameDeck.addAll(cardStack.getStack());
             }
-            //TODO: non mischio per debug, poi bisgona mischiare
-//        do{
-//
-//            //Collections.shuffle(gameDeck);
-//            //System.out.println("sto mescolando");
-//        }while(gameDeck.getFirst().getLevel() != gameLevel);
+        do{
+
+            Collections.shuffle(gameDeck);
+            System.out.println("sto mescolando");
+        }while(gameDeck.getFirst().getLevel() != gameLevel);
         }
         else{
             gameDeck.addAll(deck.getDeck());
