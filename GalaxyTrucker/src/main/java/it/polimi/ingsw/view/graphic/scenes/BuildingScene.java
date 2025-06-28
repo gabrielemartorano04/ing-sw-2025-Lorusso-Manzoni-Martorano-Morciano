@@ -455,9 +455,6 @@ public class BuildingScene {
             border.setStrokeWidth(1);
             slot.getChildren().add(border);
 
-            int index = i;
-            slot.setOnMouseClicked(e -> viewFlow.handleInput("selectKept " + index));
-
             keptBox.getChildren().add(slot);
         }
 
@@ -465,8 +462,6 @@ public class BuildingScene {
         StackPane.setMargin(keptBox, new Insets(0, 235, 590, 0));
         root.getChildren().add(keptBox);
     }
-
-
 
     /**
      * Selects a kept component from the specified index and inserts it into the selected component slot
