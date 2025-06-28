@@ -292,8 +292,6 @@ public class BuildingScene {
 
         buildShipGrid(true, null);
 
-        buildKeptBox();
-
         root.getChildren().setAll(backgroundView, grid, keptBox);
         scene = new Scene(root, width, height);
         Consumer<Button> styleButton = createDefaultButtonStyler();
@@ -312,6 +310,8 @@ public class BuildingScene {
         addComponentSelectedSlot();
         createComponentSelectedButtons(styleButton);
         attackSelectComponentButtons(scene);
+
+        buildKeptBox();
 
         return scene;
     }
