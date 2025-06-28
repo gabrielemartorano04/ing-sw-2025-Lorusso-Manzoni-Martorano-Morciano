@@ -272,8 +272,6 @@ class GameTest {
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }
-        //todo calcola dei punteggi sulla base della nave ma devi aggiungere dei goods e cosmic credits e lost e truckers out
-
     }
 
     @Test
