@@ -664,6 +664,11 @@ public class Game implements Serializable {
      */
     public boolean checkOldPlayers(String nickname, PlayerColors color) {
         for(int i=0; i<numPlayers; i++){
+            System.out.println(oldColors.get(i));
+            System.out.println(oldNicknames.get(i));
+        }
+
+        for(int i=0; i<numPlayers; i++){
             if(oldColors.get(i).equals(color) && oldNicknames.get(i).equals(nickname)){
                 return true;
             }
