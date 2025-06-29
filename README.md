@@ -1,6 +1,7 @@
 # SOFTWARE ENGINEERING PROJECT 2024/2025
 
 Students: *Lorusso Luca, Manzoni Nicola, Martorano Gabriele, Morciano Francesca*
+
 Teacher: *San Pietro Pierluigi*
 
 ## *Galaxy Trucker*
