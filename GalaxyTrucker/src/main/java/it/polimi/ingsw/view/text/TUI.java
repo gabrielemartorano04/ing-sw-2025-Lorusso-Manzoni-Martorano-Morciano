@@ -965,7 +965,7 @@ public class TUI implements UI {
             System.out.println("No scores. The game isn't started");
             return;
         }
-        System.out.println("Final scores:");
+        System.out.println("Final scores: ");
         finalScores.forEach((name, score) -> System.out.println("- " + name + ": " + score));
         System.out.println("Winner: " + finalScores.keySet().iterator().next() + "!");
     }
