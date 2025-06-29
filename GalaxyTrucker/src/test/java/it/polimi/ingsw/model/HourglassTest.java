@@ -27,7 +27,7 @@ class HourglassTest {
         Hourglass hourglass = new Hourglass();
         synchronized (lock) {
             try {
-                lock.wait(45000); // aspetta 45 secondi
+                lock.wait(45000); // waits 45 seconds
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -35,7 +35,7 @@ class HourglassTest {
         assertFalse(hourglass.timeIsUp());
         synchronized (lock) {
             try {
-                lock.wait(45000); // aspetta 45 secondi
+                lock.wait(45000); // waits 45 seconds
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -50,7 +50,7 @@ class HourglassTest {
         assertEquals(0, hourglass.getTimeTurns());
         synchronized (lock) {
             try {
-                lock.wait(91000); // aspetta 90 secondi
+                lock.wait(91000); // wait 90 seconds
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -61,7 +61,7 @@ class HourglassTest {
         assertEquals(1, hourglass.getTimeTurns());
         synchronized (lock) {
             try {
-                lock.wait(91000); // aspetta 90 secondi
+                lock.wait(91000); // waits 90 seconds
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

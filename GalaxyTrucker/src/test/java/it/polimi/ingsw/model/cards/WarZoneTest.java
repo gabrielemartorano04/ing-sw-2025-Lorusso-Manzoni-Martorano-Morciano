@@ -241,7 +241,7 @@ class WarZoneTest {
 
     @Test
     void testActivateCannons_LastPlayer_FindWeakest() throws Exception {
-        warZone.setIndexOfCurrTrucker(1);  // ultimo trucker
+        warZone.setIndexOfCurrTrucker(1);  // last trucker
 
         ArrayList<int[]> cannons = new ArrayList<>(List.of(new int[]{5, 8}));
         ArrayList<int[]> battery = new ArrayList<>(List.of(new int[]{6, 6}));
@@ -303,7 +303,7 @@ class WarZoneTest {
         warZone.setState(CardState.ACTIVATE_ENGINES);
 
         ArrayList<int[]> fakeEngines = new ArrayList<>(List.of(new int[]{1, 1}));
-        ArrayList<int[]> battery = new ArrayList<>(List.of(new int[]{5, 6})); // corretta
+        ArrayList<int[]> battery = new ArrayList<>(List.of(new int[]{5, 6})); // correct
 
         assertThrows(InvalidCoordinates.class, () ->
                 warZone.activateEngines(true, fakeEngines, battery)
@@ -348,7 +348,7 @@ class WarZoneTest {
     @Test
     void testActivateEngines_LastPlayer_ReturnsFindWeakest() throws Exception {
         warZone.setState(CardState.ACTIVATE_ENGINES);
-        warZone.setIndexOfCurrTrucker(1);  // ultimo
+        warZone.setIndexOfCurrTrucker(1);  // last one
 
         ArrayList<int[]> engines = new ArrayList<>(List.of(new int[]{9, 9}));
         ArrayList<int[]> battery = new ArrayList<>(List.of(new int[]{6, 6}));
@@ -376,7 +376,7 @@ class WarZoneTest {
     @Test
     void testRemoveGoods_NullWeakest_Throws() {
         warZone.setState(CardState.REMOVE_GOODS);
-        warZone.setWeakestTrucker(null); // forza null
+        warZone.setWeakestTrucker(null);
 
         assertThrows(GeneralError.class, () -> warZone.removeGoods());
     }
@@ -429,7 +429,6 @@ class WarZoneTest {
         g.setY(9);
         g1.setX(8);
         g1.setY(9);
-        // Setup nave con 2 beni blu (color 3)
         Game.getIstance().getTrucker(0).getSpaceShip().addGood(g, new int[]{8,9}, 0, Game.getIstance().getBank());
         Game.getIstance().getTrucker(0).getSpaceShip().addGood(g1, new int[]{8,9}, 1, Game.getIstance().getBank());
         Game.getIstance().getTrucker(0).getSpaceShip().addGoodsList(g);
@@ -816,7 +815,7 @@ class WarZoneTest {
     @Test
     void testRollDice_NegativeIndex_ThrowsGeneralError() {
         warZone.setState(CardState.ROLL_DICE);
-        warZone.setCurrShootIndex(-1); // fuori range
+        warZone.setCurrShootIndex(-1);
 
         assertThrows(GeneralError.class, () -> warZone.rollDice());
     }
@@ -837,7 +836,7 @@ class WarZoneTest {
                 0
         );
         warZone.setState(CardState.ROLL_DICE);
-        warZone.setCurrShootIndex(1); // 1 fuori range se lista vuota
+        warZone.setCurrShootIndex(1);
 
 
         assertThrows(GeneralError.class, () -> warZone.rollDice());

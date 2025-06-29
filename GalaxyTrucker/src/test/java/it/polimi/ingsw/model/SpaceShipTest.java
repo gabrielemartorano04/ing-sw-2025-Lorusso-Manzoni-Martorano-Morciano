@@ -797,16 +797,10 @@ class SpaceShipTest {
         coord.add(new int[]{7,6,1});
         try {
             assertTrue(spaceShip3.checkCabin(coord,2));
-           // assertFalse(spaceShip3.checkCabin(coord,5));
         } catch (InvalidCoordinates e) {
             throw new RuntimeException(e);
         }
         coord.add(new int[]{6,7,1});
-//        try {
-//            //assertFalse(spaceShip3.checkCabin(coord,2));
-//        } catch (InvalidCoordinates e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     @Test

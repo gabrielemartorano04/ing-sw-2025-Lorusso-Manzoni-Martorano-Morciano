@@ -405,6 +405,13 @@ public class ViewFlow implements EventReceiver {
     }
 
     /**
+     * @param stateNotSended true if state has alredy been sended
+     */
+    public void setStateNotSended(boolean stateNotSended) {
+        this.stateNotSended = stateNotSended;
+    }
+
+    /**
      * Sets the SpaceShip instance for the current ViewFlow object
      * @param ship the SpaceShip instance to be associated with the current view.
      */
