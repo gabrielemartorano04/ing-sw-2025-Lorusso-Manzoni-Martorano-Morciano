@@ -39,13 +39,13 @@ The final version of the game includes:
 Percentage of *model* and *controller* test coverage
 ![testCoverage.jpg](deliverables/readmeFiles/testCoverage.jpg)
 
-## [JavaDoc](deliverables/javaDoc) of the project
+[JavaDoc](deliverables/javaDoc) of the project
 
 ## How to use
 
 This section contains all instructions about how to run this project.
 
-From the terminal (macOS) or shell (windows) go to the deliverables/final/jar repository. Then, in different windows 
+From terminal (MacOS) or shell (Windows 11) go to the deliverables/final/jar repository. Then, in different windows 
 (one for the server and as many as the players for the clients) type the following prompt: 
 
 Run the server:
