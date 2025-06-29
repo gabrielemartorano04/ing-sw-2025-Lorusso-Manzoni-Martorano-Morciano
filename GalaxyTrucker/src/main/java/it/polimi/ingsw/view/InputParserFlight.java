@@ -217,7 +217,7 @@ public class InputParserFlight {
             return new PlotGoodEvent(false, null, -1, nickname);
         } else if (decision.equals("y")) {
             if (plotGood.length != 3) {
-                ui.showError("Error: expected format is 'y, <x> <y>, <position>'");
+                ui.showError("Error: expected format is 'y, <row> <col>, <position>'");
                 return null;
             }
 
@@ -245,7 +245,7 @@ public class InputParserFlight {
             }
         }
 
-        ui.showError("Error: invalid command, please type 'y, <x> <y>, <position>' or 'n'");
+        ui.showError("Error: invalid command, please type 'y, <row> <col>, <position>' or 'n'");
         return null;
     }
 
