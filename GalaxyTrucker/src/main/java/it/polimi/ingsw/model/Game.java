@@ -736,5 +736,9 @@ public class Game implements Serializable {
         return names;
     }
 
+    public int gameDeckSize(){
+        return gameDeck.size();
+    }
+
 }
 
