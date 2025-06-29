@@ -39,7 +39,7 @@ The final version of the game includes:
 Percentage of *model* and *controller* test coverage
 ![testCoverage.jpg](deliverables/readmeFiles/testCoverage.jpg)
 
-## JavaDoc of the project
+## [JavaDoc](deliverables/javaDoc) of the project
 
 ## How to use
 
