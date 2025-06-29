@@ -4,15 +4,15 @@ Students: [*Lorusso Luca*](https://github.com/Luc4Lo), [*Manzoni Nicola*](https:
 
 Teacher: *San Pietro Pierluigi*
 
-## *Galaxy Trucker*
+## *🚀 Galaxy Trucker 🚀*
 
 The project consists of a Java version of the board game Galaxy Trucker, made by Cranio Creations
 
-**Game rules** [(English)](deliverables/readmeFiles/galaxy-trucker-rules-en.pdf) [(Italian)](deliverables/readmeFiles/galaxy-trucker-rules-it.pdf)
+**Game rules 📖** [(English)](deliverables/readmeFiles/galaxy-trucker-rules-en.pdf) [(Italian)](deliverables/readmeFiles/galaxy-trucker-rules-it.pdf)
 
 ## Project specification
 
-[Project requirements](deliverables/readmeFiles/requirements.pdf)
+[Project requirements 📄](deliverables/readmeFiles/requirements.pdf)
 
 The final version of the game includes:
 - high-level, general UML diagram;
@@ -39,7 +39,7 @@ The final version of the game includes:
 Percentage of *model* and *controller* test coverage
 ![testCoverage.jpg](deliverables/readmeFiles/testCoverage.jpg)
 
-[JavaDoc](deliverables/javaDoc) of the project
+### [JavaDoc](deliverables/javaDoc) of the project
 
 ## How to use
 
@@ -56,6 +56,6 @@ Run the client:
     
     java -jar client-app.jar
 
-Then select the type of connection and User Interface method and enjoy the game.
+Then select the type of connection and User Interface method and enjoy the game 🎮.
 
 
