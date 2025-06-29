@@ -383,8 +383,6 @@ public class ClientHandlerVisitor implements VirtualServer {
         try {
             client.getTruckerController().selectComponent(index,gameController.getGame().getComponents());
             gameController.getGame().getComponents().setComponentAsSelected(index);
-            // probabilmente evitabile considerando che il fatto di essere covered o meno basta salvarlo lato view
-            // ma meglio tenere view e server completamente sincronizzati per ora
             gameController.getGame().getComponents().setComponentAsUncovered(index);
             return new ComponentSelectedEvent(index, client.getTruckerController().getNickname());
         } catch (GeneralError e) {

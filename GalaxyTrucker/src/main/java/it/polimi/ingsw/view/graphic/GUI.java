@@ -890,9 +890,7 @@ public class GUI implements UI {
      * Displays build options to the user
      */
     @Override
-    public void showBuildOptions() {
-        // Nella gui non deve fare nulla serve per la tui sarebbe da unificare meglio
-    }
+    public void showBuildOptions() {}
 
     /**
      * Displays the ship's layout in the GUI
