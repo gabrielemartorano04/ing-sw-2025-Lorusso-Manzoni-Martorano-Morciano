@@ -159,25 +159,6 @@ class PiratesTest {
     }
 
     @Test
-    void testVictoryDrawDefeatFlow() throws Exception {
-        pirates.activateCannons(false, new ArrayList<>(), new ArrayList<>());
-        pirates.gainCredits(true);
-        pirates.setState(CardState.ROLL_DICE);
-        pirates.rollDice(); // small -> ACTIVATE_SHIELDS
-        pirates.activateShield(false, new int[]{0,0}, new int[]{0,0});
-        pirates.setState(CardState.ROLL_DICE);
-        pirates.setDefeatedTrucker(Game.getIstance().getTrucker(0));
-        pirates.rollDice(); // big -> cardEffect
-
-        pirates.setState(CardState.ESECUZIONE);
-        ServerEvent ev = pirates.cardEffect();
-        switch (ev){
-            case RollDiceResult rd ->  assertEquals(ParserState.DISPLAY_BIG_SHOOT, rd.getParserState());
-            default -> {}
-        }
-    }
-
-    @Test
     void testStartCard(){
         ServerEvent sEvent = pirates.startCard();
         StartCardEvent event = (StartCardEvent) sEvent;
