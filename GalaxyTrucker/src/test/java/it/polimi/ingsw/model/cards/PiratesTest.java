@@ -165,7 +165,7 @@ class PiratesTest {
         assertEquals("Pirates", event.getCardName());
         assertEquals(pirates.getDescription(), event.getCardDescription());
         assertEquals(Game.getIstance().getTruckerList().getFirst().getNickname(), event.getFirstPlayerNickname());
-        assertEquals("Choose if you want to activate the double cannons. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ",event.getQuestion());
+        assertEquals("whether to activate double cannons",event.getQuestion());
         assertEquals(pirates.getDays(), event.getDays());
         assertEquals(pirates.getCredits(), event.getCredits());
         assertEquals(-1, event.getNumHumans());

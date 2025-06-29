@@ -193,11 +193,6 @@ public interface VirtualServer {
     ServerEvent visit(ApplyBigShoot event);
 
     /**
-     * Handles a DeadTrucker event.
-     */
-//    ServerEvent visit(DeadTrucker event);
-
-    /**
      * Handles a PongEvent from a client.
      */
     ServerEvent visit(PongEvent pongEvent, Client client);

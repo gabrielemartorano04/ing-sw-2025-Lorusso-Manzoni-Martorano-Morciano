@@ -213,7 +213,7 @@ public class TUI implements UI {
                 if (colCount == numCols || originalIndex == components.size() - 1) {
                     for (StringBuilder line : lines) {
                         System.out.println(line);
-                        line.setLength(0); // reset per la prossima riga
+                        line.setLength(0);
                     }
                     colCount = 0;
                 }
@@ -1017,7 +1017,6 @@ public class TUI implements UI {
     public void showShipLayout(String nickname, Component[][] layout) {
         System.out.println("\nShip layout of " + nickname + ":\n");
 
-        // Calcolo dinamico celle valide
         boolean[][] validCells = new boolean[11][12];
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[0].length; j++) {
@@ -1026,7 +1025,6 @@ public class TUI implements UI {
             }
         }
 
-        // Intestazione colonne (sopra)
         System.out.print("       ");
         for (int col = 4; col < 11; col++) {
             System.out.printf("   %2d    ", col);
@@ -1036,14 +1034,12 @@ public class TUI implements UI {
         for (int i = 5; i < 10; i++) {
             String rowStr = String.format("%2d", i);
 
-            // Riga superiore
             System.out.print("       ");
             for (int j = 4; j < 11; j++) {
                 System.out.print(validCells[i][j] ? " _______ " : "         ");
             }
             System.out.println();
 
-            // Riga link sopra
             System.out.print("       ");
             for (int j = 4; j < 11; j++) {
                 Component c = layout[i][j];
@@ -1052,7 +1048,6 @@ public class TUI implements UI {
             }
             System.out.println();
 
-            // Riga centrale con numero riga sinistra
             System.out.print("  " + rowStr + "   ");
             for (int j = 4; j < 11; j++) {
                 Component c = layout[i][j];
@@ -1062,7 +1057,6 @@ public class TUI implements UI {
             }
             System.out.println("   " + rowStr);
 
-            // Riga link sotto
             System.out.print("       ");
             for (int j = 4; j < 11; j++) {
                 Component c = layout[i][j];
@@ -1071,7 +1065,6 @@ public class TUI implements UI {
             }
             System.out.println();
 
-            // Riga inferiore
             System.out.print("       ");
             for (int j = 4; j < 11; j++) {
                 System.out.print(validCells[i][j] ? "|_______|" : "         ");
@@ -1079,14 +1072,12 @@ public class TUI implements UI {
             System.out.println();
         }
 
-        // Intestazione colonne (sotto)
         System.out.print("       ");
         for (int col = 4; col < 11; col++) {
             System.out.printf("   %2d    ", col);
         }
         System.out.println();
 
-        // Dettagli componenti
         System.out.println("\nComponents details:");
         for (int i = 5; i < 10; i++) {
             for (int j = 4; j < 11; j++) {
@@ -1214,7 +1205,6 @@ public class TUI implements UI {
 
         Component[][] layout = ship.getComponents();
 
-        // Calcolo dinamico celle valide
         boolean[][] validCells = new boolean[11][12];
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[0].length; j++) {
@@ -1223,7 +1213,6 @@ public class TUI implements UI {
             }
         }
 
-        // Intestazione colonne (sopra)
         System.out.print("       ");
         for (int col = 4; col < 11; col++) {
             System.out.printf("   %2d    ", col);
@@ -1233,14 +1222,12 @@ public class TUI implements UI {
         for (int i = 5; i < 10; i++) {
             String rowStr = String.format("%2d", i);
 
-            // Riga superiore
             System.out.print("       ");
             for (int j = 4; j < 11; j++) {
                 System.out.print(validCells[i][j] ? " _______ " : "         ");
             }
             System.out.println();
 
-            // Riga link sopra
             System.out.print("       ");
             for (int j = 4; j < 11; j++) {
                 Component c = layout[i][j];
@@ -1249,7 +1236,6 @@ public class TUI implements UI {
             }
             System.out.println();
 
-            // Riga centrale con numero riga sinistra
             System.out.print("  " + rowStr + "   ");
             for (int j = 4; j < 11; j++) {
                 Component c = layout[i][j];
@@ -1259,7 +1245,6 @@ public class TUI implements UI {
             }
             System.out.println("   " + rowStr);
 
-            // Riga link sotto
             System.out.print("       ");
             for (int j = 4; j < 11; j++) {
                 Component c = layout[i][j];
@@ -1268,7 +1253,6 @@ public class TUI implements UI {
             }
             System.out.println();
 
-            // Riga inferiore
             System.out.print("       ");
             for (int j = 4; j < 11; j++) {
                 System.out.print(validCells[i][j] ? "|_______|" : "         ");
@@ -1276,14 +1260,12 @@ public class TUI implements UI {
             System.out.println();
         }
 
-        // Intestazione colonne (sotto)
         System.out.print("       ");
         for (int col = 4; col < 11; col++) {
             System.out.printf("   %2d    ", col);
         }
         System.out.println();
 
-        // Dettagli componenti
         System.out.println("\nComponents details:");
         for (int i = 5; i < 10; i++) {
             for (int j = 4; j < 11; j++) {

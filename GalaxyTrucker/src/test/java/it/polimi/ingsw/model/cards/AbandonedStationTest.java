@@ -77,7 +77,7 @@ class AbandonedStationTest {
         assertEquals("Abandoned Station", event.getCardName());
         assertEquals(abandonedStation.getDescription(), event.getCardDescription());
         assertEquals(Game.getIstance().getTruckerList().getFirst().getNickname(), event.getFirstPlayerNickname());
-        assertEquals("Do you want to land on this Abandoned Station?", event.getQuestion());
+        assertEquals("to land on this abandoned station", event.getQuestion());
         assertEquals(abandonedStation.getDays(), event.getDays());
         assertEquals(-1, event.getCredits());
         assertEquals(abandonedStation.getNumHuman(), event.getNumHumans());
