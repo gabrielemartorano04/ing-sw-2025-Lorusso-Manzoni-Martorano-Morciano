@@ -840,6 +840,12 @@ public class ViewFlow implements EventReceiver {
         return cardsToGo;
     }
 
+    /**
+     * sets the number of cards remaining
+     */
+    public void setCardsToGo(int cardsToGo) {
+        this.cardsToGo = cardsToGo;
+    }
 
     /**
      * @return the number of lost components as an integer

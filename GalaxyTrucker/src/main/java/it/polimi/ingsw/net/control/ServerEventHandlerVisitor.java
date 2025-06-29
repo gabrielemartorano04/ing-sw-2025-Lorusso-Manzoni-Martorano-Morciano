@@ -155,6 +155,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
             case FLIGHT -> {
                 viewFlow.setStateNotSended(false);
                 viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
+                viewFlow.setCardsToGo(event.getCardToGo());
                 viewFlow.setStartFlightForAll();
                 viewFlow.setEndBuildingPhase();
                 ui.resumeFlightScene(event.getPlayerNames());
