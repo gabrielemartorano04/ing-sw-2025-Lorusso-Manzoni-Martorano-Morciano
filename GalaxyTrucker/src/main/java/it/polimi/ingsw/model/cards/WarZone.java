@@ -166,7 +166,7 @@ public class WarZone extends Card implements Serializable {
                 this.getName(),
                 this.getDescription(),
                 Game.getIstance().getTruckerList().getFirst().getNickname(),
-                "Type 'warzone' to start WarZone card",
+                "to type 'warzone' to start WarZone card",
                 -1,
                 -1,
                 -1,
