@@ -1,6 +1,6 @@
 # SOFTWARE ENGINEERING PROJECT 2024/2025
 
-Students: *Lorusso Luca, Manzoni Nicola, Martorano Gabriele, Morciano Francesca*
+Students: [*Lorusso Luca*](https://github.com/Luc4Lo), [*Manzoni Nicola*](https://github.com/NicolaManzoni), [*Martorano Gabriele*](https://github.com/gabrielemartorano04), [*Morciano Francesca*](https://github.com/francescamorciano)
 
 Teacher: *San Pietro Pierluigi*
 
