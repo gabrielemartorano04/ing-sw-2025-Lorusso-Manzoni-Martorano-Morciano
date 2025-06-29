@@ -177,7 +177,7 @@ public class InputParser {
                         }
                         return new SendAlienCoord(coord);
                     }else {
-                        System.out.println("Error: illegal command. Type 'coord <x1> <y1> <color> <x2> <y2> <color>...' .");
+                        System.out.println("Error: illegal command. Type 'coord <row1> <col1> <color> <row2> <col2> <color>...' .");
                         return null;
                     }
                 }catch (NumberFormatException e){
@@ -213,7 +213,7 @@ public class InputParser {
 
         if (command.equals("remove")) {
             if (tokens.length != 3) {
-                System.out.println("Error: illegal command. Type 'remove <x> <y>'.");
+                System.out.println("Error: illegal command. Type 'remove <row> <col>'.");
                 return null;
             }
 
@@ -222,19 +222,19 @@ public class InputParser {
                 int y = Integer.parseInt(tokens[2].trim());
                 if(level == 2){
                     if (x < 5 || x > 9 || y < 4 || y > 10) {
-                        System.out.println("Error: illegal coordinates. Type 'remove <x> <y>'.");
+                        System.out.println("Error: illegal coordinates. Type 'remove <row> <col>'.");
                         return null;
                     }
                 }else{
                     if (x < 5 || x > 9 || y < 5 || y > 10) {
-                        System.out.println("Error: illegal coordinates. Type 'remove <x> <y>'.");
+                        System.out.println("Error: illegal coordinates. Type 'remove <row> <col>'.");
                         return null;
                     }
                 }
 
                 return new RemoveTile(x, y);
             } catch (NumberFormatException e) {
-                System.out.println("Error: coordinates must be integers. Type 'remove <x> <y>'.");
+                System.out.println("Error: coordinates must be integers. Type 'remove <row> <col>'.");
                 return null;
             }
         }
@@ -423,7 +423,7 @@ public class InputParser {
                 String message = "Commands:\n";
                 message+="- rules : to open pdf file with game rules\n";
                 message+="- turn : to turn selected component\n";
-                message+="- link <x> <y> : to link selected component in position (x,y)\n";
+                message+="- link <row> <col> : to link selected component in position (row,col)\n";
                 message+="- keep : to keep the selected component\n";
                 message+="- ship <nickname> : to see the ship of another player\n";
                 System.out.println(message);
@@ -443,7 +443,7 @@ public class InputParser {
                 return new TurnComponentEvent(component);
             case "link":
                 if (tokens.length != 3) {
-                    System.out.println("Error: illegal command. Type 'link <x> <y>'.");
+                    System.out.println("Error: illegal command. Type 'link <row> <col>'.");
                     return null;
                 }
                 int x,y;
@@ -455,7 +455,7 @@ public class InputParser {
                     return null;
                 }
                 if(x<5 || x>9 || y<4 || y>10){
-                    System.out.println("Error: illegal coordinates. Type 'link <x> <y>'.");
+                    System.out.println("Error: illegal coordinates. Type 'link <row> <col>'.");
                     return null;
                 }
                 return new LinkTileEvent(index, x, y, component);
@@ -492,7 +492,7 @@ public class InputParser {
                 String message = "Commands:\n";
                 message+="- rules : to open pdf file with game rules\n";
                 message+="- turn : to turn selected component\n";
-                message+="- link <x> <y> : to link selected component in position (x,y)\n";
+                message+="- link <row> <col> : to link selected component in position (row,col)\n";
                 message+="- keep : to keep the selected component\n";
                 message+="- ship <nickname> : to see the ship of another player\n";
                 message+="- discard : to discard the selected component\n";
@@ -523,7 +523,7 @@ public class InputParser {
             case "link":
                 try{
                     if (tokens.length != 3) {
-                        System.out.println("Error: illegal command. Type 'link <x> <y>'.");
+                        System.out.println("Error: illegal command. Type 'link <row> <col>'.");
                         return null;
                     }
                     if((Integer.parseInt(tokens[1])<5 || Integer.parseInt(tokens[1])>9) && (Integer.parseInt(tokens[2])<4 || Integer.parseInt(tokens[2])>10)){
@@ -697,7 +697,7 @@ public class InputParser {
                 String message = "Commands:\n";
                 message+="- rules : to open pdf file with game rules\n";
                 message+="- turn : to turn selected component\n";
-                message+="- link <x> <y> : to link selected component in position (x,y)\n";
+                message+="- link <row> <col> : to link selected component in position (row,col)\n";
                 message+="- keep : to keep the selected component\n";
                 message+="- ship <nickname> : to see the ship of another player\n";
                 System.out.println(message);
@@ -718,13 +718,13 @@ public class InputParser {
             case "link":
                 try{
                     if (tokens.length != 3) {
-                        System.out.println("Error: illegal command. Type 'link <x> <y>'.");
+                        System.out.println("Error: illegal command. Type 'link <row> <col>'.");
                         return null;
                     }
                     int x=Integer.parseInt(tokens[1].trim());
                     int y=Integer.parseInt(tokens[2].trim());
                     if(x<5 || x>9 || y<4 || y>10){
-                        System.out.println("Error: illegal coordinates. Type 'link <x> <y>'.");
+                        System.out.println("Error: illegal coordinates. Type 'link <row> <col>'.");
                         return null;
                     }
                     return new LinkTileEvent(index, x, y, component);
@@ -767,7 +767,7 @@ public class InputParser {
                 String message = "Commands:\n";
                 message+="- rules : to open pdf file with game rules\n";
                 message+="- turn : to turn selected component\n";
-                message+="- link <x> <y> : to link selected component in position (x,y)\n";
+                message+="- link <row> <col> : to link selected component in position (row,col)\n";
                 message+="- keep : to keep the selected component\n";
                 message+="- ship <nickname> : to see the ship of another player\n";
                 message+="- discard : to discard the selected component\n";
@@ -796,7 +796,7 @@ public class InputParser {
             case "link":
                 try{
                     if (tokens.length != 3) {
-                        System.out.println("Error: illegal command. Type 'link <x> <y>'.");
+                        System.out.println("Error: illegal command. Type 'link <row> <col>'.");
                         return null;
                     }
                     if((Integer.parseInt(tokens[1])<5 || Integer.parseInt(tokens[1])>9) && (Integer.parseInt(tokens[2])<4 || Integer.parseInt(tokens[2])>10)){
