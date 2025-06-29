@@ -93,7 +93,6 @@ class MeteorShowerTest {
                 assertEquals(meteorShower.getCurrMeteorIndex(), e.getCurrIndex());
                 assertNull(e.getShoot());
                 assertEquals(meteorShower.getMeteors().get(meteorShower.getCurrMeteorIndex()), e.getMeteor());
-                //assertEquals();
                 assertEquals(Game.getIstance().getTrucker(meteorShower.getIndexOfCurrTrucker()).getNickname(), e.getNickname());
                 assertTrue(e.isForAll());
             }else{
@@ -101,7 +100,6 @@ class MeteorShowerTest {
                 assertEquals(meteorShower.getCurrMeteorIndex(), e.getCurrIndex());
                 assertNull(e.getShoot());
                 assertEquals(meteorShower.getMeteors().get(meteorShower.getCurrMeteorIndex()-1), e.getMeteor());
-                //assertEquals();
                 assertEquals(Game.getIstance().getTrucker(meteorShower.getIndexOfCurrTrucker()).getNickname(), e.getNickname());
                 assertTrue(e.isForAll());
             }

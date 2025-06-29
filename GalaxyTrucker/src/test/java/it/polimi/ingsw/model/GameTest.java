@@ -191,7 +191,7 @@ class GameTest {
         assertFalse(game2.isHourglassExpired());
         synchronized (lock) {
             try {
-                lock.wait(91000); // aspetta 90 secondi
+                lock.wait(91000); // waits 90 seconds
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -199,7 +199,7 @@ class GameTest {
         game2.getHourglass().reset();
         synchronized (lock) {
             try {
-                lock.wait(91000); // aspetta 90 secondi
+                lock.wait(91000); // waits 90 seconds
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -207,7 +207,7 @@ class GameTest {
         game2.getHourglass().reset();
         synchronized (lock) {
             try {
-                lock.wait(91000); // aspetta 90 secondi
+                lock.wait(91000); // waits 90 seconds
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

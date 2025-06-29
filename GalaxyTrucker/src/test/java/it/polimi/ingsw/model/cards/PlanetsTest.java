@@ -163,19 +163,19 @@ public class PlanetsTest {
 
     @Test
     void test_playerLandingPlanets_duplicatedLanding() throws GeneralError, PlanetNotFreeException {
-        card.playerLandingPlanets(0); // prima volta
-        Game.getIstance().getTruckerList().add(Game.getIstance().getTrucker(0));// simulate che stesso trucker venga ripetuto
+        card.playerLandingPlanets(0); // first time
+        Game.getIstance().getTruckerList().add(Game.getIstance().getTrucker(0));
         card.playerLandingPlanets(1);
         assertThrows(GeneralError.class, () -> card.playerLandingPlanets(-1));
     }
 
     @Test
     void test_playerLandingPlanets_planetAlreadyTaken() throws GeneralError, PlanetNotFreeException {
-        card.playerLandingPlanets(0); // prima occupazione
-        card.setTruckersLanded(new ArrayList<>(Game.getIstance().getTruckerList())); // finta avanzamento
+        card.playerLandingPlanets(0); // first land
+        card.setTruckersLanded(new ArrayList<>(Game.getIstance().getTruckerList()));
         card.setState(CardState.PIANETI);
-        card.getPlanetsOccupied().set(0, Game.getIstance().getTrucker(0)); // già occupato
-        Game.getIstance().getTruckerList().add(new Trucker("Fake", null)); // aggiunto finto
+        card.getPlanetsOccupied().set(0, Game.getIstance().getTrucker(0)); // occupied
+        Game.getIstance().getTruckerList().add(new Trucker("Fake", null));
         assertThrows(PlanetNotFreeException.class, () -> card.playerLandingPlanets(0));
     }
 
