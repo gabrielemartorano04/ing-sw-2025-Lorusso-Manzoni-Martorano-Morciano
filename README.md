@@ -1,25 +1,19 @@
 # **SOFTWARE ENGINEERING PROJECT 2024/2025**
 
+Lorusso Luca, Manzoni Nicola, Martorano Gabriele, Morciano Francesca
+
 ## *Galaxy Trucker*
 
-**Game rules** (EN)  **Game rules** (IT) 
+The project consists of a Java version of the board game Galaxy Trucker, made by Cranio Creations
 
+**Game rules** [(English)](deliverables/readmeFiles/galaxy-trucker-rules-en.pdf) [(Italian)](deliverables/readmeFiles/galaxy-trucker-rules-it.pdf)
 
-### Componenti del gruppo:
-Luca Lorusso,
-Nicola Manzoni,
-Gabriele Martorano,
-Francesca Morciano.
+## **Project specification**
 
-
-Istruzioni su come eseguire il progetto dai JAR:
-
-Percentuale di copertura dei test:
-![Copertura test](https://github.com/user-attachments/assets/99f3aeb6-b5c5-40fe-a09a-2a6dfb734ff8)
+[Project requirements](deliverables/readmeFiles/requirements.pdf)
 
 ### List of advanced functionalities
-|Functionality              |Implemented|
-|---------------------------|-----------|
+|**Functionality**              |**Implemented**|
 |Complete rules             |✅         |
 |Socket                     |✅         |
 |RMI                        |✅         |
@@ -30,5 +24,6 @@ Percentuale di copertura dei test:
 |Multiple Games             |❌         |
 |Resilience to disconnection|❌         |
 
-
+Percentuage of test coverage:
+![Copertura test](https://github.com/user-attachments/assets/99f3aeb6-b5c5-40fe-a09a-2a6dfb734ff8)
 
