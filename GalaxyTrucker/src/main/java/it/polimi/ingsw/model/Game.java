@@ -662,17 +662,47 @@ public class Game implements Serializable {
      * @param color color to check
      * @return if an old player had a given nickname and color
      */
+//    public boolean checkOldPlayers(String nickname, PlayerColors color) {
+//
+//        for(int i=0; i<numPlayers; i++){
+//            if(oldColors.get(i).equals(color) && oldNicknames.get(i).equals(nickname)){
+//                return true;
+//            }
+//        }
+//
+//        System.out.println("Return false");
+//        return false;
+//    }
+
+
     public boolean checkOldPlayers(String nickname, PlayerColors color) {
+        try {
+            System.out.println(">>> checkOldPlayers start");
+            System.out.println("oldColors size: " + oldColors.size());
+            System.out.println("oldNicknames size: " + oldNicknames.size());
+            System.out.println("numPlayers: " + numPlayers);
 
-        for(int i=0; i<numPlayers; i++){
-            if(oldColors.get(i).equals(color) && oldNicknames.get(i).equals(nickname)){
-                return true;
+            for (int i = 0; i < numPlayers; i++) {
+                System.out.println("i: " + i);
+                System.out.println("color: " + oldColors.get(i));
+                System.out.println("nick: " + oldNicknames.get(i));
             }
-        }
 
-        System.out.println("Return false");
-        return false;
+            for (int i = 0; i < numPlayers; i++) {
+                if (oldColors.get(i).equals(color) && oldNicknames.get(i).equals(nickname)) {
+                    System.out.println(">>> Trovato match");
+                    return true;
+                }
+            }
+
+            return false;
+        } catch (Exception e) {
+            System.err.println(">>> Eccezione in checkOldPlayers: " + e.getMessage());
+            e.printStackTrace();
+            return false; // fallback
+        }
     }
+
 
     /**
      * This method fills the oldNicknames list
