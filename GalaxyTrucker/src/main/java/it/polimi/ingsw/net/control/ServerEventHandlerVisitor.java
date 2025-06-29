@@ -1,6 +1,5 @@
 package it.polimi.ingsw.net.control;
 
-import it.polimi.ingsw.exceptions.GeneralError;
 import it.polimi.ingsw.model.Trucker;
 import it.polimi.ingsw.model.components.Component;
 import it.polimi.ingsw.net.events.serverevents.*;
