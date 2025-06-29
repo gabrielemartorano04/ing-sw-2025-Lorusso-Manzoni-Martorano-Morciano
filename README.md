@@ -40,3 +40,16 @@ Percentage of *model* and *controller* test coverage
 ![testCoverage.jpg](deliverables/readmeFiles/testCoverage.jpg)
 
 JavaDoc of the project
+
+## How to use
+
+This section contains all instructions about how to run this project.
+
+From the terminal (mac) or shell (windows) go in the deliverables/final/jar repository. Then, in differents windows 
+(one for the server and as many as the players for the clients) type the following prompt: 
+    java -jar client-app.jar (to run the client)
+    java -jar server-app.jar (to run the server)
+
+Then select the type of connection and User Interface method and enjoy the game.
+
+
