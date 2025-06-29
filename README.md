@@ -39,4 +39,4 @@ The final version of the game includes:
 Percentage of *model* and *controller* test coverage
 ![testCoverage.jpg](deliverables/readmeFiles/testCoverage.jpg)
 
-[JavaDoc](https://htmlpreview.github.io/?https://github.com/gabrielemartorano04/ing-sw-2025-Lorusso-Manzoni-Martorano-Morciano/blob/main/deliverables/readmeFiles/javadoc/overview-summary.html) of the project
+[JavaDoc](https://htmlpreview.github.io/?https://github.com/gabrielemartorano04/ing-sw-2025-Lorusso-Manzoni-Martorano-Morciano/tree/main/deliverables/readmeFiles/javadoc/overview-summary.html) of the project
