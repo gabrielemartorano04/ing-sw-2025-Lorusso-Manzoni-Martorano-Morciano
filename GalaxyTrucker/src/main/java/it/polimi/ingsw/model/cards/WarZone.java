@@ -161,6 +161,7 @@ public class WarZone extends Card implements Serializable {
      */
     @Override
     public synchronized ServerEvent startCard() {
+        this.state = CardState.WARZONE;
         return new StartCardEvent(
                 this.getName(),
                 this.getDescription(),
@@ -193,8 +194,8 @@ public class WarZone extends Card implements Serializable {
      */
     @Override
     public synchronized ServerEvent handleCurrentCondition() throws GeneralError{
-        if(state != CardState.WARZONE){
-            throw new GeneralError("CombatZone not callable in the state " + state);
+        if(this.state != CardState.WARZONE){
+            throw new GeneralError("CombatZone not callable in the state " + this.state);
         }
         if(Game.getIstance().getTruckerList().size() == 1){
             ArrayList<Trucker> truckerRemoved;
