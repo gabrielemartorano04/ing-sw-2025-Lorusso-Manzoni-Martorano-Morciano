@@ -177,7 +177,6 @@ class SlaversTest {
             ship2.setBattery();
             ship2.setNumHuman();
             Game.initializeForTest(ship1, ship2);
-            //non ultimo
             slavers = new Slavers(false, 1, 5, 1, 3, 2,
                     "/it/polimi/ingsw/model/cards/GT-cards_I_IT_01.jpg",
                     "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 9);
@@ -190,7 +189,7 @@ class SlaversTest {
                 case BooleanDecision bd -> assertEquals(Game.getIstance().getTrucker(slavers.getIndexOfCurrentTrucker()).getNickname(), bd.getNickname());
                 default -> fail();
             }
-            // ultimo e no defeated
+            // last one and not defeated
             slavers.setState(CardState.ACTIVATE_CANNONS);
             ServerEvent event1 = slavers.activateCannons(false, new ArrayList<>(), new ArrayList<>());
             slavers.setIndexOfCurrentTrucker(1);
@@ -198,7 +197,7 @@ class SlaversTest {
                 case CardFinished cf-> assertEquals(Game.getIstance().getTruckerList(), cf.getTruckers());
                 default -> fail();
             }
-            //ultimo e defeated
+            //last and defeated
             slavers.setState(CardState.ACTIVATE_CANNONS);
             slavers.addDefeatedTruckers(Game.getIstance().getTrucker(0));
             ServerEvent event2 = slavers.activateCannons(false, new ArrayList<>(), new ArrayList<>());
@@ -227,7 +226,7 @@ class SlaversTest {
             ship2.setBattery();
             ship2.setNumHuman();
             Game.initializeForTest(ship1, ship2);
-            //no ultimo
+            //not last
             slavers = new Slavers(false, 1, 5, 1, 3, 4,
                     "/it/polimi/ingsw/model/cards/GT-cards_I_IT_01.jpg",
                     "/it/polimi/ingsw/model/cards/GT-cards_I_IT_0121.jpg", 9);

@@ -104,8 +104,6 @@ class AbandonedStationTest {
                 assertEquals(abandonedStation.getGoods().get(abandonedStation.getCurrGood()), event.getGood());
             } else {
                 CardFinished event = (CardFinished) sEvent;
-                // a uno tolgo tutti gli umani per vedere se lo elimina, l'altro ne avrà di più e non verrà eliminato
-
                 Game.getIstance().getTruckerList().getFirst().getSpaceShip().removeAllHumans();
 
                 assertEquals(Game.getIstance().getTruckerOut().stream()
@@ -131,11 +129,8 @@ class AbandonedStationTest {
     void truckerLanding_noTrucker(){
         try {
             ServerEvent sEvent = abandonedStation.truckerLanding(false);
-            //non metto -1 al size perché io sto uno indietro rispetto a dopo aver chiamto truckerlanding()
-            if(abandonedStation.getIndexOfCurrTrucker() == Game.getIstance().getTruckerList().size()){
+           if(abandonedStation.getIndexOfCurrTrucker() == Game.getIstance().getTruckerList().size()){
                 CardFinished event = (CardFinished) sEvent;
-
-                // a uno tolgo tutti gli umani per vedere se lo elimina, l'altro ne avrà di più e non verrà eliminato
 
                 Game.getIstance().getTruckerList().getFirst().getSpaceShip().removeAllHumans();
 
@@ -264,8 +259,7 @@ class AbandonedStationTest {
             throw new RuntimeException(e);
         }
         CardFinished event = (CardFinished) sEvent;
-        // a uno tolgo tutti gli umani per vedere se lo elimina, l'altro ne avrà di più e non verrà eliminato
-        Game.getIstance().getTruckerList().getFirst().getSpaceShip().removeAllHumans();
+         Game.getIstance().getTruckerList().getFirst().getSpaceShip().removeAllHumans();
 
         assertEquals(Game.getIstance().getTruckerOut().stream()
                 .map(Trucker::getNickname)
@@ -293,7 +287,6 @@ class AbandonedStationTest {
             throw new RuntimeException(e);
         }
         CardFinished event = (CardFinished) sEvent;
-        // a uno tolgo tutti gli umani per vedere se lo elimina, l'altro ne avrà di più e non verrà eliminato
 
         Game.getIstance().getTruckerList().getFirst().getSpaceShip().removeAllHumans();
 

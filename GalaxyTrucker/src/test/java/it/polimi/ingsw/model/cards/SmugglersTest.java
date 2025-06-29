@@ -76,7 +76,7 @@ class SmugglersTest {
             case BooleanDecision bl -> assertTrue(true);
             default -> fail();
         }
-        //ultimo no defeated
+        //the last one and not defeated
         ship1 = createShip.createShip3(new SpaceShip());
         ship1.setBattery();
         ship1.setNumHuman();
@@ -93,7 +93,7 @@ class SmugglersTest {
             case CardFinished cf -> assertTrue(true);
             default -> fail();
         }
-        //ultimo e defeated
+        //last one and defeated
         ship1 = createShip.createShip3(new SpaceShip());
         ship1.setBattery();
         ship1.setNumHuman();
@@ -231,7 +231,6 @@ class SmugglersTest {
     void testRemoveWithoutDecision() throws Exception {
         smugglers.setGoodsToLoseCurrTrucker(1);
         smugglers.addDefeatedTruckers(Game.getIstance().getTrucker(0));
-        System.out.println("trucker " + Game.getIstance().getTrucker(0).getNickname());
         Goods g = new Goods(3);
         g.setX(9);
         g.setY(8);

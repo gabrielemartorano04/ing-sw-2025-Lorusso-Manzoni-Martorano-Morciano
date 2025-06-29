@@ -88,8 +88,6 @@ class AbandonedShipTest {
 
                 CardFinished event = (CardFinished) sEvent;
 
-                // a uno tolgo tutti gli umani per vedere se lo elimina, l'altro ne avrà di più e non verrà eliminato
-
                 Game.getIstance().getTruckerList().getFirst().getSpaceShip().removeAllHumans();
 
                 assertEquals(Game.getIstance().getTruckerOut().stream()
@@ -139,9 +137,6 @@ class AbandonedShipTest {
         }
 
         CardFinished event = (CardFinished) sEvent;
-
-        // a uno tolgo tutti gli umani per vedere se lo elimina, l'altro ne avrà di più e non verrà eliminato
-
         Game.getIstance().getTruckerList().getFirst().getSpaceShip().removeAllHumans();
 
         assertEquals(Game.getIstance().getTruckerOut().stream()
@@ -174,7 +169,6 @@ class AbandonedShipTest {
         } catch (GeneralError e) {
             throw new RuntimeException(e);
         }
-        //con trucker che atterrno
         ServerEvent sEvent = null;
         try {
             abandonedShip.setState(CardState.ESECUZIONE);
@@ -184,8 +178,6 @@ class AbandonedShipTest {
         }
 
         CardFinished event = (CardFinished) sEvent;
-
-        // a uno tolgo tutti gli umani per vedere se lo elimina, l'altro ne avrà di più e non verrà eliminato
 
         Game.getIstance().getTruckerList().getFirst().getSpaceShip().removeAllHumans();
 
@@ -209,7 +201,6 @@ class AbandonedShipTest {
         abandonedShip.setState(CardState.ESECUZIONE);
         Game.getIstance().getTruckerList().getFirst().getSpaceShip().setNumHuman();
 
-        //senza trucker che atterrno
         ServerEvent sEvent = null;
         try {
             sEvent = abandonedShip.cardEffect();
@@ -218,8 +209,6 @@ class AbandonedShipTest {
         }
 
         CardFinished event = (CardFinished) sEvent;
-
-        // a uno tolgo tutti gli umani per vedere se lo elimina, l'altro ne avrà di più e non verrà eliminato
 
         Game.getIstance().getTruckerList().getFirst().getSpaceShip().removeAllHumans();
 
