@@ -22,7 +22,7 @@ The final version of the game includes:
 - source code of the implementation;
 - source code of tests.
 
-### List of advanced functionalities
+### List of implemented functionalities
 |**Functionality**          | **Implemented** |
 |---------------------------|-----------------|
 |Complete rules             | ✅               |
