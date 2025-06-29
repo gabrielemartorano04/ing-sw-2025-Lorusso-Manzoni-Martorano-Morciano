@@ -301,10 +301,6 @@ public class LoginScene {
             if (selectedNickname[0] != null && selectedColor[0] != null) {
                 String input = selectedNickname[0] + " " + selectedColor[0];
                 viewFlow.handleInput(input);
-//                Node toRemove = root.lookup("#resume");
-//                if (toRemove != null) {
-//                    root.getChildren().remove(toRemove);
-//                }
             }
         });
 
