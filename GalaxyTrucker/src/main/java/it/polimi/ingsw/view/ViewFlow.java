@@ -405,6 +405,13 @@ public class ViewFlow implements EventReceiver {
     }
 
     /**
+     * @param stateNotSended true if state has alredy been sended
+     */
+    public void setStateNotSended(boolean stateNotSended) {
+        this.stateNotSended = stateNotSended;
+    }
+
+    /**
      * Sets the SpaceShip instance for the current ViewFlow object
      * @param ship the SpaceShip instance to be associated with the current view.
      */
@@ -833,6 +840,12 @@ public class ViewFlow implements EventReceiver {
         return cardsToGo;
     }
 
+    /**
+     * sets the number of cards remaining
+     */
+    public void setCardsToGo(int cardsToGo) {
+        this.cardsToGo = cardsToGo;
+    }
 
     /**
      * @return the number of lost components as an integer

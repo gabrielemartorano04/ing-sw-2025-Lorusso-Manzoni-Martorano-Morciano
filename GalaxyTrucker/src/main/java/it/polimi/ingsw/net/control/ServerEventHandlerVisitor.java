@@ -153,7 +153,9 @@ public class ServerEventHandlerVisitor implements VirtualView {
 
         switch (event.getGameState()) {
             case FLIGHT -> {
+                viewFlow.setStateNotSended(false);
                 viewFlow.setViewState(ViewFlow.ViewState.FLIGTH);
+                viewFlow.setCardsToGo(event.getCardToGo());
                 viewFlow.setStartFlightForAll();
                 viewFlow.setEndBuildingPhase();
                 ui.resumeFlightScene(event.getPlayerNames());
@@ -163,6 +165,7 @@ public class ServerEventHandlerVisitor implements VirtualView {
                     ui.showInputFormat(ParserState.DRAW_CARD);
                 }else{
                     viewFlow.setParserFlightState(ParserState.DO_NOTHING);
+                    ui.showMessage("leader is about to draw a card");
                 }
             }
             case ENDED -> viewFlow.setViewState(ViewFlow.ViewState.END);
