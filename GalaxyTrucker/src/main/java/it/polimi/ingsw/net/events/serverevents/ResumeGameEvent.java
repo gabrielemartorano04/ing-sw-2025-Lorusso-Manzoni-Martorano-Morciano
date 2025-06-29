@@ -49,6 +49,11 @@ public class ResumeGameEvent extends ServerEvent {
     private final ArrayList<String> playerNames;
 
     /**
+     * number of cards remaining
+     */
+    private final int cardToGo;
+
+    /**
      * Event constructor
      * @param availableComponents list of available components
      * @param nickname of the player
@@ -58,7 +63,7 @@ public class ResumeGameEvent extends ServerEvent {
      * @param track positions of the players
      * @param playerNames list of the players' nickname
      */
-    public ResumeGameEvent(ArrayList<Component> availableComponents, String nickname, ArrayList<Trucker> trucker, GameState gameState, int level, Map<String, Integer> track, ArrayList<String> playerNames) {
+    public ResumeGameEvent(ArrayList<Component> availableComponents, String nickname, ArrayList<Trucker> trucker, GameState gameState, int level, Map<String, Integer> track, ArrayList<String> playerNames, int  cardToGo) {
         super(true);
         this.truckers = trucker;
         this.gameState = gameState;
@@ -67,6 +72,7 @@ public class ResumeGameEvent extends ServerEvent {
         this.nickname = nickname;
         this.components = availableComponents;
         this.playerNames = playerNames;
+        this.cardToGo = cardToGo;
     }
 
     /**
@@ -116,6 +122,13 @@ public class ResumeGameEvent extends ServerEvent {
      */
     public ArrayList<String> getPlayerNames() {
         return playerNames;
+    }
+
+    /**
+     * @return the number of cards remaining
+     */
+    public int getCardToGo(){
+        return cardToGo;
     }
 
     /**
