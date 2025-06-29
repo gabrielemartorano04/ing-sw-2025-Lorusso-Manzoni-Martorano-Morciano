@@ -48,7 +48,7 @@ This section contains all instructions about how to run this project.
 From the terminal (macOS) or shell (windows) go in the deliverables/final/jar repository. Then, in differents windows 
 (one for the server and as many as the players for the clients) type the following prompt: 
 
-Run teh server:
+Run the server:
 
     java -jar server-app.jar
 
