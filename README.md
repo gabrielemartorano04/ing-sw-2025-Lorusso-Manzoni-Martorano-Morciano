@@ -1,6 +1,7 @@
 # SOFTWARE ENGINEERING PROJECT 2024/2025
 
 Students: *Lorusso Luca, Manzoni Nicola, Martorano Gabriele, Morciano Francesca*
+
 Teacher: *San Pietro Pierluigi*
 
 ## *Galaxy Trucker*
@@ -38,4 +39,4 @@ The final version of the game includes:
 Percentage of *model* and *controller* test coverage
 ![testCoverage.jpg](deliverables/readmeFiles/testCoverage.jpg)
 
-[JavaDoc](deliverables/readmeFiles/overview-summary.html) of the project
+[JavaDoc](https://github.com/gabrielemartorano04/ing-sw-2025-Lorusso-Manzoni-Martorano-Morciano/overview-summary.html) of the project
