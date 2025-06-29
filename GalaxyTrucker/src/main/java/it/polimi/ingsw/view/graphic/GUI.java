@@ -312,6 +312,11 @@ public class GUI implements UI {
             stage.setResizable(false);
             stage.setFullScreen(true);
             stage.show();
+
+            this.flightScene.showRemainingCards();
+            if(viewFlow.getTrack()!=null){
+                this.flightScene.updateTrack(viewFlow.getTrack());
+            }
         });
 
     }
