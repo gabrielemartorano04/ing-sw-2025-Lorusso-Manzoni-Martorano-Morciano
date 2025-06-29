@@ -178,6 +178,7 @@ public class ClientHandlerVisitor implements VirtualServer {
             return new PlayerJoinedEvent(nickname, client.getTruckerController().getSpaceShip());
         }
         else{
+            System.out.println("entro");
             numLog--;
             return new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
         }
@@ -255,7 +256,6 @@ public class ClientHandlerVisitor implements VirtualServer {
                 }
 
                 int cardToGo = gameController.getGame().gameDeckSize();
-
                 return new ResumeGameEvent(gameController.getGame().getComponents().getComponents(), nickname, allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), gameController.getGame().getTrack(), players, cardToGo);
             }else{
                 numLog--;
@@ -383,8 +383,6 @@ public class ClientHandlerVisitor implements VirtualServer {
         try {
             client.getTruckerController().selectComponent(index,gameController.getGame().getComponents());
             gameController.getGame().getComponents().setComponentAsSelected(index);
-            // probabilmente evitabile considerando che il fatto di essere covered o meno basta salvarlo lato view
-            // ma meglio tenere view e server completamente sincronizzati per ora
             gameController.getGame().getComponents().setComponentAsUncovered(index);
             return new ComponentSelectedEvent(index, client.getTruckerController().getNickname());
         } catch (GeneralError e) {

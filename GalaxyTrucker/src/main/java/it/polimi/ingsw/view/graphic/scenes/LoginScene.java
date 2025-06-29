@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -278,7 +279,7 @@ public class LoginScene {
                     boxToOverlay.get(otherBox).setVisible(true);
                 }
 
-                box.setStyle("-fx-border-color: white; -fx-border-width: 3px;");
+                box.setStyle("-fx-border-color: white; -fx-border-width: 3px; -fx-border-radius: 12px");
                 boxToOverlay.get(box).setVisible(false);
 
                 selectedBox[0] = box;
@@ -300,13 +301,17 @@ public class LoginScene {
             if (selectedNickname[0] != null && selectedColor[0] != null) {
                 String input = selectedNickname[0] + " " + selectedColor[0];
                 viewFlow.handleInput(input);
-                root.getChildren().remove(content);
+//                Node toRemove = root.lookup("#resume");
+//                if (toRemove != null) {
+//                    root.getChildren().remove(toRemove);
+//                }
             }
         });
 
         VBox content = new VBox(40, titleLabel, playerPane, confirmBtn);
         content.setAlignment(Pos.CENTER);
         content.setPadding(new Insets(40));
+        content.setId("resume");
 
         root = new StackPane(backgroundView, content);
         StackPane.setAlignment(content, Pos.CENTER);

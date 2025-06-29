@@ -538,6 +538,7 @@ public class Game implements Serializable {
             if (trucker!=t && trucker.getSpaceShip().countExposedConnectors() >= t.getSpaceShip().countExposedConnectors()){
                 return true;
             }
+            System.out.println("loop");
         }
         return false;
     }
@@ -663,13 +664,16 @@ public class Game implements Serializable {
      * @return if an old player had a given nickname and color
      */
     public boolean checkOldPlayers(String nickname, PlayerColors color) {
-        for(int i=0; i<numPlayers; i++){
-            if(oldColors.get(i).equals(color) && oldNicknames.get(i).equals(nickname)){
+
+        for (int i = 0; i < oldColors.size(); i++) {
+            if (oldColors.get(i).equals(color) && oldNicknames.get(i).equals(nickname)) {
                 return true;
             }
         }
+
         return false;
     }
+
 
     /**
      * This method fills the oldNicknames list
