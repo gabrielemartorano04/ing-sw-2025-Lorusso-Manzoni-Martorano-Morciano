@@ -144,17 +144,6 @@ public class WarZone extends Card implements Serializable {
         return state;
     }
 
-//    public ArrayList<Condition> getConditionsOrder() {
-//        return conditionsOrder;
-//    }
-
-//    public Map<Condition, Effect> getPenalties() {
-//        return penalties;
-//    }
-
-//    public ArrayList<int[]> getShoots(){
-//        return shoots;
-//    }
 
     /**
      * @return an event containing all the card details
