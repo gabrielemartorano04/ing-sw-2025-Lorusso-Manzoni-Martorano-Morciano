@@ -54,7 +54,7 @@ class AbandonedShipTest {
         assertEquals("Abandoned Ship", event.getCardName());
         assertEquals(abandonedShip.getDescription(), event.getCardDescription());
         assertEquals(Game.getIstance().getTruckerList().getFirst().getNickname(), event.getFirstPlayerNickname());
-        assertEquals("Do you want to land on this Abandoned Ship?", event.getQuestion());
+        assertEquals("to land on this Abandoned Ship", event.getQuestion());
         assertEquals(abandonedShip.getDays(), event.getDays());
         assertEquals(abandonedShip.getCredits(), event.getCredits());
         assertEquals(abandonedShip.getNumHuman(), event.getNumHumans());

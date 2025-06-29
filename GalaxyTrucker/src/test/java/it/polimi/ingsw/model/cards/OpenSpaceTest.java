@@ -62,7 +62,7 @@ class OpenSpaceTest {
         assertEquals("Open Space", event.getCardName());
         assertEquals(openSpace.getDescription(), event.getCardDescription());
         assertEquals(Game.getIstance().getTruckerList().getFirst().getNickname(), event.getFirstPlayerNickname());
-        assertEquals("Choose if you want to activate the double engines. If yes type the coordinates of the cannons then 'battery' and battery storage(s) coordinates . Type 'y, <x1> <y1>, <x2> <y2>,..., battery, <xs1> <ys1> - <numofbatteries>,...' or 'n': ", event.getQuestion());
+        assertEquals("whether to activate double engines", event.getQuestion());
         assertEquals(-1, event.getDays());
         assertEquals(-1, event.getCredits());
         assertEquals(-1, event.getNumHumans());
