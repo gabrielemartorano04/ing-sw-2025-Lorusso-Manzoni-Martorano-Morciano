@@ -94,7 +94,7 @@ public class AbandonedStation extends Card implements Serializable {
                 this.getName(),
                 this.getDescription(),
                 Game.getIstance().getTruckerList().getFirst().getNickname(),
-                "Do you want to land on this Abandoned Station?",
+                "to land on this abandoned station",
                 days,
                 -1,
                 numHuman,

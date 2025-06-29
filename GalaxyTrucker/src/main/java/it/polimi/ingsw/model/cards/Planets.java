@@ -123,7 +123,7 @@ public class Planets extends Card implements Serializable {
                         this.getName(),
                         this.getDescription(),
                         Game.getIstance().getTruckerList().getFirst().getNickname(),
-                        "Do you want to land (if no type -1) and where (index planet)?",
+                        "to land on a Planet",
                         -1,
                         -1,
                         -1,
