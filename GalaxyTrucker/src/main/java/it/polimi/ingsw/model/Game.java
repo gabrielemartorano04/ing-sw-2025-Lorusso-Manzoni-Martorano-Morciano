@@ -671,6 +671,10 @@ public class Game implements Serializable {
         for(int i=0; i<numPlayers; i++){
             if(oldColors.get(i).equals(color) && oldNicknames.get(i).equals(nickname)){
                 System.out.println("Entro qui ");
+                System.out.println(color);
+                System.out.println(nickname);
+                System.out.println(oldNicknames.get(i));
+                System.out.println(oldColors.get(i));
                 return true;
             }
         }
