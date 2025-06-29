@@ -267,4 +267,5 @@ public class CardController implements Serializable {
     public ServerEvent startCard(){
         return currCard.startCard();
     }
+
 }
