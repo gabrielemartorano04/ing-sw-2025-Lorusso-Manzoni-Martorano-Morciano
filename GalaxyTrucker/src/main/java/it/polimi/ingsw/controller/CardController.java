@@ -268,6 +268,4 @@ public class CardController implements Serializable {
         return currCard.startCard();
     }
 
-
-    //Ciao
 }
