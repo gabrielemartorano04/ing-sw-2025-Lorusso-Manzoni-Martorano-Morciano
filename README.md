@@ -1,6 +1,7 @@
-# **SOFTWARE ENGINEERING PROJECT 2024/2025**
+# SOFTWARE ENGINEERING PROJECT 2024/2025
 
-Lorusso Luca, Manzoni Nicola, Martorano Gabriele, Morciano Francesca
+Students: *Lorusso Luca, Manzoni Nicola, Martorano Gabriele, Morciano Francesca*
+Teacher: *San Pietro Pierluigi*
 
 ## *Galaxy Trucker*
 
@@ -8,9 +9,17 @@ The project consists of a Java version of the board game Galaxy Trucker, made by
 
 **Game rules** [(English)](deliverables/readmeFiles/galaxy-trucker-rules-en.pdf) [(Italian)](deliverables/readmeFiles/galaxy-trucker-rules-it.pdf)
 
-## **Project specification**
+## Project specification
 
 [Project requirements](deliverables/readmeFiles/requirements.pdf)
+
+The final version of the game includes:
+- high-level, general UML diagram;
+- detailed UML diagram, generated from the code by automated tools;
+- java documentations
+- working game implementation;
+- source code of the implementation;
+- source code of tests.
 
 ### List of advanced functionalities
 |**Functionality**          | **Implemented** |
@@ -25,6 +34,8 @@ The project consists of a Java version of the board game Galaxy Trucker, made by
 |Multiple Games             | ❌               |
 |Resilience to disconnection| ❌               |
 
-Percentuage of test coverage:
-![Copertura test](https://github.com/user-attachments/assets/99f3aeb6-b5c5-40fe-a09a-2a6dfb734ff8)
 
+Percentage of *model* and *controller* test coverage
+![testCoverage.jpg](deliverables/readmeFiles/testCoverage.jpg)
+
+[JavaDoc](deliverables/readmeFiles/overview-summary.html) of the project
