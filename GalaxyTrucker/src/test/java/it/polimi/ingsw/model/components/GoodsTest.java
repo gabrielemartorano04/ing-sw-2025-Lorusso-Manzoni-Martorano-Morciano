@@ -5,19 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Goods class test
- */
 class GoodsTest {
 
-    /**
-     * Represents the instances of the goods class used in testing
-     */
     private Goods goods,good2,good3,good1;
 
-    /**
-     * Sets up the test environment by initializing the necessary resources
-     */
     @BeforeEach
     void setUp() {
         goods=new Goods(4);
