@@ -90,7 +90,7 @@ public class AbandonedShip extends Card implements Serializable {
                 this.getName(),
                 this.getDescription(),
                 Game.getIstance().getTruckerList().getFirst().getNickname(),
-                "Do you want to land on this Abandoned Ship?",
+                "to land on this Abandoned Ship",
                 days,
                 credits,
                 numHuman,

@@ -337,7 +337,7 @@ public class StartCardEvent extends CardEvent {
      * @return a string message describing the player's current activity
      */
     public String getInfoForOthers(){
-        return firstPlayerNickname+" is deciding the answer to the following question: "+question;
+        return firstPlayerNickname+" is deciding "+ question;
     }
 
     /**

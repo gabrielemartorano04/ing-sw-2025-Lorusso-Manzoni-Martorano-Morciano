@@ -101,7 +101,7 @@ public class MeteorShower extends Card implements Serializable {
                 this.getName(),
                 this.getDescription(),
                 Game.getIstance().getTruckerList().getFirst().getNickname(),
-                "Roll the dice",
+                "to Roll the dice",
                 -1,
                 -1,
                 -1,
