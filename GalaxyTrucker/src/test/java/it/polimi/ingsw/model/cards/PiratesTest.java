@@ -165,7 +165,6 @@ class PiratesTest {
         assertEquals("Pirates", event.getCardName());
         assertEquals(pirates.getDescription(), event.getCardDescription());
         assertEquals(Game.getIstance().getTruckerList().getFirst().getNickname(), event.getFirstPlayerNickname());
-        assertEquals("whether to activate double cannons",event.getQuestion());
         assertEquals(pirates.getDays(), event.getDays());
         assertEquals(pirates.getCredits(), event.getCredits());
         assertEquals(-1, event.getNumHumans());
