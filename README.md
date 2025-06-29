@@ -22,7 +22,7 @@ The final version of the game includes:
 - source code of the implementation;
 - source code of tests.
 
-### List of advanced functionalities
+### List of implemented functionalities
 |**Functionality**          | **Implemented** |
 |---------------------------|-----------------|
 |Complete rules             | ✅               |
@@ -39,18 +39,22 @@ The final version of the game includes:
 Percentage of *model* and *controller* test coverage
 ![testCoverage.jpg](deliverables/readmeFiles/testCoverage.jpg)
 
-JavaDoc of the project
+## JavaDoc of the project
 
 ## How to use
 
 This section contains all instructions about how to run this project.
 
-From the terminal (mac) or shell (windows) go in the deliverables/final/jar repository. Then, in differents windows 
+From the terminal (macOS) or shell (windows) go to the deliverables/final/jar repository. Then, in different windows 
 (one for the server and as many as the players for the clients) type the following prompt: 
-    
-    java -jar client-app.jar (to run the client)
 
-    java -jar server-app.jar (to run the server)
+Run the server:
+
+    java -jar server-app.jar
+
+Run the client:
+    
+    java -jar client-app.jar
 
 Then select the type of connection and User Interface method and enjoy the game.
 
