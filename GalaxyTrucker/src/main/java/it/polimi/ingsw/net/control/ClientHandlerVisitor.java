@@ -259,6 +259,8 @@ public class ClientHandlerVisitor implements VirtualServer {
 
                 return new ResumeGameEvent(gameController.getGame().getComponents().getComponents(), nickname, allTruckers, gameController.getGame().getGameState(), gameController.getGame().getGameLevel(), gameController.getGame().getTrack(), players, cardToGo);
             }else{
+                System.out.println("entro");
+
                 numLog--;
                 return new GenericErrorEvent("the set of nickname and color didn't exists in the old game", false);
             }
