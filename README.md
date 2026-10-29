@@ -1,61 +1,75 @@
-# SOFTWARE ENGINEERING PROJECT 2024/2025
+# 🚀 Galaxy Trucker — Java Digital Edition (A.Y. 2024-2025)
 
-Students: [*Lorusso Luca*](https://github.com/Luc4Lo), [*Manzoni Nicola*](https://github.com/NicolaManzoni), [*Martorano Gabriele*](https://github.com/gabrielemartorano04), [*Morciano Francesca*](https://github.com/francescamorciano)
+This project consists of a full-stack, distributed multiplayer Java implementation of the popular board game **Galaxy Trucker** (published by Cranio Creations) for che course of *Software Engineering*. The system features a robust client-server architecture, allowing players to connect via Socket or RMI and interact through either a Command Line Interface (CLI) or a Graphical User Interface (GUI).
 
-Teacher: *San Pietro Pierluigi*
+* **University:** Politecnico di Milano
+* **Professor:** Prof. San Pietro Pierluigi
+* **Authors:** [Lorusso Luca](https://github.com/Luc4Lo), [Manzoni Nicola](https://github.com/NicolaManzoni), [Martorano Gabriele](https://github.com/gabrielemartorano04), [Morciano Francesca](https://github.com/francescamorciano)
 
-## *🚀 Galaxy Trucker 🚀*
+---
 
-The project consists of a Java version of the board game Galaxy Trucker, made by Cranio Creations
+## 📖 Game Rules & Specifications
 
-**Game rules 📖** [(English)](deliverables/readmeFiles/galaxy-trucker-rules-en.pdf) [(Italian)](deliverables/readmeFiles/galaxy-trucker-rules-it.pdf)
+* **Galaxy Trucker Rulebook:** [English](deliverables/readmeFiles/galaxy-trucker-rules-en.pdf) | [Italian](deliverables/readmeFiles/galaxy-trucker-rules-it.pdf)
+* **Project Specifications:** [Official Requirements Document](deliverables/readmeFiles/requirements.pdf)
 
-## Project specification
+---
 
-[Project requirements 📄](deliverables/readmeFiles/requirements.pdf)
+## 🎯 Implemented Features
 
-The final version of the game includes:
-- high-level, general UML diagram;
-- detailed UML diagram, generated from the code by automated tools;
-- java documentations
-- working game implementation;
-- source code of the implementation;
-- source code of tests.
+The project fully implements the core rules of the game alongside advanced network and architectural features required by the assignment:
 
-### List of implemented functionalities
-|**Functionality**          | **Implemented** |
-|---------------------------|-----------------|
-|Complete rules             | ✅               |
-|Socket                     | ✅               |
-|RMI                        | ✅               |
-|CLI                        | ✅               |
-|GUI                        | ✅               |
-|Trial flight               | ✅               |
-|Persistency                | ✅               |
-|Multiple Games             | ❌               |
-|Resilience to disconnection| ❌               |
+| Feature | Status | Description |
+| :--- | :---: | :--- |
+| **Complete Rules** | ✅ | Full implementation of the base game mechanics |
+| **CLI** | ✅ | Fully playable Command Line Interface |
+| **GUI** | ✅ | Graphical User Interface (Java Swing/JavaFX) |
+| **Socket** | ✅ | Network communication via TCP Sockets |
+| **RMI** | ✅ | Network communication via Remote Method Invocation |
+| **Trial Flight** (Advanced) | ✅ | Ability to test the spaceship before the actual flight |
+| **Persistency** (Advanced) | ✅ | Saving and loading game states |
+| Multiple Games | ❌ | Concurrent matches on the same server |
+| Resilience to Disconnections | ❌ | Reconnecting to an ongoing match after a crash |
 
+---
 
-Percentage of *model* and *controller* test coverage
-![testCoverage.jpg](deliverables/readmeFiles/testCoverage.jpg)
+## 📂 Project Deliverables
 
-### [JavaDoc](deliverables/javaDoc) of the project
+The final version of the repository includes all the requested academic deliverables:
+- High-level, general UML diagram.
+- Detailed UML diagram (generated dynamically from the code).
+- Interactive **[JavaDoc](deliverables/javaDoc)** documentation.
+- Full working game implementation (Client and Server binaries).
+- Complete source code for both the main implementation and the testing suite.
 
-## How to use
+### 🧪 Testing & Coverage
+Extensive unit testing was performed on the `Model` and `Controller` components to ensure a solid and bug-free game logic.
 
-This section contains all instructions about how to run this project.
+![Test Coverage](deliverables/readmeFiles/testCoverage.jpg)
 
-From terminal (MacOS) or shell (Windows 11) go to the deliverables/final/jar repository. Then, in different windows 
-(one for the server and as many as the players for the clients) type the following prompt: 
+---
 
-Run the server:
+## 🚀 How to Run the Game
 
-    java -jar server-app.jar
+Follow these instructions to start the server and connect one or more clients.
 
-Run the client:
-    
-    java -jar client-app.jar
+### 1. Locate the Executables
+From your terminal (macOS/Linux) or command prompt/PowerShell (Windows), navigate to the folder containing the compiled `.jar` files:
+```bash
+cd deliverables/final/jar
+```
 
-Then select the type of connection and User Interface method and enjoy the game 🎮.
+### 2. Start the Server
+Open a terminal window and run the server application. The server must be running before any client attempts to connect.
+```bash
+java -jar server-app.jar
+```
 
+### 3. Start the Clients
+Open a new terminal window for each player who wants to join the game, and run the client application:
+```bash
+java -jar client-app.jar
+```
 
+### 4. Play! 🎮
+Once the client starts, you will be prompted on-screen to select your preferred Connection Protocol (Socket or RMI) and User Interface (CLI or GUI). Follow the instructions and enjoy the flight!
